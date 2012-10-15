@@ -1,0 +1,133 @@
+.nav {
+   background-color: #333;
+   width: 100%;
+   height: 100%;
+}
+
+.nav ul {
+   list-style-type: none;
+   display: block;
+}
+
+.nav ul li {
+   clear: both;
+   float: left;
+   background: url('images/menu_spacer.png') 0 100% no-repeat;
+   width: 220px;
+   padding: 0px 0;
+}
+
+.nav ul li a {
+   /*color: #eee;
+   text-decoration: none;*/
+   clear: both;
+   float: left;
+   text-decoration: none;
+   color: #BBB;
+   padding-left: 0px;
+   height: 40px;
+}
+
+.nav ul li a img {
+   clear: both;
+   float: left;
+   width: 24px;
+   height: 24px;
+   margin: 4px;
+   margin-top: 8px;
+}
+
+.nav ul li.current {
+   background: url('images/menu_current.png') top right no-repeat;
+}
+
+.nav ul li a span {
+   text-transform: uppercase;
+   font-size: 11px;
+   display: block;
+   padding: 15px 10px 7px 40px;
+   width: 215px;
+}
+
+.nav ul li a span.largo {
+   padding: 7px 10px 7px 40px !important;
+}
+
+.nav ul li.current a span {
+   background: url('images/menu_arrow.png') 100% 50% no-repeat;
+   color: white;
+}
+
+.nav .lang {
+   padding-top: 1em;
+   padding-bottom: 1em;
+   clear: both;
+   text-align: center;
+}
+
+.nav .paranimf_logo {
+   padding-top: 1em;
+   padding-bottom: 1em;
+   clear: both;
+   text-align: center;
+}
+
+.paranimf-dashboard {
+   padding: 30px 20px 30px 20px;
+}
+
+.paranimf-dashboard h1 {
+   font-size: 13pt;
+   margin-bottom: 1em;
+}
+
+.paranimf-dashboard p {
+   margin-bottom: 1em;
+}
+
+.paranimf-dashboard li {
+   padding-left: 10px;
+   list-style: decimal inside !important;
+   margin-bottom: 10px;
+}
+
+.paranimf-dashboard .firma {
+   font-style: italic;
+}
+
+.paranimf-transparente {
+   width: 100%;
+   height:100%;
+   filter: alpha(opacity=50);
+   -moz-opacity:0.5;
+   -khtml-opacity: 0.5;
+   opacity: 0.5;
+}
+
+.footer4tic {
+   text-align: center;
+   color: #BBB;
+   font-style: italic;
+}
+
+.footer4tic a {
+   text-decoration: none;
+   color: #BBB;
+}
+
+.footer4tic a:hover {
+   text-decoration: underline;
+}
+
+.idioma a {
+   text-decoration: none;
+   color: grey;
+}
+
+.idioma a:hover {
+   text-decoration: underline;
+}
+
+.ext-cal-evt {
+   color: #000 !important;
+}
