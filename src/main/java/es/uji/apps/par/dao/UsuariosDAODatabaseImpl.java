@@ -26,6 +26,7 @@ public class UsuariosDAODatabaseImpl implements UsuariosDAO
     private QParUsuarioDTO qUserDTO = QParUsuarioDTO.parUsuarioDTO;
 
     @Override
+    @Transactional
     public List<ParUsuario> getUsers()
     {
         JPAQuery query = new JPAQuery(entityManager);
@@ -42,10 +43,10 @@ public class UsuariosDAODatabaseImpl implements UsuariosDAO
 
     @Override
     @Transactional
-    public void removeUser(long id)
+    public long removeUser(long id)
     {
         JPADeleteClause delete = new JPADeleteClause(entityManager, qUserDTO);
-        delete.where(qUserDTO.id.eq(id)).execute();
+        return delete.where(qUserDTO.id.eq(id)).execute();
     }
 
     @Override
@@ -56,21 +57,23 @@ public class UsuariosDAODatabaseImpl implements UsuariosDAO
         usuarioDTO.setNombre(user.getNombre());
         usuarioDTO.setMail(user.getMail());
         usuarioDTO.setUsuario(user.getUsuario());
-
+	
         entityManager.persist(usuarioDTO);
-
+	
         user.setId(usuarioDTO.getId());
         return user;
     }
 
     @Override
     @Transactional
-    public void updateUser(ParUsuario user)
+    public ParUsuario updateUser(ParUsuario user)
     {
         JPAUpdateClause update = new JPAUpdateClause(entityManager, qUserDTO);
         update.set(qUserDTO.nombre, user.getNombre())
         	.set(qUserDTO.mail, user.getMail())
         	.set(qUserDTO.usuario, user.getUsuario())
         	.where(qUserDTO.id.eq(user.getId())).execute();
+        
+        return user;
     }
 }
