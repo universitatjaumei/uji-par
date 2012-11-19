@@ -19,6 +19,9 @@ Ext.define('Paranimf.view.evento.GridSesiones', {
          dataIndex: 'id',
          hidden: true
       }, {
+    	  hidden: true,
+    	  dataIndex: 'horaCelebracion'
+      }, {
           dataIndex: 'fechaCelebracion',
           text: UI.i18n.field.eventDate,
           format:'d/m/Y H:i',
@@ -31,13 +34,13 @@ Ext.define('Paranimf.view.evento.GridSesiones', {
       }, {
           dataIndex: 'fechaInicioVentaOnline',
           text: UI.i18n.field.startOnlineSelling,
-          format:'d/m/Y H:i',
+          format:'d/m/Y',
           xtype: 'datecolumn',
           flex: 1
       }, {
           dataIndex: 'fechaFinVentaOnline',
           text: UI.i18n.field.endOnlineSelling,
-          format:'d/m/Y H:i',
+          format:'d/m/Y',
           xtype: 'datecolumn',
           flex: 1
       }, {

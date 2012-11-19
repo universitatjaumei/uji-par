@@ -8,7 +8,7 @@ Ext.define('Paranimf.view.tipoevento.GridTiposEventos', {
 
    dockedItems: [{
      xtype: 'pagingtoolbar',
-     store: 'Usuarios',
+     store: 'TiposEventos',
      dock: 'bottom',
      displayInfo: true
    }],

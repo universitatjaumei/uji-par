@@ -14,10 +14,18 @@ public class ParTipoEvento
     {
     }
     
+    public ParTipoEvento(long id) {
+    	this.id = id;
+    }
+    
     public ParTipoEvento(ParTipoEventoDTO tipoEventoDTO)
     {
         this.id = tipoEventoDTO.getId();
         this.nombre = tipoEventoDTO.getNombre();
+    }
+    
+    public ParTipoEvento(String nombre) {
+    	this.nombre = nombre;
     }
 
     public long getId()

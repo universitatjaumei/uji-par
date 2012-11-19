@@ -85,7 +85,8 @@ UI =
 			"startOnlineSelling": "Inicio venta online",
 			"endOnlineSelling": "Fin venta online",
 			"taquilla": "Taquilla",
-			"online": "Online"
+			"online": "Online",
+			"sessionTime": "Hora de la sesión"
 		},
 		"gridTitle":
 		{

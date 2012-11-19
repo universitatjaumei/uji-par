@@ -10,7 +10,7 @@ Ext.define('Paranimf.store.Usuarios', {
 
    proxy: {
       type: 'rest',
-      url: urlPrefix + 'usuarios',
+      url: urlPrefix + 'usuario',
       reader: {
          type: 'json',
          root: 'data',

@@ -22,6 +22,7 @@ public class ParSesion
     private String horaAperturaPuertas;
     private BigDecimal canalInternet;
     private BigDecimal canalTaquilla;
+    private String horaCelebracion;
     
     public ParSesion() {
     	
@@ -30,12 +31,14 @@ public class ParSesion
     public ParSesion(ParSesionDTO sesionDTO) {
     	this.id = sesionDTO.getId();
     	this.evento = sesionDTO.getParEvento();
-    	this.fechaCelebracion = sesionDTO.getFechaCelebracion();
-    	this.fechaInicioVentaOnline = sesionDTO.getFechaInicioVentaOnline();
-    	this.fechaFinVentaOnline = sesionDTO.getFechaFinVentaOnline();
+    	this.fechaCelebracion = new Date(sesionDTO.getFechaCelebracion().getTime()/1000);
+    	this.fechaInicioVentaOnline = new Date(sesionDTO.getFechaInicioVentaOnline().getTime()/1000);
+    	this.fechaFinVentaOnline = new Date(sesionDTO.getFechaFinVentaOnline().getTime()/1000);
     	this.horaAperturaPuertas = sesionDTO.getHoraApertura();
     	this.canalInternet = sesionDTO.getCanalInternet();
     	this.canalTaquilla = sesionDTO.getCanalTaquilla();
+    	
+    	this.horaCelebracion = DateUtils.getDayWithLeadingZeros(sesionDTO.getFechaCelebracion());
     }
     
 	public long getId() {
@@ -55,9 +58,7 @@ public class ParSesion
 	public Date getFechaCelebracion() {
 		return fechaCelebracion;
 	}
-	/*public void setFechaCelebracion(Date fechaCelebracion) {
-		this.fechaCelebracion = fechaCelebracion;
-	}*/
+	
 	public Date getFechaInicioVentaOnline() {
 		return fechaInicioVentaOnline;
 	}
@@ -90,9 +91,13 @@ public class ParSesion
 	}
     
 	//TODO
-	//definidos porque desde el ext se envía automaticament la fecha con formato dd/mm/YYYY y no serializa bien si el parametro es un Date 
+	//definidos porque desde el ext se envía automaticamente la fecha con formato dd/mm/YYYY y no serializa bien si el parametro es un Date 
     public void setFechaCelebracion(String fechaCelebracion) {
     	this.fechaCelebracion = DateUtils.spanishStringToDate(fechaCelebracion);
+    }
+    
+    public void setFechaCelebracionWithDate(Date fechaCelebracion) {
+    	this.fechaCelebracion = fechaCelebracion;
     }
     
     public void setFechaInicioVentaOnline(String fechaInicioVentaOnline) {
@@ -101,5 +106,13 @@ public class ParSesion
     
     public void setFechaFinVentaOnline(String fechaFinVentaOnline) {
 		this.fechaFinVentaOnline = DateUtils.spanishStringToDate(fechaFinVentaOnline);
+	}
+
+	public String getHoraCelebracion() {
+		return horaCelebracion;
+	}
+
+	public void setHoraCelebracion(String horaCelebracion) {
+		this.horaCelebracion = horaCelebracion;
 	}
 }

@@ -23,17 +23,28 @@ Ext.define('Paranimf.view.evento.FormSesiones', {
       value: new Date(),
       allowBlank: false
    }, {
+	  name: 'horaCelebracion',
+	  xtype: 'timefield',
+	  fieldLabel: UI.i18n.field.sessionTime,
+	  minValue: '8:00 AM',
+	  maxValue: '23:30 PM',
+	  format: 'H:i',
+	  increment: 30,
+	  allowBlank: false
+   }, {
       fieldLabel: UI.i18n.field.startOnlineSelling,
       name: 'fechaInicioVentaOnline',
       xtype: 'datefield',
       startDay: 1,
-      value: new Date()
+      value: new Date(),
+      allowBlank: false
    }, {
       fieldLabel: UI.i18n.field.endOnlineSelling,
       name: 'fechaFinVentaOnline',
       xtype: 'datefield',
       startDay: 1,
-      value: new Date()
+      value: new Date(),
+      allowBlank: false
    }, {
       name: 'horaAperturaPuertas',
       xtype: 'timefield',
@@ -42,15 +53,15 @@ Ext.define('Paranimf.view.evento.FormSesiones', {
       maxValue: '23:30 PM',
       format: 'H:i',
       increment: 30
-    }, {
+   }, {
       fieldLabel: UI.i18n.field.online,
       name: 'canalInternet',
       xtype: 'checkbox'
-    }, {
+   }, {
       fieldLabel: UI.i18n.field.taquilla,
       name: 'canalTaquilla',
       xtype: 'checkbox'
-    }],
+   }],
     
     areDatesValid: function() {
         var dateIni = this.getForm().findField('fechaInicioVentaOnline').getValue();

@@ -1,5 +1,6 @@
 package es.uji.apps.par.services.rest;
 
+import java.net.URI;
 import java.util.Collections;
 
 import javax.ws.rs.Consumes;
@@ -11,15 +12,17 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import com.sun.jersey.api.core.InjectParam;
 
+import es.uji.apps.par.exceptions.ParException;
 import es.uji.apps.par.model.ParEvento;
 import es.uji.apps.par.model.ParSesion;
 import es.uji.apps.par.services.EventosService;
 import es.uji.apps.par.services.SesionesService;
 
-@Path("eventos")
+@Path("evento")
 public class EventosResource
 {
     @InjectParam
@@ -30,9 +33,9 @@ public class EventosResource
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResponse getAll()
+    public Response getAll()
     {
-        return new RestResponse(true, eventosService.getEventos());
+        return Response.ok().entity(new RestResponse(true, eventosService.getEventos())).build();
     }
     
     @GET
@@ -46,19 +49,21 @@ public class EventosResource
     @DELETE
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResponse remove(@PathParam("id") String id)
+    public Response remove(@PathParam("id") String id)
     {
         eventosService.removeEvento(Integer.parseInt(id));
-        return new RestResponse(true);
+        return Response.ok().entity(new RestResponse(true)).build();
     }
     
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResponse add(ParEvento evento)
+    public Response add(ParEvento evento) throws ParException
     {
         ParEvento newEvento = eventosService.addEvento(evento);
-        return new RestResponse(true, Collections.singletonList(newEvento));
+        
+        //TODO -> crear URL
+        return Response.created(URI.create("")).entity(new RestResponse(true, Collections.singletonList(newEvento))).build();
     }
     
     @POST
@@ -75,10 +80,10 @@ public class EventosResource
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResponse update(ParEvento evento)
+    public Response update(ParEvento evento) throws ParException
     {
         eventosService.updateEvento(evento);
-        return new RestResponse(true, Collections.singletonList(evento));
+        return Response.ok().entity(new RestResponse(true, Collections.singletonList(evento))).build();
     }
     
     @PUT

@@ -2,10 +2,7 @@ package es.uji.apps.par.model;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import es.uji.apps.par.db.ParEventoDTO;
-import es.uji.apps.par.db.ParTipoEventoDTO;
 
 @XmlRootElement
 public class ParEvento
@@ -20,7 +17,7 @@ public class ParEvento
     private String premios;
     private String caracteristicas;
     private String comentarios;
-    private ParTipoEventoDTO tipoEvento;
+    private ParTipoEvento tipoEvento;
 
     public ParEvento()
     {
@@ -38,8 +35,19 @@ public class ParEvento
         this.premios = eventoDTO.getPremios();
         this.caracteristicas = eventoDTO.getCaracteristicas();
         this.comentarios = eventoDTO.getComentarios();
-        this.tipoEvento = eventoDTO.getParTiposEvento();
+        
+        if (eventoDTO.getParTiposEvento() != null) {
+        	this.tipoEvento = new ParTipoEvento();
+        	this.tipoEvento.setId(eventoDTO.getParTiposEvento().getId());
+        	this.tipoEvento.setNombre(eventoDTO.getParTiposEvento().getNombre());
+        }
     }
+
+	public ParEvento(String titulo, ParTipoEvento tipoEvento) {
+		this.tipoEvento = new ParTipoEvento();
+		this.tipoEvento = tipoEvento;
+		this.titulo = titulo;
+	}
 
 	public long getId() {
 		return id;
@@ -121,12 +129,12 @@ public class ParEvento
 		this.comentarios = comentarios;
 	}
 
-	@JsonIgnore
-	public ParTipoEventoDTO getTipoEvento() {
+	
+	public ParTipoEvento getTipoEvento() {
 		return tipoEvento;
 	}
 
-	public void setTipoEvento(ParTipoEventoDTO tipoEvento) {
+	public void setTipoEvento(ParTipoEvento tipoEvento) {
 		this.tipoEvento = tipoEvento;
 	}
 }

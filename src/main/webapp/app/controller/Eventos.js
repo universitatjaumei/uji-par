@@ -87,7 +87,7 @@ Ext.define('Paranimf.controller.Eventos', {
    saveEventoFormData: function(button, event, opts) {
       var grid = this.getGridEventos();
       var form = this.getFormEventos();
-      form.saveFormData(grid, urlPrefix + 'eventos');
+      form.saveFormData(grid, urlPrefix + 'evento');
    },
    
    loadSesiones: function(selectionModel, record) {
@@ -95,7 +95,7 @@ Ext.define('Paranimf.controller.Eventos', {
          var storeSesiones = this.getGridSesiones().getStore();
          var eventoId = record[0].get("id");
 
-         storeSesiones.getProxy().url = urlPrefix + 'eventos/' + eventoId + '/sesiones';
+         storeSesiones.getProxy().url = urlPrefix + 'evento/' + eventoId + '/sesiones';
          storeSesiones.load();
       }
    },
@@ -112,7 +112,7 @@ Ext.define('Paranimf.controller.Eventos', {
 
 	   var grid = this.getGridSesiones();
 	   var form = this.getFormSesiones();
-	   form.saveFormData(grid, urlPrefix + 'eventos/' + eventoId + '/sesiones');
+	   form.saveFormData(grid, urlPrefix + 'evento/' + eventoId + '/sesiones');
    },
    
    removeSesion: function(button, event, opts) {

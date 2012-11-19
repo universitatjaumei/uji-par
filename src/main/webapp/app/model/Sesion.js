@@ -3,12 +3,13 @@ Ext.define('Paranimf.model.Sesion', {
 
    fields: [
       'id',
-      {name: 'fechaCelebracion', type: 'date'/*, dateFormat: 'Y-m-d H:i'*/},
-      {name: 'fechaInicioVentaOnline', type: 'date'/*, dateFormat: 'Y-m-d H:i'*/},
-      {name: 'fechaFinVentaOnline', type: 'date'/*, dateFormat: 'Y-m-d H:i'*/},
+      {name: 'fechaCelebracion', type: 'date', dateFormat: 'U'},
+      {name: 'fechaInicioVentaOnline', type: 'date', dateFormat: 'U'},
+      {name: 'fechaFinVentaOnline', type: 'date', dateFormat: 'U'},
       'evento',
       'horaAperturaPuertas',
       'canalInternet',
-      'canalTaquilla'
+      'canalTaquilla',
+      'horaCelebracion'
    ]
 });

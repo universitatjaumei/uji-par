@@ -2,9 +2,6 @@ package es.uji.apps.par.db;
 
 import java.io.Serializable;
 import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.util.List;
 
 
@@ -18,7 +15,6 @@ public class ParTipoEventoDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
 
 	private String nombre;
@@ -28,11 +24,6 @@ public class ParTipoEventoDTO implements Serializable {
 	private List<ParEventoDTO> parEventos;
 
 	public ParTipoEventoDTO() {
-	}
-	
-	//TODO
-	public ParTipoEventoDTO(long id) {
-		this.id = id;
 	}
 
 	public long getId() {

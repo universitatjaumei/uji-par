@@ -58,6 +58,6 @@ Ext.define('Paranimf.controller.Usuarios', {
    saveUsuariosFormData: function(button, event, opts) {
       var grid = this.getGridUsuarios();
       var form = this.getFormUsuarios();
-      form.saveFormData(grid, urlPrefix + 'usuarios');
+      form.saveFormData(grid, urlPrefix + 'usuario');
    }
 });

@@ -8,8 +8,6 @@ UI =
         },
         "message": {
         	"event": "És obligatori seleccionar un event",
-        	
-        	
             "selectListValues": "Ha de triar els valors dels llistats, i tots els camps són obligatoris",
             "sureDeleteMessage": "Està segur d'esborrar el missatge seleccionat?",
             "activitySelect": "És obligatori seleccionar una activitat",
@@ -110,7 +108,8 @@ UI =
 			"startOnlineSelling": "Inici venda online",
 			"endOnlineSelling": "Fi venda online",
 			"taquilla": "Taquilla",
-			"online": "Online"
+			"online": "Online",
+			"sessionTime": "Hora de la sessió"
         }
     }
 }

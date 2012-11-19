@@ -2,8 +2,8 @@ package es.uji.apps.par.db;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.math.BigDecimal;
-import java.util.Date;
 
 
 /**
@@ -16,7 +16,6 @@ public class ParSesionDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
 
 	@Column(name="CANAL_INTERNET")
@@ -25,17 +24,14 @@ public class ParSesionDTO implements Serializable {
 	@Column(name="CANAL_TAQUILLA")
 	private BigDecimal canalTaquilla;
 
-	@Temporal(TemporalType.DATE)
 	@Column(name="FECHA_CELEBRACION")
-	private Date fechaCelebracion;
+	private Timestamp fechaCelebracion;
 
-	@Temporal(TemporalType.DATE)
 	@Column(name="FECHA_FIN_VENTA_ONLINE")
-	private Date fechaFinVentaOnline;
+	private Timestamp fechaFinVentaOnline;
 
-	@Temporal(TemporalType.DATE)
 	@Column(name="FECHA_INICIO_VENTA_ONLINE")
-	private Date fechaInicioVentaOnline;
+	private Timestamp fechaInicioVentaOnline;
 
 	@Column(name="HORA_APERTURA")
 	private String horaApertura;
@@ -47,7 +43,7 @@ public class ParSesionDTO implements Serializable {
 
 	public ParSesionDTO() {
 	}
-	
+
 	public long getId() {
 		return this.id;
 	}
@@ -72,27 +68,27 @@ public class ParSesionDTO implements Serializable {
 		this.canalTaquilla = canalTaquilla;
 	}
 
-	public Date getFechaCelebracion() {
+	public Timestamp getFechaCelebracion() {
 		return this.fechaCelebracion;
 	}
 
-	public void setFechaCelebracion(Date fechaCelebracion) {
+	public void setFechaCelebracion(Timestamp fechaCelebracion) {
 		this.fechaCelebracion = fechaCelebracion;
 	}
 
-	public Date getFechaFinVentaOnline() {
+	public Timestamp getFechaFinVentaOnline() {
 		return this.fechaFinVentaOnline;
 	}
 
-	public void setFechaFinVentaOnline(Date fechaFinVentaOnline) {
+	public void setFechaFinVentaOnline(Timestamp fechaFinVentaOnline) {
 		this.fechaFinVentaOnline = fechaFinVentaOnline;
 	}
 
-	public Date getFechaInicioVentaOnline() {
+	public Timestamp getFechaInicioVentaOnline() {
 		return this.fechaInicioVentaOnline;
 	}
 
-	public void setFechaInicioVentaOnline(Date fechaInicioVentaOnline) {
+	public void setFechaInicioVentaOnline(Timestamp fechaInicioVentaOnline) {
 		this.fechaInicioVentaOnline = fechaInicioVentaOnline;
 	}
 

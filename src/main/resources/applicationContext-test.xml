@@ -25,57 +25,42 @@
     <property name="entityManagerFactory" ref="entityManagerFactory" />
   </bean>
 
-  <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
-    destroy-method="close">
-    <property name="dataSourceName" value="bec" />
-    <property name="driverClass">
-      <value>${uji.db.driverClass}</value>
-    </property>
-    <property name="jdbcUrl">
-      <value>${uji.db.jdbcUrl}</value>
-    </property>
+  <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+    <property name="dataSourceName" value="apa" />
+    <property name="driverClass" value="org.hsqldb.jdbcDriver" />
+    <property name="jdbcUrl" value="jdbc:hsqldb:mem:paranimf-example-db" />
     <property name="initialPoolSize" value="10" />
     <property name="maxPoolSize" value="100" />
     <property name="minPoolSize" value="10" />
     <property name="acquireIncrement" value="5" />
     <property name="acquireRetryAttempts" value="30" />
-    <property name="idleConnectionTestPeriod">
-      <value>14400</value>
-    </property>
-    <property name="checkoutTimeout">
-      <value>25200</value>
-    </property>
+    <property name="idleConnectionTestPeriod" value="14400" />
+    <property name="checkoutTimeout" value="25200" />
     <property name="properties">
       <props>
         <prop key="c3p0.max_size">100</prop>
         <prop key="c3p0.min_size">10</prop>
         <prop key="c3p0.max_statements">0</prop>
-        <prop key="c3p0.preferredTestQuery">${uji.db.preferredTestQuery}</prop>
-        <prop key="user">${uji.db.username}</prop>
-        <prop key="password">${uji.db.password}</prop>
+        <prop key="c3p0.preferredTestQuery">select 1;</prop>
+        <prop key="user">sa</prop>
+        <prop key="password"></prop>
       </props>
     </property>
   </bean>
-
-  <bean id="entityManagerFactory"
-    class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+  
+  <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
     <property ref="dataSource" name="dataSource"></property>
     <property name="persistenceUnitName" value="persistenceUnit" />
     <property name="jpaVendorAdapter">
-      <bean
-        class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-        <property name="database">
-          <value>${uji.db.databaseId}</value>
-        </property>
+      <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+        <property name="database" value="HSQL" />
         <property name="showSql" value="true" />
-        <property name="databasePlatform">
-          <value>${uji.db.dialect}</value>
-        </property>
+        <property name="databasePlatform" value="org.hibernate.dialect.HSQLDialect" />
       </bean>
     </property>
     <property name="jpaProperties">
       <props>
-        <!-- prop key="hibernate.hbm2ddl.auto">create</prop -->
+        <prop key="hibernate.hbm2ddl.auto">create</prop>
         <prop key="hibernate.cache.provider_class">org.hibernate.cache.HashtableCacheProvider</prop>
         <prop key="hibernate.jdbc.batch_size">0</prop>
       </props>

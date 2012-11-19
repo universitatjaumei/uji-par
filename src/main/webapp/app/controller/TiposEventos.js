@@ -58,6 +58,6 @@ Ext.define('Paranimf.controller.TiposEventos', {
    saveTiposFormData: function(button, event, opts) {
       var grid = this.getGridTiposEventos();
       var form = this.getFormTiposEventos();
-      form.saveFormData(grid, urlPrefix + 'tiposeventos');
+      form.saveFormData(grid, urlPrefix + 'tipoevento');
    }
 });

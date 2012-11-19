@@ -9,7 +9,7 @@ Ext.define('Paranimf.store.TiposEventosSinPaginar', {
 
    proxy: {
       type: 'rest',
-      url: urlPrefix + 'tiposeventos',
+      url: urlPrefix + 'tipoevento',
       reader: {
          type: 'json',
          root: 'data',

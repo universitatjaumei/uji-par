@@ -1,5 +1,6 @@
 package es.uji.apps.par.services.rest;
 
+import java.net.URI;
 import java.util.Collections;
 
 import javax.ws.rs.Consumes;
@@ -11,13 +12,15 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import com.sun.jersey.api.core.InjectParam;
 
+import es.uji.apps.par.exceptions.ParException;
 import es.uji.apps.par.model.ParUsuario;
 import es.uji.apps.par.services.UsersService;
 
-@Path("usuarios")
+@Path("usuario")
 public class UsersResource
 {
     @InjectParam
@@ -25,36 +28,37 @@ public class UsersResource
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResponse getAll()
+    public Response getAll()
     {
-        return new RestResponse(true, usersService.getUsuarios());
+        return Response.ok().entity(new RestResponse(true, usersService.getUsuarios())).build();
     }
     
     @DELETE
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResponse remove(@PathParam("id") String id)
+    public Response remove(@PathParam("id") String id)
     {
         usersService.removeUser(Integer.parseInt(id));
-        return new RestResponse(true);
+        return Response.ok().entity(new RestResponse(true)).build();
     }
     
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResponse add(ParUsuario user)
+    public Response add(ParUsuario user) throws ParException
     {
         ParUsuario newUser = usersService.addUser(user);
-        return new RestResponse(true, Collections.singletonList(newUser));
+        //TODO -> generar URL
+        return Response.created(URI.create("")).entity(new RestResponse(true, Collections.singletonList(newUser))).build();
     }
     
     @PUT
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResponse update(ParUsuario user)
+    public Response update(ParUsuario user) throws ParException
     {
         usersService.updateUser(user);
-        return new RestResponse(true, Collections.singletonList(user));
+        return Response.ok().entity(new RestResponse(true, Collections.singletonList(user))).build();
     }    
 }

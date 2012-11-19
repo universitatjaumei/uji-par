@@ -10,12 +10,13 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import es.uji.apps.par.dao.UsuariosDAO;
+import es.uji.apps.par.exceptions.ParUsuarioYaExiste;
 import es.uji.apps.par.model.ParUsuario;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = false)
+@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
 @ContextConfiguration(locations = { "/applicationContext.xml" })
-public class UsersDAOTest {
+public class UsuariosDAOTest {
 
 	@Autowired
 	UsuariosDAO usuariosDAO;
@@ -37,27 +38,37 @@ public class UsersDAOTest {
 	
 	@Test
 	@Transactional
-	public void addUsuarioAndDeleteIt() {
+	public void addUsuario() throws ParUsuarioYaExiste {
 		ParUsuario parUsuario = preparaUsuario();
 		ParUsuario usuario = usuariosDAO.addUser(parUsuario);
 		
 		Assert.assertNotNull(usuario.getId());
-		
-		Assert.assertEquals(1, usuariosDAO.removeUser(usuario.getId()));
 	}
 	
 	@Test
 	@Transactional
-	public void updateUsuario() {
-		ParUsuario parUsuario = preparaUsuario();
-		ParUsuario usuario = usuariosDAO.addUser(parUsuario);
-		
-		Assert.assertNotNull(usuario.getId());
-		
-		usuario.setNombre("Prueba2");
-		ParUsuario usuarioActualizado = usuariosDAO.updateUser(usuario);
-		Assert.assertEquals(usuario.getId(), usuarioActualizado.getId());
-		
-		Assert.assertEquals(1, usuariosDAO.removeUser(usuario.getId()));
+	public void deleteUsuario() {
+		Assert.assertEquals(1, usuariosDAO.removeUser(usuariosDAO.getUsers().get(0).getId()));
+	}
+	
+	@Test
+	@Transactional
+	public void updateUsuario() throws ParUsuarioYaExiste {
+		ParUsuario parUsuario = new ParUsuario();
+		parUsuario.setId(usuariosDAO.getUsers().get(0).getId());
+		parUsuario.setNombre("Prueba2");
+		parUsuario.setMail("mail");
+		parUsuario.setUsuario("usuario");
+		ParUsuario usuarioActualizado = usuariosDAO.updateUser(parUsuario);
+		Assert.assertEquals(parUsuario.getId(), usuarioActualizado.getId());
+	}
+	
+	@Test(expected=Exception.class)
+	@Transactional
+	public void updateUsuarioBorrandoMail() throws ParUsuarioYaExiste {
+		ParUsuario parUsuario = new ParUsuario();
+		parUsuario.setId(usuariosDAO.getUsers().get(0).getId());
+		parUsuario.setNombre("Prueba2");
+		usuariosDAO.updateUser(parUsuario);
 	}
 }

@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 import es.uji.apps.par.dao.UsuariosDAO;
+import es.uji.apps.par.exceptions.ParCampoRequeridoException;
+import es.uji.apps.par.exceptions.ParException;
+import es.uji.apps.par.exceptions.ParUsuarioYaExiste;
 import es.uji.apps.par.model.ParUsuario;
 
 @Service
@@ -25,13 +27,28 @@ public class UsersService
         usuariosDAO.removeUser(id);
     }
 
-    public ParUsuario addUser(ParUsuario user)
+    public ParUsuario addUser(ParUsuario user) throws ParException
     {
-        return usuariosDAO.addUser(user);
+    	checkRequiredFields(user);
+    	
+    	if (usuariosDAO.userExists(user))
+    		throw new ParUsuarioYaExiste();
+    	else
+    		return usuariosDAO.addUser(user);
     }
 
-    public void updateUser(ParUsuario user)
+    private void checkRequiredFields(ParUsuario user) throws ParCampoRequeridoException {
+		if (user.getMail() == null || user.getMail().isEmpty())
+			throw new ParCampoRequeridoException("Mail");
+		if (user.getNombre() == null || user.getNombre().isEmpty())
+			throw new ParCampoRequeridoException("Nombre");
+		if (user.getUsuario() == null || user.getUsuario().isEmpty())
+			throw new ParCampoRequeridoException("Usuario");
+	}
+
+	public void updateUser(ParUsuario user) throws ParCampoRequeridoException
     {
+		checkRequiredFields(user);
         usuariosDAO.updateUser(user);
     }
 }
