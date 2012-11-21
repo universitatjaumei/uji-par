@@ -41,7 +41,7 @@ public class EventosService
     }
 
     private void checkRequiredFields(ParEvento evento) throws ParCampoRequeridoException {
-		if (evento.getTitulo() == null || evento.getTitulo().isEmpty())
+		if (evento.getTituloEs() == null || evento.getTituloEs().isEmpty())
 			throw new ParCampoRequeridoException("Título");
 		if (evento.getParTipoEvento() == null)
 			throw new ParCampoRequeridoException("Tipo de evento");

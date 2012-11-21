@@ -65,23 +65,46 @@ public class EventosDAO
     }
 
 	private ParEventoDTO rellenarParEventoDTOConParEvento(ParEvento evento, ParEventoDTO eventoDTO) {
-		eventoDTO.setCaracteristicas(evento.getCaracteristicas());
-        eventoDTO.setComentarios(evento.getComentarios());
-        eventoDTO.setCompanyia(evento.getCompanyia());
-        eventoDTO.setDescripcion(evento.getDescripcion());
-        eventoDTO.setDuracion(evento.getDuracion());
+		eventoDTO.setCaracteristicasEs(evento.getCaracteristicasEs());
+		eventoDTO.setCaracteristicasEn(evento.getCaracteristicasEn());
+		eventoDTO.setCaracteristicasVa(evento.getCaracteristicasVa());
+		
+        eventoDTO.setComentariosEs(evento.getComentariosEs());
+        eventoDTO.setComentariosEn(evento.getComentariosEn());
+        eventoDTO.setComentariosVa(evento.getComentariosVa());
+        
+        eventoDTO.setCompanyiaEs(evento.getCompanyiaEs());
+        eventoDTO.setCompanyiaEn(evento.getCompanyiaEn());
+        eventoDTO.setCompanyiaVa(evento.getCompanyiaVa());
+        
+        eventoDTO.setDescripcionEs(evento.getDescripcionEs());
+        eventoDTO.setDescripcionEn(evento.getDescripcionEn());
+        eventoDTO.setDescripcionVa(evento.getDescripcionVa());
+        
+        eventoDTO.setDuracionEs(evento.getDuracionEs());
+        eventoDTO.setDuracionEn(evento.getDuracionEn());
+        eventoDTO.setDuracionVa(evento.getDuracionVa());
+        
         eventoDTO.setImagen(evento.getImagen());
         eventoDTO.setImagenSrc(evento.getImagenSrc());
         eventoDTO.setImagenContentType(evento.getImagenContentType());
-        eventoDTO.setInterpretes(evento.getInterpretes());
+        
+        eventoDTO.setInterpretesEs(evento.getInterpretesEs());
+        eventoDTO.setInterpretesEn(evento.getInterpretesEn());
+        eventoDTO.setInterpretesVa(evento.getInterpretesVa());
         
         if (evento.getParTipoEvento() != null) {
         	ParTipoEventoDTO parTipoEventoDTO = new ParTipoEventoDTO();
         	parTipoEventoDTO.setId(evento.getParTipoEvento().getId());
         	eventoDTO.setParTiposEvento(parTipoEventoDTO);
         }
-        eventoDTO.setPremios(evento.getPremios());
-        eventoDTO.setTitulo(evento.getTitulo());
+        eventoDTO.setPremiosEs(evento.getPremiosEs());
+        eventoDTO.setPremiosEn(evento.getPremiosEn());
+        eventoDTO.setPremiosVa(evento.getPremiosVa());
+        
+        eventoDTO.setTituloEs(evento.getTituloEs());
+        eventoDTO.setTituloEn(evento.getTituloEn());
+        eventoDTO.setTituloVa(evento.getTituloVa());
         
         return eventoDTO;
 	}

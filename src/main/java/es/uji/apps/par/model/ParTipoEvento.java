@@ -8,7 +8,9 @@ import es.uji.apps.par.db.ParTipoEventoDTO;
 public class ParTipoEvento
 {
     private long id;
-    private String nombre;
+    private String nombreEs;
+    private String nombreEn;
+    private String nombreVa;
 
     public ParTipoEvento()
     {
@@ -21,11 +23,13 @@ public class ParTipoEvento
     public ParTipoEvento(ParTipoEventoDTO tipoEventoDTO)
     {
         this.id = tipoEventoDTO.getId();
-        this.nombre = tipoEventoDTO.getNombre();
+        this.nombreEs = tipoEventoDTO.getNombreEs();
+        this.nombreEn = tipoEventoDTO.getNombreEn();
+        this.nombreVa = tipoEventoDTO.getNombreVa();
     }
     
-    public ParTipoEvento(String nombre) {
-    	this.nombre = nombre;
+    public ParTipoEvento(String nombreEs) {
+    	this.nombreEs = nombreEs;
     }
 
     public long getId()
@@ -38,11 +42,29 @@ public class ParTipoEvento
         this.id = id;
     }
 
-	public String getNombre() {
-		return nombre;
+	public String getNombreEs() {
+		return nombreEs;
 	}
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
+	public void setNombreEs(String nombreEs) {
+		this.nombreEs = nombreEs;
 	}
+
+	public String getNombreEn() {
+		return nombreEn;
+	}
+
+	public void setNombreEn(String nombreEn) {
+		this.nombreEn = nombreEn;
+	}
+
+	public String getNombreVa() {
+		return nombreVa;
+	}
+
+	public void setNombreVa(String nombreVa) {
+		this.nombreVa = nombreVa;
+	}
+    
+    
 }

@@ -38,7 +38,7 @@ public class TiposEventosService
     }
     
     private void checkRequiredFields(ParTipoEvento tipoEvento) throws ParCampoRequeridoException {
-    	if (tipoEvento.getNombre() == null || tipoEvento.getNombre().isEmpty())
+    	if (tipoEvento.getNombreEs() == null || tipoEvento.getNombreEs().isEmpty())
     		throw new ParCampoRequeridoException("Nombre");
     }
 }

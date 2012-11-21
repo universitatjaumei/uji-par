@@ -74,18 +74,29 @@ public class EventosResource
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response add(@FormDataParam("titulo") String titulo, @FormDataParam("descripcion") String descripcion, 
-    		@FormDataParam("companyia") String companyia, @FormDataParam("interpretes") String interpretes, 
-    		@FormDataParam("duracion") String duracion, @FormDataParam("dataBinary") byte[] dataBinary,
+    public Response add(@FormDataParam("tituloEs") String tituloEs, @FormDataParam("descripcionEs") String descripcionEs, 
+    		@FormDataParam("companyiaEs") String companyiaEs, @FormDataParam("interpretesEs") String interpretesEs, 
+    		@FormDataParam("duracionEs") String duracionEs, @FormDataParam("dataBinary") byte[] dataBinary,
     		@FormDataParam("dataBinary") FormDataContentDisposition dataBinaryDetail, @FormDataParam("dataBinary") FormDataBodyPart imagenBodyPart,
-    		@FormDataParam("premios") String premios, @FormDataParam("caracteristicas") String caracteristicas,
-    		@FormDataParam("comentarios") String comentarios, @FormDataParam("tipoEvento") Integer tipoEventoId) throws ParException
+    		@FormDataParam("premiosEs") String premiosEs, @FormDataParam("caracteristicasEs") String caracteristicasEs,
+    		@FormDataParam("comentariosEs") String comentariosEs, @FormDataParam("tipoEvento") Integer tipoEventoId,
+    		@FormDataParam("tituloVa") String tituloVa, @FormDataParam("descripcionVa") String descripcionVa, 
+    		@FormDataParam("companyiaVa") String companyiaVa, @FormDataParam("interpretesVa") String interpretesVa, 
+    		@FormDataParam("duracionVa") String duracionVa, @FormDataParam("premiosVa") String premiosVa, 
+    		@FormDataParam("caracteristicasVa") String caracteristicasVa, @FormDataParam("comentariosVa") String comentariosVa,
+    		@FormDataParam("tituloEn") String tituloEn, @FormDataParam("descripcionEn") String descripcionEn, 
+    		@FormDataParam("companyiaEn") String companyiaEn, @FormDataParam("interpretesEn") String interpretesEn, 
+    		@FormDataParam("duracionEn") String duracionEn, @FormDataParam("premiosEn") String premiosEn, 
+    		@FormDataParam("caracteristicasEn") String caracteristicasEn, @FormDataParam("comentariosEn") String comentariosEn) throws ParException
     {
     	String nombreArchivo = (dataBinaryDetail != null)?dataBinaryDetail.getFileName():"";
     	String mediaType = (imagenBodyPart != null)?imagenBodyPart.getMediaType().toString():"";
     	
-    	ParEvento evento = new ParEvento(titulo, descripcion, companyia, interpretes, duracion, dataBinary, nombreArchivo, 
-    			mediaType, premios, caracteristicas, comentarios, tipoEventoId);
+    	ParEvento evento = new ParEvento(
+    			tituloEs, descripcionEs, companyiaEs, interpretesEs, duracionEs, premiosEs, caracteristicasEs, comentariosEs,
+    			tituloVa, descripcionVa, companyiaVa, interpretesVa, duracionVa, premiosVa, caracteristicasVa, comentariosVa,
+    			tituloEn, descripcionEn, companyiaEn, interpretesEn, duracionEn, premiosEn, caracteristicasEn, comentariosEn,
+    			dataBinary, nombreArchivo, mediaType, tipoEventoId);
         ParEvento newEvento = eventosService.addEvento(evento);
         
         //TODO -> crear URL
@@ -106,18 +117,29 @@ public class EventosResource
     @Path("{id}")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response update(@PathParam("id") Integer id, @FormDataParam("titulo") String titulo, @FormDataParam("descripcion") String descripcion, 
-    		@FormDataParam("companyia") String companyia, @FormDataParam("interpretes") String interpretes, 
-    		@FormDataParam("duracion") String duracion, @FormDataParam("dataBinary") byte[] dataBinary,
+    public Response update(@PathParam("id") Integer id, @FormDataParam("tituloEs") String tituloEs, @FormDataParam("descripcionEs") String descripcionEs, 
+    		@FormDataParam("companyiaEs") String companyiaEs, @FormDataParam("interpretesEs") String interpretesEs, 
+    		@FormDataParam("duracionEs") String duracionEs, @FormDataParam("dataBinary") byte[] dataBinary,
     		@FormDataParam("dataBinary") FormDataContentDisposition dataBinaryDetail, @FormDataParam("dataBinary") FormDataBodyPart imagenBodyPart,
-    		@FormDataParam("premios") String premios, @FormDataParam("caracteristicas") String caracteristicas,
-    		@FormDataParam("comentarios") String comentarios, @FormDataParam("tipoEvento") Integer tipoEventoId) throws ParException
+    		@FormDataParam("premiosEs") String premiosEs, @FormDataParam("caracteristicasEs") String caracteristicasEs,
+    		@FormDataParam("comentariosEs") String comentariosEs, @FormDataParam("tipoEvento") Integer tipoEventoId,
+    		@FormDataParam("tituloVa") String tituloVa, @FormDataParam("descripcionVa") String descripcionVa, 
+    		@FormDataParam("companyiaVa") String companyiaVa, @FormDataParam("interpretesVa") String interpretesVa, 
+    		@FormDataParam("duracionVa") String duracionVa, @FormDataParam("premiosVa") String premiosVa, 
+    		@FormDataParam("caracteristicasVa") String caracteristicasVa, @FormDataParam("comentariosVa") String comentariosVa,
+    		@FormDataParam("tituloEn") String tituloEn, @FormDataParam("descripcionEn") String descripcionEn, 
+    		@FormDataParam("companyiaEn") String companyiaEn, @FormDataParam("interpretesEn") String interpretesEn, 
+    		@FormDataParam("duracionEn") String duracionEn, @FormDataParam("premiosEn") String premiosEn, 
+    		@FormDataParam("caracteristicasEn") String caracteristicasEn, @FormDataParam("comentariosEn") String comentariosEn) throws ParException
     {
     	String nombreArchivo = (dataBinaryDetail != null)?dataBinaryDetail.getFileName():"";
     	String mediaType = (imagenBodyPart != null)?imagenBodyPart.getMediaType().toString():"";
     	
-    	ParEvento evento = new ParEvento(titulo, descripcion, companyia, interpretes, duracion, dataBinary, nombreArchivo, 
-    			mediaType, premios, caracteristicas, comentarios, tipoEventoId);
+    	ParEvento evento = new ParEvento(
+    			tituloEs, descripcionEs, companyiaEs, interpretesEs, duracionEs, premiosEs, caracteristicasEs, comentariosEs,
+    			tituloVa, descripcionVa, companyiaVa, interpretesVa, duracionVa, premiosVa, caracteristicasVa, comentariosVa,
+    			tituloEn, descripcionEn, companyiaEn, interpretesEn, duracionEn, premiosEn, caracteristicasEn, comentariosEn,
+    			dataBinary, nombreArchivo, mediaType, tipoEventoId);
     			
     	evento.setId(id);
         eventosService.updateEvento(evento);

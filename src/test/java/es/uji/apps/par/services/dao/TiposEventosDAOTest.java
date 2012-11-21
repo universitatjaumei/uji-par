@@ -44,8 +44,19 @@ public class TiposEventosDAOTest {
 	public void updateTipoEvento() {
 		ParTipoEvento parTipoEvento = new ParTipoEvento();
 		parTipoEvento.setId(tiposEventosDAO.getTiposEventos().get(0).getId());
-		parTipoEvento.setNombre("Prueba2");
+		parTipoEvento.setNombreEs("Prueba2");
 		ParTipoEvento tipoEventoActualizado = tiposEventosDAO.updateTipoEvento(parTipoEvento);
 		Assert.assertEquals(parTipoEvento.getId(), tipoEventoActualizado.getId());
+	}
+	
+	@Test
+	@Transactional
+	public void addTipoEventoConIdiomas() {
+		ParTipoEvento parTipoEvento = preparaTipoEvento();
+		parTipoEvento.setNombreEn("english");
+		parTipoEvento.setNombreVa("valencia");
+		ParTipoEvento tipoEvento = tiposEventosDAO.addTipoEvento(parTipoEvento);
+		
+		Assert.assertNotNull(tipoEvento.getId());
 	}
 }

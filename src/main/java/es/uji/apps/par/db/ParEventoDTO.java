@@ -17,15 +17,50 @@ public class ParEventoDTO implements Serializable {
 	@Id
 	private long id;
 
-	private String caracteristicas;
+	@Column(name="CARACTERISTICAS_EN")
+	private String caracteristicasEn;
 
-	private String comentarios;
+	@Column(name="CARACTERISTICAS_ES")
+	private String caracteristicasEs;
 
-	private String companyia;
+	@Column(name="CARACTERISTICAS_VA")
+	private String caracteristicasVa;
 
-	private String descripcion;
+	@Column(name="COMENTARIOS_EN")
+	private String comentariosEn;
 
-	private String duracion;
+	@Column(name="COMENTARIOS_ES")
+	private String comentariosEs;
+
+	@Column(name="COMENTARIOS_VA")
+	private String comentariosVa;
+
+	@Column(name="COMPANYIA_EN")
+	private String companyiaEn;
+
+	@Column(name="COMPANYIA_ES")
+	private String companyiaEs;
+
+	@Column(name="COMPANYIA_VA")
+	private String companyiaVa;
+
+	@Column(name="DESCRIPCION_EN")
+	private String descripcionEn;
+
+	@Column(name="DESCRIPCION_ES")
+	private String descripcionEs;
+
+	@Column(name="DESCRIPCION_VA")
+	private String descripcionVa;
+
+	@Column(name="DURACION_EN")
+	private String duracionEn;
+
+	@Column(name="DURACION_ES")
+	private String duracionEs;
+
+	@Column(name="DURACION_VA")
+	private String duracionVa;
 
 	@Lob
 	private byte[] imagen;
@@ -36,11 +71,32 @@ public class ParEventoDTO implements Serializable {
 	@Column(name="IMAGEN_SRC")
 	private String imagenSrc;
 
-	private String interpretes;
+	@Column(name="INTERPRETES_EN")
+	private String interpretesEn;
 
-	private String premios;
+	@Column(name="INTERPRETES_ES")
+	private String interpretesEs;
 
-	private String titulo;
+	@Column(name="INTERPRETES_VA")
+	private String interpretesVa;
+
+	@Column(name="PREMIOS_EN")
+	private String premiosEn;
+
+	@Column(name="PREMIOS_ES")
+	private String premiosEs;
+
+	@Column(name="PREMIOS_VA")
+	private String premiosVa;
+
+	@Column(name="TITULO_EN")
+	private String tituloEn;
+
+	@Column(name="TITULO_ES")
+	private String tituloEs;
+
+	@Column(name="TITULO_VA")
+	private String tituloVa;
 
 	//bi-directional many-to-one association to ParTipoEventoDTO
 	@ManyToOne
@@ -62,44 +118,124 @@ public class ParEventoDTO implements Serializable {
 		this.id = id;
 	}
 
-	public String getCaracteristicas() {
-		return this.caracteristicas;
+	public String getCaracteristicasEn() {
+		return this.caracteristicasEn;
 	}
 
-	public void setCaracteristicas(String caracteristicas) {
-		this.caracteristicas = caracteristicas;
+	public void setCaracteristicasEn(String caracteristicasEn) {
+		this.caracteristicasEn = caracteristicasEn;
 	}
 
-	public String getComentarios() {
-		return this.comentarios;
+	public String getCaracteristicasEs() {
+		return this.caracteristicasEs;
 	}
 
-	public void setComentarios(String comentarios) {
-		this.comentarios = comentarios;
+	public void setCaracteristicasEs(String caracteristicasEs) {
+		this.caracteristicasEs = caracteristicasEs;
 	}
 
-	public String getCompanyia() {
-		return this.companyia;
+	public String getCaracteristicasVa() {
+		return this.caracteristicasVa;
 	}
 
-	public void setCompanyia(String companyia) {
-		this.companyia = companyia;
+	public void setCaracteristicasVa(String caracteristicasVa) {
+		this.caracteristicasVa = caracteristicasVa;
 	}
 
-	public String getDescripcion() {
-		return this.descripcion;
+	public String getComentariosEn() {
+		return this.comentariosEn;
 	}
 
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
+	public void setComentariosEn(String comentariosEn) {
+		this.comentariosEn = comentariosEn;
 	}
 
-	public String getDuracion() {
-		return this.duracion;
+	public String getComentariosEs() {
+		return this.comentariosEs;
 	}
 
-	public void setDuracion(String duracion) {
-		this.duracion = duracion;
+	public void setComentariosEs(String comentariosEs) {
+		this.comentariosEs = comentariosEs;
+	}
+
+	public String getComentariosVa() {
+		return this.comentariosVa;
+	}
+
+	public void setComentariosVa(String comentariosVa) {
+		this.comentariosVa = comentariosVa;
+	}
+
+	public String getCompanyiaEn() {
+		return this.companyiaEn;
+	}
+
+	public void setCompanyiaEn(String companyiaEn) {
+		this.companyiaEn = companyiaEn;
+	}
+
+	public String getCompanyiaEs() {
+		return this.companyiaEs;
+	}
+
+	public void setCompanyiaEs(String companyiaEs) {
+		this.companyiaEs = companyiaEs;
+	}
+
+	public String getCompanyiaVa() {
+		return this.companyiaVa;
+	}
+
+	public void setCompanyiaVa(String companyiaVa) {
+		this.companyiaVa = companyiaVa;
+	}
+
+	public String getDescripcionEn() {
+		return this.descripcionEn;
+	}
+
+	public void setDescripcionEn(String descripcionEn) {
+		this.descripcionEn = descripcionEn;
+	}
+
+	public String getDescripcionEs() {
+		return this.descripcionEs;
+	}
+
+	public void setDescripcionEs(String descripcionEs) {
+		this.descripcionEs = descripcionEs;
+	}
+
+	public String getDescripcionVa() {
+		return this.descripcionVa;
+	}
+
+	public void setDescripcionVa(String descripcionVa) {
+		this.descripcionVa = descripcionVa;
+	}
+
+	public String getDuracionEn() {
+		return this.duracionEn;
+	}
+
+	public void setDuracionEn(String duracionEn) {
+		this.duracionEn = duracionEn;
+	}
+
+	public String getDuracionEs() {
+		return this.duracionEs;
+	}
+
+	public void setDuracionEs(String duracionEs) {
+		this.duracionEs = duracionEs;
+	}
+
+	public String getDuracionVa() {
+		return this.duracionVa;
+	}
+
+	public void setDuracionVa(String duracionVa) {
+		this.duracionVa = duracionVa;
 	}
 
 	public byte[] getImagen() {
@@ -126,28 +262,76 @@ public class ParEventoDTO implements Serializable {
 		this.imagenSrc = imagenSrc;
 	}
 
-	public String getInterpretes() {
-		return this.interpretes;
+	public String getInterpretesEn() {
+		return this.interpretesEn;
 	}
 
-	public void setInterpretes(String interpretes) {
-		this.interpretes = interpretes;
+	public void setInterpretesEn(String interpretesEn) {
+		this.interpretesEn = interpretesEn;
 	}
 
-	public String getPremios() {
-		return this.premios;
+	public String getInterpretesEs() {
+		return this.interpretesEs;
 	}
 
-	public void setPremios(String premios) {
-		this.premios = premios;
+	public void setInterpretesEs(String interpretesEs) {
+		this.interpretesEs = interpretesEs;
 	}
 
-	public String getTitulo() {
-		return this.titulo;
+	public String getInterpretesVa() {
+		return this.interpretesVa;
 	}
 
-	public void setTitulo(String titulo) {
-		this.titulo = titulo;
+	public void setInterpretesVa(String interpretesVa) {
+		this.interpretesVa = interpretesVa;
+	}
+
+	public String getPremiosEn() {
+		return this.premiosEn;
+	}
+
+	public void setPremiosEn(String premiosEn) {
+		this.premiosEn = premiosEn;
+	}
+
+	public String getPremiosEs() {
+		return this.premiosEs;
+	}
+
+	public void setPremiosEs(String premiosEs) {
+		this.premiosEs = premiosEs;
+	}
+
+	public String getPremiosVa() {
+		return this.premiosVa;
+	}
+
+	public void setPremiosVa(String premiosVa) {
+		this.premiosVa = premiosVa;
+	}
+
+	public String getTituloEn() {
+		return this.tituloEn;
+	}
+
+	public void setTituloEn(String tituloEn) {
+		this.tituloEn = tituloEn;
+	}
+
+	public String getTituloEs() {
+		return this.tituloEs;
+	}
+
+	public void setTituloEs(String tituloEs) {
+		this.tituloEs = tituloEs;
+	}
+
+	public String getTituloVa() {
+		return this.tituloVa;
+	}
+
+	public void setTituloVa(String tituloVa) {
+		this.tituloVa = tituloVa;
 	}
 
 	public ParTipoEventoDTO getParTiposEvento() {

@@ -51,7 +51,9 @@ public class TiposEventosDAO
     public ParTipoEvento addTipoEvento(ParTipoEvento tipoEvento)
     {
     	ParTipoEventoDTO tipoeventoDTO = new ParTipoEventoDTO();
-        tipoeventoDTO.setNombre(tipoEvento.getNombre());
+        tipoeventoDTO.setNombreEs(tipoEvento.getNombreEs());
+        tipoeventoDTO.setNombreEn(tipoEvento.getNombreEn());
+        tipoeventoDTO.setNombreVa(tipoEvento.getNombreVa());
 
         entityManager.persist(tipoeventoDTO);
 
@@ -63,7 +65,9 @@ public class TiposEventosDAO
     public ParTipoEvento updateTipoEvento(ParTipoEvento tipoEvento)
     {
         JPAUpdateClause update = new JPAUpdateClause(entityManager, qTipoEventoDTO);
-        update.set(qTipoEventoDTO.nombre, tipoEvento.getNombre())
+        update.set(qTipoEventoDTO.nombreEs, tipoEvento.getNombreEs()).
+        	set(qTipoEventoDTO.nombreEn, tipoEvento.getNombreEn()).
+        	set(qTipoEventoDTO.nombreVa, tipoEvento.getNombreVa())
         	.where(qTipoEventoDTO.id.eq(tipoEvento.getId())).execute();
         
         return tipoEvento;

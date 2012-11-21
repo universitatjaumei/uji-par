@@ -78,7 +78,7 @@ public class EventosResourceTest extends JerseyTest {
     @Test
 	public void addEventoWithoutTitulo() {
 		FormDataMultiPart parEvento = preparaEvento(new ParTipoEvento());
-		parEvento.getField("titulo").setValue("");
+		parEvento.getField("tituloEs").setValue("");
 		
 		ClientResponse response = resource.path("evento").type(MediaType.MULTIPART_FORM_DATA_TYPE).post(ClientResponse.class, parEvento);
     	Assert.assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
@@ -114,7 +114,7 @@ public class EventosResourceTest extends JerseyTest {
 	
 	private FormDataMultiPart preparaEvento(ParTipoEvento tipoEvento) {
 		FormDataMultiPart f = new FormDataMultiPart();
-		f.field("titulo", "titulo");
+		f.field("tituloEs", "titulo");
 		f.field("tipoEvento", String.valueOf(tipoEvento.getId()));
 		
 		return f;
@@ -130,7 +130,7 @@ public class EventosResourceTest extends JerseyTest {
     	RestResponse restResponse = response.getEntity(new GenericType<RestResponse>(){});
     	Assert.assertTrue(restResponse.getSuccess());
     	Assert.assertNotNull(getFieldFromRestResponse(restResponse, "id"));
-    	Assert.assertEquals(parEvento.getField("titulo").getValue(), getFieldFromRestResponse(restResponse, "titulo"));
+    	Assert.assertEquals(parEvento.getField("tituloEs").getValue(), getFieldFromRestResponse(restResponse, "tituloEs"));
 	}
     
     @Test
@@ -149,7 +149,7 @@ public class EventosResourceTest extends JerseyTest {
 		Assert.assertEquals(Status.OK.getStatusCode(), response.getStatus());
 		restResponse = response.getEntity(new GenericType<RestResponse>(){});
 		
-		Assert.assertEquals(parEvento.getField("titulo").getValue(), getFieldFromRestResponse(restResponse, "titulo"));
+		Assert.assertEquals(parEvento.getField("tituloEs").getValue(), getFieldFromRestResponse(restResponse, "tituloEs"));
 	}
     
     @Test
@@ -163,7 +163,7 @@ public class EventosResourceTest extends JerseyTest {
     	String id = getFieldFromRestResponse(restResponse, "id");
 		Assert.assertNotNull(id);
 		
-		parEvento.getField("titulo").setValue("");
+		parEvento.getField("tituloEs").setValue("");
 		response = resource.path("evento").path(id).type(MediaType.MULTIPART_FORM_DATA_TYPE).post(ClientResponse.class, parEvento);
 		Assert.assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
 		ParResponseMessage parResponseMessage = response.getEntity(new GenericType<ParResponseMessage>(){});
@@ -202,7 +202,7 @@ public class EventosResourceTest extends JerseyTest {
     	RestResponse restResponse = response.getEntity(new GenericType<RestResponse>(){});
     	Assert.assertTrue(restResponse.getSuccess());
     	Assert.assertNotNull(getFieldFromRestResponse(restResponse, "id"));
-    	Assert.assertEquals(parEvento.getField("titulo").getValue(), getFieldFromRestResponse(restResponse, "titulo"));
+    	Assert.assertEquals(parEvento.getField("tituloEs").getValue(), getFieldFromRestResponse(restResponse, "tituloEs"));
     }
     
     @Test
@@ -220,6 +220,6 @@ public class EventosResourceTest extends JerseyTest {
 		response = resource.path("evento").path(id).type(MediaType.MULTIPART_FORM_DATA_TYPE).post(ClientResponse.class, parEvento);
 		Assert.assertTrue(restResponse.getSuccess());
     	Assert.assertNotNull(getFieldFromRestResponse(restResponse, "id"));
-    	Assert.assertEquals(parEvento.getField("titulo").getValue(), getFieldFromRestResponse(restResponse, "titulo"));
+    	Assert.assertEquals(parEvento.getField("tituloEs").getValue(), getFieldFromRestResponse(restResponse, "tituloEs"));
     }
 }

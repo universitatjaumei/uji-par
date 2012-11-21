@@ -66,7 +66,7 @@ public class TiposEventoResourceTest extends JerseyTest
     
     private ParTipoEvento preparaTipoEvento() {
 		ParTipoEvento tipoEvento = new ParTipoEvento();
-		tipoEvento.setNombre("Prueba");
+		tipoEvento.setNombreEs("Prueba");
 		
 		return tipoEvento;
 	}
@@ -85,7 +85,7 @@ public class TiposEventoResourceTest extends JerseyTest
     @Test
 	public void addTipoEventoWithoutNombre() {
 		ParTipoEvento parTipoEvento = preparaTipoEvento();
-		parTipoEvento.setNombre(null);
+		parTipoEvento.setNombreEs(null);
 		ClientResponse response = resource.post(ClientResponse.class, parTipoEvento);
     	Assert.assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
     	ParResponseMessage resultatOperacio = response.getEntity(new GenericType<ParResponseMessage>(){});
@@ -104,7 +104,7 @@ public class TiposEventoResourceTest extends JerseyTest
     	RestResponse restResponse = response.getEntity(new GenericType<RestResponse>(){});
     	Assert.assertTrue(restResponse.getSuccess());
     	Assert.assertNotNull(getFieldFromRestResponse(restResponse, "id"));
-    	Assert.assertEquals(parTipoEvento.getNombre(), getFieldFromRestResponse(restResponse, "nombre"));
+    	Assert.assertEquals(parTipoEvento.getNombreEs(), getFieldFromRestResponse(restResponse, "nombreEs"));
 	}
     
     @Test
@@ -117,12 +117,12 @@ public class TiposEventoResourceTest extends JerseyTest
     	String id = getFieldFromRestResponse(restResponse, "id");
 		Assert.assertNotNull(id);
 		
-		parTipoEvento.setNombre("Prueba2");
+		parTipoEvento.setNombreEs("Prueba2");
 		response = resource.path(id).put(ClientResponse.class, parTipoEvento);
 		Assert.assertEquals(Status.OK.getStatusCode(), response.getStatus());
 		restResponse = response.getEntity(new GenericType<RestResponse>(){});
 		
-		Assert.assertEquals(parTipoEvento.getNombre(), getFieldFromRestResponse(restResponse, "nombre"));
+		Assert.assertEquals(parTipoEvento.getNombreEs(), getFieldFromRestResponse(restResponse, "nombreEs"));
 	}
     
     @Test
@@ -135,7 +135,7 @@ public class TiposEventoResourceTest extends JerseyTest
     	String id = getFieldFromRestResponse(restResponse, "id");
 		Assert.assertNotNull(id);
 		
-		parTipoEvento.setNombre("");
+		parTipoEvento.setNombreEs("");
 		response = resource.path(id).put(ClientResponse.class, parTipoEvento);
 		Assert.assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
 		ParResponseMessage parResponseMessage = response.getEntity(new GenericType<ParResponseMessage>(){});
