@@ -30,6 +30,12 @@ public class ParEventoDTO implements Serializable {
 	@Lob
 	private byte[] imagen;
 
+	@Column(name="IMAGEN_CONTENT_TYPE")
+	private String imagenContentType;
+
+	@Column(name="IMAGEN_SRC")
+	private String imagenSrc;
+
 	private String interpretes;
 
 	private String premios;
@@ -102,6 +108,22 @@ public class ParEventoDTO implements Serializable {
 
 	public void setImagen(byte[] imagen) {
 		this.imagen = imagen;
+	}
+
+	public String getImagenContentType() {
+		return this.imagenContentType;
+	}
+
+	public void setImagenContentType(String imagenContentType) {
+		this.imagenContentType = imagenContentType;
+	}
+
+	public String getImagenSrc() {
+		return this.imagenSrc;
+	}
+
+	public void setImagenSrc(String imagenSrc) {
+		this.imagenSrc = imagenSrc;
 	}
 
 	public String getInterpretes() {

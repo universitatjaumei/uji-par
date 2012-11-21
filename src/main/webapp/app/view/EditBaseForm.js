@@ -16,10 +16,11 @@ Ext.define('Paranimf.view.EditBaseForm', {
       }
    }],
 
-  saveFormData: function(grid, url, method, callback) {
+  saveFormData: function(grid, url, method, contentType, callback) {
     var me = this;
     var id = me.getForm().findField('id').getValue();
     var methodHTTP;
+    var ct;
     var formURL;
     
     if (me.getForm().isValid()) {
@@ -31,15 +32,19 @@ Ext.define('Paranimf.view.EditBaseForm', {
         methodHTTP = (id) ? 'PUT' : 'POST';
         formURL = url + '/' + ((id) ? id : '');
       }
+      
+      if (contentType)
+    	  ct = contentType;
+      else
+    	  ct = 'application/json';
 
       me.setLoading(UI.i18n.message.saving);
       
-      Ext.Ajax.request({
+      /*Ext.Ajax.request({
     	  url : formURL,
     	  method: methodHTTP,
-    	  headers: { 'Content-Type': 'application/json' },                       
-    	  //params : { "test" : "testParam" },
-    	  jsonData: me.getForm().getValues(),
+    	  headers: {'Content-Type': ct },                       
+    	  //jsonData: me.getForm().getValues(),
     	  success: function (response) {
     		  me.up('window').close();
               grid.store.load();
@@ -50,11 +55,11 @@ Ext.define('Paranimf.view.EditBaseForm', {
     			  alert(UI.i18n.error.formSave);
               me.setLoading(false);
     	  }
-   	  });
-      /*me.getForm().submit({
+   	  });*/
+      me.getForm().submit({
         method: methodHTTP,
         url: formURL,
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': ct },
         params: Ext.JSON.encode(me.getValues()),
         success: function(form, action) {
           me.up('window').close();
@@ -67,9 +72,9 @@ Ext.define('Paranimf.view.EditBaseForm', {
             }
             me.setLoading(false);
         }
-      });*/
+      });
     } else {
-      alert(UI.i18n.error.form)
+      alert(UI.i18n.error.form);
     }
   },
 

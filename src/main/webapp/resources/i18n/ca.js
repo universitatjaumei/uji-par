@@ -109,7 +109,10 @@ UI =
 			"endOnlineSelling": "Fi venda online",
 			"taquilla": "Taquilla",
 			"online": "Online",
-			"sessionTime": "Hora de la sessió"
+			"sessionTime": "Hora de la sessió",
+			"imagen": "Imatge",
+			"imagenInsertada": "Imatge inserida",
+			"uploadImagen": "Inserir imatge"
         }
     }
 }

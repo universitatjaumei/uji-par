@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import es.uji.apps.par.dao.EventosDAO;
 import es.uji.apps.par.dao.SesionesDAO;
 import es.uji.apps.par.dao.TiposEventosDAO;
-import es.uji.apps.par.model.ParEvento;
 import es.uji.apps.par.model.ParSesion;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -49,30 +48,46 @@ public class SesionesDAOTest {
 	@Test
 	@Transactional
 	public void addSesionWithoutFechaCelebracion() {
-		
+		ParSesion parSesion = preparaSesion();
+		parSesion.setFechaCelebracionWithDate(null);
+		parSesion = sesionesDAO.addSesion(parSesion.getEvento().getId(), parSesion);
+		Assert.assertNotNull(parSesion.getId());
 	}
 	
 	@Test
 	@Transactional
 	public void addSesionWithFechaEndVentaAnteriorFechaStartVenta() {
-		
+		ParSesion parSesion = preparaSesion();
+		parSesion.setFechaInicioVentaOnline("01/01/2012");
+		parSesion.setFechaFinVentaOnline("01/01/2011");
+		parSesion = sesionesDAO.addSesion(parSesion.getEvento().getId(), parSesion);
+		Assert.assertNotNull(parSesion.getId());
 	}
 	
 	@Test
 	@Transactional
 	public void addSesionWithFechaEndVentaPosteriorFechaCelebracion() {
-		
+		ParSesion parSesion = preparaSesion();
+		parSesion.setFechaInicioVentaOnline("01/01/2012");
+		parSesion.setFechaFinVentaOnline("02/01/2012");
+		parSesion = sesionesDAO.addSesion(parSesion.getEvento().getId(), parSesion);
+		Assert.assertNotNull(parSesion.getId());
 	}
 	
 	@Test
 	@Transactional
 	public void addSesionWithFechaStartVentaPosteriorFechaCelebracion() {
-		
+		ParSesion parSesion = preparaSesion();
+		parSesion.setFechaInicioVentaOnline("02/01/2012");
+		parSesion = sesionesDAO.addSesion(parSesion.getEvento().getId(), parSesion);
+		Assert.assertNotNull(parSesion.getId());
 	}
 	
 	@Test
 	@Transactional
 	public void addSesionWithoutHoraCelebracion() {
-		
+		ParSesion parSesion = preparaSesion();
+		parSesion = sesionesDAO.addSesion(parSesion.getEvento().getId(), parSesion);
+		Assert.assertNotNull(parSesion.getId());
 	}
 }

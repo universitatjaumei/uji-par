@@ -45,6 +45,10 @@ Ext.define('Paranimf.controller.Eventos', {
             click: this.saveEventoFormData
          },
          
+         'formEventos': {
+        	 beforerender: this.setImagen
+         },
+         
          'gridEventos': {
              selectionchange: this.loadSesiones
          },
@@ -66,6 +70,16 @@ Ext.define('Paranimf.controller.Eventos', {
          }
       });
    },
+   
+   
+   setImagen: function(comp, opts) {
+	   var imagen = comp.down("#imagenInsertada");
+	   var idEvento = comp.down("textfield[name='id']").getValue(); 
+	   if (idEvento != "")
+		   imagen.setSrc(urlPrefix + 'evento/' + idEvento + '/imagen'); 
+	   else
+		   imagen.setSrc('');  
+   },
 
    recargaStore: function(comp, opts) {
       console.log("RECARGA STORE EVENTOS");
@@ -77,7 +91,7 @@ Ext.define('Paranimf.controller.Eventos', {
    },
 
    editEvento: function(button, event, opts) {
-      this.getGridEventos().edit('formEventos');
+      this.getGridEventos().edit('formEventos', undefined, 600, 600);
    },
 
    removeEvento: function(button, event, opts) {
@@ -87,7 +101,7 @@ Ext.define('Paranimf.controller.Eventos', {
    saveEventoFormData: function(button, event, opts) {
       var grid = this.getGridEventos();
       var form = this.getFormEventos();
-      form.saveFormData(grid, urlPrefix + 'evento');
+      form.saveFormData(grid, urlPrefix + 'evento', undefined, 'multipart/form-data');
    },
    
    loadSesiones: function(selectionModel, record) {

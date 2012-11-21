@@ -57,7 +57,7 @@ public class EventosDAOTest {
 		parEvento.setId(eventosDAO.getEventos().get(0).getId());
 		ParTipoEvento parTipoEvento = new ParTipoEvento();
 		parTipoEvento.setId(eventosDAO.getEventos().get(0).getParTiposEvento().getId());
-		parEvento.setTipoEvento(parTipoEvento);
+		parEvento.setParTipoEvento(parTipoEvento);
 		
 		parEvento.setTitulo("Prueba2");
 		ParEvento eventoActualizado = eventosDAO.updateEvento(parEvento);

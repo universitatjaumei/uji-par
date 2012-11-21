@@ -17,7 +17,10 @@ public class ParEvento
     private String premios;
     private String caracteristicas;
     private String comentarios;
-    private ParTipoEvento tipoEvento;
+    private ParTipoEvento parTipoEvento;
+    private long tipoEvento;
+	private String imagenSrc;
+	private String imagenContentType;
 
     public ParEvento()
     {
@@ -32,21 +35,47 @@ public class ParEvento
         this.interpretes = eventoDTO.getInterpretes();
         this.duracion = eventoDTO.getDuracion();
         this.imagen = eventoDTO.getImagen();
+        this.imagenContentType = eventoDTO.getImagenContentType();
+        this.imagenSrc = eventoDTO.getImagenSrc();
         this.premios = eventoDTO.getPremios();
         this.caracteristicas = eventoDTO.getCaracteristicas();
         this.comentarios = eventoDTO.getComentarios();
         
         if (eventoDTO.getParTiposEvento() != null) {
-        	this.tipoEvento = new ParTipoEvento();
-        	this.tipoEvento.setId(eventoDTO.getParTiposEvento().getId());
-        	this.tipoEvento.setNombre(eventoDTO.getParTiposEvento().getNombre());
+        	this.parTipoEvento = new ParTipoEvento();
+        	this.parTipoEvento.setId(eventoDTO.getParTiposEvento().getId());
+        	this.parTipoEvento.setNombre(eventoDTO.getParTiposEvento().getNombre());
+        	this.tipoEvento = eventoDTO.getParTiposEvento().getId();
         }
     }
 
 	public ParEvento(String titulo, ParTipoEvento tipoEvento) {
-		this.tipoEvento = new ParTipoEvento();
-		this.tipoEvento = tipoEvento;
+		this.parTipoEvento = new ParTipoEvento();
+		this.parTipoEvento = tipoEvento;
 		this.titulo = titulo;
+	}
+
+	public ParEvento(String titulo, String descripcion, String companyia, String interpretes,
+			String duracion, byte[] dataBinary,	String fileName, String mediaType, String premios,
+			String caracteristicas, String comentarios, Integer tipoEventoId) {
+		this.titulo = titulo;
+		this.descripcion = descripcion;
+		this.companyia = companyia;
+		this.interpretes = interpretes;
+		this.duracion = duracion;
+		this.premios = premios;
+		this.caracteristicas = caracteristicas;
+		this.comentarios = comentarios;
+		
+		this.imagen = dataBinary;
+		this.imagenSrc = fileName;
+		this.imagenContentType = mediaType;
+		
+		if (tipoEventoId != null) {
+			this.parTipoEvento = new ParTipoEvento();
+			this.parTipoEvento.setId(tipoEventoId);
+			this.tipoEvento = tipoEventoId;
+		}
 	}
 
 	public long getId() {
@@ -129,12 +158,35 @@ public class ParEvento
 		this.comentarios = comentarios;
 	}
 
-	
-	public ParTipoEvento getTipoEvento() {
+	public String getImagenSrc() {
+		return imagenSrc;
+	}
+
+	public void setImagenSrc(String imagenSrc) {
+		this.imagenSrc = imagenSrc;
+	}
+
+	public String getImagenContentType() {
+		return imagenContentType;
+	}
+
+	public void setImagenContentType(String imagenContentType) {
+		this.imagenContentType = imagenContentType;
+	}
+
+	public ParTipoEvento getParTipoEvento() {
+		return parTipoEvento;
+	}
+
+	public void setParTipoEvento(ParTipoEvento parTipoEvento) {
+		this.parTipoEvento = parTipoEvento;
+	}
+
+	public long getTipoEvento() {
 		return tipoEvento;
 	}
 
-	public void setTipoEvento(ParTipoEvento tipoEvento) {
+	public void setTipoEvento(long tipoEvento) {
 		this.tipoEvento = tipoEvento;
 	}
 }

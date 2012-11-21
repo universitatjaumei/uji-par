@@ -86,7 +86,10 @@ UI =
 			"endOnlineSelling": "Fin venta online",
 			"taquilla": "Taquilla",
 			"online": "Online",
-			"sessionTime": "Hora de la sesión"
+			"sessionTime": "Hora de la sesión",
+			"imagen": "Imagen",
+			"imagenInsertada": "Imagen insertada",
+			"uploadImagen": "Insertar imagen"
 		},
 		"gridTitle":
 		{

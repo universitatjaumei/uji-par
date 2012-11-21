@@ -19,7 +19,7 @@ Ext.define('Paranimf.view.evento.GridEventos', {
          dataIndex: 'id',
          hidden: true
       }, {
-          dataIndex: 'tipoEvento',
+          dataIndex: 'parTipoEvento',
           text: UI.i18n.field.type,
           flex: 2,
           renderer: function (val, p) {
@@ -44,6 +44,6 @@ Ext.define('Paranimf.view.evento.GridEventos', {
 
 
    showAddEventoWindow: function() {
-      this.createModalWindow('formEventos').show();
+      this.createModalWindow('formEventos', 600, 600).show();
    }
 });

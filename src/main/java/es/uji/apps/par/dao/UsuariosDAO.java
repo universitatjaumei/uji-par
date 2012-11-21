@@ -6,7 +6,6 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,7 +15,6 @@ import com.mysema.query.jpa.impl.JPAUpdateClause;
 
 import es.uji.apps.par.db.ParUsuarioDTO;
 import es.uji.apps.par.db.QParUsuarioDTO;
-import es.uji.apps.par.exceptions.ParUsuarioYaExiste;
 import es.uji.apps.par.model.ParUsuario;
 
 @Repository

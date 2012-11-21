@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import es.uji.apps.par.dao.EventosDAO;
 import es.uji.apps.par.db.ParEventoDTO;
 import es.uji.apps.par.exceptions.ParCampoRequeridoException;
+import es.uji.apps.par.exceptions.ParImagenNotFoundException;
 import es.uji.apps.par.model.ParEvento;
 
 @Service
@@ -42,7 +43,7 @@ public class EventosService
     private void checkRequiredFields(ParEvento evento) throws ParCampoRequeridoException {
 		if (evento.getTitulo() == null || evento.getTitulo().isEmpty())
 			throw new ParCampoRequeridoException("Título");
-		if (evento.getTipoEvento() == null)
+		if (evento.getParTipoEvento() == null)
 			throw new ParCampoRequeridoException("Tipo de evento");
 	}
 
@@ -51,4 +52,13 @@ public class EventosService
 		checkRequiredFields(evento);
         eventosDAO.updateEvento(evento);
     }
+
+	public ParEvento getEvento(Integer eventoId) throws ParImagenNotFoundException {
+		List<ParEventoDTO> listaEventosDTO = eventosDAO.getEventoDTO(eventoId.longValue());
+		
+		if (listaEventosDTO.size() > 0)
+			return new ParEvento(listaEventosDTO.get(0));
+		else
+			throw new ParImagenNotFoundException(eventoId);
+	}
 }

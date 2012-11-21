@@ -11,9 +11,11 @@ Ext.define('Paranimf.model.Evento', {
       'premios',
       'caracteristicas',
       'comentarios',
-      'tipoEventoId',
-      
       'tipoEvento',
+      
+      'parTipoEvento',
+      'dataBinary',
+      'dataBinaryDetail',
       {name: 'fechaInicio', type: 'date'},
       {name: 'fechaFin', type: 'date'}
    ]

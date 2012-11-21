@@ -8,6 +8,9 @@ import java.util.Date;
 public class DateUtils {
 
 	public static Date spanishStringToDate(String spanishDate) {
+		if (spanishDate.equals(""))
+			return null;
+		
 		String[] splitDate = spanishDate.split("\\/");
 		
 		Calendar cal = Calendar.getInstance();

@@ -1,6 +1,8 @@
 Ext.define('Paranimf.view.evento.FormEventos', {
    extend: 'Paranimf.view.EditBaseForm',
    alias: 'widget.formEventos',
+   fileUpload: true,
+   enctype: 'multipart/form-data',
 
    url : urlPrefix + 'eventos',
    
@@ -9,7 +11,8 @@ Ext.define('Paranimf.view.evento.FormEventos', {
       msgTarget: 'side',
       labelWidth: 90,
       anchor: '100%',
-      xtype: 'textfield'
+      xtype: 'textfield',
+      flex: 1
    },
 
    items: [{
@@ -48,13 +51,33 @@ Ext.define('Paranimf.view.evento.FormEventos', {
 	  name: 'comentarios',
       allowBlank: true
    }, {
-	  fieldLabel: UI.i18n.field.type,
-	  name: 'tipoEvento',
-      xtype: 'combobox',
-      displayField: 'nombre',
-      valueField: 'id',
-      store: 'TiposEventosSinPaginar',
-      queryMode: 'local',
-      typeAhead: true
+	   fieldLabel: UI.i18n.field.type,
+	   name: 'tipoEvento',
+	   xtype: 'combobox',
+	   displayField: 'nombre',
+	   valueField: 'id',
+	   store: 'TiposEventosSinPaginar',
+	   queryMode: 'local',
+	   typeAhead: true
+   }, {
+	  xtype: 'fieldset',
+	  title: UI.i18n.field.imagen,
+	  items: [{
+		  name: 'dataBinary',
+		  anchor: '100%',
+		  allowBlank: true,
+		  fieldLabel: UI.i18n.field.uploadImagen,
+	      labelWidth: 90,
+	      msgTarget: 'side',
+		  xtype: 'filefield',
+		  buttonText: '...'
+	  }, {
+		  xtype: 'label',
+		  text: UI.i18n.field.imagenInsertada
+	  }, {
+		  xtype: 'image',
+		  id: 'imagenInsertada',
+		  name: 'imagenInsertada'
+	  }]
    }]
 });
