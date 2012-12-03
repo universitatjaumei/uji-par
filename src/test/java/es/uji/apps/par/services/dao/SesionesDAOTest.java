@@ -41,8 +41,10 @@ public class SesionesDAOTest {
 	@Transactional
 	public void addSesionAndDeleteIt() {
 		ParSesion parSesion = preparaSesion();
+		Assert.assertEquals(0, parSesion.getId());
 		sesionesDAO.addSesion(parSesion.getEvento().getId(), parSesion);
-		Assert.assertEquals(1, sesionesDAO.removeSesion(parSesion.getId()));
+		Assert.assertNotNull(parSesion.getId());
+		Assert.assertNotSame(0, parSesion.getId());
 	}
 
 	@Test

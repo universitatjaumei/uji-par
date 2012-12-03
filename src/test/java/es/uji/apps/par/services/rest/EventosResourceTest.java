@@ -1,13 +1,13 @@
 package es.uji.apps.par.services.rest;
 
 import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.util.HashMap;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response.Status;
 
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.request.RequestContextListener;
@@ -109,6 +109,8 @@ public class EventosResourceTest extends JerseyTest {
 		Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
         Assert.assertTrue(serviceResponse.getSuccess());
         Assert.assertNotNull(serviceResponse.getData());
+        int id = Integer.valueOf(((HashMap)serviceResponse.getData().get(0)).get("id").toString());
+        parTipoEvento.setId(id);
 		return parTipoEvento;
 	}
 	
