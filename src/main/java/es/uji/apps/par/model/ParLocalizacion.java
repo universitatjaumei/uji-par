@@ -25,6 +25,10 @@ public class ParLocalizacion
         this.nombre = localizacionDTO.getNombre();
         this.totalEntradas = localizacionDTO.getTotalEntradas().intValue();
     }
+    
+    public ParLocalizacion(String text) {
+    	this.nombre = text;
+    }
 
 	public long getId() {
 		return id;
