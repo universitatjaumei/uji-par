@@ -23,20 +23,20 @@ Ext.define('Paranimf.view.evento.GridEventos', {
           text: UI.i18n.field.type,
           flex: 2,
           renderer: function (val, p) {
-        	  return val["nombre"];
+        	  return val["nombreEs"];
           }
       }, {
-         dataIndex: 'titulo',
+         dataIndex: 'tituloEs',
          text: UI.i18n.field.title,
          flex: 5
       }, {
-         dataIndex: 'fechaInicio',
-         text: UI.i18n.field.startDate,
-         flex: 3
+          dataIndex: 'tituloVa',
+          text: UI.i18n.field.title_va,
+          flex: 5
       }, {
-          dataIndex: 'fechaFin',
-          text: UI.i18n.field.endDate,
-          flex: 3
+          dataIndex: 'tituloEn',
+          text: UI.i18n.field.title_en,
+          flex: 5
       }];
 
       this.callParent(arguments);

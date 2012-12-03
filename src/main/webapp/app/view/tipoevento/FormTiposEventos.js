@@ -18,6 +18,12 @@ Ext.define('Paranimf.view.tipoevento.FormTiposEventos', {
       allowBlank: true
    }, {
       fieldLabel: UI.i18n.field.name,
-      name: 'nombre'
+      name: 'nombreEs'
+   }, {
+	  fieldLabel: UI.i18n.field.name_va,
+	  name: 'nombreVa'
+   }, {
+      fieldLabel: UI.i18n.field.name_en,
+      name: 'nombreEn'
    }]
 });

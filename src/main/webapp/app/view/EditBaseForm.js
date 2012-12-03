@@ -37,42 +37,45 @@ Ext.define('Paranimf.view.EditBaseForm', {
     	  ct = contentType;
       else
     	  ct = 'application/json';
+    	  //ct = 'application/x-www-form-urlencoded';
 
       me.setLoading(UI.i18n.message.saving);
       
-      /*Ext.Ajax.request({
-    	  url : formURL,
-    	  method: methodHTTP,
-    	  headers: {'Content-Type': ct },                       
-    	  //jsonData: me.getForm().getValues(),
-    	  success: function (response) {
-    		  me.up('window').close();
-              grid.store.load();
-    	  }, failure: function (response) {
-    		  if (callback)
-    			  callback(form, action);
-    		  else
-    			  alert(UI.i18n.error.formSave);
-              me.setLoading(false);
-    	  }
-   	  });*/
-      me.getForm().submit({
-        method: methodHTTP,
-        url: formURL,
-        headers: { 'Content-Type': ct },
-        params: Ext.JSON.encode(me.getValues()),
-        success: function(form, action) {
-          me.up('window').close();
-          grid.store.load();
-        },failure: function(form, action) {
-            if (callback)
-              callback(form, action);
-            else {
-              alert(UI.i18n.error.formSave);
-            }
-            me.setLoading(false);
-        }
-      });
+      if (contentType) {
+    	  me.getForm().submit({
+  	        method: methodHTTP,
+  	        url: formURL,
+  	        headers: { 'Content-Type': ct },
+  	        params: Ext.JSON.encode(me.getValues()),
+  	        success: function(form, action) {
+  	          me.up('window').close();
+  	          grid.store.load();
+  	        },failure: function(form, action) {
+  	            if (callback)
+  	              callback(form, action);
+  	            else {
+  	              alert(UI.i18n.error.formSave);
+  	            }
+  	            me.setLoading(false);
+  	        }
+  	      });
+      } else {
+    	  Ext.Ajax.request({
+	    	  url : formURL,
+	    	  method: methodHTTP,
+	    	  jsonData: me.getForm().getValues(),
+	    	  success: function (response) {
+	    		  me.up('window').close();
+	              grid.store.load();
+	    	  }, failure: function (response) {
+	    		  if (callback)
+	    			  callback(form, action);
+	    		  else
+	    			  alert(UI.i18n.error.formSave);
+	              me.setLoading(false);
+	    	  }
+	   	  });
+      }
     } else {
       alert(UI.i18n.error.form);
     }
