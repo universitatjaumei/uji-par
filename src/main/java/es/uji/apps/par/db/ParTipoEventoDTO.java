@@ -15,16 +15,18 @@ public class ParTipoEventoDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@SequenceGenerator(name="PAR_TIPOS_EVENTO_ID_GENERATOR", sequenceName="HIBERNATE_SEQUENCE")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PAR_TIPOS_EVENTO_ID_GENERATOR")
 	private long id;
-
-	@Column(name="NOMBRE_VA")
-	private String nombreVa;
 
 	@Column(name="NOMBRE_EN")
 	private String nombreEn;
 
 	@Column(name="NOMBRE_ES")
 	private String nombreEs;
+
+	@Column(name="NOMBRE_VA")
+	private String nombreVa;
 
 	//bi-directional many-to-one association to ParEventoDTO
 	@OneToMany(mappedBy="parTiposEvento")
@@ -41,14 +43,6 @@ public class ParTipoEventoDTO implements Serializable {
 		this.id = id;
 	}
 
-	public String getNombreVa() {
-		return this.nombreVa;
-	}
-
-	public void setNombreVa(String nombreVa) {
-		this.nombreVa = nombreVa;
-	}
-
 	public String getNombreEn() {
 		return this.nombreEn;
 	}
@@ -63,6 +57,14 @@ public class ParTipoEventoDTO implements Serializable {
 
 	public void setNombreEs(String nombreEs) {
 		this.nombreEs = nombreEs;
+	}
+
+	public String getNombreVa() {
+		return this.nombreVa;
+	}
+
+	public void setNombreVa(String nombreVa) {
+		this.nombreVa = nombreVa;
 	}
 
 	public List<ParEventoDTO> getParEventos() {

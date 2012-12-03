@@ -14,6 +14,8 @@ public class ParUsuarioDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@SequenceGenerator(name="PAR_USUARIOS_ID_GENERATOR", sequenceName="HIBERNATE_SEQUENCE")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PAR_USUARIOS_ID_GENERATOR")
 	private long id;
 
 	private String mail;
