@@ -61,4 +61,8 @@ public class EventosService
 		else
 			throw new ParImagenNotFoundException(eventoId);
 	}
+
+	public void removeImagen(Integer eventoId) {
+		eventosDAO.deleteImagen(eventoId);
+	}
 }

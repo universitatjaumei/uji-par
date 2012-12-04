@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import es.uji.apps.par.dao.EventosDAO;
 import es.uji.apps.par.dao.TiposEventosDAO;
+import es.uji.apps.par.db.ParEventoDTO;
 import es.uji.apps.par.model.ParEvento;
 import es.uji.apps.par.model.ParTipoEvento;
 
@@ -74,5 +75,24 @@ public class EventosDAOTest {
 		parEvento = eventosDAO.addEvento(parEvento);
 		
 		Assert.assertNotNull(parEvento.getId());
+	}
+	
+	@Test
+	@Transactional
+	public void deleteImagen() {
+		ParEvento parEvento = preparaEvento();
+		parEvento.setTituloEn("english");
+		parEvento.setCaracteristicasVa("valencia");
+		parEvento.setComentariosEs("comentarios");
+		parEvento.setImagen("hola".getBytes());
+		parEvento.setImagenSrc("hola");
+		parEvento.setImagenContentType("");
+		parEvento = eventosDAO.addEvento(parEvento);
+		
+		Assert.assertNotNull(parEvento.getId());
+		eventosDAO.deleteImagen(parEvento.getId());
+		
+		/*ParEventoDTO eventoDespuesDeBorrarLaImagen = eventosDAO.getEventoDTO(parEvento.getId()).get(0);
+		Assert.assertNull(eventoDespuesDeBorrarLaImagen.getImagen());*/
 	}
 }

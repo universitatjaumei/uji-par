@@ -57,9 +57,9 @@ public class EventosResource
     @GET
     @Path("{id}/sesiones")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResponse getSesiones(@PathParam("id") Integer eventoId)
+    public Response getSesiones(@PathParam("id") Integer eventoId)
     {
-        return new RestResponse(true, sesionesService.getSesiones(eventoId));
+        return Response.ok().entity(new RestResponse(true, sesionesService.getSesiones(eventoId))).build();
     }
     
     @DELETE
@@ -107,10 +107,10 @@ public class EventosResource
     @Path("{id}/sesiones")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResponse add(@PathParam("id") Integer eventoId, ParSesion sesion)
+    public Response add(@PathParam("id") Integer eventoId, ParSesion sesion)
     {
     	ParSesion newSesion = sesionesService.addSesion(eventoId, sesion);
-        return new RestResponse(true, Collections.singletonList(newSesion));
+        return Response.ok().entity(new RestResponse(true, Collections.singletonList(newSesion))).build();
     }
     
     @POST
@@ -143,26 +143,37 @@ public class EventosResource
     			
     	evento.setId(id);
         eventosService.updateEvento(evento);
-        return Response.ok().entity(new RestResponse(true, Collections.singletonList(evento))).build();
+        
+        //no devolvemos el evento porque al enviar la imagen colgaba el navegador durante un tiempo
+        return Response.ok().entity(new RestResponse(true/*, Collections.singletonList(evento)*/)).build();
     }
     
     @PUT
     @Path("{id}/sesiones/{sesionId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResponse update(@PathParam("id") Integer eventoId, @PathParam("sesionId") Integer sesionId, ParSesion sesion)
+    public Response update(@PathParam("id") Integer eventoId, @PathParam("sesionId") Integer sesionId, ParSesion sesion)
     {
     	sesion.setId(sesionId);
         sesionesService.updateSesion(eventoId, sesion);
-        return new RestResponse(true, Collections.singletonList(sesion));
+        return Response.ok().entity(new RestResponse(true, Collections.singletonList(sesion))).build();
     }
     
     @DELETE
     @Path("{id}/sesiones/{sesionId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResponse remove(@PathParam("id") Integer eventoId, @PathParam("sesionId") Integer sesionId)
+    public Response remove(@PathParam("id") Integer eventoId, @PathParam("sesionId") Integer sesionId)
     {
         sesionesService.removeSesion(sesionId);
-        return new RestResponse(true);
-    }    
+        return Response.ok().entity(new RestResponse(true)).build();
+    }
+    
+    @DELETE
+    @Path("{id}/imagen")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response removeImagen(@PathParam("id") Integer eventoId)
+    {
+        eventosService.removeImagen(eventoId);
+        return Response.ok().entity(new RestResponse(true)).build();
+    }
 }

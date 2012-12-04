@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mysema.query.Tuple;
 import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
+import com.mysema.query.jpa.impl.JPAUpdateClause;
 import com.mysema.query.types.QTuple;
 
 import es.uji.apps.par.db.ParEventoDTO;
@@ -44,7 +45,8 @@ public class EventosDAO
     			qEventoDTO.id, qEventoDTO.parTiposEvento,
     			qEventoDTO.interpretesEn, qEventoDTO.interpretesEs, qEventoDTO.interpretesVa,
     			qEventoDTO.premiosEn, qEventoDTO.premiosEs, qEventoDTO.premiosVa,
-    			qEventoDTO.tituloEn, qEventoDTO.tituloEs, qEventoDTO.tituloVa));
+    			qEventoDTO.tituloEn, qEventoDTO.tituloEs, qEventoDTO.tituloVa,
+    			qEventoDTO.imagenSrc, qEventoDTO.imagenContentType));
         
         return tuplesToParEventoDTO(listadoTuples);
 
@@ -97,6 +99,9 @@ public class EventosDAO
         parEventoDTO.setTituloEs(tupla.get(qEventoDTO.tituloEs));
         parEventoDTO.setTituloEn(tupla.get(qEventoDTO.tituloEn));
         parEventoDTO.setTituloVa(tupla.get(qEventoDTO.tituloVa));
+        
+        parEventoDTO.setImagenSrc(tupla.get(qEventoDTO.imagenSrc));
+        parEventoDTO.setImagenContentType(tupla.get(qEventoDTO.imagenContentType));
         
         parEventoDTO.setId(tupla.get(qEventoDTO.id));
         
@@ -152,9 +157,11 @@ public class EventosDAO
         eventoDTO.setDuracionEn(evento.getDuracionEn());
         eventoDTO.setDuracionVa(evento.getDuracionVa());
         
-        eventoDTO.setImagen(evento.getImagen());
-        eventoDTO.setImagenSrc(evento.getImagenSrc());
-        eventoDTO.setImagenContentType(evento.getImagenContentType());
+        if (evento.getImagen() != null && evento.getImagen().length > 0) {
+        	eventoDTO.setImagen(evento.getImagen());
+        	eventoDTO.setImagenSrc(evento.getImagenSrc());
+        	eventoDTO.setImagenContentType(evento.getImagenContentType());
+        }
         
         eventoDTO.setInterpretesEs(evento.getInterpretesEs());
         eventoDTO.setInterpretesEn(evento.getInterpretesEn());
@@ -208,4 +215,12 @@ public class EventosDAO
         
         return evento;
     }
+
+    @Transactional
+	public void deleteImagen(long eventoId) {
+		JPAUpdateClause jpaUpdate = new JPAUpdateClause(entityManager, qEventoDTO);
+		
+		jpaUpdate.setNull(qEventoDTO.imagen).setNull(qEventoDTO.imagenContentType).setNull(qEventoDTO.imagenSrc).
+			where(qEventoDTO.id.eq(eventoId)).execute();
+	}
 }

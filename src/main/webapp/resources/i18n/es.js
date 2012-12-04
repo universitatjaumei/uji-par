@@ -16,7 +16,8 @@ UI =
 			"activate":"Activar",
 			"activateBooking":"Habilitar para reservas",
 			"deactivate":"Desactivar",
-			"deactivateBooking":"Deshabilitar para reservas"
+			"deactivateBooking":"Deshabilitar para reservas",
+			"eliminarImagen": "Borrar imagen - NO SE PUEDE CANCELAR"
 		},
 		"message":
 		{
@@ -25,8 +26,10 @@ UI =
 			"event":"Es obligatorio seleccionar un evento",
 			
 			"selectRow":"Es necesario seleccionar una fila",
-			"sureDelete":"¿Está seguro de borrar el registro seleccionado?",
-			"sureDeleteMessage":"¿Está seguro de borrar el mensaje seleccionado?",
+			"sureDelete":"¿Está seguro/a de borrar el registro seleccionado?",
+			"sureDeleteImage":"¿Está seguro/a de borrar la imagen del evento? Esta acción no se puede cancelar",
+			"sureDeleteMessage":"¿Está seguro/a de borrar el mensaje seleccionado?",
+			"deletedImage":"La imagen ha sido borrada satisfactoriamente",
 			"activitySelect":"Es obligatorio seleccionar una actividad",
 			"warn":"Es obligatorio seleccionar una incidencia",
 			"provider":"Es obligatorio seleccionar un proveedor",
@@ -46,7 +49,8 @@ UI =
 			"form":"Formulario no válido",
 			"element":"Error borrando el elemento",
 			"calendar":"Error cargando el calendario",
-			"messageDelete":"Se ha producido un error borrando el mensaje"
+			"messageDelete":"Se ha producido un error borrando el mensaje",
+			"deletedImage": "Se ha producido un error borrando la imagen"
 		},
 		"field":
 		{
@@ -119,7 +123,7 @@ UI =
 			"online": "Online",
 			"sessionTime": "Hora de la sesión",
 			"imagen": "Imagen",
-			"imagenInsertada": "Imagen insertada",
+			"imagenInsertada": "Ver la imagen insertada",
 			"uploadImagen": "Insertar imagen"
 		},
 		"gridTitle":

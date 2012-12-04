@@ -1,13 +1,14 @@
 package es.uji.apps.par.services.rest;
 
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.HashMap;
 
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.request.RequestContextListener;
@@ -149,9 +150,6 @@ public class EventosResourceTest extends JerseyTest {
 		parEvento.field("premios", "premios");
 		response = resource.path("evento").path(id).type(MediaType.MULTIPART_FORM_DATA_TYPE).post(ClientResponse.class, parEvento);
 		Assert.assertEquals(Status.OK.getStatusCode(), response.getStatus());
-		restResponse = response.getEntity(new GenericType<RestResponse>(){});
-		
-		Assert.assertEquals(parEvento.getField("tituloEs").getValue(), getFieldFromRestResponse(restResponse, "tituloEs"));
 	}
     
     @Test
@@ -223,5 +221,29 @@ public class EventosResourceTest extends JerseyTest {
 		Assert.assertTrue(restResponse.getSuccess());
     	Assert.assertNotNull(getFieldFromRestResponse(restResponse, "id"));
     	Assert.assertEquals(parEvento.getField("tituloEs").getValue(), getFieldFromRestResponse(restResponse, "tituloEs"));
+    }
+    
+    @Test
+    public void deleteImagen() {
+    	ParTipoEvento parTipoEvento = addTipoEvento();
+		FormDataMultiPart parEvento = preparaEvento(parTipoEvento);
+		parEvento.bodyPart(new StreamDataBodyPart("dataBinary", new ByteArrayInputStream("hola".getBytes())));
+		ClientResponse response = resource.path("evento").type(MediaType.MULTIPART_FORM_DATA_TYPE).post(ClientResponse.class, parEvento);
+    	Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
+    	RestResponse restResponse = response.getEntity(new GenericType<RestResponse>(){});
+		
+    	String id = getFieldFromRestResponse(restResponse, "id");
+		Assert.assertNotNull(id);
+		
+		response = resource.path("evento").path(id).path("imagen").get(ClientResponse.class);
+		ByteArrayInputStream imagen = (ByteArrayInputStream) response.getEntityInputStream();
+		Assert.assertNotNull(imagen);
+		
+		response = resource.path("evento").path(id).path("imagen").delete(ClientResponse.class);
+		Assert.assertEquals(Status.OK.getStatusCode(), response.getStatus());
+		
+		response = resource.path("evento").path(id).path("imagen").get(ClientResponse.class);
+		imagen = (ByteArrayInputStream) response.getEntityInputStream();
+		Assert.assertTrue(imagen.available() == 0);
     }
 }

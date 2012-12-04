@@ -67,9 +67,10 @@ public class ParEvento
         
         if (crearConImagen) {
         	this.imagen = eventoDTO.getImagen();
-        	this.imagenContentType = eventoDTO.getImagenContentType();
-        	this.imagenSrc = eventoDTO.getImagenSrc();
         }
+        
+        this.imagenContentType = eventoDTO.getImagenContentType();
+    	this.imagenSrc = eventoDTO.getImagenSrc();
         
         this.premiosEs = eventoDTO.getPremiosEs();
         this.premiosVa = eventoDTO.getPremiosVa();

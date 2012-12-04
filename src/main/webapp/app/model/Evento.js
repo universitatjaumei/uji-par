@@ -30,8 +30,12 @@ Ext.define('Paranimf.model.Evento', {
       'tipoEvento',
       
       'parTipoEvento',
+      
       'dataBinary',
       'dataBinaryDetail',
+      'imagenContentType',
+      'imagenSrc',
+
       {name: 'fechaInicio', type: 'date'},
       {name: 'fechaFin', type: 'date'}
    ]

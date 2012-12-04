@@ -9,7 +9,7 @@ UI =
         "message": {
         	"event": "És obligatori seleccionar un event",
             "selectListValues": "Ha de triar els valors dels llistats, i tots els camps són obligatoris",
-            "sureDeleteMessage": "Està segur d'esborrar el missatge seleccionat?",
+            "sureDeleteMessage": "Està segur/a d'esborrar el missatge seleccionat?",
             "activitySelect": "És obligatori seleccionar una activitat",
             "selectRow": "És necessari seleccionar una fila",
             "minHour": "S'ha de triar almenys un horari i un espai",
@@ -21,7 +21,9 @@ UI =
             "loading": "Carregant",
             "provider": "És obligatori seleccionar un proveïdor",
             "warn": "És obligatori seleccionar una incidència",
-            "sureDelete": "Està segur d'esborrar el registre seleccionat?",
+            "sureDelete": "Està segur/a d'esborrar el registre seleccionat?",
+            "sureDeleteImage":"Està segur/a d'esborrar la imatge de l'event? Aquesta acció no es pot cancel·lar",
+            "deletedImage":"La imatge ha sigut esborrada satisfactòriament",
             "toolTipAvailableEspacios": "* Passar el ratolí sobre les columnes d'espais i dies per obtindre informació extra"
         },
         "storeWeekDay": {
@@ -39,7 +41,8 @@ UI =
             "form": "Formulari no vàlid",
             "formSave": "Error al guardar el formulari",
             "messageDelete": "S'ha produït un error esborrant el missatge",
-            "error": "S'ha produït un error"
+            "error": "S'ha produït un error",
+            "deletedImage": "S'ha produït un error a l'esborrar la imatge"
         },
         "button": {
             "closeSession": "Tancar sessió",
@@ -54,7 +57,8 @@ UI =
             "cancel": "Cancel·lar",
             "edit": "Editar",
             "activateBooking":"Permetre reserves",
-            "deactivateBooking":"Bloquejar per a reserves"
+            "deactivateBooking":"Bloquejar per a reserves",
+            "eliminarImagen": "Esborrar imatge - NO ES POT CANCEL·LAR"
         },
         "calendar": {
             "calendar": "Calendari de reserves",
@@ -142,7 +146,7 @@ UI =
 			"online": "Online",
 			"sessionTime": "Hora de la sessió",
 			"imagen": "Imatge",
-			"imagenInsertada": "Imatge inserida",
+			"imagenInsertada": "Veure la imatge inserida",
 			"uploadImagen": "Inserir imatge"
         }
     }
