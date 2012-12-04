@@ -42,7 +42,7 @@ public class ParEvento
     {
     }
     
-    public ParEvento(ParEventoDTO eventoDTO)
+    public ParEvento(ParEventoDTO eventoDTO, boolean crearConImagen)
     {
         this.id = eventoDTO.getId();
         this.tituloEs = eventoDTO.getTituloEs();
@@ -65,9 +65,11 @@ public class ParEvento
         this.duracionEn = eventoDTO.getDuracionEn();
         this.duracionVa = eventoDTO.getDuracionVa();
         
-        this.imagen = eventoDTO.getImagen();
-        this.imagenContentType = eventoDTO.getImagenContentType();
-        this.imagenSrc = eventoDTO.getImagenSrc();
+        if (crearConImagen) {
+        	this.imagen = eventoDTO.getImagen();
+        	this.imagenContentType = eventoDTO.getImagenContentType();
+        	this.imagenSrc = eventoDTO.getImagenSrc();
+        }
         
         this.premiosEs = eventoDTO.getPremiosEs();
         this.premiosVa = eventoDTO.getPremiosVa();

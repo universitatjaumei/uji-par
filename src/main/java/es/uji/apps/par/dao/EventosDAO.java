@@ -1,5 +1,6 @@
 package es.uji.apps.par.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -8,8 +9,10 @@ import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mysema.query.Tuple;
 import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
+import com.mysema.query.types.QTuple;
 
 import es.uji.apps.par.db.ParEventoDTO;
 import es.uji.apps.par.db.ParTipoEventoDTO;
@@ -31,12 +34,76 @@ public class EventosDAO
     	QParTipoEventoDTO qTipoEventoDTO = QParTipoEventoDTO.parTipoEventoDTO;
         JPAQuery query = new JPAQuery(entityManager);
 
-        return query.from(qEventoDTO, qTipoEventoDTO)
+        List<Tuple> listadoTuples = query.from(qEventoDTO, qTipoEventoDTO)
         .where(qEventoDTO.parTiposEvento.id.eq(qTipoEventoDTO.id))
-    	.list(qEventoDTO);
+    	.list(new QTuple(qEventoDTO.caracteristicasEn, qEventoDTO.caracteristicasEs, qEventoDTO.caracteristicasVa,
+    			qEventoDTO.comentariosEn, qEventoDTO.comentariosEs, qEventoDTO.comentariosVa, 
+    			qEventoDTO.companyiaEn, qEventoDTO.companyiaEs, qEventoDTO.companyiaVa,
+    			qEventoDTO.descripcionEn, qEventoDTO.descripcionEs, qEventoDTO.descripcionVa,
+    			qEventoDTO.duracionEn, qEventoDTO.duracionEs, qEventoDTO.duracionVa,
+    			qEventoDTO.id, qEventoDTO.parTiposEvento,
+    			qEventoDTO.interpretesEn, qEventoDTO.interpretesEs, qEventoDTO.interpretesVa,
+    			qEventoDTO.premiosEn, qEventoDTO.premiosEs, qEventoDTO.premiosVa,
+    			qEventoDTO.tituloEn, qEventoDTO.tituloEs, qEventoDTO.tituloVa));
+        
+        return tuplesToParEventoDTO(listadoTuples);
+
     }
     
-    public List<ParEventoDTO> getEventoDTO(Long id) {
+	private List<ParEventoDTO> tuplesToParEventoDTO(List<Tuple> listadoTuples) {
+		List<ParEventoDTO> listadoParEventoDTO = new ArrayList<ParEventoDTO>();
+		
+		for (Tuple tupla: listadoTuples) {
+			listadoParEventoDTO.add(rellenarParEventoDTOConTupla(tupla));
+		}
+		
+		return listadoParEventoDTO;
+	}
+
+	private ParEventoDTO rellenarParEventoDTOConTupla(Tuple tupla) {
+		ParEventoDTO parEventoDTO = new ParEventoDTO();
+		
+		parEventoDTO.setCaracteristicasEs(tupla.get(qEventoDTO.caracteristicasEs));
+		parEventoDTO.setCaracteristicasEn(tupla.get(qEventoDTO.caracteristicasEn));
+		parEventoDTO.setCaracteristicasVa(tupla.get(qEventoDTO.caracteristicasVa));
+		
+        parEventoDTO.setComentariosEs(tupla.get(qEventoDTO.comentariosEs));
+        parEventoDTO.setComentariosEn(tupla.get(qEventoDTO.comentariosEn));
+        parEventoDTO.setComentariosVa(tupla.get(qEventoDTO.comentariosVa));
+        
+        parEventoDTO.setCompanyiaEs(tupla.get(qEventoDTO.companyiaEs));
+        parEventoDTO.setCompanyiaEn(tupla.get(qEventoDTO.companyiaEn));
+        parEventoDTO.setCompanyiaVa(tupla.get(qEventoDTO.companyiaVa));
+        
+        parEventoDTO.setDescripcionEs(tupla.get(qEventoDTO.descripcionEs));
+        parEventoDTO.setDescripcionEn(tupla.get(qEventoDTO.descripcionEn));
+        parEventoDTO.setDescripcionVa(tupla.get(qEventoDTO.descripcionVa));
+        
+        parEventoDTO.setDuracionEs(tupla.get(qEventoDTO.duracionEs));
+        parEventoDTO.setDuracionEn(tupla.get(qEventoDTO.duracionEn));
+        parEventoDTO.setDuracionVa(tupla.get(qEventoDTO.duracionVa));
+        
+        parEventoDTO.setInterpretesEs(tupla.get(qEventoDTO.interpretesEs));
+        parEventoDTO.setInterpretesEn(tupla.get(qEventoDTO.interpretesEn));
+        parEventoDTO.setInterpretesVa(tupla.get(qEventoDTO.interpretesVa));
+        
+        if (tupla.get(qEventoDTO.parTiposEvento) != null) {
+        	parEventoDTO.setParTiposEvento(tupla.get(qEventoDTO.parTiposEvento));
+        }
+        parEventoDTO.setPremiosEs(tupla.get(qEventoDTO.premiosEs));
+        parEventoDTO.setPremiosEn(tupla.get(qEventoDTO.premiosEn));
+        parEventoDTO.setPremiosVa(tupla.get(qEventoDTO.premiosVa));
+        
+        parEventoDTO.setTituloEs(tupla.get(qEventoDTO.tituloEs));
+        parEventoDTO.setTituloEn(tupla.get(qEventoDTO.tituloEn));
+        parEventoDTO.setTituloVa(tupla.get(qEventoDTO.tituloVa));
+        
+        parEventoDTO.setId(tupla.get(qEventoDTO.id));
+        
+        return parEventoDTO;
+	}
+
+	public List<ParEventoDTO> getEventoDTO(Long id) {
     	QParTipoEventoDTO qTipoEventoDTO = QParTipoEventoDTO.parTipoEventoDTO;
         JPAQuery query = new JPAQuery(entityManager);
 
@@ -105,6 +172,9 @@ public class EventosDAO
         eventoDTO.setTituloEs(evento.getTituloEs());
         eventoDTO.setTituloEn(evento.getTituloEn());
         eventoDTO.setTituloVa(evento.getTituloVa());
+        
+        if (evento.getId() != 0)
+        	eventoDTO.setId(evento.getId());
         
         return eventoDTO;
 	}

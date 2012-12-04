@@ -24,7 +24,7 @@ public class EventosService
         
     	for (ParEventoDTO eventoDB : eventosDAO.getEventos())
         {
-            listaParEvento.add(new ParEvento(eventoDB));
+            listaParEvento.add(new ParEvento(eventoDB, false));
         }
         return listaParEvento;
     }
@@ -57,7 +57,7 @@ public class EventosService
 		List<ParEventoDTO> listaEventosDTO = eventosDAO.getEventoDTO(eventoId.longValue());
 		
 		if (listaEventosDTO.size() > 0)
-			return new ParEvento(listaEventosDTO.get(0));
+			return new ParEvento(listaEventosDTO.get(0), true);
 		else
 			throw new ParImagenNotFoundException(eventoId);
 	}
