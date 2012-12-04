@@ -95,7 +95,11 @@ Ext.define('Paranimf.controller.Eventos', {
    },
 
    removeEvento: function(button, event, opts) {
-      this.getGridEventos().remove();
+      var gridSesiones = this.getGridSesiones();
+      this.getGridEventos().remove(function (borradoCorrectamente) {
+         if (borradoCorrectamente)
+            gridSesiones.getStore().removeAll();
+      });
    },
 
    saveEventoFormData: function(button, event, opts) {

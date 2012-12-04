@@ -89,10 +89,13 @@ Ext.define('Paranimf.view.EditBaseGrid', {
       }
    },
 
-   remove: function() {
+   remove: function(callback) {
       var records = this.getSelectionModel().getSelection();
-      if (records.length == 0)
+      if (records.length == 0) {
          alert(UI.i18n.message.selectRow);
+         if (callback)
+               callback(false);
+      }
       else {
          if (confirm(UI.i18n.message.sureDelete)) {
             var st = this.store;
@@ -101,6 +104,8 @@ Ext.define('Paranimf.view.EditBaseGrid', {
                st.add(st.getRemovedRecords());
             });
             this.store.remove(records);
+            if (callback)
+               callback(true);
          }
       }
    },
