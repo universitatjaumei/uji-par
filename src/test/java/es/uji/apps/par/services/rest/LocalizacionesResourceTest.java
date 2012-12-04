@@ -78,7 +78,7 @@ public class LocalizacionesResourceTest extends JerseyTest
     @Test
 	public void addLocalizacionWithoutNombre() {
 		ParLocalizacion localizacion = preparaLocalizacion();
-		localizacion.setNombre(null);
+		localizacion.setNombreEs(null);
 		
 		ClientResponse response = resource.post(ClientResponse.class, localizacion);
     	Assert.assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
@@ -100,7 +100,7 @@ public class LocalizacionesResourceTest extends JerseyTest
     	RestResponse restResponse = response.getEntity(new GenericType<RestResponse>(){});
     	Assert.assertTrue(restResponse.getSuccess());
     	Assert.assertNotNull(getFieldFromRestResponse(restResponse, "id"));
-    	Assert.assertEquals(localizacion.getNombre(), getFieldFromRestResponse(restResponse, "nombre"));
+    	Assert.assertEquals(localizacion.getNombreEs(), getFieldFromRestResponse(restResponse, "nombreEs"));
 	}
     
     @Test
@@ -113,13 +113,13 @@ public class LocalizacionesResourceTest extends JerseyTest
     	String id = getFieldFromRestResponse(restResponse, "id");
 		Assert.assertNotNull(id);
 		
-		localizacion.setNombre("Prueba2");
+		localizacion.setNombreEs("Prueba2");
 		
 		response = resource.path(id).put(ClientResponse.class, localizacion);
 		Assert.assertEquals(Status.OK.getStatusCode(), response.getStatus());
 		restResponse = response.getEntity(new GenericType<RestResponse>(){});
 		
-		Assert.assertEquals(localizacion.getNombre(), getFieldFromRestResponse(restResponse, "nombre"));
+		Assert.assertEquals(localizacion.getNombreEs(), getFieldFromRestResponse(restResponse, "nombreEs"));
 	}
     
     @Test
@@ -132,7 +132,7 @@ public class LocalizacionesResourceTest extends JerseyTest
     	String id = getFieldFromRestResponse(restResponse, "id");
 		Assert.assertNotNull(id);
 		
-		localizacion.setNombre("");
+		localizacion.setNombreEs("");
 		response = resource.path(id).put(ClientResponse.class, localizacion);
 		Assert.assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
 		ParResponseMessage parResponseMessage = response.getEntity(new GenericType<ParResponseMessage>(){});

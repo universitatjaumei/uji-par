@@ -46,7 +46,7 @@ public class LocalizacionesDAOTest {
 		
 		Assert.assertNotNull(localizacion.getId());
 		
-		localizacion.setNombre("Prueba2");
+		localizacion.setNombreEs("Prueba2");
 		ParLocalizacion localizacionActualizada = localizacionesDAO.update(localizacion);
 		Assert.assertEquals(localizacion.getId(), localizacionActualizada.getId());
 	}

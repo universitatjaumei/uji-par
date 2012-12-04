@@ -8,7 +8,9 @@ import es.uji.apps.par.db.ParLocalizacionDTO;
 public class ParLocalizacion
 {
     private long id;
-    private String nombre;
+    private String nombreEs;
+    private String nombreVa;
+    private String nombreEn;
     private int totalEntradas;
 
     public ParLocalizacion()
@@ -22,12 +24,14 @@ public class ParLocalizacion
     public ParLocalizacion(ParLocalizacionDTO localizacionDTO)
     {
         this.id = localizacionDTO.getId();
-        this.nombre = localizacionDTO.getNombre();
+        this.nombreEs = localizacionDTO.getNombreEs();
+        this.nombreVa = localizacionDTO.getNombreVa();
+        this.nombreEn = localizacionDTO.getNombreEn();
         this.totalEntradas = localizacionDTO.getTotalEntradas().intValue();
     }
     
-    public ParLocalizacion(String text) {
-    	this.nombre = text;
+    public ParLocalizacion(String nombreEs) {
+    	this.nombreEs = nombreEs;
     }
 
 	public long getId() {
@@ -38,12 +42,12 @@ public class ParLocalizacion
 		this.id = id;
 	}
 
-	public String getNombre() {
-		return nombre;
+	public String getNombreEs() {
+		return nombreEs;
 	}
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
+	public void setNombreEs(String nombreEs) {
+		this.nombreEs = nombreEs;
 	}
 
 	public int getTotalEntradas() {
@@ -53,6 +57,20 @@ public class ParLocalizacion
 	public void setTotalEntradas(int total_entradas) {
 		this.totalEntradas = total_entradas;
 	}
-       
-    
+
+	public String getNombreVa() {
+		return nombreVa;
+	}
+
+	public void setNombreVa(String nombreVa) {
+		this.nombreVa = nombreVa;
+	}
+
+	public String getNombreEn() {
+		return nombreEn;
+	}
+
+	public void setNombreEn(String nombreEn) {
+		this.nombreEn = nombreEn;
+	}
 }

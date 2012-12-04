@@ -19,7 +19,14 @@ public class ParLocalizacionDTO implements Serializable {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PAR_LOCALIZACIONES_ID_GENERATOR")
 	private long id;
 
-	private String nombre;
+	@Column(name="NOMBRE_EN")
+	private String nombreEn;
+
+	@Column(name="NOMBRE_ES")
+	private String nombreEs;
+
+	@Column(name="NOMBRE_VA")
+	private String nombreVa;
 
 	@Column(name="TOTAL_ENTRADAS")
 	private BigDecimal totalEntradas;
@@ -35,12 +42,28 @@ public class ParLocalizacionDTO implements Serializable {
 		this.id = id;
 	}
 
-	public String getNombre() {
-		return this.nombre;
+	public String getNombreEn() {
+		return this.nombreEn;
 	}
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
+	public void setNombreEn(String nombreEn) {
+		this.nombreEn = nombreEn;
+	}
+
+	public String getNombreEs() {
+		return this.nombreEs;
+	}
+
+	public void setNombreEs(String nombreEs) {
+		this.nombreEs = nombreEs;
+	}
+
+	public String getNombreVa() {
+		return this.nombreVa;
+	}
+
+	public void setNombreVa(String nombreVa) {
+		this.nombreVa = nombreVa;
 	}
 
 	public BigDecimal getTotalEntradas() {

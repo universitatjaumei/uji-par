@@ -34,7 +34,7 @@ public class LocalizacionesService {
 	}
 	
 	private void checkRequiredFields(ParLocalizacion localizacion) throws ParCampoRequeridoException {
-		if (localizacion.getNombre() == null || localizacion.getNombre().isEmpty())
+		if (localizacion.getNombreEs() == null || localizacion.getNombreEs().isEmpty())
     		throw new ParCampoRequeridoException("Nombre");
 	}
 }

@@ -2,7 +2,7 @@ Ext.define('Paranimf.store.Localizaciones', {
    extend: 'Ext.data.Store',
    model: 'Paranimf.model.Localizacion',
 
-   sorters: ['nombre'],
+   sorters: ['nombreEs'],
    autoLoad: false,
    autoSync: true,
    pageSize: 10,

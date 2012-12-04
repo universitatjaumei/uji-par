@@ -3,7 +3,9 @@ Ext.define('Paranimf.model.Localizacion', {
 
    fields: [
       'id', 
-      'nombre',
+      'nombreEs',
+      'nombreVa',
+      'nombreEn',
       'totalEntradas'
    ]
 });
