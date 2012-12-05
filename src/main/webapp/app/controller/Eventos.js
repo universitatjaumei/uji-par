@@ -82,7 +82,7 @@ Ext.define('Paranimf.controller.Eventos', {
    showImagenIfExists: function(comp, opts) {
       var record = comp.getRecord();
       
-	   if (record.data["imagenSrc"]) {
+	   if (record != undefined && record.data["imagenSrc"]) {
          var imagen = comp.down("#imagenInsertada");
          var idEvento = record.data["id"]; 
 		   imagen.html = '<a href="' + urlPrefix + 'evento/' + idEvento + '/imagen" target="blank">' + UI.i18n.field.imagenInsertada + '</a>';
