@@ -10,7 +10,6 @@ public class ParLocalizacion
     private long id;
     private String nombreEs;
     private String nombreVa;
-    private String nombreEn;
     private int totalEntradas;
 
     public ParLocalizacion()
@@ -26,7 +25,6 @@ public class ParLocalizacion
         this.id = localizacionDTO.getId();
         this.nombreEs = localizacionDTO.getNombreEs();
         this.nombreVa = localizacionDTO.getNombreVa();
-        this.nombreEn = localizacionDTO.getNombreEn();
         this.totalEntradas = localizacionDTO.getTotalEntradas().intValue();
     }
     
@@ -64,13 +62,5 @@ public class ParLocalizacion
 
 	public void setNombreVa(String nombreVa) {
 		this.nombreVa = nombreVa;
-	}
-
-	public String getNombreEn() {
-		return nombreEn;
-	}
-
-	public void setNombreEn(String nombreEn) {
-		this.nombreEn = nombreEn;
 	}
 }

@@ -24,9 +24,6 @@ Ext.define('Paranimf.view.localizacion.FormLocalizaciones', {
       fieldLabel: UI.i18n.field.name_va,
       name: 'nombreVa'
    }, {
-      fieldLabel: UI.i18n.field.name_en,
-      name: 'nombreEn'
-   }, {
 		fieldLabel: UI.i18n.field.totalEntradas,
 		name: 'totalEntradas'
 	}]

@@ -69,7 +69,6 @@ public class EventosDAOTest {
 	@Transactional
 	public void addEventoConIdiomas() {
 		ParEvento parEvento = preparaEvento();
-		parEvento.setTituloEn("english");
 		parEvento.setCaracteristicasVa("valencia");
 		parEvento.setComentariosEs("comentarios");
 		parEvento = eventosDAO.addEvento(parEvento);
@@ -81,7 +80,6 @@ public class EventosDAOTest {
 	@Transactional
 	public void deleteImagen() {
 		ParEvento parEvento = preparaEvento();
-		parEvento.setTituloEn("english");
 		parEvento.setCaracteristicasVa("valencia");
 		parEvento.setComentariosEs("comentarios");
 		parEvento.setImagen("hola".getBytes());

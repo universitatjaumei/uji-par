@@ -4,7 +4,6 @@ Ext.define('Paranimf.model.TipoEvento', {
    fields: [
       'id', 
       'nombreEs',
-      'nombreVa',
-      'nombreEn'
+      'nombreVa'
    ]
 });

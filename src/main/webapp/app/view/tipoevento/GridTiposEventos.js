@@ -28,10 +28,6 @@ Ext.define('Paranimf.view.tipoevento.GridTiposEventos', {
           dataIndex: 'nombreVa',
           text: UI.i18n.field.name_va,
           flex: 5
-      }, {
-          dataIndex: 'nombreEn',
-          text: UI.i18n.field.name_en,
-          flex: 5
       }];
 
       this.callParent(arguments);

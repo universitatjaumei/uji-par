@@ -53,7 +53,6 @@ public class TiposEventosDAOTest {
 	@Transactional
 	public void addTipoEventoConIdiomas() {
 		ParTipoEvento parTipoEvento = preparaTipoEvento();
-		parTipoEvento.setNombreEn("english");
 		parTipoEvento.setNombreVa("valencia");
 		ParTipoEvento tipoEvento = tiposEventosDAO.addTipoEvento(parTipoEvento);
 		

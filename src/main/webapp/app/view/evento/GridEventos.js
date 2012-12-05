@@ -34,11 +34,8 @@ Ext.define('Paranimf.view.evento.GridEventos', {
         text: UI.i18n.field.title_va,
         flex: 5
       }, {
-        dataIndex: 'tituloEn',
-        text: UI.i18n.field.title_en,
-        flex: 5
-      }, {
         dataIndex: 'imagenSrc',
+        text: UI.i18n.field.imagen,
         flex: 4,
         renderer: function (val, record, p) {
           if (val != undefined) {

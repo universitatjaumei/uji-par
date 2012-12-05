@@ -9,7 +9,6 @@ public class ParTipoEvento
 {
     private long id;
     private String nombreEs;
-    private String nombreEn;
     private String nombreVa;
 
     public ParTipoEvento()
@@ -24,7 +23,6 @@ public class ParTipoEvento
     {
         this.id = tipoEventoDTO.getId();
         this.nombreEs = tipoEventoDTO.getNombreEs();
-        this.nombreEn = tipoEventoDTO.getNombreEn();
         this.nombreVa = tipoEventoDTO.getNombreVa();
     }
     
@@ -48,14 +46,6 @@ public class ParTipoEvento
 
 	public void setNombreEs(String nombreEs) {
 		this.nombreEs = nombreEs;
-	}
-
-	public String getNombreEn() {
-		return nombreEn;
-	}
-
-	public void setNombreEn(String nombreEn) {
-		this.nombreEn = nombreEn;
 	}
 
 	public String getNombreVa() {

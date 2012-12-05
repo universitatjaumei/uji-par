@@ -10,29 +10,21 @@ public class ParEvento
     private long id;
     private String tituloEs;
     private String tituloVa;
-    private String tituloEn;
     private String descripcionEs;
     private String descripcionVa;
-    private String descripcionEn;
     private String companyiaEs;
     private String companyiaVa;
-    private String companyiaEn;
     private String interpretesEs;
-    private String interpretesEn;
     private String interpretesVa;
     private String duracionEs;
     private String duracionVa;
-    private String duracionEn;
     private byte[] imagen;
     private String premiosEs;
     private String premiosVa;
-    private String premiosEn;
     private String caracteristicasEs;
     private String caracteristicasVa;
-    private String caracteristicasEn;
     private String comentariosEs;
     private String comentariosVa;
-    private String comentariosEn;
     private ParTipoEvento parTipoEvento;
     private long tipoEvento;
 	private String imagenSrc;
@@ -47,22 +39,17 @@ public class ParEvento
         this.id = eventoDTO.getId();
         this.tituloEs = eventoDTO.getTituloEs();
         this.tituloVa = eventoDTO.getTituloVa();
-        this.tituloEn = eventoDTO.getTituloEn();
         
         this.descripcionEs = eventoDTO.getDescripcionEs();
         this.descripcionVa = eventoDTO.getDescripcionVa();
-        this.descripcionEn = eventoDTO.getDescripcionEn();
         
         this.companyiaEs = eventoDTO.getCompanyiaEs();
-        this.companyiaEn = eventoDTO.getCompanyiaEn();
         this.companyiaVa = eventoDTO.getCompanyiaVa();
         
         this.interpretesEs = eventoDTO.getInterpretesEs();
-        this.interpretesEn = eventoDTO.getInterpretesEn();
         this.interpretesVa = eventoDTO.getInterpretesVa();
         
         this.duracionEs = eventoDTO.getDuracionEs();
-        this.duracionEn = eventoDTO.getDuracionEn();
         this.duracionVa = eventoDTO.getDuracionVa();
         
         if (crearConImagen) {
@@ -74,14 +61,11 @@ public class ParEvento
         
         this.premiosEs = eventoDTO.getPremiosEs();
         this.premiosVa = eventoDTO.getPremiosVa();
-        this.premiosEn = eventoDTO.getPremiosEn();
         
         this.caracteristicasEs = eventoDTO.getCaracteristicasEs();
-        this.caracteristicasEn = eventoDTO.getCaracteristicasEn();
         this.caracteristicasVa = eventoDTO.getCaracteristicasVa();
         
         this.comentariosEs = eventoDTO.getComentariosEs();
-        this.comentariosEn = eventoDTO.getComentariosEn();
         this.comentariosVa = eventoDTO.getComentariosVa();
         
         if (eventoDTO.getParTiposEvento() != null) {
@@ -89,7 +73,6 @@ public class ParEvento
         	this.parTipoEvento.setId(eventoDTO.getParTiposEvento().getId());
         	this.parTipoEvento.setNombreEs(eventoDTO.getParTiposEvento().getNombreEs());
         	this.parTipoEvento.setNombreVa(eventoDTO.getParTiposEvento().getNombreVa());
-        	this.parTipoEvento.setNombreEn(eventoDTO.getParTiposEvento().getNombreEn());
         	this.tipoEvento = eventoDTO.getParTiposEvento().getId();
         }
     }
@@ -103,7 +86,6 @@ public class ParEvento
 	public ParEvento(
 			String tituloEs, String descripcionEs, String companyiaEs, String interpretesEs, String duracionEs, String premiosEs, String caracteristicasEs, String comentariosEs, 
 			String tituloVa, String descripcionVa, String companyiaVa, String interpretesVa, String duracionVa,	String premiosVa, String caracteristicasVa,	String comentariosVa, 
-			String tituloEn, String descripcionEn, String companyiaEn, String interpretesEn, String duracionEn, String premiosEn, String caracteristicasEn,	String comentariosEn, 
 			byte[] dataBinary, String nombreArchivo, String mediaType, Integer tipoEventoId) {
 		
 		this.tituloEs = tituloEs;
@@ -123,15 +105,6 @@ public class ParEvento
 		this.premiosVa = premiosVa;
 		this.caracteristicasVa = caracteristicasVa;
 		this.comentariosVa = comentariosVa;
-		
-		this.tituloEn = tituloEn;
-		this.descripcionEn = descripcionEn;
-		this.companyiaEn = companyiaEn;
-		this.interpretesEn = interpretesEn;
-		this.duracionEn = duracionEn;
-		this.premiosEn = premiosEn;
-		this.caracteristicasEn = caracteristicasEn;
-		this.comentariosEn = comentariosEn;
 		
 		this.imagen = dataBinary;
 		this.imagenSrc = nombreArchivo;
@@ -204,14 +177,6 @@ public class ParEvento
 		this.tituloVa = tituloVa;
 	}
 
-	public String getTituloEn() {
-		return tituloEn;
-	}
-
-	public void setTituloEn(String tituloEn) {
-		this.tituloEn = tituloEn;
-	}
-
 	public String getDescripcionEs() {
 		return descripcionEs;
 	}
@@ -226,14 +191,6 @@ public class ParEvento
 
 	public void setDescripcionVa(String descripcionVa) {
 		this.descripcionVa = descripcionVa;
-	}
-
-	public String getDescripcionEn() {
-		return descripcionEn;
-	}
-
-	public void setDescripcionEn(String descripcionEn) {
-		this.descripcionEn = descripcionEn;
 	}
 
 	public String getCompanyiaEs() {
@@ -252,28 +209,12 @@ public class ParEvento
 		this.companyiaVa = companyiaVa;
 	}
 
-	public String getCompanyiaEn() {
-		return companyiaEn;
-	}
-
-	public void setCompanyiaEn(String companyiaEn) {
-		this.companyiaEn = companyiaEn;
-	}
-
 	public String getInterpretesEs() {
 		return interpretesEs;
 	}
 
 	public void setInterpretesEs(String interpretesEs) {
 		this.interpretesEs = interpretesEs;
-	}
-
-	public String getInterpretesEn() {
-		return interpretesEn;
-	}
-
-	public void setInterpretesEn(String interpretesEn) {
-		this.interpretesEn = interpretesEn;
 	}
 
 	public String getInterpretesVa() {
@@ -300,14 +241,6 @@ public class ParEvento
 		this.duracionVa = duracionVa;
 	}
 
-	public String getDuracionEn() {
-		return duracionEn;
-	}
-
-	public void setDuracionEn(String duracionEn) {
-		this.duracionEn = duracionEn;
-	}
-
 	public String getPremiosEs() {
 		return premiosEs;
 	}
@@ -322,14 +255,6 @@ public class ParEvento
 
 	public void setPremiosVa(String premiosVa) {
 		this.premiosVa = premiosVa;
-	}
-
-	public String getPremiosEn() {
-		return premiosEn;
-	}
-
-	public void setPremiosEn(String premiosEn) {
-		this.premiosEn = premiosEn;
 	}
 
 	public String getCaracteristicasEs() {
@@ -348,14 +273,6 @@ public class ParEvento
 		this.caracteristicasVa = caracteristicasVa;
 	}
 
-	public String getCaracteristicasEn() {
-		return caracteristicasEn;
-	}
-
-	public void setCaracteristicasEn(String caracteristicasEn) {
-		this.caracteristicasEn = caracteristicasEn;
-	}
-
 	public String getComentariosEs() {
 		return comentariosEs;
 	}
@@ -370,14 +287,6 @@ public class ParEvento
 
 	public void setComentariosVa(String comentariosVa) {
 		this.comentariosVa = comentariosVa;
-	}
-
-	public String getComentariosEn() {
-		return comentariosEn;
-	}
-
-	public void setComentariosEn(String comentariosEn) {
-		this.comentariosEn = comentariosEn;
 	}
 
 	public String getImagenSrc() {

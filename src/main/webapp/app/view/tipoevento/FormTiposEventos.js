@@ -22,8 +22,5 @@ Ext.define('Paranimf.view.tipoevento.FormTiposEventos', {
    }, {
 	  fieldLabel: UI.i18n.field.name_va,
 	  name: 'nombreVa'
-   }, {
-      fieldLabel: UI.i18n.field.name_en,
-      name: 'nombreEn'
    }]
 });

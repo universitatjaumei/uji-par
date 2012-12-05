@@ -19,17 +19,11 @@ public class ParEventoDTO implements Serializable {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PAR_EVENTOS_ID_GENERATOR")
 	private long id;
 
-	@Column(name="CARACTERISTICAS_EN")
-	private String caracteristicasEn;
-
 	@Column(name="CARACTERISTICAS_ES")
 	private String caracteristicasEs;
 
 	@Column(name="CARACTERISTICAS_VA")
 	private String caracteristicasVa;
-
-	@Column(name="COMENTARIOS_EN")
-	private String comentariosEn;
 
 	@Column(name="COMENTARIOS_ES")
 	private String comentariosEs;
@@ -37,26 +31,17 @@ public class ParEventoDTO implements Serializable {
 	@Column(name="COMENTARIOS_VA")
 	private String comentariosVa;
 
-	@Column(name="COMPANYIA_EN")
-	private String companyiaEn;
-
 	@Column(name="COMPANYIA_ES")
 	private String companyiaEs;
 
 	@Column(name="COMPANYIA_VA")
 	private String companyiaVa;
 
-	@Column(name="DESCRIPCION_EN")
-	private String descripcionEn;
-
 	@Column(name="DESCRIPCION_ES")
 	private String descripcionEs;
 
 	@Column(name="DESCRIPCION_VA")
 	private String descripcionVa;
-
-	@Column(name="DURACION_EN")
-	private String duracionEn;
 
 	@Column(name="DURACION_ES")
 	private String duracionEs;
@@ -73,26 +58,17 @@ public class ParEventoDTO implements Serializable {
 	@Column(name="IMAGEN_SRC")
 	private String imagenSrc;
 
-	@Column(name="INTERPRETES_EN")
-	private String interpretesEn;
-
 	@Column(name="INTERPRETES_ES")
 	private String interpretesEs;
 
 	@Column(name="INTERPRETES_VA")
 	private String interpretesVa;
 
-	@Column(name="PREMIOS_EN")
-	private String premiosEn;
-
 	@Column(name="PREMIOS_ES")
 	private String premiosEs;
 
 	@Column(name="PREMIOS_VA")
 	private String premiosVa;
-
-	@Column(name="TITULO_EN")
-	private String tituloEn;
 
 	@Column(name="TITULO_ES")
 	private String tituloEs;
@@ -120,14 +96,6 @@ public class ParEventoDTO implements Serializable {
 		this.id = id;
 	}
 
-	public String getCaracteristicasEn() {
-		return this.caracteristicasEn;
-	}
-
-	public void setCaracteristicasEn(String caracteristicasEn) {
-		this.caracteristicasEn = caracteristicasEn;
-	}
-
 	public String getCaracteristicasEs() {
 		return this.caracteristicasEs;
 	}
@@ -142,14 +110,6 @@ public class ParEventoDTO implements Serializable {
 
 	public void setCaracteristicasVa(String caracteristicasVa) {
 		this.caracteristicasVa = caracteristicasVa;
-	}
-
-	public String getComentariosEn() {
-		return this.comentariosEn;
-	}
-
-	public void setComentariosEn(String comentariosEn) {
-		this.comentariosEn = comentariosEn;
 	}
 
 	public String getComentariosEs() {
@@ -168,14 +128,6 @@ public class ParEventoDTO implements Serializable {
 		this.comentariosVa = comentariosVa;
 	}
 
-	public String getCompanyiaEn() {
-		return this.companyiaEn;
-	}
-
-	public void setCompanyiaEn(String companyiaEn) {
-		this.companyiaEn = companyiaEn;
-	}
-
 	public String getCompanyiaEs() {
 		return this.companyiaEs;
 	}
@@ -192,14 +144,6 @@ public class ParEventoDTO implements Serializable {
 		this.companyiaVa = companyiaVa;
 	}
 
-	public String getDescripcionEn() {
-		return this.descripcionEn;
-	}
-
-	public void setDescripcionEn(String descripcionEn) {
-		this.descripcionEn = descripcionEn;
-	}
-
 	public String getDescripcionEs() {
 		return this.descripcionEs;
 	}
@@ -214,14 +158,6 @@ public class ParEventoDTO implements Serializable {
 
 	public void setDescripcionVa(String descripcionVa) {
 		this.descripcionVa = descripcionVa;
-	}
-
-	public String getDuracionEn() {
-		return this.duracionEn;
-	}
-
-	public void setDuracionEn(String duracionEn) {
-		this.duracionEn = duracionEn;
 	}
 
 	public String getDuracionEs() {
@@ -264,14 +200,6 @@ public class ParEventoDTO implements Serializable {
 		this.imagenSrc = imagenSrc;
 	}
 
-	public String getInterpretesEn() {
-		return this.interpretesEn;
-	}
-
-	public void setInterpretesEn(String interpretesEn) {
-		this.interpretesEn = interpretesEn;
-	}
-
 	public String getInterpretesEs() {
 		return this.interpretesEs;
 	}
@@ -288,14 +216,6 @@ public class ParEventoDTO implements Serializable {
 		this.interpretesVa = interpretesVa;
 	}
 
-	public String getPremiosEn() {
-		return this.premiosEn;
-	}
-
-	public void setPremiosEn(String premiosEn) {
-		this.premiosEn = premiosEn;
-	}
-
 	public String getPremiosEs() {
 		return this.premiosEs;
 	}
@@ -310,14 +230,6 @@ public class ParEventoDTO implements Serializable {
 
 	public void setPremiosVa(String premiosVa) {
 		this.premiosVa = premiosVa;
-	}
-
-	public String getTituloEn() {
-		return this.tituloEn;
-	}
-
-	public void setTituloEn(String tituloEn) {
-		this.tituloEn = tituloEn;
 	}
 
 	public String getTituloEs() {

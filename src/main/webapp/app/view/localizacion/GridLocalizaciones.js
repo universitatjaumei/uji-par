@@ -28,10 +28,6 @@ Ext.define('Paranimf.view.localizacion.GridLocalizaciones', {
          text: UI.i18n.field.name_va,
          flex: 5
       }, {
-         dataIndex: 'nombreEn',
-         text: UI.i18n.field.name_en,
-         flex: 5
-      }, {
           dataIndex: 'totalEntradas',
           text: UI.i18n.field.totalEntradas,
           flex: 2

@@ -51,7 +51,6 @@ public class LocalizacionesDAO {
 		ParLocalizacionDTO localizacionDTO = new ParLocalizacionDTO();
         localizacionDTO.setNombreEs(localizacion.getNombreEs());
         localizacionDTO.setNombreVa(localizacion.getNombreVa());
-        localizacionDTO.setNombreEn(localizacion.getNombreEn());
         localizacionDTO.setTotalEntradas(new BigDecimal(localizacion.getTotalEntradas()));
 
         entityManager.persist(localizacionDTO);
@@ -65,7 +64,6 @@ public class LocalizacionesDAO {
 		JPAUpdateClause update = new JPAUpdateClause(entityManager, qParLocalizacionDTO);
         update.set(qParLocalizacionDTO.nombreEs, localizacion.getNombreEs()).
         	set(qParLocalizacionDTO.nombreVa, localizacion.getNombreVa()).
-        	set(qParLocalizacionDTO.nombreEn, localizacion.getNombreEn()).
         	set(qParLocalizacionDTO.totalEntradas, new BigDecimal(localizacion.getTotalEntradas()))
         	.where(qParLocalizacionDTO.id.eq(localizacion.getId())).execute();
         

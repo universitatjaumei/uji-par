@@ -37,15 +37,15 @@ public class EventosDAO
 
         List<Tuple> listadoTuples = query.from(qEventoDTO, qTipoEventoDTO)
         .where(qEventoDTO.parTiposEvento.id.eq(qTipoEventoDTO.id))
-    	.list(new QTuple(qEventoDTO.caracteristicasEn, qEventoDTO.caracteristicasEs, qEventoDTO.caracteristicasVa,
-    			qEventoDTO.comentariosEn, qEventoDTO.comentariosEs, qEventoDTO.comentariosVa, 
-    			qEventoDTO.companyiaEn, qEventoDTO.companyiaEs, qEventoDTO.companyiaVa,
-    			qEventoDTO.descripcionEn, qEventoDTO.descripcionEs, qEventoDTO.descripcionVa,
-    			qEventoDTO.duracionEn, qEventoDTO.duracionEs, qEventoDTO.duracionVa,
+    	.list(new QTuple(qEventoDTO.caracteristicasEs, qEventoDTO.caracteristicasVa,
+    			qEventoDTO.comentariosEs, qEventoDTO.comentariosVa, 
+    			qEventoDTO.companyiaEs, qEventoDTO.companyiaVa,
+    			qEventoDTO.descripcionEs, qEventoDTO.descripcionVa,
+    			qEventoDTO.duracionEs, qEventoDTO.duracionVa,
     			qEventoDTO.id, qEventoDTO.parTiposEvento,
-    			qEventoDTO.interpretesEn, qEventoDTO.interpretesEs, qEventoDTO.interpretesVa,
-    			qEventoDTO.premiosEn, qEventoDTO.premiosEs, qEventoDTO.premiosVa,
-    			qEventoDTO.tituloEn, qEventoDTO.tituloEs, qEventoDTO.tituloVa,
+    			qEventoDTO.interpretesEs, qEventoDTO.interpretesVa,
+    			qEventoDTO.premiosEs, qEventoDTO.premiosVa,
+    			qEventoDTO.tituloEs, qEventoDTO.tituloVa,
     			qEventoDTO.imagenSrc, qEventoDTO.imagenContentType));
         
         return tuplesToParEventoDTO(listadoTuples);
@@ -66,38 +66,30 @@ public class EventosDAO
 		ParEventoDTO parEventoDTO = new ParEventoDTO();
 		
 		parEventoDTO.setCaracteristicasEs(tupla.get(qEventoDTO.caracteristicasEs));
-		parEventoDTO.setCaracteristicasEn(tupla.get(qEventoDTO.caracteristicasEn));
 		parEventoDTO.setCaracteristicasVa(tupla.get(qEventoDTO.caracteristicasVa));
 		
         parEventoDTO.setComentariosEs(tupla.get(qEventoDTO.comentariosEs));
-        parEventoDTO.setComentariosEn(tupla.get(qEventoDTO.comentariosEn));
         parEventoDTO.setComentariosVa(tupla.get(qEventoDTO.comentariosVa));
         
         parEventoDTO.setCompanyiaEs(tupla.get(qEventoDTO.companyiaEs));
-        parEventoDTO.setCompanyiaEn(tupla.get(qEventoDTO.companyiaEn));
         parEventoDTO.setCompanyiaVa(tupla.get(qEventoDTO.companyiaVa));
         
         parEventoDTO.setDescripcionEs(tupla.get(qEventoDTO.descripcionEs));
-        parEventoDTO.setDescripcionEn(tupla.get(qEventoDTO.descripcionEn));
         parEventoDTO.setDescripcionVa(tupla.get(qEventoDTO.descripcionVa));
         
         parEventoDTO.setDuracionEs(tupla.get(qEventoDTO.duracionEs));
-        parEventoDTO.setDuracionEn(tupla.get(qEventoDTO.duracionEn));
         parEventoDTO.setDuracionVa(tupla.get(qEventoDTO.duracionVa));
         
         parEventoDTO.setInterpretesEs(tupla.get(qEventoDTO.interpretesEs));
-        parEventoDTO.setInterpretesEn(tupla.get(qEventoDTO.interpretesEn));
         parEventoDTO.setInterpretesVa(tupla.get(qEventoDTO.interpretesVa));
         
         if (tupla.get(qEventoDTO.parTiposEvento) != null) {
         	parEventoDTO.setParTiposEvento(tupla.get(qEventoDTO.parTiposEvento));
         }
         parEventoDTO.setPremiosEs(tupla.get(qEventoDTO.premiosEs));
-        parEventoDTO.setPremiosEn(tupla.get(qEventoDTO.premiosEn));
         parEventoDTO.setPremiosVa(tupla.get(qEventoDTO.premiosVa));
         
         parEventoDTO.setTituloEs(tupla.get(qEventoDTO.tituloEs));
-        parEventoDTO.setTituloEn(tupla.get(qEventoDTO.tituloEn));
         parEventoDTO.setTituloVa(tupla.get(qEventoDTO.tituloVa));
         
         parEventoDTO.setImagenSrc(tupla.get(qEventoDTO.imagenSrc));
@@ -138,23 +130,18 @@ public class EventosDAO
 
 	private ParEventoDTO rellenarParEventoDTOConParEvento(ParEvento evento, ParEventoDTO eventoDTO) {
 		eventoDTO.setCaracteristicasEs(evento.getCaracteristicasEs());
-		eventoDTO.setCaracteristicasEn(evento.getCaracteristicasEn());
 		eventoDTO.setCaracteristicasVa(evento.getCaracteristicasVa());
 		
         eventoDTO.setComentariosEs(evento.getComentariosEs());
-        eventoDTO.setComentariosEn(evento.getComentariosEn());
         eventoDTO.setComentariosVa(evento.getComentariosVa());
         
         eventoDTO.setCompanyiaEs(evento.getCompanyiaEs());
-        eventoDTO.setCompanyiaEn(evento.getCompanyiaEn());
         eventoDTO.setCompanyiaVa(evento.getCompanyiaVa());
         
         eventoDTO.setDescripcionEs(evento.getDescripcionEs());
-        eventoDTO.setDescripcionEn(evento.getDescripcionEn());
         eventoDTO.setDescripcionVa(evento.getDescripcionVa());
         
         eventoDTO.setDuracionEs(evento.getDuracionEs());
-        eventoDTO.setDuracionEn(evento.getDuracionEn());
         eventoDTO.setDuracionVa(evento.getDuracionVa());
         
         if (evento.getImagen() != null && evento.getImagen().length > 0) {
@@ -164,7 +151,6 @@ public class EventosDAO
         }
         
         eventoDTO.setInterpretesEs(evento.getInterpretesEs());
-        eventoDTO.setInterpretesEn(evento.getInterpretesEn());
         eventoDTO.setInterpretesVa(evento.getInterpretesVa());
         
         if (evento.getParTipoEvento() != null) {
@@ -173,11 +159,9 @@ public class EventosDAO
         	eventoDTO.setParTiposEvento(parTipoEventoDTO);
         }
         eventoDTO.setPremiosEs(evento.getPremiosEs());
-        eventoDTO.setPremiosEn(evento.getPremiosEn());
         eventoDTO.setPremiosVa(evento.getPremiosVa());
         
         eventoDTO.setTituloEs(evento.getTituloEs());
-        eventoDTO.setTituloEn(evento.getTituloEn());
         eventoDTO.setTituloVa(evento.getTituloVa());
         
         if (evento.getId() != 0)

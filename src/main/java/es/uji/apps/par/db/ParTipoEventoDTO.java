@@ -19,9 +19,6 @@ public class ParTipoEventoDTO implements Serializable {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PAR_TIPOS_EVENTO_ID_GENERATOR")
 	private long id;
 
-	@Column(name="NOMBRE_EN")
-	private String nombreEn;
-
 	@Column(name="NOMBRE_ES")
 	private String nombreEs;
 
@@ -41,14 +38,6 @@ public class ParTipoEventoDTO implements Serializable {
 
 	public void setId(long id) {
 		this.id = id;
-	}
-
-	public String getNombreEn() {
-		return this.nombreEn;
-	}
-
-	public void setNombreEn(String nombreEn) {
-		this.nombreEn = nombreEn;
 	}
 
 	public String getNombreEs() {
