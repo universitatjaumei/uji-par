@@ -24,6 +24,7 @@ Ext.define('Paranimf.view.usuario.FormUsuarios', {
       name: 'nombre'
    }, {
       fieldLabel: UI.i18n.field.email,
-      name: 'mail'
+      name: 'mail',
+      vtype: 'email'
    }]
 });
