@@ -34,7 +34,7 @@ Ext.define('Paranimf.view.localizacion.GridLocalizaciones', {
       }, {
           dataIndex: 'totalEntradas',
           text: UI.i18n.field.totalEntradas,
-          flex: 1
+          flex: 2
       }];
 
       this.callParent(arguments);

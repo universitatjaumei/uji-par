@@ -56,7 +56,6 @@ Ext.define('Paranimf.view.EditBaseGrid', {
 
    edit: function(xtype, arrayComboClearFilter, width, height) {
       var selectedRows = this.getSelectionModel().getSelection();
-      console.log(selectedRows[0]);
       if (selectedRows.length == 0)
          alert(UI.i18n.message.selectRow);
       else {
