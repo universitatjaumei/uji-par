@@ -14,8 +14,8 @@ import es.uji.apps.par.dao.UsuariosDAO;
 import es.uji.apps.par.model.Usuario;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
-@ContextConfiguration(locations = { "/applicationContext.xml" })
+@TransactionConfiguration(transactionManager = "transactionManager")
+@ContextConfiguration(locations = { "/applicationContext-test.xml" })
 public class UsuariosDAOTest
 {
 
@@ -53,15 +53,18 @@ public class UsuariosDAOTest
     @Transactional
     public void deleteUsuario()
     {
-        Assert.assertEquals(1, usuariosDAO.removeUser(usuariosDAO.getUsers().get(0).getId()));
+    	Usuario parUsuario = preparaUsuario();
+        parUsuario = usuariosDAO.addUser(parUsuario);
+        Assert.assertEquals(1, usuariosDAO.removeUser(parUsuario.getId()));
     }
 
     @Test
     @Transactional
     public void updateUsuario() throws UsuarioYaExisteException
     {
-        Usuario parUsuario = new Usuario();
-        parUsuario.setId(usuariosDAO.getUsers().get(0).getId());
+    	Usuario parUsuario = preparaUsuario();
+        parUsuario = usuariosDAO.addUser(parUsuario);
+        
         parUsuario.setNombre("Prueba2");
         parUsuario.setMail("mail");
         parUsuario.setUsuario("usuario");

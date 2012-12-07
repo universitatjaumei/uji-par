@@ -13,8 +13,8 @@ import es.uji.apps.par.dao.LocalizacionesDAO;
 import es.uji.apps.par.model.Localizacion;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
-@ContextConfiguration(locations = { "/applicationContext.xml" })
+@TransactionConfiguration(transactionManager = "transactionManager")
+@ContextConfiguration(locations = { "/applicationContext-test.xml" })
 public class LocalizacionesDAOTest
 {
 

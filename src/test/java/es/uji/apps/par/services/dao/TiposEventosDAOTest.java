@@ -13,8 +13,8 @@ import es.uji.apps.par.dao.TiposEventosDAO;
 import es.uji.apps.par.model.TipoEvento;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
-@ContextConfiguration(locations = { "/applicationContext.xml" })
+@TransactionConfiguration(transactionManager = "transactionManager")
+@ContextConfiguration(locations = { "/applicationContext-test.xml" })
 public class TiposEventosDAOTest
 {
 
@@ -47,8 +47,9 @@ public class TiposEventosDAOTest
     @Transactional
     public void updateTipoEvento()
     {
-        TipoEvento parTipoEvento = new TipoEvento();
-        parTipoEvento.setId(tiposEventosDAO.getTiposEventos().get(0).getId());
+    	TipoEvento parTipoEvento = preparaTipoEvento();
+        parTipoEvento = tiposEventosDAO.addTipoEvento(parTipoEvento);
+        
         parTipoEvento.setNombreEs("Prueba2");
         TipoEvento tipoEventoActualizado = tiposEventosDAO.updateTipoEvento(parTipoEvento);
         Assert.assertEquals(parTipoEvento.getId(), tipoEventoActualizado.getId());

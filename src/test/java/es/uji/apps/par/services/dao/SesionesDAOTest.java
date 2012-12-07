@@ -12,11 +12,13 @@ import org.springframework.transaction.annotation.Transactional;
 import es.uji.apps.par.dao.EventosDAO;
 import es.uji.apps.par.dao.SesionesDAO;
 import es.uji.apps.par.dao.TiposEventosDAO;
+import es.uji.apps.par.model.Evento;
 import es.uji.apps.par.model.Sesion;
+import es.uji.apps.par.model.TipoEvento;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
-@ContextConfiguration(locations = { "/applicationContext.xml" })
+@TransactionConfiguration(transactionManager = "transactionManager")
+@ContextConfiguration(locations = { "/applicationContext-test.xml" })
 public class SesionesDAOTest
 {
 
@@ -31,6 +33,12 @@ public class SesionesDAOTest
 
     private Sesion preparaSesion()
     {
+    	TipoEvento tipoEvento = new TipoEvento("tipo evento");
+    	tipoEvento = tiposEventosDAO.addTipoEvento(tipoEvento);
+    	
+    	Evento evento = new Evento("Evento", tipoEvento);
+    	evento = eventosDAO.addEvento(evento);
+    	
         Sesion parSesion = new Sesion();
         parSesion.setEvento(eventosDAO.getEventos().get(0));
         parSesion.setFechaCelebracion("01/01/2012");
