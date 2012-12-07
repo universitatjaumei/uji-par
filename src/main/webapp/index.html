@@ -3,26 +3,27 @@
   <head>
     <title>Administració del Paranimf</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <script type="text/javascript">
-	    var botonLogout = "Nicolas Manero";
-	    var lang = "ca";
-	    var menuUrl = "menu_ca.html";
-	    var controllers = ['Dashboard', 'Usuarios', 'TiposEventos', 'Eventos', 'Localizaciones'];
-	    var screens = {'Dashboard': 0, 'Usuarios': 1, 'TiposEventos': 2, 'Eventos': 3, 'Localizaciones': 4};
-	    var urlPrefix = '/rest/'
-    </script>
-    
-    <link rel="stylesheet" type="text/css" href="extjs/resources/css/ext-neptune.css">
-    <link rel="stylesheet" type="text/css" href="resources/css/jquery-ui-1.8.23.custom.css">
+
+    <link rel="stylesheet" type="text/css" href="http://static.uji.es/js/extjs/extjs-4.1.1/resources/css/ext-neptune.css">
     <link rel="stylesheet" type="text/css" href="resources/css/jquery-ui-1.8.23.custom.css">
     <link rel="stylesheet" type="text/css" href="resources/css/paranimf.css">
     <link rel="shortcut icon" type="image/x-icon" href="resources/images/favicon.ico">
+    <script type="text/javascript" src="http://static.uji.es/js/extjs/extjs-4.1.1/ext-all-debug.js"></script>
 
-    <script type="text/javascript" src="resources/i18n/ca.js"></script>
-    <script type="text/javascript" src="resources/js/paranimf.js"></script>
-    <script type="text/javascript" src="extjs/ext-all-debug.js"></script>
-    <script type="text/javascript" src="extjs/locale/ext-lang-ca.js"></script>
+    <script type="text/javascript">
+	    var botonLogout = "Nicolas Manero";
+	    var lang = "ca";
+
+	    var menuUrl = "menu_" + lang + ".html";
+	    var controllers = ['Dashboard', 'Usuarios', 'TiposEventos', 'Eventos', 'Localizaciones'];
+	    var screens = {'Dashboard': 0, 'Usuarios': 1, 'TiposEventos': 2, 'Eventos': 3, 'Localizaciones': 4};
+	    var urlPrefix = '/rest/';
+
+      document.write("<script type='text/javascript' src='resources/i18n/" + lang + ".js'><\/script>");
+      document.write("<script type='text/javascript' src='http://static.uji.es/js/extjs/extjs-4.1.1/locale/ext-lang-" + lang + ".js'><\/script>");
+    </script>
     
+    <script type="text/javascript" src="resources/js/paranimf.js"></script>
     <script type="text/javascript" src="app/Application.js"></script> 
   </head>
   <body>
