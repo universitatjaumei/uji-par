@@ -13,8 +13,8 @@ import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.jpa.impl.JPAUpdateClause;
 
-import es.uji.apps.par.db.UsuarioDTO;
 import es.uji.apps.par.db.QParUsuarioDTO;
+import es.uji.apps.par.db.UsuarioDTO;
 import es.uji.apps.par.model.Usuario;
 
 @Repository
@@ -50,13 +50,13 @@ public class UsuariosDAO
     @Transactional
     public Usuario addUser(Usuario user)
     {
-    	UsuarioDTO usuarioDTO = new UsuarioDTO();
+        UsuarioDTO usuarioDTO = new UsuarioDTO();
         usuarioDTO.setNombre(user.getNombre());
         usuarioDTO.setMail(user.getMail());
         usuarioDTO.setUsuario(user.getUsuario());
-	
-       	entityManager.persist(usuarioDTO);
-	
+
+        entityManager.persist(usuarioDTO);
+
         user.setId(usuarioDTO.getId());
         return user;
     }
@@ -65,22 +65,23 @@ public class UsuariosDAO
     public Usuario updateUser(Usuario user)
     {
         JPAUpdateClause update = new JPAUpdateClause(entityManager, qUserDTO);
-        update.set(qUserDTO.nombre, user.getNombre())
-        	.set(qUserDTO.mail, user.getMail())
-        	.set(qUserDTO.usuario, user.getUsuario())
-        	.where(qUserDTO.id.eq(user.getId())).execute();
-        
+        update.set(qUserDTO.nombre, user.getNombre()).set(qUserDTO.mail, user.getMail())
+                .set(qUserDTO.usuario, user.getUsuario()).where(qUserDTO.id.eq(user.getId()))
+                .execute();
+
         return user;
     }
 
-	public boolean userExists(Usuario user) {
-		JPAQuery query = new JPAQuery(entityManager);
-		
-		List<UsuarioDTO> usuarios = query.from(qUserDTO).where(qUserDTO.usuario.eq(user.getUsuario())).list(qUserDTO);
-		
-		if (usuarios.size() > 0)
-			return true;
-		else
-			return false;
-	}
+    public boolean userExists(Usuario user)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+
+        List<UsuarioDTO> usuarios = query.from(qUserDTO)
+                .where(qUserDTO.usuario.eq(user.getUsuario())).list(qUserDTO);
+
+        if (usuarios.size() > 0)
+            return true;
+        else
+            return false;
+    }
 }

@@ -14,20 +14,22 @@ public class TipoEvento
     public TipoEvento()
     {
     }
-    
-    public TipoEvento(long id) {
-    	this.id = id;
+
+    public TipoEvento(long id)
+    {
+        this.id = id;
     }
-    
+
     public TipoEvento(TipoEventoDTO tipoEventoDTO)
     {
         this.id = tipoEventoDTO.getId();
         this.nombreEs = tipoEventoDTO.getNombreEs();
         this.nombreVa = tipoEventoDTO.getNombreVa();
     }
-    
-    public TipoEvento(String nombreEs) {
-    	this.nombreEs = nombreEs;
+
+    public TipoEvento(String nombreEs)
+    {
+        this.nombreEs = nombreEs;
     }
 
     public long getId()
@@ -40,21 +42,24 @@ public class TipoEvento
         this.id = id;
     }
 
-	public String getNombreEs() {
-		return nombreEs;
-	}
+    public String getNombreEs()
+    {
+        return nombreEs;
+    }
 
-	public void setNombreEs(String nombreEs) {
-		this.nombreEs = nombreEs;
-	}
+    public void setNombreEs(String nombreEs)
+    {
+        this.nombreEs = nombreEs;
+    }
 
-	public String getNombreVa() {
-		return nombreVa;
-	}
+    public String getNombreVa()
+    {
+        return nombreVa;
+    }
 
-	public void setNombreVa(String nombreVa) {
-		this.nombreVa = nombreVa;
-	}
-    
-    
+    public void setNombreVa(String nombreVa)
+    {
+        this.nombreVa = nombreVa;
+    }
+
 }

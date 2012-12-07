@@ -10,31 +10,37 @@ import es.uji.apps.par.dao.LocalizacionesDAO;
 import es.uji.apps.par.model.Localizacion;
 
 @Service
-public class LocalizacionesService {
+public class LocalizacionesService
+{
 
-	@Autowired
+    @Autowired
     private LocalizacionesDAO localizacionesDAO;
 
-	public List<Localizacion> get() {
-		return localizacionesDAO.get();
-	}
+    public List<Localizacion> get()
+    {
+        return localizacionesDAO.get();
+    }
 
-	public void remove(Integer id) {
-		localizacionesDAO.remove(id);
-	}
+    public void remove(Integer id)
+    {
+        localizacionesDAO.remove(id);
+    }
 
-	public Localizacion add(Localizacion localizacion) throws CampoRequeridoException {
-		checkRequiredFields(localizacion);
+    public Localizacion add(Localizacion localizacion) throws CampoRequeridoException
+    {
+        checkRequiredFields(localizacion);
         return localizacionesDAO.add(localizacion);
-	}
+    }
 
-	public void update(Localizacion localizacion) throws CampoRequeridoException {
-		checkRequiredFields(localizacion);
-		localizacionesDAO.update(localizacion);
-	}
-	
-	private void checkRequiredFields(Localizacion localizacion) throws CampoRequeridoException {
-		if (localizacion.getNombreEs() == null || localizacion.getNombreEs().isEmpty())
-    		throw new CampoRequeridoException("Nombre");
-	}
+    public void update(Localizacion localizacion) throws CampoRequeridoException
+    {
+        checkRequiredFields(localizacion);
+        localizacionesDAO.update(localizacion);
+    }
+
+    private void checkRequiredFields(Localizacion localizacion) throws CampoRequeridoException
+    {
+        if (localizacion.getNombreEs() == null || localizacion.getNombreEs().isEmpty())
+            throw new CampoRequeridoException("Nombre");
+    }
 }

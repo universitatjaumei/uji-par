@@ -15,39 +15,44 @@ import es.uji.apps.par.model.Localizacion;
 @RunWith(SpringJUnit4ClassRunner.class)
 @TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
 @ContextConfiguration(locations = { "/applicationContext.xml" })
-public class LocalizacionesDAOTest {
+public class LocalizacionesDAOTest
+{
 
-	@Autowired
-	LocalizacionesDAO localizacionesDAO;
-	
-	@Test
-	@Transactional
-	public void getLocalizaciones() {
-		Assert.assertNotNull(localizacionesDAO.get());
-	}
-	
-	@Test
-	@Transactional
-	public void addLocalizacion() {
-		Localizacion parLocalizacion = preparaLocalizacion();
-		Localizacion localizacion = localizacionesDAO.add(parLocalizacion);
-		
-		Assert.assertNotNull(localizacion.getId());
-	}
-	
-	private Localizacion preparaLocalizacion() {
-		return new Localizacion("Nombre Localizacion");
-	}
-	
-	@Test
-	@Transactional
-	public void updateLocalizacion() {
-		Localizacion localizacion = localizacionesDAO.add(preparaLocalizacion());
-		
-		Assert.assertNotNull(localizacion.getId());
-		
-		localizacion.setNombreEs("Prueba2");
-		Localizacion localizacionActualizada = localizacionesDAO.update(localizacion);
-		Assert.assertEquals(localizacion.getId(), localizacionActualizada.getId());
-	}
+    @Autowired
+    LocalizacionesDAO localizacionesDAO;
+
+    @Test
+    @Transactional
+    public void getLocalizaciones()
+    {
+        Assert.assertNotNull(localizacionesDAO.get());
+    }
+
+    @Test
+    @Transactional
+    public void addLocalizacion()
+    {
+        Localizacion parLocalizacion = preparaLocalizacion();
+        Localizacion localizacion = localizacionesDAO.add(parLocalizacion);
+
+        Assert.assertNotNull(localizacion.getId());
+    }
+
+    private Localizacion preparaLocalizacion()
+    {
+        return new Localizacion("Nombre Localizacion");
+    }
+
+    @Test
+    @Transactional
+    public void updateLocalizacion()
+    {
+        Localizacion localizacion = localizacionesDAO.add(preparaLocalizacion());
+
+        Assert.assertNotNull(localizacion.getId());
+
+        localizacion.setNombreEs("Prueba2");
+        Localizacion localizacionActualizada = localizacionesDAO.update(localizacion);
+        Assert.assertEquals(localizacion.getId(), localizacionActualizada.getId());
+    }
 }

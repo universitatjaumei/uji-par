@@ -13,8 +13,8 @@ import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.jpa.impl.JPAUpdateClause;
 
-import es.uji.apps.par.db.TipoEventoDTO;
 import es.uji.apps.par.db.QParTipoEventoDTO;
+import es.uji.apps.par.db.TipoEventoDTO;
 import es.uji.apps.par.model.TipoEvento;
 
 @Repository
@@ -50,7 +50,7 @@ public class TiposEventosDAO
     @Transactional
     public TipoEvento addTipoEvento(TipoEvento tipoEvento)
     {
-    	TipoEventoDTO tipoeventoDTO = new TipoEventoDTO();
+        TipoEventoDTO tipoeventoDTO = new TipoEventoDTO();
         tipoeventoDTO.setNombreEs(tipoEvento.getNombreEs());
         tipoeventoDTO.setNombreVa(tipoEvento.getNombreVa());
 
@@ -64,10 +64,10 @@ public class TiposEventosDAO
     public TipoEvento updateTipoEvento(TipoEvento tipoEvento)
     {
         JPAUpdateClause update = new JPAUpdateClause(entityManager, qTipoEventoDTO);
-        update.set(qTipoEventoDTO.nombreEs, tipoEvento.getNombreEs()).
-        	set(qTipoEventoDTO.nombreVa, tipoEvento.getNombreVa())
-        	.where(qTipoEventoDTO.id.eq(tipoEvento.getId())).execute();
-        
+        update.set(qTipoEventoDTO.nombreEs, tipoEvento.getNombreEs())
+                .set(qTipoEventoDTO.nombreVa, tipoEvento.getNombreVa())
+                .where(qTipoEventoDTO.id.eq(tipoEvento.getId())).execute();
+
         return tipoEvento;
     }
 }

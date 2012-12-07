@@ -32,7 +32,7 @@ public class UsersResource
     {
         return Response.ok().entity(new RestResponse(true, usersService.getUsuarios())).build();
     }
-    
+
     @DELETE
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -41,17 +41,18 @@ public class UsersResource
         usersService.removeUser(Integer.parseInt(id));
         return Response.ok().entity(new RestResponse(true)).build();
     }
-    
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response add(Usuario user) throws GeneralPARException
     {
         Usuario newUser = usersService.addUser(user);
-        //TODO -> generar URL
-        return Response.created(URI.create("")).entity(new RestResponse(true, Collections.singletonList(newUser))).build();
+        // TODO -> generar URL
+        return Response.created(URI.create(""))
+                .entity(new RestResponse(true, Collections.singletonList(newUser))).build();
     }
-    
+
     @PUT
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -59,6 +60,7 @@ public class UsersResource
     public Response update(Usuario user) throws GeneralPARException
     {
         usersService.updateUser(user);
-        return Response.ok().entity(new RestResponse(true, Collections.singletonList(user))).build();
-    }    
+        return Response.ok().entity(new RestResponse(true, Collections.singletonList(user)))
+                .build();
+    }
 }

@@ -14,7 +14,7 @@ public class TiposEventosService
 {
     @Autowired
     private TiposEventosDAO tiposEventosDAO;
-    
+
     public List<TipoEvento> getTiposEventos()
     {
         return tiposEventosDAO.getTiposEventos();
@@ -27,18 +27,19 @@ public class TiposEventosService
 
     public TipoEvento addTipoEvento(TipoEvento tipoEvento) throws CampoRequeridoException
     {
-    	checkRequiredFields(tipoEvento);
+        checkRequiredFields(tipoEvento);
         return tiposEventosDAO.addTipoEvento(tipoEvento);
     }
 
     public void updateTipoEvento(TipoEvento tipoEvento) throws CampoRequeridoException
     {
-    	checkRequiredFields(tipoEvento);
+        checkRequiredFields(tipoEvento);
         tiposEventosDAO.updateTipoEvento(tipoEvento);
     }
-    
-    private void checkRequiredFields(TipoEvento tipoEvento) throws CampoRequeridoException {
-    	if (tipoEvento.getNombreEs() == null || tipoEvento.getNombreEs().isEmpty())
-    		throw new CampoRequeridoException("Nombre");
+
+    private void checkRequiredFields(TipoEvento tipoEvento) throws CampoRequeridoException
+    {
+        if (tipoEvento.getNombreEs() == null || tipoEvento.getNombreEs().isEmpty())
+            throw new CampoRequeridoException("Nombre");
     }
 }

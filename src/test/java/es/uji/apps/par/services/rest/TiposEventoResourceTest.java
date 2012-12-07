@@ -29,47 +29,52 @@ import es.uji.apps.par.model.TipoEvento;
 
 //solamente necesario si vamos a usar alguna clase DAO desde aqui
 /*@RunWith(SpringJUnit4ClassRunner.class)
-@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = false)
-@ContextConfiguration(locations = { "/applicationContext-test.xml" })*/
+ @TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = false)
+ @ContextConfiguration(locations = { "/applicationContext-test.xml" })*/
 public class TiposEventoResourceTest extends JerseyTest
 {
     private WebResource resource;
 
     public TiposEventoResourceTest()
     {
-        super(new WebAppDescriptor.Builder(
-				"es.uji.apps.par.services.rest;com.fasterxml.jackson.jaxrs.json;es.uji.apps.par.exceptions")
-				.contextParam("contextConfigLocation", "classpath:applicationContext-test.xml")
-				.contextParam("log4jConfigLocation", "src/main/webapp/WEB-INF/log4j.properties")
-				.contextParam("webAppRootKey", "paranimf-fw-uji.root")
-				.contextListenerClass(Log4jConfigListener.class)
-				.contextListenerClass(ContextLoaderListener.class)
-				.clientConfig(clientConfiguration())
-				.requestListenerClass(RequestContextListener.class)
-				.servletClass(SpringServlet.class).build());
+        super(
+                new WebAppDescriptor.Builder(
+                        "es.uji.apps.par.services.rest;com.fasterxml.jackson.jaxrs.json;es.uji.apps.par.exceptions")
+                        .contextParam("contextConfigLocation",
+                                "classpath:applicationContext-test.xml")
+                        .contextParam("log4jConfigLocation",
+                                "src/main/webapp/WEB-INF/log4j.properties")
+                        .contextParam("webAppRootKey", "paranimf-fw-uji.root")
+                        .contextListenerClass(Log4jConfigListener.class)
+                        .contextListenerClass(ContextLoaderListener.class)
+                        .clientConfig(clientConfiguration())
+                        .requestListenerClass(RequestContextListener.class)
+                        .servletClass(SpringServlet.class).build());
 
-		this.client().addFilter(new LoggingFilter());
-		this.resource = resource().path("tipoevento");
+        this.client().addFilter(new LoggingFilter());
+        this.resource = resource().path("tipoevento");
     }
-    
-    private static ClientConfig clientConfiguration() {
-		ClientConfig config = new DefaultClientConfig();
-		config.getClasses().add(JacksonJaxbJsonProvider.class);
-		return config;
-	}
+
+    private static ClientConfig clientConfiguration()
+    {
+        ClientConfig config = new DefaultClientConfig();
+        config.getClasses().add(JacksonJaxbJsonProvider.class);
+        return config;
+    }
 
     @Override
     protected TestContainerFactory getTestContainerFactory()
     {
         return new GrizzlyWebTestContainerFactory();
     }
-    
-    private TipoEvento preparaTipoEvento() {
-		TipoEvento tipoEvento = new TipoEvento();
-		tipoEvento.setNombreEs("Prueba");
-		
-		return tipoEvento;
-	}
+
+    private TipoEvento preparaTipoEvento()
+    {
+        TipoEvento tipoEvento = new TipoEvento();
+        tipoEvento.setNombreEs("Prueba");
+
+        return tipoEvento;
+    }
 
     @Test
     public void getTiposEventos()
@@ -81,65 +86,86 @@ public class TiposEventoResourceTest extends JerseyTest
         Assert.assertTrue(serviceResponse.getSuccess());
         Assert.assertNotNull(serviceResponse.getData());
     }
-    
+
     @Test
-	public void addTipoEventoWithoutNombre() {
-		TipoEvento parTipoEvento = preparaTipoEvento();
-		parTipoEvento.setNombreEs(null);
-		ClientResponse response = resource.post(ClientResponse.class, parTipoEvento);
-    	Assert.assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
-    	ResponseMessage resultatOperacio = response.getEntity(new GenericType<ResponseMessage>(){});
-		Assert.assertEquals(CampoRequeridoException.CAMPO_OBLIGATORIO + "Nombre", resultatOperacio.getMessage());
-	}
-	
-	private String getFieldFromRestResponse(RestResponse restResponse, String field) {
-		return ((HashMap) restResponse.getData().get(0)).get(field).toString();
-	}
-	
-	@Test
-	public void addTipoEvento() {
-		TipoEvento parTipoEvento = preparaTipoEvento();
-		ClientResponse response = resource.post(ClientResponse.class, parTipoEvento);
-    	Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
-    	RestResponse restResponse = response.getEntity(new GenericType<RestResponse>(){});
-    	Assert.assertTrue(restResponse.getSuccess());
-    	Assert.assertNotNull(getFieldFromRestResponse(restResponse, "id"));
-    	Assert.assertEquals(parTipoEvento.getNombreEs(), getFieldFromRestResponse(restResponse, "nombreEs"));
-	}
-    
+    public void addTipoEventoWithoutNombre()
+    {
+        TipoEvento parTipoEvento = preparaTipoEvento();
+        parTipoEvento.setNombreEs(null);
+        ClientResponse response = resource.post(ClientResponse.class, parTipoEvento);
+        Assert.assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
+        ResponseMessage resultatOperacio = response.getEntity(new GenericType<ResponseMessage>()
+        {
+        });
+        Assert.assertEquals(CampoRequeridoException.CAMPO_OBLIGATORIO + "Nombre",
+                resultatOperacio.getMessage());
+    }
+
+    private String getFieldFromRestResponse(RestResponse restResponse, String field)
+    {
+        return ((HashMap) restResponse.getData().get(0)).get(field).toString();
+    }
+
     @Test
-	public void updateTipoEvento() {
-		TipoEvento parTipoEvento = preparaTipoEvento();
-		ClientResponse response = resource.post(ClientResponse.class, parTipoEvento);
-    	Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
-    	RestResponse restResponse = response.getEntity(new GenericType<RestResponse>(){});
-		
-    	String id = getFieldFromRestResponse(restResponse, "id");
-		Assert.assertNotNull(id);
-		
-		parTipoEvento.setNombreEs("Prueba2");
-		response = resource.path(id).put(ClientResponse.class, parTipoEvento);
-		Assert.assertEquals(Status.OK.getStatusCode(), response.getStatus());
-		restResponse = response.getEntity(new GenericType<RestResponse>(){});
-		
-		Assert.assertEquals(parTipoEvento.getNombreEs(), getFieldFromRestResponse(restResponse, "nombreEs"));
-	}
-    
+    public void addTipoEvento()
+    {
+        TipoEvento parTipoEvento = preparaTipoEvento();
+        ClientResponse response = resource.post(ClientResponse.class, parTipoEvento);
+        Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
+        RestResponse restResponse = response.getEntity(new GenericType<RestResponse>()
+        {
+        });
+        Assert.assertTrue(restResponse.getSuccess());
+        Assert.assertNotNull(getFieldFromRestResponse(restResponse, "id"));
+        Assert.assertEquals(parTipoEvento.getNombreEs(),
+                getFieldFromRestResponse(restResponse, "nombreEs"));
+    }
+
     @Test
-	public void updateTipoEventoAndRemoveNombre() {
-		TipoEvento parTipoEvento = preparaTipoEvento();
-		ClientResponse response = resource.post(ClientResponse.class, parTipoEvento);
-    	Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
-    	RestResponse restResponse = response.getEntity(new GenericType<RestResponse>(){});
-		
-    	String id = getFieldFromRestResponse(restResponse, "id");
-		Assert.assertNotNull(id);
-		
-		parTipoEvento.setNombreEs("");
-		response = resource.path(id).put(ClientResponse.class, parTipoEvento);
-		Assert.assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
-		ResponseMessage parResponseMessage = response.getEntity(new GenericType<ResponseMessage>(){});
-		
-		Assert.assertEquals(CampoRequeridoException.CAMPO_OBLIGATORIO + "Nombre", parResponseMessage.getMessage());
-	}
+    public void updateTipoEvento()
+    {
+        TipoEvento parTipoEvento = preparaTipoEvento();
+        ClientResponse response = resource.post(ClientResponse.class, parTipoEvento);
+        Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
+        RestResponse restResponse = response.getEntity(new GenericType<RestResponse>()
+        {
+        });
+
+        String id = getFieldFromRestResponse(restResponse, "id");
+        Assert.assertNotNull(id);
+
+        parTipoEvento.setNombreEs("Prueba2");
+        response = resource.path(id).put(ClientResponse.class, parTipoEvento);
+        Assert.assertEquals(Status.OK.getStatusCode(), response.getStatus());
+        restResponse = response.getEntity(new GenericType<RestResponse>()
+        {
+        });
+
+        Assert.assertEquals(parTipoEvento.getNombreEs(),
+                getFieldFromRestResponse(restResponse, "nombreEs"));
+    }
+
+    @Test
+    public void updateTipoEventoAndRemoveNombre()
+    {
+        TipoEvento parTipoEvento = preparaTipoEvento();
+        ClientResponse response = resource.post(ClientResponse.class, parTipoEvento);
+        Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
+        RestResponse restResponse = response.getEntity(new GenericType<RestResponse>()
+        {
+        });
+
+        String id = getFieldFromRestResponse(restResponse, "id");
+        Assert.assertNotNull(id);
+
+        parTipoEvento.setNombreEs("");
+        response = resource.path(id).put(ClientResponse.class, parTipoEvento);
+        Assert.assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
+        ResponseMessage parResponseMessage = response.getEntity(new GenericType<ResponseMessage>()
+        {
+        });
+
+        Assert.assertEquals(CampoRequeridoException.CAMPO_OBLIGATORIO + "Nombre",
+                parResponseMessage.getMessage());
+    }
 }

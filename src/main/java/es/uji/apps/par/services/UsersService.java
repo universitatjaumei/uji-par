@@ -16,7 +16,7 @@ public class UsersService
 {
     @Autowired
     private UsuariosDAO usuariosDAO;
-    
+
     public List<Usuario> getUsuarios()
     {
         return usuariosDAO.getUsers();
@@ -29,26 +29,27 @@ public class UsersService
 
     public Usuario addUser(Usuario user) throws GeneralPARException
     {
-    	checkRequiredFields(user);
-    	
-    	if (usuariosDAO.userExists(user))
-    		throw new UsuarioYaExisteException();
-    	else
-    		return usuariosDAO.addUser(user);
+        checkRequiredFields(user);
+
+        if (usuariosDAO.userExists(user))
+            throw new UsuarioYaExisteException();
+        else
+            return usuariosDAO.addUser(user);
     }
 
-    private void checkRequiredFields(Usuario user) throws CampoRequeridoException {
-		if (user.getMail() == null || user.getMail().isEmpty())
-			throw new CampoRequeridoException("Mail");
-		if (user.getNombre() == null || user.getNombre().isEmpty())
-			throw new CampoRequeridoException("Nombre");
-		if (user.getUsuario() == null || user.getUsuario().isEmpty())
-			throw new CampoRequeridoException("Usuario");
-	}
-
-	public void updateUser(Usuario user) throws CampoRequeridoException
+    private void checkRequiredFields(Usuario user) throws CampoRequeridoException
     {
-		checkRequiredFields(user);
+        if (user.getMail() == null || user.getMail().isEmpty())
+            throw new CampoRequeridoException("Mail");
+        if (user.getNombre() == null || user.getNombre().isEmpty())
+            throw new CampoRequeridoException("Nombre");
+        if (user.getUsuario() == null || user.getUsuario().isEmpty())
+            throw new CampoRequeridoException("Usuario");
+    }
+
+    public void updateUser(Usuario user) throws CampoRequeridoException
+    {
+        checkRequiredFields(user);
         usuariosDAO.updateUser(user);
     }
 }

@@ -10,17 +10,17 @@ public class RestResponse
 {
     private Boolean success;
     private List<?> data;
-    
+
     public RestResponse()
     {
         this(true, Collections.EMPTY_LIST);
     }
-    
+
     public RestResponse(boolean success)
     {
         this(success, Collections.EMPTY_LIST);
     }
-    
+
     public RestResponse(boolean success, List<?> data)
     {
         this.success = success;

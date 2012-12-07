@@ -15,11 +15,12 @@ public class Localizacion
     public Localizacion()
     {
     }
-    
-    public Localizacion(long id) {
-    	this.id = id;
+
+    public Localizacion(long id)
+    {
+        this.id = id;
     }
-    
+
     public Localizacion(LocalizacionDTO localizacionDTO)
     {
         this.id = localizacionDTO.getId();
@@ -27,40 +28,49 @@ public class Localizacion
         this.nombreVa = localizacionDTO.getNombreVa();
         this.totalEntradas = localizacionDTO.getTotalEntradas().intValue();
     }
-    
-    public Localizacion(String nombreEs) {
-    	this.nombreEs = nombreEs;
+
+    public Localizacion(String nombreEs)
+    {
+        this.nombreEs = nombreEs;
     }
 
-	public long getId() {
-		return id;
-	}
+    public long getId()
+    {
+        return id;
+    }
 
-	public void setId(long id) {
-		this.id = id;
-	}
+    public void setId(long id)
+    {
+        this.id = id;
+    }
 
-	public String getNombreEs() {
-		return nombreEs;
-	}
+    public String getNombreEs()
+    {
+        return nombreEs;
+    }
 
-	public void setNombreEs(String nombreEs) {
-		this.nombreEs = nombreEs;
-	}
+    public void setNombreEs(String nombreEs)
+    {
+        this.nombreEs = nombreEs;
+    }
 
-	public int getTotalEntradas() {
-		return totalEntradas;
-	}
+    public int getTotalEntradas()
+    {
+        return totalEntradas;
+    }
 
-	public void setTotalEntradas(int total_entradas) {
-		this.totalEntradas = total_entradas;
-	}
+    public void setTotalEntradas(int total_entradas)
+    {
+        this.totalEntradas = total_entradas;
+    }
 
-	public String getNombreVa() {
-		return nombreVa;
-	}
+    public String getNombreVa()
+    {
+        return nombreVa;
+    }
 
-	public void setNombreVa(String nombreVa) {
-		this.nombreVa = nombreVa;
-	}
+    public void setNombreVa(String nombreVa)
+    {
+        this.nombreVa = nombreVa;
+    }
 }

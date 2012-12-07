@@ -15,7 +15,7 @@ public class Usuario
     public Usuario()
     {
     }
-    
+
     public Usuario(UsuarioDTO usuarioDTO)
     {
         this.id = usuarioDTO.getId();
@@ -34,27 +34,33 @@ public class Usuario
         this.id = id;
     }
 
-	public String getNombre() {
-		return nombre;
-	}
+    public String getNombre()
+    {
+        return nombre;
+    }
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
+    public void setNombre(String nombre)
+    {
+        this.nombre = nombre;
+    }
 
-	public String getMail() {
-		return mail;
-	}
+    public String getMail()
+    {
+        return mail;
+    }
 
-	public void setMail(String mail) {
-		this.mail = mail;
-	}
+    public void setMail(String mail)
+    {
+        this.mail = mail;
+    }
 
-	public String getUsuario() {
-		return usuario;
-	}
+    public String getUsuario()
+    {
+        return usuario;
+    }
 
-	public void setUsuario(String usuario) {
-		this.usuario = usuario;
-	}
+    public void setUsuario(String usuario)
+    {
+        this.usuario = usuario;
+    }
 }

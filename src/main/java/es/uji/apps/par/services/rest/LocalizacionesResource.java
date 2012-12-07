@@ -32,7 +32,7 @@ public class LocalizacionesResource
     {
         return Response.ok().entity(new RestResponse(true, localizacionesService.get())).build();
     }
-    
+
     @DELETE
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -41,17 +41,18 @@ public class LocalizacionesResource
         localizacionesService.remove(Integer.parseInt(id));
         return Response.ok().entity(new RestResponse(true)).build();
     }
-    
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response add(Localizacion localizacion) throws GeneralPARException
     {
         Localizacion newLocalizacion = localizacionesService.add(localizacion);
-        //TODO crear URI
-        return Response.created(URI.create("")).entity(new RestResponse(true, Collections.singletonList(newLocalizacion))).build();
+        // TODO crear URI
+        return Response.created(URI.create(""))
+                .entity(new RestResponse(true, Collections.singletonList(newLocalizacion))).build();
     }
-    
+
     @PUT
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -59,6 +60,7 @@ public class LocalizacionesResource
     public Response update(Localizacion localizacion) throws GeneralPARException
     {
         localizacionesService.update(localizacion);
-        return Response.ok().entity(new RestResponse(true, Collections.singletonList(localizacion))).build();
-    }    
+        return Response.ok()
+                .entity(new RestResponse(true, Collections.singletonList(localizacion))).build();
+    }
 }

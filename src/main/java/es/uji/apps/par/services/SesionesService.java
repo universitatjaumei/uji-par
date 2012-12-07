@@ -15,7 +15,7 @@ public class SesionesService
 {
     @Autowired
     private SesionesDAO sesionDAO;
-    
+
     public List<Sesion> getSesiones(Integer eventoId)
     {
         return sesionDAO.getSesiones(eventoId);
@@ -28,27 +28,30 @@ public class SesionesService
 
     public Sesion addSesion(long eventoId, Sesion sesion)
     {
-    	sesion.setFechaCelebracionWithDate(addStartEventTimeToDate(sesion.getFechaCelebracion(), sesion.getHoraCelebracion()));
+        sesion.setFechaCelebracionWithDate(addStartEventTimeToDate(sesion.getFechaCelebracion(),
+                sesion.getHoraCelebracion()));
         return sesionDAO.addSesion(eventoId, sesion);
     }
 
     public void updateSesion(long eventoId, Sesion sesion)
     {
-    	sesion.setFechaCelebracionWithDate(addStartEventTimeToDate(sesion.getFechaCelebracion(), sesion.getHoraCelebracion()));
+        sesion.setFechaCelebracionWithDate(addStartEventTimeToDate(sesion.getFechaCelebracion(),
+                sesion.getHoraCelebracion()));
         sesionDAO.updateSesion(eventoId, sesion);
     }
-    
-    private Date addStartEventTimeToDate(Date startDate, String hour) {
-    	Calendar cal = Calendar.getInstance();
-    	cal.setTime(startDate);
-    	String[] arrHoraMinutos = hour.split(":");
-    	
-    	int hora = Integer.parseInt(arrHoraMinutos[0]);
-    	int minutos = Integer.parseInt(arrHoraMinutos[1]);
-    	
-		cal.set(Calendar.HOUR_OF_DAY, hora);
-    	cal.set(Calendar.MINUTE, minutos);
-    	
-    	return cal.getTime();
+
+    private Date addStartEventTimeToDate(Date startDate, String hour)
+    {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(startDate);
+        String[] arrHoraMinutos = hour.split(":");
+
+        int hora = Integer.parseInt(arrHoraMinutos[0]);
+        int minutos = Integer.parseInt(arrHoraMinutos[1]);
+
+        cal.set(Calendar.HOUR_OF_DAY, hora);
+        cal.set(Calendar.MINUTE, minutos);
+
+        return cal.getTime();
     }
 }

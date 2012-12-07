@@ -31,38 +31,43 @@ import es.uji.apps.par.CampoRequeridoException;
 import es.uji.apps.par.ResponseMessage;
 import es.uji.apps.par.model.TipoEvento;
 
-public class EventosResourceTest extends JerseyTest {
-	private WebResource resource;
+public class EventosResourceTest extends JerseyTest
+{
+    private WebResource resource;
 
     public EventosResourceTest()
     {
-        super(new WebAppDescriptor.Builder(
-				"es.uji.apps.par.services.rest;com.fasterxml.jackson.jaxrs.json;es.uji.apps.par.exceptions")
-				.contextParam("contextConfigLocation", "classpath:applicationContext-test.xml")
-				.contextParam("log4jConfigLocation", "src/main/webapp/WEB-INF/log4j.properties")
-				.contextParam("webAppRootKey", "paranimf-fw-uji.root")
-				.contextListenerClass(Log4jConfigListener.class)
-				.contextListenerClass(ContextLoaderListener.class)
-				.clientConfig(clientConfiguration())
-				.requestListenerClass(RequestContextListener.class)
-				.servletClass(SpringServlet.class).build());
+        super(
+                new WebAppDescriptor.Builder(
+                        "es.uji.apps.par.services.rest;com.fasterxml.jackson.jaxrs.json;es.uji.apps.par.exceptions")
+                        .contextParam("contextConfigLocation",
+                                "classpath:applicationContext-test.xml")
+                        .contextParam("log4jConfigLocation",
+                                "src/main/webapp/WEB-INF/log4j.properties")
+                        .contextParam("webAppRootKey", "paranimf-fw-uji.root")
+                        .contextListenerClass(Log4jConfigListener.class)
+                        .contextListenerClass(ContextLoaderListener.class)
+                        .clientConfig(clientConfiguration())
+                        .requestListenerClass(RequestContextListener.class)
+                        .servletClass(SpringServlet.class).build());
 
-		this.client().addFilter(new LoggingFilter());
-		this.resource = resource();
+        this.client().addFilter(new LoggingFilter());
+        this.resource = resource();
     }
-    
-    private static ClientConfig clientConfiguration() {
-		ClientConfig config = new DefaultClientConfig();
-		config.getClasses().add(JacksonJaxbJsonProvider.class);
-		return config;
-	}
+
+    private static ClientConfig clientConfiguration()
+    {
+        ClientConfig config = new DefaultClientConfig();
+        config.getClasses().add(JacksonJaxbJsonProvider.class);
+        return config;
+    }
 
     @Override
     protected TestContainerFactory getTestContainerFactory()
     {
         return new GrizzlyWebTestContainerFactory();
     }
-    
+
     @Test
     public void getEventos()
     {
@@ -73,175 +78,233 @@ public class EventosResourceTest extends JerseyTest {
         Assert.assertTrue(serviceResponse.getSuccess());
         Assert.assertNotNull(serviceResponse.getData());
     }
-    
+
     @Test
-	public void addEventoWithoutTitulo() {
-		FormDataMultiPart parEvento = preparaEvento(new TipoEvento());
-		parEvento.getField("tituloEs").setValue("");
-		
-		ClientResponse response = resource.path("evento").type(MediaType.MULTIPART_FORM_DATA_TYPE).post(ClientResponse.class, parEvento);
-    	Assert.assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
-    	ResponseMessage resultatOperacio = response.getEntity(new GenericType<ResponseMessage>(){});
-		Assert.assertEquals(CampoRequeridoException.CAMPO_OBLIGATORIO + "Título", resultatOperacio.getMessage());
-	}
-    
+    public void addEventoWithoutTitulo()
+    {
+        FormDataMultiPart parEvento = preparaEvento(new TipoEvento());
+        parEvento.getField("tituloEs").setValue("");
+
+        ClientResponse response = resource.path("evento").type(MediaType.MULTIPART_FORM_DATA_TYPE)
+                .post(ClientResponse.class, parEvento);
+        Assert.assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
+        ResponseMessage resultatOperacio = response.getEntity(new GenericType<ResponseMessage>()
+        {
+        });
+        Assert.assertEquals(CampoRequeridoException.CAMPO_OBLIGATORIO + "Título",
+                resultatOperacio.getMessage());
+    }
+
     @Test
-	public void addEventoWithoutTipoEvento() {
-		FormDataMultiPart parEvento = preparaEvento(new TipoEvento());
-		parEvento.getField("tipoEvento").setValue("");
-		
-		ClientResponse response = resource.path("evento").type(MediaType.MULTIPART_FORM_DATA_TYPE).post(ClientResponse.class, parEvento);
-    	Assert.assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
-    	ResponseMessage resultatOperacio = response.getEntity(new GenericType<ResponseMessage>(){});
-		Assert.assertEquals(CampoRequeridoException.CAMPO_OBLIGATORIO + "Tipo de evento", resultatOperacio.getMessage());
-	}
-	
-	private String getFieldFromRestResponse(RestResponse restResponse, String field) {
-		return ((HashMap) restResponse.getData().get(0)).get(field).toString();
-	}
-	
-	private TipoEvento addTipoEvento() {
-		TipoEvento parTipoEvento = new TipoEvento("prueba");
-		ClientResponse response = resource.path("tipoevento").post(ClientResponse.class, parTipoEvento);
-		RestResponse serviceResponse = response.getEntity(RestResponse.class);
-		
-		Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
+    public void addEventoWithoutTipoEvento()
+    {
+        FormDataMultiPart parEvento = preparaEvento(new TipoEvento());
+        parEvento.getField("tipoEvento").setValue("");
+
+        ClientResponse response = resource.path("evento").type(MediaType.MULTIPART_FORM_DATA_TYPE)
+                .post(ClientResponse.class, parEvento);
+        Assert.assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
+        ResponseMessage resultatOperacio = response.getEntity(new GenericType<ResponseMessage>()
+        {
+        });
+        Assert.assertEquals(CampoRequeridoException.CAMPO_OBLIGATORIO + "Tipo de evento",
+                resultatOperacio.getMessage());
+    }
+
+    private String getFieldFromRestResponse(RestResponse restResponse, String field)
+    {
+        return ((HashMap) restResponse.getData().get(0)).get(field).toString();
+    }
+
+    private TipoEvento addTipoEvento()
+    {
+        TipoEvento parTipoEvento = new TipoEvento("prueba");
+        ClientResponse response = resource.path("tipoevento").post(ClientResponse.class,
+                parTipoEvento);
+        RestResponse serviceResponse = response.getEntity(RestResponse.class);
+
+        Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
         Assert.assertTrue(serviceResponse.getSuccess());
         Assert.assertNotNull(serviceResponse.getData());
-        int id = Integer.valueOf(((HashMap)serviceResponse.getData().get(0)).get("id").toString());
+        int id = Integer.valueOf(((HashMap) serviceResponse.getData().get(0)).get("id").toString());
         parTipoEvento.setId(id);
-		return parTipoEvento;
-	}
-	
-	private FormDataMultiPart preparaEvento(TipoEvento tipoEvento) {
-		FormDataMultiPart f = new FormDataMultiPart();
-		f.field("tituloEs", "titulo");
-		f.field("tipoEvento", String.valueOf(tipoEvento.getId()));
-		
-		return f;
-	}
-	
-	@Test
-	public void addEvento() {
-		TipoEvento parTipoEvento = addTipoEvento();
-		FormDataMultiPart parEvento = preparaEvento(parTipoEvento);
-		ClientResponse response = resource.path("evento").type(MediaType.MULTIPART_FORM_DATA_TYPE).post(ClientResponse.class, parEvento);
-    	Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
-    	
-    	RestResponse restResponse = response.getEntity(new GenericType<RestResponse>(){});
-    	Assert.assertTrue(restResponse.getSuccess());
-    	Assert.assertNotNull(getFieldFromRestResponse(restResponse, "id"));
-    	Assert.assertEquals(parEvento.getField("tituloEs").getValue(), getFieldFromRestResponse(restResponse, "tituloEs"));
-	}
-    
-    @Test
-	public void updateEvento() {
-    	TipoEvento parTipoEvento = addTipoEvento();
-		FormDataMultiPart parEvento = preparaEvento(parTipoEvento);
-		ClientResponse response = resource.path("evento").type(MediaType.MULTIPART_FORM_DATA_TYPE).post(ClientResponse.class, parEvento);
-    	Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
-    	RestResponse restResponse = response.getEntity(new GenericType<RestResponse>(){});
-		
-    	String id = getFieldFromRestResponse(restResponse, "id");
-		Assert.assertNotNull(id);
-		
-		parEvento.field("premios", "premios");
-		response = resource.path("evento").path(id).type(MediaType.MULTIPART_FORM_DATA_TYPE).post(ClientResponse.class, parEvento);
-		Assert.assertEquals(Status.OK.getStatusCode(), response.getStatus());
-	}
-    
-    @Test
-	public void updateEventoAndRemoveNombre() {
-    	TipoEvento parTipoEvento = addTipoEvento();
-		FormDataMultiPart parEvento = preparaEvento(parTipoEvento);
-		ClientResponse response = resource.path("evento").type(MediaType.MULTIPART_FORM_DATA_TYPE).post(ClientResponse.class, parEvento);
-    	Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
-    	RestResponse restResponse = response.getEntity(new GenericType<RestResponse>(){});
-		
-    	String id = getFieldFromRestResponse(restResponse, "id");
-		Assert.assertNotNull(id);
-		
-		parEvento.getField("tituloEs").setValue("");
-		response = resource.path("evento").path(id).type(MediaType.MULTIPART_FORM_DATA_TYPE).post(ClientResponse.class, parEvento);
-		Assert.assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
-		ResponseMessage parResponseMessage = response.getEntity(new GenericType<ResponseMessage>(){});
-		
-		Assert.assertEquals(CampoRequeridoException.CAMPO_OBLIGATORIO + "Título", parResponseMessage.getMessage());
-	}
-    
-    @Test
-	public void updateEventoAndRemoveTipoEvento() {
-    	TipoEvento parTipoEvento = addTipoEvento();
-		FormDataMultiPart parEvento = preparaEvento(parTipoEvento);
-		ClientResponse response = resource.path("evento").type(MediaType.MULTIPART_FORM_DATA_TYPE).post(ClientResponse.class, parEvento);
-    	Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
-    	RestResponse restResponse = response.getEntity(new GenericType<RestResponse>(){});
-		
-    	String id = getFieldFromRestResponse(restResponse, "id");
-		Assert.assertNotNull(id);
-		
-		parEvento.getField("tipoEvento").setValue("");
-		response = resource.path("evento").path(id).type(MediaType.MULTIPART_FORM_DATA_TYPE).post(ClientResponse.class, parEvento);
-		Assert.assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
-		ResponseMessage parResponseMessage = response.getEntity(new GenericType<ResponseMessage>(){});
-		
-		Assert.assertEquals(CampoRequeridoException.CAMPO_OBLIGATORIO + "Tipo de evento", parResponseMessage.getMessage());
-	}
-    
-    @Test
-    public void addEventoWithImagen() {
-    	TipoEvento parTipoEvento = addTipoEvento();
-		FormDataMultiPart parEvento = preparaEvento(parTipoEvento);
-		parEvento.bodyPart(new StreamDataBodyPart("dataBinary", new ByteArrayInputStream("hola".getBytes())));
-		
-		ClientResponse response = resource.path("evento").type(MediaType.MULTIPART_FORM_DATA_TYPE).post(ClientResponse.class, parEvento);
-    	Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
-    	
-    	RestResponse restResponse = response.getEntity(new GenericType<RestResponse>(){});
-    	Assert.assertTrue(restResponse.getSuccess());
-    	Assert.assertNotNull(getFieldFromRestResponse(restResponse, "id"));
-    	Assert.assertEquals(parEvento.getField("tituloEs").getValue(), getFieldFromRestResponse(restResponse, "tituloEs"));
+        return parTipoEvento;
     }
-    
-    @Test
-    public void updateEventoAndAddImagen() {
-    	TipoEvento parTipoEvento = addTipoEvento();
-		FormDataMultiPart parEvento = preparaEvento(parTipoEvento);
-		ClientResponse response = resource.path("evento").type(MediaType.MULTIPART_FORM_DATA_TYPE).post(ClientResponse.class, parEvento);
-    	Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
-    	RestResponse restResponse = response.getEntity(new GenericType<RestResponse>(){});
-		
-    	String id = getFieldFromRestResponse(restResponse, "id");
-		Assert.assertNotNull(id);
-		
-		parEvento.bodyPart(new StreamDataBodyPart("dataBinary", new ByteArrayInputStream("hola".getBytes())));
-		response = resource.path("evento").path(id).type(MediaType.MULTIPART_FORM_DATA_TYPE).post(ClientResponse.class, parEvento);
-		Assert.assertTrue(restResponse.getSuccess());
-    	Assert.assertNotNull(getFieldFromRestResponse(restResponse, "id"));
-    	Assert.assertEquals(parEvento.getField("tituloEs").getValue(), getFieldFromRestResponse(restResponse, "tituloEs"));
+
+    private FormDataMultiPart preparaEvento(TipoEvento tipoEvento)
+    {
+        FormDataMultiPart f = new FormDataMultiPart();
+        f.field("tituloEs", "titulo");
+        f.field("tipoEvento", String.valueOf(tipoEvento.getId()));
+
+        return f;
     }
-    
+
     @Test
-    public void deleteImagen() {
-    	TipoEvento parTipoEvento = addTipoEvento();
-		FormDataMultiPart parEvento = preparaEvento(parTipoEvento);
-		parEvento.bodyPart(new StreamDataBodyPart("dataBinary", new ByteArrayInputStream("hola".getBytes())));
-		ClientResponse response = resource.path("evento").type(MediaType.MULTIPART_FORM_DATA_TYPE).post(ClientResponse.class, parEvento);
-    	Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
-    	RestResponse restResponse = response.getEntity(new GenericType<RestResponse>(){});
-		
-    	String id = getFieldFromRestResponse(restResponse, "id");
-		Assert.assertNotNull(id);
-		
-		response = resource.path("evento").path(id).path("imagen").get(ClientResponse.class);
-		ByteArrayInputStream imagen = (ByteArrayInputStream) response.getEntityInputStream();
-		Assert.assertNotNull(imagen);
-		
-		response = resource.path("evento").path(id).path("imagen").delete(ClientResponse.class);
-		Assert.assertEquals(Status.OK.getStatusCode(), response.getStatus());
-		
-		response = resource.path("evento").path(id).path("imagen").get(ClientResponse.class);
-		imagen = (ByteArrayInputStream) response.getEntityInputStream();
-		Assert.assertTrue(imagen.available() == 0);
+    public void addEvento()
+    {
+        TipoEvento parTipoEvento = addTipoEvento();
+        FormDataMultiPart parEvento = preparaEvento(parTipoEvento);
+        ClientResponse response = resource.path("evento").type(MediaType.MULTIPART_FORM_DATA_TYPE)
+                .post(ClientResponse.class, parEvento);
+        Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
+
+        RestResponse restResponse = response.getEntity(new GenericType<RestResponse>()
+        {
+        });
+        Assert.assertTrue(restResponse.getSuccess());
+        Assert.assertNotNull(getFieldFromRestResponse(restResponse, "id"));
+        Assert.assertEquals(parEvento.getField("tituloEs").getValue(),
+                getFieldFromRestResponse(restResponse, "tituloEs"));
+    }
+
+    @Test
+    public void updateEvento()
+    {
+        TipoEvento parTipoEvento = addTipoEvento();
+        FormDataMultiPart parEvento = preparaEvento(parTipoEvento);
+        ClientResponse response = resource.path("evento").type(MediaType.MULTIPART_FORM_DATA_TYPE)
+                .post(ClientResponse.class, parEvento);
+        Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
+        RestResponse restResponse = response.getEntity(new GenericType<RestResponse>()
+        {
+        });
+
+        String id = getFieldFromRestResponse(restResponse, "id");
+        Assert.assertNotNull(id);
+
+        parEvento.field("premios", "premios");
+        response = resource.path("evento").path(id).type(MediaType.MULTIPART_FORM_DATA_TYPE)
+                .post(ClientResponse.class, parEvento);
+        Assert.assertEquals(Status.OK.getStatusCode(), response.getStatus());
+    }
+
+    @Test
+    public void updateEventoAndRemoveNombre()
+    {
+        TipoEvento parTipoEvento = addTipoEvento();
+        FormDataMultiPart parEvento = preparaEvento(parTipoEvento);
+        ClientResponse response = resource.path("evento").type(MediaType.MULTIPART_FORM_DATA_TYPE)
+                .post(ClientResponse.class, parEvento);
+        Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
+        RestResponse restResponse = response.getEntity(new GenericType<RestResponse>()
+        {
+        });
+
+        String id = getFieldFromRestResponse(restResponse, "id");
+        Assert.assertNotNull(id);
+
+        parEvento.getField("tituloEs").setValue("");
+        response = resource.path("evento").path(id).type(MediaType.MULTIPART_FORM_DATA_TYPE)
+                .post(ClientResponse.class, parEvento);
+        Assert.assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
+        ResponseMessage parResponseMessage = response.getEntity(new GenericType<ResponseMessage>()
+        {
+        });
+
+        Assert.assertEquals(CampoRequeridoException.CAMPO_OBLIGATORIO + "Título",
+                parResponseMessage.getMessage());
+    }
+
+    @Test
+    public void updateEventoAndRemoveTipoEvento()
+    {
+        TipoEvento parTipoEvento = addTipoEvento();
+        FormDataMultiPart parEvento = preparaEvento(parTipoEvento);
+        ClientResponse response = resource.path("evento").type(MediaType.MULTIPART_FORM_DATA_TYPE)
+                .post(ClientResponse.class, parEvento);
+        Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
+        RestResponse restResponse = response.getEntity(new GenericType<RestResponse>()
+        {
+        });
+
+        String id = getFieldFromRestResponse(restResponse, "id");
+        Assert.assertNotNull(id);
+
+        parEvento.getField("tipoEvento").setValue("");
+        response = resource.path("evento").path(id).type(MediaType.MULTIPART_FORM_DATA_TYPE)
+                .post(ClientResponse.class, parEvento);
+        Assert.assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
+        ResponseMessage parResponseMessage = response.getEntity(new GenericType<ResponseMessage>()
+        {
+        });
+
+        Assert.assertEquals(CampoRequeridoException.CAMPO_OBLIGATORIO + "Tipo de evento",
+                parResponseMessage.getMessage());
+    }
+
+    @Test
+    public void addEventoWithImagen()
+    {
+        TipoEvento parTipoEvento = addTipoEvento();
+        FormDataMultiPart parEvento = preparaEvento(parTipoEvento);
+        parEvento.bodyPart(new StreamDataBodyPart("dataBinary", new ByteArrayInputStream("hola"
+                .getBytes())));
+
+        ClientResponse response = resource.path("evento").type(MediaType.MULTIPART_FORM_DATA_TYPE)
+                .post(ClientResponse.class, parEvento);
+        Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
+
+        RestResponse restResponse = response.getEntity(new GenericType<RestResponse>()
+        {
+        });
+        Assert.assertTrue(restResponse.getSuccess());
+        Assert.assertNotNull(getFieldFromRestResponse(restResponse, "id"));
+        Assert.assertEquals(parEvento.getField("tituloEs").getValue(),
+                getFieldFromRestResponse(restResponse, "tituloEs"));
+    }
+
+    @Test
+    public void updateEventoAndAddImagen()
+    {
+        TipoEvento parTipoEvento = addTipoEvento();
+        FormDataMultiPart parEvento = preparaEvento(parTipoEvento);
+        ClientResponse response = resource.path("evento").type(MediaType.MULTIPART_FORM_DATA_TYPE)
+                .post(ClientResponse.class, parEvento);
+        Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
+        RestResponse restResponse = response.getEntity(new GenericType<RestResponse>()
+        {
+        });
+
+        String id = getFieldFromRestResponse(restResponse, "id");
+        Assert.assertNotNull(id);
+
+        parEvento.bodyPart(new StreamDataBodyPart("dataBinary", new ByteArrayInputStream("hola"
+                .getBytes())));
+        response = resource.path("evento").path(id).type(MediaType.MULTIPART_FORM_DATA_TYPE)
+                .post(ClientResponse.class, parEvento);
+        Assert.assertTrue(restResponse.getSuccess());
+        Assert.assertNotNull(getFieldFromRestResponse(restResponse, "id"));
+        Assert.assertEquals(parEvento.getField("tituloEs").getValue(),
+                getFieldFromRestResponse(restResponse, "tituloEs"));
+    }
+
+    @Test
+    public void deleteImagen()
+    {
+        TipoEvento parTipoEvento = addTipoEvento();
+        FormDataMultiPart parEvento = preparaEvento(parTipoEvento);
+        parEvento.bodyPart(new StreamDataBodyPart("dataBinary", new ByteArrayInputStream("hola"
+                .getBytes())));
+        ClientResponse response = resource.path("evento").type(MediaType.MULTIPART_FORM_DATA_TYPE)
+                .post(ClientResponse.class, parEvento);
+        Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
+        RestResponse restResponse = response.getEntity(new GenericType<RestResponse>()
+        {
+        });
+
+        String id = getFieldFromRestResponse(restResponse, "id");
+        Assert.assertNotNull(id);
+
+        response = resource.path("evento").path(id).path("imagen").get(ClientResponse.class);
+        ByteArrayInputStream imagen = (ByteArrayInputStream) response.getEntityInputStream();
+        Assert.assertNotNull(imagen);
+
+        response = resource.path("evento").path(id).path("imagen").delete(ClientResponse.class);
+        Assert.assertEquals(Status.OK.getStatusCode(), response.getStatus());
+
+        response = resource.path("evento").path(id).path("imagen").get(ClientResponse.class);
+        imagen = (ByteArrayInputStream) response.getEntityInputStream();
+        Assert.assertTrue(imagen.available() == 0);
     }
 }

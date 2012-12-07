@@ -7,7 +7,6 @@ import javax.ws.rs.ext.Provider;
 
 import org.apache.log4j.Logger;
 
-
 @Provider
 public class CommonExceptionMapper implements ExceptionMapper<Exception>
 {
@@ -17,10 +16,10 @@ public class CommonExceptionMapper implements ExceptionMapper<Exception>
     public Response toResponse(Exception exception)
     {
         log.error(exception.getMessage(), exception);
-        String message = ((exception.getMessage() != null && !exception.getMessage().equals(""))? 
-        		exception.getMessage() :
-        		GeneralPARException.ERROR_GENERAL_MESS);
+        String message = ((exception.getMessage() != null && !exception.getMessage().equals("")) ? exception
+                .getMessage() : GeneralPARException.ERROR_GENERAL_MESS);
 
-        return Response.serverError().type(MediaType.APPLICATION_JSON).entity(new ResponseMessage(false, message)).build();
+        return Response.serverError().type(MediaType.APPLICATION_JSON)
+                .entity(new ResponseMessage(false, message)).build();
     }
 }

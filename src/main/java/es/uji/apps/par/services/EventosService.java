@@ -17,12 +17,12 @@ public class EventosService
 {
     @Autowired
     private EventosDAO eventosDAO;
-    
+
     public List<Evento> getEventos()
     {
         List<Evento> listaParEvento = new ArrayList<Evento>();
-        
-    	for (EventoDTO eventoDB : eventosDAO.getEventos())
+
+        for (EventoDTO eventoDB : eventosDAO.getEventos())
         {
             listaParEvento.add(new Evento(eventoDB, false));
         }
@@ -36,33 +36,36 @@ public class EventosService
 
     public Evento addEvento(Evento evento) throws CampoRequeridoException
     {
-    	checkRequiredFields(evento);
+        checkRequiredFields(evento);
         return eventosDAO.addEvento(evento);
     }
 
-    private void checkRequiredFields(Evento evento) throws CampoRequeridoException {
-		if (evento.getTituloEs() == null || evento.getTituloEs().isEmpty())
-			throw new CampoRequeridoException("Título");
-		if (evento.getParTipoEvento() == null)
-			throw new CampoRequeridoException("Tipo de evento");
-	}
-
-	public void updateEvento(Evento evento) throws CampoRequeridoException
+    private void checkRequiredFields(Evento evento) throws CampoRequeridoException
     {
-		checkRequiredFields(evento);
+        if (evento.getTituloEs() == null || evento.getTituloEs().isEmpty())
+            throw new CampoRequeridoException("Título");
+        if (evento.getParTipoEvento() == null)
+            throw new CampoRequeridoException("Tipo de evento");
+    }
+
+    public void updateEvento(Evento evento) throws CampoRequeridoException
+    {
+        checkRequiredFields(evento);
         eventosDAO.updateEvento(evento);
     }
 
-	public Evento getEvento(Integer eventoId) throws ImagenNoEncontradaException {
-		List<EventoDTO> listaEventosDTO = eventosDAO.getEventoDTO(eventoId.longValue());
-		
-		if (listaEventosDTO.size() > 0)
-			return new Evento(listaEventosDTO.get(0), true);
-		else
-			throw new ImagenNoEncontradaException(eventoId);
-	}
+    public Evento getEvento(Integer eventoId) throws ImagenNoEncontradaException
+    {
+        List<EventoDTO> listaEventosDTO = eventosDAO.getEventoDTO(eventoId.longValue());
 
-	public void removeImagen(Integer eventoId) {
-		eventosDAO.deleteImagen(eventoId);
-	}
+        if (listaEventosDTO.size() > 0)
+            return new Evento(listaEventosDTO.get(0), true);
+        else
+            throw new ImagenNoEncontradaException(eventoId);
+    }
+
+    public void removeImagen(Integer eventoId)
+    {
+        eventosDAO.deleteImagen(eventoId);
+    }
 }

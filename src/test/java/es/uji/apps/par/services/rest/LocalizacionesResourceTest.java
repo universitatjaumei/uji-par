@@ -33,36 +33,41 @@ public class LocalizacionesResourceTest extends JerseyTest
 
     public LocalizacionesResourceTest()
     {
-        super(new WebAppDescriptor.Builder(
-				"es.uji.apps.par.services.rest;com.fasterxml.jackson.jaxrs.json;es.uji.apps.par.exceptions")
-				.contextParam("contextConfigLocation", "classpath:applicationContext-test.xml")
-				.contextParam("log4jConfigLocation", "src/main/webapp/WEB-INF/log4j.properties")
-				.contextParam("webAppRootKey", "paranimf-fw-uji.root")
-				.contextListenerClass(Log4jConfigListener.class)
-				.contextListenerClass(ContextLoaderListener.class)
-				.clientConfig(clientConfiguration())
-				.requestListenerClass(RequestContextListener.class)
-				.servletClass(SpringServlet.class).build());
+        super(
+                new WebAppDescriptor.Builder(
+                        "es.uji.apps.par.services.rest;com.fasterxml.jackson.jaxrs.json;es.uji.apps.par.exceptions")
+                        .contextParam("contextConfigLocation",
+                                "classpath:applicationContext-test.xml")
+                        .contextParam("log4jConfigLocation",
+                                "src/main/webapp/WEB-INF/log4j.properties")
+                        .contextParam("webAppRootKey", "paranimf-fw-uji.root")
+                        .contextListenerClass(Log4jConfigListener.class)
+                        .contextListenerClass(ContextLoaderListener.class)
+                        .clientConfig(clientConfiguration())
+                        .requestListenerClass(RequestContextListener.class)
+                        .servletClass(SpringServlet.class).build());
 
-		this.client().addFilter(new LoggingFilter());
-		this.resource = resource().path("localizacion");
+        this.client().addFilter(new LoggingFilter());
+        this.resource = resource().path("localizacion");
     }
-    
-    private static ClientConfig clientConfiguration() {
-		ClientConfig config = new DefaultClientConfig();
-		config.getClasses().add(JacksonJaxbJsonProvider.class);
-		return config;
-	}
+
+    private static ClientConfig clientConfiguration()
+    {
+        ClientConfig config = new DefaultClientConfig();
+        config.getClasses().add(JacksonJaxbJsonProvider.class);
+        return config;
+    }
 
     @Override
     protected TestContainerFactory getTestContainerFactory()
     {
         return new GrizzlyWebTestContainerFactory();
     }
-    
-    private Localizacion preparaLocalizacion() {
-		return new Localizacion("Prueba");
-	}
+
+    private Localizacion preparaLocalizacion()
+    {
+        return new Localizacion("Prueba");
+    }
 
     @Test
     public void getLocalizaciones()
@@ -74,69 +79,90 @@ public class LocalizacionesResourceTest extends JerseyTest
         Assert.assertTrue(serviceResponse.getSuccess());
         Assert.assertNotNull(serviceResponse.getData());
     }
-    
+
     @Test
-	public void addLocalizacionWithoutNombre() {
-		Localizacion localizacion = preparaLocalizacion();
-		localizacion.setNombreEs(null);
-		
-		ClientResponse response = resource.post(ClientResponse.class, localizacion);
-    	Assert.assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
-    	
-    	ResponseMessage resultatOperacio = response.getEntity(new GenericType<ResponseMessage>(){});
-		Assert.assertEquals(CampoRequeridoException.CAMPO_OBLIGATORIO + "Nombre", resultatOperacio.getMessage());
-	}
-	
-	@SuppressWarnings("rawtypes")
-	private String getFieldFromRestResponse(RestResponse restResponse, String field) {
-		return ((HashMap) restResponse.getData().get(0)).get(field).toString();
-	}
-	
-	@Test
-	public void addLocalizacion() {
-		Localizacion localizacion = preparaLocalizacion();
-		ClientResponse response = resource.post(ClientResponse.class, localizacion);
-    	Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
-    	RestResponse restResponse = response.getEntity(new GenericType<RestResponse>(){});
-    	Assert.assertTrue(restResponse.getSuccess());
-    	Assert.assertNotNull(getFieldFromRestResponse(restResponse, "id"));
-    	Assert.assertEquals(localizacion.getNombreEs(), getFieldFromRestResponse(restResponse, "nombreEs"));
-	}
-    
+    public void addLocalizacionWithoutNombre()
+    {
+        Localizacion localizacion = preparaLocalizacion();
+        localizacion.setNombreEs(null);
+
+        ClientResponse response = resource.post(ClientResponse.class, localizacion);
+        Assert.assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
+
+        ResponseMessage resultatOperacio = response.getEntity(new GenericType<ResponseMessage>()
+        {
+        });
+        Assert.assertEquals(CampoRequeridoException.CAMPO_OBLIGATORIO + "Nombre",
+                resultatOperacio.getMessage());
+    }
+
+    @SuppressWarnings("rawtypes")
+    private String getFieldFromRestResponse(RestResponse restResponse, String field)
+    {
+        return ((HashMap) restResponse.getData().get(0)).get(field).toString();
+    }
+
     @Test
-	public void updateLocalizacion() {
-		Localizacion localizacion = preparaLocalizacion();
-		ClientResponse response = resource.post(ClientResponse.class, localizacion);
-    	Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
-    	RestResponse restResponse = response.getEntity(new GenericType<RestResponse>(){});
-		
-    	String id = getFieldFromRestResponse(restResponse, "id");
-		Assert.assertNotNull(id);
-		
-		localizacion.setNombreEs("Prueba2");
-		
-		response = resource.path(id).put(ClientResponse.class, localizacion);
-		Assert.assertEquals(Status.OK.getStatusCode(), response.getStatus());
-		restResponse = response.getEntity(new GenericType<RestResponse>(){});
-		
-		Assert.assertEquals(localizacion.getNombreEs(), getFieldFromRestResponse(restResponse, "nombreEs"));
-	}
-    
+    public void addLocalizacion()
+    {
+        Localizacion localizacion = preparaLocalizacion();
+        ClientResponse response = resource.post(ClientResponse.class, localizacion);
+        Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
+        RestResponse restResponse = response.getEntity(new GenericType<RestResponse>()
+        {
+        });
+        Assert.assertTrue(restResponse.getSuccess());
+        Assert.assertNotNull(getFieldFromRestResponse(restResponse, "id"));
+        Assert.assertEquals(localizacion.getNombreEs(),
+                getFieldFromRestResponse(restResponse, "nombreEs"));
+    }
+
     @Test
-	public void updateLocalizacionAndRemoveNombre() {
-		Localizacion localizacion = preparaLocalizacion();
-		ClientResponse response = resource.post(ClientResponse.class, localizacion);
-    	Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
-    	RestResponse restResponse = response.getEntity(new GenericType<RestResponse>(){});
-		
-    	String id = getFieldFromRestResponse(restResponse, "id");
-		Assert.assertNotNull(id);
-		
-		localizacion.setNombreEs("");
-		response = resource.path(id).put(ClientResponse.class, localizacion);
-		Assert.assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
-		ResponseMessage parResponseMessage = response.getEntity(new GenericType<ResponseMessage>(){});
-		
-		Assert.assertEquals(CampoRequeridoException.CAMPO_OBLIGATORIO + "Nombre", parResponseMessage.getMessage());
-	}
+    public void updateLocalizacion()
+    {
+        Localizacion localizacion = preparaLocalizacion();
+        ClientResponse response = resource.post(ClientResponse.class, localizacion);
+        Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
+        RestResponse restResponse = response.getEntity(new GenericType<RestResponse>()
+        {
+        });
+
+        String id = getFieldFromRestResponse(restResponse, "id");
+        Assert.assertNotNull(id);
+
+        localizacion.setNombreEs("Prueba2");
+
+        response = resource.path(id).put(ClientResponse.class, localizacion);
+        Assert.assertEquals(Status.OK.getStatusCode(), response.getStatus());
+        restResponse = response.getEntity(new GenericType<RestResponse>()
+        {
+        });
+
+        Assert.assertEquals(localizacion.getNombreEs(),
+                getFieldFromRestResponse(restResponse, "nombreEs"));
+    }
+
+    @Test
+    public void updateLocalizacionAndRemoveNombre()
+    {
+        Localizacion localizacion = preparaLocalizacion();
+        ClientResponse response = resource.post(ClientResponse.class, localizacion);
+        Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
+        RestResponse restResponse = response.getEntity(new GenericType<RestResponse>()
+        {
+        });
+
+        String id = getFieldFromRestResponse(restResponse, "id");
+        Assert.assertNotNull(id);
+
+        localizacion.setNombreEs("");
+        response = resource.path(id).put(ClientResponse.class, localizacion);
+        Assert.assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
+        ResponseMessage parResponseMessage = response.getEntity(new GenericType<ResponseMessage>()
+        {
+        });
+
+        Assert.assertEquals(CampoRequeridoException.CAMPO_OBLIGATORIO + "Nombre",
+                parResponseMessage.getMessage());
+    }
 }

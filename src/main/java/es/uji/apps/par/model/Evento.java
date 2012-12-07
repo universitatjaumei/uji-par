@@ -27,270 +27,320 @@ public class Evento
     private String comentariosVa;
     private TipoEvento parTipoEvento;
     private long tipoEvento;
-	private String imagenSrc;
-	private String imagenContentType;
+    private String imagenSrc;
+    private String imagenContentType;
 
     public Evento()
     {
     }
-    
+
     public Evento(EventoDTO eventoDTO, boolean crearConImagen)
     {
         this.id = eventoDTO.getId();
         this.tituloEs = eventoDTO.getTituloEs();
         this.tituloVa = eventoDTO.getTituloVa();
-        
+
         this.descripcionEs = eventoDTO.getDescripcionEs();
         this.descripcionVa = eventoDTO.getDescripcionVa();
-        
+
         this.companyiaEs = eventoDTO.getCompanyiaEs();
         this.companyiaVa = eventoDTO.getCompanyiaVa();
-        
+
         this.interpretesEs = eventoDTO.getInterpretesEs();
         this.interpretesVa = eventoDTO.getInterpretesVa();
-        
+
         this.duracionEs = eventoDTO.getDuracionEs();
         this.duracionVa = eventoDTO.getDuracionVa();
-        
-        if (crearConImagen) {
-        	this.imagen = eventoDTO.getImagen();
+
+        if (crearConImagen)
+        {
+            this.imagen = eventoDTO.getImagen();
         }
-        
+
         this.imagenContentType = eventoDTO.getImagenContentType();
-    	this.imagenSrc = eventoDTO.getImagenSrc();
-        
+        this.imagenSrc = eventoDTO.getImagenSrc();
+
         this.premiosEs = eventoDTO.getPremiosEs();
         this.premiosVa = eventoDTO.getPremiosVa();
-        
+
         this.caracteristicasEs = eventoDTO.getCaracteristicasEs();
         this.caracteristicasVa = eventoDTO.getCaracteristicasVa();
-        
+
         this.comentariosEs = eventoDTO.getComentariosEs();
         this.comentariosVa = eventoDTO.getComentariosVa();
-        
-        if (eventoDTO.getParTiposEvento() != null) {
-        	this.parTipoEvento = new TipoEvento();
-        	this.parTipoEvento.setId(eventoDTO.getParTiposEvento().getId());
-        	this.parTipoEvento.setNombreEs(eventoDTO.getParTiposEvento().getNombreEs());
-        	this.parTipoEvento.setNombreVa(eventoDTO.getParTiposEvento().getNombreVa());
-        	this.tipoEvento = eventoDTO.getParTiposEvento().getId();
+
+        if (eventoDTO.getParTiposEvento() != null)
+        {
+            this.parTipoEvento = new TipoEvento();
+            this.parTipoEvento.setId(eventoDTO.getParTiposEvento().getId());
+            this.parTipoEvento.setNombreEs(eventoDTO.getParTiposEvento().getNombreEs());
+            this.parTipoEvento.setNombreVa(eventoDTO.getParTiposEvento().getNombreVa());
+            this.tipoEvento = eventoDTO.getParTiposEvento().getId();
         }
     }
 
-	public Evento(String tituloEs, TipoEvento tipoEvento) {
-		this.parTipoEvento = new TipoEvento();
-		this.parTipoEvento = tipoEvento;
-		this.tituloEs = tituloEs;
-	}
+    public Evento(String tituloEs, TipoEvento tipoEvento)
+    {
+        this.parTipoEvento = new TipoEvento();
+        this.parTipoEvento = tipoEvento;
+        this.tituloEs = tituloEs;
+    }
 
-	public Evento(
-			String tituloEs, String descripcionEs, String companyiaEs, String interpretesEs, String duracionEs, String premiosEs, String caracteristicasEs, String comentariosEs, 
-			String tituloVa, String descripcionVa, String companyiaVa, String interpretesVa, String duracionVa,	String premiosVa, String caracteristicasVa,	String comentariosVa, 
-			byte[] dataBinary, String nombreArchivo, String mediaType, Integer tipoEventoId) {
-		
-		this.tituloEs = tituloEs;
-		this.descripcionEs = descripcionEs;
-		this.companyiaEs = companyiaEs;
-		this.interpretesEs = interpretesEs;
-		this.duracionEs = duracionEs;
-		this.premiosEs = premiosEs;
-		this.caracteristicasEs = caracteristicasEs;
-		this.comentariosEs = comentariosEs;
-		
-		this.tituloVa = tituloVa;
-		this.descripcionVa = descripcionVa;
-		this.companyiaVa = companyiaVa;
-		this.interpretesVa = interpretesVa;
-		this.duracionVa = duracionVa;
-		this.premiosVa = premiosVa;
-		this.caracteristicasVa = caracteristicasVa;
-		this.comentariosVa = comentariosVa;
-		
-		this.imagen = dataBinary;
-		this.imagenSrc = nombreArchivo;
-		this.imagenContentType = mediaType;
-		
-		if (tipoEventoId != null) {
-			this.parTipoEvento = new TipoEvento();
-			this.parTipoEvento.setId(tipoEventoId);
-			this.tipoEvento = tipoEventoId;
-		}
-	}
+    public Evento(String tituloEs, String descripcionEs, String companyiaEs, String interpretesEs,
+            String duracionEs, String premiosEs, String caracteristicasEs, String comentariosEs,
+            String tituloVa, String descripcionVa, String companyiaVa, String interpretesVa,
+            String duracionVa, String premiosVa, String caracteristicasVa, String comentariosVa,
+            byte[] dataBinary, String nombreArchivo, String mediaType, Integer tipoEventoId)
+    {
 
-	public long getId() {
-		return id;
-	}
+        this.tituloEs = tituloEs;
+        this.descripcionEs = descripcionEs;
+        this.companyiaEs = companyiaEs;
+        this.interpretesEs = interpretesEs;
+        this.duracionEs = duracionEs;
+        this.premiosEs = premiosEs;
+        this.caracteristicasEs = caracteristicasEs;
+        this.comentariosEs = comentariosEs;
 
-	public void setId(long id) {
-		this.id = id;
-	}
+        this.tituloVa = tituloVa;
+        this.descripcionVa = descripcionVa;
+        this.companyiaVa = companyiaVa;
+        this.interpretesVa = interpretesVa;
+        this.duracionVa = duracionVa;
+        this.premiosVa = premiosVa;
+        this.caracteristicasVa = caracteristicasVa;
+        this.comentariosVa = comentariosVa;
 
-	public byte[] getImagen() {
-		return imagen;
-	}
+        this.imagen = dataBinary;
+        this.imagenSrc = nombreArchivo;
+        this.imagenContentType = mediaType;
 
-	public void setImagen(byte[] imagen) {
-		this.imagen = imagen;
-	}
-    
-	public void setImagenSrc(String imagenSrc) {
-		this.imagenSrc = imagenSrc;
-	}
+        if (tipoEventoId != null)
+        {
+            this.parTipoEvento = new TipoEvento();
+            this.parTipoEvento.setId(tipoEventoId);
+            this.tipoEvento = tipoEventoId;
+        }
+    }
 
-	public String getImagenContentType() {
-		return imagenContentType;
-	}
+    public long getId()
+    {
+        return id;
+    }
 
-	public void setImagenContentType(String imagenContentType) {
-		this.imagenContentType = imagenContentType;
-	}
+    public void setId(long id)
+    {
+        this.id = id;
+    }
 
-	public TipoEvento getParTipoEvento() {
-		return parTipoEvento;
-	}
+    public byte[] getImagen()
+    {
+        return imagen;
+    }
 
-	public void setParTipoEvento(TipoEvento parTipoEvento) {
-		this.parTipoEvento = parTipoEvento;
-	}
+    public void setImagen(byte[] imagen)
+    {
+        this.imagen = imagen;
+    }
 
-	public long getTipoEvento() {
-		return tipoEvento;
-	}
+    public void setImagenSrc(String imagenSrc)
+    {
+        this.imagenSrc = imagenSrc;
+    }
 
-	public void setTipoEvento(long tipoEvento) {
-		this.tipoEvento = tipoEvento;
-	}
+    public String getImagenContentType()
+    {
+        return imagenContentType;
+    }
 
-	public String getTituloEs() {
-		return tituloEs;
-	}
+    public void setImagenContentType(String imagenContentType)
+    {
+        this.imagenContentType = imagenContentType;
+    }
 
-	public void setTituloEs(String tituloEs) {
-		this.tituloEs = tituloEs;
-	}
+    public TipoEvento getParTipoEvento()
+    {
+        return parTipoEvento;
+    }
 
-	public String getTituloVa() {
-		return tituloVa;
-	}
+    public void setParTipoEvento(TipoEvento parTipoEvento)
+    {
+        this.parTipoEvento = parTipoEvento;
+    }
 
-	public void setTituloVa(String tituloVa) {
-		this.tituloVa = tituloVa;
-	}
+    public long getTipoEvento()
+    {
+        return tipoEvento;
+    }
 
-	public String getDescripcionEs() {
-		return descripcionEs;
-	}
+    public void setTipoEvento(long tipoEvento)
+    {
+        this.tipoEvento = tipoEvento;
+    }
 
-	public void setDescripcionEs(String descripcionEs) {
-		this.descripcionEs = descripcionEs;
-	}
+    public String getTituloEs()
+    {
+        return tituloEs;
+    }
 
-	public String getDescripcionVa() {
-		return descripcionVa;
-	}
+    public void setTituloEs(String tituloEs)
+    {
+        this.tituloEs = tituloEs;
+    }
 
-	public void setDescripcionVa(String descripcionVa) {
-		this.descripcionVa = descripcionVa;
-	}
+    public String getTituloVa()
+    {
+        return tituloVa;
+    }
 
-	public String getCompanyiaEs() {
-		return companyiaEs;
-	}
+    public void setTituloVa(String tituloVa)
+    {
+        this.tituloVa = tituloVa;
+    }
 
-	public void setCompanyiaEs(String companyiaEs) {
-		this.companyiaEs = companyiaEs;
-	}
+    public String getDescripcionEs()
+    {
+        return descripcionEs;
+    }
 
-	public String getCompanyiaVa() {
-		return companyiaVa;
-	}
+    public void setDescripcionEs(String descripcionEs)
+    {
+        this.descripcionEs = descripcionEs;
+    }
 
-	public void setCompanyiaVa(String companyiaVa) {
-		this.companyiaVa = companyiaVa;
-	}
+    public String getDescripcionVa()
+    {
+        return descripcionVa;
+    }
 
-	public String getInterpretesEs() {
-		return interpretesEs;
-	}
+    public void setDescripcionVa(String descripcionVa)
+    {
+        this.descripcionVa = descripcionVa;
+    }
 
-	public void setInterpretesEs(String interpretesEs) {
-		this.interpretesEs = interpretesEs;
-	}
+    public String getCompanyiaEs()
+    {
+        return companyiaEs;
+    }
 
-	public String getInterpretesVa() {
-		return interpretesVa;
-	}
+    public void setCompanyiaEs(String companyiaEs)
+    {
+        this.companyiaEs = companyiaEs;
+    }
 
-	public void setInterpretesVa(String interpretesVa) {
-		this.interpretesVa = interpretesVa;
-	}
+    public String getCompanyiaVa()
+    {
+        return companyiaVa;
+    }
 
-	public String getDuracionEs() {
-		return duracionEs;
-	}
+    public void setCompanyiaVa(String companyiaVa)
+    {
+        this.companyiaVa = companyiaVa;
+    }
 
-	public void setDuracionEs(String duracionEs) {
-		this.duracionEs = duracionEs;
-	}
+    public String getInterpretesEs()
+    {
+        return interpretesEs;
+    }
 
-	public String getDuracionVa() {
-		return duracionVa;
-	}
+    public void setInterpretesEs(String interpretesEs)
+    {
+        this.interpretesEs = interpretesEs;
+    }
 
-	public void setDuracionVa(String duracionVa) {
-		this.duracionVa = duracionVa;
-	}
+    public String getInterpretesVa()
+    {
+        return interpretesVa;
+    }
 
-	public String getPremiosEs() {
-		return premiosEs;
-	}
+    public void setInterpretesVa(String interpretesVa)
+    {
+        this.interpretesVa = interpretesVa;
+    }
 
-	public void setPremiosEs(String premiosEs) {
-		this.premiosEs = premiosEs;
-	}
+    public String getDuracionEs()
+    {
+        return duracionEs;
+    }
 
-	public String getPremiosVa() {
-		return premiosVa;
-	}
+    public void setDuracionEs(String duracionEs)
+    {
+        this.duracionEs = duracionEs;
+    }
 
-	public void setPremiosVa(String premiosVa) {
-		this.premiosVa = premiosVa;
-	}
+    public String getDuracionVa()
+    {
+        return duracionVa;
+    }
 
-	public String getCaracteristicasEs() {
-		return caracteristicasEs;
-	}
+    public void setDuracionVa(String duracionVa)
+    {
+        this.duracionVa = duracionVa;
+    }
 
-	public void setCaracteristicasEs(String caracteristicasEs) {
-		this.caracteristicasEs = caracteristicasEs;
-	}
+    public String getPremiosEs()
+    {
+        return premiosEs;
+    }
 
-	public String getCaracteristicasVa() {
-		return caracteristicasVa;
-	}
+    public void setPremiosEs(String premiosEs)
+    {
+        this.premiosEs = premiosEs;
+    }
 
-	public void setCaracteristicasVa(String caracteristicasVa) {
-		this.caracteristicasVa = caracteristicasVa;
-	}
+    public String getPremiosVa()
+    {
+        return premiosVa;
+    }
 
-	public String getComentariosEs() {
-		return comentariosEs;
-	}
+    public void setPremiosVa(String premiosVa)
+    {
+        this.premiosVa = premiosVa;
+    }
 
-	public void setComentariosEs(String comentariosEs) {
-		this.comentariosEs = comentariosEs;
-	}
+    public String getCaracteristicasEs()
+    {
+        return caracteristicasEs;
+    }
 
-	public String getComentariosVa() {
-		return comentariosVa;
-	}
+    public void setCaracteristicasEs(String caracteristicasEs)
+    {
+        this.caracteristicasEs = caracteristicasEs;
+    }
 
-	public void setComentariosVa(String comentariosVa) {
-		this.comentariosVa = comentariosVa;
-	}
+    public String getCaracteristicasVa()
+    {
+        return caracteristicasVa;
+    }
 
-	public String getImagenSrc() {
-		return imagenSrc;
-	}
+    public void setCaracteristicasVa(String caracteristicasVa)
+    {
+        this.caracteristicasVa = caracteristicasVa;
+    }
+
+    public String getComentariosEs()
+    {
+        return comentariosEs;
+    }
+
+    public void setComentariosEs(String comentariosEs)
+    {
+        this.comentariosEs = comentariosEs;
+    }
+
+    public String getComentariosVa()
+    {
+        return comentariosVa;
+    }
+
+    public void setComentariosVa(String comentariosVa)
+    {
+        this.comentariosVa = comentariosVa;
+    }
+
+    public String getImagenSrc()
+    {
+        return imagenSrc;
+    }
 
 }

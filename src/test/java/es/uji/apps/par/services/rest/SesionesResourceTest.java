@@ -22,92 +22,96 @@ import com.sun.jersey.test.framework.spi.container.grizzly.web.GrizzlyWebTestCon
 
 import es.uji.apps.par.model.Sesion;
 
-public class SesionesResourceTest extends JerseyTest {
-	private WebResource resource;
-	
-	public SesionesResourceTest()
-    {
-        super(new WebAppDescriptor.Builder(
-				"es.uji.apps.par.services.rest;com.fasterxml.jackson.jaxrs.json;es.uji.apps.par.exceptions")
-				.contextParam("contextConfigLocation", "classpath:applicationContext-test.xml")
-				.contextParam("log4jConfigLocation", "src/main/webapp/WEB-INF/log4j.properties")
-				.contextParam("webAppRootKey", "paranimf-fw-uji.root")
-				.contextListenerClass(Log4jConfigListener.class)
-				.contextListenerClass(ContextLoaderListener.class)
-				.clientConfig(clientConfiguration())
-				.requestListenerClass(RequestContextListener.class)
-				.servletClass(SpringServlet.class).build());
+public class SesionesResourceTest extends JerseyTest
+{
+    private WebResource resource;
 
-		this.client().addFilter(new LoggingFilter());
-		this.resource = resource();
+    public SesionesResourceTest()
+    {
+        super(
+                new WebAppDescriptor.Builder(
+                        "es.uji.apps.par.services.rest;com.fasterxml.jackson.jaxrs.json;es.uji.apps.par.exceptions")
+                        .contextParam("contextConfigLocation",
+                                "classpath:applicationContext-test.xml")
+                        .contextParam("log4jConfigLocation",
+                                "src/main/webapp/WEB-INF/log4j.properties")
+                        .contextParam("webAppRootKey", "paranimf-fw-uji.root")
+                        .contextListenerClass(Log4jConfigListener.class)
+                        .contextListenerClass(ContextLoaderListener.class)
+                        .clientConfig(clientConfiguration())
+                        .requestListenerClass(RequestContextListener.class)
+                        .servletClass(SpringServlet.class).build());
+
+        this.client().addFilter(new LoggingFilter());
+        this.resource = resource();
     }
-    
-    private static ClientConfig clientConfiguration() {
-		ClientConfig config = new DefaultClientConfig();
-		config.getClasses().add(JacksonJaxbJsonProvider.class);
-		return config;
-	}
+
+    private static ClientConfig clientConfiguration()
+    {
+        ClientConfig config = new DefaultClientConfig();
+        config.getClasses().add(JacksonJaxbJsonProvider.class);
+        return config;
+    }
 
     @Override
     protected TestContainerFactory getTestContainerFactory()
     {
         return new GrizzlyWebTestContainerFactory();
     }
-    
+
     @Test
-    public void getSesiones() {
-    	ClientResponse response = resource.path("evento").path("1").path("sesiones").get(ClientResponse.class);
+    public void getSesiones()
+    {
+        ClientResponse response = resource.path("evento").path("1").path("sesiones")
+                .get(ClientResponse.class);
         RestResponse serviceResponse = response.getEntity(RestResponse.class);
 
         Assert.assertEquals(Status.OK.getStatusCode(), response.getStatus());
         Assert.assertTrue(serviceResponse.getSuccess());
         Assert.assertNotNull(serviceResponse.getData());
     }
-    
-    private Sesion preparaSesion() {
-    	Sesion parSesion = new Sesion();
-    	parSesion.setFechaCelebracion("01/01/2012");
-    	parSesion.setCanalInternet("1");
-    	parSesion.setFechaFinVentaOnline("");
-    	parSesion.setFechaInicioVentaOnline("");
-    	/*ParEventoDTO parEventoDTO = new ParEventoDTO();
-    	parEventoDTO.setId(1);
-    	parSesion.setEvento(parEventoDTO);*/
-   	
-    	return parSesion;
+
+    private Sesion preparaSesion()
+    {
+        Sesion parSesion = new Sesion();
+        parSesion.setFechaCelebracion("01/01/2012");
+        parSesion.setCanalInternet("1");
+        parSesion.setFechaFinVentaOnline("");
+        parSesion.setFechaInicioVentaOnline("");
+        /*
+         * ParEventoDTO parEventoDTO = new ParEventoDTO(); parEventoDTO.setId(1);
+         * parSesion.setEvento(parEventoDTO);
+         */
+
+        return parSesion;
     }
-    
-    //TODO -> realizar
-    /*@Test
-    public void addSesion() {
-    	ParSesion parSesion = preparaSesion();
-    	
-    	ClientResponse response = resource.path("evento").path("1").path("sesiones").post(ClientResponse.class, parSesion);
-    	Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
-    }
-    
-    @Test
-    public void addSesionWithoutFechaCelebracion() {
-    	
-    }
-    
-    @Test
-    public void addSesionWithFechaEndVentaAnteriorFechaStartVenta() {
-    	
-    }
-    
-    @Test
-    public void addSesionWithFechaEndVentaPosteriorFechaCelebracion() {
-    	
-    }
-    
-    @Test
-    public void addSesionWithFechaStartVentaPosteriorFechaCelebracion() {
-    	
-    }
-    
-    @Test
-    public void addSesionWithoutHoraCelebracion() {
-    	
-    }*/
+
+    // TODO -> realizar
+    /*
+     * @Test public void addSesion() { ParSesion parSesion = preparaSesion();
+     * 
+     * ClientResponse response =
+     * resource.path("evento").path("1").path("sesiones").post(ClientResponse.class, parSesion);
+     * Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus()); }
+     * 
+     * @Test public void addSesionWithoutFechaCelebracion() {
+     * 
+     * }
+     * 
+     * @Test public void addSesionWithFechaEndVentaAnteriorFechaStartVenta() {
+     * 
+     * }
+     * 
+     * @Test public void addSesionWithFechaEndVentaPosteriorFechaCelebracion() {
+     * 
+     * }
+     * 
+     * @Test public void addSesionWithFechaStartVentaPosteriorFechaCelebracion() {
+     * 
+     * }
+     * 
+     * @Test public void addSesionWithoutHoraCelebracion() {
+     * 
+     * }
+     */
 }

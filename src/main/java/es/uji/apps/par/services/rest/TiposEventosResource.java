@@ -30,9 +30,10 @@ public class TiposEventosResource
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAll()
     {
-        return Response.ok().entity(new RestResponse(true, tiposEventosService.getTiposEventos())).build();
+        return Response.ok().entity(new RestResponse(true, tiposEventosService.getTiposEventos()))
+                .build();
     }
-    
+
     @DELETE
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -41,17 +42,18 @@ public class TiposEventosResource
         tiposEventosService.removeTipoEvento(Integer.parseInt(id));
         return Response.ok().entity(new RestResponse(true)).build();
     }
-    
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response add(TipoEvento tipoEvento) throws GeneralPARException
     {
         TipoEvento newTipoEvento = tiposEventosService.addTipoEvento(tipoEvento);
-        //TODO crear URI
-        return Response.created(URI.create("")).entity(new RestResponse(true, Collections.singletonList(newTipoEvento))).build();
+        // TODO crear URI
+        return Response.created(URI.create(""))
+                .entity(new RestResponse(true, Collections.singletonList(newTipoEvento))).build();
     }
-    
+
     @PUT
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -59,6 +61,7 @@ public class TiposEventosResource
     public Response update(TipoEvento tipoEvento) throws GeneralPARException
     {
         tiposEventosService.updateTipoEvento(tipoEvento);
-        return Response.ok().entity(new RestResponse(true, Collections.singletonList(tipoEvento))).build();
-    }    
+        return Response.ok().entity(new RestResponse(true, Collections.singletonList(tipoEvento)))
+                .build();
+    }
 }
