@@ -27,7 +27,7 @@
 
   <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
     destroy-method="close">
-    <property name="dataSourceName" value="bec" />
+    <property name="dataSourceName" value="par" />
     <property name="driverClass">
       <value>${uji.db.driverClass}</value>
     </property>
