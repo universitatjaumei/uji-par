@@ -9,9 +9,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import es.uji.apps.par.UsuarioYaExisteException;
 import es.uji.apps.par.dao.UsuariosDAO;
-import es.uji.apps.par.exceptions.ParUsuarioYaExiste;
-import es.uji.apps.par.model.ParUsuario;
+import es.uji.apps.par.model.Usuario;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
@@ -21,8 +21,8 @@ public class UsuariosDAOTest {
 	@Autowired
 	UsuariosDAO usuariosDAO;
 	
-	private ParUsuario preparaUsuario() {
-		ParUsuario usuario = new ParUsuario();
+	private Usuario preparaUsuario() {
+		Usuario usuario = new Usuario();
 		usuario.setNombre("Prueba");
 		usuario.setUsuario("login");
 		usuario.setMail("mail");
@@ -38,9 +38,9 @@ public class UsuariosDAOTest {
 	
 	@Test
 	@Transactional
-	public void addUsuario() throws ParUsuarioYaExiste {
-		ParUsuario parUsuario = preparaUsuario();
-		ParUsuario usuario = usuariosDAO.addUser(parUsuario);
+	public void addUsuario() throws UsuarioYaExisteException {
+		Usuario parUsuario = preparaUsuario();
+		Usuario usuario = usuariosDAO.addUser(parUsuario);
 		
 		Assert.assertNotNull(usuario.getId());
 	}
@@ -53,20 +53,20 @@ public class UsuariosDAOTest {
 	
 	@Test
 	@Transactional
-	public void updateUsuario() throws ParUsuarioYaExiste {
-		ParUsuario parUsuario = new ParUsuario();
+	public void updateUsuario() throws UsuarioYaExisteException {
+		Usuario parUsuario = new Usuario();
 		parUsuario.setId(usuariosDAO.getUsers().get(0).getId());
 		parUsuario.setNombre("Prueba2");
 		parUsuario.setMail("mail");
 		parUsuario.setUsuario("usuario");
-		ParUsuario usuarioActualizado = usuariosDAO.updateUser(parUsuario);
+		Usuario usuarioActualizado = usuariosDAO.updateUser(parUsuario);
 		Assert.assertEquals(parUsuario.getId(), usuarioActualizado.getId());
 	}
 	
 	@Test(expected=Exception.class)
 	@Transactional
-	public void updateUsuarioBorrandoMail() throws ParUsuarioYaExiste {
-		ParUsuario parUsuario = new ParUsuario();
+	public void updateUsuarioBorrandoMail() throws UsuarioYaExisteException {
+		Usuario parUsuario = new Usuario();
 		parUsuario.setId(usuariosDAO.getUsers().get(0).getId());
 		parUsuario.setNombre("Prueba2");
 		usuariosDAO.updateUser(parUsuario);

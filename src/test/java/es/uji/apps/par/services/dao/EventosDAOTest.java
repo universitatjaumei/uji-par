@@ -11,9 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import es.uji.apps.par.dao.EventosDAO;
 import es.uji.apps.par.dao.TiposEventosDAO;
-import es.uji.apps.par.db.ParEventoDTO;
-import es.uji.apps.par.model.ParEvento;
-import es.uji.apps.par.model.ParTipoEvento;
+import es.uji.apps.par.model.Evento;
+import es.uji.apps.par.model.TipoEvento;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
@@ -35,7 +34,7 @@ public class EventosDAOTest {
 	@Test
 	@Transactional
 	public void addEvento() {
-		ParEvento parEvento = preparaEvento();
+		Evento parEvento = preparaEvento();
 		parEvento = eventosDAO.addEvento(parEvento);
 		
 		Assert.assertNotNull(parEvento.getId());
@@ -47,28 +46,28 @@ public class EventosDAOTest {
 		Assert.assertEquals(1, eventosDAO.removeEvento(eventosDAO.getEventos().get(0).getId()));
 	}
 
-	private ParEvento preparaEvento() {
-		return new ParEvento("Nombre", tiposEventosDAO.getTiposEventos().get(0));
+	private Evento preparaEvento() {
+		return new Evento("Nombre", tiposEventosDAO.getTiposEventos().get(0));
 	}
 
 	@Test
 	@Transactional
 	public void updateEvento() {
-		ParEvento parEvento = new ParEvento();
+		Evento parEvento = new Evento();
 		parEvento.setId(eventosDAO.getEventos().get(0).getId());
-		ParTipoEvento parTipoEvento = new ParTipoEvento();
+		TipoEvento parTipoEvento = new TipoEvento();
 		parTipoEvento.setId(eventosDAO.getEventos().get(0).getParTiposEvento().getId());
 		parEvento.setParTipoEvento(parTipoEvento);
 		
 		parEvento.setTituloEs("Prueba2");
-		ParEvento eventoActualizado = eventosDAO.updateEvento(parEvento);
+		Evento eventoActualizado = eventosDAO.updateEvento(parEvento);
 		Assert.assertEquals(parEvento.getId(), eventoActualizado.getId());
 	}
 	
 	@Test
 	@Transactional
 	public void addEventoConIdiomas() {
-		ParEvento parEvento = preparaEvento();
+		Evento parEvento = preparaEvento();
 		parEvento.setCaracteristicasVa("valencia");
 		parEvento.setComentariosEs("comentarios");
 		parEvento = eventosDAO.addEvento(parEvento);
@@ -79,7 +78,7 @@ public class EventosDAOTest {
 	@Test
 	@Transactional
 	public void deleteImagen() {
-		ParEvento parEvento = preparaEvento();
+		Evento parEvento = preparaEvento();
 		parEvento.setCaracteristicasVa("valencia");
 		parEvento.setComentariosEs("comentarios");
 		parEvento.setImagen("hola".getBytes());

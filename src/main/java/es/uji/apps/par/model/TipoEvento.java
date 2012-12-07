@@ -2,31 +2,31 @@ package es.uji.apps.par.model;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import es.uji.apps.par.db.ParTipoEventoDTO;
+import es.uji.apps.par.db.TipoEventoDTO;
 
 @XmlRootElement
-public class ParTipoEvento
+public class TipoEvento
 {
     private long id;
     private String nombreEs;
     private String nombreVa;
 
-    public ParTipoEvento()
+    public TipoEvento()
     {
     }
     
-    public ParTipoEvento(long id) {
+    public TipoEvento(long id) {
     	this.id = id;
     }
     
-    public ParTipoEvento(ParTipoEventoDTO tipoEventoDTO)
+    public TipoEvento(TipoEventoDTO tipoEventoDTO)
     {
         this.id = tipoEventoDTO.getId();
         this.nombreEs = tipoEventoDTO.getNombreEs();
         this.nombreVa = tipoEventoDTO.getNombreVa();
     }
     
-    public ParTipoEvento(String nombreEs) {
+    public TipoEvento(String nombreEs) {
     	this.nombreEs = nombreEs;
     }
 

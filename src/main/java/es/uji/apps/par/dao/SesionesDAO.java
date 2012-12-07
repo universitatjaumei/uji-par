@@ -13,11 +13,11 @@ import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.jpa.impl.JPAUpdateClause;
 
-import es.uji.apps.par.db.ParEventoDTO;
-import es.uji.apps.par.db.ParSesionDTO;
+import es.uji.apps.par.DateUtils;
+import es.uji.apps.par.db.EventoDTO;
+import es.uji.apps.par.db.SesionDTO;
 import es.uji.apps.par.db.QParSesionDTO;
-import es.uji.apps.par.model.ParSesion;
-import es.uji.apps.par.util.DateUtils;
+import es.uji.apps.par.model.Sesion;
 
 @Repository
 public class SesionesDAO
@@ -28,17 +28,17 @@ public class SesionesDAO
     private QParSesionDTO qSesionDTO = QParSesionDTO.parSesionDTO;
 
     @Transactional
-    public List<ParSesion> getSesiones(long sesionId)
+    public List<Sesion> getSesiones(long sesionId)
     {
         JPAQuery query = new JPAQuery(entityManager);
 
-        List<ParSesion> sesion = new ArrayList<ParSesion>();
+        List<Sesion> sesion = new ArrayList<Sesion>();
 
-        for (ParSesionDTO sesionDB : query.from(qSesionDTO)
+        for (SesionDTO sesionDB : query.from(qSesionDTO)
         	.where(qSesionDTO.parEvento.id.eq(sesionId))
         	.list(qSesionDTO))
         {
-            sesion.add(new ParSesion(sesionDB));
+            sesion.add(new Sesion(sesionDB));
         }
 
         return sesion;
@@ -52,9 +52,9 @@ public class SesionesDAO
     }
 
     @Transactional
-    public ParSesion addSesion(long eventoId, ParSesion sesion)
+    public Sesion addSesion(long eventoId, Sesion sesion)
     {
-    	ParSesionDTO sesionDTO = new ParSesionDTO();
+    	SesionDTO sesionDTO = new SesionDTO();
         sesionDTO.setCanalInternet(sesion.getCanalInternet());
         sesionDTO.setCanalTaquilla(sesion.getCanalTaquilla());
         sesionDTO.setFechaCelebracion(DateUtils.dateToTimestampSafe(sesion.getFechaCelebracion()));
@@ -62,7 +62,7 @@ public class SesionesDAO
         sesionDTO.setFechaInicioVentaOnline(DateUtils.dateToTimestampSafe(sesion.getFechaInicioVentaOnline()));
         sesionDTO.setHoraApertura(sesion.getHoraAperturaPuertas());
         
-        ParEventoDTO parEventoDTO = createParEventoDTOWithId(eventoId);
+        EventoDTO parEventoDTO = createParEventoDTOWithId(eventoId);
         sesionDTO.setParEvento(parEventoDTO);
 
         entityManager.persist(sesionDTO);
@@ -71,14 +71,14 @@ public class SesionesDAO
         return sesion;
     }
 
-	private ParEventoDTO createParEventoDTOWithId(long eventoId) {
-		ParEventoDTO parEventoDTO = new ParEventoDTO();
+	private EventoDTO createParEventoDTOWithId(long eventoId) {
+		EventoDTO parEventoDTO = new EventoDTO();
         parEventoDTO.setId(eventoId);
 		return parEventoDTO;
 	}
 
     @Transactional
-    public void updateSesion(long eventoId, ParSesion sesion)
+    public void updateSesion(long eventoId, Sesion sesion)
     {
     	sesion.setEvento(createParEventoDTOWithId(eventoId));
     	

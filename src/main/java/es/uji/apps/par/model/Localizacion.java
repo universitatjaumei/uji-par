@@ -2,25 +2,25 @@ package es.uji.apps.par.model;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import es.uji.apps.par.db.ParLocalizacionDTO;
+import es.uji.apps.par.db.LocalizacionDTO;
 
 @XmlRootElement
-public class ParLocalizacion
+public class Localizacion
 {
     private long id;
     private String nombreEs;
     private String nombreVa;
     private int totalEntradas;
 
-    public ParLocalizacion()
+    public Localizacion()
     {
     }
     
-    public ParLocalizacion(long id) {
+    public Localizacion(long id) {
     	this.id = id;
     }
     
-    public ParLocalizacion(ParLocalizacionDTO localizacionDTO)
+    public Localizacion(LocalizacionDTO localizacionDTO)
     {
         this.id = localizacionDTO.getId();
         this.nombreEs = localizacionDTO.getNombreEs();
@@ -28,7 +28,7 @@ public class ParLocalizacion
         this.totalEntradas = localizacionDTO.getTotalEntradas().intValue();
     }
     
-    public ParLocalizacion(String nombreEs) {
+    public Localizacion(String nombreEs) {
     	this.nombreEs = nombreEs;
     }
 

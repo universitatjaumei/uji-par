@@ -19,10 +19,10 @@ import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataBodyPart;
 import com.sun.jersey.multipart.FormDataParam;
 
-import es.uji.apps.par.exceptions.ParException;
-import es.uji.apps.par.exceptions.ParImagenNotFoundException;
-import es.uji.apps.par.model.ParEvento;
-import es.uji.apps.par.model.ParSesion;
+import es.uji.apps.par.GeneralPARException;
+import es.uji.apps.par.ImagenNoEncontradaException;
+import es.uji.apps.par.model.Evento;
+import es.uji.apps.par.model.Sesion;
 import es.uji.apps.par.services.EventosService;
 import es.uji.apps.par.services.SesionesService;
 
@@ -46,10 +46,10 @@ public class EventosResource
     @Path("{id}/imagen")
     public Response getImagenEvento(@PathParam("id") Integer eventoId) {
     	try {
-    		ParEvento evento = eventosService.getEvento(eventoId);
+    		Evento evento = eventosService.getEvento(eventoId);
         	
         	return Response.ok(evento.getImagen()).type(evento.getImagenContentType()).build();
-    	} catch (ParImagenNotFoundException e) {
+    	} catch (ImagenNoEncontradaException e) {
     		return Response.noContent().build();
     	}
     }
@@ -83,16 +83,16 @@ public class EventosResource
     		@FormDataParam("tituloVa") String tituloVa, @FormDataParam("descripcionVa") String descripcionVa, 
     		@FormDataParam("companyiaVa") String companyiaVa, @FormDataParam("interpretesVa") String interpretesVa, 
     		@FormDataParam("duracionVa") String duracionVa, @FormDataParam("premiosVa") String premiosVa, 
-    		@FormDataParam("caracteristicasVa") String caracteristicasVa, @FormDataParam("comentariosVa") String comentariosVa) throws ParException
+    		@FormDataParam("caracteristicasVa") String caracteristicasVa, @FormDataParam("comentariosVa") String comentariosVa) throws GeneralPARException
     {
     	String nombreArchivo = (dataBinaryDetail != null)?dataBinaryDetail.getFileName():"";
     	String mediaType = (imagenBodyPart != null)?imagenBodyPart.getMediaType().toString():"";
     	
-    	ParEvento evento = new ParEvento(
+    	Evento evento = new Evento(
     			tituloEs, descripcionEs, companyiaEs, interpretesEs, duracionEs, premiosEs, caracteristicasEs, comentariosEs,
     			tituloVa, descripcionVa, companyiaVa, interpretesVa, duracionVa, premiosVa, caracteristicasVa, comentariosVa,
     			dataBinary, nombreArchivo, mediaType, tipoEventoId);
-        ParEvento newEvento = eventosService.addEvento(evento);
+        Evento newEvento = eventosService.addEvento(evento);
         
         //TODO -> crear URL
         return Response.created(URI.create("")).entity(new RestResponse(true, Collections.singletonList(newEvento))).build();
@@ -102,9 +102,9 @@ public class EventosResource
     @Path("{id}/sesiones")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response add(@PathParam("id") Integer eventoId, ParSesion sesion)
+    public Response add(@PathParam("id") Integer eventoId, Sesion sesion)
     {
-    	ParSesion newSesion = sesionesService.addSesion(eventoId, sesion);
+    	Sesion newSesion = sesionesService.addSesion(eventoId, sesion);
         return Response.ok().entity(new RestResponse(true, Collections.singletonList(newSesion))).build();
     }
     
@@ -121,12 +121,12 @@ public class EventosResource
     		@FormDataParam("tituloVa") String tituloVa, @FormDataParam("descripcionVa") String descripcionVa, 
     		@FormDataParam("companyiaVa") String companyiaVa, @FormDataParam("interpretesVa") String interpretesVa, 
     		@FormDataParam("duracionVa") String duracionVa, @FormDataParam("premiosVa") String premiosVa, 
-    		@FormDataParam("caracteristicasVa") String caracteristicasVa, @FormDataParam("comentariosVa") String comentariosVa) throws ParException
+    		@FormDataParam("caracteristicasVa") String caracteristicasVa, @FormDataParam("comentariosVa") String comentariosVa) throws GeneralPARException
     {
     	String nombreArchivo = (dataBinaryDetail != null)?dataBinaryDetail.getFileName():"";
     	String mediaType = (imagenBodyPart != null)?imagenBodyPart.getMediaType().toString():"";
     	
-    	ParEvento evento = new ParEvento(
+    	Evento evento = new Evento(
     			tituloEs, descripcionEs, companyiaEs, interpretesEs, duracionEs, premiosEs, caracteristicasEs, comentariosEs,
     			tituloVa, descripcionVa, companyiaVa, interpretesVa, duracionVa, premiosVa, caracteristicasVa, comentariosVa,
     			dataBinary, nombreArchivo, mediaType, tipoEventoId);
@@ -142,7 +142,7 @@ public class EventosResource
     @Path("{id}/sesiones/{sesionId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response update(@PathParam("id") Integer eventoId, @PathParam("sesionId") Integer sesionId, ParSesion sesion)
+    public Response update(@PathParam("id") Integer eventoId, @PathParam("sesionId") Integer sesionId, Sesion sesion)
     {
     	sesion.setId(sesionId);
         sesionesService.updateSesion(eventoId, sesion);

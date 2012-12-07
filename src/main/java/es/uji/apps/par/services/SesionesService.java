@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.uji.apps.par.dao.SesionesDAO;
-import es.uji.apps.par.model.ParSesion;
+import es.uji.apps.par.model.Sesion;
 
 @Service
 public class SesionesService
@@ -16,7 +16,7 @@ public class SesionesService
     @Autowired
     private SesionesDAO sesionDAO;
     
-    public List<ParSesion> getSesiones(Integer eventoId)
+    public List<Sesion> getSesiones(Integer eventoId)
     {
         return sesionDAO.getSesiones(eventoId);
     }
@@ -26,13 +26,13 @@ public class SesionesService
         sesionDAO.removeSesion(id);
     }
 
-    public ParSesion addSesion(long eventoId, ParSesion sesion)
+    public Sesion addSesion(long eventoId, Sesion sesion)
     {
     	sesion.setFechaCelebracionWithDate(addStartEventTimeToDate(sesion.getFechaCelebracion(), sesion.getHoraCelebracion()));
         return sesionDAO.addSesion(eventoId, sesion);
     }
 
-    public void updateSesion(long eventoId, ParSesion sesion)
+    public void updateSesion(long eventoId, Sesion sesion)
     {
     	sesion.setFechaCelebracionWithDate(addStartEventTimeToDate(sesion.getFechaCelebracion(), sesion.getHoraCelebracion()));
         sesionDAO.updateSesion(eventoId, sesion);

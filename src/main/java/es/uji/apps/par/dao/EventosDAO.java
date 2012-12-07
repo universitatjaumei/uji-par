@@ -15,11 +15,11 @@ import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.jpa.impl.JPAUpdateClause;
 import com.mysema.query.types.QTuple;
 
-import es.uji.apps.par.db.ParEventoDTO;
-import es.uji.apps.par.db.ParTipoEventoDTO;
+import es.uji.apps.par.db.EventoDTO;
+import es.uji.apps.par.db.TipoEventoDTO;
 import es.uji.apps.par.db.QParEventoDTO;
 import es.uji.apps.par.db.QParTipoEventoDTO;
-import es.uji.apps.par.model.ParEvento;
+import es.uji.apps.par.model.Evento;
 
 @Repository
 public class EventosDAO
@@ -30,7 +30,7 @@ public class EventosDAO
     private QParEventoDTO qEventoDTO = QParEventoDTO.parEventoDTO;
 
     @Transactional
-    public List<ParEventoDTO> getEventos()
+    public List<EventoDTO> getEventos()
     {
     	QParTipoEventoDTO qTipoEventoDTO = QParTipoEventoDTO.parTipoEventoDTO;
         JPAQuery query = new JPAQuery(entityManager);
@@ -52,8 +52,8 @@ public class EventosDAO
 
     }
     
-	private List<ParEventoDTO> tuplesToParEventoDTO(List<Tuple> listadoTuples) {
-		List<ParEventoDTO> listadoParEventoDTO = new ArrayList<ParEventoDTO>();
+	private List<EventoDTO> tuplesToParEventoDTO(List<Tuple> listadoTuples) {
+		List<EventoDTO> listadoParEventoDTO = new ArrayList<EventoDTO>();
 		
 		for (Tuple tupla: listadoTuples) {
 			listadoParEventoDTO.add(rellenarParEventoDTOConTupla(tupla));
@@ -62,8 +62,8 @@ public class EventosDAO
 		return listadoParEventoDTO;
 	}
 
-	private ParEventoDTO rellenarParEventoDTOConTupla(Tuple tupla) {
-		ParEventoDTO parEventoDTO = new ParEventoDTO();
+	private EventoDTO rellenarParEventoDTOConTupla(Tuple tupla) {
+		EventoDTO parEventoDTO = new EventoDTO();
 		
 		parEventoDTO.setCaracteristicasEs(tupla.get(qEventoDTO.caracteristicasEs));
 		parEventoDTO.setCaracteristicasVa(tupla.get(qEventoDTO.caracteristicasVa));
@@ -100,7 +100,7 @@ public class EventosDAO
         return parEventoDTO;
 	}
 
-	public List<ParEventoDTO> getEventoDTO(Long id) {
+	public List<EventoDTO> getEventoDTO(Long id) {
     	QParTipoEventoDTO qTipoEventoDTO = QParTipoEventoDTO.parTipoEventoDTO;
         JPAQuery query = new JPAQuery(entityManager);
 
@@ -117,9 +117,9 @@ public class EventosDAO
     }
 
     @Transactional
-    public ParEvento addEvento(ParEvento evento)
+    public Evento addEvento(Evento evento)
     {
-    	ParEventoDTO eventoDTO = new ParEventoDTO();
+    	EventoDTO eventoDTO = new EventoDTO();
     	eventoDTO = rellenarParEventoDTOConParEvento(evento, eventoDTO);
 
         entityManager.persist(eventoDTO);
@@ -128,7 +128,7 @@ public class EventosDAO
         return evento;
     }
 
-	private ParEventoDTO rellenarParEventoDTOConParEvento(ParEvento evento, ParEventoDTO eventoDTO) {
+	private EventoDTO rellenarParEventoDTOConParEvento(Evento evento, EventoDTO eventoDTO) {
 		eventoDTO.setCaracteristicasEs(evento.getCaracteristicasEs());
 		eventoDTO.setCaracteristicasVa(evento.getCaracteristicasVa());
 		
@@ -154,7 +154,7 @@ public class EventosDAO
         eventoDTO.setInterpretesVa(evento.getInterpretesVa());
         
         if (evento.getParTipoEvento() != null) {
-        	ParTipoEventoDTO parTipoEventoDTO = new ParTipoEventoDTO();
+        	TipoEventoDTO parTipoEventoDTO = new TipoEventoDTO();
         	parTipoEventoDTO.setId(evento.getParTipoEvento().getId());
         	eventoDTO.setParTiposEvento(parTipoEventoDTO);
         }
@@ -171,7 +171,7 @@ public class EventosDAO
 	}
 
     @Transactional
-    public ParEvento updateEvento(ParEvento evento)
+    public Evento updateEvento(Evento evento)
     {
         /*JPAUpdateClause update = new JPAUpdateClause(entityManager, qEventoDTO);
         update.set(qEventoDTO.caracteristicas, evento.getCaracteristicas())
@@ -188,10 +188,10 @@ public class EventosDAO
         	.set(qEventoDTO.titulo, evento.getTitulo())
         	.where(qEventoDTO.id.eq(evento.getId())).execute();*/
     	
-    	List<ParEventoDTO> listaEventos = getEventoDTO(evento.getId());
+    	List<EventoDTO> listaEventos = getEventoDTO(evento.getId());
     	
     	if (listaEventos.size() > 0) {
-    		ParEventoDTO eventoDTO = listaEventos.get(0);
+    		EventoDTO eventoDTO = listaEventos.get(0);
     		eventoDTO = rellenarParEventoDTOConParEvento(evento, eventoDTO);
     		
     		entityManager.persist(eventoDTO);

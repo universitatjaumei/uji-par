@@ -6,7 +6,6 @@ import javax.ws.rs.core.Response.Status;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.request.RequestContextListener;
 import org.springframework.web.util.Log4jConfigListener;
@@ -24,11 +23,9 @@ import com.sun.jersey.test.framework.WebAppDescriptor;
 import com.sun.jersey.test.framework.spi.container.TestContainerFactory;
 import com.sun.jersey.test.framework.spi.container.grizzly.web.GrizzlyWebTestContainerFactory;
 
-import es.uji.apps.par.exceptions.ParCampoRequeridoException;
-import es.uji.apps.par.exceptions.ParException;
-import es.uji.apps.par.exceptions.ParUsuarioYaExiste;
-import es.uji.apps.par.model.ParResponseMessage;
-import es.uji.apps.par.model.ParUsuario;
+import es.uji.apps.par.CampoRequeridoException;
+import es.uji.apps.par.ResponseMessage;
+import es.uji.apps.par.model.Usuario;
 
 //solamente necesario si vamos a usar alguna clase DAO desde aqui
 /*@RunWith(SpringJUnit4ClassRunner.class)
@@ -67,8 +64,8 @@ public class UsuariosResourceTest extends JerseyTest
         return new GrizzlyWebTestContainerFactory();
     }
     
-    private ParUsuario preparaUsuario() {
-		ParUsuario usuario = new ParUsuario();
+    private Usuario preparaUsuario() {
+		Usuario usuario = new Usuario();
 		usuario.setNombre("Prueba");
 		usuario.setUsuario("login");
 		usuario.setMail("mail");
@@ -89,32 +86,32 @@ public class UsuariosResourceTest extends JerseyTest
     
     @Test
 	public void addUsuarioWithoutMail() {
-    	ParUsuario parUsuario = preparaUsuario();
+    	Usuario parUsuario = preparaUsuario();
     	parUsuario.setMail(null);
     	ClientResponse response = resource.post(ClientResponse.class, parUsuario);
     	Assert.assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
-    	ParResponseMessage resultatOperacio = response.getEntity(new GenericType<ParResponseMessage>(){});
-		Assert.assertEquals(ParCampoRequeridoException.CAMPO_OBLIGATORIO + "Mail", resultatOperacio.getMessage());
+    	ResponseMessage resultatOperacio = response.getEntity(new GenericType<ResponseMessage>(){});
+		Assert.assertEquals(CampoRequeridoException.CAMPO_OBLIGATORIO + "Mail", resultatOperacio.getMessage());
     }
 	
 	@Test
 	public void addUsuarioWithoutNombre() {
-		ParUsuario parUsuario = preparaUsuario();
+		Usuario parUsuario = preparaUsuario();
 		parUsuario.setNombre(null);
 		ClientResponse response = resource.post(ClientResponse.class, parUsuario);
     	Assert.assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
-    	ParResponseMessage resultatOperacio = response.getEntity(new GenericType<ParResponseMessage>(){});
-		Assert.assertEquals(ParCampoRequeridoException.CAMPO_OBLIGATORIO + "Nombre", resultatOperacio.getMessage());
+    	ResponseMessage resultatOperacio = response.getEntity(new GenericType<ResponseMessage>(){});
+		Assert.assertEquals(CampoRequeridoException.CAMPO_OBLIGATORIO + "Nombre", resultatOperacio.getMessage());
 	}
 	
 	@Test
 	public void addUsuarioWithoutLogin() {
-		ParUsuario parUsuario = preparaUsuario();
+		Usuario parUsuario = preparaUsuario();
 		parUsuario.setUsuario(null);
 		ClientResponse response = resource.post(ClientResponse.class, parUsuario);
     	Assert.assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
-    	ParResponseMessage resultatOperacio = response.getEntity(new GenericType<ParResponseMessage>(){});
-		Assert.assertEquals(ParCampoRequeridoException.CAMPO_OBLIGATORIO + "Usuario", resultatOperacio.getMessage());
+    	ResponseMessage resultatOperacio = response.getEntity(new GenericType<ResponseMessage>(){});
+		Assert.assertEquals(CampoRequeridoException.CAMPO_OBLIGATORIO + "Usuario", resultatOperacio.getMessage());
 	}
 	
 	private String getFieldFromRestResponse(RestResponse restResponse, String field) {
@@ -123,7 +120,7 @@ public class UsuariosResourceTest extends JerseyTest
 	
 	@Test
 	public void addUsuario() {
-		ParUsuario parUsuario = preparaUsuario();
+		Usuario parUsuario = preparaUsuario();
 		ClientResponse response = resource.post(ClientResponse.class, parUsuario);
     	Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
     	RestResponse restResponse = response.getEntity(new GenericType<RestResponse>(){});
@@ -134,7 +131,7 @@ public class UsuariosResourceTest extends JerseyTest
     
     @Test
 	public void updateUsuario() {
-		ParUsuario parUsuario = preparaUsuario();
+		Usuario parUsuario = preparaUsuario();
 		ClientResponse response = resource.post(ClientResponse.class, parUsuario);
     	Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
     	RestResponse restResponse = response.getEntity(new GenericType<RestResponse>(){});
@@ -152,7 +149,7 @@ public class UsuariosResourceTest extends JerseyTest
     
     @Test
 	public void updateUsuarioAndRemoveMail() {
-		ParUsuario parUsuario = preparaUsuario();
+		Usuario parUsuario = preparaUsuario();
 		ClientResponse response = resource.post(ClientResponse.class, parUsuario);
     	Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
     	RestResponse restResponse = response.getEntity(new GenericType<RestResponse>(){});
@@ -163,8 +160,8 @@ public class UsuariosResourceTest extends JerseyTest
 		parUsuario.setMail("");
 		response = resource.path(id).put(ClientResponse.class, parUsuario);
 		Assert.assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
-		ParResponseMessage parResponseMessage = response.getEntity(new GenericType<ParResponseMessage>(){});
+		ResponseMessage parResponseMessage = response.getEntity(new GenericType<ResponseMessage>(){});
 		
-		Assert.assertEquals(ParCampoRequeridoException.CAMPO_OBLIGATORIO + "Mail", parResponseMessage.getMessage());
+		Assert.assertEquals(CampoRequeridoException.CAMPO_OBLIGATORIO + "Mail", parResponseMessage.getMessage());
 	}
 }

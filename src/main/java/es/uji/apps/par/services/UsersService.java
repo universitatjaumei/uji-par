@@ -5,11 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import es.uji.apps.par.CampoRequeridoException;
+import es.uji.apps.par.GeneralPARException;
+import es.uji.apps.par.UsuarioYaExisteException;
 import es.uji.apps.par.dao.UsuariosDAO;
-import es.uji.apps.par.exceptions.ParCampoRequeridoException;
-import es.uji.apps.par.exceptions.ParException;
-import es.uji.apps.par.exceptions.ParUsuarioYaExiste;
-import es.uji.apps.par.model.ParUsuario;
+import es.uji.apps.par.model.Usuario;
 
 @Service
 public class UsersService
@@ -17,7 +17,7 @@ public class UsersService
     @Autowired
     private UsuariosDAO usuariosDAO;
     
-    public List<ParUsuario> getUsuarios()
+    public List<Usuario> getUsuarios()
     {
         return usuariosDAO.getUsers();
     }
@@ -27,26 +27,26 @@ public class UsersService
         usuariosDAO.removeUser(id);
     }
 
-    public ParUsuario addUser(ParUsuario user) throws ParException
+    public Usuario addUser(Usuario user) throws GeneralPARException
     {
     	checkRequiredFields(user);
     	
     	if (usuariosDAO.userExists(user))
-    		throw new ParUsuarioYaExiste();
+    		throw new UsuarioYaExisteException();
     	else
     		return usuariosDAO.addUser(user);
     }
 
-    private void checkRequiredFields(ParUsuario user) throws ParCampoRequeridoException {
+    private void checkRequiredFields(Usuario user) throws CampoRequeridoException {
 		if (user.getMail() == null || user.getMail().isEmpty())
-			throw new ParCampoRequeridoException("Mail");
+			throw new CampoRequeridoException("Mail");
 		if (user.getNombre() == null || user.getNombre().isEmpty())
-			throw new ParCampoRequeridoException("Nombre");
+			throw new CampoRequeridoException("Nombre");
 		if (user.getUsuario() == null || user.getUsuario().isEmpty())
-			throw new ParCampoRequeridoException("Usuario");
+			throw new CampoRequeridoException("Usuario");
 	}
 
-	public void updateUser(ParUsuario user) throws ParCampoRequeridoException
+	public void updateUser(Usuario user) throws CampoRequeridoException
     {
 		checkRequiredFields(user);
         usuariosDAO.updateUser(user);

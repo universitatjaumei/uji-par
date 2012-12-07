@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import es.uji.apps.par.dao.EventosDAO;
 import es.uji.apps.par.dao.SesionesDAO;
 import es.uji.apps.par.dao.TiposEventosDAO;
-import es.uji.apps.par.model.ParSesion;
+import es.uji.apps.par.model.Sesion;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
@@ -29,8 +29,8 @@ public class SesionesDAOTest {
 	SesionesDAO sesionesDAO;
 	
 	
-	private ParSesion preparaSesion() {
-		ParSesion parSesion = new ParSesion();
+	private Sesion preparaSesion() {
+		Sesion parSesion = new Sesion();
 		parSesion.setEvento(eventosDAO.getEventos().get(0));
 		parSesion.setFechaCelebracion("01/01/2012");
 		
@@ -40,7 +40,7 @@ public class SesionesDAOTest {
 	@Test
 	@Transactional
 	public void addSesionAndDeleteIt() {
-		ParSesion parSesion = preparaSesion();
+		Sesion parSesion = preparaSesion();
 		Assert.assertEquals(0, parSesion.getId());
 		sesionesDAO.addSesion(parSesion.getEvento().getId(), parSesion);
 		Assert.assertNotNull(parSesion.getId());
@@ -50,7 +50,7 @@ public class SesionesDAOTest {
 	@Test
 	@Transactional
 	public void addSesionWithoutFechaCelebracion() {
-		ParSesion parSesion = preparaSesion();
+		Sesion parSesion = preparaSesion();
 		parSesion.setFechaCelebracionWithDate(null);
 		parSesion = sesionesDAO.addSesion(parSesion.getEvento().getId(), parSesion);
 		Assert.assertNotNull(parSesion.getId());
@@ -59,7 +59,7 @@ public class SesionesDAOTest {
 	@Test
 	@Transactional
 	public void addSesionWithFechaEndVentaAnteriorFechaStartVenta() {
-		ParSesion parSesion = preparaSesion();
+		Sesion parSesion = preparaSesion();
 		parSesion.setFechaInicioVentaOnline("01/01/2012");
 		parSesion.setFechaFinVentaOnline("01/01/2011");
 		parSesion = sesionesDAO.addSesion(parSesion.getEvento().getId(), parSesion);
@@ -69,7 +69,7 @@ public class SesionesDAOTest {
 	@Test
 	@Transactional
 	public void addSesionWithFechaEndVentaPosteriorFechaCelebracion() {
-		ParSesion parSesion = preparaSesion();
+		Sesion parSesion = preparaSesion();
 		parSesion.setFechaInicioVentaOnline("01/01/2012");
 		parSesion.setFechaFinVentaOnline("02/01/2012");
 		parSesion = sesionesDAO.addSesion(parSesion.getEvento().getId(), parSesion);
@@ -79,7 +79,7 @@ public class SesionesDAOTest {
 	@Test
 	@Transactional
 	public void addSesionWithFechaStartVentaPosteriorFechaCelebracion() {
-		ParSesion parSesion = preparaSesion();
+		Sesion parSesion = preparaSesion();
 		parSesion.setFechaInicioVentaOnline("02/01/2012");
 		parSesion = sesionesDAO.addSesion(parSesion.getEvento().getId(), parSesion);
 		Assert.assertNotNull(parSesion.getId());
@@ -88,7 +88,7 @@ public class SesionesDAOTest {
 	@Test
 	@Transactional
 	public void addSesionWithoutHoraCelebracion() {
-		ParSesion parSesion = preparaSesion();
+		Sesion parSesion = preparaSesion();
 		parSesion = sesionesDAO.addSesion(parSesion.getEvento().getId(), parSesion);
 		Assert.assertNotNull(parSesion.getId());
 	}

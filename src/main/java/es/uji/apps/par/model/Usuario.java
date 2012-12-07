@@ -2,21 +2,21 @@ package es.uji.apps.par.model;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import es.uji.apps.par.db.ParUsuarioDTO;
+import es.uji.apps.par.db.UsuarioDTO;
 
 @XmlRootElement
-public class ParUsuario
+public class Usuario
 {
     private long id;
     private String nombre;
     private String mail;
     private String usuario;
 
-    public ParUsuario()
+    public Usuario()
     {
     }
     
-    public ParUsuario(ParUsuarioDTO usuarioDTO)
+    public Usuario(UsuarioDTO usuarioDTO)
     {
         this.id = usuarioDTO.getId();
         this.nombre = usuarioDTO.getNombre();

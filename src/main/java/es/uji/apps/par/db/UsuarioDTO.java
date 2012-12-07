@@ -10,7 +10,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="PAR_USUARIOS")
-public class ParUsuarioDTO implements Serializable {
+public class UsuarioDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -24,7 +24,7 @@ public class ParUsuarioDTO implements Serializable {
 
 	private String usuario;
 
-	public ParUsuarioDTO() {
+	public UsuarioDTO() {
 	}
 
 	public long getId() {

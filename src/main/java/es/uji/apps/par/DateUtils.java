@@ -1,4 +1,4 @@
-package es.uji.apps.par.util;
+package es.uji.apps.par;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;

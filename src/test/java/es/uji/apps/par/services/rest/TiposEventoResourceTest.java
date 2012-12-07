@@ -23,9 +23,9 @@ import com.sun.jersey.test.framework.WebAppDescriptor;
 import com.sun.jersey.test.framework.spi.container.TestContainerFactory;
 import com.sun.jersey.test.framework.spi.container.grizzly.web.GrizzlyWebTestContainerFactory;
 
-import es.uji.apps.par.exceptions.ParCampoRequeridoException;
-import es.uji.apps.par.model.ParResponseMessage;
-import es.uji.apps.par.model.ParTipoEvento;
+import es.uji.apps.par.CampoRequeridoException;
+import es.uji.apps.par.ResponseMessage;
+import es.uji.apps.par.model.TipoEvento;
 
 //solamente necesario si vamos a usar alguna clase DAO desde aqui
 /*@RunWith(SpringJUnit4ClassRunner.class)
@@ -64,8 +64,8 @@ public class TiposEventoResourceTest extends JerseyTest
         return new GrizzlyWebTestContainerFactory();
     }
     
-    private ParTipoEvento preparaTipoEvento() {
-		ParTipoEvento tipoEvento = new ParTipoEvento();
+    private TipoEvento preparaTipoEvento() {
+		TipoEvento tipoEvento = new TipoEvento();
 		tipoEvento.setNombreEs("Prueba");
 		
 		return tipoEvento;
@@ -84,12 +84,12 @@ public class TiposEventoResourceTest extends JerseyTest
     
     @Test
 	public void addTipoEventoWithoutNombre() {
-		ParTipoEvento parTipoEvento = preparaTipoEvento();
+		TipoEvento parTipoEvento = preparaTipoEvento();
 		parTipoEvento.setNombreEs(null);
 		ClientResponse response = resource.post(ClientResponse.class, parTipoEvento);
     	Assert.assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
-    	ParResponseMessage resultatOperacio = response.getEntity(new GenericType<ParResponseMessage>(){});
-		Assert.assertEquals(ParCampoRequeridoException.CAMPO_OBLIGATORIO + "Nombre", resultatOperacio.getMessage());
+    	ResponseMessage resultatOperacio = response.getEntity(new GenericType<ResponseMessage>(){});
+		Assert.assertEquals(CampoRequeridoException.CAMPO_OBLIGATORIO + "Nombre", resultatOperacio.getMessage());
 	}
 	
 	private String getFieldFromRestResponse(RestResponse restResponse, String field) {
@@ -98,7 +98,7 @@ public class TiposEventoResourceTest extends JerseyTest
 	
 	@Test
 	public void addTipoEvento() {
-		ParTipoEvento parTipoEvento = preparaTipoEvento();
+		TipoEvento parTipoEvento = preparaTipoEvento();
 		ClientResponse response = resource.post(ClientResponse.class, parTipoEvento);
     	Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
     	RestResponse restResponse = response.getEntity(new GenericType<RestResponse>(){});
@@ -109,7 +109,7 @@ public class TiposEventoResourceTest extends JerseyTest
     
     @Test
 	public void updateTipoEvento() {
-		ParTipoEvento parTipoEvento = preparaTipoEvento();
+		TipoEvento parTipoEvento = preparaTipoEvento();
 		ClientResponse response = resource.post(ClientResponse.class, parTipoEvento);
     	Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
     	RestResponse restResponse = response.getEntity(new GenericType<RestResponse>(){});
@@ -127,7 +127,7 @@ public class TiposEventoResourceTest extends JerseyTest
     
     @Test
 	public void updateTipoEventoAndRemoveNombre() {
-		ParTipoEvento parTipoEvento = preparaTipoEvento();
+		TipoEvento parTipoEvento = preparaTipoEvento();
 		ClientResponse response = resource.post(ClientResponse.class, parTipoEvento);
     	Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
     	RestResponse restResponse = response.getEntity(new GenericType<RestResponse>(){});
@@ -138,8 +138,8 @@ public class TiposEventoResourceTest extends JerseyTest
 		parTipoEvento.setNombreEs("");
 		response = resource.path(id).put(ClientResponse.class, parTipoEvento);
 		Assert.assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
-		ParResponseMessage parResponseMessage = response.getEntity(new GenericType<ParResponseMessage>(){});
+		ResponseMessage parResponseMessage = response.getEntity(new GenericType<ResponseMessage>(){});
 		
-		Assert.assertEquals(ParCampoRequeridoException.CAMPO_OBLIGATORIO + "Nombre", parResponseMessage.getMessage());
+		Assert.assertEquals(CampoRequeridoException.CAMPO_OBLIGATORIO + "Nombre", parResponseMessage.getMessage());
 	}
 }

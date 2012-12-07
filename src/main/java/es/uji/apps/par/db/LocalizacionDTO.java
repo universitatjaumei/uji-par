@@ -11,7 +11,7 @@ import java.math.BigDecimal;
  */
 @Entity
 @Table(name="PAR_LOCALIZACIONES")
-public class ParLocalizacionDTO implements Serializable {
+public class LocalizacionDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -28,7 +28,7 @@ public class ParLocalizacionDTO implements Serializable {
 	@Column(name="TOTAL_ENTRADAS")
 	private BigDecimal totalEntradas;
 
-	public ParLocalizacionDTO() {
+	public LocalizacionDTO() {
 	}
 
 	public long getId() {

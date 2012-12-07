@@ -14,9 +14,9 @@ import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.jpa.impl.JPAUpdateClause;
 
-import es.uji.apps.par.db.ParLocalizacionDTO;
+import es.uji.apps.par.db.LocalizacionDTO;
 import es.uji.apps.par.db.QParLocalizacionDTO;
-import es.uji.apps.par.model.ParLocalizacion;
+import es.uji.apps.par.model.Localizacion;
 
 @Repository
 public class LocalizacionesDAO {
@@ -27,14 +27,14 @@ public class LocalizacionesDAO {
     private QParLocalizacionDTO qParLocalizacionDTO = QParLocalizacionDTO.parLocalizacionDTO;
 
     @Transactional
-	public List<ParLocalizacion> get() {
+	public List<Localizacion> get() {
     	JPAQuery query = new JPAQuery(entityManager);
 
-        List<ParLocalizacion> localizacion = new ArrayList<ParLocalizacion>();
+        List<Localizacion> localizacion = new ArrayList<Localizacion>();
 
-        for (ParLocalizacionDTO localizacionDB : query.from(qParLocalizacionDTO).list(qParLocalizacionDTO))
+        for (LocalizacionDTO localizacionDB : query.from(qParLocalizacionDTO).list(qParLocalizacionDTO))
         {
-            localizacion.add(new ParLocalizacion(localizacionDB));
+            localizacion.add(new Localizacion(localizacionDB));
         }
 
         return localizacion;
@@ -47,8 +47,8 @@ public class LocalizacionesDAO {
 	}
 
     @Transactional
-	public ParLocalizacion add(ParLocalizacion localizacion) {
-		ParLocalizacionDTO localizacionDTO = new ParLocalizacionDTO();
+	public Localizacion add(Localizacion localizacion) {
+		LocalizacionDTO localizacionDTO = new LocalizacionDTO();
         localizacionDTO.setNombreEs(localizacion.getNombreEs());
         localizacionDTO.setNombreVa(localizacion.getNombreVa());
         localizacionDTO.setTotalEntradas(new BigDecimal(localizacion.getTotalEntradas()));
@@ -60,7 +60,7 @@ public class LocalizacionesDAO {
 	}
 
     @Transactional
-	public ParLocalizacion update(ParLocalizacion localizacion) {
+	public Localizacion update(Localizacion localizacion) {
 		JPAUpdateClause update = new JPAUpdateClause(entityManager, qParLocalizacionDTO);
         update.set(qParLocalizacionDTO.nombreEs, localizacion.getNombreEs()).
         	set(qParLocalizacionDTO.nombreVa, localizacion.getNombreVa()).

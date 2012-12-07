@@ -13,9 +13,9 @@ import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.jpa.impl.JPAUpdateClause;
 
-import es.uji.apps.par.db.ParTipoEventoDTO;
+import es.uji.apps.par.db.TipoEventoDTO;
 import es.uji.apps.par.db.QParTipoEventoDTO;
-import es.uji.apps.par.model.ParTipoEvento;
+import es.uji.apps.par.model.TipoEvento;
 
 @Repository
 public class TiposEventosDAO
@@ -26,15 +26,15 @@ public class TiposEventosDAO
     private QParTipoEventoDTO qTipoEventoDTO = QParTipoEventoDTO.parTipoEventoDTO;
 
     @Transactional
-    public List<ParTipoEvento> getTiposEventos()
+    public List<TipoEvento> getTiposEventos()
     {
         JPAQuery query = new JPAQuery(entityManager);
 
-        List<ParTipoEvento> tipoEvento = new ArrayList<ParTipoEvento>();
+        List<TipoEvento> tipoEvento = new ArrayList<TipoEvento>();
 
-        for (ParTipoEventoDTO tipoEventoDB : query.from(qTipoEventoDTO).list(qTipoEventoDTO))
+        for (TipoEventoDTO tipoEventoDB : query.from(qTipoEventoDTO).list(qTipoEventoDTO))
         {
-            tipoEvento.add(new ParTipoEvento(tipoEventoDB));
+            tipoEvento.add(new TipoEvento(tipoEventoDB));
         }
 
         return tipoEvento;
@@ -48,9 +48,9 @@ public class TiposEventosDAO
     }
 
     @Transactional
-    public ParTipoEvento addTipoEvento(ParTipoEvento tipoEvento)
+    public TipoEvento addTipoEvento(TipoEvento tipoEvento)
     {
-    	ParTipoEventoDTO tipoeventoDTO = new ParTipoEventoDTO();
+    	TipoEventoDTO tipoeventoDTO = new TipoEventoDTO();
         tipoeventoDTO.setNombreEs(tipoEvento.getNombreEs());
         tipoeventoDTO.setNombreVa(tipoEvento.getNombreVa());
 
@@ -61,7 +61,7 @@ public class TiposEventosDAO
     }
 
     @Transactional
-    public ParTipoEvento updateTipoEvento(ParTipoEvento tipoEvento)
+    public TipoEvento updateTipoEvento(TipoEvento tipoEvento)
     {
         JPAUpdateClause update = new JPAUpdateClause(entityManager, qTipoEventoDTO);
         update.set(qTipoEventoDTO.nombreEs, tipoEvento.getNombreEs()).

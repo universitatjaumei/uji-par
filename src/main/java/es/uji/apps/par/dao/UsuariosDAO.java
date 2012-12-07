@@ -13,9 +13,9 @@ import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.jpa.impl.JPAUpdateClause;
 
-import es.uji.apps.par.db.ParUsuarioDTO;
+import es.uji.apps.par.db.UsuarioDTO;
 import es.uji.apps.par.db.QParUsuarioDTO;
-import es.uji.apps.par.model.ParUsuario;
+import es.uji.apps.par.model.Usuario;
 
 @Repository
 public class UsuariosDAO
@@ -26,15 +26,15 @@ public class UsuariosDAO
     private QParUsuarioDTO qUserDTO = QParUsuarioDTO.parUsuarioDTO;
 
     @Transactional
-    public List<ParUsuario> getUsers()
+    public List<Usuario> getUsers()
     {
         JPAQuery query = new JPAQuery(entityManager);
 
-        List<ParUsuario> users = new ArrayList<ParUsuario>();
+        List<Usuario> users = new ArrayList<Usuario>();
 
-        for (ParUsuarioDTO userDB : query.from(qUserDTO).list(qUserDTO))
+        for (UsuarioDTO userDB : query.from(qUserDTO).list(qUserDTO))
         {
-            users.add(new ParUsuario(userDB));
+            users.add(new Usuario(userDB));
         }
 
         return users;
@@ -48,9 +48,9 @@ public class UsuariosDAO
     }
 
     @Transactional
-    public ParUsuario addUser(ParUsuario user)
+    public Usuario addUser(Usuario user)
     {
-    	ParUsuarioDTO usuarioDTO = new ParUsuarioDTO();
+    	UsuarioDTO usuarioDTO = new UsuarioDTO();
         usuarioDTO.setNombre(user.getNombre());
         usuarioDTO.setMail(user.getMail());
         usuarioDTO.setUsuario(user.getUsuario());
@@ -62,7 +62,7 @@ public class UsuariosDAO
     }
 
     @Transactional
-    public ParUsuario updateUser(ParUsuario user)
+    public Usuario updateUser(Usuario user)
     {
         JPAUpdateClause update = new JPAUpdateClause(entityManager, qUserDTO);
         update.set(qUserDTO.nombre, user.getNombre())
@@ -73,10 +73,10 @@ public class UsuariosDAO
         return user;
     }
 
-	public boolean userExists(ParUsuario user) {
+	public boolean userExists(Usuario user) {
 		JPAQuery query = new JPAQuery(entityManager);
 		
-		List<ParUsuarioDTO> usuarios = query.from(qUserDTO).where(qUserDTO.usuario.eq(user.getUsuario())).list(qUserDTO);
+		List<UsuarioDTO> usuarios = query.from(qUserDTO).where(qUserDTO.usuario.eq(user.getUsuario())).list(qUserDTO);
 		
 		if (usuarios.size() > 0)
 			return true;

@@ -20,7 +20,7 @@ import com.sun.jersey.test.framework.WebAppDescriptor;
 import com.sun.jersey.test.framework.spi.container.TestContainerFactory;
 import com.sun.jersey.test.framework.spi.container.grizzly.web.GrizzlyWebTestContainerFactory;
 
-import es.uji.apps.par.model.ParSesion;
+import es.uji.apps.par.model.Sesion;
 
 public class SesionesResourceTest extends JerseyTest {
 	private WebResource resource;
@@ -64,8 +64,8 @@ public class SesionesResourceTest extends JerseyTest {
         Assert.assertNotNull(serviceResponse.getData());
     }
     
-    private ParSesion preparaSesion() {
-    	ParSesion parSesion = new ParSesion();
+    private Sesion preparaSesion() {
+    	Sesion parSesion = new Sesion();
     	parSesion.setFechaCelebracion("01/01/2012");
     	parSesion.setCanalInternet("1");
     	parSesion.setFechaFinVentaOnline("");

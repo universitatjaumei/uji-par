@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import es.uji.apps.par.CampoRequeridoException;
 import es.uji.apps.par.dao.LocalizacionesDAO;
-import es.uji.apps.par.exceptions.ParCampoRequeridoException;
-import es.uji.apps.par.model.ParLocalizacion;
+import es.uji.apps.par.model.Localizacion;
 
 @Service
 public class LocalizacionesService {
@@ -15,7 +15,7 @@ public class LocalizacionesService {
 	@Autowired
     private LocalizacionesDAO localizacionesDAO;
 
-	public List<ParLocalizacion> get() {
+	public List<Localizacion> get() {
 		return localizacionesDAO.get();
 	}
 
@@ -23,18 +23,18 @@ public class LocalizacionesService {
 		localizacionesDAO.remove(id);
 	}
 
-	public ParLocalizacion add(ParLocalizacion localizacion) throws ParCampoRequeridoException {
+	public Localizacion add(Localizacion localizacion) throws CampoRequeridoException {
 		checkRequiredFields(localizacion);
         return localizacionesDAO.add(localizacion);
 	}
 
-	public void update(ParLocalizacion localizacion) throws ParCampoRequeridoException {
+	public void update(Localizacion localizacion) throws CampoRequeridoException {
 		checkRequiredFields(localizacion);
 		localizacionesDAO.update(localizacion);
 	}
 	
-	private void checkRequiredFields(ParLocalizacion localizacion) throws ParCampoRequeridoException {
+	private void checkRequiredFields(Localizacion localizacion) throws CampoRequeridoException {
 		if (localizacion.getNombreEs() == null || localizacion.getNombreEs().isEmpty())
-    		throw new ParCampoRequeridoException("Nombre");
+    		throw new CampoRequeridoException("Nombre");
 	}
 }

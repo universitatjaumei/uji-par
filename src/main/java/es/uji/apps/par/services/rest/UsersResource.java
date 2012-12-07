@@ -16,8 +16,8 @@ import javax.ws.rs.core.Response;
 
 import com.sun.jersey.api.core.InjectParam;
 
-import es.uji.apps.par.exceptions.ParException;
-import es.uji.apps.par.model.ParUsuario;
+import es.uji.apps.par.GeneralPARException;
+import es.uji.apps.par.model.Usuario;
 import es.uji.apps.par.services.UsersService;
 
 @Path("usuario")
@@ -45,9 +45,9 @@ public class UsersResource
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response add(ParUsuario user) throws ParException
+    public Response add(Usuario user) throws GeneralPARException
     {
-        ParUsuario newUser = usersService.addUser(user);
+        Usuario newUser = usersService.addUser(user);
         //TODO -> generar URL
         return Response.created(URI.create("")).entity(new RestResponse(true, Collections.singletonList(newUser))).build();
     }
@@ -56,7 +56,7 @@ public class UsersResource
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response update(ParUsuario user) throws ParException
+    public Response update(Usuario user) throws GeneralPARException
     {
         usersService.updateUser(user);
         return Response.ok().entity(new RestResponse(true, Collections.singletonList(user))).build();

@@ -6,11 +6,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import es.uji.apps.par.CampoRequeridoException;
+import es.uji.apps.par.ImagenNoEncontradaException;
 import es.uji.apps.par.dao.EventosDAO;
-import es.uji.apps.par.db.ParEventoDTO;
-import es.uji.apps.par.exceptions.ParCampoRequeridoException;
-import es.uji.apps.par.exceptions.ParImagenNotFoundException;
-import es.uji.apps.par.model.ParEvento;
+import es.uji.apps.par.db.EventoDTO;
+import es.uji.apps.par.model.Evento;
 
 @Service
 public class EventosService
@@ -18,13 +18,13 @@ public class EventosService
     @Autowired
     private EventosDAO eventosDAO;
     
-    public List<ParEvento> getEventos()
+    public List<Evento> getEventos()
     {
-        List<ParEvento> listaParEvento = new ArrayList<ParEvento>();
+        List<Evento> listaParEvento = new ArrayList<Evento>();
         
-    	for (ParEventoDTO eventoDB : eventosDAO.getEventos())
+    	for (EventoDTO eventoDB : eventosDAO.getEventos())
         {
-            listaParEvento.add(new ParEvento(eventoDB, false));
+            listaParEvento.add(new Evento(eventoDB, false));
         }
         return listaParEvento;
     }
@@ -34,32 +34,32 @@ public class EventosService
         eventosDAO.removeEvento(id);
     }
 
-    public ParEvento addEvento(ParEvento evento) throws ParCampoRequeridoException
+    public Evento addEvento(Evento evento) throws CampoRequeridoException
     {
     	checkRequiredFields(evento);
         return eventosDAO.addEvento(evento);
     }
 
-    private void checkRequiredFields(ParEvento evento) throws ParCampoRequeridoException {
+    private void checkRequiredFields(Evento evento) throws CampoRequeridoException {
 		if (evento.getTituloEs() == null || evento.getTituloEs().isEmpty())
-			throw new ParCampoRequeridoException("Título");
+			throw new CampoRequeridoException("Título");
 		if (evento.getParTipoEvento() == null)
-			throw new ParCampoRequeridoException("Tipo de evento");
+			throw new CampoRequeridoException("Tipo de evento");
 	}
 
-	public void updateEvento(ParEvento evento) throws ParCampoRequeridoException
+	public void updateEvento(Evento evento) throws CampoRequeridoException
     {
 		checkRequiredFields(evento);
         eventosDAO.updateEvento(evento);
     }
 
-	public ParEvento getEvento(Integer eventoId) throws ParImagenNotFoundException {
-		List<ParEventoDTO> listaEventosDTO = eventosDAO.getEventoDTO(eventoId.longValue());
+	public Evento getEvento(Integer eventoId) throws ImagenNoEncontradaException {
+		List<EventoDTO> listaEventosDTO = eventosDAO.getEventoDTO(eventoId.longValue());
 		
 		if (listaEventosDTO.size() > 0)
-			return new ParEvento(listaEventosDTO.get(0), true);
+			return new Evento(listaEventosDTO.get(0), true);
 		else
-			throw new ParImagenNotFoundException(eventoId);
+			throw new ImagenNoEncontradaException(eventoId);
 	}
 
 	public void removeImagen(Integer eventoId) {

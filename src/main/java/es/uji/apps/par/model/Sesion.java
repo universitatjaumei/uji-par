@@ -7,15 +7,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import es.uji.apps.par.db.ParEventoDTO;
-import es.uji.apps.par.db.ParSesionDTO;
-import es.uji.apps.par.util.DateUtils;
+import es.uji.apps.par.DateUtils;
+import es.uji.apps.par.db.EventoDTO;
+import es.uji.apps.par.db.SesionDTO;
 
 @XmlRootElement
-public class ParSesion
+public class Sesion
 {
     private long id;
-    private ParEventoDTO evento;
+    private EventoDTO evento;
     private Date fechaCelebracion;
     private Date fechaInicioVentaOnline;
     private Date fechaFinVentaOnline;
@@ -24,11 +24,11 @@ public class ParSesion
     private BigDecimal canalTaquilla;
     private String horaCelebracion;
     
-    public ParSesion() {
+    public Sesion() {
     	
     }
     
-    public ParSesion(ParSesionDTO sesionDTO) {
+    public Sesion(SesionDTO sesionDTO) {
     	this.id = sesionDTO.getId();
     	this.evento = sesionDTO.getParEvento();
     	this.fechaCelebracion = new Date(sesionDTO.getFechaCelebracion().getTime()/1000);
@@ -49,10 +49,10 @@ public class ParSesion
 	}
 	
 	@JsonIgnore
-	public ParEventoDTO getEvento() {
+	public EventoDTO getEvento() {
 		return evento;
 	}
-	public void setEvento(ParEventoDTO evento) {
+	public void setEvento(EventoDTO evento) {
 		this.evento = evento;
 	}
 	public Date getFechaCelebracion() {

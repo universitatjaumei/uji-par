@@ -1,13 +1,13 @@
-package es.uji.apps.par.model;
+package es.uji.apps.par;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class ParResponseMessage {
+public class ResponseMessage {
 	private boolean result;
 	private String message;
 	
-	public ParResponseMessage(boolean result, String message) {
+	public ResponseMessage(boolean result, String message) {
 		this.result = result;
 		this.message = message;
 	}
@@ -28,7 +28,7 @@ public class ParResponseMessage {
 		this.message = message;
 	}
 	
-	public ParResponseMessage() {
+	public ResponseMessage() {
 		
 	}
 }

@@ -16,8 +16,8 @@ import javax.ws.rs.core.Response;
 
 import com.sun.jersey.api.core.InjectParam;
 
-import es.uji.apps.par.exceptions.ParException;
-import es.uji.apps.par.model.ParLocalizacion;
+import es.uji.apps.par.GeneralPARException;
+import es.uji.apps.par.model.Localizacion;
 import es.uji.apps.par.services.LocalizacionesService;
 
 @Path("localizacion")
@@ -45,9 +45,9 @@ public class LocalizacionesResource
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response add(ParLocalizacion localizacion) throws ParException
+    public Response add(Localizacion localizacion) throws GeneralPARException
     {
-        ParLocalizacion newLocalizacion = localizacionesService.add(localizacion);
+        Localizacion newLocalizacion = localizacionesService.add(localizacion);
         //TODO crear URI
         return Response.created(URI.create("")).entity(new RestResponse(true, Collections.singletonList(newLocalizacion))).build();
     }
@@ -56,7 +56,7 @@ public class LocalizacionesResource
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response update(ParLocalizacion localizacion) throws ParException
+    public Response update(Localizacion localizacion) throws GeneralPARException
     {
         localizacionesService.update(localizacion);
         return Response.ok().entity(new RestResponse(true, Collections.singletonList(localizacion))).build();

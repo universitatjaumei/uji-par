@@ -23,9 +23,9 @@ import com.sun.jersey.test.framework.WebAppDescriptor;
 import com.sun.jersey.test.framework.spi.container.TestContainerFactory;
 import com.sun.jersey.test.framework.spi.container.grizzly.web.GrizzlyWebTestContainerFactory;
 
-import es.uji.apps.par.exceptions.ParCampoRequeridoException;
-import es.uji.apps.par.model.ParLocalizacion;
-import es.uji.apps.par.model.ParResponseMessage;
+import es.uji.apps.par.CampoRequeridoException;
+import es.uji.apps.par.ResponseMessage;
+import es.uji.apps.par.model.Localizacion;
 
 public class LocalizacionesResourceTest extends JerseyTest
 {
@@ -60,8 +60,8 @@ public class LocalizacionesResourceTest extends JerseyTest
         return new GrizzlyWebTestContainerFactory();
     }
     
-    private ParLocalizacion preparaLocalizacion() {
-		return new ParLocalizacion("Prueba");
+    private Localizacion preparaLocalizacion() {
+		return new Localizacion("Prueba");
 	}
 
     @Test
@@ -77,14 +77,14 @@ public class LocalizacionesResourceTest extends JerseyTest
     
     @Test
 	public void addLocalizacionWithoutNombre() {
-		ParLocalizacion localizacion = preparaLocalizacion();
+		Localizacion localizacion = preparaLocalizacion();
 		localizacion.setNombreEs(null);
 		
 		ClientResponse response = resource.post(ClientResponse.class, localizacion);
     	Assert.assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
     	
-    	ParResponseMessage resultatOperacio = response.getEntity(new GenericType<ParResponseMessage>(){});
-		Assert.assertEquals(ParCampoRequeridoException.CAMPO_OBLIGATORIO + "Nombre", resultatOperacio.getMessage());
+    	ResponseMessage resultatOperacio = response.getEntity(new GenericType<ResponseMessage>(){});
+		Assert.assertEquals(CampoRequeridoException.CAMPO_OBLIGATORIO + "Nombre", resultatOperacio.getMessage());
 	}
 	
 	@SuppressWarnings("rawtypes")
@@ -94,7 +94,7 @@ public class LocalizacionesResourceTest extends JerseyTest
 	
 	@Test
 	public void addLocalizacion() {
-		ParLocalizacion localizacion = preparaLocalizacion();
+		Localizacion localizacion = preparaLocalizacion();
 		ClientResponse response = resource.post(ClientResponse.class, localizacion);
     	Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
     	RestResponse restResponse = response.getEntity(new GenericType<RestResponse>(){});
@@ -105,7 +105,7 @@ public class LocalizacionesResourceTest extends JerseyTest
     
     @Test
 	public void updateLocalizacion() {
-		ParLocalizacion localizacion = preparaLocalizacion();
+		Localizacion localizacion = preparaLocalizacion();
 		ClientResponse response = resource.post(ClientResponse.class, localizacion);
     	Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
     	RestResponse restResponse = response.getEntity(new GenericType<RestResponse>(){});
@@ -124,7 +124,7 @@ public class LocalizacionesResourceTest extends JerseyTest
     
     @Test
 	public void updateLocalizacionAndRemoveNombre() {
-		ParLocalizacion localizacion = preparaLocalizacion();
+		Localizacion localizacion = preparaLocalizacion();
 		ClientResponse response = resource.post(ClientResponse.class, localizacion);
     	Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
     	RestResponse restResponse = response.getEntity(new GenericType<RestResponse>(){});
@@ -135,8 +135,8 @@ public class LocalizacionesResourceTest extends JerseyTest
 		localizacion.setNombreEs("");
 		response = resource.path(id).put(ClientResponse.class, localizacion);
 		Assert.assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
-		ParResponseMessage parResponseMessage = response.getEntity(new GenericType<ParResponseMessage>(){});
+		ResponseMessage parResponseMessage = response.getEntity(new GenericType<ResponseMessage>(){});
 		
-		Assert.assertEquals(ParCampoRequeridoException.CAMPO_OBLIGATORIO + "Nombre", parResponseMessage.getMessage());
+		Assert.assertEquals(CampoRequeridoException.CAMPO_OBLIGATORIO + "Nombre", parResponseMessage.getMessage());
 	}
 }

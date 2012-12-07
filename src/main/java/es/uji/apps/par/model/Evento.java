@@ -2,10 +2,10 @@ package es.uji.apps.par.model;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import es.uji.apps.par.db.ParEventoDTO;
+import es.uji.apps.par.db.EventoDTO;
 
 @XmlRootElement
-public class ParEvento
+public class Evento
 {
     private long id;
     private String tituloEs;
@@ -25,16 +25,16 @@ public class ParEvento
     private String caracteristicasVa;
     private String comentariosEs;
     private String comentariosVa;
-    private ParTipoEvento parTipoEvento;
+    private TipoEvento parTipoEvento;
     private long tipoEvento;
 	private String imagenSrc;
 	private String imagenContentType;
 
-    public ParEvento()
+    public Evento()
     {
     }
     
-    public ParEvento(ParEventoDTO eventoDTO, boolean crearConImagen)
+    public Evento(EventoDTO eventoDTO, boolean crearConImagen)
     {
         this.id = eventoDTO.getId();
         this.tituloEs = eventoDTO.getTituloEs();
@@ -69,7 +69,7 @@ public class ParEvento
         this.comentariosVa = eventoDTO.getComentariosVa();
         
         if (eventoDTO.getParTiposEvento() != null) {
-        	this.parTipoEvento = new ParTipoEvento();
+        	this.parTipoEvento = new TipoEvento();
         	this.parTipoEvento.setId(eventoDTO.getParTiposEvento().getId());
         	this.parTipoEvento.setNombreEs(eventoDTO.getParTiposEvento().getNombreEs());
         	this.parTipoEvento.setNombreVa(eventoDTO.getParTiposEvento().getNombreVa());
@@ -77,13 +77,13 @@ public class ParEvento
         }
     }
 
-	public ParEvento(String tituloEs, ParTipoEvento tipoEvento) {
-		this.parTipoEvento = new ParTipoEvento();
+	public Evento(String tituloEs, TipoEvento tipoEvento) {
+		this.parTipoEvento = new TipoEvento();
 		this.parTipoEvento = tipoEvento;
 		this.tituloEs = tituloEs;
 	}
 
-	public ParEvento(
+	public Evento(
 			String tituloEs, String descripcionEs, String companyiaEs, String interpretesEs, String duracionEs, String premiosEs, String caracteristicasEs, String comentariosEs, 
 			String tituloVa, String descripcionVa, String companyiaVa, String interpretesVa, String duracionVa,	String premiosVa, String caracteristicasVa,	String comentariosVa, 
 			byte[] dataBinary, String nombreArchivo, String mediaType, Integer tipoEventoId) {
@@ -111,7 +111,7 @@ public class ParEvento
 		this.imagenContentType = mediaType;
 		
 		if (tipoEventoId != null) {
-			this.parTipoEvento = new ParTipoEvento();
+			this.parTipoEvento = new TipoEvento();
 			this.parTipoEvento.setId(tipoEventoId);
 			this.tipoEvento = tipoEventoId;
 		}
@@ -145,11 +145,11 @@ public class ParEvento
 		this.imagenContentType = imagenContentType;
 	}
 
-	public ParTipoEvento getParTipoEvento() {
+	public TipoEvento getParTipoEvento() {
 		return parTipoEvento;
 	}
 
-	public void setParTipoEvento(ParTipoEvento parTipoEvento) {
+	public void setParTipoEvento(TipoEvento parTipoEvento) {
 		this.parTipoEvento = parTipoEvento;
 	}
 

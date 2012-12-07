@@ -11,7 +11,7 @@ import java.util.List;
  */
 @Entity
 @Table(name="PAR_TIPOS_EVENTO")
-public class ParTipoEventoDTO implements Serializable {
+public class TipoEventoDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -27,9 +27,9 @@ public class ParTipoEventoDTO implements Serializable {
 
 	//bi-directional many-to-one association to ParEventoDTO
 	@OneToMany(mappedBy="parTiposEvento")
-	private List<ParEventoDTO> parEventos;
+	private List<EventoDTO> parEventos;
 
-	public ParTipoEventoDTO() {
+	public TipoEventoDTO() {
 	}
 
 	public long getId() {
@@ -56,11 +56,11 @@ public class ParTipoEventoDTO implements Serializable {
 		this.nombreVa = nombreVa;
 	}
 
-	public List<ParEventoDTO> getParEventos() {
+	public List<EventoDTO> getParEventos() {
 		return this.parEventos;
 	}
 
-	public void setParEventos(List<ParEventoDTO> parEventos) {
+	public void setParEventos(List<EventoDTO> parEventos) {
 		this.parEventos = parEventos;
 	}
 

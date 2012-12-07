@@ -16,8 +16,8 @@ import javax.ws.rs.core.Response;
 
 import com.sun.jersey.api.core.InjectParam;
 
-import es.uji.apps.par.exceptions.ParException;
-import es.uji.apps.par.model.ParTipoEvento;
+import es.uji.apps.par.GeneralPARException;
+import es.uji.apps.par.model.TipoEvento;
 import es.uji.apps.par.services.TiposEventosService;
 
 @Path("tipoevento")
@@ -45,9 +45,9 @@ public class TiposEventosResource
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response add(ParTipoEvento tipoEvento) throws ParException
+    public Response add(TipoEvento tipoEvento) throws GeneralPARException
     {
-        ParTipoEvento newTipoEvento = tiposEventosService.addTipoEvento(tipoEvento);
+        TipoEvento newTipoEvento = tiposEventosService.addTipoEvento(tipoEvento);
         //TODO crear URI
         return Response.created(URI.create("")).entity(new RestResponse(true, Collections.singletonList(newTipoEvento))).build();
     }
@@ -56,7 +56,7 @@ public class TiposEventosResource
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response update(ParTipoEvento tipoEvento) throws ParException
+    public Response update(TipoEvento tipoEvento) throws GeneralPARException
     {
         tiposEventosService.updateTipoEvento(tipoEvento);
         return Response.ok().entity(new RestResponse(true, Collections.singletonList(tipoEvento))).build();

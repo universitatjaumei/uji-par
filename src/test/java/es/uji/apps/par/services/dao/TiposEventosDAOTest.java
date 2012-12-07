@@ -10,7 +10,7 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import es.uji.apps.par.dao.TiposEventosDAO;
-import es.uji.apps.par.model.ParTipoEvento;
+import es.uji.apps.par.model.TipoEvento;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
@@ -29,32 +29,32 @@ public class TiposEventosDAOTest {
 	@Test
 	@Transactional
 	public void addTipoEvento() {
-		ParTipoEvento parTipoEvento = preparaTipoEvento();
-		ParTipoEvento tipoEvento = tiposEventosDAO.addTipoEvento(parTipoEvento);
+		TipoEvento parTipoEvento = preparaTipoEvento();
+		TipoEvento tipoEvento = tiposEventosDAO.addTipoEvento(parTipoEvento);
 		
 		Assert.assertNotNull(tipoEvento.getId());
 	}
 	
-	private ParTipoEvento preparaTipoEvento() {
-		return new ParTipoEvento("NombreTipoEvento");
+	private TipoEvento preparaTipoEvento() {
+		return new TipoEvento("NombreTipoEvento");
 	}
 	
 	@Test
 	@Transactional
 	public void updateTipoEvento() {
-		ParTipoEvento parTipoEvento = new ParTipoEvento();
+		TipoEvento parTipoEvento = new TipoEvento();
 		parTipoEvento.setId(tiposEventosDAO.getTiposEventos().get(0).getId());
 		parTipoEvento.setNombreEs("Prueba2");
-		ParTipoEvento tipoEventoActualizado = tiposEventosDAO.updateTipoEvento(parTipoEvento);
+		TipoEvento tipoEventoActualizado = tiposEventosDAO.updateTipoEvento(parTipoEvento);
 		Assert.assertEquals(parTipoEvento.getId(), tipoEventoActualizado.getId());
 	}
 	
 	@Test
 	@Transactional
 	public void addTipoEventoConIdiomas() {
-		ParTipoEvento parTipoEvento = preparaTipoEvento();
+		TipoEvento parTipoEvento = preparaTipoEvento();
 		parTipoEvento.setNombreVa("valencia");
-		ParTipoEvento tipoEvento = tiposEventosDAO.addTipoEvento(parTipoEvento);
+		TipoEvento tipoEvento = tiposEventosDAO.addTipoEvento(parTipoEvento);
 		
 		Assert.assertNotNull(tipoEvento.getId());
 	}

@@ -1,4 +1,4 @@
-package es.uji.apps.par.exceptions;
+package es.uji.apps.par;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -7,12 +7,11 @@ import javax.ws.rs.ext.Provider;
 
 import org.apache.log4j.Logger;
 
-import es.uji.apps.par.model.ParResponseMessage;
 
 @Provider
-public class ParCommonExceptionMapper implements ExceptionMapper<Exception>
+public class CommonExceptionMapper implements ExceptionMapper<Exception>
 {
-    public static Logger log = Logger.getLogger(ParCommonExceptionMapper.class);
+    public static Logger log = Logger.getLogger(CommonExceptionMapper.class);
 
     @Override
     public Response toResponse(Exception exception)
@@ -20,8 +19,8 @@ public class ParCommonExceptionMapper implements ExceptionMapper<Exception>
         log.error(exception.getMessage(), exception);
         String message = ((exception.getMessage() != null && !exception.getMessage().equals(""))? 
         		exception.getMessage() :
-        		ParException.ERROR_GENERAL_MESS);
+        		GeneralPARException.ERROR_GENERAL_MESS);
 
-        return Response.serverError().type(MediaType.APPLICATION_JSON).entity(new ParResponseMessage(false, message)).build();
+        return Response.serverError().type(MediaType.APPLICATION_JSON).entity(new ResponseMessage(false, message)).build();
     }
 }

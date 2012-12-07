@@ -10,7 +10,7 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import es.uji.apps.par.dao.LocalizacionesDAO;
-import es.uji.apps.par.model.ParLocalizacion;
+import es.uji.apps.par.model.Localizacion;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
@@ -29,25 +29,25 @@ public class LocalizacionesDAOTest {
 	@Test
 	@Transactional
 	public void addLocalizacion() {
-		ParLocalizacion parLocalizacion = preparaLocalizacion();
-		ParLocalizacion localizacion = localizacionesDAO.add(parLocalizacion);
+		Localizacion parLocalizacion = preparaLocalizacion();
+		Localizacion localizacion = localizacionesDAO.add(parLocalizacion);
 		
 		Assert.assertNotNull(localizacion.getId());
 	}
 	
-	private ParLocalizacion preparaLocalizacion() {
-		return new ParLocalizacion("Nombre Localizacion");
+	private Localizacion preparaLocalizacion() {
+		return new Localizacion("Nombre Localizacion");
 	}
 	
 	@Test
 	@Transactional
 	public void updateLocalizacion() {
-		ParLocalizacion localizacion = localizacionesDAO.add(preparaLocalizacion());
+		Localizacion localizacion = localizacionesDAO.add(preparaLocalizacion());
 		
 		Assert.assertNotNull(localizacion.getId());
 		
 		localizacion.setNombreEs("Prueba2");
-		ParLocalizacion localizacionActualizada = localizacionesDAO.update(localizacion);
+		Localizacion localizacionActualizada = localizacionesDAO.update(localizacion);
 		Assert.assertEquals(localizacion.getId(), localizacionActualizada.getId());
 	}
 }

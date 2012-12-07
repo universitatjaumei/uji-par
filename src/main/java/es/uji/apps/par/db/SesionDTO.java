@@ -12,7 +12,7 @@ import java.math.BigDecimal;
  */
 @Entity
 @Table(name="PAR_SESIONES")
-public class ParSesionDTO implements Serializable {
+public class SesionDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -41,9 +41,9 @@ public class ParSesionDTO implements Serializable {
 	//bi-directional many-to-one association to ParEventoDTO
 	@ManyToOne
 	@JoinColumn(name="EVENTO_ID")
-	private ParEventoDTO parEvento;
+	private EventoDTO parEvento;
 
-	public ParSesionDTO() {
+	public SesionDTO() {
 	}
 
 	public long getId() {
@@ -102,11 +102,11 @@ public class ParSesionDTO implements Serializable {
 		this.horaApertura = horaApertura;
 	}
 
-	public ParEventoDTO getParEvento() {
+	public EventoDTO getParEvento() {
 		return this.parEvento;
 	}
 
-	public void setParEvento(ParEventoDTO parEvento) {
+	public void setParEvento(EventoDTO parEvento) {
 		this.parEvento = parEvento;
 	}
 
