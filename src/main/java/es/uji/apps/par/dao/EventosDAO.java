@@ -16,8 +16,8 @@ import com.mysema.query.jpa.impl.JPAUpdateClause;
 import com.mysema.query.types.QTuple;
 
 import es.uji.apps.par.db.EventoDTO;
-import es.uji.apps.par.db.QParEventoDTO;
-import es.uji.apps.par.db.QParTipoEventoDTO;
+import es.uji.apps.par.db.QEventoDTO;
+import es.uji.apps.par.db.QTipoEventoDTO;
 import es.uji.apps.par.db.TipoEventoDTO;
 import es.uji.apps.par.model.Evento;
 
@@ -27,12 +27,12 @@ public class EventosDAO
     @PersistenceContext
     private EntityManager entityManager;
 
-    private QParEventoDTO qEventoDTO = QParEventoDTO.parEventoDTO;
+    private QEventoDTO qEventoDTO = QEventoDTO.eventoDTO;
 
     @Transactional
     public List<EventoDTO> getEventos()
     {
-        QParTipoEventoDTO qTipoEventoDTO = QParTipoEventoDTO.parTipoEventoDTO;
+        QTipoEventoDTO qTipoEventoDTO = QTipoEventoDTO.tipoEventoDTO;
         JPAQuery query = new JPAQuery(entityManager);
 
         List<Tuple> listadoTuples = query
@@ -105,7 +105,7 @@ public class EventosDAO
 
     public List<EventoDTO> getEventoDTO(Long id)
     {
-        QParTipoEventoDTO qTipoEventoDTO = QParTipoEventoDTO.parTipoEventoDTO;
+        QTipoEventoDTO qTipoEventoDTO = QTipoEventoDTO.tipoEventoDTO;
         JPAQuery query = new JPAQuery(entityManager);
 
         return query

@@ -15,7 +15,7 @@ import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.jpa.impl.JPAUpdateClause;
 
 import es.uji.apps.par.db.LocalizacionDTO;
-import es.uji.apps.par.db.QParLocalizacionDTO;
+import es.uji.apps.par.db.QLocalizacionDTO;
 import es.uji.apps.par.model.Localizacion;
 
 @Repository
@@ -25,7 +25,7 @@ public class LocalizacionesDAO
     @PersistenceContext
     private EntityManager entityManager;
 
-    private QParLocalizacionDTO qParLocalizacionDTO = QParLocalizacionDTO.parLocalizacionDTO;
+    private QLocalizacionDTO qParLocalizacionDTO = QLocalizacionDTO.localizacionDTO;
 
     @Transactional
     public List<Localizacion> get()

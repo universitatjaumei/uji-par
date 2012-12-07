@@ -15,7 +15,7 @@ import com.mysema.query.jpa.impl.JPAUpdateClause;
 
 import es.uji.apps.par.DateUtils;
 import es.uji.apps.par.db.EventoDTO;
-import es.uji.apps.par.db.QParSesionDTO;
+import es.uji.apps.par.db.QSesionDTO;
 import es.uji.apps.par.db.SesionDTO;
 import es.uji.apps.par.model.Sesion;
 
@@ -25,7 +25,7 @@ public class SesionesDAO
     @PersistenceContext
     private EntityManager entityManager;
 
-    private QParSesionDTO qSesionDTO = QParSesionDTO.parSesionDTO;
+    private QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
 
     @Transactional
     public List<Sesion> getSesiones(long sesionId)

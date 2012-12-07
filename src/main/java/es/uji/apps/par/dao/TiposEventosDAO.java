@@ -13,7 +13,7 @@ import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.jpa.impl.JPAUpdateClause;
 
-import es.uji.apps.par.db.QParTipoEventoDTO;
+import es.uji.apps.par.db.QTipoEventoDTO;
 import es.uji.apps.par.db.TipoEventoDTO;
 import es.uji.apps.par.model.TipoEvento;
 
@@ -23,7 +23,7 @@ public class TiposEventosDAO
     @PersistenceContext
     private EntityManager entityManager;
 
-    private QParTipoEventoDTO qTipoEventoDTO = QParTipoEventoDTO.parTipoEventoDTO;
+    private QTipoEventoDTO qTipoEventoDTO = QTipoEventoDTO.tipoEventoDTO;
 
     @Transactional
     public List<TipoEvento> getTiposEventos()

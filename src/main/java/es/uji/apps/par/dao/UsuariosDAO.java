@@ -13,7 +13,7 @@ import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.jpa.impl.JPAUpdateClause;
 
-import es.uji.apps.par.db.QParUsuarioDTO;
+import es.uji.apps.par.db.QUsuarioDTO;
 import es.uji.apps.par.db.UsuarioDTO;
 import es.uji.apps.par.model.Usuario;
 
@@ -23,7 +23,7 @@ public class UsuariosDAO
     @PersistenceContext
     private EntityManager entityManager;
 
-    private QParUsuarioDTO qUserDTO = QParUsuarioDTO.parUsuarioDTO;
+    private QUsuarioDTO qUserDTO = QUsuarioDTO.usuarioDTO;
 
     @Transactional
     public List<Usuario> getUsers()
