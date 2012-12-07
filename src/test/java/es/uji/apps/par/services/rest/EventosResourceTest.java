@@ -39,7 +39,7 @@ public class EventosResourceTest extends JerseyTest
     {
         super(
                 new WebAppDescriptor.Builder(
-                        "es.uji.apps.par.services.rest;com.fasterxml.jackson.jaxrs.json;es.uji.apps.par.exceptions")
+                        "es.uji.apps.par.services.rest;com.fasterxml.jackson.jaxrs.json;es.uji.apps.par")
                         .contextParam("contextConfigLocation",
                                 "classpath:applicationContext-test.xml")
                         .contextParam("log4jConfigLocation",
