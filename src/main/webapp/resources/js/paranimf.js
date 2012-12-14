@@ -1,5 +1,4 @@
 var menu = (window.location.href.indexOf("#") != -1) ? window.location.href.substring(window.location.href.indexOf("#")+1) : 'Dashboard';
-var urlPrefix = '/paranimf/rest/';
          
 if (!window.console) console = {log: function() {}};
 

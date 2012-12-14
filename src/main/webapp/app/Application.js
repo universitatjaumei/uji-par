@@ -41,16 +41,6 @@ Ext.application({
                   action: 'logout'
                },{
                   xtype: 'label',
-                  html: '<a alt="Castellano" title="Castellano" href="javascript:cambiaIdioma(\'es\');">Cas</a>',
-                  style: 'float: right;margin-right:1em;margin-top:6px',
-                  cls: 'idioma'
-               },{
-                  xtype: 'label',
-                  html: '<a alt="Valencià" title="Valencià" href="javascript:cambiaIdioma(\'ca\');">Val</a>',
-                  style: 'float: right;margin-right:1em;margin-top:6px',
-                  cls: 'idioma'
-               },{
-                  xtype: 'label',
                   text: botonLogout,
                   style: 'float: right;margin-right:1em;font-weight:bold;margin-top:5px'
                }]
