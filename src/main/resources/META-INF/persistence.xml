@@ -4,6 +4,11 @@
   
   <persistence-unit name="persistenceUnit" transaction-type="RESOURCE_LOCAL">
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <class>es.uji.apps.par.db.EventoDTO</class>
+    <class>es.uji.apps.par.db.LocalizacionDTO</class>
+    <class>es.uji.apps.par.db.SesionDTO</class>
+    <class>es.uji.apps.par.db.TipoEventoDTO</class>
+    <class>es.uji.apps.par.db.UsuarioDTO</class>
   </persistence-unit>
   
 </persistence>

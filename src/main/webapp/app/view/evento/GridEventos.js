@@ -19,6 +19,9 @@ Ext.define('Paranimf.view.evento.GridEventos', {
         dataIndex: 'id',
         hidden: true
       }, {
+        dataIndex: 'asientosNumerados',
+        hidden: true
+      }, {
         dataIndex: 'parTipoEvento',
         text: UI.i18n.field.type,
         flex: 2,

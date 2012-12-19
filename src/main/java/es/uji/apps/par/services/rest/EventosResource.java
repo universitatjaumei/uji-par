@@ -1,5 +1,6 @@
 package es.uji.apps.par.services.rest;
 
+import java.math.BigDecimal;
 import java.net.URI;
 import java.util.Collections;
 
@@ -98,7 +99,11 @@ public class EventosResource
             @FormDataParam("duracionVa") String duracionVa,
             @FormDataParam("premiosVa") String premiosVa,
             @FormDataParam("caracteristicasVa") String caracteristicasVa,
-            @FormDataParam("comentariosVa") String comentariosVa) throws GeneralPARException
+            @FormDataParam("comentariosVa") String comentariosVa,
+            @FormDataParam("porcentajeIVA") BigDecimal porcentajeIVA,
+            @FormDataParam("retencionSGAE") BigDecimal retencionSGAE,
+            @FormDataParam("ivaSGAE") BigDecimal ivaSGAE,
+            @FormDataParam("asientosNumerados") BigDecimal asientosNumerados) throws GeneralPARException
     {
         String nombreArchivo = (dataBinaryDetail != null) ? dataBinaryDetail.getFileName() : "";
         String mediaType = (imagenBodyPart != null) ? imagenBodyPart.getMediaType().toString() : "";
@@ -106,7 +111,7 @@ public class EventosResource
         Evento evento = new Evento(tituloEs, descripcionEs, companyiaEs, interpretesEs, duracionEs,
                 premiosEs, caracteristicasEs, comentariosEs, tituloVa, descripcionVa, companyiaVa,
                 interpretesVa, duracionVa, premiosVa, caracteristicasVa, comentariosVa, dataBinary,
-                nombreArchivo, mediaType, tipoEventoId);
+                nombreArchivo, mediaType, tipoEventoId, porcentajeIVA, retencionSGAE, ivaSGAE, asientosNumerados);
         Evento newEvento = eventosService.addEvento(evento);
 
         // TODO -> crear URL
@@ -148,7 +153,11 @@ public class EventosResource
             @FormDataParam("duracionVa") String duracionVa,
             @FormDataParam("premiosVa") String premiosVa,
             @FormDataParam("caracteristicasVa") String caracteristicasVa,
-            @FormDataParam("comentariosVa") String comentariosVa) throws GeneralPARException
+            @FormDataParam("comentariosVa") String comentariosVa,
+            @FormDataParam("porcentajeIVA") BigDecimal porcentajeIVA,
+            @FormDataParam("retencionSGAE") BigDecimal retencionSGAE,
+            @FormDataParam("ivaSGAE") BigDecimal ivaSGAE,
+            @FormDataParam("asientosNumerados") BigDecimal asientosNumerados) throws GeneralPARException
     {
         String nombreArchivo = (dataBinaryDetail != null) ? dataBinaryDetail.getFileName() : "";
         String mediaType = (imagenBodyPart != null) ? imagenBodyPart.getMediaType().toString() : "";
@@ -156,7 +165,7 @@ public class EventosResource
         Evento evento = new Evento(tituloEs, descripcionEs, companyiaEs, interpretesEs, duracionEs,
                 premiosEs, caracteristicasEs, comentariosEs, tituloVa, descripcionVa, companyiaVa,
                 interpretesVa, duracionVa, premiosVa, caracteristicasVa, comentariosVa, dataBinary,
-                nombreArchivo, mediaType, tipoEventoId);
+                nombreArchivo, mediaType, tipoEventoId, porcentajeIVA, retencionSGAE, ivaSGAE, asientosNumerados);
 
         evento.setId(id);
         eventosService.updateEvento(evento);

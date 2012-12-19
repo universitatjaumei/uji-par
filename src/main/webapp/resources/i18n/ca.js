@@ -24,7 +24,9 @@ UI =
             "sureDelete": "Està segur/a d'esborrar el registre seleccionat?",
             "sureDeleteImage":"Està segur/a d'esborrar la imatge de l'event? Aquesta acció no es pot cancel·lar",
             "deletedImage":"La imatge ha sigut esborrada satisfactòriament",
-            "toolTipAvailableEspacios": "* Passar el ratolí sobre les columnes d'espais i dies per obtindre informació extra"
+            "toolTipAvailableEspacios": "* Passar el ratolí sobre les columnes d'espais i dies per obtindre informació extra",
+            "si": "Si",
+            "no": "No"
         },
         "storeWeekDay": {
             "wed": "Dimecres",
@@ -138,7 +140,12 @@ UI =
 			"sessionTime": "Hora de la sessió",
 			"imagen": "Imatge",
 			"imagenInsertada": "Veure la imatge inserida",
-			"uploadImagen": "Inserir imatge"
+			"uploadImagen": "Inserir imatge",
+            "retenciones": "Retencions",
+            "porcentajeIVA": "Percentatge IVA",
+            "ivaSGAE": "IVA SGAE",
+            "retencionSGAE": "Retenció SGAE",
+            "asientosNumerados": "Seients numerats"
         }
     }
 }

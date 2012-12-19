@@ -1,5 +1,7 @@
 package es.uji.apps.par.model;
 
+import java.math.BigDecimal;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 import es.uji.apps.par.db.EventoDTO;
@@ -29,6 +31,10 @@ public class Evento
     private long tipoEvento;
     private String imagenSrc;
     private String imagenContentType;
+    private BigDecimal asientosNumerados;
+    private BigDecimal porcentajeIVA;
+    private BigDecimal ivaSGAE;
+    private BigDecimal retencionSGAE;
 
     public Evento()
     {
@@ -77,6 +83,11 @@ public class Evento
             this.parTipoEvento.setNombreVa(eventoDTO.getParTiposEvento().getNombreVa());
             this.tipoEvento = eventoDTO.getParTiposEvento().getId();
         }
+        
+        this.asientosNumerados = eventoDTO.getAsientosNumerados();
+        this.ivaSGAE = eventoDTO.getIvaSgae();
+        this.retencionSGAE = eventoDTO.getRetencionSgae();
+        this.porcentajeIVA = eventoDTO.getPorcentajeIva();
     }
 
     public Evento(String tituloEs, TipoEvento tipoEvento)
@@ -90,7 +101,8 @@ public class Evento
             String duracionEs, String premiosEs, String caracteristicasEs, String comentariosEs,
             String tituloVa, String descripcionVa, String companyiaVa, String interpretesVa,
             String duracionVa, String premiosVa, String caracteristicasVa, String comentariosVa,
-            byte[] dataBinary, String nombreArchivo, String mediaType, Integer tipoEventoId)
+            byte[] dataBinary, String nombreArchivo, String mediaType, Integer tipoEventoId,
+            BigDecimal porcentajeIVA, BigDecimal retencionSGAE, BigDecimal ivaSGAE, BigDecimal asientosNumerados)
     {
 
         this.tituloEs = tituloEs;
@@ -121,6 +133,11 @@ public class Evento
             this.parTipoEvento.setId(tipoEventoId);
             this.tipoEvento = tipoEventoId;
         }
+        
+        this.porcentajeIVA = porcentajeIVA;
+        this.retencionSGAE = retencionSGAE;
+        this.ivaSGAE = ivaSGAE;
+        this.asientosNumerados = asientosNumerados;
     }
 
     public long getId()
@@ -343,4 +360,35 @@ public class Evento
         return imagenSrc;
     }
 
+	public BigDecimal getAsientosNumerados() {
+		return asientosNumerados;
+	}
+
+	public void setAsientosNumerados(BigDecimal asientosNumerados) {
+		this.asientosNumerados = asientosNumerados;
+	}
+
+	public BigDecimal getPorcentajeIVA() {
+		return porcentajeIVA;
+	}
+
+	public void setPorcentajeIVA(BigDecimal porcentajeIVA) {
+		this.porcentajeIVA = porcentajeIVA;
+	}
+
+	public BigDecimal getIvaSGAE() {
+		return ivaSGAE;
+	}
+
+	public void setIvaSGAE(BigDecimal ivaSGAE) {
+		this.ivaSGAE = ivaSGAE;
+	}
+
+	public BigDecimal getRetencionSGAE() {
+		return retencionSGAE;
+	}
+
+	public void setRetencionSGAE(BigDecimal retencionSGAE) {
+		this.retencionSGAE = retencionSGAE;
+	}
 }

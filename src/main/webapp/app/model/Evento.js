@@ -28,6 +28,11 @@ Ext.define('Paranimf.model.Evento', {
       'imagenContentType',
       'imagenSrc',
 
+      'asientosNumerados',
+      'porcentajeIVA',
+      'retencionSGAE',
+      'ivaSGAE',
+
       {name: 'fechaInicio', type: 'date'},
       {name: 'fechaFin', type: 'date'}
    ]

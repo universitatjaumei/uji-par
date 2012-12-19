@@ -136,6 +136,7 @@ public class EventosResourceTest extends JerseyTest
         FormDataMultiPart f = new FormDataMultiPart();
         f.field("tituloEs", "titulo");
         f.field("tipoEvento", String.valueOf(tipoEvento.getId()));
+        f.field("asientosNumerados", "1");
 
         return f;
     }

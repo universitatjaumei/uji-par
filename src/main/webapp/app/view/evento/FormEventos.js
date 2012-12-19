@@ -190,6 +190,32 @@ Ext.define('Paranimf.view.evento.FormEventos', {
        allowBlank: true
       }]
    },
+
+  {
+    xtype: 'fieldset',
+    flex: 1,
+    title: UI.i18n.field.retenciones,
+    defaults: {
+        xtype: 'numberfield',
+        anchor: '100%',
+        spinUpEnabled: false,
+        spinDownEnabled: false,
+        minValue: 0
+    },
+    items: [{
+      fieldLabel: UI.i18n.field.porcentajeIVA,
+      name: 'porcentajeIVA',
+      allowBlank: true
+     }, {
+      fieldLabel: UI.i18n.field.ivaSGAE,
+      name: 'ivaSGAE',
+      allowBlank: true
+     }, {
+      fieldLabel: UI.i18n.field.retencionSGAE,
+      name: 'retencionSGAE',
+      allowBlank: true
+     }]
+  },  
      
   {
     fieldLabel: UI.i18n.field.type,
@@ -200,6 +226,22 @@ Ext.define('Paranimf.view.evento.FormEventos', {
     store: 'TiposEventosSinPaginar',
     queryMode: 'local',
     typeAhead: true
+  }, {
+    fieldLabel: UI.i18n.field.asientosNumerados,
+    name: 'asientosNumerados',
+    xtype: 'combobox',
+    displayField: 'name',
+    valueField : 'value',
+    queryMode: 'local',
+    allowBlank: false,
+    forceSelection:true,
+    store: new Ext.data.SimpleStore({
+      fields: ['value', 'name'],
+        data: [
+          [1, UI.i18n.message.si],
+          [0, UI.i18n.message.no]
+        ]
+    })
   }, {
     xtype: 'fieldset',
     title: UI.i18n.field.imagen,

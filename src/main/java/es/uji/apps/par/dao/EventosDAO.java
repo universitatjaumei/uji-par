@@ -45,7 +45,7 @@ public class EventosDAO
                         qEventoDTO.parTiposEvento, qEventoDTO.interpretesEs,
                         qEventoDTO.interpretesVa, qEventoDTO.premiosEs, qEventoDTO.premiosVa,
                         qEventoDTO.tituloEs, qEventoDTO.tituloVa, qEventoDTO.imagenSrc,
-                        qEventoDTO.imagenContentType));
+                        qEventoDTO.imagenContentType, qEventoDTO.asientosNumerados, qEventoDTO.retencionSgae, qEventoDTO.ivaSgae, qEventoDTO.porcentajeIva));
 
         return tuplesToParEventoDTO(listadoTuples);
 
@@ -99,6 +99,11 @@ public class EventosDAO
         parEventoDTO.setImagenContentType(tupla.get(qEventoDTO.imagenContentType));
 
         parEventoDTO.setId(tupla.get(qEventoDTO.id));
+        
+        parEventoDTO.setAsientosNumerados(tupla.get(qEventoDTO.asientosNumerados));
+        parEventoDTO.setIvaSgae(tupla.get(qEventoDTO.ivaSgae));
+        parEventoDTO.setRetencionSgae(tupla.get(qEventoDTO.retencionSgae));
+        parEventoDTO.setPorcentajeIva(tupla.get(qEventoDTO.porcentajeIva));
 
         return parEventoDTO;
     }
@@ -171,6 +176,11 @@ public class EventosDAO
 
         eventoDTO.setTituloEs(evento.getTituloEs());
         eventoDTO.setTituloVa(evento.getTituloVa());
+        
+        eventoDTO.setPorcentajeIva(evento.getPorcentajeIVA());
+        eventoDTO.setAsientosNumerados(evento.getAsientosNumerados());
+        eventoDTO.setRetencionSgae(evento.getRetencionSGAE());
+        eventoDTO.setIvaSgae(evento.getIvaSGAE());
 
         if (evento.getId() != 0)
             eventoDTO.setId(evento.getId());
