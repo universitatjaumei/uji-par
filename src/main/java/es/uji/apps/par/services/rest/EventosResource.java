@@ -123,10 +123,11 @@ public class EventosResource
     @Path("{id}/sesiones")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response add(@PathParam("id") Integer eventoId, Sesion sesion)
+    public Response add(@PathParam("id") Integer eventoId, Sesion sesion) throws GeneralPARException
     {
         Sesion newSesion = sesionesService.addSesion(eventoId, sesion);
-        return Response.ok().entity(new RestResponse(true, Collections.singletonList(newSesion)))
+        //TODO -> crear URL
+        return Response.created(URI.create("")).entity(new RestResponse(true, Collections.singletonList(newSesion)))
                 .build();
     }
 
@@ -180,7 +181,7 @@ public class EventosResource
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response update(@PathParam("id") Integer eventoId,
-            @PathParam("sesionId") Integer sesionId, Sesion sesion)
+            @PathParam("sesionId") Integer sesionId, Sesion sesion) throws GeneralPARException
     {
         sesion.setId(sesionId);
         sesionesService.updateSesion(eventoId, sesion);

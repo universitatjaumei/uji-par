@@ -28,16 +28,16 @@ public class LocalizacionesDAO
     private QLocalizacionDTO qParLocalizacionDTO = QLocalizacionDTO.localizacionDTO;
 
     @Transactional
-    public List<Localizacion> get()
+    public List<LocalizacionDTO> get()
     {
         JPAQuery query = new JPAQuery(entityManager);
 
-        List<Localizacion> localizacion = new ArrayList<Localizacion>();
+        List<LocalizacionDTO> localizacion = new ArrayList<LocalizacionDTO>();
 
         for (LocalizacionDTO localizacionDB : query.from(qParLocalizacionDTO).list(
                 qParLocalizacionDTO))
         {
-            localizacion.add(new Localizacion(localizacionDB));
+            localizacion.add(localizacionDB);
         }
 
         return localizacion;

@@ -1,13 +1,16 @@
 package es.uji.apps.par.services;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import es.uji.apps.par.CampoRequeridoException;
+import es.uji.apps.par.DateUtils;
+import es.uji.apps.par.FechasInvalidasException;
 import es.uji.apps.par.dao.SesionesDAO;
+import es.uji.apps.par.db.SesionDTO;
 import es.uji.apps.par.model.Sesion;
 
 @Service
@@ -18,7 +21,12 @@ public class SesionesService
 
     public List<Sesion> getSesiones(Integer eventoId)
     {
-        return sesionDAO.getSesiones(eventoId);
+    	List<Sesion> listaSesiones = new ArrayList<Sesion>();
+    	
+    	for (SesionDTO sesionDB: sesionDAO.getSesiones(eventoId)) {
+    		listaSesiones.add(new Sesion(sesionDB));
+    	}
+        return listaSesiones;
     }
 
     public void removeSesion(Integer id)
@@ -26,32 +34,39 @@ public class SesionesService
         sesionDAO.removeSesion(id);
     }
 
-    public Sesion addSesion(long eventoId, Sesion sesion)
+    public Sesion addSesion(long eventoId, Sesion sesion) throws CampoRequeridoException, FechasInvalidasException
     {
-        sesion.setFechaCelebracionWithDate(addStartEventTimeToDate(sesion.getFechaCelebracion(),
+    	checkRequiredFields(sesion);
+    	checkIfDatesAreValid(sesion);
+        sesion.setFechaCelebracionWithDate(DateUtils.addStartEventTimeToDate(sesion.getFechaCelebracion(),
                 sesion.getHoraCelebracion()));
         return sesionDAO.addSesion(eventoId, sesion);
     }
 
-    public void updateSesion(long eventoId, Sesion sesion)
+    private void checkIfDatesAreValid(Sesion sesion) throws FechasInvalidasException {
+		if (sesion.getFechaFinVentaOnline().getTime() < sesion.getFechaInicioVentaOnline().getTime())
+			throw new FechasInvalidasException(FechasInvalidasException.FECHA_INICIO_VENTA_POSTERIOR_FECHA_FIN_VENTA);
+		if (sesion.getFechaFinVentaOnline().getTime() > sesion.getFechaCelebracion().getTime())
+			throw new FechasInvalidasException(FechasInvalidasException.FECHA_FIN_VENTA_POSTERIOR_FECHA_CELEBRACION);
+	}
+
+	private void checkRequiredFields(Sesion sesion) throws CampoRequeridoException {
+		if (sesion.getFechaCelebracion() == null)
+			throw new CampoRequeridoException("Fecha de celebración");
+		if (sesion.getHoraCelebracion() == null)
+			throw new CampoRequeridoException("Hora de celebración");
+		if (sesion.getFechaInicioVentaOnline() == null)
+			throw new CampoRequeridoException("Fecha de inicio de la venta online");
+		if (sesion.getFechaFinVentaOnline() == null)
+			throw new CampoRequeridoException("Fecha de fin de la venta online");
+	}
+
+	public void updateSesion(long eventoId, Sesion sesion) throws CampoRequeridoException, FechasInvalidasException
     {
-        sesion.setFechaCelebracionWithDate(addStartEventTimeToDate(sesion.getFechaCelebracion(),
+		checkRequiredFields(sesion);
+		checkIfDatesAreValid(sesion);
+        sesion.setFechaCelebracionWithDate(DateUtils.addStartEventTimeToDate(sesion.getFechaCelebracion(),
                 sesion.getHoraCelebracion()));
         sesionDAO.updateSesion(eventoId, sesion);
-    }
-
-    private Date addStartEventTimeToDate(Date startDate, String hour)
-    {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(startDate);
-        String[] arrHoraMinutos = hour.split(":");
-
-        int hora = Integer.parseInt(arrHoraMinutos[0]);
-        int minutos = Integer.parseInt(arrHoraMinutos[1]);
-
-        cal.set(Calendar.HOUR_OF_DAY, hora);
-        cal.set(Calendar.MINUTE, minutos);
-
-        return cal.getTime();
     }
 }

@@ -1,5 +1,6 @@
 package es.uji.apps.par.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import es.uji.apps.par.CampoRequeridoException;
 import es.uji.apps.par.dao.LocalizacionesDAO;
+import es.uji.apps.par.db.LocalizacionDTO;
 import es.uji.apps.par.model.Localizacion;
 
 @Service
@@ -18,7 +20,12 @@ public class LocalizacionesService
 
     public List<Localizacion> get()
     {
-        return localizacionesDAO.get();
+    	List<Localizacion> listaLocalizaciones = new ArrayList<Localizacion>();
+    	
+    	for(LocalizacionDTO localizacionDB: localizacionesDAO.get())
+    		listaLocalizaciones.add(new Localizacion(localizacionDB));
+        
+    	return listaLocalizaciones;
     }
 
     public void remove(Integer id)

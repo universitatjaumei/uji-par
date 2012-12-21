@@ -28,16 +28,16 @@ public class SesionesDAO
     private QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
 
     @Transactional
-    public List<Sesion> getSesiones(long sesionId)
+    public List<SesionDTO> getSesiones(long eventoId)
     {
         JPAQuery query = new JPAQuery(entityManager);
 
-        List<Sesion> sesion = new ArrayList<Sesion>();
+        List<SesionDTO> sesion = new ArrayList<SesionDTO>();
 
         for (SesionDTO sesionDB : query.from(qSesionDTO)
-                .where(qSesionDTO.parEvento.id.eq(sesionId)).list(qSesionDTO))
+                .where(qSesionDTO.parEvento.id.eq(eventoId)).list(qSesionDTO))
         {
-            sesion.add(new Sesion(sesionDB));
+            sesion.add(sesionDB);
         }
 
         return sesion;
