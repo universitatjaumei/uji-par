@@ -20,7 +20,7 @@ Ext.define('Paranimf.view.usuario.FormUsuarios', {
       fieldLabel: UI.i18n.field.user,
       name: 'usuario'
    }, {
-      fieldLabel: UI.i18n.field.name,
+      fieldLabel: UI.i18n.field.name_va,
       name: 'nombre'
    }, {
       fieldLabel: UI.i18n.field.email,

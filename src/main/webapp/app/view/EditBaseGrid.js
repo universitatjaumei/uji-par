@@ -98,10 +98,13 @@ Ext.define('Paranimf.view.EditBaseGrid', {
       else {
          if (confirm(UI.i18n.message.sureDelete)) {
             var st = this.store;
-            this.store.getProxy().on('exception', function(proxy, resp, operation) {
-               alert(UI.i18n.error.element);
-               st.add(st.getRemovedRecords());
-            });
+            if (!this.store.getProxy().hasListener('exception')) {
+               this.store.getProxy().on('exception', function(proxy, resp, operation) {
+                  alert(UI.i18n.error.element);
+                  st.rejectChanges();
+                  //st.add(st.getRemovedRecords());
+               });
+            }
             this.store.remove(records);
             if (callback)
                callback(true);
