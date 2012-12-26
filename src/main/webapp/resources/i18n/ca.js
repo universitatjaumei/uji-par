@@ -26,7 +26,8 @@ UI =
             "deletedImage":"La imatge ha sigut esborrada satisfactòriament",
             "toolTipAvailableEspacios": "* Passar el ratolí sobre les columnes d'espais i dies per obtindre informació extra",
             "si": "Si",
-            "no": "No"
+            "no": "No",
+            "plantillaPrecios": "És obligatori seleccionar una plantilla de preus"
         },
         "storeWeekDay": {
             "wed": "Dimecres",
@@ -76,7 +77,9 @@ UI =
             "tipoEvento": "Gestió de tipus d'events",
             "eventos": "Gestió dels events",
             "sesiones": "Gestió de les sessions",
-            "localizaciones": "Gestió de les localitzacions"
+            "localizaciones": "Gestió de les localitzacions",
+            "plantillasprecios": "Gestió de les plantilles de preus",
+            "precios": "Gestió dels preus per localització i plantilla seleccionada"
         },
         
         "field": {
@@ -145,7 +148,12 @@ UI =
             "porcentajeIVA": "Percentatge IVA",
             "ivaSGAE": "IVA SGAE",
             "retencionSGAE": "Retenció SGAE",
-            "asientosNumerados": "Seients numerats"
+            "asientosNumerados": "Seients numerats",
+            "precio": "Preu",
+            "descuento": "Descompte",
+            "invitacion": "Invitació",
+            "localizacion": "Localització",
+            "plantillaprecios": "Plantilla de preus"
         }
     }
 }

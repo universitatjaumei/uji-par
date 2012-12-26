@@ -34,7 +34,7 @@ public class LocalizacionesDAO
 
         List<LocalizacionDTO> localizacion = new ArrayList<LocalizacionDTO>();
 
-        for (LocalizacionDTO localizacionDB : query.from(qParLocalizacionDTO).list(
+        for (LocalizacionDTO localizacionDB : query.from(qParLocalizacionDTO).orderBy(qParLocalizacionDTO.nombreVa.asc()).list(
                 qParLocalizacionDTO))
         {
             localizacion.add(localizacionDB);

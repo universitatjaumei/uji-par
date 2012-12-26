@@ -62,6 +62,8 @@ Ext.application({
                      xtype: 'panelEventos'
                   }, {
                      xtype: 'gridLocalizaciones'
+                  }, {
+                     xtype: 'panelPlantillas'
                   }],
                listeners: {
                   afterlayout: function(container, layout, opts) {

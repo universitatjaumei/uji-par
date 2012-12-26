@@ -1,5 +1,5 @@
 --------------------------------------------------------
---  File created - viernes-diciembre-07-2012   
+--  File created - miércoles-diciembre-26-2012   
 --------------------------------------------------------
 --------------------------------------------------------
 --  DDL for Sequence HIBERNATE_SEQUENCE
@@ -31,10 +31,10 @@
 	"DURACION_VA" VARCHAR2(255), 
 	"PREMIOS_VA" VARCHAR2(3500), 
 	"CARACTERISTICAS_VA" VARCHAR2(3500), 
-	"COMENTARIOS_VA" VARCHAR2(3500),
-	"ASIENTOS_NUMERADOS" NUMBER(1,0),
-	"PORCENTAJE_IVA" NUMBER,
-	"IVA_SGAE" NUMBER,
+	"COMENTARIOS_VA" VARCHAR2(3500), 
+	"ASIENTOS_NUMERADOS" NUMBER(1,0) DEFAULT 0, 
+	"PORCENTAJE_IVA" NUMBER, 
+	"IVA_SGAE" NUMBER, 
 	"RETENCION_SGAE" NUMBER
    ) ;
 --------------------------------------------------------
@@ -46,6 +46,26 @@
 	"NOMBRE_ES" VARCHAR2(255), 
 	"TOTAL_ENTRADAS" NUMBER, 
 	"NOMBRE_VA" VARCHAR2(255)
+   ) ;
+--------------------------------------------------------
+--  DDL for Table PAR_PLANTILLAS_PRECIOS
+--------------------------------------------------------
+
+  CREATE TABLE "PAR_PLANTILLAS_PRECIOS" 
+   (	"ID" NUMBER, 
+	"NOMBRE" VARCHAR2(255)
+   ) ;
+--------------------------------------------------------
+--  DDL for Table PAR_PRECIOS
+--------------------------------------------------------
+
+  CREATE TABLE "PAR_PRECIOS" 
+   (	"ID" NUMBER, 
+	"LOCALIZACION_ID" NUMBER, 
+	"PLANTILLA_ID" NUMBER, 
+	"PRECIO" NUMBER, 
+	"DESCUENTO" NUMBER, 
+	"INVITACION" NUMBER
    ) ;
 --------------------------------------------------------
 --  DDL for Table PAR_SESIONES
@@ -76,9 +96,9 @@
 
   CREATE TABLE "PAR_USUARIOS" 
    (	"ID" NUMBER, 
-	"NOMBRE" VARCHAR2(20), 
-	"USUARIO" VARCHAR2(20), 
-	"MAIL" VARCHAR2(20)
+	"NOMBRE" VARCHAR2(255), 
+	"USUARIO" VARCHAR2(255), 
+	"MAIL" VARCHAR2(255)
    ) ;
 --------------------------------------------------------
 --  Constraints for Table PAR_EVENTOS
@@ -100,6 +120,26 @@
   ALTER TABLE "PAR_LOCALIZACIONES" MODIFY ("ID" NOT NULL ENABLE);
  
   ALTER TABLE "PAR_LOCALIZACIONES" MODIFY ("NOMBRE_ES" NOT NULL ENABLE);
+--------------------------------------------------------
+--  Constraints for Table PAR_PLANTILLAS_PRECIOS
+--------------------------------------------------------
+
+  ALTER TABLE "PAR_PLANTILLAS_PRECIOS" ADD CONSTRAINT "PAR_PLANTILLAS_PRECIOS_PK" PRIMARY KEY ("ID") ENABLE;
+ 
+  ALTER TABLE "PAR_PLANTILLAS_PRECIOS" MODIFY ("ID" NOT NULL ENABLE);
+ 
+  ALTER TABLE "PAR_PLANTILLAS_PRECIOS" MODIFY ("NOMBRE" NOT NULL ENABLE);
+--------------------------------------------------------
+--  Constraints for Table PAR_PRECIOS
+--------------------------------------------------------
+
+  ALTER TABLE "PAR_PRECIOS" ADD CONSTRAINT "PAR_PRECIOS_PK" PRIMARY KEY ("ID") ENABLE;
+ 
+  ALTER TABLE "PAR_PRECIOS" ADD CONSTRAINT "PAR_PRECIOS_UK1" UNIQUE ("LOCALIZACION_ID", "PLANTILLA_ID") ENABLE;
+ 
+  ALTER TABLE "PAR_PRECIOS" MODIFY ("ID" NOT NULL ENABLE);
+ 
+  ALTER TABLE "PAR_PRECIOS" MODIFY ("LOCALIZACION_ID" NOT NULL ENABLE);
 --------------------------------------------------------
 --  Constraints for Table PAR_SESIONES
 --------------------------------------------------------
@@ -148,6 +188,24 @@
   CREATE UNIQUE INDEX "PAR_LOCALIZACIONES_PK" ON "PAR_LOCALIZACIONES" ("ID") 
   ;
 --------------------------------------------------------
+--  DDL for Index PAR_PLANTILLAS_PRECIOS_PK
+--------------------------------------------------------
+
+  CREATE UNIQUE INDEX "PAR_PLANTILLAS_PRECIOS_PK" ON "PAR_PLANTILLAS_PRECIOS" ("ID") 
+  ;
+--------------------------------------------------------
+--  DDL for Index PAR_PRECIOS_PK
+--------------------------------------------------------
+
+  CREATE UNIQUE INDEX "PAR_PRECIOS_PK" ON "PAR_PRECIOS" ("ID") 
+  ;
+--------------------------------------------------------
+--  DDL for Index PAR_PRECIOS_UK1
+--------------------------------------------------------
+
+  CREATE UNIQUE INDEX "PAR_PRECIOS_UK1" ON "PAR_PRECIOS" ("LOCALIZACION_ID", "PLANTILLA_ID") 
+  ;
+--------------------------------------------------------
 --  DDL for Index PAR_SESION_PK
 --------------------------------------------------------
 
@@ -177,6 +235,15 @@
 
   ALTER TABLE "PAR_EVENTOS" ADD CONSTRAINT "PAR_EVENTOS_PAR_TIPOS_EVE_FK1" FOREIGN KEY ("TIPO_EVENTO_ID")
 	  REFERENCES "PAR_TIPOS_EVENTO" ("ID") ENABLE;
+--------------------------------------------------------
+--  Ref Constraints for Table PAR_PRECIOS
+--------------------------------------------------------
+
+  ALTER TABLE "PAR_PRECIOS" ADD CONSTRAINT "PAR_PRECIOS_PAR_LOCALIZAC_FK1" FOREIGN KEY ("LOCALIZACION_ID")
+	  REFERENCES "PAR_LOCALIZACIONES" ("ID") ON DELETE CASCADE ENABLE;
+ 
+  ALTER TABLE "PAR_PRECIOS" ADD CONSTRAINT "PAR_PRECIOS_PAR_PLANTILLA_FK1" FOREIGN KEY ("PLANTILLA_ID")
+	  REFERENCES "PAR_PLANTILLAS_PRECIOS" ("ID") ON DELETE CASCADE ENABLE;
 --------------------------------------------------------
 --  Ref Constraints for Table PAR_SESIONES
 --------------------------------------------------------
@@ -210,6 +277,32 @@ END;
 
 /
 ALTER TRIGGER "PAR_LOCALIZACIONES_TRG" ENABLE;
+--------------------------------------------------------
+--  DDL for Trigger PAR_PLANTILLAS_PRECIOS_TRG
+--------------------------------------------------------
+
+  CREATE OR REPLACE TRIGGER "PAR_PLANTILLAS_PRECIOS_TRG" 
+BEFORE INSERT ON PAR_PLANTILLAS_PRECIOS
+FOR EACH ROW 
+BEGIN
+  SELECT HIBERNATE_SEQUENCE.NEXTVAL INTO :NEW.ID FROM DUAL;
+END;
+
+/
+ALTER TRIGGER "PAR_PLANTILLAS_PRECIOS_TRG" ENABLE;
+--------------------------------------------------------
+--  DDL for Trigger PAR_PRECIOS_TRG
+--------------------------------------------------------
+
+  CREATE OR REPLACE TRIGGER "PAR_PRECIOS_TRG" 
+BEFORE INSERT ON PAR_PRECIOS
+FOR EACH ROW 
+BEGIN
+  SELECT HIBERNATE_SEQUENCE.NEXTVAL INTO :NEW.ID FROM DUAL;
+END;
+
+/
+ALTER TRIGGER "PAR_PRECIOS_TRG" ENABLE;
 --------------------------------------------------------
 --  DDL for Trigger PAR_SESIONES_TRIGGER
 --------------------------------------------------------

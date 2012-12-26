@@ -9,6 +9,8 @@
     <class>es.uji.apps.par.db.SesionDTO</class>
     <class>es.uji.apps.par.db.TipoEventoDTO</class>
     <class>es.uji.apps.par.db.UsuarioDTO</class>
+    <class>es.uji.apps.par.db.PlantillaPreciosDTO</class>
+    <class>es.uji.apps.par.db.PrecioDTO</class>
   </persistence-unit>
   
 </persistence>

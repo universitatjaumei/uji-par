@@ -1,5 +1,7 @@
 package es.uji.apps.par.model;
 
+import java.math.BigDecimal;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 import es.uji.apps.par.db.LocalizacionDTO;
@@ -12,10 +14,30 @@ public class Localizacion
     private String nombreVa;
     private int totalEntradas;
 
+    public static Localizacion localizacionDTOtoLocalizacion(LocalizacionDTO localizacionDTO) {
+    	Localizacion localizacion = new Localizacion();
+    	localizacion.setId(localizacionDTO.getId());
+    	localizacion.setNombreEs(localizacionDTO.getNombreEs());
+    	localizacion.setNombreVa(localizacionDTO.getNombreVa());
+    	localizacion.setTotalEntradas(localizacionDTO.getTotalEntradas().intValue());
+    	
+    	return localizacion;
+    }
+    
+    public static LocalizacionDTO localizacionToLocalizacionDTO(Localizacion localizacion) {
+    	LocalizacionDTO localizacionDTO = new LocalizacionDTO();
+    	localizacionDTO.setId(localizacion.getId());
+    	localizacionDTO.setNombreEs(localizacion.getNombreEs());
+    	localizacionDTO.setNombreVa(localizacion.getNombreVa());
+    	localizacionDTO.setTotalEntradas(new BigDecimal(localizacion.getTotalEntradas()));
+    	
+    	return localizacionDTO;
+    }
+    
     public Localizacion()
     {
     }
-
+    
     public Localizacion(long id)
     {
         this.id = id;
