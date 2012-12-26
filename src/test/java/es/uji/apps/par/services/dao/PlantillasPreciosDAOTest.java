@@ -9,8 +9,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import es.uji.apps.par.dao.PlantillasPreciosDAO;
-import es.uji.apps.par.model.PlantillaPrecios;
+import es.uji.apps.par.dao.PlantillasDAO;
+import es.uji.apps.par.model.Plantilla;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @TransactionConfiguration(transactionManager = "transactionManager")
@@ -18,7 +18,7 @@ import es.uji.apps.par.model.PlantillaPrecios;
 public class PlantillasPreciosDAOTest {
 
 	@Autowired
-	PlantillasPreciosDAO plantillasPreciosDAO;
+	PlantillasDAO plantillasPreciosDAO;
 	
 	@Test
     @Transactional
@@ -31,27 +31,27 @@ public class PlantillasPreciosDAOTest {
     @Transactional
     public void addPlantilla()
     {
-        PlantillaPrecios parPlantillaPrecio = preparaPlantilla();
-        PlantillaPrecios plantilla = plantillasPreciosDAO.add(parPlantillaPrecio);
+        Plantilla parPlantillaPrecio = preparaPlantilla();
+        Plantilla plantilla = plantillasPreciosDAO.add(parPlantillaPrecio);
 
         Assert.assertNotNull(plantilla.getId());
     }
 
-    private PlantillaPrecios preparaPlantilla()
+    private Plantilla preparaPlantilla()
     {
-        return new PlantillaPrecios("Nombre Localizacion");
+        return new Plantilla("Nombre Localizacion");
     }
 
     @Test
     @Transactional
     public void updatePlantillaPrecio()
     {
-        PlantillaPrecios plantilla = plantillasPreciosDAO.add(preparaPlantilla());
+        Plantilla plantilla = plantillasPreciosDAO.add(preparaPlantilla());
 
         Assert.assertNotNull(plantilla.getId());
 
         plantilla.setNombre("Prueba2");
-        PlantillaPrecios plantillaActualizada = plantillasPreciosDAO.update(plantilla);
+        Plantilla plantillaActualizada = plantillasPreciosDAO.update(plantilla);
         Assert.assertEquals(plantilla.getId(), plantillaActualizada.getId());
     }
 }

@@ -13,13 +13,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import es.uji.apps.par.dao.EventosDAO;
 import es.uji.apps.par.dao.LocalizacionesDAO;
-import es.uji.apps.par.dao.PlantillasPreciosDAO;
-import es.uji.apps.par.dao.PreciosDAO;
+import es.uji.apps.par.dao.PlantillasDAO;
+import es.uji.apps.par.dao.PreciosPlantillaDAO;
 import es.uji.apps.par.dao.TiposEventosDAO;
 import es.uji.apps.par.model.Evento;
 import es.uji.apps.par.model.Localizacion;
-import es.uji.apps.par.model.PlantillaPrecios;
-import es.uji.apps.par.model.Precio;
+import es.uji.apps.par.model.Plantilla;
+import es.uji.apps.par.model.PreciosPlantilla;
 import es.uji.apps.par.model.TipoEvento;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -28,7 +28,7 @@ import es.uji.apps.par.model.TipoEvento;
 public class PreciosDAOTest {
 
 	@Autowired
-	PreciosDAO preciosDAO;
+	PreciosPlantillaDAO preciosDAO;
 	
 	@Autowired
 	LocalizacionesDAO localizacionesDAO;
@@ -40,7 +40,7 @@ public class PreciosDAOTest {
 	EventosDAO eventosDAO;
 	
 	@Autowired
-	PlantillasPreciosDAO plantillaPreciosDAO;
+	PlantillasDAO plantillaPreciosDAO;
 	
 	@Test
     @Transactional
@@ -53,13 +53,13 @@ public class PreciosDAOTest {
     @Transactional
     public void addPrecio()
     {
-        Precio parPrecio = preparaPrecio();
-        Precio precio = preciosDAO.add(parPrecio);
+        PreciosPlantilla parPrecio = preparaPrecio();
+        PreciosPlantilla precio = preciosDAO.add(parPrecio);
 
         Assert.assertNotNull(precio.getId());
     }
 
-    private Precio preparaPrecio()
+    private PreciosPlantilla preparaPrecio()
     {
     	Localizacion localizacion = new Localizacion("Nombre");
     	localizacion = localizacionesDAO.add(localizacion);
@@ -70,23 +70,23 @@ public class PreciosDAOTest {
     	Evento evento = new Evento("Evento", tipoEvento);
     	evento = eventosDAO.addEvento(evento);
     	
-    	PlantillaPrecios plantillaPrecios = new PlantillaPrecios("test");
+    	Plantilla plantillaPrecios = new Plantilla("test");
     	plantillaPrecios = plantillaPreciosDAO.add(plantillaPrecios);
     	
-        return new Precio(Localizacion.localizacionDTOtoLocalizacion(localizacionesDAO.get().get(0)), 
-        		PlantillaPrecios.plantillaPreciosDTOtoPlantillaPrecios(plantillaPreciosDAO.get().get(0)));
+        return new PreciosPlantilla(Localizacion.localizacionDTOtoLocalizacion(localizacionesDAO.get().get(0)), 
+        		Plantilla.plantillaPreciosDTOtoPlantillaPrecios(plantillaPreciosDAO.get().get(0)));
     }
 
     @Test
     @Transactional
     public void updatePrecio()
     {
-        Precio precio = preciosDAO.add(preparaPrecio());
+        PreciosPlantilla precio = preciosDAO.add(preparaPrecio());
 
         Assert.assertNotNull(precio.getId());
 
         precio.setInvitacion(new BigDecimal(1));
-        Precio precioActualizado = preciosDAO.update(precio);
+        PreciosPlantilla precioActualizado = preciosDAO.update(precio);
         Assert.assertEquals(precio.getId(), precioActualizado.getId());
         Assert.assertEquals(1, precioActualizado.getInvitacion().intValue());
     }

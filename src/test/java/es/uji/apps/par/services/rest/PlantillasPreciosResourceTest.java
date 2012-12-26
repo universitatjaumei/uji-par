@@ -25,7 +25,7 @@ import com.sun.jersey.test.framework.spi.container.grizzly.web.GrizzlyWebTestCon
 
 import es.uji.apps.par.CampoRequeridoException;
 import es.uji.apps.par.ResponseMessage;
-import es.uji.apps.par.model.PlantillaPrecios;
+import es.uji.apps.par.model.Plantilla;
 
 public class PlantillasPreciosResourceTest extends JerseyTest {
 	private WebResource resource;
@@ -63,9 +63,9 @@ public class PlantillasPreciosResourceTest extends JerseyTest {
         return new GrizzlyWebTestContainerFactory();
     }
     
-    private PlantillaPrecios preparaPlantilla()
+    private Plantilla preparaPlantilla()
     {
-        return new PlantillaPrecios("Prueba");
+        return new Plantilla("Prueba");
     }
 
     @Test
@@ -82,7 +82,7 @@ public class PlantillasPreciosResourceTest extends JerseyTest {
     @Test
     public void addPlantillaWithoutNombre()
     {
-        PlantillaPrecios plantilla = preparaPlantilla();
+        Plantilla plantilla = preparaPlantilla();
         plantilla.setNombre(null);
 
         ClientResponse response = resource.post(ClientResponse.class, plantilla);
@@ -104,7 +104,7 @@ public class PlantillasPreciosResourceTest extends JerseyTest {
     @Test
     public void addPlantilla()
     {
-        PlantillaPrecios plantillaPrecios = preparaPlantilla();
+        Plantilla plantillaPrecios = preparaPlantilla();
         ClientResponse response = resource.post(ClientResponse.class, plantillaPrecios);
         Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
         RestResponse restResponse = response.getEntity(new GenericType<RestResponse>()
@@ -119,7 +119,7 @@ public class PlantillasPreciosResourceTest extends JerseyTest {
     @Test
     public void updatePlantilla()
     {
-        PlantillaPrecios plantilla = preparaPlantilla();
+        Plantilla plantilla = preparaPlantilla();
         ClientResponse response = resource.post(ClientResponse.class, plantilla);
         Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
         RestResponse restResponse = response.getEntity(new GenericType<RestResponse>()
@@ -144,7 +144,7 @@ public class PlantillasPreciosResourceTest extends JerseyTest {
     @Test
     public void updatePlantillaAndRemoveNombre()
     {
-        PlantillaPrecios plantilla = preparaPlantilla();
+        Plantilla plantilla = preparaPlantilla();
         ClientResponse response = resource.post(ClientResponse.class, plantilla);
         Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
         RestResponse restResponse = response.getEntity(new GenericType<RestResponse>()

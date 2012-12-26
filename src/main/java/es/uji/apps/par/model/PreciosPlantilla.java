@@ -4,34 +4,34 @@ import java.math.BigDecimal;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import es.uji.apps.par.db.PrecioDTO;
+import es.uji.apps.par.db.PreciosPlantillaDTO;
 
 @XmlRootElement
-public class Precio {
+public class PreciosPlantilla {
 
 	private long id;
 	private Localizacion localizacion;
-	private PlantillaPrecios plantillaPrecios;
+	private Plantilla plantillaPrecios;
 	private BigDecimal descuento;
 	private BigDecimal invitacion;
 	private BigDecimal precio;
 	
-	public Precio() {
+	public PreciosPlantilla() {
 		
 	}
 	
-	public Precio(Localizacion localizacion, PlantillaPrecios plantilla) {
+	public PreciosPlantilla(Localizacion localizacion, Plantilla plantilla) {
 		this.plantillaPrecios = plantilla;
 		this.localizacion = localizacion;
 	}
 	
-	public Precio(PrecioDTO precio) {
-		this.id = precio.getId();
-		this.localizacion = Localizacion.localizacionDTOtoLocalizacion(precio.getParLocalizacione());
-		this.plantillaPrecios = PlantillaPrecios.plantillaPreciosDTOtoPlantillaPrecios(precio.getParPlantillasPrecio());
-		this.descuento = precio.getDescuento();
-		this.invitacion = precio.getInvitacion();
-		this.precio = precio.getPrecio();
+	public PreciosPlantilla(PreciosPlantillaDTO preciosPlantilla) {
+		this.id = preciosPlantilla.getId();
+		this.localizacion = Localizacion.localizacionDTOtoLocalizacion(preciosPlantilla.getParLocalizacione());
+		this.plantillaPrecios = Plantilla.plantillaPreciosDTOtoPlantillaPrecios(preciosPlantilla.getParPlantilla());
+		this.descuento = preciosPlantilla.getDescuento();
+		this.invitacion = preciosPlantilla.getInvitacion();
+		this.precio = preciosPlantilla.getPrecio();
 	}
 
 	public long getId() {
@@ -50,11 +50,11 @@ public class Precio {
 		this.localizacion = localizacion;
 	}
 	
-	public PlantillaPrecios getPlantillaPrecios() {
+	public Plantilla getPlantillaPrecios() {
 		return plantillaPrecios;
 	}
 
-	public void setPlantillaPrecios(PlantillaPrecios plantillaPrecios) {
+	public void setPlantillaPrecios(Plantilla plantillaPrecios) {
 		this.plantillaPrecios = plantillaPrecios;
 	}
 	

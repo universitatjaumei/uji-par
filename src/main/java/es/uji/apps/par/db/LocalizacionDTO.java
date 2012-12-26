@@ -29,9 +29,9 @@ public class LocalizacionDTO implements Serializable {
 	@Column(name="TOTAL_ENTRADAS")
 	private BigDecimal totalEntradas;
 
-	//bi-directional many-to-one association to PrecioDTO
+	//bi-directional many-to-one association to PreciosPlantillaDTO
 	@OneToMany(mappedBy="parLocalizacione")
-	private List<PrecioDTO> parPrecios;
+	private List<PreciosPlantillaDTO> parPreciosPlantillas;
 
 	public LocalizacionDTO() {
 	}
@@ -68,12 +68,12 @@ public class LocalizacionDTO implements Serializable {
 		this.totalEntradas = totalEntradas;
 	}
 
-	public List<PrecioDTO> getParPrecios() {
-		return this.parPrecios;
+	public List<PreciosPlantillaDTO> getParPreciosPlantillas() {
+		return this.parPreciosPlantillas;
 	}
 
-	public void setParPrecios(List<PrecioDTO> parPrecios) {
-		this.parPrecios = parPrecios;
+	public void setParPreciosPlantillas(List<PreciosPlantillaDTO> parPreciosPlantillas) {
+		this.parPreciosPlantillas = parPreciosPlantillas;
 	}
 
 }

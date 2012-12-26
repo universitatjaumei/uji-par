@@ -17,19 +17,19 @@ import javax.ws.rs.core.Response;
 import com.sun.jersey.api.core.InjectParam;
 
 import es.uji.apps.par.GeneralPARException;
-import es.uji.apps.par.model.PlantillaPrecios;
-import es.uji.apps.par.model.Precio;
-import es.uji.apps.par.services.PlantillaPreciosService;
-import es.uji.apps.par.services.PreciosService;
+import es.uji.apps.par.model.Plantilla;
+import es.uji.apps.par.model.PreciosPlantilla;
+import es.uji.apps.par.services.PlantillasService;
+import es.uji.apps.par.services.PreciosPlantillaService;
 
 @Path("plantillaprecios")
 public class PlantillasPreciosResource {
 
 	@InjectParam
-    private PlantillaPreciosService plantillaPreciosService;
+    private PlantillasService plantillaPreciosService;
 	
 	@InjectParam
-	private PreciosService preciosService;
+	private PreciosPlantillaService preciosService;
 	
 	@GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -50,9 +50,9 @@ public class PlantillasPreciosResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response add(PlantillaPrecios plantillaPrecios) throws GeneralPARException
+    public Response add(Plantilla plantillaPrecios) throws GeneralPARException
     {
-        PlantillaPrecios newPlantillaPrecios = plantillaPreciosService.add(plantillaPrecios);
+        Plantilla newPlantillaPrecios = plantillaPreciosService.add(plantillaPrecios);
         // TODO crear URI
         return Response.created(URI.create(""))
                 .entity(new RestResponse(true, Collections.singletonList(newPlantillaPrecios))).build();
@@ -62,7 +62,7 @@ public class PlantillasPreciosResource {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response update(@PathParam("id") String id, PlantillaPrecios plantillaPrecios) throws GeneralPARException
+    public Response update(@PathParam("id") String id, Plantilla plantillaPrecios) throws GeneralPARException
     {
     	plantillaPrecios.setId(Long.valueOf(id));
     	plantillaPreciosService.update(plantillaPrecios);
@@ -91,9 +91,9 @@ public class PlantillasPreciosResource {
     @Path("{plantillaId}/precios")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addPrecio(@PathParam("plantillaId") String plantillaId, Precio precio) throws GeneralPARException
+    public Response addPrecio(@PathParam("plantillaId") String plantillaId, PreciosPlantilla precio) throws GeneralPARException
     {
-        Precio newPrecio = preciosService.add(precio);
+        PreciosPlantilla newPrecio = preciosService.add(precio);
         // TODO crear URI
         return Response.created(URI.create(""))
                 .entity(new RestResponse(true, Collections.singletonList(newPrecio))).build();
@@ -103,7 +103,7 @@ public class PlantillasPreciosResource {
     @Path("{plantillaId}/precios/{precioId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updatePrecio(@PathParam("plantillaId") String plantillaId, @PathParam("precioId") String precioId, Precio precio) throws GeneralPARException
+    public Response updatePrecio(@PathParam("plantillaId") String plantillaId, @PathParam("precioId") String precioId, PreciosPlantilla precio) throws GeneralPARException
     {
     	precio.setId(Long.valueOf(precioId));
     	preciosService.update(precio);
