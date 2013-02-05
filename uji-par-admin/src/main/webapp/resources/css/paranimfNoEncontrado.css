@@ -1,0 +1,103 @@
+html, body {
+   height:100%;
+}
+
+body {
+   margin: 0;
+   padding: 0;
+   height: 100%;
+   background-color: #E8EBED !important;
+}
+
+div {
+   display: block;
+}
+
+.contenedor {
+   height: 100%;
+   width:100%;
+   margin: 0 auto;
+   min-height: 100%;
+   overflow: hidden;
+}
+.nav {
+   background-color: #333;
+   color: #fff;
+   width: 215px;
+   float: left;
+   /*margin-left: -100%;*/
+   height: 100%;
+}
+
+.nav .paranimf_logo {
+   padding-top: 1em;
+   padding-bottom: 1em;
+   clear: both;
+   text-align: center;
+}
+
+.content {
+   margin-left: 215px;
+   height: 100%;
+   color: #333;
+   margin-top: 0px;
+   padding-left: 20px;
+   padding-right: 20px;
+   padding-top: 0px;
+   background-color: #E8EBED !important;
+}
+
+.cabecera {
+   margin-top: 20px;
+   height: 30px;
+   width: 100%;
+   color: #fff;
+   border-color: #A8B0B8;
+   border-width: 0;
+   border-style: solid;
+   border-width: 0;
+   background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #188AE5), color-stop(100%, #167CCE));
+   background-image: -webkit-linear-gradient(top, #188AE5, #167CCE 100%);
+   background-image: -moz-linear-gradient(top, #188AE5, #167CCE 100%);
+   background-image: -o-linear-gradient(top, #188AE5, #167CCE 100%);
+   background-image: -ms-linear-gradient(top, #188AE5, #167CCE 100%);
+   background-image: linear-gradient(top, #188AE5, #167CCE 100%);
+   font-family: "Helvetica Neue", Arial, Verdana, sans-serif;
+   font-size: 12pt;
+   margin-bottom: 1em;
+}
+
+.cabecera div {
+   margin-left: 10px;
+   margin-top: 10px;
+}
+
+.logout {
+   margin-right:1em;
+   font-weight: bold;
+   margin: 0;
+   padding: 0;
+   text-align: right;
+   /*margin-top:5px;*/
+}
+
+.logout input{
+   -webkit-border-radius: 3px;
+   -moz-border-radius: 3px;
+   -ms-border-radius: 3px;
+   -o-border-radius: 3px;
+   border-radius: 3px;
+   padding: 3px 6px 4px 6px;
+   border-width: 1px;
+   border-style: solid;
+   background-image: none;
+   background-color: #1369AE;
+   background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #2591E8), color-stop(3%, #1574C0), color-stop(100%, #115D9B));
+   background-image: -webkit-linear-gradient(top, #2591E8, #1574C0 3%, #115D9B);
+   background-image: -moz-linear-gradient(top, #2591E8, #1574C0 3%, #115D9B);
+   background-image: -o-linear-gradient(top, #2591E8, #1574C0 3%, #115D9B);
+   background-image: -ms-linear-gradient(top, #2591E8, #1574C0 3%, #115D9B);
+   background-image: linear-gradient(top, #2591E8, #1574C0 3%, #115D9B);
+   border-color: #093152;
+   color: #fff;
+}
