@@ -21,7 +21,7 @@ import com.sun.jersey.multipart.FormDataBodyPart;
 import com.sun.jersey.multipart.FormDataParam;
 
 import es.uji.apps.par.GeneralPARException;
-import es.uji.apps.par.ImagenNoEncontradaException;
+import es.uji.apps.par.EventoNoEncontradoException;
 import es.uji.apps.par.model.Evento;
 import es.uji.apps.par.model.Sesion;
 import es.uji.apps.par.services.EventosService;
@@ -53,7 +53,7 @@ public class EventosResource
 
             return Response.ok(evento.getImagen()).type(evento.getImagenContentType()).build();
         }
-        catch (ImagenNoEncontradaException e)
+        catch (EventoNoEncontradoException e)
         {
             return Response.noContent().build();
         }
