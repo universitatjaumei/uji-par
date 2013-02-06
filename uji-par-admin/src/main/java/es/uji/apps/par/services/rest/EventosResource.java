@@ -64,7 +64,7 @@ public class EventosResource
     @Produces(MediaType.APPLICATION_JSON)
     public Response getSesiones(@PathParam("id") Integer eventoId)
     {
-        return Response.ok().entity(new RestResponse(true, sesionesService.getSesiones(eventoId)))
+        return Response.ok().entity(new RestResponse(true, sesionesService.getSesionesDateEnSegundos(eventoId)))
                 .build();
     }
 
