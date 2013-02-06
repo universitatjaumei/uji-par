@@ -11,6 +11,7 @@ import javax.ws.rs.core.Response;
 
 import com.sun.jersey.api.core.InjectParam;
 
+import es.uji.apps.par.Constantes;
 import es.uji.apps.par.EventoNoEncontradoException;
 import es.uji.apps.par.model.Evento;
 import es.uji.apps.par.model.Sesion;
@@ -22,8 +23,6 @@ import es.uji.commons.web.template.Template;
 @Path("evento")
 public class EventosResource
 {
-    private static final String PLANTILLAS_DIR = "plantillas/";
-
     @InjectParam
     private EventosService eventosService;
 
@@ -38,7 +37,7 @@ public class EventosResource
         Evento evento = eventosService.getEvento(id);
         List<Sesion> sesiones = sesionesService.getSesiones(id);
 
-        Template template = new HTMLTemplate(PLANTILLAS_DIR + "eventoDetalle");
+        Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "eventoDetalle");
         template.put("evento", evento);
         template.put("sesiones", sesiones);
 
