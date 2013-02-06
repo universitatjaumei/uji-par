@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" type="text/css" href="../../css/estilo.css"></link>
+</head>
+<body>
+	<h1>Localización de las entradas</h1>
+
+	<div class="">
+		<h1 th:text="${evento.tituloEs}"></h1>
+		Sesión: <span th:text="${#dates.format(sesion.fechaCelebracion, 'dd/MM/yyyy')}"></span>
+		<span th:text="${sesion.horaCelebracion}"></span>
+		<span th:text="${sesion.canalInternet}"></span>
+	</div>
+		
+	<form action="" method="POST">
+		<h3>Plano del Paraninfo</h3>
+		<div class="entrada-plano"></div>
+		<h3>Datos personales</h3>
+		<div class="entrada-datos">
+			<label>Nombre</label> 
+			<input type="text" name="nombre" placeholder="Nombre"/> 
+			<label>Apellidos</label> 
+			<input type="text"	name="apellidos" placeholder="Apellidos"/>
+			<label>Teléfono confirmación</label> 
+			<input type="text"	name="telefono" placeholder="Teléfono"/>
+			<label>Email</label> 
+			<input type="text"	name="email" placeholder="Email"/>
+		</div>
+		<h3>Tipo de entrada</h3>
+		<div class="entrada-datos">
+			<input type="radio" name="tipo" value="normal"/>Normal
+			<input type="radio" name="tipo" value="descuento"/>Descuento
+		</div>
+		<input type="submit" value="Comprar"/>
+	</form>
+</body>
+</html>
