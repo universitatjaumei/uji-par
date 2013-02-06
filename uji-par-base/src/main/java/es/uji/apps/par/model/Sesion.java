@@ -33,10 +33,10 @@ public class Sesion
     {
         this.id = sesionDTO.getId();
         this.evento = sesionDTO.getParEvento();
-        this.fechaCelebracion = new Date(sesionDTO.getFechaCelebracion().getTime() / 1000);
+        this.fechaCelebracion = new Date(sesionDTO.getFechaCelebracion().getTime());
         this.fechaInicioVentaOnline = new Date(
-                sesionDTO.getFechaInicioVentaOnline().getTime() / 1000);
-        this.fechaFinVentaOnline = new Date(sesionDTO.getFechaFinVentaOnline().getTime() / 1000);
+                sesionDTO.getFechaInicioVentaOnline().getTime());
+        this.fechaFinVentaOnline = new Date(sesionDTO.getFechaFinVentaOnline().getTime());
         this.horaAperturaPuertas = sesionDTO.getHoraApertura();
         this.canalInternet = sesionDTO.getCanalInternet();
         this.canalTaquilla = sesionDTO.getCanalTaquilla();
@@ -141,6 +141,16 @@ public class Sesion
     public void setFechaFinVentaOnline(String fechaFinVentaOnline)
     {
         this.fechaFinVentaOnline = DateUtils.spanishStringToDate(fechaFinVentaOnline);
+    }
+    
+    public void setFechaInicioVentaOnlineWithDate(Date fechaInicioVentaOnline)
+    {
+        this.fechaInicioVentaOnline = fechaInicioVentaOnline;
+    }
+
+    public void setFechaFinVentaOnlineWithDate(Date fechaFinVentaOnline)
+    {
+        this.fechaFinVentaOnline = fechaFinVentaOnline;
     }
 
     public String getHoraCelebracion()

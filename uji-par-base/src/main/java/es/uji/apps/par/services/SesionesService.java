@@ -1,6 +1,7 @@
 package es.uji.apps.par.services;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,22 @@ public class SesionesService
     		listaSesiones.add(new Sesion(sesionDB));
     	}
         return listaSesiones;
+    }
+    
+    
+    // Para el Ext que espera recibir segundos en vez de milisegundos
+    public List<Sesion> getSesionesDateEnSegundos(Integer eventoId)
+    {
+        List<Sesion> sesiones = getSesiones(eventoId);
+        
+        for (Sesion sesion : sesiones)
+        {
+            sesion.setFechaCelebracionWithDate(new Date(sesion.getFechaCelebracion().getTime()/1000));
+            sesion.setFechaInicioVentaOnlineWithDate(new Date(sesion.getFechaInicioVentaOnline().getTime()/1000));
+            sesion.setFechaFinVentaOnlineWithDate(new Date(sesion.getFechaFinVentaOnline().getTime()/1000));
+        }
+        
+        return sesiones;
     }
 
     public void removeSesion(Integer id)
