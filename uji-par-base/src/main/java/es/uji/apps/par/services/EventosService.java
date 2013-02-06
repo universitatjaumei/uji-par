@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.uji.apps.par.CampoRequeridoException;
-import es.uji.apps.par.ImagenNoEncontradaException;
+import es.uji.apps.par.EventoNoEncontradoException;
 import es.uji.apps.par.dao.EventosDAO;
 import es.uji.apps.par.db.EventoDTO;
 import es.uji.apps.par.model.Evento;
@@ -54,14 +54,14 @@ public class EventosService
         eventosDAO.updateEvento(evento);
     }
 
-    public Evento getEvento(Integer eventoId) throws ImagenNoEncontradaException
+    public Evento getEvento(Integer eventoId) throws EventoNoEncontradoException
     {
         List<EventoDTO> listaEventosDTO = eventosDAO.getEventoDTO(eventoId.longValue());
 
         if (listaEventosDTO.size() > 0)
             return new Evento(listaEventosDTO.get(0), true);
         else
-            throw new ImagenNoEncontradaException(eventoId);
+            throw new EventoNoEncontradoException(eventoId);
     }
 
     public void removeImagen(Integer eventoId)
