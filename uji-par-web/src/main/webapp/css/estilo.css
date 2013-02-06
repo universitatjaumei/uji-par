@@ -1,0 +1,22 @@
+.evento-imagen {
+	float: left;
+	margin-right: 10px;
+}
+
+.evento-imagen img {
+	width: 400px;
+}
+
+.evento-tipo {
+	margin-bottom: 16px;
+}
+
+.evento-titulo {
+	font-size: 28px;
+	font-style: italic;
+	margin-bottom: 28px;
+}
+
+.evento-sesiones {
+	clear: both;
+}
