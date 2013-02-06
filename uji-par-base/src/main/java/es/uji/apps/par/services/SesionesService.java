@@ -86,4 +86,9 @@ public class SesionesService
                 sesion.getHoraCelebracion()));
         sesionDAO.updateSesion(eventoId, sesion);
     }
+	
+	public Sesion getSesion(long id)
+	{
+	    return new Sesion(sesionDAO.getSesion(id));
+	}
 }

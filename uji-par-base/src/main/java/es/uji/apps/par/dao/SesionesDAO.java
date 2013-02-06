@@ -97,4 +97,10 @@ public class SesionesDAO
                 .set(qSesionDTO.parEvento, sesion.getEvento())
                 .where(qSesionDTO.id.eq(sesion.getId())).execute();
     }
+    
+    public SesionDTO getSesion(long sesionId)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+        return query.from(qSesionDTO).where(qSesionDTO.id.eq(sesionId)).uniqueResult(qSesionDTO);
+    }
 }
