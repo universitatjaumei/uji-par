@@ -5,7 +5,7 @@
 <link rel="stylesheet" type="text/css" href="../../css/estilo.css"></link>
 </head>
 <body>
-	<h1>Datos del evento seleccionado</h1>
+	<h1 th:text="#{titulo}">Datos del evento seleccionado</h1>
 	<div class="evento-tipo" th:text="${evento.parTipoEvento.nombreEs}"></div>
 	<div class="evento-imagen">
 		<img th:src="${evento.id} + '/imagen'" />
@@ -23,9 +23,9 @@
 	<div class="evento-sesiones">
 		<table>
 			<thead>
-				<th>Día</th>
-				<th>Hora</th>
-				<th>Precio</th>
+				<th th:text="#{dia}">Día</th>
+				<th th:text="#{hora}">Hora</th>
+				<th th:text="#{precio}">Precio</th>
 				<th></th>
 			</thead>
 			<tbody>
@@ -33,7 +33,7 @@
 					<td th:text="${#dates.format(sesion.fechaCelebracion, 'dd/MM/yyyy')}"></td>
 					<td th:text="${sesion.horaCelebracion}"></td>
 					<td th:text="${sesion.canalInternet}"></td>
-					<td><a th:href="'../entrada/' + ${sesion.id}">Comprar entradas</a></td>
+					<td><a th:href="'../entrada/' + ${sesion.id}" th:text="#{comprarEntradas}">Comprar entradas</a></td>
 				</tr>
 			</tbody>
 		</table>

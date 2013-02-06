@@ -21,7 +21,7 @@ import es.uji.commons.web.template.HTMLTemplate;
 import es.uji.commons.web.template.Template;
 
 @Path("evento")
-public class EventosResource
+public class EventosResource extends BaseResource
 {
     @InjectParam
     private EventosService eventosService;
@@ -37,7 +37,7 @@ public class EventosResource
         Evento evento = eventosService.getEvento(id);
         List<Sesion> sesiones = sesionesService.getSesiones(id);
 
-        Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "eventoDetalle");
+        Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "eventoDetalle", getLocale());
         template.put("evento", evento);
         template.put("sesiones", sesiones);
 
