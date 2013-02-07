@@ -27,11 +27,13 @@ def generate_map(x_ini, y_ini, ancho_imagen, alto_imagen, ancho_celda, alto_celd
 
     fila = (alto_imagen-y_ini) / alto_celda
 
+    if descendente:
+        inc_butaca = -inc_butaca
+
     for y in range(y_ini, alto_imagen, alto_celda):
 
         if descendente: 
-            numero = (ancho_imagen-x_ini) / ancho_celda
-            inc_butaca = -inc_butaca
+            numero = ((ancho_imagen-x_ini) / ancho_celda) * abs(inc_butaca)
         else:    
             numero = 1
 
