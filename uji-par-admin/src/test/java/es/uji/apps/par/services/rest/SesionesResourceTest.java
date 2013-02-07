@@ -201,8 +201,7 @@ public class SesionesResourceTest extends JerseyTest
     	ResponseMessage resultatOperacio = response.getEntity(new GenericType<ResponseMessage>()
         {
         });
-        Assert.assertEquals(FechasInvalidasException.FECHA_INICIO_VENTA_POSTERIOR_FECHA_FIN_VENTA,
-            resultatOperacio.getMessage());
+        Assert.assertTrue(resultatOperacio.getMessage().startsWith(FechasInvalidasException.FECHA_INICIO_VENTA_POSTERIOR_FECHA_FIN_VENTA));
     }
     
     @Test 
@@ -246,7 +245,6 @@ public class SesionesResourceTest extends JerseyTest
     	ResponseMessage resultatOperacio = response.getEntity(new GenericType<ResponseMessage>()
         {
         });
-        Assert.assertEquals(FechasInvalidasException.FECHA_FIN_VENTA_POSTERIOR_FECHA_CELEBRACION,
-            resultatOperacio.getMessage());
+        Assert.assertTrue(resultatOperacio.getMessage().startsWith(FechasInvalidasException.FECHA_FIN_VENTA_POSTERIOR_FECHA_CELEBRACION));
     }
 }

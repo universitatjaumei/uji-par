@@ -62,9 +62,9 @@ public class SesionesService
 
     private void checkIfDatesAreValid(Sesion sesion) throws FechasInvalidasException {
 		if (sesion.getFechaFinVentaOnline().getTime() < sesion.getFechaInicioVentaOnline().getTime())
-			throw new FechasInvalidasException(FechasInvalidasException.FECHA_INICIO_VENTA_POSTERIOR_FECHA_FIN_VENTA);
+			throw new FechasInvalidasException(FechasInvalidasException.FECHA_INICIO_VENTA_POSTERIOR_FECHA_FIN_VENTA, sesion.getFechaInicioVentaOnline(), sesion.getFechaFinVentaOnline());
 		if (sesion.getFechaFinVentaOnline().getTime() > sesion.getFechaCelebracion().getTime())
-			throw new FechasInvalidasException(FechasInvalidasException.FECHA_FIN_VENTA_POSTERIOR_FECHA_CELEBRACION);
+			throw new FechasInvalidasException(FechasInvalidasException.FECHA_FIN_VENTA_POSTERIOR_FECHA_CELEBRACION, sesion.getFechaCelebracion(), sesion.getFechaFinVentaOnline());
 	}
 
 	private void checkRequiredFields(Sesion sesion) throws CampoRequeridoException {
