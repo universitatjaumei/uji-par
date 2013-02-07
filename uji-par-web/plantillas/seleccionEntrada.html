@@ -5,35 +5,35 @@
 <link rel="stylesheet" type="text/css" href="../../css/estilo.css"></link>
 </head>
 <body>
-	<h1>Localización de las entradas</h1>
+	<h1 th:text="#{titulo}">Localización de las entradas</h1>
 
 	<div class="">
 		<h1 th:text="${evento.tituloEs}"></h1>
-		Sesión: <span th:text="${#dates.format(sesion.fechaCelebracion, 'dd/MM/yyyy')}"></span>
+		<span th:text="#{sesion}">Sesión:</span>&nbsp;<span th:text="${#dates.format(sesion.fechaCelebracion, 'dd/MM/yyyy')}"></span>
 		<span th:text="${sesion.horaCelebracion}"></span>
 		<span th:text="${sesion.canalInternet}"></span>
 	</div>
 		
 	<form action="" method="POST">
-		<h3>Plano del Paraninfo</h3>
+		<h3 th:text="#{plano}">Plano del Paraninfo</h3>
 		<div class="entrada-plano"></div>
-		<h3>Datos personales</h3>
+		<h3 th:text="#{datosPersonales}">Datos personales</h3>
 		<div class="entrada-datos">
-			<label>Nombre</label> 
-			<input type="text" name="nombre" placeholder="Nombre"/> 
-			<label>Apellidos</label> 
-			<input type="text"	name="apellidos" placeholder="Apellidos"/>
-			<label>Teléfono confirmación</label> 
-			<input type="text"	name="telefono" placeholder="Teléfono"/>
-			<label>Email</label> 
-			<input type="text"	name="email" placeholder="Email"/>
+			<label th:text="#{nombre}">Nombre</label> 
+			<input type="text" name="nombre" th:placeholder="#{nombre}" placeholder="Nombre"/> 
+			<label th:text="#{apellidos}">Apellidos</label> 
+			<input type="text"	name="apellidos" th:placeholder="#{apellidos}" placeholder="Apellidos"/>
+			<label th:text="#{telefono}">Teléfono confirmación</label> 
+			<input type="text"	name="telefono" th:placeholder="#{telefono}" placeholder="Teléfono"/>
+			<label th:text="#{email}">Email</label> 
+			<input type="text"	name="email" th:placeholder="#{email}" placeholder="Email"/>
 		</div>
-		<h3>Tipo de entrada</h3>
+		<h3 th:text="#{tipo}">Tipo de entrada</h3>
 		<div class="entrada-datos">
-			<input type="radio" name="tipo" value="normal"/>Normal
-			<input type="radio" name="tipo" value="descuento"/>Descuento
+			<input type="radio" name="tipo" value="normal"/><span th:text="#{tipoNormal}">Normal</span>
+			<input type="radio" name="tipo" value="descuento"/><span th:text="#{tipoDescuento}">Descuento</span>
 		</div>
-		<input type="submit" value="Comprar"/>
+		<input type="submit" th:value="#{comprar}" value="Comprar"/>
 	</form>
 </body>
 </html>

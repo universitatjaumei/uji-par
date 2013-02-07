@@ -50,7 +50,7 @@ public class EntradasResource extends BaseResource
 
         EventoDTO evento = sesion.getEvento();
 
-        Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "seleccionEntrada");
+        Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "seleccionEntrada", getLocale());
         template.put("evento", evento);
         template.put("sesion", sesion);
 
@@ -83,7 +83,7 @@ public class EntradasResource extends BaseResource
     @Produces(MediaType.TEXT_HTML)
     public Template compraValida() throws Exception
     {
-        return new HTMLTemplate(Constantes.PLANTILLAS_DIR + "compraValida");
+        return new HTMLTemplate(Constantes.PLANTILLAS_DIR + "compraValida", getLocale());
     }
 
     @GET
@@ -91,7 +91,7 @@ public class EntradasResource extends BaseResource
     @Produces(MediaType.TEXT_HTML)
     public Template compraNoValida() throws Exception
     {
-        return new HTMLTemplate(Constantes.PLANTILLAS_DIR + "compraNoValida");
+        return new HTMLTemplate(Constantes.PLANTILLAS_DIR + "compraNoValida", getLocale());
     }
 
     private Response paginaProhibida()
