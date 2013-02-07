@@ -21,7 +21,6 @@ import com.sun.jersey.api.core.InjectParam;
 import es.uji.apps.par.Constantes;
 import es.uji.apps.par.db.EventoDTO;
 import es.uji.apps.par.model.Sesion;
-import es.uji.apps.par.services.EventosService;
 import es.uji.apps.par.services.SesionesService;
 import es.uji.commons.web.template.HTMLTemplate;
 import es.uji.commons.web.template.Template;
@@ -29,9 +28,6 @@ import es.uji.commons.web.template.Template;
 @Path("entrada")
 public class EntradasResource extends BaseResource
 {
-    @InjectParam
-    private EventosService eventosService;
-
     @InjectParam
     private SesionesService sesionesService;
 
