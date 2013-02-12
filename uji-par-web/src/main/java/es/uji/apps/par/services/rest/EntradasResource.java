@@ -1,8 +1,5 @@
 package es.uji.apps.par.services.rest;
 
-import java.io.IOException;
-import java.util.Date;
-
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -19,7 +16,7 @@ import com.sun.jersey.api.client.ClientResponse.Status;
 import com.sun.jersey.api.core.InjectParam;
 
 import es.uji.apps.par.Constantes;
-import es.uji.apps.par.db.EventoDTO;
+import es.uji.apps.par.model.Evento;
 import es.uji.apps.par.model.Sesion;
 import es.uji.apps.par.services.SesionesService;
 import es.uji.commons.web.template.HTMLTemplate;
@@ -44,7 +41,7 @@ public class EntradasResource extends BaseResource
         if (!sesion.getEnPlazoVentaInternet())
             return paginaProhibida();
 
-        EventoDTO evento = sesion.getEvento();
+        Evento evento = sesion.getEvento();
 
         Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "seleccionEntrada", getLocale());
         template.put("evento", evento);
