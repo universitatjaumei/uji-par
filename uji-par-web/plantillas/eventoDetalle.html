@@ -34,7 +34,16 @@
 					<td th:text="${#dates.format(sesion.fechaCelebracion, 'dd/MM/yyyy')}"></td>
 					<td th:text="${sesion.horaCelebracion}"></td>
 					<td th:text="${sesion.canalInternet}"></td>
-					<td><a th:href="'../entrada/' + ${sesion.id}" th:text="#{comprarEntradas}">Comprar entradas</a></td>
+					<td>
+						<a th:href="'../entrada/' + ${sesion.id}" th:text="#{comprarEntradas}" th:if="${sesion.enPlazoVentaInternet}">Comprar entradas</a>
+						<div th:if="${sesion.canalInternet} != 1">
+							<span th:text="#{comprarEntradasNoDisponiblesInternet}">No disponibles por internet</span>
+						</div>
+						<div th:if="${sesion.canalInternet}==1 and !${sesion.enPlazoVentaInternet}">
+							<span th:text="#{comprarEntradasNoDisponibles}">Venta por internet desde</span> <span th:text="${#dates.format(sesion.fechaInicioVentaOnline, 'dd/MM/yyyy')}"></span>
+							<span th:text="#{comprarEntradasNoDisponiblesHasta}">hasta</span> <span th:text="${#dates.format(sesion.fechaFinVentaOnline, 'dd/MM/yyyy')}"></span>
+						</div>
+					</td>
 				</tr>
 			</tbody>
 		</table>

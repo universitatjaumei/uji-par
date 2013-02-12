@@ -161,4 +161,11 @@ public class Sesion
     {
         this.horaCelebracion = horaCelebracion;
     }
+
+    public boolean getEnPlazoVentaInternet()
+    {
+        Date ahora = new Date();
+
+        return ahora.before(getFechaFinVentaOnline()) && ahora.after(fechaInicioVentaOnline);
+    }
 }

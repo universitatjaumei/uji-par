@@ -41,7 +41,7 @@ public class EntradasResource extends BaseResource
     {
         Sesion sesion = sesionesService.getSesion(sesionId);
 
-        if (fueraDePlazoVenta(sesion))
+        if (!sesion.getEnPlazoVentaInternet())
             return paginaProhibida();
 
         EventoDTO evento = sesion.getEvento();
@@ -63,7 +63,7 @@ public class EntradasResource extends BaseResource
     {
         Sesion sesion = sesionesService.getSesion(sesionId);
 
-        if (fueraDePlazoVenta(sesion))
+        if (!sesion.getEnPlazoVentaInternet())
             return paginaProhibida();
 
         if (tipo.equals("normal"))
@@ -93,13 +93,6 @@ public class EntradasResource extends BaseResource
     private Response paginaProhibida()
     {
         return Response.status(Status.FORBIDDEN.getStatusCode()).build();
-    }
-
-    private boolean fueraDePlazoVenta(Sesion sesion) throws IOException
-    {
-        Date ahora = new Date();
-
-        return ahora.before(sesion.getFechaInicioVentaOnline()) || ahora.after(sesion.getFechaFinVentaOnline());
     }
 
 }
