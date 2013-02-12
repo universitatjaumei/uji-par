@@ -27,7 +27,8 @@ UI =
             "toolTipAvailableEspacios": "* Passar el ratolí sobre les columnes d'espais i dies per obtindre informació extra",
             "si": "Si",
             "no": "No",
-            "plantillaPrecios": "És obligatori seleccionar una plantilla de preus"
+            "plantillaPrecios": "És obligatori seleccionar una plantilla de preus",
+            "registroConMismaLocalizacionExiste": "Ja existeix un registre per a aquesta localització, modifique l'existent o esborri'l"
         },
         "storeWeekDay": {
             "wed": "Dimecres",
@@ -45,7 +46,8 @@ UI =
             "formSave": "Error al guardar el formulari",
             "messageDelete": "S'ha produït un error esborrant el missatge",
             "error": "S'ha produït un error",
-            "deletedImage": "S'ha produït un error a l'esborrar la imatge"
+            "deletedImage": "S'ha produït un error a l'esborrar la imatge",
+            "loadingPrecios": "S'ha produït un error carregant els preus de la plantilla seleccionada"
         },
         "button": {
             "closeSession": "Tancar sessió",
@@ -153,7 +155,9 @@ UI =
             "descuento": "Descompte",
             "invitacion": "Invitació",
             "localizacion": "Localització",
-            "plantillaprecios": "Plantilla de preus"
+            "plantillaprecios": "Plantilla de preus",
+            "horaInicioVentaOnline": "Hora d'inici de la venda online",
+            "horaFinVentaOnline": "Hora de fi de la venda online"
         }
     }
 }

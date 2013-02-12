@@ -8,8 +8,11 @@ Ext.define('Paranimf.model.Sesion', {
       {name: 'fechaFinVentaOnline', type: 'date', dateFormat: 'U'},
       'evento',
       'horaAperturaPuertas',
-      'canalInternet',
-      'canalTaquilla',
-      'horaCelebracion'
+      'horaCelebracion',
+      'horaInicioVentaOnline',
+      'horaFinVentaOnline',
+      {name: 'plantillaPrecios', mapping: 'plantillaPrecios.id'},
+      {name: 'plantillaPrecios_nombre', mapping: 'plantillaPrecios.nombre'},
+      'preciosSesion'
    ]
 });

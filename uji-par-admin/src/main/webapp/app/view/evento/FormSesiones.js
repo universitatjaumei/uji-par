@@ -5,62 +5,105 @@ Ext.define('Paranimf.view.evento.FormSesiones', {
    url : urlPrefix + 'sesiones',
    
    defaults: {
-      allowBlank: true,
-      msgTarget: 'side',
-      labelWidth: 120,
       anchor: '100%',
-      xtype: 'textfield'
+      xtype: 'textfield',
+      labelWidth: 190,
    },
 
    items: [{
       name: 'id',
-      hidden: true
+      hidden: true,
+      allowBlank: true
    }, {
-      fieldLabel: UI.i18n.field.eventDate,
-      name: 'fechaCelebracion',
-      xtype: 'datefield',
-      startDay: 1,
-      value: new Date(),
+      name: 'preciosSesion',
+      hidden: true,
+      allowBlank: true
+   }, {
+      xtype: 'fieldset',
+      defaults: {
+         anchor: '100%',
+         labelWidth: 190,
+         allowBlank: false
+      },
+      items: [{
+         fieldLabel: UI.i18n.field.eventDate,
+         name: 'fechaCelebracion',
+         xtype: 'datefield',
+         startDay: 1,
+         value: new Date()
+      }, {
+         name: 'horaCelebracion',
+         xtype: 'timefield',
+         fieldLabel: UI.i18n.field.sessionTime,
+         minValue: '8:00 AM',
+         maxValue: '23:30 PM',
+         format: 'H:i',
+         increment: 30
+      }, {
+         name: 'horaAperturaPuertas',
+         xtype: 'timefield',
+         fieldLabel: UI.i18n.field.opening,
+         minValue: '8:00 AM',
+         maxValue: '23:30 PM',
+         format: 'H:i',
+         increment: 30,
+         allowBlank: true
+      }]
+   }, {
+      xtype: 'fieldset',
+      defaults: {
+         anchor: '100%',
+         labelWidth: 190,
+         allowBlank: false
+      },
+      items: [{
+         fieldLabel: UI.i18n.field.startOnlineSelling,
+         name: 'fechaInicioVentaOnline',
+         xtype: 'datefield',
+         startDay: 1,
+         value: new Date()
+      }, {
+         name: 'horaInicioVentaOnline',
+         xtype: 'timefield',
+         fieldLabel: UI.i18n.field.horaInicioVentaOnline,
+         minValue: '0:00 AM',
+         maxValue: '23:00 PM',
+         format: 'H:i'
+      }]
+   }, {
+      xtype: 'fieldset',
+      defaults: {
+         anchor: '100%',
+         labelWidth: 190,
+         allowBlank: false
+      },
+      items: [{
+         fieldLabel: UI.i18n.field.endOnlineSelling,
+         name: 'fechaFinVentaOnline',
+         xtype: 'datefield',
+         startDay: 1,
+         value: new Date()
+      }, {
+         name: 'horaFinVentaOnline',
+         xtype: 'timefield',
+         fieldLabel: UI.i18n.field.horaFinVentaOnline,
+         minValue: '0:00 AM',
+         maxValue: '23:00 PM',
+         format: 'H:i',
+         increment: 60
+      }]
+   }, {
+      fieldLabel: UI.i18n.field.plantillaprecios,
+      name: 'plantillaPrecios',
+      xtype: 'combobox',
+      displayField: 'nombre',
+      valueField: 'id',
+      store: 'PlantillasPrecios',
+      queryMode: 'local',
+      typeAhead: true,
       allowBlank: false
    }, {
-	  name: 'horaCelebracion',
-	  xtype: 'timefield',
-	  fieldLabel: UI.i18n.field.sessionTime,
-	  minValue: '8:00 AM',
-	  maxValue: '23:30 PM',
-	  format: 'H:i',
-	  increment: 30,
-	  allowBlank: false
-   }, {
-      fieldLabel: UI.i18n.field.startOnlineSelling,
-      name: 'fechaInicioVentaOnline',
-      xtype: 'datefield',
-      startDay: 1,
-      value: new Date(),
-      allowBlank: false
-   }, {
-      fieldLabel: UI.i18n.field.endOnlineSelling,
-      name: 'fechaFinVentaOnline',
-      xtype: 'datefield',
-      startDay: 1,
-      value: new Date(),
-      allowBlank: false
-   }, {
-      name: 'horaAperturaPuertas',
-      xtype: 'timefield',
-      fieldLabel: UI.i18n.field.opening,
-      minValue: '8:00 AM',
-      maxValue: '23:30 PM',
-      format: 'H:i',
-      increment: 30
-   }, {
-      fieldLabel: UI.i18n.field.online,
-      name: 'canalInternet',
-      xtype: 'checkbox'
-   }, {
-      fieldLabel: UI.i18n.field.taquilla,
-      name: 'canalTaquilla',
-      xtype: 'checkbox'
+      xtype: 'gridPreciosSesion'
    }],
     
     areDatesValid: function() {

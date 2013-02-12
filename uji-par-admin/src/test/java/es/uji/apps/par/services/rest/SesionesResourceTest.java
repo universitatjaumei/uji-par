@@ -1,15 +1,12 @@
 package es.uji.apps.par.services.rest;
 
-import java.util.Calendar;
 import java.util.HashMap;
 
-import javax.annotation.concurrent.ThreadSafe;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response.Status;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.springframework.test.annotation.ExpectedException;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.request.RequestContextListener;
 import org.springframework.web.util.Log4jConfigListener;
@@ -29,10 +26,10 @@ import com.sun.jersey.test.framework.spi.container.TestContainerFactory;
 import com.sun.jersey.test.framework.spi.container.grizzly.web.GrizzlyWebTestContainerFactory;
 
 import es.uji.apps.par.CampoRequeridoException;
-import es.uji.apps.par.CommonExceptionMapper;
 import es.uji.apps.par.DateUtils;
 import es.uji.apps.par.FechasInvalidasException;
 import es.uji.apps.par.ResponseMessage;
+import es.uji.apps.par.model.Plantilla;
 import es.uji.apps.par.model.Sesion;
 import es.uji.apps.par.model.TipoEvento;
 
@@ -72,70 +69,33 @@ public class SesionesResourceTest extends JerseyTest
     {
         return new GrizzlyWebTestContainerFactory();
     }
-
-    @Test
-    public void getSesiones()
+    
+    private Plantilla preparaPlantilla()
     {
-        ClientResponse response = resource.path("evento").path("1").path("sesiones")
-                .get(ClientResponse.class);
-        RestResponse serviceResponse = response.getEntity(RestResponse.class);
-
-        Assert.assertEquals(Status.OK.getStatusCode(), response.getStatus());
-        Assert.assertTrue(serviceResponse.getSuccess());
-        Assert.assertNotNull(serviceResponse.getData());
+        return new Plantilla("Prueba");
     }
-
+    
     private Sesion preparaSesion()
     {
-        Sesion parSesion = new Sesion();
-        parSesion.setFechaCelebracion("01/01/2012");
-        parSesion.setFechaInicioVentaOnline("01/01/2012");
-        parSesion.setFechaFinVentaOnline("01/01/2012");
-        parSesion.setHoraCelebracion("12:30");
-        parSesion.setCanalInternet("1");
-        /*
-         * ParEventoDTO parEventoDTO = new ParEventoDTO(); parEventoDTO.setId(1);
-         * parSesion.setEvento(parEventoDTO);
-         */
+        return preparaSesion(null);
+    }
+    
+    private Sesion preparaSesion(Plantilla plantilla) {
+    	Sesion sesion = new Sesion();
+        sesion.setFechaCelebracion("01/01/2012");
+        sesion.setFechaInicioVentaOnline("01/01/2012");
+        sesion.setFechaFinVentaOnline("01/01/2012");
+        sesion.setHoraCelebracion("12:30");
+        //sesion.setCanalInternet("1");
+        sesion.setHoraInicioVentaOnline("12:00");
+        sesion.setHoraFinVentaOnline("12:30");
+        sesion.setPlantillaPrecios(plantilla);
 
-        return parSesion;
+        return sesion;
     }
     
-    private String getFieldFromRestResponse(RestResponse restResponse, String field)
-    {
-        return ((HashMap) restResponse.getData().get(0)).get(field).toString();
-    }
-    
-    @Test public void addSesionWithoutFechaCelebracion() { 
-    	Sesion sesion = preparaSesion();
-    	sesion.setFechaCelebracion(null);
-    	
-    	ClientResponse response = resource.path("evento").path("1").path("sesiones").post(ClientResponse.class, sesion);
-    	Assert.assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus()); 
-    	
-    	ResponseMessage resultatOperacio = response.getEntity(new GenericType<ResponseMessage>()
-        {
-        });
-        Assert.assertEquals(CampoRequeridoException.CAMPO_OBLIGATORIO + "Fecha de celebración",
-    	                resultatOperacio.getMessage());
-    }
-
-    
-    @Test public void addSesionWithoutHoraCelebracion() { 
-    	Sesion sesion = preparaSesion();
-    	sesion.setHoraCelebracion(null);
-     
-    	ClientResponse response = resource.path("evento").path("1").path("sesiones").post(ClientResponse.class, sesion);
-    	Assert.assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus()); 
-    	
-    	ResponseMessage resultatOperacio = response.getEntity(new GenericType<ResponseMessage>()
-        {
-        });
-        Assert.assertEquals(CampoRequeridoException.CAMPO_OBLIGATORIO + "Hora de celebración",
-    	                resultatOperacio.getMessage());
-    }
-    
-    private TipoEvento addTipoEvento()
+    @SuppressWarnings("rawtypes")
+	private TipoEvento addTipoEvento()
     {
         TipoEvento parTipoEvento = new TipoEvento("prueba");
         ClientResponse response = resource.path("tipoevento").post(ClientResponse.class,
@@ -159,11 +119,15 @@ public class SesionesResourceTest extends JerseyTest
 
         return f;
     }
+
+    @SuppressWarnings("rawtypes")
+	private String getFieldFromRestResponse(RestResponse restResponse, String field)
+    {
+        return ((HashMap) restResponse.getData().get(0)).get(field).toString();
+    }
     
-    @Test 
-    public void addSesion() {
-    	TipoEvento parTipoEvento = addTipoEvento();
-        FormDataMultiPart parEvento = preparaEvento(parTipoEvento);
+    private String addEvento(TipoEvento parTipoEvento) {
+		FormDataMultiPart parEvento = preparaEvento(parTipoEvento);
         ClientResponse response = resource.path("evento").type(MediaType.MULTIPART_FORM_DATA_TYPE)
                 .post(ClientResponse.class, parEvento);
         Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
@@ -175,23 +139,90 @@ public class SesionesResourceTest extends JerseyTest
         Assert.assertNotNull(getFieldFromRestResponse(restResponse, "id"));
         Assert.assertEquals(parEvento.getField("tituloEs").getValue(),
                 getFieldFromRestResponse(restResponse, "tituloEs"));
+		return getFieldFromRestResponse(restResponse, "id");
+	}
+    
+    private Plantilla addPlantilla()
+    {
+        Plantilla plantilla = preparaPlantilla();
+        ClientResponse response = resource.path("plantillaprecios").post(ClientResponse.class, plantilla);
+        Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
+        RestResponse restResponse = response.getEntity(new GenericType<RestResponse>()
+        {
+        });
+        Assert.assertTrue(restResponse.getSuccess());
+        Assert.assertNotNull(getFieldFromRestResponse(restResponse, "id"));
+        Assert.assertEquals(plantilla.getNombre(),
+                getFieldFromRestResponse(restResponse, "nombre"));
         
+        plantilla.setId(Long.valueOf(getFieldFromRestResponse(restResponse, "id")));
+        return plantilla;
+    }
+    
+    @Test
+    public void getSesiones()
+    {
+        ClientResponse response = resource.path("evento").path("1").path("sesiones")
+                .get(ClientResponse.class);
+        RestResponse serviceResponse = response.getEntity(RestResponse.class);
+
+        Assert.assertEquals(Status.OK.getStatusCode(), response.getStatus());
+        Assert.assertTrue(serviceResponse.getSuccess());
+        Assert.assertNotNull(serviceResponse.getData());
+    }
+    
+    @Test 
+    public void addSesionWithoutFechaCelebracion() { 
     	Sesion sesion = preparaSesion();
+    	sesion.setFechaCelebracion(null);
+    	
+    	ClientResponse response = resource.path("evento").path("1").path("sesiones").post(ClientResponse.class, sesion);
+    	Assert.assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus()); 
+    	
+    	ResponseMessage resultatOperacio = response.getEntity(new GenericType<ResponseMessage>()
+        {
+        });
+        Assert.assertEquals(CampoRequeridoException.CAMPO_OBLIGATORIO + "Fecha de celebración",
+    	                resultatOperacio.getMessage());
+    }
+
+    
+    @Test 
+    public void addSesionWithoutHoraCelebracion() { 
+    	Sesion sesion = preparaSesion();
+    	sesion.setHoraCelebracion(null);
      
-    	response = resource.path("evento").path(getFieldFromRestResponse(restResponse, "id")).path("sesiones").post(ClientResponse.class, sesion);
+    	ClientResponse response = resource.path("evento").path("1").path("sesiones").post(ClientResponse.class, sesion);
+    	Assert.assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus()); 
+    	
+    	ResponseMessage resultatOperacio = response.getEntity(new GenericType<ResponseMessage>()
+        {
+        });
+        Assert.assertEquals(CampoRequeridoException.CAMPO_OBLIGATORIO + "Hora de celebración",
+    	                resultatOperacio.getMessage());
+    }
+    
+    @Test 
+    public void addSesion() {
+    	TipoEvento parTipoEvento = addTipoEvento();
+    	String eventoId = addEvento(parTipoEvento);
+    	Plantilla plantilla = addPlantilla();
+    	Sesion sesion = preparaSesion(plantilla);
+     
+    	ClientResponse response = resource.path("evento").path(eventoId).path("sesiones").post(ClientResponse.class, sesion);
     	Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus()); 
     	
-    	restResponse = response.getEntity(new GenericType<RestResponse>()
+    	RestResponse restResponse = response.getEntity(new GenericType<RestResponse>()
     	{
     	});
     	Assert.assertTrue(restResponse.getSuccess());
     	Assert.assertNotNull(getFieldFromRestResponse(restResponse, "id"));
     	
-    	Assert.assertEquals(String.valueOf(DateUtils.addStartEventTimeToDate(sesion.getFechaCelebracion(), sesion.getHoraCelebracion()).getTime()),
+    	Assert.assertEquals(String.valueOf(DateUtils.addTimeToDate(sesion.getFechaCelebracion(), sesion.getHoraCelebracion()).getTime()),
             getFieldFromRestResponse(restResponse, "fechaCelebracion"));
     }
-    
-    @Test
+
+	@Test
     public void addSesionWithFechaEndVentaAnteriorFechaStartVenta() {
     	Sesion sesion = preparaSesion();
     	sesion.setFechaInicioVentaOnline("02/12/2012");
@@ -231,6 +262,36 @@ public class SesionesResourceTest extends JerseyTest
         {
         });
         Assert.assertEquals(CampoRequeridoException.CAMPO_OBLIGATORIO + "Fecha de fin de la venta online",
+            resultatOperacio.getMessage());
+    }
+    
+    @Test 
+    public void addSesionWithoutHoraInicioVentaOnline() {
+    	Sesion sesion = preparaSesion();
+        sesion.setHoraInicioVentaOnline(null);
+        
+        ClientResponse response = resource.path("evento").path("1").path("sesiones").post(ClientResponse.class, sesion);
+    	Assert.assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus()); 
+    	
+    	ResponseMessage resultatOperacio = response.getEntity(new GenericType<ResponseMessage>()
+        {
+        });
+        Assert.assertEquals(CampoRequeridoException.CAMPO_OBLIGATORIO + "Hora de inicio de la venta online",
+            resultatOperacio.getMessage());
+    }
+    
+    @Test 
+    public void addSesionWithoutHoraFinVentaOnline() {
+    	Sesion sesion = preparaSesion();
+        sesion.setHoraFinVentaOnline(null);
+        
+        ClientResponse response = resource.path("evento").path("1").path("sesiones").post(ClientResponse.class, sesion);
+    	Assert.assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus()); 
+    	
+    	ResponseMessage resultatOperacio = response.getEntity(new GenericType<ResponseMessage>()
+        {
+        });
+        Assert.assertEquals(CampoRequeridoException.CAMPO_OBLIGATORIO + "Hora de fin de la venta online",
             resultatOperacio.getMessage());
     }
      

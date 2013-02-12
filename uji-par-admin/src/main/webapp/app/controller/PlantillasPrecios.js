@@ -2,7 +2,7 @@ Ext.define('Paranimf.controller.PlantillasPrecios', {
    extend: 'Ext.app.Controller',
 
    views: ['EditModalWindow', 'EditBaseForm', 'EditBaseGrid', 'plantillaprecios.PanelPlantillasPrecios', 'plantillaprecios.GridPlantillas', 'plantillaprecios.FormPlantillas', 'plantillaprecios.GridPrecios', 'plantillaprecios.FormPrecios'],
-   stores: ['PlantillasPrecios', 'Precios', 'Localizaciones'],
+   stores: ['PlantillasPrecios', 'Precios', 'Localizaciones', 'PlantillasPreciosEditables'],
    models: ['PlantillaPrecios', 'Precio', 'Localizacion'],
 
    refs: [{
@@ -80,27 +80,9 @@ Ext.define('Paranimf.controller.PlantillasPrecios', {
       var localizacionId = undefined;
       if (this.getGridPrecios().getSelectedColumnId() != undefined)
          localizacionId = this.getGridPrecios().getSelectedRecord(this.getGridPrecios()).data.localizacion_id;
-      this.cargaStore(comp.getForm().findField('localizacion'), localizacionId);
-      this.cargaStore(comp.getForm().findField('plantillaPrecios'), this.getGridPlantillas().getSelectedColumnId());
-   },
 
-   cargaStore: function(elemento, idASeleccionar) {
-      if (elemento.store.count() == 0) {
-         elemento.store.load(function(records, operation, success) {
-            if (success) {
-               elemento.setDisabled(false);
-
-               if (idASeleccionar != undefined)
-                  elemento.setValue(idASeleccionar);
-            }
-         });
-      }
-      else {
-         elemento.setDisabled(false);
-
-         if (idASeleccionar != undefined)
-            elemento.setValue(idASeleccionar);
-      }
+      this.getFormPrecios().cargaComboStore('localizacion', localizacionId);
+      this.getFormPrecios().cargaComboStore('plantillaPrecios', this.getGridPlantillas().getSelectedColumnId());
    },
 
    addPlantilla: function(button, event, opts) {

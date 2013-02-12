@@ -20,9 +20,23 @@ Ext.define('Paranimf.view.EditBaseGrid', {
    }],
 
    getSelectedRecord: function(grid) {
+      if (grid == undefined)
+         return this.getSelectedRecordOfGrid(this);
+      else
+         return this.getSelectedRecordOfGrid(grid);
+   },
+
+   getSelectedRecordOfGrid: function(grid) {
       var selectedRows = grid.getSelectionModel().getSelection();
       var indiceFilaSeleccionada = grid.getStore().indexOf(selectedRows[0]);
       return grid.getStore().getAt(indiceFilaSeleccionada);
+   },
+
+   getIndiceFilaSeleccionada: function() {
+      var selectedRows = this.getSelectionModel().getSelection();
+      var indiceFilaSeleccionada = this.getStore().indexOf(selectedRows[0]);
+
+      return indiceFilaSeleccionada;
    },
 
    createModalWindow: function(xtype, width, height) {
@@ -50,10 +64,6 @@ Ext.define('Paranimf.view.EditBaseGrid', {
       return jsonFilas;
    },
 
-   /*edit: function(xtype) {
-      this.edit(xtype, null);
-   },*/
-
    edit: function(xtype, arrayComboClearFilter, width, height) {
       var selectedRows = this.getSelectionModel().getSelection();
       if (selectedRows.length == 0)
@@ -67,9 +77,6 @@ Ext.define('Paranimf.view.EditBaseGrid', {
          this.clearFilter(form, arrayComboClearFilter);
          
          modalWindow.down('form').loadRecord(selectedRows[0]);
-
-         if(selectedRows[0].data.color)
-            modalWindow.down('calendarColorPicker').select(selectedRows[0].data.color);
          modalWindow.show();
       }
    },
@@ -142,5 +149,22 @@ Ext.define('Paranimf.view.EditBaseGrid', {
    recargaStore: function() {
       this.store.clearFilter();
       this.store.load();
+   },
+
+   vaciar: function() {
+      this.store.removeAll();
+   },
+
+   ocultarToolbar: function() {
+      this.getDockedItems('toolbar')[0].hide();
+   },
+
+   mostrarToolbar: function() {
+      this.getDockedItems('toolbar')[0].show();
+   }, 
+
+   deseleccionar: function() {
+      if (this.hasRowSelected())
+         this.getSelectionModel().deselectAll();
    }
 });

@@ -2,13 +2,13 @@ Ext.define('Paranimf.view.plantillaprecios.GridPlantillas', {
    extend: 'Paranimf.view.EditBaseGrid',
 
    alias: 'widget.gridPlantillas',
-   store: 'PlantillasPrecios',
+   store: 'PlantillasPreciosEditables',
 
    title: UI.i18n.gridTitle.plantillasprecios,
 
    dockedItems: [{
      xtype: 'pagingtoolbar',
-     store: 'PlantillasPrecios',
+     store: 'PlantillasPreciosEditables',
      dock: 'bottom',
      displayInfo: true
    }],

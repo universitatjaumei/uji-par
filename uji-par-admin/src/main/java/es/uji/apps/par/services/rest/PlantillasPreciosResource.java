@@ -35,7 +35,7 @@ public class PlantillasPreciosResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAll()
     {
-        return Response.ok().entity(new RestResponse(true, plantillaPreciosService.get())).build();
+        return Response.ok().entity(new RestResponse(true, plantillaPreciosService.getAll())).build();
     }
 
     @DELETE
@@ -76,6 +76,14 @@ public class PlantillasPreciosResource {
     public Response getPrecios(@PathParam("id") String id)
     {
         return Response.ok().entity(new RestResponse(true, preciosService.getPreciosOfPlantilla(Long.valueOf(id)))).build();
+    }
+    
+    @GET
+    @Path("editables")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getPlantillasEditables()
+    {
+        return Response.ok().entity(new RestResponse(true,  plantillaPreciosService.getEditables())).build();
     }
     
     @DELETE

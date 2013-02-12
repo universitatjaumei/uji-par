@@ -20,8 +20,8 @@ import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataBodyPart;
 import com.sun.jersey.multipart.FormDataParam;
 
-import es.uji.apps.par.GeneralPARException;
 import es.uji.apps.par.EventoNoEncontradoException;
+import es.uji.apps.par.GeneralPARException;
 import es.uji.apps.par.model.Evento;
 import es.uji.apps.par.model.Sesion;
 import es.uji.apps.par.services.EventosService;
@@ -67,20 +67,20 @@ public class EventosResource
         return Response.ok().entity(new RestResponse(true, sesionesService.getSesionesDateEnSegundos(eventoId)))
                 .build();
     }
-
-    @DELETE
-    @Path("{id}")
+    
+    @GET
+    @Path("{eventoId}/sesiones/{sesionId}/precios")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response remove(@PathParam("id") Integer id)
+    public Response getPreciosSesion(@PathParam("eventoId") Integer eventoId, @PathParam("sesionId") Integer sesionId)
     {
-        eventosService.removeEvento(id);
-        return Response.ok().entity(new RestResponse(true)).build();
+        return Response.ok().entity(new RestResponse(true, sesionesService.getPreciosSesion(sesionId)))
+                .build();
     }
 
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response add(@FormDataParam("tituloEs") String tituloEs,
+    public Response addEvento(@FormDataParam("tituloEs") String tituloEs,
             @FormDataParam("descripcionEs") String descripcionEs,
             @FormDataParam("companyiaEs") String companyiaEs,
             @FormDataParam("interpretesEs") String interpretesEs,
@@ -123,7 +123,7 @@ public class EventosResource
     @Path("{id}/sesiones")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response add(@PathParam("id") Integer eventoId, Sesion sesion) throws GeneralPARException
+    public Response addSesion(@PathParam("id") Integer eventoId, Sesion sesion) throws GeneralPARException
     {
         Sesion newSesion = sesionesService.addSesion(eventoId, sesion);
         //TODO -> crear URL
@@ -187,6 +187,15 @@ public class EventosResource
         sesionesService.updateSesion(eventoId, sesion);
         return Response.ok().entity(new RestResponse(true, Collections.singletonList(sesion)))
                 .build();
+    }
+    
+    @DELETE
+    @Path("{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response remove(@PathParam("id") Integer id)
+    {
+        eventosService.removeEvento(id);
+        return Response.ok().entity(new RestResponse(true)).build();
     }
 
     @DELETE
