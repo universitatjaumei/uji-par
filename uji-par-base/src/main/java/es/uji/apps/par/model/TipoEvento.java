@@ -62,4 +62,22 @@ public class TipoEvento
         this.nombreVa = nombreVa;
     }
 
+	public static TipoEventoDTO tipoEventoToTipoEventoDTO(TipoEvento tipoEvento) {
+		TipoEventoDTO tipoEventoDTO = new TipoEventoDTO();
+    	tipoEventoDTO.setId(tipoEvento.getId());
+    	tipoEventoDTO.setNombreEs(tipoEvento.getNombreEs());
+    	tipoEventoDTO.setNombreVa(tipoEvento.getNombreVa());
+
+    	return tipoEventoDTO;
+	}
+
+	public static TipoEvento tipoEventoDTOToTipoEvento(TipoEventoDTO eventoDTO) {
+		TipoEvento tipoEvento = new TipoEvento();
+    	tipoEvento.setId(eventoDTO.getId());
+    	tipoEvento.setNombreEs(eventoDTO.getNombreEs());
+    	tipoEvento.setNombreVa(eventoDTO.getNombreVa());
+    	
+    	return tipoEvento;
+	}
+
 }

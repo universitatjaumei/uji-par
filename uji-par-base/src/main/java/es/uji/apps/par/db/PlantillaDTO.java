@@ -25,6 +25,10 @@ public class PlantillaDTO implements Serializable {
 	@OneToMany(mappedBy="parPlantilla")
 	private List<PreciosPlantillaDTO> parPreciosPlantillas;
 
+	//bi-directional many-to-one association to SesionDTO
+	@OneToMany(mappedBy="parPlantilla")
+	private List<SesionDTO> parSesiones;
+
 	public PlantillaDTO() {
 	}
 
@@ -50,6 +54,14 @@ public class PlantillaDTO implements Serializable {
 
 	public void setParPreciosPlantillas(List<PreciosPlantillaDTO> parPreciosPlantillas) {
 		this.parPreciosPlantillas = parPreciosPlantillas;
+	}
+
+	public List<SesionDTO> getParSesiones() {
+		return this.parSesiones;
+	}
+
+	public void setParSesiones(List<SesionDTO> parSesiones) {
+		this.parSesiones = parSesiones;
 	}
 
 }

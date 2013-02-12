@@ -24,16 +24,24 @@ public class Plantilla {
 	
 	public static Plantilla plantillaPreciosDTOtoPlantillaPrecios(PlantillaDTO plantillaDTO) {
 		Plantilla plantillaPrecios = new Plantilla();
-		plantillaPrecios.setId(plantillaDTO.getId());
-		plantillaPrecios.setNombre(plantillaDTO.getNombre());
-		
+		if (plantillaDTO != null) {
+			plantillaPrecios.setId(plantillaDTO.getId());
+			plantillaPrecios.setNombre(plantillaDTO.getNombre());
+		} else {
+			plantillaPrecios.setId(-1);
+		}
 		return plantillaPrecios;
 	}
 	
 	public static PlantillaDTO plantillaPreciosToPlantillaPreciosDTO(Plantilla plantillaPrecios) {
 		PlantillaDTO plantillaDTO = new PlantillaDTO();
-		plantillaDTO.setId(plantillaPrecios.getId());
-		plantillaDTO.setNombre(plantillaPrecios.getNombre());
+		
+		if (plantillaPrecios != null) {
+			plantillaDTO.setId(plantillaPrecios.getId());
+			plantillaDTO.setNombre(plantillaPrecios.getNombre());
+		} else {
+			plantillaDTO.setId(-1);
+		}
 		
 		return plantillaDTO;
 	}

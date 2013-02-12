@@ -40,13 +40,13 @@ public class DateUtils
             return new Timestamp(fecha.getTime());
     }
 
-    public static String getDayWithLeadingZeros(Date date)
+    public static String getHourAndMinutesWithLeadingZeros(Date date)
     {
         SimpleDateFormat date_format = new SimpleDateFormat("HH:mm");
         return date_format.format(date);
     }
     
-    public static Date addStartEventTimeToDate(Date startDate, String hour)
+    public static Date addTimeToDate(Date startDate, String hour)
     {
         Calendar cal = Calendar.getInstance();
         cal.setTime(startDate);
@@ -57,7 +57,20 @@ public class DateUtils
 
         cal.set(Calendar.HOUR_OF_DAY, hora);
         cal.set(Calendar.MINUTE, minutos);
+        cal.set(Calendar.SECOND, 0);
 
         return cal.getTime();
+    }
+    
+    public static String timestampToSpanishString(Timestamp fecha) {
+    	if (fecha == null)
+    		throw new NullPointerException();
+    	
+    	SimpleDateFormat f = new SimpleDateFormat("dd/MM/yyyy");
+    	return f.format(fecha);
+    }
+    
+    public static long millisecondsToSeconds(long time) {
+    	return time/1000;
     }
 }

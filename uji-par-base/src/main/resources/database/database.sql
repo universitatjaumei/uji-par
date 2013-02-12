@@ -1,5 +1,5 @@
 --------------------------------------------------------
---  File created - miércoles-diciembre-26-2012   
+--  File created - viernes-diciembre-28-2012   
 --------------------------------------------------------
 --------------------------------------------------------
 --  DDL for Sequence HIBERNATE_SEQUENCE
@@ -55,6 +55,8 @@
    (	"ID" NUMBER, 
 	"NOMBRE" VARCHAR2(255)
    ) ;
+   
+   INSERT INTO "PAR_PLANTILLAS" (ID, NOMBRE) VALUES ('-1', '- Sense plantilla');
 --------------------------------------------------------
 --  DDL for Table PAR_PRECIOS_PLANTILLA
 --------------------------------------------------------
@@ -63,6 +65,18 @@
    (	"ID" NUMBER, 
 	"LOCALIZACION_ID" NUMBER, 
 	"PLANTILLA_ID" NUMBER, 
+	"PRECIO" NUMBER, 
+	"DESCUENTO" NUMBER, 
+	"INVITACION" NUMBER
+   ) ;
+--------------------------------------------------------
+--  DDL for Table PAR_PRECIOS_SESION
+--------------------------------------------------------
+
+  CREATE TABLE "PAR_PRECIOS_SESION" 
+   (	"ID" NUMBER, 
+	"LOCALIZACION_ID" NUMBER, 
+	"SESION_ID" NUMBER, 
 	"PRECIO" NUMBER, 
 	"DESCUENTO" NUMBER, 
 	"INVITACION" NUMBER
@@ -78,8 +92,9 @@
 	"FECHA_INICIO_VENTA_ONLINE" TIMESTAMP (6), 
 	"FECHA_FIN_VENTA_ONLINE" TIMESTAMP (6), 
 	"HORA_APERTURA" VARCHAR2(10), 
-	"CANAL_INTERNET" NUMBER(1,0), 
-	"CANAL_TAQUILLA" NUMBER(1,0)
+	"CANAL_INTERNET" NUMBER(1,0) DEFAULT 1, 
+	"CANAL_TAQUILLA" NUMBER(1,0) DEFAULT 1, 
+	"PLANTILLA_ID" NUMBER
    ) ;
 --------------------------------------------------------
 --  DDL for Table PAR_TIPOS_EVENTO
@@ -126,6 +141,8 @@
 
   ALTER TABLE "PAR_PLANTILLAS" ADD CONSTRAINT "PAR_PLANTILLAS_PK" PRIMARY KEY ("ID") ENABLE;
  
+  ALTER TABLE "PAR_PLANTILLAS" ADD CONSTRAINT "PAR_PLANTILLAS_UK1" UNIQUE ("NOMBRE") ENABLE;
+ 
   ALTER TABLE "PAR_PLANTILLAS" MODIFY ("ID" NOT NULL ENABLE);
  
   ALTER TABLE "PAR_PLANTILLAS" MODIFY ("NOMBRE" NOT NULL ENABLE);
@@ -140,6 +157,21 @@
   ALTER TABLE "PAR_PRECIOS_PLANTILLA" MODIFY ("ID" NOT NULL ENABLE);
  
   ALTER TABLE "PAR_PRECIOS_PLANTILLA" MODIFY ("LOCALIZACION_ID" NOT NULL ENABLE);
+ 
+  ALTER TABLE "PAR_PRECIOS_PLANTILLA" MODIFY ("PLANTILLA_ID" NOT NULL ENABLE);
+--------------------------------------------------------
+--  Constraints for Table PAR_PRECIOS_SESION
+--------------------------------------------------------
+
+  ALTER TABLE "PAR_PRECIOS_SESION" ADD CONSTRAINT "PAR_PRECIOS_SESION_PK" PRIMARY KEY ("ID") ENABLE;
+ 
+  ALTER TABLE "PAR_PRECIOS_SESION" ADD CONSTRAINT "PAR_PRECIOS_SESION_UK1" UNIQUE ("SESION_ID", "LOCALIZACION_ID") ENABLE;
+ 
+  ALTER TABLE "PAR_PRECIOS_SESION" MODIFY ("ID" NOT NULL ENABLE);
+ 
+  ALTER TABLE "PAR_PRECIOS_SESION" MODIFY ("LOCALIZACION_ID" NOT NULL ENABLE);
+ 
+  ALTER TABLE "PAR_PRECIOS_SESION" MODIFY ("SESION_ID" NOT NULL ENABLE);
 --------------------------------------------------------
 --  Constraints for Table PAR_SESIONES
 --------------------------------------------------------
@@ -194,6 +226,12 @@
   CREATE UNIQUE INDEX "PAR_PLANTILLAS_PK" ON "PAR_PLANTILLAS" ("ID") 
   ;
 --------------------------------------------------------
+--  DDL for Index PAR_PLANTILLAS_UK1
+--------------------------------------------------------
+
+  CREATE UNIQUE INDEX "PAR_PLANTILLAS_UK1" ON "PAR_PLANTILLAS" ("NOMBRE") 
+  ;
+--------------------------------------------------------
 --  DDL for Index PAR_PRECIOS_PLANTILLA_PK
 --------------------------------------------------------
 
@@ -204,6 +242,18 @@
 --------------------------------------------------------
 
   CREATE UNIQUE INDEX "PAR_PRECIOS_PLANTILLA_UK1" ON "PAR_PRECIOS_PLANTILLA" ("LOCALIZACION_ID", "PLANTILLA_ID") 
+  ;
+--------------------------------------------------------
+--  DDL for Index PAR_PRECIOS_SESION_PK
+--------------------------------------------------------
+
+  CREATE UNIQUE INDEX "PAR_PRECIOS_SESION_PK" ON "PAR_PRECIOS_SESION" ("ID") 
+  ;
+--------------------------------------------------------
+--  DDL for Index PAR_PRECIOS_SESION_UK1
+--------------------------------------------------------
+
+  CREATE UNIQUE INDEX "PAR_PRECIOS_SESION_UK1" ON "PAR_PRECIOS_SESION" ("SESION_ID", "LOCALIZACION_ID") 
   ;
 --------------------------------------------------------
 --  DDL for Index PAR_SESION_PK
@@ -239,17 +289,29 @@
 --  Ref Constraints for Table PAR_PRECIOS_PLANTILLA
 --------------------------------------------------------
 
-  ALTER TABLE "PAR_PRECIOS_PLANTILLA" ADD CONSTRAINT "PAR_PRECIOS_PLANTILLA_PAR_LOCALIZAC_FK1" FOREIGN KEY ("LOCALIZACION_ID")
-	  REFERENCES "PAR_LOCALIZACIONES" ("ID") ON DELETE CASCADE ENABLE;
+  ALTER TABLE "PAR_PRECIOS_PLANTILLA" ADD CONSTRAINT "PAR_PRECIOS_PLANTILLA_PAR_FK1" FOREIGN KEY ("LOCALIZACION_ID")
+	  REFERENCES "PAR_LOCALIZACIONES" ("ID") ENABLE;
  
-  ALTER TABLE "PAR_PRECIOS_PLANTILLA" ADD CONSTRAINT "PAR_PRECIOS_PLANTILLA_PAR_PLANTILLA_FK1" FOREIGN KEY ("PLANTILLA_ID")
+  ALTER TABLE "PAR_PRECIOS_PLANTILLA" ADD CONSTRAINT "PAR_PRECIOS_PLANTILLA_PAR_FK2" FOREIGN KEY ("PLANTILLA_ID")
 	  REFERENCES "PAR_PLANTILLAS" ("ID") ON DELETE CASCADE ENABLE;
+--------------------------------------------------------
+--  Ref Constraints for Table PAR_PRECIOS_SESION
+--------------------------------------------------------
+
+  ALTER TABLE "PAR_PRECIOS_SESION" ADD CONSTRAINT "PAR_PRECIOS_SESION_PAR_LO_FK1" FOREIGN KEY ("LOCALIZACION_ID")
+	  REFERENCES "PAR_LOCALIZACIONES" ("ID") ENABLE;
+ 
+  ALTER TABLE "PAR_PRECIOS_SESION" ADD CONSTRAINT "PAR_PRECIOS_SESION_PAR_SE_FK1" FOREIGN KEY ("SESION_ID")
+	  REFERENCES "PAR_SESIONES" ("ID") ON DELETE CASCADE ENABLE;
 --------------------------------------------------------
 --  Ref Constraints for Table PAR_SESIONES
 --------------------------------------------------------
 
   ALTER TABLE "PAR_SESIONES" ADD CONSTRAINT "PAR_SESIONES_PAR_EVENTOS_FK1" FOREIGN KEY ("EVENTO_ID")
 	  REFERENCES "PAR_EVENTOS" ("ID") ON DELETE CASCADE ENABLE;
+ 
+  ALTER TABLE "PAR_SESIONES" ADD CONSTRAINT "PAR_SESIONES_PAR_PLANTILL_FK1" FOREIGN KEY ("PLANTILLA_ID")
+	  REFERENCES "PAR_PLANTILLAS" ("ID") ENABLE;
 --------------------------------------------------------
 --  DDL for Trigger PAR_EVENTOS_TRIGGER
 --------------------------------------------------------
@@ -278,31 +340,33 @@ END;
 /
 ALTER TRIGGER "PAR_LOCALIZACIONES_TRG" ENABLE;
 --------------------------------------------------------
---  DDL for Trigger PAR_PLANTILLAS_TRG
+--  DDL for Trigger PAR_PLANTILLAS_SQ
 --------------------------------------------------------
 
-  CREATE OR REPLACE TRIGGER "PAR_PLANTILLAS_TRG" 
-BEFORE INSERT ON PAR_PLANTILLAS
-FOR EACH ROW 
-BEGIN
-  SELECT HIBERNATE_SEQUENCE.NEXTVAL INTO :NEW.ID FROM DUAL;
-END;
-
+  CREATE OR REPLACE TRIGGER "PAR_PLANTILLAS_SQ" before insert on "PAR_PLANTILLAS"    for each row begin     if inserting then       if :NEW."ID" is null then          select HIBERNATE_SEQUENCE.nextval into :NEW."ID" from dual;       end if;    end if; end;
 /
-ALTER TRIGGER "PAR_PLANTILLAS_TRG" ENABLE;
+ALTER TRIGGER "PAR_PLANTILLAS_SQ" ENABLE;
 --------------------------------------------------------
---  DDL for Trigger PAR_PRECIOS_PLANTILLA_TRG
+--  DDL for Trigger PAR_PLANTILLAS_TRIGGER
 --------------------------------------------------------
 
-  CREATE OR REPLACE TRIGGER "PAR_PRECIOS_PLANTILLA_TRG" 
-BEFORE INSERT ON PAR_PRECIOS_PLANTILLA
-FOR EACH ROW 
-BEGIN
-  SELECT HIBERNATE_SEQUENCE.NEXTVAL INTO :NEW.ID FROM DUAL;
-END;
-
+  CREATE OR REPLACE TRIGGER "PAR_PLANTILLAS_TRIGGER" before insert on "PAR_PLANTILLAS"    for each row begin     if inserting then       if :NEW."ID" is null then          select HIBERNATE_SEQUENCE.nextval into :NEW."ID" from dual;       end if;    end if; end;
 /
-ALTER TRIGGER "PAR_PRECIOS_PLANTILLA_TRG" ENABLE;
+ALTER TRIGGER "PAR_PLANTILLAS_TRIGGER" ENABLE;
+--------------------------------------------------------
+--  DDL for Trigger PAR_PRECIOS_PLANTILLA_TRIGGER
+--------------------------------------------------------
+
+  CREATE OR REPLACE TRIGGER "PAR_PRECIOS_PLANTILLA_TRIGGER" before insert on "PAR_PRECIOS_PLANTILLA"    for each row begin     if inserting then       if :NEW."ID" is null then          select HIBERNATE_SEQUENCE.nextval into :NEW."ID" from dual;       end if;    end if; end;
+/
+ALTER TRIGGER "PAR_PRECIOS_PLANTILLA_TRIGGER" ENABLE;
+--------------------------------------------------------
+--  DDL for Trigger PAR_PRECIOS_SESION_TRIGGER
+--------------------------------------------------------
+
+  CREATE OR REPLACE TRIGGER "PAR_PRECIOS_SESION_TRIGGER" before insert on "PAR_PRECIOS_SESION"    for each row begin     if inserting then       if :NEW."ID" is null then          select HIBERNATE_SEQUENCE.nextval into :NEW."ID" from dual;       end if;    end if; end;
+/
+ALTER TRIGGER "PAR_PRECIOS_SESION_TRIGGER" ENABLE;
 --------------------------------------------------------
 --  DDL for Trigger PAR_SESIONES_TRIGGER
 --------------------------------------------------------

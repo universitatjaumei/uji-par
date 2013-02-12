@@ -77,4 +77,8 @@ public class LocalizacionesDAO
         return localizacion;
     }
 
+	public LocalizacionDTO getLocalizacionById(long id) {
+		return entityManager.find(LocalizacionDTO.class, id);
+	}
+
 }

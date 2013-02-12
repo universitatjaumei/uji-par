@@ -226,4 +226,8 @@ public class EventosDAO
         jpaUpdate.setNull(qEventoDTO.imagen).setNull(qEventoDTO.imagenContentType)
                 .setNull(qEventoDTO.imagenSrc).where(qEventoDTO.id.eq(eventoId)).execute();
     }
+
+	public EventoDTO getEventoById(long eventoId) {
+		return entityManager.find(EventoDTO.class, eventoId);
+	}
 }

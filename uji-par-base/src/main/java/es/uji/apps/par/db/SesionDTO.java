@@ -1,9 +1,22 @@
 package es.uji.apps.par.db;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.sql.Timestamp;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 
 /**
@@ -38,10 +51,19 @@ public class SesionDTO implements Serializable {
 	@Column(name="HORA_APERTURA")
 	private String horaApertura;
 
+	//bi-directional many-to-one association to PreciosSesionDTO
+	@OneToMany(mappedBy="parSesione", cascade=CascadeType.PERSIST)
+	private List<PreciosSesionDTO> parPreciosSesions;
+
 	//bi-directional many-to-one association to EventoDTO
 	@ManyToOne
 	@JoinColumn(name="EVENTO_ID")
 	private EventoDTO parEvento;
+
+	//bi-directional many-to-one association to PlantillaDTO
+	@ManyToOne
+	@JoinColumn(name="PLANTILLA_ID")
+	private PlantillaDTO parPlantilla;
 
 	public SesionDTO() {
 	}
@@ -102,12 +124,36 @@ public class SesionDTO implements Serializable {
 		this.horaApertura = horaApertura;
 	}
 
+	public List<PreciosSesionDTO> getParPreciosSesions() {
+		return this.parPreciosSesions;
+	}
+
+	public void setParPreciosSesions(List<PreciosSesionDTO> parPreciosSesions) {
+		this.parPreciosSesions = parPreciosSesions;
+	}
+	
+	public void addParPreciosSesion(PreciosSesionDTO preciosSesionDTO) {
+		if (this.parPreciosSesions == null)
+			this.parPreciosSesions = new ArrayList<PreciosSesionDTO>();
+		
+		preciosSesionDTO.setParSesione(this);
+		this.parPreciosSesions.add(preciosSesionDTO);
+	}
+	
 	public EventoDTO getParEvento() {
 		return this.parEvento;
 	}
 
 	public void setParEvento(EventoDTO parEvento) {
 		this.parEvento = parEvento;
+	}
+
+	public PlantillaDTO getParPlantilla() {
+		return this.parPlantilla;
+	}
+
+	public void setParPlantilla(PlantillaDTO parPlantilla) {
+		this.parPlantilla = parPlantilla;
 	}
 
 }

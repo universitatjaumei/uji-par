@@ -26,12 +26,18 @@ public class PlantillasDAO {
 	
 	
 	@Transactional
-	public List<PlantillaDTO> get() {
+	public List<PlantillaDTO> get(boolean filtrarEditables) {
 		JPAQuery query = new JPAQuery(entityManager);
 
         List<PlantillaDTO> plantillaPrecios = new ArrayList<PlantillaDTO>();
+        List<PlantillaDTO> listaPlantillaPreciosDTO = new ArrayList<PlantillaDTO>();
+        
+        if (filtrarEditables)
+        	listaPlantillaPreciosDTO = query.from(qPlantillaDTO).where(qPlantillaDTO.id.ne(Long.valueOf("-1"))).orderBy(qPlantillaDTO.nombre.asc()).list(qPlantillaDTO);
+        else
+        	listaPlantillaPreciosDTO = query.from(qPlantillaDTO).orderBy(qPlantillaDTO.nombre.asc()).list(qPlantillaDTO);
 
-        for (PlantillaDTO plantillaPreciosDB : query.from(qPlantillaDTO).orderBy(qPlantillaDTO.nombre.asc()).list(qPlantillaDTO))
+        for (PlantillaDTO plantillaPreciosDB : listaPlantillaPreciosDTO)
         {
             plantillaPrecios.add(plantillaPreciosDB);
         }
@@ -63,5 +69,9 @@ public class PlantillasDAO {
                 .where(qPlantillaDTO.id.eq(plantillaPrecios.getId())).execute();
 
         return plantillaPrecios;
+	}
+
+	public PlantillaDTO getPlantillaById(long id) {
+		return entityManager.find(PlantillaDTO.class, id); 
 	}
 }

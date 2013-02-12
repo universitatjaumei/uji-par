@@ -1,5 +1,6 @@
 package es.uji.apps.par.dao;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,9 +15,13 @@ import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.jpa.impl.JPAUpdateClause;
 
 import es.uji.apps.par.DateUtils;
-import es.uji.apps.par.db.EventoDTO;
+import es.uji.apps.par.db.PreciosSesionDTO;
+import es.uji.apps.par.db.QPreciosSesionDTO;
 import es.uji.apps.par.db.QSesionDTO;
 import es.uji.apps.par.db.SesionDTO;
+import es.uji.apps.par.model.Evento;
+import es.uji.apps.par.model.Plantilla;
+import es.uji.apps.par.model.PreciosSesion;
 import es.uji.apps.par.model.Sesion;
 
 @Repository
@@ -26,6 +31,7 @@ public class SesionesDAO
     private EntityManager entityManager;
 
     private QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
+    private QPreciosSesionDTO qPreciosSesionDTO = QPreciosSesionDTO.preciosSesionDTO;
 
     @Transactional
     public List<SesionDTO> getSesiones(long eventoId)
@@ -51,56 +57,87 @@ public class SesionesDAO
     }
 
     @Transactional
-    public Sesion addSesion(long eventoId, Sesion sesion)
+    public SesionDTO persistSesion(SesionDTO sesionDTO) 
     {
-        SesionDTO sesionDTO = new SesionDTO();
-        sesionDTO.setCanalInternet(sesion.getCanalInternet());
-        sesionDTO.setCanalTaquilla(sesion.getCanalTaquilla());
-        sesionDTO.setFechaCelebracion(DateUtils.dateToTimestampSafe(sesion.getFechaCelebracion()));
-        sesionDTO.setFechaFinVentaOnline(DateUtils.dateToTimestampSafe(sesion
-                .getFechaFinVentaOnline()));
-        sesionDTO.setFechaInicioVentaOnline(DateUtils.dateToTimestampSafe(sesion
-                .getFechaInicioVentaOnline()));
-        sesionDTO.setHoraApertura(sesion.getHoraAperturaPuertas());
-
-        EventoDTO parEventoDTO = createParEventoDTOWithId(eventoId);
-        sesionDTO.setParEvento(parEventoDTO);
-
         entityManager.persist(sesionDTO);
+        return sesionDTO;
+	}
 
-        sesion.setId(sesionDTO.getId());
-        return sesion;
+    @Transactional
+    public Sesion testMethod(SesionDTO sesionDTO, Sesion sesion) {
+    	entityManager.persist(sesionDTO);
+    	sesion.setId(sesionDTO.getId());
+    	
+    	//setLocalizacionesToPreciosSesion(sesion.getPreciosSesion());
+    	if (sesion.getPreciosSesion() !=  null) {
+        	for (PreciosSesion preciosSesion: sesion.getPreciosSesion()) {
+        		preciosSesion.setSesion(sesion);
+        		PreciosSesionDTO preciosSesionDTO = PreciosSesion.precioSesionToPrecioSesionDTO(preciosSesion);
+        		preciosSesionDTO.setParSesione(sesionDTO);
+        		entityManager.persist(preciosSesionDTO);
+        	}
+        }
+    	
+    	return sesion;
     }
+    
 
-    private EventoDTO createParEventoDTOWithId(long eventoId)
+    @Transactional
+    public void updateSesion(Sesion sesion)
     {
-        EventoDTO parEventoDTO = new EventoDTO();
-        parEventoDTO.setId(eventoId);
-        return parEventoDTO;
+        JPAUpdateClause update = new JPAUpdateClause(entityManager, qSesionDTO);
+        update.
+        	/*set(qSesionDTO.canalInternet, sesion.getCanalInternet())
+            .set(qSesionDTO.canalTaquilla, sesion.getCanalTaquilla())*/
+        	set(qSesionDTO.canalInternet, new BigDecimal(1))
+        	.set(qSesionDTO.canalTaquilla, new BigDecimal(1))
+            .set(qSesionDTO.fechaCelebracion,
+                 DateUtils.dateToTimestampSafe(sesion.getFechaCelebracion()))
+            .set(qSesionDTO.fechaFinVentaOnline,
+                 DateUtils.dateToTimestampSafe(sesion.getFechaFinVentaOnline()))
+            .set(qSesionDTO.fechaInicioVentaOnline,
+                 DateUtils.dateToTimestampSafe(sesion.getFechaInicioVentaOnline()))
+            .set(qSesionDTO.horaApertura, sesion.getHoraAperturaPuertas())
+            .set(qSesionDTO.parEvento, Evento.eventoToEventoDTO(sesion.getEvento()))
+            .set(qSesionDTO.parPlantilla, Plantilla.plantillaPreciosToPlantillaPreciosDTO(sesion.getPlantillaPrecios()))
+            .where(qSesionDTO.id.eq(sesion.getId())).execute();
     }
 
     @Transactional
-    public void updateSesion(long eventoId, Sesion sesion)
-    {
-        sesion.setEvento(createParEventoDTOWithId(eventoId));
+	public void addPrecioSesion(PreciosSesionDTO precioSesionDTO) {
+		entityManager.persist(precioSesionDTO);
+	}
 
-        JPAUpdateClause update = new JPAUpdateClause(entityManager, qSesionDTO);
-        update.set(qSesionDTO.canalInternet, sesion.getCanalInternet())
-                .set(qSesionDTO.canalTaquilla, sesion.getCanalTaquilla())
-                .set(qSesionDTO.fechaCelebracion,
-                        DateUtils.dateToTimestampSafe(sesion.getFechaCelebracion()))
-                .set(qSesionDTO.fechaFinVentaOnline,
-                        DateUtils.dateToTimestampSafe(sesion.getFechaFinVentaOnline()))
-                .set(qSesionDTO.fechaInicioVentaOnline,
-                        DateUtils.dateToTimestampSafe(sesion.getFechaInicioVentaOnline()))
-                .set(qSesionDTO.horaApertura, sesion.getHoraAperturaPuertas())
-                .set(qSesionDTO.parEvento, sesion.getEvento())
-                .where(qSesionDTO.id.eq(sesion.getId())).execute();
+    @Transactional
+	public void deleteExistingPreciosSesion(long sesionId) {
+		JPADeleteClause delete = new JPADeleteClause(entityManager, qPreciosSesionDTO);
+        delete.where(qPreciosSesionDTO.parSesione.id.eq(sesionId)).execute();
+	}
+
+	@Transactional
+    public List<PreciosSesionDTO> getPreciosSesion(long sesionId)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+
+        List<PreciosSesionDTO> preciosSesion = new ArrayList<PreciosSesionDTO>();
+
+        for (PreciosSesionDTO preciosSesionDB : query.from(qPreciosSesionDTO)
+                .where(qPreciosSesionDTO.parSesione.id.eq(sesionId)).list(qPreciosSesionDTO))
+        {
+            preciosSesion.add(preciosSesionDB);
+        }
+
+        return preciosSesion;
     }
-    
+
+	public PreciosSesionDTO persistPreciosSesion(PreciosSesionDTO precioSesionDTO) {
+		entityManager.persist(precioSesionDTO);
+		return precioSesionDTO;
+	}
+	
     public SesionDTO getSesion(long sesionId)
     {
         JPAQuery query = new JPAQuery(entityManager);
         return query.from(qSesionDTO).where(qSesionDTO.id.eq(sesionId)).uniqueResult(qSesionDTO);
-    }
+    }	
 }

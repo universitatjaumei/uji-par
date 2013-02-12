@@ -21,6 +21,8 @@ public class Evento
     private String duracionEs;
     private String duracionVa;
     private byte[] imagen;
+    private String imagenSrc;
+    private String imagenContentType;
     private String premiosEs;
     private String premiosVa;
     private String caracteristicasEs;
@@ -29,8 +31,6 @@ public class Evento
     private String comentariosVa;
     private TipoEvento parTipoEvento;
     private long tipoEvento;
-    private String imagenSrc;
-    private String imagenContentType;
     private BigDecimal asientosNumerados;
     private BigDecimal porcentajeIVA;
     private BigDecimal ivaSGAE;
@@ -39,6 +39,92 @@ public class Evento
     public Evento()
     {
     }
+    
+    public static Evento eventoDTOtoEvento(EventoDTO eventoDTO) {
+    	Evento evento = new Evento();
+    	
+    	evento.setId(eventoDTO.getId());
+    	evento.setTituloEs(eventoDTO.getTituloEs());
+    	evento.setTituloVa(eventoDTO.getTituloVa());
+
+    	evento.setDescripcionEs(eventoDTO.getDescripcionEs());
+    	evento.setDescripcionVa(eventoDTO.getDescripcionVa());
+
+    	evento.setCompanyiaEs(eventoDTO.getCompanyiaEs());
+    	evento.setCompanyiaVa(eventoDTO.getCompanyiaVa());
+
+    	evento.setInterpretesEs(eventoDTO.getInterpretesEs());
+    	evento.setInterpretesVa(eventoDTO.getInterpretesVa());
+
+    	evento.setDuracionEs(eventoDTO.getDuracionEs());
+    	evento.setDuracionVa(eventoDTO.getDuracionVa());
+
+    	evento.setImagen(eventoDTO.getImagen());
+    	evento.setImagenContentType(eventoDTO.getImagenContentType());
+    	evento.setImagenSrc(eventoDTO.getImagenSrc());
+
+    	evento.setPremiosEs(eventoDTO.getPremiosEs());
+    	evento.setPremiosVa(eventoDTO.getPremiosVa());
+
+    	evento.setCaracteristicasEs(eventoDTO.getCaracteristicasEs());
+    	evento.setCaracteristicasVa(eventoDTO.getCaracteristicasVa());
+
+    	evento.setComentariosEs(eventoDTO.getComentariosEs());
+    	evento.setComentariosVa(eventoDTO.getComentariosVa());
+
+        if (eventoDTO.getParTiposEvento() != null)
+        	evento.setParTipoEvento(TipoEvento.tipoEventoDTOToTipoEvento(eventoDTO.getParTiposEvento()));
+        
+        evento.setAsientosNumerados(eventoDTO.getAsientosNumerados());
+        evento.setIvaSGAE(eventoDTO.getIvaSgae());
+        evento.setRetencionSGAE(eventoDTO.getRetencionSgae());
+        evento.setPorcentajeIVA(eventoDTO.getPorcentajeIva());
+    	
+    	return evento;
+    }
+    
+    public static EventoDTO eventoToEventoDTO(Evento evento) {
+    	EventoDTO eventoDTO = new EventoDTO();
+    	
+    	eventoDTO.setId(evento.getId());
+    	eventoDTO.setTituloEs(evento.getTituloEs());
+    	eventoDTO.setTituloVa(evento.getTituloVa());
+
+    	eventoDTO.setDescripcionEs(evento.getDescripcionEs());
+    	eventoDTO.setDescripcionVa(evento.getDescripcionVa());
+
+    	eventoDTO.setCompanyiaEs(evento.getCompanyiaEs());
+    	eventoDTO.setCompanyiaVa(evento.getCompanyiaVa());
+
+    	eventoDTO.setInterpretesEs(evento.getInterpretesEs());
+    	eventoDTO.setInterpretesVa(evento.getInterpretesVa());
+
+    	eventoDTO.setDuracionEs(evento.getDuracionEs());
+    	eventoDTO.setDuracionVa(evento.getDuracionVa());
+
+    	eventoDTO.setImagen(evento.getImagen());
+    	eventoDTO.setImagenContentType(evento.getImagenContentType());
+    	eventoDTO.setImagenSrc(evento.getImagenSrc());
+
+    	eventoDTO.setPremiosEs(evento.getPremiosEs());
+    	eventoDTO.setPremiosVa(evento.getPremiosVa());
+
+    	eventoDTO.setCaracteristicasEs(evento.getCaracteristicasEs());
+    	eventoDTO.setCaracteristicasVa(evento.getCaracteristicasVa());
+
+    	eventoDTO.setComentariosEs(evento.getComentariosEs());
+    	eventoDTO.setComentariosVa(evento.getComentariosVa());
+
+        if (eventoDTO.getParTiposEvento() != null)
+        	eventoDTO.setParTiposEvento(TipoEvento.tipoEventoToTipoEventoDTO(evento.getParTipoEvento()));
+        
+        eventoDTO.setAsientosNumerados(evento.getAsientosNumerados());
+        eventoDTO.setIvaSgae(evento.getIvaSGAE());
+        eventoDTO.setRetencionSgae(evento.getRetencionSGAE());
+        eventoDTO.setPorcentajeIva(evento.getPorcentajeIVA());
+    	
+    	return eventoDTO;
+	}
 
     public Evento(EventoDTO eventoDTO, boolean crearConImagen)
     {

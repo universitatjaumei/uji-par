@@ -17,10 +17,10 @@ public class PlantillasService {
 	@Autowired
     private PlantillasDAO plantillasPreciosDAO;
 
-	public List<Plantilla> get() {
+	private List<Plantilla> get(boolean filtrarEditables) {
 		List<Plantilla> plantillaPrecios = new ArrayList<Plantilla>();
 		
-		for (PlantillaDTO plantillaDTO: plantillasPreciosDAO.get()) {
+		for (PlantillaDTO plantillaDTO: plantillasPreciosDAO.get(filtrarEditables)) {
 			plantillaPrecios.add(new Plantilla(plantillaDTO));
 		}
 		return plantillaPrecios;
@@ -43,5 +43,15 @@ public class PlantillasService {
 	public void update(Plantilla plantillaPrecios) throws CampoRequeridoException {
 		checkRequiredFields(plantillaPrecios);
 		plantillasPreciosDAO.update(plantillaPrecios);
+	}
+
+	public List<Plantilla> getEditables() {
+		boolean filtrarEditables = true;
+		return get(filtrarEditables);
+	}
+	
+	public List<Plantilla> getAll() {
+		boolean filtrarEditables = false;
+		return get(filtrarEditables);
 	}
 }

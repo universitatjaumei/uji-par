@@ -24,7 +24,7 @@ public class PlantillasPreciosDAOTest {
     @Transactional
     public void getPlantillasPrecios()
     {
-        Assert.assertNotNull(plantillasPreciosDAO.get());
+        Assert.assertNotNull(plantillasPreciosDAO.get(true));
     }
 
     @Test

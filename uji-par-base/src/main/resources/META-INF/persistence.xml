@@ -11,6 +11,7 @@
     <class>es.uji.apps.par.db.UsuarioDTO</class>
     <class>es.uji.apps.par.db.PlantillaDTO</class>
     <class>es.uji.apps.par.db.PreciosPlantillaDTO</class>
+    <class>es.uji.apps.par.db.PreciosSesionDTO</class>
   </persistence-unit>
   
 </persistence>

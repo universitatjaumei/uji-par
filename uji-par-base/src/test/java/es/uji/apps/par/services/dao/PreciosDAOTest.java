@@ -74,7 +74,7 @@ public class PreciosDAOTest {
     	plantillaPrecios = plantillaPreciosDAO.add(plantillaPrecios);
     	
         return new PreciosPlantilla(Localizacion.localizacionDTOtoLocalizacion(localizacionesDAO.get().get(0)), 
-        		Plantilla.plantillaPreciosDTOtoPlantillaPrecios(plantillaPreciosDAO.get().get(0)));
+        		Plantilla.plantillaPreciosDTOtoPlantillaPrecios(plantillaPreciosDAO.get(false).get(0)));
     }
 
     @Test
