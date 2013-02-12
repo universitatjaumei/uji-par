@@ -34,8 +34,7 @@ public class Sesion
         this.id = sesionDTO.getId();
         this.evento = sesionDTO.getParEvento();
         this.fechaCelebracion = new Date(sesionDTO.getFechaCelebracion().getTime());
-        this.fechaInicioVentaOnline = new Date(
-                sesionDTO.getFechaInicioVentaOnline().getTime());
+        this.fechaInicioVentaOnline = new Date(sesionDTO.getFechaInicioVentaOnline().getTime());
         this.fechaFinVentaOnline = new Date(sesionDTO.getFechaFinVentaOnline().getTime());
         this.horaAperturaPuertas = sesionDTO.getHoraApertura();
         this.canalInternet = sesionDTO.getCanalInternet();
@@ -105,8 +104,8 @@ public class Sesion
 
     public void setCanalInternet(String canalInternet)
     {
-        this.canalInternet = (canalInternet != null && canalInternet.equals("on")) ? new BigDecimal(
-                1) : new BigDecimal(0);
+        this.canalInternet = (canalInternet != null && canalInternet.equals("on")) ? new BigDecimal(1)
+                : new BigDecimal(0);
     }
 
     public BigDecimal getCanalTaquilla()
@@ -116,8 +115,8 @@ public class Sesion
 
     public void setCanalTaquilla(String canalTaquilla)
     {
-        this.canalTaquilla = (canalTaquilla != null && canalTaquilla.equals("on")) ? new BigDecimal(
-                1) : new BigDecimal(0);
+        this.canalTaquilla = (canalTaquilla != null && canalTaquilla.equals("on")) ? new BigDecimal(1)
+                : new BigDecimal(0);
     }
 
     // TODO
@@ -142,7 +141,7 @@ public class Sesion
     {
         this.fechaFinVentaOnline = DateUtils.spanishStringToDate(fechaFinVentaOnline);
     }
-    
+
     public void setFechaInicioVentaOnlineWithDate(Date fechaInicioVentaOnline)
     {
         this.fechaInicioVentaOnline = fechaInicioVentaOnline;
