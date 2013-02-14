@@ -25,10 +25,11 @@
 	position: relative;
 }
 
-#butacaSeleccionada {
+.butaca-seleccionada {
 	position: absolute;
+	display: none;
 }
 
-#numeroSeleccionada,#filaSeleccionada {
+#numeroSeleccionada,#filaSeleccionada,#seccionSeleccionada {
 	font-weight: bold;
 }
