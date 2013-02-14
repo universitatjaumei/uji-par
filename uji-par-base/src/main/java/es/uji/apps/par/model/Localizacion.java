@@ -10,6 +10,7 @@ import es.uji.apps.par.db.LocalizacionDTO;
 public class Localizacion
 {
     private long id;
+    private String codigo;
     private String nombreEs;
     private String nombreVa;
     private int totalEntradas;
@@ -17,6 +18,7 @@ public class Localizacion
     public static Localizacion localizacionDTOtoLocalizacion(LocalizacionDTO localizacionDTO) {
     	Localizacion localizacion = new Localizacion();
     	localizacion.setId(localizacionDTO.getId());
+    	localizacion.setCodigo(localizacionDTO.getCodigo());
     	localizacion.setNombreEs(localizacionDTO.getNombreEs());
     	localizacion.setNombreVa(localizacionDTO.getNombreVa());
     	localizacion.setTotalEntradas(localizacionDTO.getTotalEntradas().intValue());
@@ -27,6 +29,7 @@ public class Localizacion
     public static LocalizacionDTO localizacionToLocalizacionDTO(Localizacion localizacion) {
     	LocalizacionDTO localizacionDTO = new LocalizacionDTO();
     	localizacionDTO.setId(localizacion.getId());
+    	localizacionDTO.setCodigo(localizacion.getCodigo());
     	localizacionDTO.setNombreEs(localizacion.getNombreEs());
     	localizacionDTO.setNombreVa(localizacion.getNombreVa());
     	localizacionDTO.setTotalEntradas(new BigDecimal(localizacion.getTotalEntradas()));
@@ -46,6 +49,7 @@ public class Localizacion
     public Localizacion(LocalizacionDTO localizacionDTO)
     {
         this.id = localizacionDTO.getId();
+        this.codigo = localizacionDTO.getCodigo();
         this.nombreEs = localizacionDTO.getNombreEs();
         this.nombreVa = localizacionDTO.getNombreVa();
         this.totalEntradas = localizacionDTO.getTotalEntradas().intValue();
@@ -64,6 +68,16 @@ public class Localizacion
     public void setId(long id)
     {
         this.id = id;
+    }
+
+    public String getCodigo()
+    {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo)
+    {
+        this.codigo = codigo;
     }
 
     public String getNombreEs()

@@ -20,6 +20,9 @@ public class LocalizacionDTO implements Serializable {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PAR_LOCALIZACIONES_ID_GENERATOR")
 	private long id;
 
+	@Column(name="CODIGO")
+	private String codigo;
+	
 	@Column(name="NOMBRE_ES")
 	private String nombreEs;
 
@@ -47,8 +50,21 @@ public class LocalizacionDTO implements Serializable {
 	public void setId(long id) {
 		this.id = id;
 	}
+	
+	public String getCodigo() {
+        return codigo;
+    }
 
-	public String getNombreEs() {
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
+    public static long getSerialversionuid()
+    {
+        return serialVersionUID;
+    }
+
+    public String getNombreEs() {
 		return this.nombreEs;
 	}
 

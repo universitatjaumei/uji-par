@@ -18,6 +18,9 @@ Ext.define('Paranimf.view.localizacion.FormLocalizaciones', {
       hidden: true,
       allowBlank: true
    }, {
+		fieldLabel: UI.i18n.field.codigo,
+		name: 'codigo'
+	}, {
 		fieldLabel: UI.i18n.field.name,
 		name: 'nombreEs'
 	}, {

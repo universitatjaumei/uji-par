@@ -69,6 +69,7 @@ public class LocalizacionesDAO
     {
         JPAUpdateClause update = new JPAUpdateClause(entityManager, qParLocalizacionDTO);
         update.set(qParLocalizacionDTO.nombreEs, localizacion.getNombreEs())
+                .set(qParLocalizacionDTO.codigo, localizacion.getCodigo())
                 .set(qParLocalizacionDTO.nombreVa, localizacion.getNombreVa())
                 .set(qParLocalizacionDTO.totalEntradas,
                         new BigDecimal(localizacion.getTotalEntradas()))

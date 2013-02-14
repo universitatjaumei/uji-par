@@ -85,6 +85,7 @@ UI =
         },
         
         "field": {
+        	"codigo":"Codi",
         	"name":"Nombre",
 			"name_va": "Nom",
 			"title":"Título",
