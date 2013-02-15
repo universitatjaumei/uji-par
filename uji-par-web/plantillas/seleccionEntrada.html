@@ -41,8 +41,18 @@
 			<span th:text="#{butacaSeleccionadaFila}">fila=</span><span id="filaSeleccionada"></span>, <span
 				th:text="#{butacaSeleccionadaNumero}">butaca=</span><span id="numeroSeleccionada"></span>
 		</div>
+
+		<h3 th:text="#{tipo}">Tipo de entrada</h3>
+		<div class="entrada-datos">
+			<input type="radio" name="tipo" id="tipoNormal" value="normal" /><label for="tipoNormal" th:text="#{tipoNormal}">Normal</label> <input
+				type="radio" name="tipo" id="tipoDescuento" value="descuento" /><label for="tipoDescuento" th:text="#{tipoDescuento}">Descuento</label>
+		</div>		
 		
 		<h2>Anfiteatro</h2>
+		<ul>
+			<li><span>Entrada normal:</span> <span th:text="${precioNormal_anfiteatro}"></span></li>
+			<li><span>Entrada con descuento:</span> <span th:text="${precioDescuento_anfiteatro}"></span></li>
+		</ul>
 		<div id="seccion_anfiteatro" class="entrada-plano">
 			<map name="mapAnfiteatro">
 				<area shape="rect" coords="0,0,21,19" href="javascript:selecciona('anfiteatro', 15, 18, 0, 0)" />
@@ -367,6 +377,10 @@
 		</div>
 
 		<h2>Platea 1</h2>
+		<ul>
+			<li><span>Entrada normal:</span> <span th:text="${precioNormal_platea1}"></span></li>
+			<li><span>Entrada con descuento:</span> <span th:text="${precioDescuento_platea1}"></span></li>
+		</ul>		
 		<div id="seccion_platea1" class="entrada-plano">
 			<map name="mapPlatea1">
 				<area shape="rect" coords="0,0,21,19" href="javascript:selecciona('platea1', 15, 18, 0, 0)" />
@@ -695,11 +709,6 @@
 			<label th:text="#{telefono}">Teléfono confirmación</label> <input type="text" name="telefono" th:placeholder="#{telefono}"
 				placeholder="Teléfono" /> <br /> <label th:text="#{email}">Email</label> <input type="text" name="email" th:placeholder="#{email}"
 				placeholder="Email" /><br />
-		</div>
-		<h3 th:text="#{tipo}">Tipo de entrada</h3>
-		<div class="entrada-datos">
-			<input type="radio" name="tipo" id="tipoNormal" value="normal" /><label for="tipoNormal" th:text="#{tipoNormal}">Normal</label> <input
-				type="radio" name="tipo" id="tipoDescuento" value="descuento" /><label for="tipoDescuento" th:text="#{tipoDescuento}">Descuento</label>
 		</div>
 		<input type="submit" th:value="#{comprar}" value="Comprar" />
 	</form>

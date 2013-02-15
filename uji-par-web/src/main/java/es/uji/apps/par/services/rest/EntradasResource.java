@@ -1,5 +1,7 @@
 package es.uji.apps.par.services.rest;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -17,6 +19,7 @@ import com.sun.jersey.api.core.InjectParam;
 
 import es.uji.apps.par.Constantes;
 import es.uji.apps.par.model.Evento;
+import es.uji.apps.par.model.PreciosSesion;
 import es.uji.apps.par.model.Sesion;
 import es.uji.apps.par.services.SesionesService;
 import es.uji.commons.web.template.HTMLTemplate;
@@ -46,6 +49,14 @@ public class EntradasResource extends BaseResource
         Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "seleccionEntrada", getLocale());
         template.put("evento", evento);
         template.put("sesion", sesion);
+        
+        List<PreciosSesion> precios = sesionesService.getPreciosSesion(sesionId);
+        
+        for (PreciosSesion precio : precios)
+        {
+            template.put("precioNormal_" + precio.getLocalizacion().getCodigo(), precio.getPrecio());
+            template.put("precioDescuento_" + precio.getLocalizacion().getCodigo(), precio.getDescuento());
+        }
 
         return Response.ok(template).build();
     }
