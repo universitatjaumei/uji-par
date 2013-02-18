@@ -115,6 +115,32 @@
 				redibujaButacasSeleccionadas();
 				muestraDetallesSeleccionadas();
 			}
+			
+			function muestraPrecios()
+			{
+				var value = $('input[name=tipo]:checked').val();
+				
+				console.log('Precio:', value);
+				
+				if (value == 'normal')
+				{
+					$('.precio-normal').show();
+					$('.precio-descuento').hide();
+				}
+				else
+				{
+					$('.precio-descuento').show();
+					$('.precio-normal').hide();
+				}
+			}
+			
+			$(document).ready(function(){
+				$('input[name=tipo]').click(function(){
+					muestraPrecios();
+				});
+				
+				muestraPrecios();
+			});
 		/* ]]> */ 
 		</script>
 	</div>
@@ -130,8 +156,8 @@
 		
 		<h2>Anfiteatro</h2>
 		<ul>
-			<li><span>Entrada normal:</span> <span th:text="${precioNormal_anfiteatro}"></span></li>
-			<li><span>Entrada con descuento:</span> <span th:text="${precioDescuento_anfiteatro}"></span></li>
+			<li class="precio-normal"><span>Entrada normal:</span> <span th:text="${precioNormal_anfiteatro}"></span></li>
+			<li class="precio-descuento"><span>Entrada con descuento:</span> <span th:text="${precioDescuento_anfiteatro}"></span></li>
 		</ul>
 		<div id="seccion_anfiteatro" class="entrada-plano">
 			<map name="mapAnfiteatro">
@@ -458,8 +484,8 @@
 
 		<h2>Platea 1</h2>
 		<ul>
-			<li><span>Entrada normal:</span> <span th:text="${precioNormal_platea1}"></span></li>
-			<li><span>Entrada con descuento:</span> <span th:text="${precioDescuento_platea1}"></span></li>
+			<li class="precio-normal"><span>Entrada normal:</span> <span th:text="${precioNormal_platea1}"></span></li>
+			<li class="precio-descuento"><span>Entrada con descuento:</span> <span th:text="${precioDescuento_platea1}"></span></li>
 		</ul>		
 		<div id="seccion_platea1" class="entrada-plano">
 			<map name="mapPlatea1">
