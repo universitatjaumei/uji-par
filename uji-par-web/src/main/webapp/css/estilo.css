@@ -28,6 +28,7 @@
 .butaca-seleccionada {
 	position: absolute;
 	display: none;
+	cursor: pointer;
 }
 
 #numeroSeleccionada,#filaSeleccionada,#seccionSeleccionada {

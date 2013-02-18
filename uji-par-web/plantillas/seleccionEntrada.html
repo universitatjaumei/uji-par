@@ -14,39 +14,119 @@
 		<span th:text="#{sesion}">Sesión:</span>&nbsp;<span th:text="${#dates.format(sesion.fechaCelebracion, 'dd/MM/yyyy')}"></span> <span
 			th:text="${sesion.horaCelebracion}"></span> <span th:text="${sesion.canalInternet}"></span>
 		<script type="text/javascript">
-			function selecciona(seccion, fila, numero, x, y) {
-				
+		/* <![CDATA[ */ 
+			var butacasSeleccionadas = [];
+			
+			function ocultaButacasSeleccionadas()
+			{
 				$('.butaca-seleccionada').remove();
-				
-				var	butacaSeleccionada = $('<img src="../../img/seleccionada.png" class="butaca-seleccionada"/>');
-				butacaSeleccionada.css("left", x + "px");
-				butacaSeleccionada.css("top", y + "px");
-				
-				$('#seccion_' + seccion).append(butacaSeleccionada);
-				
-				butacaSeleccionada.show();
-
-				$('#seccionSeleccionada').text(seccion);
-				$('#filaSeleccionada').text(fila);
-				$('#numeroSeleccionada').text(numero);
 			}
+			
+			function iguales(butaca1, butaca2)
+			{
+				return butaca1.seccion==butaca2.seccion && butaca1.fila==butaca2.fila && butaca1.numero==butaca2.numero; 				
+			}
+			
+			function estaSeleccionada(butaca)
+			{
+				for (var i=0; i<butacasSeleccionadas.length; i++)
+					if (iguales(butaca, butacasSeleccionadas[i]))
+						return true
+				return false;		
+			}
+			
+			function muestraButacaSeleccionada(butaca)
+			{
+				var	butacaSeleccionada = $('<img src="../../img/seleccionada.png" class="butaca-seleccionada"/>');
+				butacaSeleccionada.css("left", butaca.x + "px");
+				butacaSeleccionada.css("top", butaca.y + "px");
+				$('#seccion_' + butaca.seccion).append(butacaSeleccionada);
+
+				butacaSeleccionada.click(function(){
+					console.log("Click sobre seleccionada: ", butaca);
+					selecciona(butaca.seccion, butaca.fila, butaca.numero, butaca.x, butaca.y);
+				});
+				butacaSeleccionada.show();
+			}
+			
+			function muestraButacasSeleccionadas()
+			{
+				for (var i=0; i<butacasSeleccionadas.length; i++)
+				{	
+					muestraButacaSeleccionada(butacasSeleccionadas[i]);
+				}
+			}
+			
+			function redibujaButacasSeleccionadas()
+			{
+				ocultaButacasSeleccionadas();
+				muestraButacasSeleccionadas();
+			}
+			
+			function anyadeButacaSeleccionada(butaca)
+			{
+				butacasSeleccionadas.push(butaca);
+			}
+			
+			function eliminaButacaSeleccionada(butaca)
+			{
+				for (var i=0; i<butacasSeleccionadas.length; i++)
+				{
+					if (iguales(butaca, butacasSeleccionadas[i]))
+					{
+						butacasSeleccionadas.splice(i, 1);
+						return;
+					}
+				}
+			}
+			
+			function muestraDetallesSeleccionadas()
+			{
+				var detalles = "";
+				
+				$('#detallesSeleccionadas').empty();
+				
+				for (var i=0; i<butacasSeleccionadas.length; i++)
+				{
+					var fila = $('<div class="entrada-seleccionada">'
+									+ '<span th:text="#{butacaSeleccionadaSeccion}">seccion=</span>' + butacasSeleccionadas[i].seccion + '</span>, '
+									+ '<span th:text="#{butacaSeleccionadaFila}">fila=</span>' + butacasSeleccionadas[i].fila + ', '
+									+ '<span th:text="#{butacaSeleccionadaNumero}">butaca=</span>' + butacasSeleccionadas[i].numero
+								+ "</div>");
+					$('#detallesSeleccionadas').append(fila);
+				}
+			}
+		
+			function selecciona(seccion, fila, numero, x, y) 
+			{
+				var butaca = {seccion:seccion, fila:fila, numero:numero, x:x, y:y};
+				
+				if (estaSeleccionada(butaca))
+				{
+					console.log('Ya está seleccionada:', butaca);	
+					eliminaButacaSeleccionada(butaca);
+				}
+				else
+				{
+					console.log('Añade a seleccionadas:', butaca);
+					anyadeButacaSeleccionada(butaca);
+				}
+				
+				redibujaButacasSeleccionadas();
+				muestraDetallesSeleccionadas();
+			}
+		/* ]]> */ 
 		</script>
 	</div>
 
 	<form action="" method="POST">
 		<h3 th:text="#{plano}">Plano del Paraninfo</h3>
-		<div class="entrada-seleccionada">
-			<span th:text="#{butacaSeleccionada}">Butaca seleccionada:</span>
-			<span th:text="#{butacaSeleccionadaSeccion}">seccion=</span><span id="seccionSeleccionada"></span>,
-			<span th:text="#{butacaSeleccionadaFila}">fila=</span><span id="filaSeleccionada"></span>, <span
-				th:text="#{butacaSeleccionadaNumero}">butaca=</span><span id="numeroSeleccionada"></span>
-		</div>
-
+		
 		<h3 th:text="#{tipo}">Tipo de entrada</h3>
 		<div class="entrada-datos">
-			<input type="radio" name="tipo" id="tipoNormal" value="normal" /><label for="tipoNormal" th:text="#{tipoNormal}">Normal</label> <input
+			<input type="radio" name="tipo" id="tipoNormal" value="normal" checked="true"/><label for="tipoNormal" th:text="#{tipoNormal}">Normal</label> <input
 				type="radio" name="tipo" id="tipoDescuento" value="descuento" /><label for="tipoDescuento" th:text="#{tipoDescuento}">Descuento</label>
-		</div>		
+		</div>
 		
 		<h2>Anfiteatro</h2>
 		<ul>
@@ -702,6 +782,10 @@
 
 			<img src="../../img/butacas.png" border="0" usemap="#mapPlatea1" /> 
 		</div>
+		
+		<h3 ht:text="#{detallesSeleccionadas}">Butacas seleccionadas</h3>
+		<div id="detallesSeleccionadas"></div>
+			
 		<h3 th:text="#{datosPersonales}">Datos personales</h3>
 		<div class="entrada-datos">
 			<label th:text="#{nombre}">Nombre</label> <input type="text" name="nombre" th:placeholder="#{nombre}" placeholder="Nombre" /><br /> <label
