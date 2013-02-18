@@ -18,6 +18,7 @@ import com.sun.jersey.api.client.ClientResponse.Status;
 import com.sun.jersey.api.core.InjectParam;
 
 import es.uji.apps.par.Constantes;
+import es.uji.apps.par.model.EstadoButaca;
 import es.uji.apps.par.model.Evento;
 import es.uji.apps.par.model.PreciosSesion;
 import es.uji.apps.par.model.Sesion;
@@ -49,9 +50,9 @@ public class EntradasResource extends BaseResource
         Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "seleccionEntrada", getLocale());
         template.put("evento", evento);
         template.put("sesion", sesion);
-        
+
         List<PreciosSesion> precios = sesionesService.getPreciosSesion(sesionId);
-        
+
         for (PreciosSesion precio : precios)
         {
             template.put("precioNormal_" + precio.getLocalizacion().getCodigo(), precio.getPrecio());
@@ -103,4 +104,15 @@ public class EntradasResource extends BaseResource
         return Response.status(Status.FORBIDDEN.getStatusCode()).build();
     }
 
+    @GET
+    @Path("{id}/{seccion}/{fila}/{numero}/estado")
+    @Produces(MediaType.APPLICATION_JSON)
+    public EstadoButaca estadoButaca(@PathParam("id") Integer sesionId, @PathParam("seccion") String seccion,
+            @PathParam("fila") String fila, @PathParam("numero") String numero) throws Exception
+    {
+        if (numero.equals("3"))
+            return new EstadoButaca(true);
+        else
+            return new EstadoButaca(false);
+    }
 }
