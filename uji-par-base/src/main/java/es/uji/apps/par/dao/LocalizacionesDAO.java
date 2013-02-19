@@ -56,6 +56,7 @@ public class LocalizacionesDAO
         LocalizacionDTO localizacionDTO = new LocalizacionDTO();
         localizacionDTO.setNombreEs(localizacion.getNombreEs());
         localizacionDTO.setNombreVa(localizacion.getNombreVa());
+        localizacionDTO.setCodigo(localizacion.getCodigo());
         localizacionDTO.setTotalEntradas(new BigDecimal(localizacion.getTotalEntradas()));
 
         entityManager.persist(localizacionDTO);

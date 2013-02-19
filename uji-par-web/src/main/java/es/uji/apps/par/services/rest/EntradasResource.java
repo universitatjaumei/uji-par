@@ -22,6 +22,7 @@ import es.uji.apps.par.model.EstadoButaca;
 import es.uji.apps.par.model.Evento;
 import es.uji.apps.par.model.PreciosSesion;
 import es.uji.apps.par.model.Sesion;
+import es.uji.apps.par.services.ButacasService;
 import es.uji.apps.par.services.SesionesService;
 import es.uji.commons.web.template.HTMLTemplate;
 import es.uji.commons.web.template.Template;
@@ -31,6 +32,9 @@ public class EntradasResource extends BaseResource
 {
     @InjectParam
     private SesionesService sesionesService;
+    
+    @InjectParam
+    private ButacasService butacasService;
 
     @Context
     HttpServletResponse currentResponse;
@@ -110,9 +114,7 @@ public class EntradasResource extends BaseResource
     public EstadoButaca estadoButaca(@PathParam("id") Integer sesionId, @PathParam("seccion") String seccion,
             @PathParam("fila") String fila, @PathParam("numero") String numero) throws Exception
     {
-        if (numero.equals("3"))
-            return new EstadoButaca(true);
-        else
-            return new EstadoButaca(false);
+        boolean ocupada = butacasService.estaOcupada(sesionId, seccion, fila, numero);
+        return new EstadoButaca(ocupada);
     }
 }

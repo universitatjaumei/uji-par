@@ -117,6 +117,32 @@
 	"MAIL" VARCHAR2(255)
    ) ;
 --------------------------------------------------------
+--  DDL for Table PAR_BUTACAS
+--------------------------------------------------------
+
+  CREATE TABLE "PAR_BUTACAS" 
+   (	"ID" NUMBER,
+    "SESION_ID" NUMBER, 
+	"LOCALIZACION_ID" NUMBER,
+	"COMPRA_ID" NUMBER,  
+	"FILA" VARCHAR2(255), 
+	"NUMERO" VARCHAR2(255),
+	"TIPO" VARCHAR2(255),
+	"PRECIO" NUMBER
+   ) ;
+--------------------------------------------------------
+--  DDL for Table PAR_COMPRAS
+--------------------------------------------------------
+
+  CREATE TABLE "PAR_COMPRAS" 
+   (	"ID" NUMBER,
+ 		"NOMBRE" VARCHAR2(255),
+ 		"APELLIDOS" VARCHAR2(255),
+ 		"TFNO" VARCHAR2(255),
+ 		"EMAIL" VARCHAR2(255),
+ 		"FECHA" TIMESTAMP (6)
+   ) ;     
+--------------------------------------------------------
 --  Constraints for Table PAR_EVENTOS
 --------------------------------------------------------
 
@@ -201,7 +227,7 @@
 --  Constraints for Table PAR_USUARIOS
 --------------------------------------------------------
 
-  ALTER TABLE "PAR_USUARIOS" ADD CONSTRAINT "PAR_USERS_PK" PRIMARY KEY ("ID") ENABLE;
+  ALTER TABLE "PAR_USUARIOS" ADD CONSTRAINT "" PRIMARY KEY ("ID") ENABLE;
  
   ALTER TABLE "PAR_USUARIOS" ADD CONSTRAINT "PAR_USERS_UK1" UNIQUE ("USUARIO") ENABLE;
  
@@ -212,6 +238,37 @@
   ALTER TABLE "PAR_USUARIOS" MODIFY ("USUARIO" NOT NULL ENABLE);
  
   ALTER TABLE "PAR_USUARIOS" MODIFY ("MAIL" NOT NULL ENABLE);
+--------------------------------------------------------
+--  Constraints for Table PAR_BUTACAS
+--------------------------------------------------------
+
+  ALTER TABLE "PAR_BUTACAS" ADD CONSTRAINT "PAR_BUTACAS_PK" PRIMARY KEY ("ID") ENABLE;
+ 
+  ALTER TABLE "PAR_BUTACAS" ADD CONSTRAINT "PAR_BUTACAS_UK1" UNIQUE ("SESION_ID", "LOCALIZACION_ID", "FILA", "NUMERO") ENABLE;
+  
+  ALTER TABLE "PAR_BUTACAS" MODIFY ("COMPRA_ID" NOT NULL ENABLE);
+ 
+  ALTER TABLE "PAR_BUTACAS" MODIFY ("ID" NOT NULL ENABLE);
+ 
+  ALTER TABLE "PAR_BUTACAS" MODIFY ("FILA" NOT NULL ENABLE);
+ 
+  ALTER TABLE "PAR_BUTACAS" MODIFY ("NUMERO" NOT NULL ENABLE);
+  
+  ALTER TABLE "PAR_BUTACAS" MODIFY ("PRECIO" NOT NULL ENABLE);
+--------------------------------------------------------
+--  Constraints for Table PAR_COMPRAS
+--------------------------------------------------------
+
+  ALTER TABLE "PAR_COMPRAS" ADD CONSTRAINT "PAR_COMPRAS_PK" PRIMARY KEY ("ID") ENABLE;
+  
+  ALTER TABLE "PAR_COMPRAS" MODIFY ("NOMBRE" NOT NULL ENABLE);
+ 
+  ALTER TABLE "PAR_COMPRAS" MODIFY ("APELLIDOS" NOT NULL ENABLE);
+ 
+  ALTER TABLE "PAR_COMPRAS" MODIFY ("TFNO" NOT NULL ENABLE);
+ 
+  ALTER TABLE "PAR_COMPRAS" MODIFY ("FECHA" NOT NULL ENABLE);
+          
 --------------------------------------------------------
 --  DDL for Index PAR_EVENTOS_PK
 --------------------------------------------------------
@@ -273,7 +330,7 @@
   CREATE UNIQUE INDEX "PAR_TIPOS_EVENTO_PK" ON "PAR_TIPOS_EVENTO" ("ID") 
   ;
 --------------------------------------------------------
---  DDL for Index PAR_USERS_PK
+--  DDL for Index 
 --------------------------------------------------------
 
   CREATE UNIQUE INDEX "PAR_USERS_PK" ON "PAR_USUARIOS" ("ID") 
@@ -284,6 +341,18 @@
 
   CREATE UNIQUE INDEX "PAR_USERS_UK1" ON "PAR_USUARIOS" ("USUARIO") 
   ;
+--------------------------------------------------------
+--  DDL for Index PAR_BUTACAS_PK
+--------------------------------------------------------
+
+  CREATE UNIQUE INDEX "PAR_BUTACAS_PK" ON "PAR_BUTACAS" ("ID") 
+  ;  
+--------------------------------------------------------
+--  DDL for Index PAR_COMPRAS_PK
+--------------------------------------------------------
+
+  CREATE UNIQUE INDEX "PAR_COMPRAS_PK" ON "PAR_COMPRAS" ("ID") 
+  ;    
 --------------------------------------------------------
 --  Ref Constraints for Table PAR_EVENTOS
 --------------------------------------------------------
@@ -317,6 +386,18 @@
  
   ALTER TABLE "PAR_SESIONES" ADD CONSTRAINT "PAR_SESIONES_PAR_PLANTILL_FK1" FOREIGN KEY ("PLANTILLA_ID")
 	  REFERENCES "PAR_PLANTILLAS" ("ID") ENABLE;
+--------------------------------------------------------
+--  Ref Constraints for Table PAR_BUTACAS
+--------------------------------------------------------
+
+  ALTER TABLE "PAR_BUTACAS" ADD CONSTRAINT "PAR_BUTACAS_LO_FK1" FOREIGN KEY ("LOCALIZACION_ID")
+	  REFERENCES "PAR_LOCALIZACIONES" ("ID") ENABLE;
+ 
+  ALTER TABLE "PAR_BUTACAS" ADD CONSTRAINT "PAR_BUTACAS_SE_FK1" FOREIGN KEY ("SESION_ID")
+	  REFERENCES "PAR_SESIONES" ("ID") ON DELETE CASCADE ENABLE;	
+	  
+  ALTER TABLE "PAR_BUTACAS" ADD CONSTRAINT "PAR_BUTACAS_CO_FK1" FOREIGN KEY ("COMPRA_ID")
+	  REFERENCES "PAR_COMPRAS" ("ID") ON DELETE CASCADE ENABLE;		    
 --------------------------------------------------------
 --  DDL for Trigger PAR_EVENTOS_TRIGGER
 --------------------------------------------------------
@@ -372,6 +453,20 @@ ALTER TRIGGER "PAR_PRECIOS_PLANTILLA_TRIGGER" ENABLE;
   CREATE OR REPLACE TRIGGER "PAR_PRECIOS_SESION_TRIGGER" before insert on "PAR_PRECIOS_SESION"    for each row begin     if inserting then       if :NEW."ID" is null then          select HIBERNATE_SEQUENCE.nextval into :NEW."ID" from dual;       end if;    end if; end;
 /
 ALTER TRIGGER "PAR_PRECIOS_SESION_TRIGGER" ENABLE;
+--------------------------------------------------------
+--  DDL for Trigger PAR_BUTACAS_TRIGGER
+--------------------------------------------------------
+
+  CREATE OR REPLACE TRIGGER "PAR_BUTACAS_TRIGGER" before insert on "PAR_BUTACAS"    for each row begin     if inserting then       if :NEW."ID" is null then          select HIBERNATE_SEQUENCE.nextval into :NEW."ID" from dual;       end if;    end if; end;
+/
+ALTER TRIGGER "PAR_BUTACAS_TRIGGER" ENABLE;
+--------------------------------------------------------
+--  DDL for Trigger PAR_COMPRAS_TRIGGER
+--------------------------------------------------------
+
+  CREATE OR REPLACE TRIGGER "PAR_COMPRAS_TRIGGER" before insert on "PAR_COMPRAS"    for each row begin     if inserting then       if :NEW."ID" is null then          select HIBERNATE_SEQUENCE.nextval into :NEW."ID" from dual;       end if;    end if; end;
+/
+ALTER TRIGGER "PAR_COMPRAS_TRIGGER" ENABLE;
 --------------------------------------------------------
 --  DDL for Trigger PAR_SESIONES_TRIGGER
 --------------------------------------------------------

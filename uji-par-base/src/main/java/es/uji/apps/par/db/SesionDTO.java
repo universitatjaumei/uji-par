@@ -64,6 +64,10 @@ public class SesionDTO implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="PLANTILLA_ID")
 	private PlantillaDTO parPlantilla;
+	
+    //bi-directional many-to-one association to SesionDTO
+    @OneToMany(mappedBy="parSesion")
+    private List<ButacaDTO> parButacas;	
 
 	public SesionDTO() {
 	}
@@ -156,4 +160,12 @@ public class SesionDTO implements Serializable {
 		this.parPlantilla = parPlantilla;
 	}
 
+    public List<ButacaDTO> getParButacas() {
+        return parButacas;
+    }
+
+    public void setParButacas(List<ButacaDTO> parButacas) {
+        this.parButacas = parButacas;
+    }
+	
 }
