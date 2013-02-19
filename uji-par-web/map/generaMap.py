@@ -2,14 +2,18 @@
 # -*- coding: utf-8 -*-
 
 from docopt import docopt
+import json
 
 USO = """
 Usage:
-    generaMap.py [options] <anchoImagen> <altoImagen> <anchoCelda> <altoCelda>
+    generaMap.py [options] json <seccion> <anchoImagen> <altoImagen> <anchoCelda> <altoCelda>
+    generaMap.py map <fichero_json>
     generaMap.py --help
 
 Options:
     --help               Muestra esta pantalla
+
+    json                                        Genera fichero json con butacas
 
     -x <xini>                                   Desplazamiento inicial X [default: 0]
     -y <yini>                                   Desplazamiento inicial Y [default: 0]
@@ -19,11 +23,13 @@ Options:
     <altoImagen>                                Alto de imagen
     <anchoCelda>                                Ancho de celda
     <altoCelda>                                 Alto de celda
+
+    map                                         Genera map para incluir en el HTML
 """
 
-def generate_map(x_ini, y_ini, ancho_imagen, alto_imagen, ancho_celda, alto_celda, descendente, inc_butaca):
+def genera_json(seccion, x_ini, y_ini, ancho_imagen, alto_imagen, ancho_celda, alto_celda, descendente, inc_butaca):
 
-    print '<map name="map">'
+    butacas = []
 
     fila = (alto_imagen-y_ini) / alto_celda
 
@@ -38,16 +44,37 @@ def generate_map(x_ini, y_ini, ancho_imagen, alto_imagen, ancho_celda, alto_celd
             numero = 1
 
         for x in range(x_ini, ancho_imagen, ancho_celda):
-            print '<area shape="rect" coords="%d,%d,%d,%d" href="javascript:selecciona(%d, %d, %d, %d)" />' % (x, y, x+ancho_celda, y+alto_celda, fila, numero, x, y)
+            butacas.append({"seccion":seccion, "xIni":x, "yIni":y, "xFin":x+ancho_celda, "yFin":y+alto_celda, "fila":fila, "numero":numero})
             numero += inc_butaca
         
         fila -= 1
 
-    print '</map>'
+    return json.dumps(butacas)
+
+
+def genera_map(fichero):
+
+    st = '<map name="map">\n'
+
+    for butaca in json.load(open(fichero)):
+        st += '<area shape="rect" coords="%d,%d,%d,%d" href="javascript:selecciona(\'%s\', %d, %d, %d, %d)" />\n' % (butaca['xIni'], butaca['yIni'], butaca['xFin'], butaca['yFin'], butaca['seccion'], butaca['fila'], butaca['numero'], butaca['xIni'], butaca['yIni'])
+
+
+    st += '</map>\n'
+
+    return st
 
 if __name__ == "__main__":
     arguments = docopt(USO)
 
     #print arguments
 
-    generate_map(int(arguments["-x"]), int(arguments["-y"]), int(arguments["<anchoImagen>"]), int(arguments["<altoImagen>"]), int(arguments["<anchoCelda>"]), int(arguments["<altoCelda>"]), arguments["--descendente"], int(arguments['--incremento']))
+    if arguments['json']:
+
+        print genera_json(arguments["<seccion>"], int(arguments["-x"]), int(arguments["-y"]), int(arguments["<anchoImagen>"]), int(arguments["<altoImagen>"]), int(arguments["<anchoCelda>"]), int(arguments["<altoCelda>"]), arguments["--descendente"], int(arguments['--incremento']))
+    
+    else:
+        
+        print genera_map(arguments['<fichero_json>'])
+
+
