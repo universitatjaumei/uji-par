@@ -14,7 +14,7 @@ public class Butaca
     private String numero;
     private BigDecimal precio;
     private Localizacion parLocalizacion;
-
+    
     public Butaca()
     {
     }

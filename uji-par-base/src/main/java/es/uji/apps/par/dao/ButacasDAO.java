@@ -24,12 +24,19 @@ public class ButacasDAO
     private QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
 
     @Transactional
-    public List<ButacaDTO> getButacas()
+    public List<ButacaDTO> getButacas(long idSesion, String codigoLocalizacion)
     {
+        QLocalizacionDTO qLocalizacionDTO = QLocalizacionDTO.localizacionDTO;
         QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
         JPAQuery query = new JPAQuery(entityManager);
+        
+        List<ButacaDTO> list = query
+                .from(qButacaDTO, qSesionDTO, qLocalizacionDTO)
+                .where(qButacaDTO.parSesion.id.eq(qSesionDTO.id).and(qSesionDTO.id.eq(idSesion))
+                        .and(qLocalizacionDTO.codigo.eq(codigoLocalizacion))
+                        .and(qButacaDTO.parLocalizacion.id.eq(qLocalizacionDTO.id))).list(qButacaDTO);
 
-        return query.from(qButacaDTO, qSesionDTO).where(qButacaDTO.parSesion.id.eq(qSesionDTO.id)).list(qButacaDTO);
+        return list;
     }
 
     @Transactional

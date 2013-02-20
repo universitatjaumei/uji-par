@@ -1,8 +1,10 @@
 package es.uji.apps.par.services.dao;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +19,6 @@ import es.uji.apps.par.dao.SesionesDAO;
 import es.uji.apps.par.db.ButacaDTO;
 import es.uji.apps.par.db.LocalizacionDTO;
 import es.uji.apps.par.db.SesionDTO;
-import es.uji.apps.par.model.Butaca;
 import es.uji.apps.par.model.Localizacion;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -35,20 +36,44 @@ public class ButacasDAOTest
     @Autowired
     LocalizacionesDAO localizacionesDao;
 
+    private Localizacion localizacion;
+
+    private SesionDTO sesion;
+
+    @Before
+    public void before()
+    {
+        localizacion = preparaLocalizacion("anfiteatro");
+        sesion = preparaSesion();
+    }
+
     @Test
     @Transactional
     public void getButacas()
     {
-        Assert.assertNotNull(butacasDao.getButacas());
+        Localizacion localizacion2 = preparaLocalizacion("platea1");
+
+        ButacaDTO butaca = preparaButaca(sesion, Localizacion.localizacionToLocalizacionDTO(localizacion), "1", "2",
+                BigDecimal.ONE);
+        butacasDao.addButaca(butaca);
+
+        ButacaDTO butaca2 = preparaButaca(sesion, Localizacion.localizacionToLocalizacionDTO(localizacion2), "2", "3",
+                BigDecimal.ONE);
+        butacasDao.addButaca(butaca2);
+
+        List<ButacaDTO> butacas = butacasDao.getButacas(sesion.getId(), localizacion.getCodigo());
+
+        Assert.assertEquals(1, butacas.size());
+        Assert.assertEquals(butaca, butacas.get(0));
     }
-    
+
     @Test
     @Transactional
     public void butacaLibreAlInicio()
     {
         Localizacion localizacion = preparaLocalizacion("anfiteatro");
         SesionDTO sesion = preparaSesion();
-        
+
         Assert.assertFalse(butacasDao.estaOcupada(sesion.getId(), localizacion.getCodigo(), "1", "2"));
     }
 
@@ -56,12 +81,10 @@ public class ButacasDAOTest
     @Transactional
     public void getButacaOcupada()
     {
-        Localizacion localizacion = preparaLocalizacion("anfiteatro");
-        SesionDTO sesion = preparaSesion();
-        
-        ButacaDTO butaca = preparaButaca(sesion, Localizacion.localizacionToLocalizacionDTO(localizacion), "1", "2", BigDecimal.ONE);
+        ButacaDTO butaca = preparaButaca(sesion, Localizacion.localizacionToLocalizacionDTO(localizacion), "1", "2",
+                BigDecimal.ONE);
         butacasDao.addButaca(butaca);
-        
+
         Assert.assertTrue(butacasDao.estaOcupada(sesion.getId(), localizacion.getCodigo(), "1", "2"));
     }
 
@@ -79,16 +102,17 @@ public class ButacasDAOTest
         return localizacionesDao.add(localizacion);
     }
 
-    private ButacaDTO preparaButaca(SesionDTO sesion, LocalizacionDTO localizacion, String fila, String numero, BigDecimal precio)
+    private ButacaDTO preparaButaca(SesionDTO sesion, LocalizacionDTO localizacion, String fila, String numero,
+            BigDecimal precio)
     {
         ButacaDTO butacaDTO = new ButacaDTO();
-        
+
         butacaDTO.setFila(fila);
         butacaDTO.setNumero(numero);
         butacaDTO.setPrecio(precio);
         butacaDTO.setParSesion(sesion);
         butacaDTO.setParLocalizacion(localizacion);
-        
+
         return butacaDTO;
     }
 
