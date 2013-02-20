@@ -49,7 +49,7 @@ def genera_json(seccion, x_ini, y_ini, ancho_imagen, alto_imagen, ancho_celda, a
         
         fila -= 1
 
-    return json.dumps(butacas)
+    return json.dumps(butacas, sort_keys=True, indent=4, separators=(',', ': '))
 
 
 def genera_map(fichero):
