@@ -6,7 +6,7 @@ import json
 
 USO = """
 Usage:
-    generaMap.py [options] json <seccion> <anchoImagen> <altoImagen> <anchoCelda> <altoCelda>
+    generaMap.py [options] json <localizacion> <anchoImagen> <altoImagen> <anchoCelda> <altoCelda>
     generaMap.py map <fichero_json>
     generaMap.py --help
 
@@ -27,7 +27,7 @@ Options:
     map                                         Genera map para incluir en el HTML
 """
 
-def genera_json(seccion, x_ini, y_ini, ancho_imagen, alto_imagen, ancho_celda, alto_celda, descendente, inc_butaca):
+def genera_json(localizacion, x_ini, y_ini, ancho_imagen, alto_imagen, ancho_celda, alto_celda, descendente, inc_butaca):
 
     butacas = []
 
@@ -44,7 +44,7 @@ def genera_json(seccion, x_ini, y_ini, ancho_imagen, alto_imagen, ancho_celda, a
             numero = 1
 
         for x in range(x_ini, ancho_imagen, ancho_celda):
-            butacas.append({"seccion":seccion, "xIni":x, "yIni":y, "xFin":x+ancho_celda, "yFin":y+alto_celda, "fila":fila, "numero":numero})
+            butacas.append({"localizacion":localizacion, "xIni":x, "yIni":y, "xFin":x+ancho_celda, "yFin":y+alto_celda, "fila":fila, "numero":numero})
             numero += inc_butaca
         
         fila -= 1
@@ -57,7 +57,7 @@ def genera_map(fichero):
     st = '<map name="map">\n'
 
     for butaca in json.load(open(fichero)):
-        st += '<area shape="rect" coords="%d,%d,%d,%d" href="javascript:selecciona(\'%s\', %d, %d, %d, %d)" />\n' % (butaca['xIni'], butaca['yIni'], butaca['xFin'], butaca['yFin'], butaca['seccion'], butaca['fila'], butaca['numero'], butaca['xIni'], butaca['yIni'])
+        st += '<area shape="rect" coords="%d,%d,%d,%d" href="javascript:selecciona(\'%s\', %d, %d, %d, %d)" />\n' % (butaca['xIni'], butaca['yIni'], butaca['xFin'], butaca['yFin'], butaca['localizacion'], butaca['fila'], butaca['numero'], butaca['xIni'], butaca['yIni'])
 
 
     st += '</map>\n'
@@ -71,7 +71,7 @@ if __name__ == "__main__":
 
     if arguments['json']:
 
-        print genera_json(arguments["<seccion>"], int(arguments["-x"]), int(arguments["-y"]), int(arguments["<anchoImagen>"]), int(arguments["<altoImagen>"]), int(arguments["<anchoCelda>"]), int(arguments["<altoCelda>"]), arguments["--descendente"], int(arguments['--incremento']))
+        print genera_json(arguments["<localizacion>"], int(arguments["-x"]), int(arguments["-y"]), int(arguments["<anchoImagen>"]), int(arguments["<altoImagen>"]), int(arguments["<anchoCelda>"]), int(arguments["<altoCelda>"]), arguments["--descendente"], int(arguments['--incremento']))
     
     else:
         

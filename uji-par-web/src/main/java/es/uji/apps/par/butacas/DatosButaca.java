@@ -4,7 +4,7 @@ public class DatosButaca
 {
     private int fila;
     private int numero;
-    private String seccion;
+    private String localizacion;
     private int xFin;
     private int xIni;
     private int yFin;
@@ -34,14 +34,14 @@ public class DatosButaca
         this.numero = numero;
     }
 
-    public String getSeccion()
+    public String getLocalizacion()
     {
-        return seccion;
+        return localizacion;
     }
 
-    public void setSeccion(String seccion)
+    public void setLocalizacion(String localizacion)
     {
-        this.seccion = seccion;
+        this.localizacion = localizacion;
     }
 
     public int getxFin()

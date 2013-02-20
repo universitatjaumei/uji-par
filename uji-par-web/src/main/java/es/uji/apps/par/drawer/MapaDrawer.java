@@ -54,7 +54,7 @@ public class MapaDrawer
             for (DatosButaca datosButaca : listaButacas)
             {
                 datosButacas.put(
-                        String.format("%s_%d_%d", datosButaca.getSeccion(), datosButaca.getFila(),
+                        String.format("%s_%d_%d", datosButaca.getLocalizacion(), datosButaca.getFila(),
                                 datosButaca.getNumero()), datosButaca);
             }
         }
