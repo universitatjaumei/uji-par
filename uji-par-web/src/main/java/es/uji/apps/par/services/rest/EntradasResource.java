@@ -1,5 +1,6 @@
 package es.uji.apps.par.services.rest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -18,7 +19,7 @@ import com.sun.jersey.api.client.ClientResponse.Status;
 import com.sun.jersey.api.core.InjectParam;
 
 import es.uji.apps.par.Constantes;
-import es.uji.apps.par.model.EstadoButaca;
+import es.uji.apps.par.model.Butaca;
 import es.uji.apps.par.model.Evento;
 import es.uji.apps.par.model.PreciosSesion;
 import es.uji.apps.par.model.Sesion;
@@ -32,7 +33,7 @@ public class EntradasResource extends BaseResource
 {
     @InjectParam
     private SesionesService sesionesService;
-    
+
     @InjectParam
     private ButacasService butacasService;
 
@@ -109,13 +110,20 @@ public class EntradasResource extends BaseResource
         return Response.status(Status.FORBIDDEN.getStatusCode()).build();
     }
 
-    @GET
-    @Path("{id}/{seccion}/{fila}/{numero}/estado")
+    @POST
+    @Path("{id}/ocupadas")
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public EstadoButaca estadoButaca(@PathParam("id") Integer sesionId, @PathParam("seccion") String seccion,
-            @PathParam("fila") String fila, @PathParam("numero") String numero) throws Exception
+    public List<Butaca> estadoButaca(@PathParam("id") Integer sesionId, List<Butaca> butacas) throws Exception
     {
-        boolean ocupada = butacasService.estaOcupada(sesionId, seccion, fila, numero);
-        return new EstadoButaca(ocupada);
+        List<Butaca> ocupadas = new ArrayList<Butaca>();
+
+        for (Butaca butaca : butacas)
+        {
+            if (butacasService.estaOcupada(sesionId, butaca.getLocalizacion(), butaca.getFila(), butaca.getNumero()))
+                ocupadas.add(butaca);
+        }
+
+        return ocupadas;
     }
 }

@@ -4,6 +4,7 @@
 <meta charset="utf-8" />
 <link rel="stylesheet" type="text/css" href="../../css/estilo.css"></link>
 <script type="text/javascript" src="../../js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="../../js/jquery.json-2.4.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 </head>
 <body>
@@ -13,7 +14,7 @@
 		<h1 th:text="${evento.tituloEs}"></h1>
 		<span th:text="#{sesion}">Sesión:</span>&nbsp;<span th:text="${#dates.format(sesion.fechaCelebracion, 'dd/MM/yyyy')}"></span> <span
 			th:text="${sesion.horaCelebracion}"></span> <span th:text="${sesion.canalInternet}"></span>
-		<script type="text/javascript">
+		<script type="text/javascript" th:inline="javascript">
 			/* <![CDATA[ */
 			
 			var butacasSeleccionadas = [];
@@ -23,7 +24,7 @@
 			}
 
 			function iguales(butaca1, butaca2) {
-				return butaca1.seccion == butaca2.seccion
+				return butaca1.localizacion == butaca2.localizacion
 						&& butaca1.fila == butaca2.fila
 						&& butaca1.numero == butaca2.numero;
 			}
@@ -39,11 +40,11 @@
 				var butacaSeleccionada = $('<img src="../../img/seleccionada.png" class="butaca-seleccionada"/>');
 				butacaSeleccionada.css("left", butaca.x + "px");
 				butacaSeleccionada.css("top", butaca.y + "px");
-				$('#seccion_' + butaca.seccion).append(butacaSeleccionada);
+				$('#localizacion_' + butaca.localizacion).append(butacaSeleccionada);
 
 				butacaSeleccionada.click(function() {
 					//console.log("Click sobre seleccionada: ", butaca);
-					selecciona(butaca.seccion, butaca.fila, butaca.numero,
+					selecciona(butaca.localizacion, butaca.fila, butaca.numero,
 							butaca.x, butaca.y);
 				});
 				butacaSeleccionada.show();
@@ -73,9 +74,9 @@
 				}
 			}
 			
-			function refrescaImagen(seccion)
+			function refrescaImagen(localizacion)
 			{
-				var imagen = $("#imagen_" + seccion);
+				var imagen = $("#imagen_" + localizacion);
 				
 				var url = imagen.attr("src").replace(/\?.*/, "");
 				
@@ -89,8 +90,8 @@
 
 				for ( var i = 0; i < butacasSeleccionadas.length; i++) {
 					var fila = $('<div class="entrada-seleccionada">'
-							+ '<span th:text="#{butacaSeleccionadaSeccion}">seccion=</span>'
-							+ butacasSeleccionadas[i].seccion
+							+ '<span th:text="#{butacaSeleccionadaLocalizacion}">localización=</span>'
+							+ butacasSeleccionadas[i].localizacion
 							+ '</span>, '
 							+ '<span th:text="#{butacaSeleccionadaFila}">fila=</span>'
 							+ butacasSeleccionadas[i].fila
@@ -104,10 +105,10 @@
 				}
 			}
 
-			function selecciona(seccion, fila, numero, x, y) {
+			function selecciona(localizacion, fila, numero, x, y) {
 				var tipoEntrada = $('input[name=tipo]:checked').val();
 				var butaca = {
-					seccion : seccion,
+					localizacion : localizacion,
 					fila : fila,
 					numero : numero,
 					x : x,
@@ -127,21 +128,39 @@
 				redibujaButacasSeleccionadas();
 				muestraDetallesSeleccionadas();
 			}
+			
+			function ocupadasSuccess(ocupadas) {
+				
+				console.log("ocupadas:", ocupadas);
+				if (ocupadas.length > 0) {
+					
+					for (var i=0; i<ocupadas.length; i++)
+					{
+						eliminaButacaSeleccionada(ocupadas[i]);
+						refrescaImagen(ocupadas[i].localizacion);
+					}
+					
+					redibujaButacasSeleccionadas();
+					muestraDetallesSeleccionadas();
+					
+					var msj = /*[[#{butacasOcupadas}]]*/; 
+					alert(msj);
+				}
+			}
 
 			function compruebaEstadoButaca(butaca) {
-				var path = $("input[name=idSesion]").val() + "/"
-						+ butaca.seccion + "/" + butaca.fila + "/"
-						+ butaca.numero + "/estado";
-				$.getJSON(path).success(function(data) {
-					if (data.ocupada) {
-						eliminaButacaSeleccionada(butaca);
-						redibujaButacasSeleccionadas();
-						muestraDetallesSeleccionadas();
-						refrescaImagen(butaca.seccion);
-						alert("Butaca ocupada");
-					}
-
-				});
+				
+				var path = $("input[name=idSesion]").val() + "/ocupadas";
+				
+				console.log(butacasSeleccionadas[0]);
+				
+				$.ajax({
+					  url: path,
+					  type:"POST",
+					  data: $.toJSON(butacasSeleccionadas),
+					  contentType: "application/json; charset=utf-8",
+					  dataType: "json",
+					  success: ocupadasSuccess});
 			}
 
 			function muestraPrecios() {
@@ -185,7 +204,7 @@
 			<li class="precio-normal"><span>Entrada normal:</span> <span th:text="${precioNormal_anfiteatro}"></span></li>
 			<li class="precio-descuento"><span>Entrada con descuento:</span> <span th:text="${precioDescuento_anfiteatro}"></span></li>
 		</ul>
-		<div id="seccion_anfiteatro" class="entrada-plano">
+		<div id="localizacion_anfiteatro" class="entrada-plano">
 			
 			<map name="mapAnfiteatro">
 				<area shape="rect" coords="0,0,21,19" href="javascript:selecciona('anfiteatro', 15, 18, 0, 0)" />
@@ -513,7 +532,7 @@
 			<li class="precio-normal"><span>Entrada normal:</span> <span th:text="${precioNormal_platea1}"></span></li>
 			<li class="precio-descuento"><span>Entrada con descuento:</span> <span th:text="${precioDescuento_platea1}"></span></li>
 		</ul>
-		<div id="seccion_platea1" class="entrada-plano">
+		<div id="localizacion_platea1" class="entrada-plano">
 			<map name="mapPlatea1">
 				<area shape="rect" coords="0,0,21,19" href="javascript:selecciona('platea1', 15, 18, 0, 0)" />
 				<area shape="rect" coords="21,0,42,19" href="javascript:selecciona('platea1', 15, 16, 21, 0)" />

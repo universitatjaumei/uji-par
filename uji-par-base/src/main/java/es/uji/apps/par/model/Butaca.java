@@ -13,20 +13,22 @@ public class Butaca
     private String fila;
     private String numero;
     private BigDecimal precio;
-    private Localizacion parLocalizacion;
-    
+    private String localizacion;
+    private String x;
+    private String y;
+    private String tipo;
+
     public Butaca()
     {
     }
-    
+
     public Butaca(ButacaDTO butacaDTO)
     {
         id = butacaDTO.getId();
         fila = butacaDTO.getFila();
         numero = butacaDTO.getNumero();
         precio = butacaDTO.getPrecio();
-        
-        parLocalizacion = Localizacion.localizacionDTOtoLocalizacion(butacaDTO.getParLocalizacion());
+        localizacion = butacaDTO.getParLocalizacion().getCodigo();
     }
 
     public long getId()
@@ -69,14 +71,44 @@ public class Butaca
         this.precio = precio;
     }
 
-    public Localizacion getParLocalizacion()
+    public String getLocalizacion()
     {
-        return parLocalizacion;
+        return localizacion;
     }
 
-    public void setParLocalizacion(Localizacion parLocalizacion)
+    public void setLocalizacion(String localizacion)
     {
-        this.parLocalizacion = parLocalizacion;
+        this.localizacion = localizacion;
+    }
+
+    public String getX()
+    {
+        return x;
+    }
+
+    public void setX(String x)
+    {
+        this.x = x;
+    }
+
+    public String getY()
+    {
+        return y;
+    }
+
+    public void setY(String y)
+    {
+        this.y = y;
+    }
+
+    public String getTipo()
+    {
+        return tipo;
+    }
+
+    public void setTipo(String tipo)
+    {
+        this.tipo = tipo;
     }
 
 }
