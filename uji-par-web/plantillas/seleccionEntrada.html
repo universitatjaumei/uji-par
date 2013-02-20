@@ -14,172 +14,179 @@
 		<span th:text="#{sesion}">Sesión:</span>&nbsp;<span th:text="${#dates.format(sesion.fechaCelebracion, 'dd/MM/yyyy')}"></span> <span
 			th:text="${sesion.horaCelebracion}"></span> <span th:text="${sesion.canalInternet}"></span>
 		<script type="text/javascript">
-		/* <![CDATA[ */ 
-			var butacasSeleccionadas = [];
+			/* <![CDATA[ */
 			
-			function ocultaButacasSeleccionadas()
-			{
+			var butacasSeleccionadas = [];
+
+			function ocultaButacasSeleccionadas() {
 				$('.butaca-seleccionada').remove();
 			}
-			
-			function iguales(butaca1, butaca2)
-			{
-				return butaca1.seccion==butaca2.seccion && butaca1.fila==butaca2.fila && butaca1.numero==butaca2.numero; 				
+
+			function iguales(butaca1, butaca2) {
+				return butaca1.seccion == butaca2.seccion
+						&& butaca1.fila == butaca2.fila
+						&& butaca1.numero == butaca2.numero;
 			}
-			
-			function estaSeleccionada(butaca)
-			{
-				for (var i=0; i<butacasSeleccionadas.length; i++)
+
+			function estaSeleccionada(butaca) {
+				for ( var i = 0; i < butacasSeleccionadas.length; i++)
 					if (iguales(butaca, butacasSeleccionadas[i]))
 						return true
-				return false;		
+				return false;
 			}
-			
-			function muestraButacaSeleccionada(butaca)
-			{
-				var	butacaSeleccionada = $('<img src="../../img/seleccionada.png" class="butaca-seleccionada"/>');
+
+			function muestraButacaSeleccionada(butaca) {
+				var butacaSeleccionada = $('<img src="../../img/seleccionada.png" class="butaca-seleccionada"/>');
 				butacaSeleccionada.css("left", butaca.x + "px");
 				butacaSeleccionada.css("top", butaca.y + "px");
 				$('#seccion_' + butaca.seccion).append(butacaSeleccionada);
 
-				butacaSeleccionada.click(function(){
+				butacaSeleccionada.click(function() {
 					//console.log("Click sobre seleccionada: ", butaca);
-					selecciona(butaca.seccion, butaca.fila, butaca.numero, butaca.x, butaca.y);
+					selecciona(butaca.seccion, butaca.fila, butaca.numero,
+							butaca.x, butaca.y);
 				});
 				butacaSeleccionada.show();
 			}
-			
-			function muestraButacasSeleccionadas()
-			{
-				for (var i=0; i<butacasSeleccionadas.length; i++)
-				{	
+
+			function muestraButacasSeleccionadas() {
+				for ( var i = 0; i < butacasSeleccionadas.length; i++) {
 					muestraButacaSeleccionada(butacasSeleccionadas[i]);
 				}
 			}
-			
-			function redibujaButacasSeleccionadas()
-			{
+
+			function redibujaButacasSeleccionadas() {
 				ocultaButacasSeleccionadas();
 				muestraButacasSeleccionadas();
 			}
-			
-			function anyadeButacaSeleccionada(butaca)
-			{
+
+			function anyadeButacaSeleccionada(butaca) {
 				butacasSeleccionadas.push(butaca);
 			}
-			
-			function eliminaButacaSeleccionada(butaca)
-			{
-				for (var i=0; i<butacasSeleccionadas.length; i++)
-				{
-					if (iguales(butaca, butacasSeleccionadas[i]))
-					{
+
+			function eliminaButacaSeleccionada(butaca) {
+				for ( var i = 0; i < butacasSeleccionadas.length; i++) {
+					if (iguales(butaca, butacasSeleccionadas[i])) {
 						butacasSeleccionadas.splice(i, 1);
 						return;
 					}
 				}
 			}
 			
-			function muestraDetallesSeleccionadas()
+			function refrescaImagen(seccion)
 			{
+				var imagen = $("#imagen_" + seccion);
+				
+				var url = imagen.attr("src").replace(/\?.*/, "");
+				
+				imagen.attr("src", url + "?" + (new Date()).getTime());
+			}
+
+			function muestraDetallesSeleccionadas() {
 				var detalles = "";
-				
+
 				$('#detallesSeleccionadas').empty();
-				
-				for (var i=0; i<butacasSeleccionadas.length; i++)
-				{
+
+				for ( var i = 0; i < butacasSeleccionadas.length; i++) {
 					var fila = $('<div class="entrada-seleccionada">'
-									+ '<span th:text="#{butacaSeleccionadaSeccion}">seccion=</span>' + butacasSeleccionadas[i].seccion + '</span>, '
-									+ '<span th:text="#{butacaSeleccionadaFila}">fila=</span>' + butacasSeleccionadas[i].fila + ', '
-									+ '<span th:text="#{butacaSeleccionadaNumero}">butaca=</span>' + butacasSeleccionadas[i].numero + ', '
-									+ '<span th:text="#{butacaSeleccionadaTipo}">tipo=</span>' + butacasSeleccionadas[i].tipo + ', '
-								+ "</div>");
+							+ '<span th:text="#{butacaSeleccionadaSeccion}">seccion=</span>'
+							+ butacasSeleccionadas[i].seccion
+							+ '</span>, '
+							+ '<span th:text="#{butacaSeleccionadaFila}">fila=</span>'
+							+ butacasSeleccionadas[i].fila
+							+ ', '
+							+ '<span th:text="#{butacaSeleccionadaNumero}">butaca=</span>'
+							+ butacasSeleccionadas[i].numero
+							+ ', '
+							+ '<span th:text="#{butacaSeleccionadaTipo}">tipo=</span>'
+							+ butacasSeleccionadas[i].tipo + ', ' + "</div>");
 					$('#detallesSeleccionadas').append(fila);
 				}
 			}
-		
-			function selecciona(seccion, fila, numero, x, y) 
-			{
+
+			function selecciona(seccion, fila, numero, x, y) {
 				var tipoEntrada = $('input[name=tipo]:checked').val();
-				var butaca = {seccion:seccion, fila:fila, numero:numero, x:x, y:y, tipo:tipoEntrada};
-				
-				if (estaSeleccionada(butaca))
-				{
+				var butaca = {
+					seccion : seccion,
+					fila : fila,
+					numero : numero,
+					x : x,
+					y : y,
+					tipo : tipoEntrada
+				};
+
+				if (estaSeleccionada(butaca)) {
 					//console.log('Ya está seleccionada:', butaca);	
 					eliminaButacaSeleccionada(butaca);
-				}
-				else
-				{
+				} else {
 					//console.log('Añade a seleccionadas:', butaca);
 					anyadeButacaSeleccionada(butaca);
 					compruebaEstadoButaca(butaca);
 				}
-				
+
 				redibujaButacasSeleccionadas();
 				muestraDetallesSeleccionadas();
 			}
-			
-			function compruebaEstadoButaca(butaca)
-			{
-				var path = $("input[name=idSesion]").val() + "/" + butaca.seccion + "/" + butaca.fila + "/" + butaca.numero + "/estado";
-				$.getJSON(path).success(function(data){
-					if (data.ocupada)
-					{
+
+			function compruebaEstadoButaca(butaca) {
+				var path = $("input[name=idSesion]").val() + "/"
+						+ butaca.seccion + "/" + butaca.fila + "/"
+						+ butaca.numero + "/estado";
+				$.getJSON(path).success(function(data) {
+					if (data.ocupada) {
 						eliminaButacaSeleccionada(butaca);
 						redibujaButacasSeleccionadas();
 						muestraDetallesSeleccionadas();
+						refrescaImagen(butaca.seccion);
 						alert("Butaca ocupada");
 					}
-						
+
 				});
 			}
-			
-			function muestraPrecios()
-			{
+
+			function muestraPrecios() {
 				var value = $('input[name=tipo]:checked').val();
-				
+
 				//console.log('Precio:', value);
-				
-				if (value == 'normal')
-				{
+
+				if (value == 'normal') {
 					$('.precio-normal').show();
 					$('.precio-descuento').hide();
-				}
-				else
-				{
+				} else {
 					$('.precio-descuento').show();
 					$('.precio-normal').hide();
 				}
 			}
 
-			$(document).ready(function(){
-				$('input[name=tipo]').click(function(){
+			$(document).ready(function() {
+				$('input[name=tipo]').click(function() {
 					muestraPrecios();
 				});
-				
+
 				muestraPrecios();
 			});
-		/* ]]> */ 
+			/* ]]> */
 		</script>
 	</div>
 
 	<form action="" method="POST">
-		<input th:value="${sesion.id}" type="hidden" name="idSesion" value=""/>
-	
+		<input th:value="${sesion.id}" type="hidden" name="idSesion" value="" />
+
 		<h3 th:text="#{plano}">Plano del Paraninfo</h3>
-		
+
 		<h3 th:text="#{tipo}">Tipo de entrada</h3>
 		<div class="entrada-datos">
-			<input type="radio" name="tipo" id="tipoNormal" value="normal" checked="true"/><label for="tipoNormal" th:text="#{tipoNormal}">Normal</label> <input
-				type="radio" name="tipo" id="tipoDescuento" value="descuento" /><label for="tipoDescuento" th:text="#{tipoDescuento}">Descuento</label>
+			<input type="radio" name="tipo" id="tipoNormal" value="normal" checked="true" /><label for="tipoNormal" th:text="#{tipoNormal}">Normal</label>
+			<input type="radio" name="tipo" id="tipoDescuento" value="descuento" /><label for="tipoDescuento" th:text="#{tipoDescuento}">Descuento</label>
 		</div>
-		
+
 		<h2>Anfiteatro</h2>
 		<ul>
 			<li class="precio-normal"><span>Entrada normal:</span> <span th:text="${precioNormal_anfiteatro}"></span></li>
 			<li class="precio-descuento"><span>Entrada con descuento:</span> <span th:text="${precioDescuento_anfiteatro}"></span></li>
 		</ul>
 		<div id="seccion_anfiteatro" class="entrada-plano">
+			
 			<map name="mapAnfiteatro">
 				<area shape="rect" coords="0,0,21,19" href="javascript:selecciona('anfiteatro', 15, 18, 0, 0)" />
 				<area shape="rect" coords="21,0,42,19" href="javascript:selecciona('anfiteatro', 15, 16, 21, 0)" />
@@ -498,15 +505,14 @@
 				<area shape="rect" coords="476,266,497,285" href="javascript:selecciona('anfiteatro', 1, 23, 476, 266)" />
 			</map>
 
-
-			<img src="../../img/butacas.png" border="0" usemap="#mapAnfiteatro" /> 
+			<img id="imagen_anfiteatro" th:src="${urlAnfiteatro}" border="0" usemap="#mapAnfiteatro" />
 		</div>
 
 		<h2>Platea 1</h2>
 		<ul>
 			<li class="precio-normal"><span>Entrada normal:</span> <span th:text="${precioNormal_platea1}"></span></li>
 			<li class="precio-descuento"><span>Entrada con descuento:</span> <span th:text="${precioDescuento_platea1}"></span></li>
-		</ul>		
+		</ul>
 		<div id="seccion_platea1" class="entrada-plano">
 			<map name="mapPlatea1">
 				<area shape="rect" coords="0,0,21,19" href="javascript:selecciona('platea1', 15, 18, 0, 0)" />
@@ -826,12 +832,12 @@
 				<area shape="rect" coords="476,266,497,285" href="javascript:selecciona('platea1', 1, 23, 476, 266)" />
 			</map>
 
-			<img src="../../img/butacas.png" border="0" usemap="#mapPlatea1" /> 
+			<img id="imagen_platea1" th:src="${urlPlatea1}" border="0" usemap="#mapPlatea1" />
 		</div>
-		
+
 		<h3 ht:text="#{detallesSeleccionadas}">Butacas seleccionadas</h3>
 		<div id="detallesSeleccionadas"></div>
-			
+
 		<h3 th:text="#{datosPersonales}">Datos personales</h3>
 		<div class="entrada-datos">
 			<label th:text="#{nombre}">Nombre</label> <input type="text" name="nombre" th:placeholder="#{nombre}" placeholder="Nombre" /><br /> <label

@@ -54,6 +54,7 @@ public class EntradasResource extends BaseResource
         Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "seleccionEntrada", getLocale());
         template.put("evento", evento);
         template.put("sesion", sesion);
+        template.put("urlAnfiteatro", String.format("../imagenes/butacas/730/anfiteatro", sesion.getId()));
 
         List<PreciosSesion> precios = sesionesService.getPreciosSesion(sesionId);
 
