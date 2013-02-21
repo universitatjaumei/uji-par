@@ -70,9 +70,6 @@ public class MapaDrawer
         InputStreamReader jsonReader = new InputStreamReader(
                 MapaDrawer.class.getResourceAsStream("/butacas/anfiteatro.json"));
 
-        //            char[] buff = new char[1000];
-        //            jsonReader.read(buff);
-
         List<DatosButaca> listaButacas = gson.fromJson(jsonReader, fooType);
         return listaButacas;
     }
