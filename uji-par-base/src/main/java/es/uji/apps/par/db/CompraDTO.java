@@ -47,7 +47,15 @@ public class CompraDTO implements Serializable {
 	public CompraDTO() {
 	}
 
-	public long getId() {
+	public CompraDTO(String nombre, String apellidos, String telefono, String email)
+    {
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.telefono = telefono;
+        this.email = email;
+    }
+
+    public long getId() {
 		return this.id;
 	}
 

@@ -1,6 +1,5 @@
 package es.uji.apps.par.services.rest;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -22,8 +21,10 @@ import es.uji.apps.par.Constantes;
 import es.uji.apps.par.model.Butaca;
 import es.uji.apps.par.model.Evento;
 import es.uji.apps.par.model.PreciosSesion;
+import es.uji.apps.par.model.ResultadoCompra;
 import es.uji.apps.par.model.Sesion;
 import es.uji.apps.par.services.ButacasService;
+import es.uji.apps.par.services.ComprasService;
 import es.uji.apps.par.services.SesionesService;
 import es.uji.commons.web.template.HTMLTemplate;
 import es.uji.commons.web.template.Template;
@@ -37,13 +38,22 @@ public class EntradasResource extends BaseResource
     @InjectParam
     private ButacasService butacasService;
 
+    @InjectParam
+    private ComprasService comprasService;
+
     @Context
     HttpServletResponse currentResponse;
 
     @GET
     @Path("{id}")
     @Produces(MediaType.TEXT_HTML)
-    public Response datosEntrada(@PathParam("id") Integer sesionId) throws Exception
+    public Response datosEntrada(@PathParam("id") Long sesionId) throws Exception
+    {
+        return paginaSeleccionEntradas(sesionId, null, null);
+    }
+
+    private Response paginaSeleccionEntradas(long sesionId, List<Butaca> butacasSeleccionadas,
+            List<Butaca> butacasOcupadas)
     {
         Sesion sesion = sesionesService.getSesion(sesionId);
 
@@ -57,7 +67,10 @@ public class EntradasResource extends BaseResource
         template.put("sesion", sesion);
         template.put("urlAnfiteatro", String.format("../imagenes/butacas/730/anfiteatro", sesion.getId()));
 
-        List<PreciosSesion> precios = sesionesService.getPreciosSesion(sesionId);
+        if (butacasSeleccionadas != null)
+            template.put("butacasSeleccionadas", butacasSeleccionadas);
+
+        List<PreciosSesion> precios = sesionesService.getPreciosSesion(sesion.getId());
 
         for (PreciosSesion precio : precios)
         {
@@ -72,19 +85,24 @@ public class EntradasResource extends BaseResource
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.TEXT_HTML)
-    public Response compraEntrada(@PathParam("id") Integer sesionId, @FormParam("nombre") String nombre,
+    public Response compraEntrada(@PathParam("id") Long sesionId, @FormParam("nombre") String nombre,
             @FormParam("apellidos") String apellidos, @FormParam("telefono") String telefono,
-            @FormParam("email") String email, @FormParam("tipo") String tipo) throws Exception
+            @FormParam("email") String email, @FormParam("butacasSeleccionadas") String butacasSeleccionadasJSON)
+            throws Exception
     {
         Sesion sesion = sesionesService.getSesion(sesionId);
 
         if (!sesion.getEnPlazoVentaInternet())
             return paginaProhibida();
 
-        if (tipo.equals("normal"))
+        List<Butaca> butacasSeleccionadas = Butaca.parseaJSON(butacasSeleccionadasJSON);
+        ResultadoCompra resultadoCompra = comprasService.realizaCompra(sesionId, nombre, apellidos, telefono, email,
+                butacasSeleccionadas);
+
+        if (resultadoCompra.getCorrecta())
             currentResponse.sendRedirect("compraValida");
         else
-            currentResponse.sendRedirect("compraNoValida");
+            return paginaSeleccionEntradas(sesionId, butacasSeleccionadas, resultadoCompra.getButacasOcupadas());
 
         return null;
     }
@@ -114,16 +132,8 @@ public class EntradasResource extends BaseResource
     @Path("{id}/ocupadas")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Butaca> estadoButaca(@PathParam("id") Integer sesionId, List<Butaca> butacas) throws Exception
+    public List<Butaca> estadoButaca(@PathParam("id") Integer idSesion, List<Butaca> butacas) throws Exception
     {
-        List<Butaca> ocupadas = new ArrayList<Butaca>();
-
-        for (Butaca butaca : butacas)
-        {
-            if (butacasService.estaOcupada(sesionId, butaca.getLocalizacion(), butaca.getFila(), butaca.getNumero()))
-                ocupadas.add(butaca);
-        }
-
-        return ocupadas;
+        return butacasService.estanOcupadas(idSesion, butacas);
     }
 }

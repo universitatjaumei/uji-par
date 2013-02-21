@@ -1,6 +1,5 @@
 package es.uji.apps.par.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -17,21 +16,18 @@ public class Compra
     private String email;
     private List<Butaca> parButacas;
 
-    public Compra()
+    public Compra(CompraDTO compraDTO)
     {
+        this.setId(compraDTO.getId());
+        this.setNombre(compraDTO.getNombre());
+        this.setApellidos(compraDTO.getApellidos());
+        this.setTelefono(compraDTO.getTelefono());
+        this.setEmail(compraDTO.getEmail());
     }
 
     public static Compra compraDTOtoCompra(CompraDTO compraDTO)
     {
-        Compra compra = new Compra();
-        
-        compra.setId(compraDTO.getId());
-        compra.setNombre(compraDTO.getNombre());
-        compra.setApellidos(compraDTO.getApellidos());
-        compra.setTelefono(compraDTO.getTelefono());
-        compra.setEmail(compraDTO.getEmail());
-        
-        return compra;
+        return new Compra(compraDTO);
     }
 
     public long getId()

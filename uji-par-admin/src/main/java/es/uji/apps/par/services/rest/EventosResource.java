@@ -71,7 +71,7 @@ public class EventosResource
     @GET
     @Path("{eventoId}/sesiones/{sesionId}/precios")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getPreciosSesion(@PathParam("eventoId") Integer eventoId, @PathParam("sesionId") Integer sesionId)
+    public Response getPreciosSesion(@PathParam("eventoId") Integer eventoId, @PathParam("sesionId") Long sesionId)
     {
         return Response.ok().entity(new RestResponse(true, sesionesService.getPreciosSesion(sesionId)))
                 .build();

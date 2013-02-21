@@ -1,8 +1,12 @@
 package es.uji.apps.par.model;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import es.uji.apps.par.db.ButacaDTO;
 
@@ -18,6 +22,18 @@ public class Butaca
     private String y;
     private String tipo;
 
+    public static ButacaDTO butacaToButacaDTO(Butaca butaca)
+    {
+        ButacaDTO butacaDTO = new ButacaDTO();
+
+        butacaDTO.setId(butaca.getId());
+        butacaDTO.setFila(butaca.getFila());
+        butacaDTO.setNumero(butaca.getNumero());
+        butacaDTO.setPrecio(butaca.getPrecio());
+
+        return butacaDTO;
+    }
+
     public Butaca()
     {
     }
@@ -29,6 +45,14 @@ public class Butaca
         numero = butacaDTO.getNumero();
         precio = butacaDTO.getPrecio();
         localizacion = butacaDTO.getParLocalizacion().getCodigo();
+    }
+
+    public static List<Butaca> parseaJSON(String jsonButacas)
+    {
+        Gson gson = new Gson();
+        return gson.fromJson(jsonButacas, new TypeToken<List<Butaca>>()
+        {
+        }.getType());
     }
 
     public long getId()

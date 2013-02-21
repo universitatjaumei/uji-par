@@ -177,7 +177,7 @@ public class SesionesService
 			throw new CampoRequeridoException("Hora de fin de la venta online");
 	}
 
-	public List<PreciosSesion> getPreciosSesion(Integer sesionId) {
+	public List<PreciosSesion> getPreciosSesion(Long sesionId) {
 		List<PreciosSesion> listaPreciosSesion = new ArrayList<PreciosSesion>();
     	
     	for (PreciosSesionDTO precioSesionDB: sesionDAO.getPreciosSesion(sesionId)) {

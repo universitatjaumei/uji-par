@@ -34,8 +34,8 @@ public class LocalizacionesDAO
 
         List<LocalizacionDTO> localizacion = new ArrayList<LocalizacionDTO>();
 
-        for (LocalizacionDTO localizacionDB : query.from(qParLocalizacionDTO).orderBy(qParLocalizacionDTO.nombreVa.asc()).list(
-                qParLocalizacionDTO))
+        for (LocalizacionDTO localizacionDB : query.from(qParLocalizacionDTO)
+                .orderBy(qParLocalizacionDTO.nombreVa.asc()).list(qParLocalizacionDTO))
         {
             localizacion.add(localizacionDB);
         }
@@ -72,15 +72,23 @@ public class LocalizacionesDAO
         update.set(qParLocalizacionDTO.nombreEs, localizacion.getNombreEs())
                 .set(qParLocalizacionDTO.codigo, localizacion.getCodigo())
                 .set(qParLocalizacionDTO.nombreVa, localizacion.getNombreVa())
-                .set(qParLocalizacionDTO.totalEntradas,
-                        new BigDecimal(localizacion.getTotalEntradas()))
+                .set(qParLocalizacionDTO.totalEntradas, new BigDecimal(localizacion.getTotalEntradas()))
                 .where(qParLocalizacionDTO.id.eq(localizacion.getId())).execute();
 
         return localizacion;
     }
 
-	public LocalizacionDTO getLocalizacionById(long id) {
-		return entityManager.find(LocalizacionDTO.class, id);
-	}
+    public LocalizacionDTO getLocalizacionById(long id)
+    {
+        return entityManager.find(LocalizacionDTO.class, id);
+    }
+
+    public LocalizacionDTO getLocalizacionByCodigo(String codigo)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+
+        return query.from(qParLocalizacionDTO).where(qParLocalizacionDTO.codigo.eq(codigo))
+                .singleResult(qParLocalizacionDTO);
+    }
 
 }
