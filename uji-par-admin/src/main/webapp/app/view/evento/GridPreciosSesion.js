@@ -14,7 +14,7 @@ Ext.define('Paranimf.view.evento.GridPreciosSesion', {
         sortable: false
       }, {
         dataIndex: 'localizacion',
-        hidden: false,
+        hidden: true,
         sortable: false
       }, {
         dataIndex: 'localizacion_nombre',

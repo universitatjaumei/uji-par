@@ -53,6 +53,6 @@ Ext.define('Paranimf.view.evento.GridSesiones', {
   },
 
   showAddSesionWindow: function() {
-    this.createModalWindow('formSesiones', undefined, 600).show();
+    this.createModalWindow('formSesiones', 600, 600).show();
   }
 });

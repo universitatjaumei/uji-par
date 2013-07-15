@@ -23,7 +23,7 @@ Ext.define('Paranimf.view.plantillaprecios.GridPrecios', {
         hidden: true
       }, {
         dataIndex: 'localizacion_id',
-        hidden: false
+        hidden: true
       }, {
         dataIndex: 'localizacion_nombre',
         text: UI.i18n.field.localizacion,

@@ -119,7 +119,7 @@ Ext.define('Paranimf.controller.Eventos', {
    },
 
    editPrecioSesion: function(button, event, opts) {
-      this.getGridPreciosSesion().edit('formPreciosSesion');
+      this.getGridPreciosSesion().edit('formPreciosSesion', undefined, 600);
    },
 
    cambiaPlantilla: function(combo, newValue, oldValue, opts) {

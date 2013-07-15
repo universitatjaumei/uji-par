@@ -20,15 +20,32 @@ Ext.application({
 
    launch: function() {
       Ext.create('Ext.container.Viewport', {
-         layout: 'border',         
+         layout: 'border',
+         defaults: {
+        	 border: false,
+             bodyPadding: 0,
+             margins: '5 0 0 0',
+             split: true,
+             autoScroll: true
+         },
          items: [{
             xtype: 'panel',
             region: 'west',
-            layout: 'fit',
-            width: 215
+            title: UI.i18n.gridTitle.menu,
+            layout: 'anchor',
+            collapsible: true,
+            margins: '0 0 0 0',
+            padding: '0',
+            width: 215,
+            minWidth: 220,
+            maxWidth: 220
          }, {
             layout: 'vbox',
             region: 'center',
+            border: false,
+            defaults: {
+            	border: false
+            },
             items: [{
                xtype: 'form',
                height: 25,
@@ -51,6 +68,7 @@ Ext.application({
                region: 'south',
                width: '100%',
                autoScroll: true,
+               border: false,
                flex: 1,
                items: [{
                      xtype: 'dashboard'

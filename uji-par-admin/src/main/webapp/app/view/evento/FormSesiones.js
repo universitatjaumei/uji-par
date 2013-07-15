@@ -20,6 +20,7 @@ Ext.define('Paranimf.view.evento.FormSesiones', {
       allowBlank: true
    }, {
       xtype: 'fieldset',
+      title: UI.i18n.field.dadesGenerals,
       defaults: {
          anchor: '100%',
          labelWidth: 190,
@@ -51,6 +52,7 @@ Ext.define('Paranimf.view.evento.FormSesiones', {
       }]
    }, {
       xtype: 'fieldset',
+      title: UI.i18n.field.reservesOnline,
       defaults: {
          anchor: '100%',
          labelWidth: 190,
@@ -69,15 +71,7 @@ Ext.define('Paranimf.view.evento.FormSesiones', {
          minValue: '0:00 AM',
          maxValue: '23:00 PM',
          format: 'H:i'
-      }]
-   }, {
-      xtype: 'fieldset',
-      defaults: {
-         anchor: '100%',
-         labelWidth: 190,
-         allowBlank: false
-      },
-      items: [{
+      }, {
          fieldLabel: UI.i18n.field.endOnlineSelling,
          name: 'fechaFinVentaOnline',
          xtype: 'datefield',

@@ -81,7 +81,8 @@ UI =
             "sesiones": "Gestió de les sessions",
             "localizaciones": "Gestió de les localitzacions",
             "plantillasprecios": "Gestió de les plantilles de preus",
-            "precios": "Gestió dels preus per localització i plantilla seleccionada"
+            "precios": "Gestió dels preus per localització i plantilla seleccionada",
+            "menu": "Menú d'opcions"
         },
         
         "field": {
@@ -158,7 +159,9 @@ UI =
             "localizacion": "Localització",
             "plantillaprecios": "Plantilla de preus",
             "horaInicioVentaOnline": "Hora d'inici de la venda online",
-            "horaFinVentaOnline": "Hora de fi de la venda online"
+            "horaFinVentaOnline": "Hora de fi de la venda online",
+            "reservesOnline": "Reserves online",
+            "dadesGenerals": "Dades generals"
         }
     }
 }
