@@ -14,7 +14,6 @@ import es.uji.apps.par.FechasInvalidasException;
 import es.uji.apps.par.dao.EventosDAO;
 import es.uji.apps.par.dao.LocalizacionesDAO;
 import es.uji.apps.par.dao.SesionesDAO;
-import es.uji.apps.par.db.LocalizacionDTO;
 import es.uji.apps.par.db.PreciosSesionDTO;
 import es.uji.apps.par.db.SesionDTO;
 import es.uji.apps.par.model.Evento;
@@ -69,49 +68,25 @@ public class SesionesService
     {
     	checkSesionAndSetTimesToDates(sesion);
 
-    	
     	sesion.setEvento(Evento.eventoDTOtoEvento(eventosDAO.getEventoById(eventoId)));
-    	/*sesion.setPlantillaPrecios(Plantilla.plantillaPreciosDTOtoPlantillaPrecios(
-    			plantillasDAO.getPlantillaById(sesion.getPlantillaPrecios().getId())));*/
-    	//sesion.setEvento(createParEventoWithId(eventoId));
-    	
     	List<PreciosSesion> listaPreciosSesion = new ArrayList<PreciosSesion>();
     	if (sesion.getPreciosSesion() !=  null) {
         	for (PreciosSesion preciosSesion: sesion.getPreciosSesion()) {
         		preciosSesion.setLocalizacion(Localizacion.localizacionDTOtoLocalizacion(localizacionesDAO.getLocalizacionById(preciosSesion.getLocalizacion().getId())));
         		preciosSesion.setSesion(sesion);
         		listaPreciosSesion.add(preciosSesion);
-        		//PreciosSesionDTO preciosSesionDTO = PreciosSesion.precioSesionToPrecioSesionDTO(preciosSesion);
-        		//sesionDAO.persistPreciosSesion(preciosSesionDTO);
         	}
         	sesion.setPreciosSesion(listaPreciosSesion);
         }
     	
-    	
     	SesionDTO sesionDTO = sesionDAO.persistSesion(Sesion.SesionToSesionDTO(sesion));
+		
     	sesion.setId(sesionDTO.getId());
-    	/*sesionDTO = sesionDAO.persistSesion(sesionDTO);
-    	
-    	
-    	//setLocalizacionesToPreciosSesion(sesion.getPreciosSesion());
-        */
-    	//sesion = sesionDAO.testMethod(sesionDTO, sesion);
         return sesion;
     }
 
-	private void setLocalizacionesToPreciosSesion(List<PreciosSesion> listaPreciosSesion) {
-		if (listaPreciosSesion != null) {
-			for (PreciosSesion preciosSesion: listaPreciosSesion) {
-				LocalizacionDTO localizacionDTO = localizacionesDAO.getLocalizacionById(preciosSesion.getLocalizacion().getId());
-				preciosSesion.setLocalizacion(Localizacion.localizacionDTOtoLocalizacion(localizacionDTO));
-			}
-		}
-	}
-
 	private void addPreciosSesion(SesionDTO sesionDTO) {
-    	//List<PreciosSesionDTO> listaPreciosSesionDTO = PreciosSesion.listaPreciosSesionToListaPreciosSesionDTO(sesionDTO.getPreciosSesion());
 		if (sesionDTO.getParPreciosSesions() != null) {
-    		//for (PreciosSesionDTO precioSesionDTO : listaPreciosSesionDTO) {
 			for (PreciosSesionDTO precioSesionDTO : sesionDTO.getParPreciosSesions()) {
     			precioSesionDTO.setParSesione(sesionDTO);
     			sesionDAO.addPrecioSesion(precioSesionDTO);

@@ -21,7 +21,6 @@ import es.uji.apps.par.db.QSesionDTO;
 import es.uji.apps.par.db.SesionDTO;
 import es.uji.apps.par.model.Evento;
 import es.uji.apps.par.model.Plantilla;
-import es.uji.apps.par.model.PreciosSesion;
 import es.uji.apps.par.model.Sesion;
 
 @Repository
@@ -62,26 +61,8 @@ public class SesionesDAO
         entityManager.persist(sesionDTO);
         return sesionDTO;
 	}
-
-    @Transactional
-    public Sesion testMethod(SesionDTO sesionDTO, Sesion sesion) {
-    	entityManager.persist(sesionDTO);
-    	sesion.setId(sesionDTO.getId());
-    	
-    	//setLocalizacionesToPreciosSesion(sesion.getPreciosSesion());
-    	if (sesion.getPreciosSesion() !=  null) {
-        	for (PreciosSesion preciosSesion: sesion.getPreciosSesion()) {
-        		preciosSesion.setSesion(sesion);
-        		PreciosSesionDTO preciosSesionDTO = PreciosSesion.precioSesionToPrecioSesionDTO(preciosSesion);
-        		preciosSesionDTO.setParSesione(sesionDTO);
-        		entityManager.persist(preciosSesionDTO);
-        	}
-        }
-    	
-    	return sesion;
-    }
     
-
+    
     @Transactional
     public void updateSesion(Sesion sesion)
     {
@@ -130,11 +111,13 @@ public class SesionesDAO
         return preciosSesion;
     }
 
+	@Transactional
 	public PreciosSesionDTO persistPreciosSesion(PreciosSesionDTO precioSesionDTO) {
 		entityManager.persist(precioSesionDTO);
 		return precioSesionDTO;
 	}
 	
+	@Transactional
     public SesionDTO getSesion(long sesionId)
     {
         JPAQuery query = new JPAQuery(entityManager);
