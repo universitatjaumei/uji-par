@@ -122,7 +122,7 @@ public class SesionesDAO
     public SesionDTO getSesion(long sesionId)
     {
         JPAQuery query = new JPAQuery(entityManager);
-        return query.from(qSesionDTO).join(qSesionDTO.parPreciosSesions, qPreciosSesionDTO).
+        return query.from(qSesionDTO).leftJoin(qSesionDTO.parPreciosSesions, qPreciosSesionDTO).
                 where(qSesionDTO.id.eq(sesionId)).uniqueResult(qSesionDTO);
     }
 }

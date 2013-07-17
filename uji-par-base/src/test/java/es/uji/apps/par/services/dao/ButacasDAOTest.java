@@ -42,7 +42,7 @@ public class ButacasDAOTest extends BaseDAOTest
     public void before()
     {
         localizacion = preparaLocalizacion("anfiteatro");
-        sesion = preparaSesion();
+        sesion = preparaSesion(Localizacion.localizacionToLocalizacionDTO(localizacion));
     }
 
     @Test
@@ -70,7 +70,7 @@ public class ButacasDAOTest extends BaseDAOTest
     public void butacaLibreAlInicio()
     {
         Localizacion localizacion = preparaLocalizacion("anfiteatro");
-        SesionDTO sesion = preparaSesion();
+        SesionDTO sesion = preparaSesion(Localizacion.localizacionToLocalizacionDTO(localizacion));
 
         Assert.assertFalse(butacasDao.estaOcupada(sesion.getId(), localizacion.getCodigo(), "1", "2"));
     }
@@ -94,6 +94,7 @@ public class ButacasDAOTest extends BaseDAOTest
                 BigDecimal.ONE);
 
         Butaca butaca = new Butaca(butacaDTO);
+        butaca.setTipo("normal");
 
         CompraDTO compraDTO = comprasDao.guardaCompra("Pepe", "Perez", "964123456", "prueba@example.com", new Date());
         butacasDao.reservaButacas(sesion.getId(), compraDTO, Arrays.asList(butaca));
@@ -104,6 +105,6 @@ public class ButacasDAOTest extends BaseDAOTest
         Assert.assertEquals(localizacion.getId(), butacas.get(0).getParLocalizacion().getId());
         Assert.assertEquals(butaca.getFila(), butacas.get(0).getFila());
         Assert.assertEquals(butaca.getNumero(), butacas.get(0).getNumero());
-        Assert.assertEquals(BigDecimal.ONE, butacas.get(0).getPrecio());
+        Assert.assertEquals(BigDecimal.valueOf(10), butacas.get(0).getPrecio());
     }
 }

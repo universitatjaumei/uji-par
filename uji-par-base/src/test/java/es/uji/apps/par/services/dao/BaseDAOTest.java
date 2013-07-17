@@ -1,6 +1,7 @@
 package es.uji.apps.par.services.dao;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -8,6 +9,7 @@ import es.uji.apps.par.dao.LocalizacionesDAO;
 import es.uji.apps.par.dao.SesionesDAO;
 import es.uji.apps.par.db.ButacaDTO;
 import es.uji.apps.par.db.LocalizacionDTO;
+import es.uji.apps.par.db.PreciosSesionDTO;
 import es.uji.apps.par.db.SesionDTO;
 import es.uji.apps.par.model.Localizacion;
 
@@ -19,17 +21,23 @@ public class BaseDAOTest
     @Autowired
     LocalizacionesDAO localizacionesDao;
 
-    protected SesionDTO preparaSesion()
+    protected SesionDTO preparaSesion(LocalizacionDTO localizacion)
     {
-        SesionDTO sesion = new SesionDTO();
-        return sesionesDao.persistSesion(sesion);
+        SesionDTO sesion = sesionesDao.persistSesion(new SesionDTO());
+
+        PreciosSesionDTO precioSesion = new PreciosSesionDTO(BigDecimal.valueOf(1), BigDecimal.valueOf(5),
+                BigDecimal.valueOf(10), localizacion);
+
+        sesion.setParPreciosSesions(Arrays.asList(precioSesion));
+
+        return sesion;
     }
 
     protected Localizacion preparaLocalizacion(String codigoLocalizacion)
     {
         Localizacion localizacion = new Localizacion();
         localizacion.setCodigo(codigoLocalizacion);
-
+        
         return localizacionesDao.add(localizacion);
     }
 

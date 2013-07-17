@@ -38,7 +38,16 @@ public class PreciosSesionDTO implements Serializable {
 	public PreciosSesionDTO() {
 	}
 
-	public long getId() {
+	public PreciosSesionDTO(BigDecimal descuento, BigDecimal invitacion, BigDecimal precio, LocalizacionDTO localizacion)
+    {
+        super();
+        this.descuento = descuento;
+        this.invitacion = invitacion;
+        this.precio = precio;
+        this.parLocalizacione = localizacion;
+    }
+
+    public long getId() {
 		return this.id;
 	}
 
