@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.jpa.impl.JPAUpdateClause;
+import com.mysema.query.types.path.ListPath;
 
 import es.uji.apps.par.DateUtils;
 import es.uji.apps.par.db.PreciosSesionDTO;
@@ -121,6 +122,7 @@ public class SesionesDAO
     public SesionDTO getSesion(long sesionId)
     {
         JPAQuery query = new JPAQuery(entityManager);
-        return query.from(qSesionDTO).where(qSesionDTO.id.eq(sesionId)).uniqueResult(qSesionDTO);
-    }	
+        return query.from(qSesionDTO).join(qSesionDTO.parPreciosSesions, qPreciosSesionDTO).
+                where(qSesionDTO.id.eq(sesionId)).uniqueResult(qSesionDTO);
+    }
 }
