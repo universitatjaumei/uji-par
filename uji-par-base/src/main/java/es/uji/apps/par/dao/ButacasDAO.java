@@ -14,6 +14,7 @@ import com.mysema.query.jpa.impl.JPAQuery;
 import es.uji.apps.par.db.ButacaDTO;
 import es.uji.apps.par.db.CompraDTO;
 import es.uji.apps.par.db.LocalizacionDTO;
+import es.uji.apps.par.db.PreciosSesionDTO;
 import es.uji.apps.par.db.QButacaDTO;
 import es.uji.apps.par.db.QLocalizacionDTO;
 import es.uji.apps.par.db.QSesionDTO;
@@ -81,14 +82,24 @@ public class ButacasDAO
         for (Butaca butaca : butacas)
         {
             LocalizacionDTO localizacionDTO = localizacionesDAO.getLocalizacionByCodigo(butaca.getLocalizacion());
-            
+
             ButacaDTO butacaDTO = Butaca.butacaToButacaDTO(butaca);
             butacaDTO.setParSesion(sesionDTO);
             butacaDTO.setParCompra(compraDTO);
             butacaDTO.setParLocalizacion(localizacionDTO);
 
+            for (PreciosSesionDTO precioSesion : sesionDTO.getParPreciosSesions())
+            {
+                if (precioSesion.getParLocalizacione().getCodigo().equals(butaca.getLocalizacion()))
+                {
+                    if (butaca.getTipo().equals("normal"))
+                        butacaDTO.setPrecio(precioSesion.getPrecio());
+                    else if (butaca.getTipo().equals("descuento"))
+                        butacaDTO.setPrecio(precioSesion.getDescuento());
+                }
+            }
+
             entityManager.persist(butacaDTO);
         }
     }
-
 }
