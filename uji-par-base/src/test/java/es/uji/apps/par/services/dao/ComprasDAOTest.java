@@ -2,6 +2,8 @@ package es.uji.apps.par.services.dao;
 
 import static org.junit.Assert.assertNotNull;
 
+import java.util.Date;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,7 +33,7 @@ public class ComprasDAOTest extends BaseDAOTest
     @Transactional
     public void guardaCompraOk()
     {
-        CompraDTO compraDTO = comprasDAO.guardaCompra("Pepe", "Perez", "964123456", "pepe@example.com");
+        CompraDTO compraDTO = comprasDAO.guardaCompra("Pepe", "Perez", "964123456", "pepe@example.com", new Date());
 
         assertNotNull(compraDTO.getId());
     }

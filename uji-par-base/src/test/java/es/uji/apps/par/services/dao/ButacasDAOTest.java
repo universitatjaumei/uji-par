@@ -2,6 +2,7 @@ package es.uji.apps.par.services.dao;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Assert;
@@ -94,7 +95,7 @@ public class ButacasDAOTest extends BaseDAOTest
 
         Butaca butaca = new Butaca(butacaDTO);
 
-        CompraDTO compraDTO = comprasDao.guardaCompra("Pepe", "Perez", "964123456", "prueba@example.com");
+        CompraDTO compraDTO = comprasDao.guardaCompra("Pepe", "Perez", "964123456", "prueba@example.com", new Date());
         butacasDao.reservaButacas(sesion.getId(), compraDTO, Arrays.asList(butaca));
 
         List<ButacaDTO> butacas = butacasDao.getButacas(sesion.getId(), localizacion.getCodigo());
@@ -103,5 +104,6 @@ public class ButacasDAOTest extends BaseDAOTest
         Assert.assertEquals(localizacion.getId(), butacas.get(0).getParLocalizacion().getId());
         Assert.assertEquals(butaca.getFila(), butacas.get(0).getFila());
         Assert.assertEquals(butaca.getNumero(), butacas.get(0).getNumero());
+        Assert.assertEquals(BigDecimal.ONE, butacas.get(0).getPrecio());
     }
 }

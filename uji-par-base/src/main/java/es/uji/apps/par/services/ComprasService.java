@@ -1,10 +1,10 @@
 package es.uji.apps.par.services;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import es.uji.apps.par.dao.ButacasDAO;
 import es.uji.apps.par.dao.ComprasDAO;
@@ -26,7 +26,7 @@ public class ComprasService
     {
         ResultadoCompra resultadoCompra = new ResultadoCompra();
 
-        CompraDTO compraDTO = comprasDAO.guardaCompra(nombre, apellidos, telefono, email);
+        CompraDTO compraDTO = comprasDAO.guardaCompra(nombre, apellidos, telefono, email, new Date());
         butacasDAO.reservaButacas(sesionId, compraDTO, butacasSeleccionadas);
         resultadoCompra.setCorrecta(true);
 

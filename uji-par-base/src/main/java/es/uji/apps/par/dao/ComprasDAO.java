@@ -1,5 +1,8 @@
 package es.uji.apps.par.dao;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -15,9 +18,9 @@ public class ComprasDAO
     private EntityManager entityManager;
 
     @Transactional
-    public CompraDTO guardaCompra(String nombre, String apellidos, String telefono, String email)
+    public CompraDTO guardaCompra(String nombre, String apellidos, String telefono, String email, Date fecha)
     {
-        CompraDTO compraDTO = new CompraDTO(nombre, apellidos, telefono, email);
+        CompraDTO compraDTO = new CompraDTO(nombre, apellidos, telefono, email, new Timestamp(fecha.getTime()));
 
         entityManager.persist(compraDTO);
 
