@@ -82,6 +82,8 @@ Ext.application({
                      xtype: 'gridLocalizaciones'
                   }, {
                      xtype: 'panelPlantillas'
+                  }, {
+                     xtype: 'panelTaquilla'
                   }],
                listeners: {
                   afterlayout: function(container, layout, opts) {

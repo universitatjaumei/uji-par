@@ -54,4 +54,5 @@ Ext.define('Paranimf.view.evento.GridEventos', {
    showAddEventoWindow: function() {
       this.createModalWindow('formEventos', 600, 600).show();
    }
+
 });

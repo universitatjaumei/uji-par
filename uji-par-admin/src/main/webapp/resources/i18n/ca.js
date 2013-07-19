@@ -63,7 +63,8 @@ UI =
             "edit": "Editar",
             "activateBooking":"Permetre reserves",
             "deactivateBooking":"Bloquejar per a reserves",
-            "eliminarImagen": "Esborrar imatge - NO ES POT CANCEL·LAR"
+            "eliminarImagen": "Esborrar imatge - NO ES POT CANCEL·LAR",
+            "comprar": "Comprar"
         },
         "calendar": {
             "calendar": "Calendari de reserves",
