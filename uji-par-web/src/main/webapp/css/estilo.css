@@ -20,17 +20,3 @@
 .evento-sesiones {
 	clear: both;
 }
-
-.entrada-plano {
-	position: relative;
-}
-
-.butaca-seleccionada {
-	position: absolute;
-	display: none;
-	cursor: pointer;
-}
-
-#numeroSeleccionada,#filaSeleccionada,#seccionSeleccionada {
-	font-weight: bold;
-}

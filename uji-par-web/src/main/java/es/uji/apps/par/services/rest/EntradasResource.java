@@ -66,8 +66,8 @@ public class EntradasResource extends BaseResource
         template.put("evento", evento);
         template.put("sesion", sesion);
         template.put("idioma", getLocale().getLanguage());
-        template.put("urlAnfiteatro", String.format("../imagenes/butacas/730/anfiteatro", sesion.getId()));
-
+        template.put("baseContext", currentRequest.getContextPath());
+        
         if (butacasSeleccionadas != null)
             template.put("butacasSeleccionadas", butacasSeleccionadas);
 
@@ -123,7 +123,7 @@ public class EntradasResource extends BaseResource
     {
         return new HTMLTemplate(Constantes.PLANTILLAS_DIR + "compraNoValida", getLocale());
     }
-
+    
     private Response paginaProhibida()
     {
         return Response.status(Status.FORBIDDEN.getStatusCode()).build();
@@ -137,4 +137,20 @@ public class EntradasResource extends BaseResource
     {
         return butacasService.estanOcupadas(idSesion, butacas);
     }
+    
+    @GET
+    @Path("butacasFragment/{id}")
+    @Produces(MediaType.TEXT_HTML)
+    public Template butacasFragment(@PathParam("id") long sesionId) throws Exception
+    {
+        HTMLTemplate template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "butacasFragment", getLocale());
+        
+        Sesion sesion = sesionesService.getSesion(sesionId);
+        
+        template.put("baseContext", currentRequest.getContextPath());
+        template.put("idioma", getLocale().getLanguage());
+        template.put("sesion", sesion);
+        
+        return template;
+    }  
 }
