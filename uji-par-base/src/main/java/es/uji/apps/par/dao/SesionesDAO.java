@@ -1,10 +1,13 @@
 package es.uji.apps.par.dao;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 
 import org.springframework.stereotype.Repository;
@@ -13,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.jpa.impl.JPAUpdateClause;
-import com.mysema.query.types.path.ListPath;
 
 import es.uji.apps.par.DateUtils;
 import es.uji.apps.par.db.PreciosSesionDTO;
@@ -36,12 +38,36 @@ public class SesionesDAO
     @Transactional
     public List<SesionDTO> getSesiones(long eventoId)
     {
-        JPAQuery query = new JPAQuery(entityManager);
+        return getSesiones(eventoId, false);
+    }
+    
+    @Transactional
+    public List<SesionDTO> getSesionesActivas(long eventoId)
+    {
+        return getSesiones(eventoId, true);
+    }    
 
+    @Transactional
+    private List<SesionDTO> getSesiones(long eventoId, boolean activos)
+    {
         List<SesionDTO> sesion = new ArrayList<SesionDTO>();
 
-        for (SesionDTO sesionDB : query.from(qSesionDTO)
-                .where(qSesionDTO.parEvento.id.eq(eventoId)).list(qSesionDTO))
+        JPAQuery query;
+        
+        if (activos)
+        {
+            Timestamp now = new Timestamp(new Date().getTime());
+            
+            query = new JPAQuery(entityManager).from(qSesionDTO)
+                .where(qSesionDTO.parEvento.id.eq(eventoId).and(qSesionDTO.fechaCelebracion.after(now)));
+        }
+        else
+        {
+            query = new JPAQuery(entityManager).from(qSesionDTO)
+                    .where(qSesionDTO.parEvento.id.eq(eventoId));            
+        }
+        
+        for (SesionDTO sesionDB : query.list(qSesionDTO))
         {
             sesion.add(sesionDB);
         }
@@ -67,6 +93,8 @@ public class SesionesDAO
     @Transactional
     public void updateSesion(Sesion sesion)
     {
+        boolean actualTransactionActive = org.springframework.transaction.support.TransactionSynchronizationManager.isActualTransactionActive();
+        
         JPAUpdateClause update = new JPAUpdateClause(entityManager, qSesionDTO);
         update.
         	/*set(qSesionDTO.canalInternet, sesion.getCanalInternet())

@@ -1,6 +1,8 @@
 package es.uji.apps.par.dao;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -17,6 +19,7 @@ import com.mysema.query.types.QTuple;
 
 import es.uji.apps.par.db.EventoDTO;
 import es.uji.apps.par.db.QEventoDTO;
+import es.uji.apps.par.db.QSesionDTO;
 import es.uji.apps.par.db.QTipoEventoDTO;
 import es.uji.apps.par.db.TipoEventoDTO;
 import es.uji.apps.par.model.Evento;
@@ -32,24 +35,54 @@ public class EventosDAO
     @Transactional
     public List<EventoDTO> getEventos()
     {
+        return getEventos(false);
+    }
+    
+    @Transactional
+    public List<EventoDTO> getEventosActivos()
+    {
+        return getEventos(true);
+    }    
+    
+    public List<EventoDTO> getEventos(boolean activos)
+    {
         QTipoEventoDTO qTipoEventoDTO = QTipoEventoDTO.tipoEventoDTO;
+        QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
+        
         JPAQuery query = new JPAQuery(entityManager);
-
-        List<Tuple> listadoTuples = query
+        QTuple fields = new QTuple(qEventoDTO.caracteristicasEs, qEventoDTO.caracteristicasVa,
+                qEventoDTO.comentariosEs, qEventoDTO.comentariosVa, qEventoDTO.companyiaEs,
+                qEventoDTO.companyiaVa, qEventoDTO.descripcionEs, qEventoDTO.descripcionVa,
+                qEventoDTO.duracionEs, qEventoDTO.duracionVa, qEventoDTO.id,
+                qEventoDTO.parTiposEvento, qEventoDTO.interpretesEs,
+                qEventoDTO.interpretesVa, qEventoDTO.premiosEs, qEventoDTO.premiosVa,
+                qEventoDTO.tituloEs, qEventoDTO.tituloVa, qEventoDTO.imagenSrc,
+                qEventoDTO.imagenContentType, qEventoDTO.asientosNumerados, qEventoDTO.retencionSgae, qEventoDTO.ivaSgae, qEventoDTO.porcentajeIva);
+        
+        
+        List<Tuple> listadoTuples;
+        
+        if (activos)
+        {
+            Timestamp now = new Timestamp(new Date().getTime());
+            
+            listadoTuples = query
                 .from(qEventoDTO, qTipoEventoDTO)
-                .where(qEventoDTO.parTiposEvento.id.eq(qTipoEventoDTO.id))
-                .list(new QTuple(qEventoDTO.caracteristicasEs, qEventoDTO.caracteristicasVa,
-                        qEventoDTO.comentariosEs, qEventoDTO.comentariosVa, qEventoDTO.companyiaEs,
-                        qEventoDTO.companyiaVa, qEventoDTO.descripcionEs, qEventoDTO.descripcionVa,
-                        qEventoDTO.duracionEs, qEventoDTO.duracionVa, qEventoDTO.id,
-                        qEventoDTO.parTiposEvento, qEventoDTO.interpretesEs,
-                        qEventoDTO.interpretesVa, qEventoDTO.premiosEs, qEventoDTO.premiosVa,
-                        qEventoDTO.tituloEs, qEventoDTO.tituloVa, qEventoDTO.imagenSrc,
-                        qEventoDTO.imagenContentType, qEventoDTO.asientosNumerados, qEventoDTO.retencionSgae, qEventoDTO.ivaSgae, qEventoDTO.porcentajeIva));
+                .innerJoin(qEventoDTO.parSesiones, qSesionDTO)
+                .distinct()
+                .where(qEventoDTO.parTiposEvento.id.eq(qTipoEventoDTO.id).and(qSesionDTO.fechaCelebracion.after(now)))
+                .list(fields);
+        }
+        else
+        {
+            listadoTuples = query
+                    .from(qEventoDTO, qTipoEventoDTO)
+                    .where(qEventoDTO.parTiposEvento.id.eq(qTipoEventoDTO.id))
+                    .list(fields);            
+        }
 
         return tuplesToParEventoDTO(listadoTuples);
-
-    }
+    }    
 
     private List<EventoDTO> tuplesToParEventoDTO(List<Tuple> listadoTuples)
     {

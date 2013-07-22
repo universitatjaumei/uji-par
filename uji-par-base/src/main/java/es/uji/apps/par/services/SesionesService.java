@@ -35,19 +35,51 @@ public class SesionesService
     
     public List<Sesion> getSesiones(Integer eventoId)
     {
-    	List<Sesion> listaSesiones = new ArrayList<Sesion>();
-    	
-    	for (SesionDTO sesionDB: sesionDAO.getSesiones(eventoId)) {
-    		listaSesiones.add(new Sesion(sesionDB));
-    	}
-        return listaSesiones;
+    	return getSesiones(eventoId, false);
     }
     
+    public List<Sesion> getSesionesActivas(Integer eventoId)
+    {
+        return getSesiones(eventoId, true);
+    }
+    
+    private List<Sesion> getSesiones(Integer eventoId, boolean activos)
+    {
+        List<Sesion> listaSesiones = new ArrayList<Sesion>();
+        
+        List<SesionDTO> sesiones;
+        
+        if (activos)
+            sesiones = sesionDAO.getSesionesActivas(eventoId);
+        else
+            sesiones = sesionDAO.getSesiones(eventoId);
+        
+        for (SesionDTO sesionDB: sesiones) {
+            listaSesiones.add(new Sesion(sesionDB));
+        }
+        return listaSesiones;
+    }
     
     // Para el Ext que espera recibir segundos en vez de milisegundos
     public List<Sesion> getSesionesDateEnSegundos(Integer eventoId)
     {
-        List<Sesion> sesiones = getSesiones(eventoId);
+      return getSesionesDateEnSegundos(eventoId, false);
+    }
+    
+    // Para el Ext que espera recibir segundos en vez de milisegundos
+    public List<Sesion> getSesionesActivasDateEnSegundos(Integer eventoId)
+    {
+      return getSesionesDateEnSegundos(eventoId, true);
+    }    
+    
+    public List<Sesion> getSesionesDateEnSegundos(Integer eventoId, boolean activos)
+    {
+        List<Sesion> sesiones;
+        
+        if (activos)
+            sesiones = getSesionesActivas(eventoId);
+        else
+            sesiones = getSesiones(eventoId);
         
         for (Sesion sesion : sesiones)
         {
@@ -57,7 +89,7 @@ public class SesionesService
         }
         
         return sesiones;
-    }
+    }    
 
     public void removeSesion(Integer id)
     {

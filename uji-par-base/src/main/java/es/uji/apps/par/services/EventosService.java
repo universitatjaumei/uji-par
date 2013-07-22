@@ -20,12 +20,29 @@ public class EventosService
 
     public List<Evento> getEventos()
     {
+       return getEventos(false);
+    }
+    
+    public List<Evento> getEventosActivos()
+    {
+       return getEventos(true);
+    }
+    
+    private List<Evento> getEventos(boolean activos)
+    {
         List<Evento> listaParEvento = new ArrayList<Evento>();
-
-        for (EventoDTO eventoDB : eventosDAO.getEventos())
+        
+        List<EventoDTO> eventos;
+        if (activos)
+            eventos = eventosDAO.getEventosActivos();
+        else
+            eventos = eventosDAO.getEventos();
+        
+        for (EventoDTO eventoDB : eventos)
         {
             listaParEvento.add(new Evento(eventoDB, false));
         }
+        
         return listaParEvento;
     }
 
