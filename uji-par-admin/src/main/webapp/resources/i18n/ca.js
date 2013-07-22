@@ -57,7 +57,7 @@ UI =
             "save": "Guardar",
             "activate": "Activar",
             "deactivate": "Desactivar",
-            "delete": "Eliminar",
+            "del": "Eliminar",
             "new": "Nou",
             "cancel": "Cancel·lar",
             "edit": "Editar",
