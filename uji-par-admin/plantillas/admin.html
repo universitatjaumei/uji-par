@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Administració del Paranimf</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+    <link rel="stylesheet" type="text/css" href="http://static.uji.es/js/extjs/extjs-4.2.0/resources/css/ext-all-neptune.css"/>
+    <link rel="stylesheet" type="text/css" href="../resources/css/jquery-ui-1.8.23.custom.css"/>
+    <link rel="stylesheet" type="text/css" href="../resources/css/paranimf.css"/>
+    <link rel="shortcut icon" type="image/x-icon" href="../resources/images/favicon.ico"/>
+    <script type="text/javascript" src="http://static.uji.es/js/extjs/extjs-4.2.0/ext-all-debug.js"></script>
+    
+    <script type="text/javascript" src="../resources/js/jquery-1.8.0.min.js"></script>
+    <script type="text/javascript" src="../resources/js/postmessage.js"></script>
+
+    <script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/
+	    var botonLogout = "Nicolas Manero";
+
+	    var menuUrl = "../menu_ca.html";
+	    var controllers = ['Dashboard', 'Usuarios', 'TiposEventos', 'Eventos', 'Localizaciones', 'PlantillasPrecios', 'Taquilla'];
+	    var screens = {'Dashboard': 0, 'Usuarios': 1, 'TiposEventos': 2, 'Eventos': 3, 'Localizaciones': 4, 'PlantillasPrecios': 5,  'Taquilla': 6};
+
+	    var urlPrefix = '../rest/';
+	    var urlPublic = /*[[${urlPublic}]]*/ "";
+
+        document.write("<script type='text/javascript' src='../resources/i18n/ca.js'><\/script>");
+        document.write("<script type='text/javascript' src='http://static.uji.es/js/extjs/extjs-4.2.0/locale/ext-lang-ca.js'><\/script>");
+    /*]]>*/
+    </script>
+    
+    <script type="text/javascript" src="../resources/js/paranimf.js"></script>
+    <script type="text/javascript" src="../app/Application.js"></script> 
+  </head>
+  <body>
+      <form id="history-form" class="x-hide-display">
+      	<input type="hidden" id="x-history-field"/>
+      	<iframe id="x-history-frame"></iframe>
+      </form>
+      <div class="x-mask-msg x-layer paranimf-transparente" id="divCargador"></div>
+  </body>
+</html>

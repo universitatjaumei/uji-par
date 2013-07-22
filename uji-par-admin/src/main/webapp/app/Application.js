@@ -15,7 +15,7 @@ Ext.Loader.setConfig({
 Ext.application({
    name: 'Paranimf',
    autoCreateViewport: false,
-   appFolder: 'app',
+   appFolder: '../app',
    controllers: controllers,
 
    launch: function() {

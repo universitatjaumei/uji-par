@@ -6,7 +6,7 @@ Ext.define('Paranimf.view.dashboard.Dashboard', {
 		var me = this;
 
 		Ext.Ajax.request({
-			url: 'dashboard_ca.html',
+			url: '../dashboard_ca.html',
 			success: function(response, opts) {
 				me.update(response.responseText);
 			}
