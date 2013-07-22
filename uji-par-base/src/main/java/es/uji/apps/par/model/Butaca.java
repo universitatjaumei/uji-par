@@ -54,6 +54,14 @@ public class Butaca
         {
         }.getType());
     }
+    
+    public static String toJSON(List<Butaca> butacas)
+    {
+        Gson gson = new Gson();
+        return gson.toJson(butacas, new TypeToken<List<Butaca>>()
+        {
+        }.getType());
+    }
 
     public long getId()
     {

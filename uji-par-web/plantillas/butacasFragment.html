@@ -1,16 +1,27 @@
 <div th:fragment="butacasFragment">
 
-	<link rel="stylesheet" type="text/css" th:attr="href=${baseContext + '/css/butacas.css'}"></link>
+	<link rel="stylesheet" type="text/css" th:attr="href=${baseUrl + '/css/butacas.css'}"></link>
 	
-	<script type="text/javascript" th:attr="src=${baseContext + '/js/jquery-1.9.1.min.js'}"></script>
-	<script type="text/javascript" th:attr="src=${baseContext + '/js/jquery.json-2.4.min.js'}"></script>
-	<script type="text/javascript" th:attr="src=${baseContext + '/js/i18n/' + idioma + '.js'}" src="../../js/i18n/es.js"></script>			
-	<script type="text/javascript" th:attr="src=${baseContext + '/js/butacas.js'}"></script>
+	<script type="text/javascript" th:attr="src=${baseUrl + '/js/jquery-1.9.1.min.js'}"></script>
+	<script type="text/javascript" th:attr="src=${baseUrl + '/js/jquery.json-2.4.min.js'}"></script>
+	<script type="text/javascript" th:attr="src=${baseUrl + '/js/postmessage.js'}"></script>
+	<script type="text/javascript" th:attr="src=${baseUrl + '/js/i18n/' + idioma + '.js'}"></script>			
+	<script type="text/javascript" th:attr="src=${baseUrl + '/js/butacas.js'}"></script>
 	
 	<script type="text/javascript" th:inline="javascript">
     /*<![CDATA[*/
-        var baseUrl = /*[[${baseContext}]]*/ "";
-	    Butacas.setBaseUrl(baseUrl);
+	    function initButacas()
+	    {
+    		var baseUrl = /*[[${baseUrl}]]*/ "";
+	    	Butacas.setBaseUrl(baseUrl);
+	    }
+    
+        setTimeout(function(){
+			if (typeof Butacas === 'undefined')
+				setTimeout(initButacas, 100);
+			else
+				initButacas();
+		}, 100);
     /*]]>*/
 	</script>
 	
@@ -25,8 +36,10 @@
 	</select>
 
 	<span class="titulo-tipo" th:text="#{tipo}">Tipo de entrada</span>
-	<input type="radio" name="tipo" id="tipoNormal" value="normal" checked="true" /><label for="tipoNormal" th:text="#{tipoNormal}">Normal</label>
-	<input type="radio" name="tipo" id="tipoDescuento" value="descuento" /><label for="tipoDescuento" th:text="#{tipoDescuento}">Descuento</label>
+	<select id="tipo">
+		<option value="normal" th:text="#{tipoNormal}">Normal</option>
+		<option value="descuento" th:text="#{tipoDescuento}">Descuento</option>
+	</select>
 	
 	<div id="localizacion_anfiteatro" class="entrada-plano">
 		
@@ -348,7 +361,7 @@
 			<area shape="rect" coords="476,266,497,285" href="javascript:Butacas.selecciona('anfiteatro', 1, 23, 476, 266)" />
 		</map>
 	
-		<img id="imagen_anfiteatro" th:src="${baseContext + '/rest/imagenes/butacas/' + sesion.id + '/anfiteatro'}" border="0" usemap="#mapAnfiteatro" />
+		<img id="imagen_anfiteatro" th:src="${baseUrl + '/rest/imagenes/butacas/' + sesion.id + '/anfiteatro'}" border="0" usemap="#mapAnfiteatro" />
 	</div>
 	
 	<div id="localizacion_platea1" class="entrada-plano">
@@ -670,7 +683,7 @@
 			<area shape="rect" coords="476,266,497,285" href="javascript:Butacas.selecciona('platea1', 1, 23, 476, 266)" />
 		</map>
 	
-		<img id="imagen_platea1" th:src="${baseContext + '/rest/imagenes/butacas/' + sesion.id + '/platea'}" border="0" usemap="#mapPlatea1" />
+		<img id="imagen_platea1" th:src="${baseUrl + '/rest/imagenes/butacas/' + sesion.id + '/platea'}" border="0" usemap="#mapPlatea1" />
 	</div>
 	
 	<h3 th:text="#{detallesSeleccionadas}">Butacas seleccionadas</h3>

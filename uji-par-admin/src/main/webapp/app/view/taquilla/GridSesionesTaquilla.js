@@ -53,10 +53,6 @@ Ext.define('Paranimf.view.taquilla.GridSesionesTaquilla', {
       format:'d/m/Y',
       xtype: 'datecolumn',
       flex: 1
-    }, {
-      dataIndex: 'plantillaPrecios_nombre',
-      text: UI.i18n.field.plantillaprecios,
-      flex: 1
     }];
 
     this.callParent(arguments);
@@ -64,15 +60,12 @@ Ext.define('Paranimf.view.taquilla.GridSesionesTaquilla', {
     //this.getDockedItems('toolbar[dock=top]')[0].hide();
   },
 
-  showComprarWindow: function() {
+  showComprarWindow: function(idSesion) {
+	console.log("showComprarWindow: ", idSesion	);  
+	  
 	this.createModalWindow('formComprar', 600, 600).show();
 
-	Ext.Ajax.request({
-	    url: 'http://google.es',
-	    success: function(response){
-	        Ext.getCmp('formComprar').update( response.responseText );
-	    }
-	});	
+	Ext.getDom('iframeButacas').src = urlPublic + "/rest/entrada/butacasFragment/" + idSesion;
   }
 
 });

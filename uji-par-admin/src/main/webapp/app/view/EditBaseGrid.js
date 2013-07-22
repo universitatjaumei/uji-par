@@ -15,7 +15,7 @@ Ext.define('Paranimf.view.EditBaseGrid', {
       action: 'edit'
    }, {
       xtype: 'button',
-      text: UI.i18n.button.delete,
+      text: UI.i18n.button.del,
       action: 'del'
    }],
 

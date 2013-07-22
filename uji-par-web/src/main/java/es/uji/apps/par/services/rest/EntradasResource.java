@@ -66,7 +66,7 @@ public class EntradasResource extends BaseResource
         template.put("evento", evento);
         template.put("sesion", sesion);
         template.put("idioma", getLocale().getLanguage());
-        template.put("baseContext", currentRequest.getContextPath());
+        template.put("baseUrl", getBaseUrl());
         
         if (butacasSeleccionadas != null)
             template.put("butacasSeleccionadas", butacasSeleccionadas);
@@ -147,10 +147,11 @@ public class EntradasResource extends BaseResource
         
         Sesion sesion = sesionesService.getSesion(sesionId);
         
-        template.put("baseContext", currentRequest.getContextPath());
+        template.put("baseUrl", getBaseUrl());
         template.put("idioma", getLocale().getLanguage());
         template.put("sesion", sesion);
         
         return template;
-    }  
+    }
+
 }

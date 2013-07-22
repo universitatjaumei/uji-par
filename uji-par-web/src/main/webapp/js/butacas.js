@@ -83,13 +83,14 @@ Butacas = (function() {
 					+ ', <span>' + UI.i18n.butacas.butaca + '=</span>'
 					+ butacasSeleccionadas[i].numero
 					+ ', <span>' + UI.i18n.butacas.tipo + '=</span>'
-					+ butacasSeleccionadas[i].tipo + ', ' + "</div>");
+					+ butacasSeleccionadas[i].tipo + "</div>");
 			$('#detallesSeleccionadas').append(fila);
 		}
 	}
 	
 	function selecciona(localizacion, fila, numero, x, y) {
-		var tipoEntrada = $('input[name=tipo]:checked').val();
+		var tipoEntrada = $('#tipo').val();
+		
 		var butaca = {
 			localizacion : localizacion,
 			fila : fila,
@@ -193,8 +194,17 @@ Butacas = (function() {
 		baseUrl = url;
 	}
 	
+	pm.bind("butacas", function(data){
+		 pm({
+			   target: parent,
+			   type:"respuestaButacas", 
+			   data:butacasSeleccionadas
+		 });
+	});
+	
 	return {
 		selecciona:selecciona,
 		setBaseUrl:setBaseUrl
 	};
+	
 }());

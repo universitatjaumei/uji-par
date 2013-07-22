@@ -17,6 +17,10 @@ Ext.define('Paranimf.controller.Taquilla', {
       {
       	ref: 'gridSesionesTaquilla',
       	selector: 'gridSesionesTaquilla'
+      },
+      {
+       	ref: 'formComprar',
+        selector: 'formComprar'
       }],
 
    init: function() {
@@ -31,7 +35,10 @@ Ext.define('Paranimf.controller.Taquilla', {
          },
          'gridSesionesTaquilla button[action=comprar]': {
              click: this.comprar
-         }  
+         },
+         'formComprar button[action=pagar]': {
+             click: this.butacasSeleccionadas
+         }
          
          /*
          'gridPlantillas button[action=add]': {
@@ -78,8 +85,24 @@ Ext.define('Paranimf.controller.Taquilla', {
          }
     	   */
       });
+      
+	  var me = this;
+	  
+	  pm.bind("respuestaButacas", function(data){
+		   console.log("Respuesta:", data);
+		   me.getFormComprar().up('window').close();
+	  });      
    },
 
+   butacasSeleccionadas: function() {
+	   console.log('butacasSeleccionadas:', Ext.getDom('iframeButacas'));
+	   pm({
+		   target: window.frames["iframeButacas"],
+		   type:"butacas", 
+		   data:{hello:"world"}
+	   });
+   },
+   
    recargaStore: function(comp, opts) {
       console.log("RECARGA STORE EVENTOS TAQUILLA");
       this.getGridEventosTaquilla().recargaStore();
@@ -96,7 +119,8 @@ Ext.define('Paranimf.controller.Taquilla', {
    },
 
    comprar: function(button, event, opts) {
-	 this.getGridSesionesTaquilla().showComprarWindow();
+	 var selectedRecord = this.getGridSesionesTaquilla().getSelectedRecord();
+	 this.getGridSesionesTaquilla().showComprarWindow(selectedRecord.data["id"]);
    }
    
    /*

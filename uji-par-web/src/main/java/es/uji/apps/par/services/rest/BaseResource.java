@@ -42,4 +42,8 @@ public class BaseResource
         return idioma.equals("es") || idioma.equals("ca");
     }
 
+    protected String getBaseUrl()
+    {
+        return currentRequest.getScheme() + "://" + currentRequest.getServerName() + ":" + currentRequest.getServerPort() + currentRequest.getContextPath();
+    }  
 }
