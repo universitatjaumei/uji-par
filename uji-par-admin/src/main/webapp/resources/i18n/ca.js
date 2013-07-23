@@ -4,7 +4,8 @@ UI =
         "formTitle": {
             "spaces": "Reserva d'espais",
             "config": "Configuració del sistema",
-            "warn": "Incidència"
+            "warn": "Incidència",
+            "pagar": "Realizar pago"
         },
         "message": {
         	"event": "És obligatori seleccionar un event",
@@ -67,7 +68,7 @@ UI =
             "comprar": "Comprar",
             "pagar": "Pagar",
             "anterior": "&laquo; Anterior",
-            "siguiente": "Següent &raquo;",
+            "siguiente": "Següent &raquo;"
         },
         "calendar": {
             "calendar": "Calendari de reserves",
@@ -166,7 +167,11 @@ UI =
             "horaInicioVentaOnline": "Hora d'inici de la venda online",
             "horaFinVentaOnline": "Hora de fi de la venda online",
             "reservesOnline": "Reserves online",
-            "dadesGenerals": "Dades generals"
+            "dadesGenerals": "Dades generals",
+            "tipoPago": "Pagament",
+            "metalico": "Metàl·lic",
+            "tarjeta": "Tarjeta",
+            "total": "Total"
         }
     }
 }

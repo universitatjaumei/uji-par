@@ -1,7 +1,7 @@
 Ext.define('Paranimf.controller.Taquilla', {
    extend: 'Ext.app.Controller',
 
-   views: ['EditModalWindow', 'EditBaseForm', 'EditBaseGrid', 'taquilla.PanelTaquilla', 'taquilla.GridEventosTaquilla', 'taquilla.GridSesionesTaquilla', "taquilla.FormComprar"],
+   views: ['EditModalWindow', 'EditBaseForm', 'EditBaseGrid', 'taquilla.PanelTaquilla', 'taquilla.GridEventosTaquilla', 'taquilla.GridSesionesTaquilla', 'taquilla.FormComprar'],
    stores: ['EventosTaquilla', 'SesionesTaquilla'],
    models: ['Evento'],
 
@@ -52,7 +52,10 @@ Ext.define('Paranimf.controller.Taquilla', {
          },         
          'formComprar': {
              afterrender: this.cambiarEstadoBotonesComprar
-         },         
+         },    
+         'formComprar #pagar': {
+        	 click: this.pagar
+         },           
          
          /*
          'gridPlantillas button[action=add]': {
@@ -102,14 +105,40 @@ Ext.define('Paranimf.controller.Taquilla', {
       
 	  var me = this;
 	  
-	  pm.bind("respuestaButacas", function(data){
-		   console.log("Respuesta:", data);
+	  pm.bind('respuestaButacas', function(butacas){
+		   console.log('Respuesta:', butacas);
 		   
 		   var layout = me.getFormComprarCards().getLayout();
 		   layout.setActiveItem(layout.getNext());
 		   
+		   me.rellenaDatosPasoPagar(butacas);
+		   
 		   me.cambiarEstadoBotonesComprar();
 	  });      
+   },
+   
+   pagar: function() {
+	   var tipoPago = Ext.getCmp('tipoPago').value;
+	   
+	   if (tipoPago == 'metalico')
+		   alert('Pagado en metálico');
+	   else
+		   alert('Pagado con tarjeta');
+	   
+	   this.getFormComprar().up('window').close();
+   },
+   
+   sumaImportes: function(butacas) {
+	   var total = 0.0;
+	   
+	   for(var i=0; i<butacas.length; i++)
+		   total += butacas[i].precio;
+	   
+	   return total;
+   },
+   
+   rellenaDatosPasoPagar: function(butacas) {
+	 Ext.getCmp('total').setText(UI.i18n.field.total + ": " + this.sumaImportes(butacas) + " €");  
    },
    
    cerrarComprar: function() {
@@ -117,14 +146,14 @@ Ext.define('Paranimf.controller.Taquilla', {
    },
    
    comprarAnterior: function() {
-	   console.log("Anterior");
+	   console.log('Anterior');
 	   
 	   var layout = this.getFormComprarCards().getLayout();
 	   var pasoActual = layout.activeItem.id;
 	   
 	   console.log(pasoActual);
 	   
-	   if (pasoActual != "pasoSeleccionar")
+	   if (pasoActual != 'pasoSeleccionar')
 	   {
 		   layout.setActiveItem(layout.getActiveItem()-1);
 	   }
@@ -133,19 +162,19 @@ Ext.define('Paranimf.controller.Taquilla', {
    },
 
    comprarSiguiente: function() {
-	   console.log("Siguiente");
+	   console.log('Siguiente');
 	   
 	   var layout = this.getFormComprarCards().getLayout();
 	   var pasoActual = layout.activeItem.id;
 	   
 	   console.log(pasoActual);
 	   
-	   if (pasoActual == "pasoSeleccionar")
+	   if (pasoActual == 'pasoSeleccionar')
 	   {
 		   // Llámamos al iframe para que nos pase las butacas seleccionadas
 		   pm({
-			   target: window.frames["iframeButacas"],
-			   type:"butacas", 
+			   target: window.frames['iframeButacas'],
+			   type:'butacas', 
 			   data:{}
 		   });
 	   }
@@ -161,14 +190,14 @@ Ext.define('Paranimf.controller.Taquilla', {
    },
 
    recargaStore: function(comp, opts) {
-      console.log("RECARGA STORE EVENTOS TAQUILLA");
+      console.log('RECARGA STORE EVENTOS TAQUILLA');
       this.getGridEventosTaquilla().recargaStore();
    },
 
    loadSesiones: function(selectionModel, record) {
       if (record[0]) {
          var storeSesiones = this.getGridSesionesTaquilla().getStore();
-         var eventoId = record[0].get("id");
+         var eventoId = record[0].get('id');
 
          storeSesiones.getProxy().url = urlPrefix + 'evento/' + eventoId + '/sesiones?activos=true';
          storeSesiones.load();
@@ -177,7 +206,7 @@ Ext.define('Paranimf.controller.Taquilla', {
 
    comprar: function(button, event, opts) {
 	 var selectedRecord = this.getGridSesionesTaquilla().getSelectedRecord();
-	 this.getGridSesionesTaquilla().showComprarWindow(selectedRecord.data["id"]);
+	 this.getGridSesionesTaquilla().showComprarWindow(selectedRecord.data['id']);
    }
    
    /*
@@ -215,7 +244,7 @@ Ext.define('Paranimf.controller.Taquilla', {
    loadPrecios: function(selectionModel, record) {
       if (record[0]) {
          var storePrecios = this.getGridPrecios().getStore();
-         var plantillaId = record[0].get("id");
+         var plantillaId = record[0].get('id');
 
          storePrecios.getProxy().url = urlPrefix + 'plantillaprecios/' + plantillaId + '/precios';
          storePrecios.load();

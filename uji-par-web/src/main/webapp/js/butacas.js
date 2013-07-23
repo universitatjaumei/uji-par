@@ -1,8 +1,29 @@
 Butacas = (function() {
 	
 	var baseUrl = "";
+	var sesionId;
+	var precios = {};
 	
 	var butacasSeleccionadas = [];
+	
+	function init(url, sesId) {
+		baseUrl = url;
+		sesionId = sesId;
+	}
+	
+	function cargaPrecios(callback) {
+		$.getJSON(baseUrl + '/rest/entrada/' + sesionId + '/precios', function(respuesta){
+			
+			for (var i=0; i<respuesta.data.length; i++)
+			{
+				var sesion = respuesta.data[i];
+				precios[sesion.localizacion.codigo] = {normal:sesion.precio, descuento:sesion.descuento, invitacion:sesion.invitacion};
+			}
+			
+			callback(precios);
+		});
+	}
+	
 	
 	function ocultaButacasSeleccionadas() {
 		$('.butaca-seleccionada').remove();
@@ -76,14 +97,12 @@ Butacas = (function() {
 	
 		for ( var i = 0; i < butacasSeleccionadas.length; i++) {
 			var fila = $('<div class="entrada-seleccionada">'
-					+ '<span>' + UI.i18n.butacas.localizacion + '=</span>'
 					+ butacasSeleccionadas[i].localizacion
 					+ ', <span>' + UI.i18n.butacas.fila + '=</span>'
-					+ butacasSeleccionadas[i].fila
+					+ '<b>' + butacasSeleccionadas[i].fila + '</b>'
 					+ ', <span>' + UI.i18n.butacas.butaca + '=</span>'
-					+ butacasSeleccionadas[i].numero
-					+ ', <span>' + UI.i18n.butacas.tipo + '=</span>'
-					+ butacasSeleccionadas[i].tipo + "</div>");
+					+ '<b>' + butacasSeleccionadas[i].numero + '</b>'
+					+ '<span> (' + butacasSeleccionadas[i].tipo + ': <b>' + butacasSeleccionadas[i].precio + '</b> €)</span></div>');
 			$('#detallesSeleccionadas').append(fila);
 		}
 	}
@@ -97,7 +116,8 @@ Butacas = (function() {
 			numero : numero,
 			x : x,
 			y : y,
-			tipo : tipoEntrada
+			tipo : tipoEntrada,
+			precio: precios[localizacion][tipoEntrada]
 		};
 	
 		if (estaSeleccionada(butaca)) {
@@ -190,10 +210,6 @@ Butacas = (function() {
 		muestraLocalizacion();
 	});
 	
-	function setBaseUrl(url) {
-		baseUrl = url;
-	}
-	
 	// Desde fuera del iframe nos han pedido que le pasemos las butacas seleccionadas 
 	pm.bind("butacas", function(data){
 		 pm({
@@ -205,7 +221,8 @@ Butacas = (function() {
 	
 	return {
 		selecciona:selecciona,
-		setBaseUrl:setBaseUrl
+		init:init,
+		cargaPrecios:cargaPrecios
 	};
 	
 }());

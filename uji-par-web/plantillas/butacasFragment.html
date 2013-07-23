@@ -1,4 +1,4 @@
-<div th:fragment="butacasFragment">
+<div th:fragment="butacasFragment" id="butacas">
 
 	<link rel="stylesheet" type="text/css" th:attr="href=${baseUrl + '/css/butacas.css'}"></link>
 	
@@ -10,18 +10,17 @@
 	
 	<script type="text/javascript" th:inline="javascript">
     /*<![CDATA[*/
-	    function initButacas()
-	    {
-    		var baseUrl = /*[[${baseUrl}]]*/ "";
-	    	Butacas.setBaseUrl(baseUrl);
-	    }
+   		var baseUrl = /*[[${baseUrl}]]*/ "";
+    	var sesionId = /*[[${sesion.id}]]*/"";
     
-        setTimeout(function(){
-			if (typeof Butacas === 'undefined')
-				setTimeout(initButacas, 100);
-			else
-				initButacas();
-		}, 100);
+    	$('#butacas').hide();
+    	
+    	Butacas.init(baseUrl, sesionId);
+    	
+    	Butacas.cargaPrecios(function(precios){
+    		console.log(precios);
+    		$('#butacas').show();    		
+    	});
     /*]]>*/
 	</script>
 	

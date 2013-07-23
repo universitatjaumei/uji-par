@@ -23,6 +23,14 @@ public class PreciosSesion {
 		
 	}
 	
+	public PreciosSesion(PreciosPlantilla preciosPlantilla) {
+        this.id = preciosPlantilla.getId();
+        this.localizacion = preciosPlantilla.getLocalizacion();
+        this.descuento = preciosPlantilla.getDescuento();
+        this.invitacion = preciosPlantilla.getInvitacion();
+        this.precio = preciosPlantilla.getPrecio();
+    }
+	
 	public PreciosSesion(PreciosSesionDTO preciosSesion) {
 		this.id = preciosSesion.getId();
 		this.localizacion = Localizacion.localizacionDTOtoLocalizacion(preciosSesion.getParLocalizacione());

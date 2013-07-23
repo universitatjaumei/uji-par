@@ -18,6 +18,7 @@ import es.uji.apps.par.db.PreciosSesionDTO;
 import es.uji.apps.par.db.SesionDTO;
 import es.uji.apps.par.model.Evento;
 import es.uji.apps.par.model.Localizacion;
+import es.uji.apps.par.model.PreciosPlantilla;
 import es.uji.apps.par.model.PreciosSesion;
 import es.uji.apps.par.model.Sesion;
 
@@ -32,6 +33,9 @@ public class SesionesService
     
     @Autowired
     private LocalizacionesDAO localizacionesDAO;
+    
+    @Autowired
+    private PreciosPlantillaService preciosPlantillaService;
     
     public List<Sesion> getSesiones(Integer eventoId)
     {
@@ -187,9 +191,24 @@ public class SesionesService
 	public List<PreciosSesion> getPreciosSesion(Long sesionId) {
 		List<PreciosSesion> listaPreciosSesion = new ArrayList<PreciosSesion>();
     	
-    	for (PreciosSesionDTO precioSesionDB: sesionDAO.getPreciosSesion(sesionId)) {
-    		listaPreciosSesion.add(new PreciosSesion(precioSesionDB));
-    	}
+		Sesion sesion = getSesion(sesionId);
+		
+		if (sesion.getPlantillaPrecios().getId() == -1)
+		{
+        	for (PreciosSesionDTO precioSesionDB: sesionDAO.getPreciosSesion(sesionId)) {
+        		listaPreciosSesion.add(new PreciosSesion(precioSesionDB));
+        	}
+		}
+		else
+		{
+		    List<PreciosPlantilla> preciosPlantilla = preciosPlantillaService.getPreciosOfPlantilla(sesion.getPlantillaPrecios().getId());
+            
+            for(PreciosPlantilla precioPlantilla: preciosPlantilla)
+            {
+                listaPreciosSesion.add(new PreciosSesion(precioPlantilla));
+            }
+		}
+		
         return listaPreciosSesion;
 	}
 	
@@ -197,4 +216,5 @@ public class SesionesService
 	{
 	    return new Sesion(sesionDAO.getSesion(id));
 	}
+	
 }

@@ -45,21 +45,76 @@ Ext.define('Paranimf.view.taquilla.FormComprar', {
 	   layout: 'card',
 	   border: 0,
 	   items: [{
-		        id    : "pasoSeleccionar",
-		        xtype : "panel",
+		        id    : 'pasoSeleccionar',
+		        xtype : 'panel',
 		        items: [{
-			        id    : "iframeButacas",
-			        xtype : "component",
+			        id    : 'iframeButacas',
+			        xtype : 'component',
 			        autoEl : {
-			            tag : "iframe",
-			            src : ""
+			            tag : 'iframe',
+			            src : ''
 			        }
 		        }]
 		   },
 	       {
-		       	id: "pasoPagar",
-		       	html: "Paso de pagar"
-	       }]
+		       	id: 'pasoPagar',
+		       	xtype: 'panel',
+		       	border: 0,
+		       	frame: false,
+		       	items: [
+						{
+						    fieldLabel: UI.i18n.field.tipoPago,
+						    id: 'tipoPago',
+						    xtype: 'combobox',
+						    displayField: 'name',
+						    valueField : 'value',
+						    queryMode: 'local',
+						    value: 'metalico',
+						    typeAhead: false,
+						    editable: false,
+						    allowBlank: false,
+						    forceSelection:true,
+						    store: new Ext.data.SimpleStore({
+						      fields: ['value', 'name'],
+						        data: [
+						          ['metalico', UI.i18n.field.metalico],
+						          ['tarjeta', UI.i18n.field.tarjeta]
+						        ]
+						    })
+						 },
+						 {
+							 layout: {
+							        align: 'middle',
+							        pack: 'center',
+							        type: 'hbox'
+							 },
+							 frame: false,
+							 border: 0,
+						     items: [{
+									xtype: 'label',
+								    id: 'total',
+								    style: {
+								    	fontSize: '30px',
+								    	margin: '30px'
+								    }
+							 }]
+						 },
+						 {
+							 layout: {
+							        align: 'middle',
+							        pack: 'center',
+							        type: 'hbox'
+							 },
+							 frame: false,
+							 border: 0,
+						     items: [{
+						    	 xtype: 'button',
+								 id: 'pagar',
+								 scale: 'large',
+								 text: UI.i18n.button.pagar
+						     }]
+						 }
+				]
+	    }]
    }]
-   
 });
