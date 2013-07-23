@@ -63,7 +63,7 @@ Ext.define('Paranimf.view.taquilla.GridSesionesTaquilla', {
   showComprarWindow: function(idSesion) {
 	console.log("showComprarWindow: ", idSesion	);  
 	  
-	this.createModalWindow('formComprar', 700, 700).show();
+	this.createModalWindow('formComprar', 600, 700).show();
 
 	Ext.getDom('iframeButacas').src = urlPublic + "/rest/entrada/butacasFragment/" + idSesion;
   }
