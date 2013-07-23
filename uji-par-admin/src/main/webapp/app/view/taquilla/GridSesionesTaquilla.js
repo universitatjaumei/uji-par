@@ -4,7 +4,7 @@ Ext.define('Paranimf.view.taquilla.GridSesionesTaquilla', {
    alias: 'widget.gridSesionesTaquilla',
    store: 'SesionesTaquilla',
 
-   title: UI.i18n.gridTitle.sesiones,
+   title: UI.i18n.gridTitle.comprar,
 
    dockedItems: [{
      xtype: 'pagingtoolbar',
@@ -63,7 +63,7 @@ Ext.define('Paranimf.view.taquilla.GridSesionesTaquilla', {
   showComprarWindow: function(idSesion) {
 	console.log("showComprarWindow: ", idSesion	);  
 	  
-	this.createModalWindow('formComprar', 600, 600).show();
+	this.createModalWindow('formComprar', 700, 700).show();
 
 	Ext.getDom('iframeButacas').src = urlPublic + "/rest/entrada/butacasFragment/" + idSesion;
   }

@@ -21,7 +21,12 @@ Ext.define('Paranimf.controller.Taquilla', {
       {
        	ref: 'formComprar',
         selector: 'formComprar'
-      }],
+      },
+      {
+       	ref: 'formComprarCards',
+        selector: '#formComprarCards'
+      }      
+   ],
 
    init: function() {
 	   
@@ -36,9 +41,18 @@ Ext.define('Paranimf.controller.Taquilla', {
          'gridSesionesTaquilla button[action=comprar]': {
              click: this.comprar
          },
-         'formComprar button[action=pagar]': {
-             click: this.butacasSeleccionadas
-         }
+         'formComprar #comprarAnterior': {
+        	 click: this.comprarAnterior
+         },
+         'formComprar #comprarSiguiente': {
+        	 click: this.comprarSiguiente
+         },
+         'formComprar #comprarCancelar': {
+        	 click: this.cerrarComprar
+         },         
+         'formComprar': {
+             afterrender: this.cambiarEstadoBotonesComprar
+         },         
          
          /*
          'gridPlantillas button[action=add]': {
@@ -90,19 +104,62 @@ Ext.define('Paranimf.controller.Taquilla', {
 	  
 	  pm.bind("respuestaButacas", function(data){
 		   console.log("Respuesta:", data);
-		   me.getFormComprar().up('window').close();
+		   
+		   var layout = me.getFormComprarCards().getLayout();
+		   layout.setActiveItem(layout.getNext());
+		   
+		   me.cambiarEstadoBotonesComprar();
 	  });      
    },
-
-   butacasSeleccionadas: function() {
-	   console.log('butacasSeleccionadas:', Ext.getDom('iframeButacas'));
-	   pm({
-		   target: window.frames["iframeButacas"],
-		   type:"butacas", 
-		   data:{hello:"world"}
-	   });
+   
+   cerrarComprar: function() {
+	   this.getFormComprar().up('window').close();  
    },
    
+   comprarAnterior: function() {
+	   console.log("Anterior");
+	   
+	   var layout = this.getFormComprarCards().getLayout();
+	   var pasoActual = layout.activeItem.id;
+	   
+	   console.log(pasoActual);
+	   
+	   if (pasoActual != "pasoSeleccionar")
+	   {
+		   layout.setActiveItem(layout.getActiveItem()-1);
+	   }
+	
+	   this.cambiarEstadoBotonesComprar();
+   },
+
+   comprarSiguiente: function() {
+	   console.log("Siguiente");
+	   
+	   var layout = this.getFormComprarCards().getLayout();
+	   var pasoActual = layout.activeItem.id;
+	   
+	   console.log(pasoActual);
+	   
+	   if (pasoActual == "pasoSeleccionar")
+	   {
+		   // Llámamos al iframe para que nos pase las butacas seleccionadas
+		   pm({
+			   target: window.frames["iframeButacas"],
+			   type:"butacas", 
+			   data:{}
+		   });
+	   }
+	
+	   this.cambiarEstadoBotonesComprar();
+   },
+   
+   cambiarEstadoBotonesComprar: function () {
+	   var layout = this.getFormComprarCards().getLayout();
+	   
+	   Ext.getCmp('comprarAnterior').setDisabled(!layout.getPrev());
+	   Ext.getCmp('comprarSiguiente').setDisabled(!layout.getNext());	
+   },
+
    recargaStore: function(comp, opts) {
       console.log("RECARGA STORE EVENTOS TAQUILLA");
       this.getGridEventosTaquilla().recargaStore();

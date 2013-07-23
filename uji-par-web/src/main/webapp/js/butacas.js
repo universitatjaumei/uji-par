@@ -194,6 +194,7 @@ Butacas = (function() {
 		baseUrl = url;
 	}
 	
+	// Desde fuera del iframe nos han pedido que le pasemos las butacas seleccionadas 
 	pm.bind("butacas", function(data){
 		 pm({
 			   target: parent,

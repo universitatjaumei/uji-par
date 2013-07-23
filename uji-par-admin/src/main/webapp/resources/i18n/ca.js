@@ -65,7 +65,9 @@ UI =
             "deactivateBooking":"Bloquejar per a reserves",
             "eliminarImagen": "Esborrar imatge - NO ES POT CANCEL·LAR",
             "comprar": "Comprar",
-            "pagar": "Pagar"
+            "pagar": "Pagar",
+            "anterior": "&laquo; Anterior",
+            "siguiente": "Següent &raquo;",
         },
         "calendar": {
             "calendar": "Calendari de reserves",
@@ -84,7 +86,8 @@ UI =
             "localizaciones": "Gestió de les localitzacions",
             "plantillasprecios": "Gestió de les plantilles de preus",
             "precios": "Gestió dels preus per localització i plantilla seleccionada",
-            "menu": "Menú d'opcions"
+            "menu": "Menú d'opcions",
+            "comprar": "Comprar entrades"
         },
         
         "field": {
