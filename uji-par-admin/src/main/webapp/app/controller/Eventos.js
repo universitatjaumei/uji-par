@@ -126,6 +126,7 @@ Ext.define('Paranimf.controller.Eventos', {
       if (newValue == -1) {
          this.getGridPreciosSesion().mostrarToolbar();
          this.getGridPreciosSesion().vaciar();
+         this.cargarPreciosSesion();
       } else {
          this.getGridPreciosSesion().ocultarToolbar();
          this.cargarPreciosPlantilla(newValue);
@@ -145,6 +146,27 @@ Ext.define('Paranimf.controller.Eventos', {
         }
       });
    },
+   
+   cargarPreciosSesion: function(plantillaId) {
+      var gridPreciosSesion = this.getGridPreciosSesion();
+      
+      var idEvento = this.getGridEventos().getSelectedRecord().data["id"];
+      var idSesion = this.getGridSesiones().getSelectedRecord().data["id"];
+      
+      console.log('idEvento:', idEvento);
+      console.log('idSesion:', idSesion);
+      
+      Ext.Ajax.request({
+        url : urlPrefix + 'evento/' + idEvento + '/sesiones/' + idSesion + '/precios',
+        method: 'GET',
+        success: function (response) {
+            var respuesta = Ext.JSON.decode(response.responseText, true);
+            gridPreciosSesion.store.loadRawData(respuesta.data);
+        }, failure: function (response) {
+           alert(UI.i18n.error.loadingPrecios);
+        }
+      });
+   },   
 
    cargaLocalizaciones: function(comp, opts) {
       this.getFormPreciosSesion().cargaComboStore('localizacion');
