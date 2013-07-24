@@ -25,17 +25,20 @@ Ext.define('Paranimf.view.evento.GridPreciosSesion', {
         dataIndex: 'precio',
         text: UI.i18n.field.precio,
         flex: 1,
-        sortable: false
+        sortable: false,
+        renderer: Ext.util.Format.numberRenderer("0.00")
       },{
         dataIndex: 'descuento',
         text: UI.i18n.field.descuento,
         flex: 1,
-        sortable: false
+        sortable: false,
+        renderer: Ext.util.Format.numberRenderer("0.00")
       },{
         dataIndex: 'invitacion',
         text: UI.i18n.field.invitacion,
         flex: 1,
-        sortable: false
+        sortable: false,
+        renderer: Ext.util.Format.numberRenderer("0.00")
       }];
 
       this.callParent(arguments);

@@ -138,7 +138,7 @@ Ext.define('Paranimf.controller.Taquilla', {
    },
    
    rellenaDatosPasoPagar: function(butacas) {
-	 Ext.getCmp('total').setText(UI.i18n.field.total + ": " + this.sumaImportes(butacas) + " €");  
+	 Ext.getCmp('total').setText(UI.i18n.field.total + ": " + this.sumaImportes(butacas).toFixed(2) + " €");  
    },
    
    cerrarComprar: function() {

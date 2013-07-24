@@ -129,6 +129,16 @@ Ext.define('Paranimf.controller.PlantillasPrecios', {
 
 	   var grid = this.getGridPrecios();
 	   var form = this.getFormPrecios();
+	   
+	   var precio = this.getFormPrecios().getForm().findField('precio');
+	   var descuento = this.getFormPrecios().getForm().findField('descuento');
+	   var invitacion = this.getFormPrecios().getForm().findField('invitacion');
+	   
+	   // Pasar precios a float para que se envíen bien al REST
+	   precio.setRawValue(precio.value);
+	   descuento.setRawValue(descuento.value);
+	   invitacion.setRawValue(invitacion.value);
+	   
 	   form.saveFormData(grid, urlPrefix + 'plantillaprecios/' + plantillaId + '/precios');
    },
    

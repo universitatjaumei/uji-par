@@ -102,7 +102,7 @@ Butacas = (function() {
 					+ '<b>' + butacasSeleccionadas[i].fila + '</b>'
 					+ ', <span>' + UI.i18n.butacas.butaca + '=</span>'
 					+ '<b>' + butacasSeleccionadas[i].numero + '</b>'
-					+ '<span> (' + butacasSeleccionadas[i].tipo + ': <b>' + butacasSeleccionadas[i].precio + '</b> €)</span></div>');
+					+ '<span> (' + butacasSeleccionadas[i].tipo + ': <b>' + butacasSeleccionadas[i].precio.toFixed(2) + '</b> €)</span></div>');
 			$('#detallesSeleccionadas').append(fila);
 		}
 	}

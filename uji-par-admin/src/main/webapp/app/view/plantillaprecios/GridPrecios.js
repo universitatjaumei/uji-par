@@ -31,15 +31,18 @@ Ext.define('Paranimf.view.plantillaprecios.GridPrecios', {
       }, {
         dataIndex: 'precio',
         text: UI.i18n.field.precio,
-        flex: 1
+        flex: 1,
+        renderer: Ext.util.Format.numberRenderer("0.00")
       },{
         dataIndex: 'descuento',
         text: UI.i18n.field.descuento,
-        flex: 1
+        flex: 1,
+        renderer: Ext.util.Format.numberRenderer("0.00")
       },{
         dataIndex: 'invitacion',
         text: UI.i18n.field.invitacion,
-        flex: 1
+        flex: 1,
+        renderer: Ext.util.Format.numberRenderer("0.00")
       }];
 
       this.callParent(arguments);

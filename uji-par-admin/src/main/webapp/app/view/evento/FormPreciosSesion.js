@@ -30,20 +30,26 @@ Ext.define('Paranimf.view.evento.FormPreciosSesion', {
     spinUpEnabled: false,
     spinDownEnabled: false,
     minValue: 0,
-    xtype: 'numberfield'
+    xtype: 'numericfield',
+    decimalPrecision: 2,
+    alwaysDisplayDecimals: true
    },{
     fieldLabel: UI.i18n.field.descuento,
     name: 'descuento',
     spinUpEnabled: false,
     spinDownEnabled: false,
     minValue: 0,
-    xtype: 'numberfield'
+    xtype: 'numericfield',
+    decimalPrecision: 2,
+    alwaysDisplayDecimals: true
    },{
     fieldLabel: UI.i18n.field.invitacion,
     name: 'invitacion',
     spinUpEnabled: false,
     spinDownEnabled: false,
     minValue: 0,
-    xtype: 'numberfield'
+    xtype: 'numericfield',
+    decimalPrecision: 2,
+    alwaysDisplayDecimals: true
    }]
 });
