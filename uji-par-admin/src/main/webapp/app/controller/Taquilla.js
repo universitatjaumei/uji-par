@@ -104,9 +104,11 @@ Ext.define('Paranimf.controller.Taquilla', {
       });
       
 	  var me = this;
-	  
+
 	  pm.bind('respuestaButacas', function(butacas){
 		   console.log('Respuesta:', butacas);
+		   
+		   me.butacasSeleccionadas = butacas;
 		   
 		   var layout = me.getFormComprarCards().getLayout();
 		   layout.setActiveItem(layout.getNext());
@@ -120,12 +122,26 @@ Ext.define('Paranimf.controller.Taquilla', {
    pagar: function() {
 	   var tipoPago = Ext.getCmp('tipoPago').value;
 	   
-	   if (tipoPago == 'metalico')
-		   alert('Pagado en metálico');
-	   else
-		   alert('Pagado con tarjeta');
+	   var idSesion = this.getGridSesionesTaquilla().getSelectedRecord().data['id'];
+
+	   var me = this;
 	   
-	   this.getFormComprar().up('window').close();
+	   Ext.Ajax.request({
+	    	  url : urlPrefix + 'compra/' + idSesion,
+	    	  method: 'POST',
+	    	  jsonData: this.butacasSeleccionadas,
+	    	  success: function (response) {
+	    		  me.getFormComprar().up('window').close();
+	    		  
+	    		   if (tipoPago == 'metalico')
+	    			   alert('Pagado en metálico');
+	    		   else
+	    			   alert('Pagado con tarjeta');
+	    		   
+	    	  }, failure: function (response) {
+    			  alert(UI.i18n.error.formSave);
+	    	  }
+	   	  });
    },
    
    sumaImportes: function(butacas) {

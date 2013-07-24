@@ -14,10 +14,13 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.log4j.Logger;
+
 import com.sun.jersey.api.client.ClientResponse.Status;
 import com.sun.jersey.api.core.InjectParam;
 
 import es.uji.apps.par.Constantes;
+import es.uji.apps.par.FueraDePlazoVentaInternetException;
 import es.uji.apps.par.model.Butaca;
 import es.uji.apps.par.model.Evento;
 import es.uji.apps.par.model.PreciosSesion;
@@ -32,6 +35,8 @@ import es.uji.commons.web.template.Template;
 @Path("entrada")
 public class EntradasResource extends BaseResource
 {
+    public static Logger log = Logger.getLogger(EntradasResource.class);
+    
     @InjectParam
     private SesionesService sesionesService;
 
@@ -86,28 +91,35 @@ public class EntradasResource extends BaseResource
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.TEXT_HTML)
-    public Response compraEntrada(@PathParam("id") Long sesionId, @FormParam("nombre") String nombre,
+    public Response compraEntradaHtml(@PathParam("id") Long sesionId, @FormParam("nombre") String nombre,
             @FormParam("apellidos") String apellidos, @FormParam("telefono") String telefono,
             @FormParam("email") String email, @FormParam("butacasSeleccionadas") String butacasSeleccionadasJSON)
             throws Exception
     {
-        Sesion sesion = sesionesService.getSesion(sesionId);
-
-        if (!sesion.getEnPlazoVentaInternet())
-            return paginaProhibida();
-
+        ResultadoCompra resultadoCompra;
         List<Butaca> butacasSeleccionadas = Butaca.parseaJSON(butacasSeleccionadasJSON);
-        ResultadoCompra resultadoCompra = comprasService.realizaCompra(sesionId, nombre, apellidos, telefono, email,
-                butacasSeleccionadas);
+        
+        try
+        {
+            resultadoCompra =  comprasService.realizaCompraInternet(sesionId, nombre, apellidos, telefono, email, butacasSeleccionadas);
+        }
+        catch (FueraDePlazoVentaInternetException e)
+        {
+            log.error("Fuera de plazo", e);
+            return paginaProhibida();
+        }
 
         if (resultadoCompra.getCorrecta())
+        {
             currentResponse.sendRedirect("compraValida");
+            return null;
+        }
         else
+        {
             return paginaSeleccionEntradas(sesionId, butacasSeleccionadas, resultadoCompra.getButacasOcupadas());
-
-        return null;
+        }
     }
-
+    
     @GET
     @Path("compraValida")
     @Produces(MediaType.TEXT_HTML)

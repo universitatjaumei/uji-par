@@ -2,10 +2,17 @@ package es.uji.apps.par.model;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class ResultadoCompra
 {
     private boolean correcta;
     private List<Butaca> butacasOcupadas;
+    
+    public ResultadoCompra()
+    {
+    }
 
     public boolean getCorrecta()
     {

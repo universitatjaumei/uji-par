@@ -18,9 +18,9 @@ public class ComprasDAO
     private EntityManager entityManager;
 
     @Transactional
-    public CompraDTO guardaCompra(String nombre, String apellidos, String telefono, String email, Date fecha)
+    public CompraDTO guardaCompra(String nombre, String apellidos, String telefono, String email, Date fecha, boolean taquilla)
     {
-        CompraDTO compraDTO = new CompraDTO(nombre, apellidos, telefono, email, new Timestamp(fecha.getTime()));
+        CompraDTO compraDTO = new CompraDTO(nombre, apellidos, telefono, email, new Timestamp(fecha.getTime()), taquilla);
 
         entityManager.persist(compraDTO);
 

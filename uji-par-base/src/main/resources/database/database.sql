@@ -134,14 +134,15 @@
 --  DDL for Table PAR_COMPRAS
 --------------------------------------------------------
 
-  CREATE TABLE "PAR_COMPRAS" 
-   (	"ID" NUMBER,
- 		"NOMBRE" VARCHAR2(255),
- 		"APELLIDOS" VARCHAR2(255),
- 		"TFNO" VARCHAR2(255),
- 		"EMAIL" VARCHAR2(255),
- 		"FECHA" TIMESTAMP (6)
-   ) ;     
+	CREATE TABLE "PARANIMF"."PAR_COMPRAS" 
+   (	"ID" NUMBER, 
+	"NOMBRE" VARCHAR2(255 BYTE), 
+	"APELLIDOS" VARCHAR2(255 BYTE), 
+	"TFNO" VARCHAR2(255 BYTE), 
+	"EMAIL" VARCHAR2(255 BYTE), 
+	"FECHA" TIMESTAMP (6), 
+	"TAQUILLA" NUMBER(1,0) DEFAULT 0
+   );
 --------------------------------------------------------
 --  Constraints for Table PAR_EVENTOS
 --------------------------------------------------------
@@ -259,15 +260,11 @@
 --  Constraints for Table PAR_COMPRAS
 --------------------------------------------------------
 
-  ALTER TABLE "PAR_COMPRAS" ADD CONSTRAINT "PAR_COMPRAS_PK" PRIMARY KEY ("ID") ENABLE;
+  ALTER TABLE "PAR_COMPRAS" ADD CONSTRAINT "PAR_COMPRAS_PK" PRIMARY KEY ("ID");
   
-  ALTER TABLE "PAR_COMPRAS" MODIFY ("NOMBRE" NOT NULL ENABLE);
- 
-  ALTER TABLE "PAR_COMPRAS" MODIFY ("APELLIDOS" NOT NULL ENABLE);
- 
-  ALTER TABLE "PAR_COMPRAS" MODIFY ("TFNO" NOT NULL ENABLE);
- 
   ALTER TABLE "PAR_COMPRAS" MODIFY ("FECHA" NOT NULL ENABLE);
+  
+  ALTER TABLE "PAR_COMPRAS" MODIFY ("TAQUILLA" NOT NULL ENABLE);
           
 --------------------------------------------------------
 --  DDL for Index PAR_EVENTOS_PK

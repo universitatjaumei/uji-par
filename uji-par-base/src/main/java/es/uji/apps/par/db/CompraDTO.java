@@ -41,6 +41,9 @@ public class CompraDTO implements Serializable {
 
 	@Column(name = "FECHA")
 	private Timestamp fecha;
+	
+	@Column(name = "TAQUILLA")
+	private Boolean taquilla;
 
 	// bi-directional many-to-one association to ButacaDTO
 	@OneToMany(mappedBy = "parCompra")
@@ -50,12 +53,13 @@ public class CompraDTO implements Serializable {
 	}
 
 	public CompraDTO(String nombre, String apellidos, String telefono,
-			String email, Timestamp fecha) {
+			String email, Timestamp fecha, Boolean taquilla) {
 		this.nombre = nombre;
 		this.apellidos = apellidos;
 		this.telefono = telefono;
 		this.email = email;
 		this.fecha = fecha;
+		this.taquilla = taquilla;
 	}
 
 	public long getId() {
@@ -114,4 +118,11 @@ public class CompraDTO implements Serializable {
 		this.parButacas = parButacas;
 	}
 
+    public Boolean getTaquilla() {
+        return taquilla;
+    }
+
+    public void setTaquilla(Boolean taquilla) {
+        this.taquilla = taquilla;
+    }
 }

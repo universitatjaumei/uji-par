@@ -96,7 +96,7 @@ public class ButacasDAOTest extends BaseDAOTest
         Butaca butaca = new Butaca(butacaDTO);
         butaca.setTipo("normal");
 
-        CompraDTO compraDTO = comprasDao.guardaCompra("Pepe", "Perez", "964123456", "prueba@example.com", new Date());
+        CompraDTO compraDTO = comprasDao.guardaCompra("Pepe", "Perez", "964123456", "prueba@example.com", new Date(), false);
         butacasDao.reservaButacas(sesion.getId(), compraDTO, Arrays.asList(butaca));
 
         List<ButacaDTO> butacas = butacasDao.getButacas(sesion.getId(), localizacion.getCodigo());
