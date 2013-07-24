@@ -29,9 +29,9 @@ public class MapaDrawer
     @InjectParam
     ButacasService butacasService;
 
-    private BufferedImage butacas;
     private BufferedImage butacaOcupada;
     private Map<String, DatosButaca> datosButacas;
+    private Map<String, BufferedImage> imagenes;
 
     public ByteArrayOutputStream generaImagen(String imagesPath, long idSesion, String codigoLocalizacion)
             throws IOException
@@ -84,10 +84,10 @@ public class MapaDrawer
 
     private BufferedImage dibujaButacas(long idSesion, String codigoLocalizacion)
     {
-        BufferedImage img = new BufferedImage(butacas.getWidth(), butacas.getHeight(), butacas.getType());
-        Graphics2D graphics = img.createGraphics();
-
-        graphics.drawImage(butacas, 0, 0, null);
+        BufferedImage imgButacas = imagenes.get(codigoLocalizacion);
+        BufferedImage imgResult = new BufferedImage(imgButacas.getWidth(), imgButacas.getHeight(), imgButacas.getType());
+        Graphics2D graphics = imgResult.createGraphics();
+        graphics.drawImage(imgButacas, 0, 0, null);
 
         List<ButacaDTO> butacas = butacasService.getButacas(idSesion, codigoLocalizacion);
 
@@ -97,18 +97,19 @@ public class MapaDrawer
                     butacaDTO.getNumero());
             DatosButaca butaca = datosButacas.get(key);
 
+            // Necesitamos saber el (x, y) que ocupa la butaca en la imagen
             graphics.drawImage(butacaOcupada, butaca.getxIni(), butaca.getyIni(), null);
         }
 
-        return img;
+        return imgResult;
     }
 
     private void cargaImagenes(String imagesPath) throws IOException
     {
-        if (butacas == null)
+        if (imagenes == null)
         {
-            File f = new File(imagesPath + "/img/butacas.png");
-            butacas = ImageIO.read(f);
+            imagenes = new HashMap<String, BufferedImage>();
+            loadImage(imagesPath, "anfiteatro");
         }
 
         if (butacaOcupada == null)
@@ -116,6 +117,12 @@ public class MapaDrawer
             File f = new File(imagesPath + "/img/ocupada.png");
             butacaOcupada = ImageIO.read(f);
         }
+    }
+
+    private void loadImage(String imagesPath, String localizacion) throws IOException
+    {
+        File f = new File(imagesPath + "/img/" + localizacion + ".png");
+        imagenes.put(localizacion, ImageIO.read(f));
     }
 
 }
