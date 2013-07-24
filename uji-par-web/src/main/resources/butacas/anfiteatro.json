@@ -1,2837 +1,650 @@
 [
     {
-        "fila": 15,
+        "fila": 8,
+        "localizacion": "anfiteatro",
         "numero": 18,
-        "localizacion": "anfiteatro",
-        "xFin": 21,
-        "xIni": 0,
-        "yFin": 19,
-        "yIni": 0
-    },
-    {
-        "fila": 15,
-        "numero": 16,
-        "localizacion": "anfiteatro",
-        "xFin": 42,
-        "xIni": 21,
-        "yFin": 19,
-        "yIni": 0
-    },
-    {
-        "fila": 15,
-        "numero": 14,
-        "localizacion": "anfiteatro",
-        "xFin": 63,
-        "xIni": 42,
-        "yFin": 19,
-        "yIni": 0
-    },
-    {
-        "fila": 15,
-        "numero": 12,
-        "localizacion": "anfiteatro",
-        "xFin": 84,
-        "xIni": 63,
-        "yFin": 19,
-        "yIni": 0
-    },
-    {
-        "fila": 15,
-        "numero": 10,
-        "localizacion": "anfiteatro",
-        "xFin": 105,
-        "xIni": 84,
-        "yFin": 19,
-        "yIni": 0
-    },
-    {
-        "fila": 15,
-        "numero": 8,
-        "localizacion": "anfiteatro",
-        "xFin": 126,
-        "xIni": 105,
-        "yFin": 19,
-        "yIni": 0
-    },
-    {
-        "fila": 15,
-        "numero": 6,
-        "localizacion": "anfiteatro",
-        "xFin": 147,
-        "xIni": 126,
-        "yFin": 19,
-        "yIni": 0
-    },
-    {
-        "fila": 15,
-        "numero": 4,
-        "localizacion": "anfiteatro",
-        "xFin": 168,
-        "xIni": 147,
-        "yFin": 19,
-        "yIni": 0
-    },
-    {
-        "fila": 15,
-        "numero": 2,
-        "localizacion": "anfiteatro",
-        "xFin": 189,
-        "xIni": 168,
-        "yFin": 19,
-        "yIni": 0
-    },
-    {
-        "fila": 14,
-        "numero": 18,
-        "localizacion": "anfiteatro",
-        "xFin": 21,
-        "xIni": 0,
-        "yFin": 38,
-        "yIni": 19
-    },
-    {
-        "fila": 14,
-        "numero": 16,
-        "localizacion": "anfiteatro",
-        "xFin": 42,
-        "xIni": 21,
-        "yFin": 38,
-        "yIni": 19
-    },
-    {
-        "fila": 14,
-        "numero": 14,
-        "localizacion": "anfiteatro",
-        "xFin": 63,
-        "xIni": 42,
-        "yFin": 38,
-        "yIni": 19
-    },
-    {
-        "fila": 14,
-        "numero": 12,
-        "localizacion": "anfiteatro",
-        "xFin": 84,
-        "xIni": 63,
-        "yFin": 38,
-        "yIni": 19
-    },
-    {
-        "fila": 14,
-        "numero": 10,
-        "localizacion": "anfiteatro",
-        "xFin": 105,
-        "xIni": 84,
-        "yFin": 38,
-        "yIni": 19
-    },
-    {
-        "fila": 14,
-        "numero": 8,
-        "localizacion": "anfiteatro",
-        "xFin": 126,
-        "xIni": 105,
-        "yFin": 38,
-        "yIni": 19
-    },
-    {
-        "fila": 14,
-        "numero": 6,
-        "localizacion": "anfiteatro",
-        "xFin": 147,
-        "xIni": 126,
-        "yFin": 38,
-        "yIni": 19
-    },
-    {
-        "fila": 14,
-        "numero": 4,
-        "localizacion": "anfiteatro",
-        "xFin": 168,
-        "xIni": 147,
-        "yFin": 38,
-        "yIni": 19
-    },
-    {
-        "fila": 14,
-        "numero": 2,
-        "localizacion": "anfiteatro",
-        "xFin": 189,
-        "xIni": 168,
-        "yFin": 38,
-        "yIni": 19
-    },
-    {
-        "fila": 13,
-        "numero": 18,
-        "localizacion": "anfiteatro",
-        "xFin": 21,
+        "xFin": 19,
         "xIni": 0,
         "yFin": 57,
-        "yIni": 38
+        "yIni": 28
     },
     {
-        "fila": 13,
+        "fila": 8,
+        "localizacion": "anfiteatro",
         "numero": 16,
-        "localizacion": "anfiteatro",
-        "xFin": 42,
-        "xIni": 21,
+        "xFin": 38,
+        "xIni": 19,
         "yFin": 57,
-        "yIni": 38
+        "yIni": 28
     },
     {
-        "fila": 13,
+        "fila": 8,
+        "localizacion": "anfiteatro",
         "numero": 14,
-        "localizacion": "anfiteatro",
-        "xFin": 63,
-        "xIni": 42,
+        "xFin": 57,
+        "xIni": 38,
         "yFin": 57,
-        "yIni": 38
+        "yIni": 28
     },
     {
-        "fila": 13,
+        "fila": 8,
+        "localizacion": "anfiteatro",
         "numero": 12,
-        "localizacion": "anfiteatro",
-        "xFin": 84,
-        "xIni": 63,
+        "xFin": 76,
+        "xIni": 57,
         "yFin": 57,
-        "yIni": 38
+        "yIni": 28
     },
     {
-        "fila": 13,
+        "fila": 8,
+        "localizacion": "anfiteatro",
         "numero": 10,
-        "localizacion": "anfiteatro",
-        "xFin": 105,
-        "xIni": 84,
+        "xFin": 95,
+        "xIni": 76,
         "yFin": 57,
-        "yIni": 38
+        "yIni": 28
     },
     {
-        "fila": 13,
+        "fila": 8,
+        "localizacion": "anfiteatro",
         "numero": 8,
-        "localizacion": "anfiteatro",
-        "xFin": 126,
-        "xIni": 105,
+        "xFin": 114,
+        "xIni": 95,
         "yFin": 57,
-        "yIni": 38
+        "yIni": 28
     },
     {
-        "fila": 13,
+        "fila": 8,
+        "localizacion": "anfiteatro",
         "numero": 6,
-        "localizacion": "anfiteatro",
-        "xFin": 147,
-        "xIni": 126,
+        "xFin": 133,
+        "xIni": 114,
         "yFin": 57,
-        "yIni": 38
+        "yIni": 28
     },
     {
-        "fila": 13,
+        "fila": 8,
+        "localizacion": "anfiteatro",
         "numero": 4,
-        "localizacion": "anfiteatro",
-        "xFin": 168,
-        "xIni": 147,
+        "xFin": 152,
+        "xIni": 133,
         "yFin": 57,
-        "yIni": 38
+        "yIni": 28
     },
     {
-        "fila": 13,
+        "fila": 8,
+        "localizacion": "anfiteatro",
         "numero": 2,
-        "localizacion": "anfiteatro",
-        "xFin": 189,
-        "xIni": 168,
+        "xFin": 171,
+        "xIni": 152,
         "yFin": 57,
-        "yIni": 38
+        "yIni": 28
     },
     {
-        "fila": 12,
+        "fila": 7,
+        "localizacion": "anfiteatro",
         "numero": 18,
-        "localizacion": "anfiteatro",
-        "xFin": 21,
+        "xFin": 19,
         "xIni": 0,
-        "yFin": 76,
+        "yFin": 86,
         "yIni": 57
     },
     {
-        "fila": 12,
+        "fila": 7,
+        "localizacion": "anfiteatro",
         "numero": 16,
-        "localizacion": "anfiteatro",
-        "xFin": 42,
-        "xIni": 21,
-        "yFin": 76,
+        "xFin": 38,
+        "xIni": 19,
+        "yFin": 86,
         "yIni": 57
     },
     {
-        "fila": 12,
+        "fila": 7,
+        "localizacion": "anfiteatro",
         "numero": 14,
-        "localizacion": "anfiteatro",
-        "xFin": 63,
-        "xIni": 42,
-        "yFin": 76,
+        "xFin": 57,
+        "xIni": 38,
+        "yFin": 86,
         "yIni": 57
     },
     {
-        "fila": 12,
+        "fila": 7,
+        "localizacion": "anfiteatro",
         "numero": 12,
-        "localizacion": "anfiteatro",
-        "xFin": 84,
-        "xIni": 63,
-        "yFin": 76,
+        "xFin": 76,
+        "xIni": 57,
+        "yFin": 86,
         "yIni": 57
     },
     {
-        "fila": 12,
+        "fila": 7,
+        "localizacion": "anfiteatro",
         "numero": 10,
-        "localizacion": "anfiteatro",
-        "xFin": 105,
-        "xIni": 84,
-        "yFin": 76,
+        "xFin": 95,
+        "xIni": 76,
+        "yFin": 86,
         "yIni": 57
     },
     {
-        "fila": 12,
+        "fila": 7,
+        "localizacion": "anfiteatro",
         "numero": 8,
-        "localizacion": "anfiteatro",
-        "xFin": 126,
-        "xIni": 105,
-        "yFin": 76,
+        "xFin": 114,
+        "xIni": 95,
+        "yFin": 86,
         "yIni": 57
     },
     {
-        "fila": 12,
+        "fila": 7,
+        "localizacion": "anfiteatro",
         "numero": 6,
-        "localizacion": "anfiteatro",
-        "xFin": 147,
-        "xIni": 126,
-        "yFin": 76,
+        "xFin": 133,
+        "xIni": 114,
+        "yFin": 86,
         "yIni": 57
     },
     {
-        "fila": 12,
+        "fila": 7,
+        "localizacion": "anfiteatro",
         "numero": 4,
-        "localizacion": "anfiteatro",
-        "xFin": 168,
-        "xIni": 147,
-        "yFin": 76,
+        "xFin": 152,
+        "xIni": 133,
+        "yFin": 86,
         "yIni": 57
     },
     {
-        "fila": 12,
+        "fila": 7,
+        "localizacion": "anfiteatro",
         "numero": 2,
-        "localizacion": "anfiteatro",
-        "xFin": 189,
-        "xIni": 168,
-        "yFin": 76,
+        "xFin": 171,
+        "xIni": 152,
+        "yFin": 86,
         "yIni": 57
     },
     {
-        "fila": 11,
+        "fila": 6,
+        "localizacion": "anfiteatro",
         "numero": 18,
-        "localizacion": "anfiteatro",
-        "xFin": 21,
+        "xFin": 19,
         "xIni": 0,
-        "yFin": 95,
-        "yIni": 76
+        "yFin": 115,
+        "yIni": 86
     },
     {
-        "fila": 11,
+        "fila": 6,
+        "localizacion": "anfiteatro",
         "numero": 16,
-        "localizacion": "anfiteatro",
-        "xFin": 42,
-        "xIni": 21,
-        "yFin": 95,
-        "yIni": 76
+        "xFin": 38,
+        "xIni": 19,
+        "yFin": 115,
+        "yIni": 86
     },
     {
-        "fila": 11,
+        "fila": 6,
+        "localizacion": "anfiteatro",
         "numero": 14,
-        "localizacion": "anfiteatro",
-        "xFin": 63,
-        "xIni": 42,
-        "yFin": 95,
-        "yIni": 76
+        "xFin": 57,
+        "xIni": 38,
+        "yFin": 115,
+        "yIni": 86
     },
     {
-        "fila": 11,
+        "fila": 6,
+        "localizacion": "anfiteatro",
         "numero": 12,
-        "localizacion": "anfiteatro",
-        "xFin": 84,
-        "xIni": 63,
-        "yFin": 95,
-        "yIni": 76
+        "xFin": 76,
+        "xIni": 57,
+        "yFin": 115,
+        "yIni": 86
     },
     {
-        "fila": 11,
+        "fila": 6,
+        "localizacion": "anfiteatro",
         "numero": 10,
-        "localizacion": "anfiteatro",
-        "xFin": 105,
-        "xIni": 84,
-        "yFin": 95,
-        "yIni": 76
+        "xFin": 95,
+        "xIni": 76,
+        "yFin": 115,
+        "yIni": 86
     },
     {
-        "fila": 11,
+        "fila": 6,
+        "localizacion": "anfiteatro",
         "numero": 8,
-        "localizacion": "anfiteatro",
-        "xFin": 126,
-        "xIni": 105,
-        "yFin": 95,
-        "yIni": 76
+        "xFin": 114,
+        "xIni": 95,
+        "yFin": 115,
+        "yIni": 86
     },
     {
-        "fila": 11,
+        "fila": 6,
+        "localizacion": "anfiteatro",
         "numero": 6,
-        "localizacion": "anfiteatro",
-        "xFin": 147,
-        "xIni": 126,
-        "yFin": 95,
-        "yIni": 76
+        "xFin": 133,
+        "xIni": 114,
+        "yFin": 115,
+        "yIni": 86
     },
     {
-        "fila": 11,
+        "fila": 6,
+        "localizacion": "anfiteatro",
         "numero": 4,
-        "localizacion": "anfiteatro",
-        "xFin": 168,
-        "xIni": 147,
-        "yFin": 95,
-        "yIni": 76
+        "xFin": 152,
+        "xIni": 133,
+        "yFin": 115,
+        "yIni": 86
     },
     {
-        "fila": 11,
+        "fila": 6,
+        "localizacion": "anfiteatro",
         "numero": 2,
-        "localizacion": "anfiteatro",
-        "xFin": 189,
-        "xIni": 168,
-        "yFin": 95,
-        "yIni": 76
+        "xFin": 171,
+        "xIni": 152,
+        "yFin": 115,
+        "yIni": 86
     },
     {
-        "fila": 10,
+        "fila": 5,
+        "localizacion": "anfiteatro",
         "numero": 18,
-        "localizacion": "anfiteatro",
-        "xFin": 21,
+        "xFin": 19,
         "xIni": 0,
-        "yFin": 114,
-        "yIni": 95
+        "yFin": 144,
+        "yIni": 115
     },
     {
-        "fila": 10,
+        "fila": 5,
+        "localizacion": "anfiteatro",
         "numero": 16,
-        "localizacion": "anfiteatro",
-        "xFin": 42,
-        "xIni": 21,
-        "yFin": 114,
-        "yIni": 95
+        "xFin": 38,
+        "xIni": 19,
+        "yFin": 144,
+        "yIni": 115
     },
     {
-        "fila": 10,
+        "fila": 5,
+        "localizacion": "anfiteatro",
         "numero": 14,
-        "localizacion": "anfiteatro",
-        "xFin": 63,
-        "xIni": 42,
-        "yFin": 114,
-        "yIni": 95
+        "xFin": 57,
+        "xIni": 38,
+        "yFin": 144,
+        "yIni": 115
     },
     {
-        "fila": 10,
+        "fila": 5,
+        "localizacion": "anfiteatro",
         "numero": 12,
-        "localizacion": "anfiteatro",
-        "xFin": 84,
-        "xIni": 63,
-        "yFin": 114,
-        "yIni": 95
+        "xFin": 76,
+        "xIni": 57,
+        "yFin": 144,
+        "yIni": 115
     },
     {
-        "fila": 10,
+        "fila": 5,
+        "localizacion": "anfiteatro",
         "numero": 10,
-        "localizacion": "anfiteatro",
-        "xFin": 105,
-        "xIni": 84,
-        "yFin": 114,
-        "yIni": 95
+        "xFin": 95,
+        "xIni": 76,
+        "yFin": 144,
+        "yIni": 115
     },
     {
-        "fila": 10,
+        "fila": 5,
+        "localizacion": "anfiteatro",
         "numero": 8,
-        "localizacion": "anfiteatro",
-        "xFin": 126,
-        "xIni": 105,
-        "yFin": 114,
-        "yIni": 95
+        "xFin": 114,
+        "xIni": 95,
+        "yFin": 144,
+        "yIni": 115
     },
     {
-        "fila": 10,
+        "fila": 5,
+        "localizacion": "anfiteatro",
         "numero": 6,
-        "localizacion": "anfiteatro",
-        "xFin": 147,
-        "xIni": 126,
-        "yFin": 114,
-        "yIni": 95
+        "xFin": 133,
+        "xIni": 114,
+        "yFin": 144,
+        "yIni": 115
     },
     {
-        "fila": 10,
+        "fila": 5,
+        "localizacion": "anfiteatro",
         "numero": 4,
-        "localizacion": "anfiteatro",
-        "xFin": 168,
-        "xIni": 147,
-        "yFin": 114,
-        "yIni": 95
+        "xFin": 152,
+        "xIni": 133,
+        "yFin": 144,
+        "yIni": 115
     },
     {
-        "fila": 10,
+        "fila": 5,
+        "localizacion": "anfiteatro",
         "numero": 2,
-        "localizacion": "anfiteatro",
-        "xFin": 189,
-        "xIni": 168,
-        "yFin": 114,
-        "yIni": 95
+        "xFin": 171,
+        "xIni": 152,
+        "yFin": 144,
+        "yIni": 115
     },
     {
-        "fila": 9,
+        "fila": 4,
+        "localizacion": "anfiteatro",
         "numero": 18,
-        "localizacion": "anfiteatro",
-        "xFin": 21,
+        "xFin": 19,
         "xIni": 0,
-        "yFin": 133,
-        "yIni": 114
+        "yFin": 173,
+        "yIni": 144
     },
     {
-        "fila": 9,
+        "fila": 4,
+        "localizacion": "anfiteatro",
         "numero": 16,
-        "localizacion": "anfiteatro",
-        "xFin": 42,
-        "xIni": 21,
-        "yFin": 133,
-        "yIni": 114
+        "xFin": 38,
+        "xIni": 19,
+        "yFin": 173,
+        "yIni": 144
     },
     {
-        "fila": 9,
+        "fila": 4,
+        "localizacion": "anfiteatro",
         "numero": 14,
-        "localizacion": "anfiteatro",
-        "xFin": 63,
-        "xIni": 42,
-        "yFin": 133,
-        "yIni": 114
+        "xFin": 57,
+        "xIni": 38,
+        "yFin": 173,
+        "yIni": 144
     },
     {
-        "fila": 9,
+        "fila": 4,
+        "localizacion": "anfiteatro",
         "numero": 12,
-        "localizacion": "anfiteatro",
-        "xFin": 84,
-        "xIni": 63,
-        "yFin": 133,
-        "yIni": 114
+        "xFin": 76,
+        "xIni": 57,
+        "yFin": 173,
+        "yIni": 144
     },
     {
-        "fila": 9,
+        "fila": 4,
+        "localizacion": "anfiteatro",
         "numero": 10,
-        "localizacion": "anfiteatro",
-        "xFin": 105,
-        "xIni": 84,
-        "yFin": 133,
-        "yIni": 114
+        "xFin": 95,
+        "xIni": 76,
+        "yFin": 173,
+        "yIni": 144
     },
     {
-        "fila": 9,
+        "fila": 4,
+        "localizacion": "anfiteatro",
         "numero": 8,
-        "localizacion": "anfiteatro",
-        "xFin": 126,
-        "xIni": 105,
-        "yFin": 133,
-        "yIni": 114
+        "xFin": 114,
+        "xIni": 95,
+        "yFin": 173,
+        "yIni": 144
     },
     {
-        "fila": 9,
+        "fila": 4,
+        "localizacion": "anfiteatro",
         "numero": 6,
-        "localizacion": "anfiteatro",
-        "xFin": 147,
-        "xIni": 126,
-        "yFin": 133,
-        "yIni": 114
+        "xFin": 133,
+        "xIni": 114,
+        "yFin": 173,
+        "yIni": 144
     },
     {
-        "fila": 9,
+        "fila": 4,
+        "localizacion": "anfiteatro",
         "numero": 4,
-        "localizacion": "anfiteatro",
-        "xFin": 168,
-        "xIni": 147,
-        "yFin": 133,
-        "yIni": 114
+        "xFin": 152,
+        "xIni": 133,
+        "yFin": 173,
+        "yIni": 144
     },
     {
-        "fila": 9,
+        "fila": 4,
+        "localizacion": "anfiteatro",
         "numero": 2,
-        "localizacion": "anfiteatro",
-        "xFin": 189,
-        "xIni": 168,
-        "yFin": 133,
-        "yIni": 114
+        "xFin": 171,
+        "xIni": 152,
+        "yFin": 173,
+        "yIni": 144
     },
     {
-        "fila": 8,
+        "fila": 3,
+        "localizacion": "anfiteatro",
         "numero": 18,
-        "localizacion": "anfiteatro",
-        "xFin": 21,
+        "xFin": 19,
         "xIni": 0,
-        "yFin": 152,
-        "yIni": 133
+        "yFin": 202,
+        "yIni": 173
     },
     {
-        "fila": 8,
+        "fila": 3,
+        "localizacion": "anfiteatro",
         "numero": 16,
-        "localizacion": "anfiteatro",
-        "xFin": 42,
-        "xIni": 21,
-        "yFin": 152,
-        "yIni": 133
+        "xFin": 38,
+        "xIni": 19,
+        "yFin": 202,
+        "yIni": 173
     },
     {
-        "fila": 8,
+        "fila": 3,
+        "localizacion": "anfiteatro",
         "numero": 14,
-        "localizacion": "anfiteatro",
-        "xFin": 63,
-        "xIni": 42,
-        "yFin": 152,
-        "yIni": 133
+        "xFin": 57,
+        "xIni": 38,
+        "yFin": 202,
+        "yIni": 173
     },
     {
-        "fila": 8,
+        "fila": 3,
+        "localizacion": "anfiteatro",
         "numero": 12,
-        "localizacion": "anfiteatro",
-        "xFin": 84,
-        "xIni": 63,
-        "yFin": 152,
-        "yIni": 133
+        "xFin": 76,
+        "xIni": 57,
+        "yFin": 202,
+        "yIni": 173
     },
     {
-        "fila": 8,
+        "fila": 3,
+        "localizacion": "anfiteatro",
         "numero": 10,
-        "localizacion": "anfiteatro",
-        "xFin": 105,
-        "xIni": 84,
-        "yFin": 152,
-        "yIni": 133
+        "xFin": 95,
+        "xIni": 76,
+        "yFin": 202,
+        "yIni": 173
     },
     {
-        "fila": 8,
+        "fila": 3,
+        "localizacion": "anfiteatro",
         "numero": 8,
-        "localizacion": "anfiteatro",
-        "xFin": 126,
-        "xIni": 105,
-        "yFin": 152,
-        "yIni": 133
+        "xFin": 114,
+        "xIni": 95,
+        "yFin": 202,
+        "yIni": 173
     },
     {
-        "fila": 8,
+        "fila": 3,
+        "localizacion": "anfiteatro",
         "numero": 6,
-        "localizacion": "anfiteatro",
-        "xFin": 147,
-        "xIni": 126,
-        "yFin": 152,
-        "yIni": 133
+        "xFin": 133,
+        "xIni": 114,
+        "yFin": 202,
+        "yIni": 173
     },
     {
-        "fila": 8,
+        "fila": 3,
+        "localizacion": "anfiteatro",
         "numero": 4,
-        "localizacion": "anfiteatro",
-        "xFin": 168,
-        "xIni": 147,
-        "yFin": 152,
-        "yIni": 133
+        "xFin": 152,
+        "xIni": 133,
+        "yFin": 202,
+        "yIni": 173
     },
     {
-        "fila": 8,
+        "fila": 3,
+        "localizacion": "anfiteatro",
         "numero": 2,
-        "localizacion": "anfiteatro",
-        "xFin": 189,
-        "xIni": 168,
-        "yFin": 152,
-        "yIni": 133
+        "xFin": 171,
+        "xIni": 152,
+        "yFin": 202,
+        "yIni": 173
     },
     {
-        "fila": 7,
+        "fila": 2,
+        "localizacion": "anfiteatro",
         "numero": 18,
-        "localizacion": "anfiteatro",
-        "xFin": 21,
+        "xFin": 19,
         "xIni": 0,
-        "yFin": 171,
-        "yIni": 152
+        "yFin": 231,
+        "yIni": 202
     },
     {
-        "fila": 7,
+        "fila": 2,
+        "localizacion": "anfiteatro",
         "numero": 16,
-        "localizacion": "anfiteatro",
-        "xFin": 42,
-        "xIni": 21,
-        "yFin": 171,
-        "yIni": 152
+        "xFin": 38,
+        "xIni": 19,
+        "yFin": 231,
+        "yIni": 202
     },
     {
-        "fila": 7,
+        "fila": 2,
+        "localizacion": "anfiteatro",
         "numero": 14,
-        "localizacion": "anfiteatro",
-        "xFin": 63,
-        "xIni": 42,
-        "yFin": 171,
-        "yIni": 152
+        "xFin": 57,
+        "xIni": 38,
+        "yFin": 231,
+        "yIni": 202
     },
     {
-        "fila": 7,
+        "fila": 2,
+        "localizacion": "anfiteatro",
         "numero": 12,
-        "localizacion": "anfiteatro",
-        "xFin": 84,
-        "xIni": 63,
-        "yFin": 171,
-        "yIni": 152
+        "xFin": 76,
+        "xIni": 57,
+        "yFin": 231,
+        "yIni": 202
     },
     {
-        "fila": 7,
+        "fila": 2,
+        "localizacion": "anfiteatro",
         "numero": 10,
-        "localizacion": "anfiteatro",
-        "xFin": 105,
-        "xIni": 84,
-        "yFin": 171,
-        "yIni": 152
+        "xFin": 95,
+        "xIni": 76,
+        "yFin": 231,
+        "yIni": 202
     },
     {
-        "fila": 7,
+        "fila": 2,
+        "localizacion": "anfiteatro",
         "numero": 8,
-        "localizacion": "anfiteatro",
-        "xFin": 126,
-        "xIni": 105,
-        "yFin": 171,
-        "yIni": 152
+        "xFin": 114,
+        "xIni": 95,
+        "yFin": 231,
+        "yIni": 202
     },
     {
-        "fila": 7,
+        "fila": 2,
+        "localizacion": "anfiteatro",
         "numero": 6,
-        "localizacion": "anfiteatro",
-        "xFin": 147,
-        "xIni": 126,
-        "yFin": 171,
-        "yIni": 152
+        "xFin": 133,
+        "xIni": 114,
+        "yFin": 231,
+        "yIni": 202
     },
     {
-        "fila": 7,
+        "fila": 2,
+        "localizacion": "anfiteatro",
         "numero": 4,
-        "localizacion": "anfiteatro",
-        "xFin": 168,
-        "xIni": 147,
-        "yFin": 171,
-        "yIni": 152
+        "xFin": 152,
+        "xIni": 133,
+        "yFin": 231,
+        "yIni": 202
     },
     {
-        "fila": 7,
+        "fila": 2,
+        "localizacion": "anfiteatro",
         "numero": 2,
-        "localizacion": "anfiteatro",
-        "xFin": 189,
-        "xIni": 168,
-        "yFin": 171,
-        "yIni": 152
+        "xFin": 171,
+        "xIni": 152,
+        "yFin": 231,
+        "yIni": 202
     },
     {
-        "fila": 6,
+        "fila": 1,
+        "localizacion": "anfiteatro",
         "numero": 18,
-        "localizacion": "anfiteatro",
-        "xFin": 21,
+        "xFin": 19,
         "xIni": 0,
-        "yFin": 190,
-        "yIni": 171
+        "yFin": 260,
+        "yIni": 231
     },
     {
-        "fila": 6,
+        "fila": 1,
+        "localizacion": "anfiteatro",
         "numero": 16,
-        "localizacion": "anfiteatro",
-        "xFin": 42,
-        "xIni": 21,
-        "yFin": 190,
-        "yIni": 171
+        "xFin": 38,
+        "xIni": 19,
+        "yFin": 260,
+        "yIni": 231
     },
     {
-        "fila": 6,
+        "fila": 1,
+        "localizacion": "anfiteatro",
         "numero": 14,
-        "localizacion": "anfiteatro",
-        "xFin": 63,
-        "xIni": 42,
-        "yFin": 190,
-        "yIni": 171
+        "xFin": 57,
+        "xIni": 38,
+        "yFin": 260,
+        "yIni": 231
     },
     {
-        "fila": 6,
+        "fila": 1,
+        "localizacion": "anfiteatro",
         "numero": 12,
-        "localizacion": "anfiteatro",
-        "xFin": 84,
-        "xIni": 63,
-        "yFin": 190,
-        "yIni": 171
+        "xFin": 76,
+        "xIni": 57,
+        "yFin": 260,
+        "yIni": 231
     },
     {
-        "fila": 6,
+        "fila": 1,
+        "localizacion": "anfiteatro",
         "numero": 10,
-        "localizacion": "anfiteatro",
-        "xFin": 105,
-        "xIni": 84,
-        "yFin": 190,
-        "yIni": 171
+        "xFin": 95,
+        "xIni": 76,
+        "yFin": 260,
+        "yIni": 231
     },
     {
-        "fila": 6,
+        "fila": 1,
+        "localizacion": "anfiteatro",
         "numero": 8,
-        "localizacion": "anfiteatro",
-        "xFin": 126,
-        "xIni": 105,
-        "yFin": 190,
-        "yIni": 171
+        "xFin": 114,
+        "xIni": 95,
+        "yFin": 260,
+        "yIni": 231
     },
     {
-        "fila": 6,
+        "fila": 1,
+        "localizacion": "anfiteatro",
         "numero": 6,
-        "localizacion": "anfiteatro",
-        "xFin": 147,
-        "xIni": 126,
-        "yFin": 190,
-        "yIni": 171
+        "xFin": 133,
+        "xIni": 114,
+        "yFin": 260,
+        "yIni": 231
     },
     {
-        "fila": 6,
+        "fila": 1,
+        "localizacion": "anfiteatro",
         "numero": 4,
-        "localizacion": "anfiteatro",
-        "xFin": 168,
-        "xIni": 147,
-        "yFin": 190,
-        "yIni": 171
+        "xFin": 152,
+        "xIni": 133,
+        "yFin": 260,
+        "yIni": 231
     },
     {
-        "fila": 6,
+        "fila": 1,
+        "localizacion": "anfiteatro",
         "numero": 2,
-        "localizacion": "anfiteatro",
-        "xFin": 189,
-        "xIni": 168,
-        "yFin": 190,
-        "yIni": 171
-    },
-    {
-        "fila": 5,
-        "numero": 18,
-        "localizacion": "anfiteatro",
-        "xFin": 21,
-        "xIni": 0,
-        "yFin": 209,
-        "yIni": 190
-    },
-    {
-        "fila": 5,
-        "numero": 16,
-        "localizacion": "anfiteatro",
-        "xFin": 42,
-        "xIni": 21,
-        "yFin": 209,
-        "yIni": 190
-    },
-    {
-        "fila": 5,
-        "numero": 14,
-        "localizacion": "anfiteatro",
-        "xFin": 63,
-        "xIni": 42,
-        "yFin": 209,
-        "yIni": 190
-    },
-    {
-        "fila": 5,
-        "numero": 12,
-        "localizacion": "anfiteatro",
-        "xFin": 84,
-        "xIni": 63,
-        "yFin": 209,
-        "yIni": 190
-    },
-    {
-        "fila": 5,
-        "numero": 10,
-        "localizacion": "anfiteatro",
-        "xFin": 105,
-        "xIni": 84,
-        "yFin": 209,
-        "yIni": 190
-    },
-    {
-        "fila": 5,
-        "numero": 8,
-        "localizacion": "anfiteatro",
-        "xFin": 126,
-        "xIni": 105,
-        "yFin": 209,
-        "yIni": 190
-    },
-    {
-        "fila": 5,
-        "numero": 6,
-        "localizacion": "anfiteatro",
-        "xFin": 147,
-        "xIni": 126,
-        "yFin": 209,
-        "yIni": 190
-    },
-    {
-        "fila": 5,
-        "numero": 4,
-        "localizacion": "anfiteatro",
-        "xFin": 168,
-        "xIni": 147,
-        "yFin": 209,
-        "yIni": 190
-    },
-    {
-        "fila": 5,
-        "numero": 2,
-        "localizacion": "anfiteatro",
-        "xFin": 189,
-        "xIni": 168,
-        "yFin": 209,
-        "yIni": 190
-    },
-    {
-        "fila": 4,
-        "numero": 18,
-        "localizacion": "anfiteatro",
-        "xFin": 21,
-        "xIni": 0,
-        "yFin": 228,
-        "yIni": 209
-    },
-    {
-        "fila": 4,
-        "numero": 16,
-        "localizacion": "anfiteatro",
-        "xFin": 42,
-        "xIni": 21,
-        "yFin": 228,
-        "yIni": 209
-    },
-    {
-        "fila": 4,
-        "numero": 14,
-        "localizacion": "anfiteatro",
-        "xFin": 63,
-        "xIni": 42,
-        "yFin": 228,
-        "yIni": 209
-    },
-    {
-        "fila": 4,
-        "numero": 12,
-        "localizacion": "anfiteatro",
-        "xFin": 84,
-        "xIni": 63,
-        "yFin": 228,
-        "yIni": 209
-    },
-    {
-        "fila": 4,
-        "numero": 10,
-        "localizacion": "anfiteatro",
-        "xFin": 105,
-        "xIni": 84,
-        "yFin": 228,
-        "yIni": 209
-    },
-    {
-        "fila": 4,
-        "numero": 8,
-        "localizacion": "anfiteatro",
-        "xFin": 126,
-        "xIni": 105,
-        "yFin": 228,
-        "yIni": 209
-    },
-    {
-        "fila": 4,
-        "numero": 6,
-        "localizacion": "anfiteatro",
-        "xFin": 147,
-        "xIni": 126,
-        "yFin": 228,
-        "yIni": 209
-    },
-    {
-        "fila": 4,
-        "numero": 4,
-        "localizacion": "anfiteatro",
-        "xFin": 168,
-        "xIni": 147,
-        "yFin": 228,
-        "yIni": 209
-    },
-    {
-        "fila": 4,
-        "numero": 2,
-        "localizacion": "anfiteatro",
-        "xFin": 189,
-        "xIni": 168,
-        "yFin": 228,
-        "yIni": 209
-    },
-    {
-        "fila": 3,
-        "numero": 18,
-        "localizacion": "anfiteatro",
-        "xFin": 21,
-        "xIni": 0,
-        "yFin": 247,
-        "yIni": 228
-    },
-    {
-        "fila": 3,
-        "numero": 16,
-        "localizacion": "anfiteatro",
-        "xFin": 42,
-        "xIni": 21,
-        "yFin": 247,
-        "yIni": 228
-    },
-    {
-        "fila": 3,
-        "numero": 14,
-        "localizacion": "anfiteatro",
-        "xFin": 63,
-        "xIni": 42,
-        "yFin": 247,
-        "yIni": 228
-    },
-    {
-        "fila": 3,
-        "numero": 12,
-        "localizacion": "anfiteatro",
-        "xFin": 84,
-        "xIni": 63,
-        "yFin": 247,
-        "yIni": 228
-    },
-    {
-        "fila": 3,
-        "numero": 10,
-        "localizacion": "anfiteatro",
-        "xFin": 105,
-        "xIni": 84,
-        "yFin": 247,
-        "yIni": 228
-    },
-    {
-        "fila": 3,
-        "numero": 8,
-        "localizacion": "anfiteatro",
-        "xFin": 126,
-        "xIni": 105,
-        "yFin": 247,
-        "yIni": 228
-    },
-    {
-        "fila": 3,
-        "numero": 6,
-        "localizacion": "anfiteatro",
-        "xFin": 147,
-        "xIni": 126,
-        "yFin": 247,
-        "yIni": 228
-    },
-    {
-        "fila": 3,
-        "numero": 4,
-        "localizacion": "anfiteatro",
-        "xFin": 168,
-        "xIni": 147,
-        "yFin": 247,
-        "yIni": 228
-    },
-    {
-        "fila": 3,
-        "numero": 2,
-        "localizacion": "anfiteatro",
-        "xFin": 189,
-        "xIni": 168,
-        "yFin": 247,
-        "yIni": 228
-    },
-    {
-        "fila": 2,
-        "numero": 18,
-        "localizacion": "anfiteatro",
-        "xFin": 21,
-        "xIni": 0,
-        "yFin": 266,
-        "yIni": 247
-    },
-    {
-        "fila": 2,
-        "numero": 16,
-        "localizacion": "anfiteatro",
-        "xFin": 42,
-        "xIni": 21,
-        "yFin": 266,
-        "yIni": 247
-    },
-    {
-        "fila": 2,
-        "numero": 14,
-        "localizacion": "anfiteatro",
-        "xFin": 63,
-        "xIni": 42,
-        "yFin": 266,
-        "yIni": 247
-    },
-    {
-        "fila": 2,
-        "numero": 12,
-        "localizacion": "anfiteatro",
-        "xFin": 84,
-        "xIni": 63,
-        "yFin": 266,
-        "yIni": 247
-    },
-    {
-        "fila": 2,
-        "numero": 10,
-        "localizacion": "anfiteatro",
-        "xFin": 105,
-        "xIni": 84,
-        "yFin": 266,
-        "yIni": 247
-    },
-    {
-        "fila": 2,
-        "numero": 8,
-        "localizacion": "anfiteatro",
-        "xFin": 126,
-        "xIni": 105,
-        "yFin": 266,
-        "yIni": 247
-    },
-    {
-        "fila": 2,
-        "numero": 6,
-        "localizacion": "anfiteatro",
-        "xFin": 147,
-        "xIni": 126,
-        "yFin": 266,
-        "yIni": 247
-    },
-    {
-        "fila": 2,
-        "numero": 4,
-        "localizacion": "anfiteatro",
-        "xFin": 168,
-        "xIni": 147,
-        "yFin": 266,
-        "yIni": 247
-    },
-    {
-        "fila": 2,
-        "numero": 2,
-        "localizacion": "anfiteatro",
-        "xFin": 189,
-        "xIni": 168,
-        "yFin": 266,
-        "yIni": 247
-    },
-    {
-        "fila": 1,
-        "numero": 18,
-        "localizacion": "anfiteatro",
-        "xFin": 21,
-        "xIni": 0,
-        "yFin": 285,
-        "yIni": 266
-    },
-    {
-        "fila": 1,
-        "numero": 16,
-        "localizacion": "anfiteatro",
-        "xFin": 42,
-        "xIni": 21,
-        "yFin": 285,
-        "yIni": 266
-    },
-    {
-        "fila": 1,
-        "numero": 14,
-        "localizacion": "anfiteatro",
-        "xFin": 63,
-        "xIni": 42,
-        "yFin": 285,
-        "yIni": 266
-    },
-    {
-        "fila": 1,
-        "numero": 12,
-        "localizacion": "anfiteatro",
-        "xFin": 84,
-        "xIni": 63,
-        "yFin": 285,
-        "yIni": 266
-    },
-    {
-        "fila": 1,
-        "numero": 10,
-        "localizacion": "anfiteatro",
-        "xFin": 105,
-        "xIni": 84,
-        "yFin": 285,
-        "yIni": 266
-    },
-    {
-        "fila": 1,
-        "numero": 8,
-        "localizacion": "anfiteatro",
-        "xFin": 126,
-        "xIni": 105,
-        "yFin": 285,
-        "yIni": 266
-    },
-    {
-        "fila": 1,
-        "numero": 6,
-        "localizacion": "anfiteatro",
-        "xFin": 147,
-        "xIni": 126,
-        "yFin": 285,
-        "yIni": 266
-    },
-    {
-        "fila": 1,
-        "numero": 4,
-        "localizacion": "anfiteatro",
-        "xFin": 168,
-        "xIni": 147,
-        "yFin": 285,
-        "yIni": 266
-    },
-    {
-        "fila": 1,
-        "numero": 2,
-        "localizacion": "anfiteatro",
-        "xFin": 189,
-        "xIni": 168,
-        "yFin": 285,
-        "yIni": 266
-    },
-    {
-        "fila": 15,
-        "numero": 1,
-        "localizacion": "anfiteatro",
-        "xFin": 266,
-        "xIni": 245,
-        "yFin": 19,
-        "yIni": 0
-    },
-    {
-        "fila": 15,
-        "numero": 3,
-        "localizacion": "anfiteatro",
-        "xFin": 287,
-        "xIni": 266,
-        "yFin": 19,
-        "yIni": 0
-    },
-    {
-        "fila": 15,
-        "numero": 5,
-        "localizacion": "anfiteatro",
-        "xFin": 308,
-        "xIni": 287,
-        "yFin": 19,
-        "yIni": 0
-    },
-    {
-        "fila": 15,
-        "numero": 7,
-        "localizacion": "anfiteatro",
-        "xFin": 329,
-        "xIni": 308,
-        "yFin": 19,
-        "yIni": 0
-    },
-    {
-        "fila": 15,
-        "numero": 9,
-        "localizacion": "anfiteatro",
-        "xFin": 350,
-        "xIni": 329,
-        "yFin": 19,
-        "yIni": 0
-    },
-    {
-        "fila": 15,
-        "numero": 11,
-        "localizacion": "anfiteatro",
-        "xFin": 371,
-        "xIni": 350,
-        "yFin": 19,
-        "yIni": 0
-    },
-    {
-        "fila": 15,
-        "numero": 13,
-        "localizacion": "anfiteatro",
-        "xFin": 392,
-        "xIni": 371,
-        "yFin": 19,
-        "yIni": 0
-    },
-    {
-        "fila": 15,
-        "numero": 15,
-        "localizacion": "anfiteatro",
-        "xFin": 413,
-        "xIni": 392,
-        "yFin": 19,
-        "yIni": 0
-    },
-    {
-        "fila": 15,
-        "numero": 17,
-        "localizacion": "anfiteatro",
-        "xFin": 434,
-        "xIni": 413,
-        "yFin": 19,
-        "yIni": 0
-    },
-    {
-        "fila": 15,
-        "numero": 19,
-        "localizacion": "anfiteatro",
-        "xFin": 455,
-        "xIni": 434,
-        "yFin": 19,
-        "yIni": 0
-    },
-    {
-        "fila": 15,
-        "numero": 21,
-        "localizacion": "anfiteatro",
-        "xFin": 476,
-        "xIni": 455,
-        "yFin": 19,
-        "yIni": 0
-    },
-    {
-        "fila": 15,
-        "numero": 23,
-        "localizacion": "anfiteatro",
-        "xFin": 497,
-        "xIni": 476,
-        "yFin": 19,
-        "yIni": 0
-    },
-    {
-        "fila": 14,
-        "numero": 1,
-        "localizacion": "anfiteatro",
-        "xFin": 266,
-        "xIni": 245,
-        "yFin": 38,
-        "yIni": 19
-    },
-    {
-        "fila": 14,
-        "numero": 3,
-        "localizacion": "anfiteatro",
-        "xFin": 287,
-        "xIni": 266,
-        "yFin": 38,
-        "yIni": 19
-    },
-    {
-        "fila": 14,
-        "numero": 5,
-        "localizacion": "anfiteatro",
-        "xFin": 308,
-        "xIni": 287,
-        "yFin": 38,
-        "yIni": 19
-    },
-    {
-        "fila": 14,
-        "numero": 7,
-        "localizacion": "anfiteatro",
-        "xFin": 329,
-        "xIni": 308,
-        "yFin": 38,
-        "yIni": 19
-    },
-    {
-        "fila": 14,
-        "numero": 9,
-        "localizacion": "anfiteatro",
-        "xFin": 350,
-        "xIni": 329,
-        "yFin": 38,
-        "yIni": 19
-    },
-    {
-        "fila": 14,
-        "numero": 11,
-        "localizacion": "anfiteatro",
-        "xFin": 371,
-        "xIni": 350,
-        "yFin": 38,
-        "yIni": 19
-    },
-    {
-        "fila": 14,
-        "numero": 13,
-        "localizacion": "anfiteatro",
-        "xFin": 392,
-        "xIni": 371,
-        "yFin": 38,
-        "yIni": 19
-    },
-    {
-        "fila": 14,
-        "numero": 15,
-        "localizacion": "anfiteatro",
-        "xFin": 413,
-        "xIni": 392,
-        "yFin": 38,
-        "yIni": 19
-    },
-    {
-        "fila": 14,
-        "numero": 17,
-        "localizacion": "anfiteatro",
-        "xFin": 434,
-        "xIni": 413,
-        "yFin": 38,
-        "yIni": 19
-    },
-    {
-        "fila": 14,
-        "numero": 19,
-        "localizacion": "anfiteatro",
-        "xFin": 455,
-        "xIni": 434,
-        "yFin": 38,
-        "yIni": 19
-    },
-    {
-        "fila": 14,
-        "numero": 21,
-        "localizacion": "anfiteatro",
-        "xFin": 476,
-        "xIni": 455,
-        "yFin": 38,
-        "yIni": 19
-    },
-    {
-        "fila": 14,
-        "numero": 23,
-        "localizacion": "anfiteatro",
-        "xFin": 497,
-        "xIni": 476,
-        "yFin": 38,
-        "yIni": 19
-    },
-    {
-        "fila": 13,
-        "numero": 1,
-        "localizacion": "anfiteatro",
-        "xFin": 266,
-        "xIni": 245,
-        "yFin": 57,
-        "yIni": 38
-    },
-    {
-        "fila": 13,
-        "numero": 3,
-        "localizacion": "anfiteatro",
-        "xFin": 287,
-        "xIni": 266,
-        "yFin": 57,
-        "yIni": 38
-    },
-    {
-        "fila": 13,
-        "numero": 5,
-        "localizacion": "anfiteatro",
-        "xFin": 308,
-        "xIni": 287,
-        "yFin": 57,
-        "yIni": 38
-    },
-    {
-        "fila": 13,
-        "numero": 7,
-        "localizacion": "anfiteatro",
-        "xFin": 329,
-        "xIni": 308,
-        "yFin": 57,
-        "yIni": 38
-    },
-    {
-        "fila": 13,
-        "numero": 9,
-        "localizacion": "anfiteatro",
-        "xFin": 350,
-        "xIni": 329,
-        "yFin": 57,
-        "yIni": 38
-    },
-    {
-        "fila": 13,
-        "numero": 11,
-        "localizacion": "anfiteatro",
-        "xFin": 371,
-        "xIni": 350,
-        "yFin": 57,
-        "yIni": 38
-    },
-    {
-        "fila": 13,
-        "numero": 13,
-        "localizacion": "anfiteatro",
-        "xFin": 392,
-        "xIni": 371,
-        "yFin": 57,
-        "yIni": 38
-    },
-    {
-        "fila": 13,
-        "numero": 15,
-        "localizacion": "anfiteatro",
-        "xFin": 413,
-        "xIni": 392,
-        "yFin": 57,
-        "yIni": 38
-    },
-    {
-        "fila": 13,
-        "numero": 17,
-        "localizacion": "anfiteatro",
-        "xFin": 434,
-        "xIni": 413,
-        "yFin": 57,
-        "yIni": 38
-    },
-    {
-        "fila": 13,
-        "numero": 19,
-        "localizacion": "anfiteatro",
-        "xFin": 455,
-        "xIni": 434,
-        "yFin": 57,
-        "yIni": 38
-    },
-    {
-        "fila": 13,
-        "numero": 21,
-        "localizacion": "anfiteatro",
-        "xFin": 476,
-        "xIni": 455,
-        "yFin": 57,
-        "yIni": 38
-    },
-    {
-        "fila": 13,
-        "numero": 23,
-        "localizacion": "anfiteatro",
-        "xFin": 497,
-        "xIni": 476,
-        "yFin": 57,
-        "yIni": 38
-    },
-    {
-        "fila": 12,
-        "numero": 1,
-        "localizacion": "anfiteatro",
-        "xFin": 266,
-        "xIni": 245,
-        "yFin": 76,
-        "yIni": 57
-    },
-    {
-        "fila": 12,
-        "numero": 3,
-        "localizacion": "anfiteatro",
-        "xFin": 287,
-        "xIni": 266,
-        "yFin": 76,
-        "yIni": 57
-    },
-    {
-        "fila": 12,
-        "numero": 5,
-        "localizacion": "anfiteatro",
-        "xFin": 308,
-        "xIni": 287,
-        "yFin": 76,
-        "yIni": 57
-    },
-    {
-        "fila": 12,
-        "numero": 7,
-        "localizacion": "anfiteatro",
-        "xFin": 329,
-        "xIni": 308,
-        "yFin": 76,
-        "yIni": 57
-    },
-    {
-        "fila": 12,
-        "numero": 9,
-        "localizacion": "anfiteatro",
-        "xFin": 350,
-        "xIni": 329,
-        "yFin": 76,
-        "yIni": 57
-    },
-    {
-        "fila": 12,
-        "numero": 11,
-        "localizacion": "anfiteatro",
-        "xFin": 371,
-        "xIni": 350,
-        "yFin": 76,
-        "yIni": 57
-    },
-    {
-        "fila": 12,
-        "numero": 13,
-        "localizacion": "anfiteatro",
-        "xFin": 392,
-        "xIni": 371,
-        "yFin": 76,
-        "yIni": 57
-    },
-    {
-        "fila": 12,
-        "numero": 15,
-        "localizacion": "anfiteatro",
-        "xFin": 413,
-        "xIni": 392,
-        "yFin": 76,
-        "yIni": 57
-    },
-    {
-        "fila": 12,
-        "numero": 17,
-        "localizacion": "anfiteatro",
-        "xFin": 434,
-        "xIni": 413,
-        "yFin": 76,
-        "yIni": 57
-    },
-    {
-        "fila": 12,
-        "numero": 19,
-        "localizacion": "anfiteatro",
-        "xFin": 455,
-        "xIni": 434,
-        "yFin": 76,
-        "yIni": 57
-    },
-    {
-        "fila": 12,
-        "numero": 21,
-        "localizacion": "anfiteatro",
-        "xFin": 476,
-        "xIni": 455,
-        "yFin": 76,
-        "yIni": 57
-    },
-    {
-        "fila": 12,
-        "numero": 23,
-        "localizacion": "anfiteatro",
-        "xFin": 497,
-        "xIni": 476,
-        "yFin": 76,
-        "yIni": 57
-    },
-    {
-        "fila": 11,
-        "numero": 1,
-        "localizacion": "anfiteatro",
-        "xFin": 266,
-        "xIni": 245,
-        "yFin": 95,
-        "yIni": 76
-    },
-    {
-        "fila": 11,
-        "numero": 3,
-        "localizacion": "anfiteatro",
-        "xFin": 287,
-        "xIni": 266,
-        "yFin": 95,
-        "yIni": 76
-    },
-    {
-        "fila": 11,
-        "numero": 5,
-        "localizacion": "anfiteatro",
-        "xFin": 308,
-        "xIni": 287,
-        "yFin": 95,
-        "yIni": 76
-    },
-    {
-        "fila": 11,
-        "numero": 7,
-        "localizacion": "anfiteatro",
-        "xFin": 329,
-        "xIni": 308,
-        "yFin": 95,
-        "yIni": 76
-    },
-    {
-        "fila": 11,
-        "numero": 9,
-        "localizacion": "anfiteatro",
-        "xFin": 350,
-        "xIni": 329,
-        "yFin": 95,
-        "yIni": 76
-    },
-    {
-        "fila": 11,
-        "numero": 11,
-        "localizacion": "anfiteatro",
-        "xFin": 371,
-        "xIni": 350,
-        "yFin": 95,
-        "yIni": 76
-    },
-    {
-        "fila": 11,
-        "numero": 13,
-        "localizacion": "anfiteatro",
-        "xFin": 392,
-        "xIni": 371,
-        "yFin": 95,
-        "yIni": 76
-    },
-    {
-        "fila": 11,
-        "numero": 15,
-        "localizacion": "anfiteatro",
-        "xFin": 413,
-        "xIni": 392,
-        "yFin": 95,
-        "yIni": 76
-    },
-    {
-        "fila": 11,
-        "numero": 17,
-        "localizacion": "anfiteatro",
-        "xFin": 434,
-        "xIni": 413,
-        "yFin": 95,
-        "yIni": 76
-    },
-    {
-        "fila": 11,
-        "numero": 19,
-        "localizacion": "anfiteatro",
-        "xFin": 455,
-        "xIni": 434,
-        "yFin": 95,
-        "yIni": 76
-    },
-    {
-        "fila": 11,
-        "numero": 21,
-        "localizacion": "anfiteatro",
-        "xFin": 476,
-        "xIni": 455,
-        "yFin": 95,
-        "yIni": 76
-    },
-    {
-        "fila": 11,
-        "numero": 23,
-        "localizacion": "anfiteatro",
-        "xFin": 497,
-        "xIni": 476,
-        "yFin": 95,
-        "yIni": 76
-    },
-    {
-        "fila": 10,
-        "numero": 1,
-        "localizacion": "anfiteatro",
-        "xFin": 266,
-        "xIni": 245,
-        "yFin": 114,
-        "yIni": 95
-    },
-    {
-        "fila": 10,
-        "numero": 3,
-        "localizacion": "anfiteatro",
-        "xFin": 287,
-        "xIni": 266,
-        "yFin": 114,
-        "yIni": 95
-    },
-    {
-        "fila": 10,
-        "numero": 5,
-        "localizacion": "anfiteatro",
-        "xFin": 308,
-        "xIni": 287,
-        "yFin": 114,
-        "yIni": 95
-    },
-    {
-        "fila": 10,
-        "numero": 7,
-        "localizacion": "anfiteatro",
-        "xFin": 329,
-        "xIni": 308,
-        "yFin": 114,
-        "yIni": 95
-    },
-    {
-        "fila": 10,
-        "numero": 9,
-        "localizacion": "anfiteatro",
-        "xFin": 350,
-        "xIni": 329,
-        "yFin": 114,
-        "yIni": 95
-    },
-    {
-        "fila": 10,
-        "numero": 11,
-        "localizacion": "anfiteatro",
-        "xFin": 371,
-        "xIni": 350,
-        "yFin": 114,
-        "yIni": 95
-    },
-    {
-        "fila": 10,
-        "numero": 13,
-        "localizacion": "anfiteatro",
-        "xFin": 392,
-        "xIni": 371,
-        "yFin": 114,
-        "yIni": 95
-    },
-    {
-        "fila": 10,
-        "numero": 15,
-        "localizacion": "anfiteatro",
-        "xFin": 413,
-        "xIni": 392,
-        "yFin": 114,
-        "yIni": 95
-    },
-    {
-        "fila": 10,
-        "numero": 17,
-        "localizacion": "anfiteatro",
-        "xFin": 434,
-        "xIni": 413,
-        "yFin": 114,
-        "yIni": 95
-    },
-    {
-        "fila": 10,
-        "numero": 19,
-        "localizacion": "anfiteatro",
-        "xFin": 455,
-        "xIni": 434,
-        "yFin": 114,
-        "yIni": 95
-    },
-    {
-        "fila": 10,
-        "numero": 21,
-        "localizacion": "anfiteatro",
-        "xFin": 476,
-        "xIni": 455,
-        "yFin": 114,
-        "yIni": 95
-    },
-    {
-        "fila": 10,
-        "numero": 23,
-        "localizacion": "anfiteatro",
-        "xFin": 497,
-        "xIni": 476,
-        "yFin": 114,
-        "yIni": 95
-    },
-    {
-        "fila": 9,
-        "numero": 1,
-        "localizacion": "anfiteatro",
-        "xFin": 266,
-        "xIni": 245,
-        "yFin": 133,
-        "yIni": 114
-    },
-    {
-        "fila": 9,
-        "numero": 3,
-        "localizacion": "anfiteatro",
-        "xFin": 287,
-        "xIni": 266,
-        "yFin": 133,
-        "yIni": 114
-    },
-    {
-        "fila": 9,
-        "numero": 5,
-        "localizacion": "anfiteatro",
-        "xFin": 308,
-        "xIni": 287,
-        "yFin": 133,
-        "yIni": 114
-    },
-    {
-        "fila": 9,
-        "numero": 7,
-        "localizacion": "anfiteatro",
-        "xFin": 329,
-        "xIni": 308,
-        "yFin": 133,
-        "yIni": 114
-    },
-    {
-        "fila": 9,
-        "numero": 9,
-        "localizacion": "anfiteatro",
-        "xFin": 350,
-        "xIni": 329,
-        "yFin": 133,
-        "yIni": 114
-    },
-    {
-        "fila": 9,
-        "numero": 11,
-        "localizacion": "anfiteatro",
-        "xFin": 371,
-        "xIni": 350,
-        "yFin": 133,
-        "yIni": 114
-    },
-    {
-        "fila": 9,
-        "numero": 13,
-        "localizacion": "anfiteatro",
-        "xFin": 392,
-        "xIni": 371,
-        "yFin": 133,
-        "yIni": 114
-    },
-    {
-        "fila": 9,
-        "numero": 15,
-        "localizacion": "anfiteatro",
-        "xFin": 413,
-        "xIni": 392,
-        "yFin": 133,
-        "yIni": 114
-    },
-    {
-        "fila": 9,
-        "numero": 17,
-        "localizacion": "anfiteatro",
-        "xFin": 434,
-        "xIni": 413,
-        "yFin": 133,
-        "yIni": 114
-    },
-    {
-        "fila": 9,
-        "numero": 19,
-        "localizacion": "anfiteatro",
-        "xFin": 455,
-        "xIni": 434,
-        "yFin": 133,
-        "yIni": 114
-    },
-    {
-        "fila": 9,
-        "numero": 21,
-        "localizacion": "anfiteatro",
-        "xFin": 476,
-        "xIni": 455,
-        "yFin": 133,
-        "yIni": 114
-    },
-    {
-        "fila": 9,
-        "numero": 23,
-        "localizacion": "anfiteatro",
-        "xFin": 497,
-        "xIni": 476,
-        "yFin": 133,
-        "yIni": 114
-    },
-    {
-        "fila": 8,
-        "numero": 1,
-        "localizacion": "anfiteatro",
-        "xFin": 266,
-        "xIni": 245,
-        "yFin": 152,
-        "yIni": 133
-    },
-    {
-        "fila": 8,
-        "numero": 3,
-        "localizacion": "anfiteatro",
-        "xFin": 287,
-        "xIni": 266,
-        "yFin": 152,
-        "yIni": 133
-    },
-    {
-        "fila": 8,
-        "numero": 5,
-        "localizacion": "anfiteatro",
-        "xFin": 308,
-        "xIni": 287,
-        "yFin": 152,
-        "yIni": 133
-    },
-    {
-        "fila": 8,
-        "numero": 7,
-        "localizacion": "anfiteatro",
-        "xFin": 329,
-        "xIni": 308,
-        "yFin": 152,
-        "yIni": 133
-    },
-    {
-        "fila": 8,
-        "numero": 9,
-        "localizacion": "anfiteatro",
-        "xFin": 350,
-        "xIni": 329,
-        "yFin": 152,
-        "yIni": 133
-    },
-    {
-        "fila": 8,
-        "numero": 11,
-        "localizacion": "anfiteatro",
-        "xFin": 371,
-        "xIni": 350,
-        "yFin": 152,
-        "yIni": 133
-    },
-    {
-        "fila": 8,
-        "numero": 13,
-        "localizacion": "anfiteatro",
-        "xFin": 392,
-        "xIni": 371,
-        "yFin": 152,
-        "yIni": 133
-    },
-    {
-        "fila": 8,
-        "numero": 15,
-        "localizacion": "anfiteatro",
-        "xFin": 413,
-        "xIni": 392,
-        "yFin": 152,
-        "yIni": 133
-    },
-    {
-        "fila": 8,
-        "numero": 17,
-        "localizacion": "anfiteatro",
-        "xFin": 434,
-        "xIni": 413,
-        "yFin": 152,
-        "yIni": 133
-    },
-    {
-        "fila": 8,
-        "numero": 19,
-        "localizacion": "anfiteatro",
-        "xFin": 455,
-        "xIni": 434,
-        "yFin": 152,
-        "yIni": 133
-    },
-    {
-        "fila": 8,
-        "numero": 21,
-        "localizacion": "anfiteatro",
-        "xFin": 476,
-        "xIni": 455,
-        "yFin": 152,
-        "yIni": 133
-    },
-    {
-        "fila": 8,
-        "numero": 23,
-        "localizacion": "anfiteatro",
-        "xFin": 497,
-        "xIni": 476,
-        "yFin": 152,
-        "yIni": 133
-    },
-    {
-        "fila": 7,
-        "numero": 1,
-        "localizacion": "anfiteatro",
-        "xFin": 266,
-        "xIni": 245,
-        "yFin": 171,
-        "yIni": 152
-    },
-    {
-        "fila": 7,
-        "numero": 3,
-        "localizacion": "anfiteatro",
-        "xFin": 287,
-        "xIni": 266,
-        "yFin": 171,
-        "yIni": 152
-    },
-    {
-        "fila": 7,
-        "numero": 5,
-        "localizacion": "anfiteatro",
-        "xFin": 308,
-        "xIni": 287,
-        "yFin": 171,
-        "yIni": 152
-    },
-    {
-        "fila": 7,
-        "numero": 7,
-        "localizacion": "anfiteatro",
-        "xFin": 329,
-        "xIni": 308,
-        "yFin": 171,
-        "yIni": 152
-    },
-    {
-        "fila": 7,
-        "numero": 9,
-        "localizacion": "anfiteatro",
-        "xFin": 350,
-        "xIni": 329,
-        "yFin": 171,
-        "yIni": 152
-    },
-    {
-        "fila": 7,
-        "numero": 11,
-        "localizacion": "anfiteatro",
-        "xFin": 371,
-        "xIni": 350,
-        "yFin": 171,
-        "yIni": 152
-    },
-    {
-        "fila": 7,
-        "numero": 13,
-        "localizacion": "anfiteatro",
-        "xFin": 392,
-        "xIni": 371,
-        "yFin": 171,
-        "yIni": 152
-    },
-    {
-        "fila": 7,
-        "numero": 15,
-        "localizacion": "anfiteatro",
-        "xFin": 413,
-        "xIni": 392,
-        "yFin": 171,
-        "yIni": 152
-    },
-    {
-        "fila": 7,
-        "numero": 17,
-        "localizacion": "anfiteatro",
-        "xFin": 434,
-        "xIni": 413,
-        "yFin": 171,
-        "yIni": 152
-    },
-    {
-        "fila": 7,
-        "numero": 19,
-        "localizacion": "anfiteatro",
-        "xFin": 455,
-        "xIni": 434,
-        "yFin": 171,
-        "yIni": 152
-    },
-    {
-        "fila": 7,
-        "numero": 21,
-        "localizacion": "anfiteatro",
-        "xFin": 476,
-        "xIni": 455,
-        "yFin": 171,
-        "yIni": 152
-    },
-    {
-        "fila": 7,
-        "numero": 23,
-        "localizacion": "anfiteatro",
-        "xFin": 497,
-        "xIni": 476,
-        "yFin": 171,
-        "yIni": 152
-    },
-    {
-        "fila": 6,
-        "numero": 1,
-        "localizacion": "anfiteatro",
-        "xFin": 266,
-        "xIni": 245,
-        "yFin": 190,
-        "yIni": 171
-    },
-    {
-        "fila": 6,
-        "numero": 3,
-        "localizacion": "anfiteatro",
-        "xFin": 287,
-        "xIni": 266,
-        "yFin": 190,
-        "yIni": 171
-    },
-    {
-        "fila": 6,
-        "numero": 5,
-        "localizacion": "anfiteatro",
-        "xFin": 308,
-        "xIni": 287,
-        "yFin": 190,
-        "yIni": 171
-    },
-    {
-        "fila": 6,
-        "numero": 7,
-        "localizacion": "anfiteatro",
-        "xFin": 329,
-        "xIni": 308,
-        "yFin": 190,
-        "yIni": 171
-    },
-    {
-        "fila": 6,
-        "numero": 9,
-        "localizacion": "anfiteatro",
-        "xFin": 350,
-        "xIni": 329,
-        "yFin": 190,
-        "yIni": 171
-    },
-    {
-        "fila": 6,
-        "numero": 11,
-        "localizacion": "anfiteatro",
-        "xFin": 371,
-        "xIni": 350,
-        "yFin": 190,
-        "yIni": 171
-    },
-    {
-        "fila": 6,
-        "numero": 13,
-        "localizacion": "anfiteatro",
-        "xFin": 392,
-        "xIni": 371,
-        "yFin": 190,
-        "yIni": 171
-    },
-    {
-        "fila": 6,
-        "numero": 15,
-        "localizacion": "anfiteatro",
-        "xFin": 413,
-        "xIni": 392,
-        "yFin": 190,
-        "yIni": 171
-    },
-    {
-        "fila": 6,
-        "numero": 17,
-        "localizacion": "anfiteatro",
-        "xFin": 434,
-        "xIni": 413,
-        "yFin": 190,
-        "yIni": 171
-    },
-    {
-        "fila": 6,
-        "numero": 19,
-        "localizacion": "anfiteatro",
-        "xFin": 455,
-        "xIni": 434,
-        "yFin": 190,
-        "yIni": 171
-    },
-    {
-        "fila": 6,
-        "numero": 21,
-        "localizacion": "anfiteatro",
-        "xFin": 476,
-        "xIni": 455,
-        "yFin": 190,
-        "yIni": 171
-    },
-    {
-        "fila": 6,
-        "numero": 23,
-        "localizacion": "anfiteatro",
-        "xFin": 497,
-        "xIni": 476,
-        "yFin": 190,
-        "yIni": 171
-    },
-    {
-        "fila": 5,
-        "numero": 1,
-        "localizacion": "anfiteatro",
-        "xFin": 266,
-        "xIni": 245,
-        "yFin": 209,
-        "yIni": 190
-    },
-    {
-        "fila": 5,
-        "numero": 3,
-        "localizacion": "anfiteatro",
-        "xFin": 287,
-        "xIni": 266,
-        "yFin": 209,
-        "yIni": 190
-    },
-    {
-        "fila": 5,
-        "numero": 5,
-        "localizacion": "anfiteatro",
-        "xFin": 308,
-        "xIni": 287,
-        "yFin": 209,
-        "yIni": 190
-    },
-    {
-        "fila": 5,
-        "numero": 7,
-        "localizacion": "anfiteatro",
-        "xFin": 329,
-        "xIni": 308,
-        "yFin": 209,
-        "yIni": 190
-    },
-    {
-        "fila": 5,
-        "numero": 9,
-        "localizacion": "anfiteatro",
-        "xFin": 350,
-        "xIni": 329,
-        "yFin": 209,
-        "yIni": 190
-    },
-    {
-        "fila": 5,
-        "numero": 11,
-        "localizacion": "anfiteatro",
-        "xFin": 371,
-        "xIni": 350,
-        "yFin": 209,
-        "yIni": 190
-    },
-    {
-        "fila": 5,
-        "numero": 13,
-        "localizacion": "anfiteatro",
-        "xFin": 392,
-        "xIni": 371,
-        "yFin": 209,
-        "yIni": 190
-    },
-    {
-        "fila": 5,
-        "numero": 15,
-        "localizacion": "anfiteatro",
-        "xFin": 413,
-        "xIni": 392,
-        "yFin": 209,
-        "yIni": 190
-    },
-    {
-        "fila": 5,
-        "numero": 17,
-        "localizacion": "anfiteatro",
-        "xFin": 434,
-        "xIni": 413,
-        "yFin": 209,
-        "yIni": 190
-    },
-    {
-        "fila": 5,
-        "numero": 19,
-        "localizacion": "anfiteatro",
-        "xFin": 455,
-        "xIni": 434,
-        "yFin": 209,
-        "yIni": 190
-    },
-    {
-        "fila": 5,
-        "numero": 21,
-        "localizacion": "anfiteatro",
-        "xFin": 476,
-        "xIni": 455,
-        "yFin": 209,
-        "yIni": 190
-    },
-    {
-        "fila": 5,
-        "numero": 23,
-        "localizacion": "anfiteatro",
-        "xFin": 497,
-        "xIni": 476,
-        "yFin": 209,
-        "yIni": 190
-    },
-    {
-        "fila": 4,
-        "numero": 1,
-        "localizacion": "anfiteatro",
-        "xFin": 266,
-        "xIni": 245,
-        "yFin": 228,
-        "yIni": 209
-    },
-    {
-        "fila": 4,
-        "numero": 3,
-        "localizacion": "anfiteatro",
-        "xFin": 287,
-        "xIni": 266,
-        "yFin": 228,
-        "yIni": 209
-    },
-    {
-        "fila": 4,
-        "numero": 5,
-        "localizacion": "anfiteatro",
-        "xFin": 308,
-        "xIni": 287,
-        "yFin": 228,
-        "yIni": 209
-    },
-    {
-        "fila": 4,
-        "numero": 7,
-        "localizacion": "anfiteatro",
-        "xFin": 329,
-        "xIni": 308,
-        "yFin": 228,
-        "yIni": 209
-    },
-    {
-        "fila": 4,
-        "numero": 9,
-        "localizacion": "anfiteatro",
-        "xFin": 350,
-        "xIni": 329,
-        "yFin": 228,
-        "yIni": 209
-    },
-    {
-        "fila": 4,
-        "numero": 11,
-        "localizacion": "anfiteatro",
-        "xFin": 371,
-        "xIni": 350,
-        "yFin": 228,
-        "yIni": 209
-    },
-    {
-        "fila": 4,
-        "numero": 13,
-        "localizacion": "anfiteatro",
-        "xFin": 392,
-        "xIni": 371,
-        "yFin": 228,
-        "yIni": 209
-    },
-    {
-        "fila": 4,
-        "numero": 15,
-        "localizacion": "anfiteatro",
-        "xFin": 413,
-        "xIni": 392,
-        "yFin": 228,
-        "yIni": 209
-    },
-    {
-        "fila": 4,
-        "numero": 17,
-        "localizacion": "anfiteatro",
-        "xFin": 434,
-        "xIni": 413,
-        "yFin": 228,
-        "yIni": 209
-    },
-    {
-        "fila": 4,
-        "numero": 19,
-        "localizacion": "anfiteatro",
-        "xFin": 455,
-        "xIni": 434,
-        "yFin": 228,
-        "yIni": 209
-    },
-    {
-        "fila": 4,
-        "numero": 21,
-        "localizacion": "anfiteatro",
-        "xFin": 476,
-        "xIni": 455,
-        "yFin": 228,
-        "yIni": 209
-    },
-    {
-        "fila": 4,
-        "numero": 23,
-        "localizacion": "anfiteatro",
-        "xFin": 497,
-        "xIni": 476,
-        "yFin": 228,
-        "yIni": 209
-    },
-    {
-        "fila": 3,
-        "numero": 1,
-        "localizacion": "anfiteatro",
-        "xFin": 266,
-        "xIni": 245,
-        "yFin": 247,
-        "yIni": 228
-    },
-    {
-        "fila": 3,
-        "numero": 3,
-        "localizacion": "anfiteatro",
-        "xFin": 287,
-        "xIni": 266,
-        "yFin": 247,
-        "yIni": 228
-    },
-    {
-        "fila": 3,
-        "numero": 5,
-        "localizacion": "anfiteatro",
-        "xFin": 308,
-        "xIni": 287,
-        "yFin": 247,
-        "yIni": 228
-    },
-    {
-        "fila": 3,
-        "numero": 7,
-        "localizacion": "anfiteatro",
-        "xFin": 329,
-        "xIni": 308,
-        "yFin": 247,
-        "yIni": 228
-    },
-    {
-        "fila": 3,
-        "numero": 9,
-        "localizacion": "anfiteatro",
-        "xFin": 350,
-        "xIni": 329,
-        "yFin": 247,
-        "yIni": 228
-    },
-    {
-        "fila": 3,
-        "numero": 11,
-        "localizacion": "anfiteatro",
-        "xFin": 371,
-        "xIni": 350,
-        "yFin": 247,
-        "yIni": 228
-    },
-    {
-        "fila": 3,
-        "numero": 13,
-        "localizacion": "anfiteatro",
-        "xFin": 392,
-        "xIni": 371,
-        "yFin": 247,
-        "yIni": 228
-    },
-    {
-        "fila": 3,
-        "numero": 15,
-        "localizacion": "anfiteatro",
-        "xFin": 413,
-        "xIni": 392,
-        "yFin": 247,
-        "yIni": 228
-    },
-    {
-        "fila": 3,
-        "numero": 17,
-        "localizacion": "anfiteatro",
-        "xFin": 434,
-        "xIni": 413,
-        "yFin": 247,
-        "yIni": 228
-    },
-    {
-        "fila": 3,
-        "numero": 19,
-        "localizacion": "anfiteatro",
-        "xFin": 455,
-        "xIni": 434,
-        "yFin": 247,
-        "yIni": 228
-    },
-    {
-        "fila": 3,
-        "numero": 21,
-        "localizacion": "anfiteatro",
-        "xFin": 476,
-        "xIni": 455,
-        "yFin": 247,
-        "yIni": 228
-    },
-    {
-        "fila": 3,
-        "numero": 23,
-        "localizacion": "anfiteatro",
-        "xFin": 497,
-        "xIni": 476,
-        "yFin": 247,
-        "yIni": 228
-    },
-    {
-        "fila": 2,
-        "numero": 1,
-        "localizacion": "anfiteatro",
-        "xFin": 266,
-        "xIni": 245,
-        "yFin": 266,
-        "yIni": 247
-    },
-    {
-        "fila": 2,
-        "numero": 3,
-        "localizacion": "anfiteatro",
-        "xFin": 287,
-        "xIni": 266,
-        "yFin": 266,
-        "yIni": 247
-    },
-    {
-        "fila": 2,
-        "numero": 5,
-        "localizacion": "anfiteatro",
-        "xFin": 308,
-        "xIni": 287,
-        "yFin": 266,
-        "yIni": 247
-    },
-    {
-        "fila": 2,
-        "numero": 7,
-        "localizacion": "anfiteatro",
-        "xFin": 329,
-        "xIni": 308,
-        "yFin": 266,
-        "yIni": 247
-    },
-    {
-        "fila": 2,
-        "numero": 9,
-        "localizacion": "anfiteatro",
-        "xFin": 350,
-        "xIni": 329,
-        "yFin": 266,
-        "yIni": 247
-    },
-    {
-        "fila": 2,
-        "numero": 11,
-        "localizacion": "anfiteatro",
-        "xFin": 371,
-        "xIni": 350,
-        "yFin": 266,
-        "yIni": 247
-    },
-    {
-        "fila": 2,
-        "numero": 13,
-        "localizacion": "anfiteatro",
-        "xFin": 392,
-        "xIni": 371,
-        "yFin": 266,
-        "yIni": 247
-    },
-    {
-        "fila": 2,
-        "numero": 15,
-        "localizacion": "anfiteatro",
-        "xFin": 413,
-        "xIni": 392,
-        "yFin": 266,
-        "yIni": 247
-    },
-    {
-        "fila": 2,
-        "numero": 17,
-        "localizacion": "anfiteatro",
-        "xFin": 434,
-        "xIni": 413,
-        "yFin": 266,
-        "yIni": 247
-    },
-    {
-        "fila": 2,
-        "numero": 19,
-        "localizacion": "anfiteatro",
-        "xFin": 455,
-        "xIni": 434,
-        "yFin": 266,
-        "yIni": 247
-    },
-    {
-        "fila": 2,
-        "numero": 21,
-        "localizacion": "anfiteatro",
-        "xFin": 476,
-        "xIni": 455,
-        "yFin": 266,
-        "yIni": 247
-    },
-    {
-        "fila": 2,
-        "numero": 23,
-        "localizacion": "anfiteatro",
-        "xFin": 497,
-        "xIni": 476,
-        "yFin": 266,
-        "yIni": 247
-    },
-    {
-        "fila": 1,
-        "numero": 1,
-        "localizacion": "anfiteatro",
-        "xFin": 266,
-        "xIni": 245,
-        "yFin": 285,
-        "yIni": 266
-    },
-    {
-        "fila": 1,
-        "numero": 3,
-        "localizacion": "anfiteatro",
-        "xFin": 287,
-        "xIni": 266,
-        "yFin": 285,
-        "yIni": 266
-    },
-    {
-        "fila": 1,
-        "numero": 5,
-        "localizacion": "anfiteatro",
-        "xFin": 308,
-        "xIni": 287,
-        "yFin": 285,
-        "yIni": 266
-    },
-    {
-        "fila": 1,
-        "numero": 7,
-        "localizacion": "anfiteatro",
-        "xFin": 329,
-        "xIni": 308,
-        "yFin": 285,
-        "yIni": 266
-    },
-    {
-        "fila": 1,
-        "numero": 9,
-        "localizacion": "anfiteatro",
-        "xFin": 350,
-        "xIni": 329,
-        "yFin": 285,
-        "yIni": 266
-    },
-    {
-        "fila": 1,
-        "numero": 11,
-        "localizacion": "anfiteatro",
-        "xFin": 371,
-        "xIni": 350,
-        "yFin": 285,
-        "yIni": 266
-    },
-    {
-        "fila": 1,
-        "numero": 13,
-        "localizacion": "anfiteatro",
-        "xFin": 392,
-        "xIni": 371,
-        "yFin": 285,
-        "yIni": 266
-    },
-    {
-        "fila": 1,
-        "numero": 15,
-        "localizacion": "anfiteatro",
-        "xFin": 413,
-        "xIni": 392,
-        "yFin": 285,
-        "yIni": 266
-    },
-    {
-        "fila": 1,
-        "numero": 17,
-        "localizacion": "anfiteatro",
-        "xFin": 434,
-        "xIni": 413,
-        "yFin": 285,
-        "yIni": 266
-    },
-    {
-        "fila": 1,
-        "numero": 19,
-        "localizacion": "anfiteatro",
-        "xFin": 455,
-        "xIni": 434,
-        "yFin": 285,
-        "yIni": 266
-    },
-    {
-        "fila": 1,
-        "numero": 21,
-        "localizacion": "anfiteatro",
-        "xFin": 476,
-        "xIni": 455,
-        "yFin": 285,
-        "yIni": 266
-    },
-    {
-        "fila": 1,
-        "numero": 23,
-        "localizacion": "anfiteatro",
-        "xFin": 497,
-        "xIni": 476,
-        "yFin": 285,
-        "yIni": 266
+        "xFin": 171,
+        "xIni": 152,
+        "yFin": 260,
+        "yIni": 231
     }
 ]
