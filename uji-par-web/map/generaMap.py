@@ -54,13 +54,15 @@ def genera_json(localizacion, x_ini, y_ini, ancho_imagen, alto_imagen, ancho_cel
 
 def genera_map(fichero):
 
-    st = '<map name="map">\n'
+    #st = '<map name="map">\n'
+
+    st = ''
 
     for butaca in json.load(open(fichero)):
         st += '<area shape="rect" coords="%d,%d,%d,%d" href="javascript:Butacas.selecciona(\'%s\', %d, %d, %d, %d)" />\n' % (butaca['xIni'], butaca['yIni'], butaca['xFin'], butaca['yFin'], butaca['localizacion'], butaca['fila'], butaca['numero'], butaca['xIni'], butaca['yIni'])
 
 
-    st += '</map>\n'
+    #st += '</map>\n'
 
     return st
 
