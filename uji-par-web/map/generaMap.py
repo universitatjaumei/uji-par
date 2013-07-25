@@ -19,6 +19,7 @@ Options:
     -y <yini>                                   Desplazamiento inicial Y [default: 0]
     -d --descendente                            Los número de butacas van en orden descendente
     -i <incremento> --incremento <incremento>   Los números de butaca van incrementandose en este numero [default: 1]
+    -f <filaInicial>                            Número de fila inicial [default: 0]
     <anchoImagen>                               Ancho de imagen
     <altoImagen>                                Alto de imagen
     <anchoCelda>                                Ancho de celda
@@ -27,11 +28,11 @@ Options:
     map                                         Genera map para incluir en el HTML
 """
 
-def genera_json(localizacion, x_ini, y_ini, ancho_imagen, alto_imagen, ancho_celda, alto_celda, descendente, inc_butaca):
+def genera_json(localizacion, x_ini, y_ini, ancho_imagen, alto_imagen, ancho_celda, alto_celda, descendente, inc_butaca, fila_ini):
 
     butacas = []
 
-    fila = (alto_imagen-y_ini) / alto_celda
+    fila = (alto_imagen-y_ini) / alto_celda + (fila_ini-1)
 
     if descendente:
         inc_butaca = -inc_butaca
@@ -73,7 +74,7 @@ if __name__ == "__main__":
 
     if arguments['json']:
 
-        print genera_json(arguments["<localizacion>"], int(arguments["-x"]), int(arguments["-y"]), int(arguments["<anchoImagen>"]), int(arguments["<altoImagen>"]), int(arguments["<anchoCelda>"]), int(arguments["<altoCelda>"]), arguments["--descendente"], int(arguments['--incremento']))
+        print genera_json(arguments["<localizacion>"], int(arguments["-x"]), int(arguments["-y"]), int(arguments["<anchoImagen>"]), int(arguments["<altoImagen>"]), int(arguments["<anchoCelda>"]), int(arguments["<altoCelda>"]), arguments["--descendente"], int(arguments['--incremento']), int(arguments['-f']))
     
     else:
         
