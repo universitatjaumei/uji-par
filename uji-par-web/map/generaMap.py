@@ -20,6 +20,7 @@ Options:
     -d --descendente                            Los número de butacas van en orden descendente
     -i <incremento> --incremento <incremento>   Los números de butaca van incrementandose en este numero [default: 1]
     -f <filaInicial>                            Número de fila inicial [default: 0]
+    -b <butacaInicial>                          Número de butaca inicial (default: Calculada automáticamente)
     <anchoImagen>                               Ancho de imagen
     <altoImagen>                                Alto de imagen
     <anchoCelda>                                Ancho de celda
@@ -28,7 +29,7 @@ Options:
     map                                         Genera map para incluir en el HTML
 """
 
-def genera_json(localizacion, x_ini, y_ini, ancho_imagen, alto_imagen, ancho_celda, alto_celda, descendente, inc_butaca, fila_ini):
+def genera_json(localizacion, x_ini, y_ini, ancho_imagen, alto_imagen, ancho_celda, alto_celda, descendente, inc_butaca, fila_ini, butaca_ini):
 
     butacas = []
 
@@ -39,10 +40,13 @@ def genera_json(localizacion, x_ini, y_ini, ancho_imagen, alto_imagen, ancho_cel
 
     for y in range(y_ini, alto_imagen, alto_celda):
 
-        if descendente: 
-            numero = ((ancho_imagen-x_ini) / ancho_celda) * abs(inc_butaca)
+        if butaca_ini != None:
+            numero = int(butaca_ini)
         else:    
-            numero = 1
+            if descendente: 
+                numero = ((ancho_imagen-x_ini) / ancho_celda) * abs(inc_butaca)
+            else:    
+                numero = 1
 
         for x in range(x_ini, ancho_imagen, ancho_celda):
             butacas.append({"localizacion":localizacion, "xIni":x, "yIni":y, "xFin":x+ancho_celda, "yFin":y+alto_celda, "fila":fila, "numero":numero})
@@ -74,7 +78,7 @@ if __name__ == "__main__":
 
     if arguments['json']:
 
-        print genera_json(arguments["<localizacion>"], int(arguments["-x"]), int(arguments["-y"]), int(arguments["<anchoImagen>"]), int(arguments["<altoImagen>"]), int(arguments["<anchoCelda>"]), int(arguments["<altoCelda>"]), arguments["--descendente"], int(arguments['--incremento']), int(arguments['-f']))
+        print genera_json(arguments["<localizacion>"], int(arguments["-x"]), int(arguments["-y"]), int(arguments["<anchoImagen>"]), int(arguments["<altoImagen>"]), int(arguments["<anchoCelda>"]), int(arguments["<altoCelda>"]), arguments["--descendente"], int(arguments['--incremento']), int(arguments['-f']), arguments['-b'])
     
     else:
         
