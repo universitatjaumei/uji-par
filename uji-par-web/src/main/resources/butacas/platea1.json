@@ -3,2430 +3,2430 @@
         "fila": 9,
         "localizacion": "platea1",
         "numero": 30,
-        "xFin": 20,
-        "xIni": 1,
-        "yFin": 31,
-        "yIni": 2
+        "xFin": 19,
+        "xIni": 0,
+        "yFin": 28,
+        "yIni": 0
     },
     {
         "fila": 9,
         "localizacion": "platea1",
         "numero": 28,
-        "xFin": 39,
-        "xIni": 20,
-        "yFin": 31,
-        "yIni": 2
+        "xFin": 38,
+        "xIni": 19,
+        "yFin": 28,
+        "yIni": 0
     },
     {
         "fila": 9,
         "localizacion": "platea1",
         "numero": 26,
-        "xFin": 58,
-        "xIni": 39,
-        "yFin": 31,
-        "yIni": 2
+        "xFin": 57,
+        "xIni": 38,
+        "yFin": 28,
+        "yIni": 0
     },
     {
         "fila": 9,
         "localizacion": "platea1",
         "numero": 24,
-        "xFin": 77,
-        "xIni": 58,
-        "yFin": 31,
-        "yIni": 2
+        "xFin": 76,
+        "xIni": 57,
+        "yFin": 28,
+        "yIni": 0
     },
     {
         "fila": 9,
         "localizacion": "platea1",
         "numero": 22,
-        "xFin": 96,
-        "xIni": 77,
-        "yFin": 31,
-        "yIni": 2
+        "xFin": 95,
+        "xIni": 76,
+        "yFin": 28,
+        "yIni": 0
     },
     {
         "fila": 9,
         "localizacion": "platea1",
         "numero": 20,
-        "xFin": 115,
-        "xIni": 96,
-        "yFin": 31,
-        "yIni": 2
+        "xFin": 114,
+        "xIni": 95,
+        "yFin": 28,
+        "yIni": 0
     },
     {
         "fila": 9,
         "localizacion": "platea1",
         "numero": 18,
-        "xFin": 134,
-        "xIni": 115,
-        "yFin": 31,
-        "yIni": 2
+        "xFin": 133,
+        "xIni": 114,
+        "yFin": 28,
+        "yIni": 0
     },
     {
         "fila": 9,
         "localizacion": "platea1",
         "numero": 16,
-        "xFin": 153,
-        "xIni": 134,
-        "yFin": 31,
-        "yIni": 2
+        "xFin": 152,
+        "xIni": 133,
+        "yFin": 28,
+        "yIni": 0
     },
     {
         "fila": 9,
         "localizacion": "platea1",
         "numero": 14,
-        "xFin": 172,
-        "xIni": 153,
-        "yFin": 31,
-        "yIni": 2
+        "xFin": 171,
+        "xIni": 152,
+        "yFin": 28,
+        "yIni": 0
     },
     {
         "fila": 9,
         "localizacion": "platea1",
         "numero": 12,
-        "xFin": 191,
-        "xIni": 172,
-        "yFin": 31,
-        "yIni": 2
+        "xFin": 190,
+        "xIni": 171,
+        "yFin": 28,
+        "yIni": 0
     },
     {
         "fila": 9,
         "localizacion": "platea1",
         "numero": 10,
-        "xFin": 210,
-        "xIni": 191,
-        "yFin": 31,
-        "yIni": 2
+        "xFin": 209,
+        "xIni": 190,
+        "yFin": 28,
+        "yIni": 0
     },
     {
         "fila": 9,
         "localizacion": "platea1",
         "numero": 8,
-        "xFin": 229,
-        "xIni": 210,
-        "yFin": 31,
-        "yIni": 2
+        "xFin": 228,
+        "xIni": 209,
+        "yFin": 28,
+        "yIni": 0
     },
     {
         "fila": 9,
         "localizacion": "platea1",
         "numero": 6,
-        "xFin": 248,
-        "xIni": 229,
-        "yFin": 31,
-        "yIni": 2
+        "xFin": 247,
+        "xIni": 228,
+        "yFin": 28,
+        "yIni": 0
     },
     {
         "fila": 9,
         "localizacion": "platea1",
         "numero": 4,
-        "xFin": 267,
-        "xIni": 248,
-        "yFin": 31,
-        "yIni": 2
+        "xFin": 266,
+        "xIni": 247,
+        "yFin": 28,
+        "yIni": 0
     },
     {
         "fila": 9,
         "localizacion": "platea1",
         "numero": 2,
-        "xFin": 286,
-        "xIni": 267,
-        "yFin": 31,
-        "yIni": 2
+        "xFin": 285,
+        "xIni": 266,
+        "yFin": 28,
+        "yIni": 0
     },
     {
         "fila": 8,
         "localizacion": "platea1",
         "numero": 30,
-        "xFin": 20,
-        "xIni": 1,
-        "yFin": 60,
-        "yIni": 31
+        "xFin": 19,
+        "xIni": 0,
+        "yFin": 56,
+        "yIni": 28
     },
     {
         "fila": 8,
         "localizacion": "platea1",
         "numero": 28,
-        "xFin": 39,
-        "xIni": 20,
-        "yFin": 60,
-        "yIni": 31
+        "xFin": 38,
+        "xIni": 19,
+        "yFin": 56,
+        "yIni": 28
     },
     {
         "fila": 8,
         "localizacion": "platea1",
         "numero": 26,
-        "xFin": 58,
-        "xIni": 39,
-        "yFin": 60,
-        "yIni": 31
+        "xFin": 57,
+        "xIni": 38,
+        "yFin": 56,
+        "yIni": 28
     },
     {
         "fila": 8,
         "localizacion": "platea1",
         "numero": 24,
-        "xFin": 77,
-        "xIni": 58,
-        "yFin": 60,
-        "yIni": 31
+        "xFin": 76,
+        "xIni": 57,
+        "yFin": 56,
+        "yIni": 28
     },
     {
         "fila": 8,
         "localizacion": "platea1",
         "numero": 22,
-        "xFin": 96,
-        "xIni": 77,
-        "yFin": 60,
-        "yIni": 31
+        "xFin": 95,
+        "xIni": 76,
+        "yFin": 56,
+        "yIni": 28
     },
     {
         "fila": 8,
         "localizacion": "platea1",
         "numero": 20,
-        "xFin": 115,
-        "xIni": 96,
-        "yFin": 60,
-        "yIni": 31
+        "xFin": 114,
+        "xIni": 95,
+        "yFin": 56,
+        "yIni": 28
     },
     {
         "fila": 8,
         "localizacion": "platea1",
         "numero": 18,
-        "xFin": 134,
-        "xIni": 115,
-        "yFin": 60,
-        "yIni": 31
+        "xFin": 133,
+        "xIni": 114,
+        "yFin": 56,
+        "yIni": 28
     },
     {
         "fila": 8,
         "localizacion": "platea1",
         "numero": 16,
-        "xFin": 153,
-        "xIni": 134,
-        "yFin": 60,
-        "yIni": 31
+        "xFin": 152,
+        "xIni": 133,
+        "yFin": 56,
+        "yIni": 28
     },
     {
         "fila": 8,
         "localizacion": "platea1",
         "numero": 14,
-        "xFin": 172,
-        "xIni": 153,
-        "yFin": 60,
-        "yIni": 31
+        "xFin": 171,
+        "xIni": 152,
+        "yFin": 56,
+        "yIni": 28
     },
     {
         "fila": 8,
         "localizacion": "platea1",
         "numero": 12,
-        "xFin": 191,
-        "xIni": 172,
-        "yFin": 60,
-        "yIni": 31
+        "xFin": 190,
+        "xIni": 171,
+        "yFin": 56,
+        "yIni": 28
     },
     {
         "fila": 8,
         "localizacion": "platea1",
         "numero": 10,
-        "xFin": 210,
-        "xIni": 191,
-        "yFin": 60,
-        "yIni": 31
+        "xFin": 209,
+        "xIni": 190,
+        "yFin": 56,
+        "yIni": 28
     },
     {
         "fila": 8,
         "localizacion": "platea1",
         "numero": 8,
-        "xFin": 229,
-        "xIni": 210,
-        "yFin": 60,
-        "yIni": 31
+        "xFin": 228,
+        "xIni": 209,
+        "yFin": 56,
+        "yIni": 28
     },
     {
         "fila": 8,
         "localizacion": "platea1",
         "numero": 6,
-        "xFin": 248,
-        "xIni": 229,
-        "yFin": 60,
-        "yIni": 31
+        "xFin": 247,
+        "xIni": 228,
+        "yFin": 56,
+        "yIni": 28
     },
     {
         "fila": 8,
         "localizacion": "platea1",
         "numero": 4,
-        "xFin": 267,
-        "xIni": 248,
-        "yFin": 60,
-        "yIni": 31
+        "xFin": 266,
+        "xIni": 247,
+        "yFin": 56,
+        "yIni": 28
     },
     {
         "fila": 8,
         "localizacion": "platea1",
         "numero": 2,
-        "xFin": 286,
-        "xIni": 267,
-        "yFin": 60,
-        "yIni": 31
+        "xFin": 285,
+        "xIni": 266,
+        "yFin": 56,
+        "yIni": 28
     },
     {
         "fila": 7,
         "localizacion": "platea1",
         "numero": 30,
-        "xFin": 20,
-        "xIni": 1,
-        "yFin": 89,
-        "yIni": 60
+        "xFin": 19,
+        "xIni": 0,
+        "yFin": 84,
+        "yIni": 56
     },
     {
         "fila": 7,
         "localizacion": "platea1",
         "numero": 28,
-        "xFin": 39,
-        "xIni": 20,
-        "yFin": 89,
-        "yIni": 60
+        "xFin": 38,
+        "xIni": 19,
+        "yFin": 84,
+        "yIni": 56
     },
     {
         "fila": 7,
         "localizacion": "platea1",
         "numero": 26,
-        "xFin": 58,
-        "xIni": 39,
-        "yFin": 89,
-        "yIni": 60
+        "xFin": 57,
+        "xIni": 38,
+        "yFin": 84,
+        "yIni": 56
     },
     {
         "fila": 7,
         "localizacion": "platea1",
         "numero": 24,
-        "xFin": 77,
-        "xIni": 58,
-        "yFin": 89,
-        "yIni": 60
+        "xFin": 76,
+        "xIni": 57,
+        "yFin": 84,
+        "yIni": 56
     },
     {
         "fila": 7,
         "localizacion": "platea1",
         "numero": 22,
-        "xFin": 96,
-        "xIni": 77,
-        "yFin": 89,
-        "yIni": 60
+        "xFin": 95,
+        "xIni": 76,
+        "yFin": 84,
+        "yIni": 56
     },
     {
         "fila": 7,
         "localizacion": "platea1",
         "numero": 20,
-        "xFin": 115,
-        "xIni": 96,
-        "yFin": 89,
-        "yIni": 60
+        "xFin": 114,
+        "xIni": 95,
+        "yFin": 84,
+        "yIni": 56
     },
     {
         "fila": 7,
         "localizacion": "platea1",
         "numero": 18,
-        "xFin": 134,
-        "xIni": 115,
-        "yFin": 89,
-        "yIni": 60
+        "xFin": 133,
+        "xIni": 114,
+        "yFin": 84,
+        "yIni": 56
     },
     {
         "fila": 7,
         "localizacion": "platea1",
         "numero": 16,
-        "xFin": 153,
-        "xIni": 134,
-        "yFin": 89,
-        "yIni": 60
+        "xFin": 152,
+        "xIni": 133,
+        "yFin": 84,
+        "yIni": 56
     },
     {
         "fila": 7,
         "localizacion": "platea1",
         "numero": 14,
-        "xFin": 172,
-        "xIni": 153,
-        "yFin": 89,
-        "yIni": 60
+        "xFin": 171,
+        "xIni": 152,
+        "yFin": 84,
+        "yIni": 56
     },
     {
         "fila": 7,
         "localizacion": "platea1",
         "numero": 12,
-        "xFin": 191,
-        "xIni": 172,
-        "yFin": 89,
-        "yIni": 60
+        "xFin": 190,
+        "xIni": 171,
+        "yFin": 84,
+        "yIni": 56
     },
     {
         "fila": 7,
         "localizacion": "platea1",
         "numero": 10,
-        "xFin": 210,
-        "xIni": 191,
-        "yFin": 89,
-        "yIni": 60
+        "xFin": 209,
+        "xIni": 190,
+        "yFin": 84,
+        "yIni": 56
     },
     {
         "fila": 7,
         "localizacion": "platea1",
         "numero": 8,
-        "xFin": 229,
-        "xIni": 210,
-        "yFin": 89,
-        "yIni": 60
+        "xFin": 228,
+        "xIni": 209,
+        "yFin": 84,
+        "yIni": 56
     },
     {
         "fila": 7,
         "localizacion": "platea1",
         "numero": 6,
-        "xFin": 248,
-        "xIni": 229,
-        "yFin": 89,
-        "yIni": 60
+        "xFin": 247,
+        "xIni": 228,
+        "yFin": 84,
+        "yIni": 56
     },
     {
         "fila": 7,
         "localizacion": "platea1",
         "numero": 4,
-        "xFin": 267,
-        "xIni": 248,
-        "yFin": 89,
-        "yIni": 60
+        "xFin": 266,
+        "xIni": 247,
+        "yFin": 84,
+        "yIni": 56
     },
     {
         "fila": 7,
         "localizacion": "platea1",
         "numero": 2,
-        "xFin": 286,
-        "xIni": 267,
-        "yFin": 89,
-        "yIni": 60
+        "xFin": 285,
+        "xIni": 266,
+        "yFin": 84,
+        "yIni": 56
     },
     {
         "fila": 6,
         "localizacion": "platea1",
         "numero": 30,
-        "xFin": 20,
-        "xIni": 1,
-        "yFin": 118,
-        "yIni": 89
+        "xFin": 19,
+        "xIni": 0,
+        "yFin": 112,
+        "yIni": 84
     },
     {
         "fila": 6,
         "localizacion": "platea1",
         "numero": 28,
-        "xFin": 39,
-        "xIni": 20,
-        "yFin": 118,
-        "yIni": 89
+        "xFin": 38,
+        "xIni": 19,
+        "yFin": 112,
+        "yIni": 84
     },
     {
         "fila": 6,
         "localizacion": "platea1",
         "numero": 26,
-        "xFin": 58,
-        "xIni": 39,
-        "yFin": 118,
-        "yIni": 89
+        "xFin": 57,
+        "xIni": 38,
+        "yFin": 112,
+        "yIni": 84
     },
     {
         "fila": 6,
         "localizacion": "platea1",
         "numero": 24,
-        "xFin": 77,
-        "xIni": 58,
-        "yFin": 118,
-        "yIni": 89
+        "xFin": 76,
+        "xIni": 57,
+        "yFin": 112,
+        "yIni": 84
     },
     {
         "fila": 6,
         "localizacion": "platea1",
         "numero": 22,
-        "xFin": 96,
-        "xIni": 77,
-        "yFin": 118,
-        "yIni": 89
+        "xFin": 95,
+        "xIni": 76,
+        "yFin": 112,
+        "yIni": 84
     },
     {
         "fila": 6,
         "localizacion": "platea1",
         "numero": 20,
-        "xFin": 115,
-        "xIni": 96,
-        "yFin": 118,
-        "yIni": 89
+        "xFin": 114,
+        "xIni": 95,
+        "yFin": 112,
+        "yIni": 84
     },
     {
         "fila": 6,
         "localizacion": "platea1",
         "numero": 18,
-        "xFin": 134,
-        "xIni": 115,
-        "yFin": 118,
-        "yIni": 89
+        "xFin": 133,
+        "xIni": 114,
+        "yFin": 112,
+        "yIni": 84
     },
     {
         "fila": 6,
         "localizacion": "platea1",
         "numero": 16,
-        "xFin": 153,
-        "xIni": 134,
-        "yFin": 118,
-        "yIni": 89
+        "xFin": 152,
+        "xIni": 133,
+        "yFin": 112,
+        "yIni": 84
     },
     {
         "fila": 6,
         "localizacion": "platea1",
         "numero": 14,
-        "xFin": 172,
-        "xIni": 153,
-        "yFin": 118,
-        "yIni": 89
+        "xFin": 171,
+        "xIni": 152,
+        "yFin": 112,
+        "yIni": 84
     },
     {
         "fila": 6,
         "localizacion": "platea1",
         "numero": 12,
-        "xFin": 191,
-        "xIni": 172,
-        "yFin": 118,
-        "yIni": 89
+        "xFin": 190,
+        "xIni": 171,
+        "yFin": 112,
+        "yIni": 84
     },
     {
         "fila": 6,
         "localizacion": "platea1",
         "numero": 10,
-        "xFin": 210,
-        "xIni": 191,
-        "yFin": 118,
-        "yIni": 89
+        "xFin": 209,
+        "xIni": 190,
+        "yFin": 112,
+        "yIni": 84
     },
     {
         "fila": 6,
         "localizacion": "platea1",
         "numero": 8,
-        "xFin": 229,
-        "xIni": 210,
-        "yFin": 118,
-        "yIni": 89
+        "xFin": 228,
+        "xIni": 209,
+        "yFin": 112,
+        "yIni": 84
     },
     {
         "fila": 6,
         "localizacion": "platea1",
         "numero": 6,
-        "xFin": 248,
-        "xIni": 229,
-        "yFin": 118,
-        "yIni": 89
+        "xFin": 247,
+        "xIni": 228,
+        "yFin": 112,
+        "yIni": 84
     },
     {
         "fila": 6,
         "localizacion": "platea1",
         "numero": 4,
-        "xFin": 267,
-        "xIni": 248,
-        "yFin": 118,
-        "yIni": 89
+        "xFin": 266,
+        "xIni": 247,
+        "yFin": 112,
+        "yIni": 84
     },
     {
         "fila": 6,
         "localizacion": "platea1",
         "numero": 2,
-        "xFin": 286,
-        "xIni": 267,
-        "yFin": 118,
-        "yIni": 89
+        "xFin": 285,
+        "xIni": 266,
+        "yFin": 112,
+        "yIni": 84
     },
     {
         "fila": 5,
         "localizacion": "platea1",
         "numero": 30,
-        "xFin": 20,
-        "xIni": 1,
-        "yFin": 147,
-        "yIni": 118
+        "xFin": 19,
+        "xIni": 0,
+        "yFin": 140,
+        "yIni": 112
     },
     {
         "fila": 5,
         "localizacion": "platea1",
         "numero": 28,
-        "xFin": 39,
-        "xIni": 20,
-        "yFin": 147,
-        "yIni": 118
+        "xFin": 38,
+        "xIni": 19,
+        "yFin": 140,
+        "yIni": 112
     },
     {
         "fila": 5,
         "localizacion": "platea1",
         "numero": 26,
-        "xFin": 58,
-        "xIni": 39,
-        "yFin": 147,
-        "yIni": 118
+        "xFin": 57,
+        "xIni": 38,
+        "yFin": 140,
+        "yIni": 112
     },
     {
         "fila": 5,
         "localizacion": "platea1",
         "numero": 24,
-        "xFin": 77,
-        "xIni": 58,
-        "yFin": 147,
-        "yIni": 118
+        "xFin": 76,
+        "xIni": 57,
+        "yFin": 140,
+        "yIni": 112
     },
     {
         "fila": 5,
         "localizacion": "platea1",
         "numero": 22,
-        "xFin": 96,
-        "xIni": 77,
-        "yFin": 147,
-        "yIni": 118
+        "xFin": 95,
+        "xIni": 76,
+        "yFin": 140,
+        "yIni": 112
     },
     {
         "fila": 5,
         "localizacion": "platea1",
         "numero": 20,
-        "xFin": 115,
-        "xIni": 96,
-        "yFin": 147,
-        "yIni": 118
+        "xFin": 114,
+        "xIni": 95,
+        "yFin": 140,
+        "yIni": 112
     },
     {
         "fila": 5,
         "localizacion": "platea1",
         "numero": 18,
-        "xFin": 134,
-        "xIni": 115,
-        "yFin": 147,
-        "yIni": 118
+        "xFin": 133,
+        "xIni": 114,
+        "yFin": 140,
+        "yIni": 112
     },
     {
         "fila": 5,
         "localizacion": "platea1",
         "numero": 16,
-        "xFin": 153,
-        "xIni": 134,
-        "yFin": 147,
-        "yIni": 118
+        "xFin": 152,
+        "xIni": 133,
+        "yFin": 140,
+        "yIni": 112
     },
     {
         "fila": 5,
         "localizacion": "platea1",
         "numero": 14,
-        "xFin": 172,
-        "xIni": 153,
-        "yFin": 147,
-        "yIni": 118
+        "xFin": 171,
+        "xIni": 152,
+        "yFin": 140,
+        "yIni": 112
     },
     {
         "fila": 5,
         "localizacion": "platea1",
         "numero": 12,
-        "xFin": 191,
-        "xIni": 172,
-        "yFin": 147,
-        "yIni": 118
+        "xFin": 190,
+        "xIni": 171,
+        "yFin": 140,
+        "yIni": 112
     },
     {
         "fila": 5,
         "localizacion": "platea1",
         "numero": 10,
-        "xFin": 210,
-        "xIni": 191,
-        "yFin": 147,
-        "yIni": 118
+        "xFin": 209,
+        "xIni": 190,
+        "yFin": 140,
+        "yIni": 112
     },
     {
         "fila": 5,
         "localizacion": "platea1",
         "numero": 8,
-        "xFin": 229,
-        "xIni": 210,
-        "yFin": 147,
-        "yIni": 118
+        "xFin": 228,
+        "xIni": 209,
+        "yFin": 140,
+        "yIni": 112
     },
     {
         "fila": 5,
         "localizacion": "platea1",
         "numero": 6,
-        "xFin": 248,
-        "xIni": 229,
-        "yFin": 147,
-        "yIni": 118
+        "xFin": 247,
+        "xIni": 228,
+        "yFin": 140,
+        "yIni": 112
     },
     {
         "fila": 5,
         "localizacion": "platea1",
         "numero": 4,
-        "xFin": 267,
-        "xIni": 248,
-        "yFin": 147,
-        "yIni": 118
+        "xFin": 266,
+        "xIni": 247,
+        "yFin": 140,
+        "yIni": 112
     },
     {
         "fila": 5,
         "localizacion": "platea1",
         "numero": 2,
-        "xFin": 286,
-        "xIni": 267,
-        "yFin": 147,
-        "yIni": 118
+        "xFin": 285,
+        "xIni": 266,
+        "yFin": 140,
+        "yIni": 112
     },
     {
         "fila": 4,
         "localizacion": "platea1",
         "numero": 30,
-        "xFin": 20,
-        "xIni": 1,
-        "yFin": 176,
-        "yIni": 147
+        "xFin": 19,
+        "xIni": 0,
+        "yFin": 168,
+        "yIni": 140
     },
     {
         "fila": 4,
         "localizacion": "platea1",
         "numero": 28,
-        "xFin": 39,
-        "xIni": 20,
-        "yFin": 176,
-        "yIni": 147
+        "xFin": 38,
+        "xIni": 19,
+        "yFin": 168,
+        "yIni": 140
     },
     {
         "fila": 4,
         "localizacion": "platea1",
         "numero": 26,
-        "xFin": 58,
-        "xIni": 39,
-        "yFin": 176,
-        "yIni": 147
+        "xFin": 57,
+        "xIni": 38,
+        "yFin": 168,
+        "yIni": 140
     },
     {
         "fila": 4,
         "localizacion": "platea1",
         "numero": 24,
-        "xFin": 77,
-        "xIni": 58,
-        "yFin": 176,
-        "yIni": 147
+        "xFin": 76,
+        "xIni": 57,
+        "yFin": 168,
+        "yIni": 140
     },
     {
         "fila": 4,
         "localizacion": "platea1",
         "numero": 22,
-        "xFin": 96,
-        "xIni": 77,
-        "yFin": 176,
-        "yIni": 147
+        "xFin": 95,
+        "xIni": 76,
+        "yFin": 168,
+        "yIni": 140
     },
     {
         "fila": 4,
         "localizacion": "platea1",
         "numero": 20,
-        "xFin": 115,
-        "xIni": 96,
-        "yFin": 176,
-        "yIni": 147
+        "xFin": 114,
+        "xIni": 95,
+        "yFin": 168,
+        "yIni": 140
     },
     {
         "fila": 4,
         "localizacion": "platea1",
         "numero": 18,
-        "xFin": 134,
-        "xIni": 115,
-        "yFin": 176,
-        "yIni": 147
+        "xFin": 133,
+        "xIni": 114,
+        "yFin": 168,
+        "yIni": 140
     },
     {
         "fila": 4,
         "localizacion": "platea1",
         "numero": 16,
-        "xFin": 153,
-        "xIni": 134,
-        "yFin": 176,
-        "yIni": 147
+        "xFin": 152,
+        "xIni": 133,
+        "yFin": 168,
+        "yIni": 140
     },
     {
         "fila": 4,
         "localizacion": "platea1",
         "numero": 14,
-        "xFin": 172,
-        "xIni": 153,
-        "yFin": 176,
-        "yIni": 147
+        "xFin": 171,
+        "xIni": 152,
+        "yFin": 168,
+        "yIni": 140
     },
     {
         "fila": 4,
         "localizacion": "platea1",
         "numero": 12,
-        "xFin": 191,
-        "xIni": 172,
-        "yFin": 176,
-        "yIni": 147
+        "xFin": 190,
+        "xIni": 171,
+        "yFin": 168,
+        "yIni": 140
     },
     {
         "fila": 4,
         "localizacion": "platea1",
         "numero": 10,
-        "xFin": 210,
-        "xIni": 191,
-        "yFin": 176,
-        "yIni": 147
+        "xFin": 209,
+        "xIni": 190,
+        "yFin": 168,
+        "yIni": 140
     },
     {
         "fila": 4,
         "localizacion": "platea1",
         "numero": 8,
-        "xFin": 229,
-        "xIni": 210,
-        "yFin": 176,
-        "yIni": 147
+        "xFin": 228,
+        "xIni": 209,
+        "yFin": 168,
+        "yIni": 140
     },
     {
         "fila": 4,
         "localizacion": "platea1",
         "numero": 6,
-        "xFin": 248,
-        "xIni": 229,
-        "yFin": 176,
-        "yIni": 147
+        "xFin": 247,
+        "xIni": 228,
+        "yFin": 168,
+        "yIni": 140
     },
     {
         "fila": 4,
         "localizacion": "platea1",
         "numero": 4,
-        "xFin": 267,
-        "xIni": 248,
-        "yFin": 176,
-        "yIni": 147
+        "xFin": 266,
+        "xIni": 247,
+        "yFin": 168,
+        "yIni": 140
     },
     {
         "fila": 4,
         "localizacion": "platea1",
         "numero": 2,
-        "xFin": 286,
-        "xIni": 267,
-        "yFin": 176,
-        "yIni": 147
+        "xFin": 285,
+        "xIni": 266,
+        "yFin": 168,
+        "yIni": 140
     },
     {
         "fila": 3,
         "localizacion": "platea1",
         "numero": 30,
-        "xFin": 20,
-        "xIni": 1,
-        "yFin": 205,
-        "yIni": 176
+        "xFin": 19,
+        "xIni": 0,
+        "yFin": 196,
+        "yIni": 168
     },
     {
         "fila": 3,
         "localizacion": "platea1",
         "numero": 28,
-        "xFin": 39,
-        "xIni": 20,
-        "yFin": 205,
-        "yIni": 176
+        "xFin": 38,
+        "xIni": 19,
+        "yFin": 196,
+        "yIni": 168
     },
     {
         "fila": 3,
         "localizacion": "platea1",
         "numero": 26,
-        "xFin": 58,
-        "xIni": 39,
-        "yFin": 205,
-        "yIni": 176
+        "xFin": 57,
+        "xIni": 38,
+        "yFin": 196,
+        "yIni": 168
     },
     {
         "fila": 3,
         "localizacion": "platea1",
         "numero": 24,
-        "xFin": 77,
-        "xIni": 58,
-        "yFin": 205,
-        "yIni": 176
+        "xFin": 76,
+        "xIni": 57,
+        "yFin": 196,
+        "yIni": 168
     },
     {
         "fila": 3,
         "localizacion": "platea1",
         "numero": 22,
-        "xFin": 96,
-        "xIni": 77,
-        "yFin": 205,
-        "yIni": 176
+        "xFin": 95,
+        "xIni": 76,
+        "yFin": 196,
+        "yIni": 168
     },
     {
         "fila": 3,
         "localizacion": "platea1",
         "numero": 20,
-        "xFin": 115,
-        "xIni": 96,
-        "yFin": 205,
-        "yIni": 176
+        "xFin": 114,
+        "xIni": 95,
+        "yFin": 196,
+        "yIni": 168
     },
     {
         "fila": 3,
         "localizacion": "platea1",
         "numero": 18,
-        "xFin": 134,
-        "xIni": 115,
-        "yFin": 205,
-        "yIni": 176
+        "xFin": 133,
+        "xIni": 114,
+        "yFin": 196,
+        "yIni": 168
     },
     {
         "fila": 3,
         "localizacion": "platea1",
         "numero": 16,
-        "xFin": 153,
-        "xIni": 134,
-        "yFin": 205,
-        "yIni": 176
+        "xFin": 152,
+        "xIni": 133,
+        "yFin": 196,
+        "yIni": 168
     },
     {
         "fila": 3,
         "localizacion": "platea1",
         "numero": 14,
-        "xFin": 172,
-        "xIni": 153,
-        "yFin": 205,
-        "yIni": 176
+        "xFin": 171,
+        "xIni": 152,
+        "yFin": 196,
+        "yIni": 168
     },
     {
         "fila": 3,
         "localizacion": "platea1",
         "numero": 12,
-        "xFin": 191,
-        "xIni": 172,
-        "yFin": 205,
-        "yIni": 176
+        "xFin": 190,
+        "xIni": 171,
+        "yFin": 196,
+        "yIni": 168
     },
     {
         "fila": 3,
         "localizacion": "platea1",
         "numero": 10,
-        "xFin": 210,
-        "xIni": 191,
-        "yFin": 205,
-        "yIni": 176
+        "xFin": 209,
+        "xIni": 190,
+        "yFin": 196,
+        "yIni": 168
     },
     {
         "fila": 3,
         "localizacion": "platea1",
         "numero": 8,
-        "xFin": 229,
-        "xIni": 210,
-        "yFin": 205,
-        "yIni": 176
+        "xFin": 228,
+        "xIni": 209,
+        "yFin": 196,
+        "yIni": 168
     },
     {
         "fila": 3,
         "localizacion": "platea1",
         "numero": 6,
-        "xFin": 248,
-        "xIni": 229,
-        "yFin": 205,
-        "yIni": 176
+        "xFin": 247,
+        "xIni": 228,
+        "yFin": 196,
+        "yIni": 168
     },
     {
         "fila": 3,
         "localizacion": "platea1",
         "numero": 4,
-        "xFin": 267,
-        "xIni": 248,
-        "yFin": 205,
-        "yIni": 176
+        "xFin": 266,
+        "xIni": 247,
+        "yFin": 196,
+        "yIni": 168
     },
     {
         "fila": 3,
         "localizacion": "platea1",
         "numero": 2,
-        "xFin": 286,
-        "xIni": 267,
-        "yFin": 205,
-        "yIni": 176
+        "xFin": 285,
+        "xIni": 266,
+        "yFin": 196,
+        "yIni": 168
     },
     {
         "fila": 2,
         "localizacion": "platea1",
         "numero": 30,
-        "xFin": 20,
-        "xIni": 1,
-        "yFin": 234,
-        "yIni": 205
+        "xFin": 19,
+        "xIni": 0,
+        "yFin": 224,
+        "yIni": 196
     },
     {
         "fila": 2,
         "localizacion": "platea1",
         "numero": 28,
-        "xFin": 39,
-        "xIni": 20,
-        "yFin": 234,
-        "yIni": 205
+        "xFin": 38,
+        "xIni": 19,
+        "yFin": 224,
+        "yIni": 196
     },
     {
         "fila": 2,
         "localizacion": "platea1",
         "numero": 26,
-        "xFin": 58,
-        "xIni": 39,
-        "yFin": 234,
-        "yIni": 205
+        "xFin": 57,
+        "xIni": 38,
+        "yFin": 224,
+        "yIni": 196
     },
     {
         "fila": 2,
         "localizacion": "platea1",
         "numero": 24,
-        "xFin": 77,
-        "xIni": 58,
-        "yFin": 234,
-        "yIni": 205
+        "xFin": 76,
+        "xIni": 57,
+        "yFin": 224,
+        "yIni": 196
     },
     {
         "fila": 2,
         "localizacion": "platea1",
         "numero": 22,
-        "xFin": 96,
-        "xIni": 77,
-        "yFin": 234,
-        "yIni": 205
+        "xFin": 95,
+        "xIni": 76,
+        "yFin": 224,
+        "yIni": 196
     },
     {
         "fila": 2,
         "localizacion": "platea1",
         "numero": 20,
-        "xFin": 115,
-        "xIni": 96,
-        "yFin": 234,
-        "yIni": 205
+        "xFin": 114,
+        "xIni": 95,
+        "yFin": 224,
+        "yIni": 196
     },
     {
         "fila": 2,
         "localizacion": "platea1",
         "numero": 18,
-        "xFin": 134,
-        "xIni": 115,
-        "yFin": 234,
-        "yIni": 205
+        "xFin": 133,
+        "xIni": 114,
+        "yFin": 224,
+        "yIni": 196
     },
     {
         "fila": 2,
         "localizacion": "platea1",
         "numero": 16,
-        "xFin": 153,
-        "xIni": 134,
-        "yFin": 234,
-        "yIni": 205
+        "xFin": 152,
+        "xIni": 133,
+        "yFin": 224,
+        "yIni": 196
     },
     {
         "fila": 2,
         "localizacion": "platea1",
         "numero": 14,
-        "xFin": 172,
-        "xIni": 153,
-        "yFin": 234,
-        "yIni": 205
+        "xFin": 171,
+        "xIni": 152,
+        "yFin": 224,
+        "yIni": 196
     },
     {
         "fila": 2,
         "localizacion": "platea1",
         "numero": 12,
-        "xFin": 191,
-        "xIni": 172,
-        "yFin": 234,
-        "yIni": 205
+        "xFin": 190,
+        "xIni": 171,
+        "yFin": 224,
+        "yIni": 196
     },
     {
         "fila": 2,
         "localizacion": "platea1",
         "numero": 10,
-        "xFin": 210,
-        "xIni": 191,
-        "yFin": 234,
-        "yIni": 205
+        "xFin": 209,
+        "xIni": 190,
+        "yFin": 224,
+        "yIni": 196
     },
     {
         "fila": 2,
         "localizacion": "platea1",
         "numero": 8,
-        "xFin": 229,
-        "xIni": 210,
-        "yFin": 234,
-        "yIni": 205
+        "xFin": 228,
+        "xIni": 209,
+        "yFin": 224,
+        "yIni": 196
     },
     {
         "fila": 2,
         "localizacion": "platea1",
         "numero": 6,
-        "xFin": 248,
-        "xIni": 229,
-        "yFin": 234,
-        "yIni": 205
+        "xFin": 247,
+        "xIni": 228,
+        "yFin": 224,
+        "yIni": 196
     },
     {
         "fila": 2,
         "localizacion": "platea1",
         "numero": 4,
-        "xFin": 267,
-        "xIni": 248,
-        "yFin": 234,
-        "yIni": 205
+        "xFin": 266,
+        "xIni": 247,
+        "yFin": 224,
+        "yIni": 196
     },
     {
         "fila": 2,
         "localizacion": "platea1",
         "numero": 2,
-        "xFin": 286,
-        "xIni": 267,
-        "yFin": 234,
-        "yIni": 205
+        "xFin": 285,
+        "xIni": 266,
+        "yFin": 224,
+        "yIni": 196
     },
     {
         "fila": 1,
         "localizacion": "platea1",
         "numero": 30,
-        "xFin": 20,
-        "xIni": 1,
-        "yFin": 263,
-        "yIni": 234
+        "xFin": 19,
+        "xIni": 0,
+        "yFin": 252,
+        "yIni": 224
     },
     {
         "fila": 1,
         "localizacion": "platea1",
         "numero": 28,
-        "xFin": 39,
-        "xIni": 20,
-        "yFin": 263,
-        "yIni": 234
+        "xFin": 38,
+        "xIni": 19,
+        "yFin": 252,
+        "yIni": 224
     },
     {
         "fila": 1,
         "localizacion": "platea1",
         "numero": 26,
-        "xFin": 58,
-        "xIni": 39,
-        "yFin": 263,
-        "yIni": 234
+        "xFin": 57,
+        "xIni": 38,
+        "yFin": 252,
+        "yIni": 224
     },
     {
         "fila": 1,
         "localizacion": "platea1",
         "numero": 24,
-        "xFin": 77,
-        "xIni": 58,
-        "yFin": 263,
-        "yIni": 234
+        "xFin": 76,
+        "xIni": 57,
+        "yFin": 252,
+        "yIni": 224
     },
     {
         "fila": 1,
         "localizacion": "platea1",
         "numero": 22,
-        "xFin": 96,
-        "xIni": 77,
-        "yFin": 263,
-        "yIni": 234
+        "xFin": 95,
+        "xIni": 76,
+        "yFin": 252,
+        "yIni": 224
     },
     {
         "fila": 1,
         "localizacion": "platea1",
         "numero": 20,
-        "xFin": 115,
-        "xIni": 96,
-        "yFin": 263,
-        "yIni": 234
+        "xFin": 114,
+        "xIni": 95,
+        "yFin": 252,
+        "yIni": 224
     },
     {
         "fila": 1,
         "localizacion": "platea1",
         "numero": 18,
-        "xFin": 134,
-        "xIni": 115,
-        "yFin": 263,
-        "yIni": 234
+        "xFin": 133,
+        "xIni": 114,
+        "yFin": 252,
+        "yIni": 224
     },
     {
         "fila": 1,
         "localizacion": "platea1",
         "numero": 16,
-        "xFin": 153,
-        "xIni": 134,
-        "yFin": 263,
-        "yIni": 234
+        "xFin": 152,
+        "xIni": 133,
+        "yFin": 252,
+        "yIni": 224
     },
     {
         "fila": 1,
         "localizacion": "platea1",
         "numero": 14,
-        "xFin": 172,
-        "xIni": 153,
-        "yFin": 263,
-        "yIni": 234
+        "xFin": 171,
+        "xIni": 152,
+        "yFin": 252,
+        "yIni": 224
     },
     {
         "fila": 1,
         "localizacion": "platea1",
         "numero": 12,
-        "xFin": 191,
-        "xIni": 172,
-        "yFin": 263,
-        "yIni": 234
+        "xFin": 190,
+        "xIni": 171,
+        "yFin": 252,
+        "yIni": 224
     },
     {
         "fila": 1,
         "localizacion": "platea1",
         "numero": 10,
-        "xFin": 210,
-        "xIni": 191,
-        "yFin": 263,
-        "yIni": 234
+        "xFin": 209,
+        "xIni": 190,
+        "yFin": 252,
+        "yIni": 224
     },
     {
         "fila": 1,
         "localizacion": "platea1",
         "numero": 8,
-        "xFin": 229,
-        "xIni": 210,
-        "yFin": 263,
-        "yIni": 234
+        "xFin": 228,
+        "xIni": 209,
+        "yFin": 252,
+        "yIni": 224
     },
     {
         "fila": 1,
         "localizacion": "platea1",
         "numero": 6,
-        "xFin": 248,
-        "xIni": 229,
-        "yFin": 263,
-        "yIni": 234
+        "xFin": 247,
+        "xIni": 228,
+        "yFin": 252,
+        "yIni": 224
     },
     {
         "fila": 1,
         "localizacion": "platea1",
         "numero": 4,
-        "xFin": 267,
-        "xIni": 248,
-        "yFin": 263,
-        "yIni": 234
+        "xFin": 266,
+        "xIni": 247,
+        "yFin": 252,
+        "yIni": 224
     },
     {
         "fila": 1,
         "localizacion": "platea1",
         "numero": 2,
-        "xFin": 286,
-        "xIni": 267,
-        "yFin": 263,
-        "yIni": 234
+        "xFin": 285,
+        "xIni": 266,
+        "yFin": 252,
+        "yIni": 224
     },
-    {
+   {
         "fila": 9,
         "localizacion": "platea1",
         "numero": 1,
-        "xFin": 343,
-        "xIni": 324,
-        "yFin": 31,
-        "yIni": 2
+        "xFin": 342,
+        "xIni": 323,
+        "yFin": 28,
+        "yIni": 0
     },
     {
         "fila": 9,
         "localizacion": "platea1",
         "numero": 3,
-        "xFin": 362,
-        "xIni": 343,
-        "yFin": 31,
-        "yIni": 2
+        "xFin": 361,
+        "xIni": 342,
+        "yFin": 28,
+        "yIni": 0
     },
     {
         "fila": 9,
         "localizacion": "platea1",
         "numero": 5,
-        "xFin": 381,
-        "xIni": 362,
-        "yFin": 31,
-        "yIni": 2
+        "xFin": 380,
+        "xIni": 361,
+        "yFin": 28,
+        "yIni": 0
     },
     {
         "fila": 9,
         "localizacion": "platea1",
         "numero": 7,
-        "xFin": 400,
-        "xIni": 381,
-        "yFin": 31,
-        "yIni": 2
+        "xFin": 399,
+        "xIni": 380,
+        "yFin": 28,
+        "yIni": 0
     },
     {
         "fila": 9,
         "localizacion": "platea1",
         "numero": 9,
-        "xFin": 419,
-        "xIni": 400,
-        "yFin": 31,
-        "yIni": 2
+        "xFin": 418,
+        "xIni": 399,
+        "yFin": 28,
+        "yIni": 0
     },
     {
         "fila": 9,
         "localizacion": "platea1",
         "numero": 11,
-        "xFin": 438,
-        "xIni": 419,
-        "yFin": 31,
-        "yIni": 2
+        "xFin": 437,
+        "xIni": 418,
+        "yFin": 28,
+        "yIni": 0
     },
     {
         "fila": 9,
         "localizacion": "platea1",
         "numero": 13,
-        "xFin": 457,
-        "xIni": 438,
-        "yFin": 31,
-        "yIni": 2
+        "xFin": 456,
+        "xIni": 437,
+        "yFin": 28,
+        "yIni": 0
     },
     {
         "fila": 9,
         "localizacion": "platea1",
         "numero": 15,
-        "xFin": 476,
-        "xIni": 457,
-        "yFin": 31,
-        "yIni": 2
+        "xFin": 475,
+        "xIni": 456,
+        "yFin": 28,
+        "yIni": 0
     },
     {
         "fila": 9,
         "localizacion": "platea1",
         "numero": 17,
-        "xFin": 495,
-        "xIni": 476,
-        "yFin": 31,
-        "yIni": 2
+        "xFin": 494,
+        "xIni": 475,
+        "yFin": 28,
+        "yIni": 0
     },
     {
         "fila": 9,
         "localizacion": "platea1",
         "numero": 19,
-        "xFin": 514,
-        "xIni": 495,
-        "yFin": 31,
-        "yIni": 2
+        "xFin": 513,
+        "xIni": 494,
+        "yFin": 28,
+        "yIni": 0
     },
     {
         "fila": 9,
         "localizacion": "platea1",
         "numero": 21,
-        "xFin": 533,
-        "xIni": 514,
-        "yFin": 31,
-        "yIni": 2
+        "xFin": 532,
+        "xIni": 513,
+        "yFin": 28,
+        "yIni": 0
     },
     {
         "fila": 9,
         "localizacion": "platea1",
         "numero": 23,
-        "xFin": 552,
-        "xIni": 533,
-        "yFin": 31,
-        "yIni": 2
+        "xFin": 551,
+        "xIni": 532,
+        "yFin": 28,
+        "yIni": 0
     },
     {
         "fila": 9,
         "localizacion": "platea1",
         "numero": 25,
-        "xFin": 571,
-        "xIni": 552,
-        "yFin": 31,
-        "yIni": 2
+        "xFin": 570,
+        "xIni": 551,
+        "yFin": 28,
+        "yIni": 0
     },
     {
         "fila": 9,
         "localizacion": "platea1",
         "numero": 27,
-        "xFin": 590,
-        "xIni": 571,
-        "yFin": 31,
-        "yIni": 2
+        "xFin": 589,
+        "xIni": 570,
+        "yFin": 28,
+        "yIni": 0
     },
     {
         "fila": 9,
         "localizacion": "platea1",
         "numero": 29,
-        "xFin": 609,
-        "xIni": 590,
-        "yFin": 31,
-        "yIni": 2
+        "xFin": 608,
+        "xIni": 589,
+        "yFin": 28,
+        "yIni": 0
     },
     {
         "fila": 8,
         "localizacion": "platea1",
         "numero": 1,
-        "xFin": 343,
-        "xIni": 324,
-        "yFin": 60,
-        "yIni": 31
+        "xFin": 342,
+        "xIni": 323,
+        "yFin": 56,
+        "yIni": 28
     },
     {
         "fila": 8,
         "localizacion": "platea1",
         "numero": 3,
-        "xFin": 362,
-        "xIni": 343,
-        "yFin": 60,
-        "yIni": 31
+        "xFin": 361,
+        "xIni": 342,
+        "yFin": 56,
+        "yIni": 28
     },
     {
         "fila": 8,
         "localizacion": "platea1",
         "numero": 5,
-        "xFin": 381,
-        "xIni": 362,
-        "yFin": 60,
-        "yIni": 31
+        "xFin": 380,
+        "xIni": 361,
+        "yFin": 56,
+        "yIni": 28
     },
     {
         "fila": 8,
         "localizacion": "platea1",
         "numero": 7,
-        "xFin": 400,
-        "xIni": 381,
-        "yFin": 60,
-        "yIni": 31
+        "xFin": 399,
+        "xIni": 380,
+        "yFin": 56,
+        "yIni": 28
     },
     {
         "fila": 8,
         "localizacion": "platea1",
         "numero": 9,
-        "xFin": 419,
-        "xIni": 400,
-        "yFin": 60,
-        "yIni": 31
+        "xFin": 418,
+        "xIni": 399,
+        "yFin": 56,
+        "yIni": 28
     },
     {
         "fila": 8,
         "localizacion": "platea1",
         "numero": 11,
-        "xFin": 438,
-        "xIni": 419,
-        "yFin": 60,
-        "yIni": 31
+        "xFin": 437,
+        "xIni": 418,
+        "yFin": 56,
+        "yIni": 28
     },
     {
         "fila": 8,
         "localizacion": "platea1",
         "numero": 13,
-        "xFin": 457,
-        "xIni": 438,
-        "yFin": 60,
-        "yIni": 31
+        "xFin": 456,
+        "xIni": 437,
+        "yFin": 56,
+        "yIni": 28
     },
     {
         "fila": 8,
         "localizacion": "platea1",
         "numero": 15,
-        "xFin": 476,
-        "xIni": 457,
-        "yFin": 60,
-        "yIni": 31
+        "xFin": 475,
+        "xIni": 456,
+        "yFin": 56,
+        "yIni": 28
     },
     {
         "fila": 8,
         "localizacion": "platea1",
         "numero": 17,
-        "xFin": 495,
-        "xIni": 476,
-        "yFin": 60,
-        "yIni": 31
+        "xFin": 494,
+        "xIni": 475,
+        "yFin": 56,
+        "yIni": 28
     },
     {
         "fila": 8,
         "localizacion": "platea1",
         "numero": 19,
-        "xFin": 514,
-        "xIni": 495,
-        "yFin": 60,
-        "yIni": 31
+        "xFin": 513,
+        "xIni": 494,
+        "yFin": 56,
+        "yIni": 28
     },
     {
         "fila": 8,
         "localizacion": "platea1",
         "numero": 21,
-        "xFin": 533,
-        "xIni": 514,
-        "yFin": 60,
-        "yIni": 31
+        "xFin": 532,
+        "xIni": 513,
+        "yFin": 56,
+        "yIni": 28
     },
     {
         "fila": 8,
         "localizacion": "platea1",
         "numero": 23,
-        "xFin": 552,
-        "xIni": 533,
-        "yFin": 60,
-        "yIni": 31
+        "xFin": 551,
+        "xIni": 532,
+        "yFin": 56,
+        "yIni": 28
     },
     {
         "fila": 8,
         "localizacion": "platea1",
         "numero": 25,
-        "xFin": 571,
-        "xIni": 552,
-        "yFin": 60,
-        "yIni": 31
+        "xFin": 570,
+        "xIni": 551,
+        "yFin": 56,
+        "yIni": 28
     },
     {
         "fila": 8,
         "localizacion": "platea1",
         "numero": 27,
-        "xFin": 590,
-        "xIni": 571,
-        "yFin": 60,
-        "yIni": 31
+        "xFin": 589,
+        "xIni": 570,
+        "yFin": 56,
+        "yIni": 28
     },
     {
         "fila": 8,
         "localizacion": "platea1",
         "numero": 29,
-        "xFin": 609,
-        "xIni": 590,
-        "yFin": 60,
-        "yIni": 31
+        "xFin": 608,
+        "xIni": 589,
+        "yFin": 56,
+        "yIni": 28
     },
     {
         "fila": 7,
         "localizacion": "platea1",
         "numero": 1,
-        "xFin": 343,
-        "xIni": 324,
-        "yFin": 89,
-        "yIni": 60
+        "xFin": 342,
+        "xIni": 323,
+        "yFin": 84,
+        "yIni": 56
     },
     {
         "fila": 7,
         "localizacion": "platea1",
         "numero": 3,
-        "xFin": 362,
-        "xIni": 343,
-        "yFin": 89,
-        "yIni": 60
+        "xFin": 361,
+        "xIni": 342,
+        "yFin": 84,
+        "yIni": 56
     },
     {
         "fila": 7,
         "localizacion": "platea1",
         "numero": 5,
-        "xFin": 381,
-        "xIni": 362,
-        "yFin": 89,
-        "yIni": 60
+        "xFin": 380,
+        "xIni": 361,
+        "yFin": 84,
+        "yIni": 56
     },
     {
         "fila": 7,
         "localizacion": "platea1",
         "numero": 7,
-        "xFin": 400,
-        "xIni": 381,
-        "yFin": 89,
-        "yIni": 60
+        "xFin": 399,
+        "xIni": 380,
+        "yFin": 84,
+        "yIni": 56
     },
     {
         "fila": 7,
         "localizacion": "platea1",
         "numero": 9,
-        "xFin": 419,
-        "xIni": 400,
-        "yFin": 89,
-        "yIni": 60
+        "xFin": 418,
+        "xIni": 399,
+        "yFin": 84,
+        "yIni": 56
     },
     {
         "fila": 7,
         "localizacion": "platea1",
         "numero": 11,
-        "xFin": 438,
-        "xIni": 419,
-        "yFin": 89,
-        "yIni": 60
+        "xFin": 437,
+        "xIni": 418,
+        "yFin": 84,
+        "yIni": 56
     },
     {
         "fila": 7,
         "localizacion": "platea1",
         "numero": 13,
-        "xFin": 457,
-        "xIni": 438,
-        "yFin": 89,
-        "yIni": 60
+        "xFin": 456,
+        "xIni": 437,
+        "yFin": 84,
+        "yIni": 56
     },
     {
         "fila": 7,
         "localizacion": "platea1",
         "numero": 15,
-        "xFin": 476,
-        "xIni": 457,
-        "yFin": 89,
-        "yIni": 60
+        "xFin": 475,
+        "xIni": 456,
+        "yFin": 84,
+        "yIni": 56
     },
     {
         "fila": 7,
         "localizacion": "platea1",
         "numero": 17,
-        "xFin": 495,
-        "xIni": 476,
-        "yFin": 89,
-        "yIni": 60
+        "xFin": 494,
+        "xIni": 475,
+        "yFin": 84,
+        "yIni": 56
     },
     {
         "fila": 7,
         "localizacion": "platea1",
         "numero": 19,
-        "xFin": 514,
-        "xIni": 495,
-        "yFin": 89,
-        "yIni": 60
+        "xFin": 513,
+        "xIni": 494,
+        "yFin": 84,
+        "yIni": 56
     },
     {
         "fila": 7,
         "localizacion": "platea1",
         "numero": 21,
-        "xFin": 533,
-        "xIni": 514,
-        "yFin": 89,
-        "yIni": 60
+        "xFin": 532,
+        "xIni": 513,
+        "yFin": 84,
+        "yIni": 56
     },
     {
         "fila": 7,
         "localizacion": "platea1",
         "numero": 23,
-        "xFin": 552,
-        "xIni": 533,
-        "yFin": 89,
-        "yIni": 60
+        "xFin": 551,
+        "xIni": 532,
+        "yFin": 84,
+        "yIni": 56
     },
     {
         "fila": 7,
         "localizacion": "platea1",
         "numero": 25,
-        "xFin": 571,
-        "xIni": 552,
-        "yFin": 89,
-        "yIni": 60
+        "xFin": 570,
+        "xIni": 551,
+        "yFin": 84,
+        "yIni": 56
     },
     {
         "fila": 7,
         "localizacion": "platea1",
         "numero": 27,
-        "xFin": 590,
-        "xIni": 571,
-        "yFin": 89,
-        "yIni": 60
+        "xFin": 589,
+        "xIni": 570,
+        "yFin": 84,
+        "yIni": 56
     },
     {
         "fila": 7,
         "localizacion": "platea1",
         "numero": 29,
-        "xFin": 609,
-        "xIni": 590,
-        "yFin": 89,
-        "yIni": 60
+        "xFin": 608,
+        "xIni": 589,
+        "yFin": 84,
+        "yIni": 56
     },
     {
         "fila": 6,
         "localizacion": "platea1",
         "numero": 1,
-        "xFin": 343,
-        "xIni": 324,
-        "yFin": 118,
-        "yIni": 89
+        "xFin": 342,
+        "xIni": 323,
+        "yFin": 112,
+        "yIni": 84
     },
     {
         "fila": 6,
         "localizacion": "platea1",
         "numero": 3,
-        "xFin": 362,
-        "xIni": 343,
-        "yFin": 118,
-        "yIni": 89
+        "xFin": 361,
+        "xIni": 342,
+        "yFin": 112,
+        "yIni": 84
     },
     {
         "fila": 6,
         "localizacion": "platea1",
         "numero": 5,
-        "xFin": 381,
-        "xIni": 362,
-        "yFin": 118,
-        "yIni": 89
+        "xFin": 380,
+        "xIni": 361,
+        "yFin": 112,
+        "yIni": 84
     },
     {
         "fila": 6,
         "localizacion": "platea1",
         "numero": 7,
-        "xFin": 400,
-        "xIni": 381,
-        "yFin": 118,
-        "yIni": 89
+        "xFin": 399,
+        "xIni": 380,
+        "yFin": 112,
+        "yIni": 84
     },
     {
         "fila": 6,
         "localizacion": "platea1",
         "numero": 9,
-        "xFin": 419,
-        "xIni": 400,
-        "yFin": 118,
-        "yIni": 89
+        "xFin": 418,
+        "xIni": 399,
+        "yFin": 112,
+        "yIni": 84
     },
     {
         "fila": 6,
         "localizacion": "platea1",
         "numero": 11,
-        "xFin": 438,
-        "xIni": 419,
-        "yFin": 118,
-        "yIni": 89
+        "xFin": 437,
+        "xIni": 418,
+        "yFin": 112,
+        "yIni": 84
     },
     {
         "fila": 6,
         "localizacion": "platea1",
         "numero": 13,
-        "xFin": 457,
-        "xIni": 438,
-        "yFin": 118,
-        "yIni": 89
+        "xFin": 456,
+        "xIni": 437,
+        "yFin": 112,
+        "yIni": 84
     },
     {
         "fila": 6,
         "localizacion": "platea1",
         "numero": 15,
-        "xFin": 476,
-        "xIni": 457,
-        "yFin": 118,
-        "yIni": 89
+        "xFin": 475,
+        "xIni": 456,
+        "yFin": 112,
+        "yIni": 84
     },
     {
         "fila": 6,
         "localizacion": "platea1",
         "numero": 17,
-        "xFin": 495,
-        "xIni": 476,
-        "yFin": 118,
-        "yIni": 89
+        "xFin": 494,
+        "xIni": 475,
+        "yFin": 112,
+        "yIni": 84
     },
     {
         "fila": 6,
         "localizacion": "platea1",
         "numero": 19,
-        "xFin": 514,
-        "xIni": 495,
-        "yFin": 118,
-        "yIni": 89
+        "xFin": 513,
+        "xIni": 494,
+        "yFin": 112,
+        "yIni": 84
     },
     {
         "fila": 6,
         "localizacion": "platea1",
         "numero": 21,
-        "xFin": 533,
-        "xIni": 514,
-        "yFin": 118,
-        "yIni": 89
+        "xFin": 532,
+        "xIni": 513,
+        "yFin": 112,
+        "yIni": 84
     },
     {
         "fila": 6,
         "localizacion": "platea1",
         "numero": 23,
-        "xFin": 552,
-        "xIni": 533,
-        "yFin": 118,
-        "yIni": 89
+        "xFin": 551,
+        "xIni": 532,
+        "yFin": 112,
+        "yIni": 84
     },
     {
         "fila": 6,
         "localizacion": "platea1",
         "numero": 25,
-        "xFin": 571,
-        "xIni": 552,
-        "yFin": 118,
-        "yIni": 89
+        "xFin": 570,
+        "xIni": 551,
+        "yFin": 112,
+        "yIni": 84
     },
     {
         "fila": 6,
         "localizacion": "platea1",
         "numero": 27,
-        "xFin": 590,
-        "xIni": 571,
-        "yFin": 118,
-        "yIni": 89
+        "xFin": 589,
+        "xIni": 570,
+        "yFin": 112,
+        "yIni": 84
     },
     {
         "fila": 6,
         "localizacion": "platea1",
         "numero": 29,
-        "xFin": 609,
-        "xIni": 590,
-        "yFin": 118,
-        "yIni": 89
+        "xFin": 608,
+        "xIni": 589,
+        "yFin": 112,
+        "yIni": 84
     },
     {
         "fila": 5,
         "localizacion": "platea1",
         "numero": 1,
-        "xFin": 343,
-        "xIni": 324,
-        "yFin": 147,
-        "yIni": 118
+        "xFin": 342,
+        "xIni": 323,
+        "yFin": 140,
+        "yIni": 112
     },
     {
         "fila": 5,
         "localizacion": "platea1",
         "numero": 3,
-        "xFin": 362,
-        "xIni": 343,
-        "yFin": 147,
-        "yIni": 118
+        "xFin": 361,
+        "xIni": 342,
+        "yFin": 140,
+        "yIni": 112
     },
     {
         "fila": 5,
         "localizacion": "platea1",
         "numero": 5,
-        "xFin": 381,
-        "xIni": 362,
-        "yFin": 147,
-        "yIni": 118
+        "xFin": 380,
+        "xIni": 361,
+        "yFin": 140,
+        "yIni": 112
     },
     {
         "fila": 5,
         "localizacion": "platea1",
         "numero": 7,
-        "xFin": 400,
-        "xIni": 381,
-        "yFin": 147,
-        "yIni": 118
+        "xFin": 399,
+        "xIni": 380,
+        "yFin": 140,
+        "yIni": 112
     },
     {
         "fila": 5,
         "localizacion": "platea1",
         "numero": 9,
-        "xFin": 419,
-        "xIni": 400,
-        "yFin": 147,
-        "yIni": 118
+        "xFin": 418,
+        "xIni": 399,
+        "yFin": 140,
+        "yIni": 112
     },
     {
         "fila": 5,
         "localizacion": "platea1",
         "numero": 11,
-        "xFin": 438,
-        "xIni": 419,
-        "yFin": 147,
-        "yIni": 118
+        "xFin": 437,
+        "xIni": 418,
+        "yFin": 140,
+        "yIni": 112
     },
     {
         "fila": 5,
         "localizacion": "platea1",
         "numero": 13,
-        "xFin": 457,
-        "xIni": 438,
-        "yFin": 147,
-        "yIni": 118
+        "xFin": 456,
+        "xIni": 437,
+        "yFin": 140,
+        "yIni": 112
     },
     {
         "fila": 5,
         "localizacion": "platea1",
         "numero": 15,
-        "xFin": 476,
-        "xIni": 457,
-        "yFin": 147,
-        "yIni": 118
+        "xFin": 475,
+        "xIni": 456,
+        "yFin": 140,
+        "yIni": 112
     },
     {
         "fila": 5,
         "localizacion": "platea1",
         "numero": 17,
-        "xFin": 495,
-        "xIni": 476,
-        "yFin": 147,
-        "yIni": 118
+        "xFin": 494,
+        "xIni": 475,
+        "yFin": 140,
+        "yIni": 112
     },
     {
         "fila": 5,
         "localizacion": "platea1",
         "numero": 19,
-        "xFin": 514,
-        "xIni": 495,
-        "yFin": 147,
-        "yIni": 118
+        "xFin": 513,
+        "xIni": 494,
+        "yFin": 140,
+        "yIni": 112
     },
     {
         "fila": 5,
         "localizacion": "platea1",
         "numero": 21,
-        "xFin": 533,
-        "xIni": 514,
-        "yFin": 147,
-        "yIni": 118
+        "xFin": 532,
+        "xIni": 513,
+        "yFin": 140,
+        "yIni": 112
     },
     {
         "fila": 5,
         "localizacion": "platea1",
         "numero": 23,
-        "xFin": 552,
-        "xIni": 533,
-        "yFin": 147,
-        "yIni": 118
+        "xFin": 551,
+        "xIni": 532,
+        "yFin": 140,
+        "yIni": 112
     },
     {
         "fila": 5,
         "localizacion": "platea1",
         "numero": 25,
-        "xFin": 571,
-        "xIni": 552,
-        "yFin": 147,
-        "yIni": 118
+        "xFin": 570,
+        "xIni": 551,
+        "yFin": 140,
+        "yIni": 112
     },
     {
         "fila": 5,
         "localizacion": "platea1",
         "numero": 27,
-        "xFin": 590,
-        "xIni": 571,
-        "yFin": 147,
-        "yIni": 118
+        "xFin": 589,
+        "xIni": 570,
+        "yFin": 140,
+        "yIni": 112
     },
     {
         "fila": 5,
         "localizacion": "platea1",
         "numero": 29,
-        "xFin": 609,
-        "xIni": 590,
-        "yFin": 147,
-        "yIni": 118
+        "xFin": 608,
+        "xIni": 589,
+        "yFin": 140,
+        "yIni": 112
     },
     {
         "fila": 4,
         "localizacion": "platea1",
         "numero": 1,
-        "xFin": 343,
-        "xIni": 324,
-        "yFin": 176,
-        "yIni": 147
+        "xFin": 342,
+        "xIni": 323,
+        "yFin": 168,
+        "yIni": 140
     },
     {
         "fila": 4,
         "localizacion": "platea1",
         "numero": 3,
-        "xFin": 362,
-        "xIni": 343,
-        "yFin": 176,
-        "yIni": 147
+        "xFin": 361,
+        "xIni": 342,
+        "yFin": 168,
+        "yIni": 140
     },
     {
         "fila": 4,
         "localizacion": "platea1",
         "numero": 5,
-        "xFin": 381,
-        "xIni": 362,
-        "yFin": 176,
-        "yIni": 147
+        "xFin": 380,
+        "xIni": 361,
+        "yFin": 168,
+        "yIni": 140
     },
     {
         "fila": 4,
         "localizacion": "platea1",
         "numero": 7,
-        "xFin": 400,
-        "xIni": 381,
-        "yFin": 176,
-        "yIni": 147
+        "xFin": 399,
+        "xIni": 380,
+        "yFin": 168,
+        "yIni": 140
     },
     {
         "fila": 4,
         "localizacion": "platea1",
         "numero": 9,
-        "xFin": 419,
-        "xIni": 400,
-        "yFin": 176,
-        "yIni": 147
+        "xFin": 418,
+        "xIni": 399,
+        "yFin": 168,
+        "yIni": 140
     },
     {
         "fila": 4,
         "localizacion": "platea1",
         "numero": 11,
-        "xFin": 438,
-        "xIni": 419,
-        "yFin": 176,
-        "yIni": 147
+        "xFin": 437,
+        "xIni": 418,
+        "yFin": 168,
+        "yIni": 140
     },
     {
         "fila": 4,
         "localizacion": "platea1",
         "numero": 13,
-        "xFin": 457,
-        "xIni": 438,
-        "yFin": 176,
-        "yIni": 147
+        "xFin": 456,
+        "xIni": 437,
+        "yFin": 168,
+        "yIni": 140
     },
     {
         "fila": 4,
         "localizacion": "platea1",
         "numero": 15,
-        "xFin": 476,
-        "xIni": 457,
-        "yFin": 176,
-        "yIni": 147
+        "xFin": 475,
+        "xIni": 456,
+        "yFin": 168,
+        "yIni": 140
     },
     {
         "fila": 4,
         "localizacion": "platea1",
         "numero": 17,
-        "xFin": 495,
-        "xIni": 476,
-        "yFin": 176,
-        "yIni": 147
+        "xFin": 494,
+        "xIni": 475,
+        "yFin": 168,
+        "yIni": 140
     },
     {
         "fila": 4,
         "localizacion": "platea1",
         "numero": 19,
-        "xFin": 514,
-        "xIni": 495,
-        "yFin": 176,
-        "yIni": 147
+        "xFin": 513,
+        "xIni": 494,
+        "yFin": 168,
+        "yIni": 140
     },
     {
         "fila": 4,
         "localizacion": "platea1",
         "numero": 21,
-        "xFin": 533,
-        "xIni": 514,
-        "yFin": 176,
-        "yIni": 147
+        "xFin": 532,
+        "xIni": 513,
+        "yFin": 168,
+        "yIni": 140
     },
     {
         "fila": 4,
         "localizacion": "platea1",
         "numero": 23,
-        "xFin": 552,
-        "xIni": 533,
-        "yFin": 176,
-        "yIni": 147
+        "xFin": 551,
+        "xIni": 532,
+        "yFin": 168,
+        "yIni": 140
     },
     {
         "fila": 4,
         "localizacion": "platea1",
         "numero": 25,
-        "xFin": 571,
-        "xIni": 552,
-        "yFin": 176,
-        "yIni": 147
+        "xFin": 570,
+        "xIni": 551,
+        "yFin": 168,
+        "yIni": 140
     },
     {
         "fila": 4,
         "localizacion": "platea1",
         "numero": 27,
-        "xFin": 590,
-        "xIni": 571,
-        "yFin": 176,
-        "yIni": 147
+        "xFin": 589,
+        "xIni": 570,
+        "yFin": 168,
+        "yIni": 140
     },
     {
         "fila": 4,
         "localizacion": "platea1",
         "numero": 29,
-        "xFin": 609,
-        "xIni": 590,
-        "yFin": 176,
-        "yIni": 147
+        "xFin": 608,
+        "xIni": 589,
+        "yFin": 168,
+        "yIni": 140
     },
     {
         "fila": 3,
         "localizacion": "platea1",
         "numero": 1,
-        "xFin": 343,
-        "xIni": 324,
-        "yFin": 205,
-        "yIni": 176
+        "xFin": 342,
+        "xIni": 323,
+        "yFin": 196,
+        "yIni": 168
     },
     {
         "fila": 3,
         "localizacion": "platea1",
         "numero": 3,
-        "xFin": 362,
-        "xIni": 343,
-        "yFin": 205,
-        "yIni": 176
+        "xFin": 361,
+        "xIni": 342,
+        "yFin": 196,
+        "yIni": 168
     },
     {
         "fila": 3,
         "localizacion": "platea1",
         "numero": 5,
-        "xFin": 381,
-        "xIni": 362,
-        "yFin": 205,
-        "yIni": 176
+        "xFin": 380,
+        "xIni": 361,
+        "yFin": 196,
+        "yIni": 168
     },
     {
         "fila": 3,
         "localizacion": "platea1",
         "numero": 7,
-        "xFin": 400,
-        "xIni": 381,
-        "yFin": 205,
-        "yIni": 176
+        "xFin": 399,
+        "xIni": 380,
+        "yFin": 196,
+        "yIni": 168
     },
     {
         "fila": 3,
         "localizacion": "platea1",
         "numero": 9,
-        "xFin": 419,
-        "xIni": 400,
-        "yFin": 205,
-        "yIni": 176
+        "xFin": 418,
+        "xIni": 399,
+        "yFin": 196,
+        "yIni": 168
     },
     {
         "fila": 3,
         "localizacion": "platea1",
         "numero": 11,
-        "xFin": 438,
-        "xIni": 419,
-        "yFin": 205,
-        "yIni": 176
+        "xFin": 437,
+        "xIni": 418,
+        "yFin": 196,
+        "yIni": 168
     },
     {
         "fila": 3,
         "localizacion": "platea1",
         "numero": 13,
-        "xFin": 457,
-        "xIni": 438,
-        "yFin": 205,
-        "yIni": 176
+        "xFin": 456,
+        "xIni": 437,
+        "yFin": 196,
+        "yIni": 168
     },
     {
         "fila": 3,
         "localizacion": "platea1",
         "numero": 15,
-        "xFin": 476,
-        "xIni": 457,
-        "yFin": 205,
-        "yIni": 176
+        "xFin": 475,
+        "xIni": 456,
+        "yFin": 196,
+        "yIni": 168
     },
     {
         "fila": 3,
         "localizacion": "platea1",
         "numero": 17,
-        "xFin": 495,
-        "xIni": 476,
-        "yFin": 205,
-        "yIni": 176
+        "xFin": 494,
+        "xIni": 475,
+        "yFin": 196,
+        "yIni": 168
     },
     {
         "fila": 3,
         "localizacion": "platea1",
         "numero": 19,
-        "xFin": 514,
-        "xIni": 495,
-        "yFin": 205,
-        "yIni": 176
+        "xFin": 513,
+        "xIni": 494,
+        "yFin": 196,
+        "yIni": 168
     },
     {
         "fila": 3,
         "localizacion": "platea1",
         "numero": 21,
-        "xFin": 533,
-        "xIni": 514,
-        "yFin": 205,
-        "yIni": 176
+        "xFin": 532,
+        "xIni": 513,
+        "yFin": 196,
+        "yIni": 168
     },
     {
         "fila": 3,
         "localizacion": "platea1",
         "numero": 23,
-        "xFin": 552,
-        "xIni": 533,
-        "yFin": 205,
-        "yIni": 176
+        "xFin": 551,
+        "xIni": 532,
+        "yFin": 196,
+        "yIni": 168
     },
     {
         "fila": 3,
         "localizacion": "platea1",
         "numero": 25,
-        "xFin": 571,
-        "xIni": 552,
-        "yFin": 205,
-        "yIni": 176
+        "xFin": 570,
+        "xIni": 551,
+        "yFin": 196,
+        "yIni": 168
     },
     {
         "fila": 3,
         "localizacion": "platea1",
         "numero": 27,
-        "xFin": 590,
-        "xIni": 571,
-        "yFin": 205,
-        "yIni": 176
+        "xFin": 589,
+        "xIni": 570,
+        "yFin": 196,
+        "yIni": 168
     },
     {
         "fila": 3,
         "localizacion": "platea1",
         "numero": 29,
-        "xFin": 609,
-        "xIni": 590,
-        "yFin": 205,
-        "yIni": 176
+        "xFin": 608,
+        "xIni": 589,
+        "yFin": 196,
+        "yIni": 168
     },
     {
         "fila": 2,
         "localizacion": "platea1",
         "numero": 1,
-        "xFin": 343,
-        "xIni": 324,
-        "yFin": 234,
-        "yIni": 205
+        "xFin": 342,
+        "xIni": 323,
+        "yFin": 224,
+        "yIni": 196
     },
     {
         "fila": 2,
         "localizacion": "platea1",
         "numero": 3,
-        "xFin": 362,
-        "xIni": 343,
-        "yFin": 234,
-        "yIni": 205
+        "xFin": 361,
+        "xIni": 342,
+        "yFin": 224,
+        "yIni": 196
     },
     {
         "fila": 2,
         "localizacion": "platea1",
         "numero": 5,
-        "xFin": 381,
-        "xIni": 362,
-        "yFin": 234,
-        "yIni": 205
+        "xFin": 380,
+        "xIni": 361,
+        "yFin": 224,
+        "yIni": 196
     },
     {
         "fila": 2,
         "localizacion": "platea1",
         "numero": 7,
-        "xFin": 400,
-        "xIni": 381,
-        "yFin": 234,
-        "yIni": 205
+        "xFin": 399,
+        "xIni": 380,
+        "yFin": 224,
+        "yIni": 196
     },
     {
         "fila": 2,
         "localizacion": "platea1",
         "numero": 9,
-        "xFin": 419,
-        "xIni": 400,
-        "yFin": 234,
-        "yIni": 205
+        "xFin": 418,
+        "xIni": 399,
+        "yFin": 224,
+        "yIni": 196
     },
     {
         "fila": 2,
         "localizacion": "platea1",
         "numero": 11,
-        "xFin": 438,
-        "xIni": 419,
-        "yFin": 234,
-        "yIni": 205
+        "xFin": 437,
+        "xIni": 418,
+        "yFin": 224,
+        "yIni": 196
     },
     {
         "fila": 2,
         "localizacion": "platea1",
         "numero": 13,
-        "xFin": 457,
-        "xIni": 438,
-        "yFin": 234,
-        "yIni": 205
+        "xFin": 456,
+        "xIni": 437,
+        "yFin": 224,
+        "yIni": 196
     },
     {
         "fila": 2,
         "localizacion": "platea1",
         "numero": 15,
-        "xFin": 476,
-        "xIni": 457,
-        "yFin": 234,
-        "yIni": 205
+        "xFin": 475,
+        "xIni": 456,
+        "yFin": 224,
+        "yIni": 196
     },
     {
         "fila": 2,
         "localizacion": "platea1",
         "numero": 17,
-        "xFin": 495,
-        "xIni": 476,
-        "yFin": 234,
-        "yIni": 205
+        "xFin": 494,
+        "xIni": 475,
+        "yFin": 224,
+        "yIni": 196
     },
     {
         "fila": 2,
         "localizacion": "platea1",
         "numero": 19,
-        "xFin": 514,
-        "xIni": 495,
-        "yFin": 234,
-        "yIni": 205
+        "xFin": 513,
+        "xIni": 494,
+        "yFin": 224,
+        "yIni": 196
     },
     {
         "fila": 2,
         "localizacion": "platea1",
         "numero": 21,
-        "xFin": 533,
-        "xIni": 514,
-        "yFin": 234,
-        "yIni": 205
+        "xFin": 532,
+        "xIni": 513,
+        "yFin": 224,
+        "yIni": 196
     },
     {
         "fila": 2,
         "localizacion": "platea1",
         "numero": 23,
-        "xFin": 552,
-        "xIni": 533,
-        "yFin": 234,
-        "yIni": 205
+        "xFin": 551,
+        "xIni": 532,
+        "yFin": 224,
+        "yIni": 196
     },
     {
         "fila": 2,
         "localizacion": "platea1",
         "numero": 25,
-        "xFin": 571,
-        "xIni": 552,
-        "yFin": 234,
-        "yIni": 205
+        "xFin": 570,
+        "xIni": 551,
+        "yFin": 224,
+        "yIni": 196
     },
     {
         "fila": 2,
         "localizacion": "platea1",
         "numero": 27,
-        "xFin": 590,
-        "xIni": 571,
-        "yFin": 234,
-        "yIni": 205
+        "xFin": 589,
+        "xIni": 570,
+        "yFin": 224,
+        "yIni": 196
     },
     {
         "fila": 2,
         "localizacion": "platea1",
         "numero": 29,
-        "xFin": 609,
-        "xIni": 590,
-        "yFin": 234,
-        "yIni": 205
+        "xFin": 608,
+        "xIni": 589,
+        "yFin": 224,
+        "yIni": 196
     },
     {
         "fila": 1,
         "localizacion": "platea1",
         "numero": 1,
-        "xFin": 343,
-        "xIni": 324,
-        "yFin": 263,
-        "yIni": 234
+        "xFin": 342,
+        "xIni": 323,
+        "yFin": 252,
+        "yIni": 224
     },
     {
         "fila": 1,
         "localizacion": "platea1",
         "numero": 3,
-        "xFin": 362,
-        "xIni": 343,
-        "yFin": 263,
-        "yIni": 234
+        "xFin": 361,
+        "xIni": 342,
+        "yFin": 252,
+        "yIni": 224
     },
     {
         "fila": 1,
         "localizacion": "platea1",
         "numero": 5,
-        "xFin": 381,
-        "xIni": 362,
-        "yFin": 263,
-        "yIni": 234
+        "xFin": 380,
+        "xIni": 361,
+        "yFin": 252,
+        "yIni": 224
     },
     {
         "fila": 1,
         "localizacion": "platea1",
         "numero": 7,
-        "xFin": 400,
-        "xIni": 381,
-        "yFin": 263,
-        "yIni": 234
+        "xFin": 399,
+        "xIni": 380,
+        "yFin": 252,
+        "yIni": 224
     },
     {
         "fila": 1,
         "localizacion": "platea1",
         "numero": 9,
-        "xFin": 419,
-        "xIni": 400,
-        "yFin": 263,
-        "yIni": 234
+        "xFin": 418,
+        "xIni": 399,
+        "yFin": 252,
+        "yIni": 224
     },
     {
         "fila": 1,
         "localizacion": "platea1",
         "numero": 11,
-        "xFin": 438,
-        "xIni": 419,
-        "yFin": 263,
-        "yIni": 234
+        "xFin": 437,
+        "xIni": 418,
+        "yFin": 252,
+        "yIni": 224
     },
     {
         "fila": 1,
         "localizacion": "platea1",
         "numero": 13,
-        "xFin": 457,
-        "xIni": 438,
-        "yFin": 263,
-        "yIni": 234
+        "xFin": 456,
+        "xIni": 437,
+        "yFin": 252,
+        "yIni": 224
     },
     {
         "fila": 1,
         "localizacion": "platea1",
         "numero": 15,
-        "xFin": 476,
-        "xIni": 457,
-        "yFin": 263,
-        "yIni": 234
+        "xFin": 475,
+        "xIni": 456,
+        "yFin": 252,
+        "yIni": 224
     },
     {
         "fila": 1,
         "localizacion": "platea1",
         "numero": 17,
-        "xFin": 495,
-        "xIni": 476,
-        "yFin": 263,
-        "yIni": 234
+        "xFin": 494,
+        "xIni": 475,
+        "yFin": 252,
+        "yIni": 224
     },
     {
         "fila": 1,
         "localizacion": "platea1",
         "numero": 19,
-        "xFin": 514,
-        "xIni": 495,
-        "yFin": 263,
-        "yIni": 234
+        "xFin": 513,
+        "xIni": 494,
+        "yFin": 252,
+        "yIni": 224
     },
     {
         "fila": 1,
         "localizacion": "platea1",
         "numero": 21,
-        "xFin": 533,
-        "xIni": 514,
-        "yFin": 263,
-        "yIni": 234
+        "xFin": 532,
+        "xIni": 513,
+        "yFin": 252,
+        "yIni": 224
     },
     {
         "fila": 1,
         "localizacion": "platea1",
         "numero": 23,
-        "xFin": 552,
-        "xIni": 533,
-        "yFin": 263,
-        "yIni": 234
+        "xFin": 551,
+        "xIni": 532,
+        "yFin": 252,
+        "yIni": 224
     },
     {
         "fila": 1,
         "localizacion": "platea1",
         "numero": 25,
-        "xFin": 571,
-        "xIni": 552,
-        "yFin": 263,
-        "yIni": 234
+        "xFin": 570,
+        "xIni": 551,
+        "yFin": 252,
+        "yIni": 224
     },
     {
         "fila": 1,
         "localizacion": "platea1",
         "numero": 27,
-        "xFin": 590,
-        "xIni": 571,
-        "yFin": 263,
-        "yIni": 234
+        "xFin": 589,
+        "xIni": 570,
+        "yFin": 252,
+        "yIni": 224
     },
     {
         "fila": 1,
         "localizacion": "platea1",
         "numero": 29,
-        "xFin": 609,
-        "xIni": 590,
-        "yFin": 263,
-        "yIni": 234
-    }    
+        "xFin": 608,
+        "xIni": 589,
+        "yFin": 252,
+        "yIni": 224
+    }
 ]
