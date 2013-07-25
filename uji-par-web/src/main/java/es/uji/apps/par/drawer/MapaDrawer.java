@@ -26,7 +26,7 @@ import es.uji.apps.par.services.ButacasService;
 @Service
 public class MapaDrawer
 {
-    private static final String[] LOCALIZACIONES = new String[] { "anfiteatro", "platea1" };
+    private static final String[] LOCALIZACIONES = new String[] { "anfiteatro", "platea1", "platea2" };
 
     @InjectParam
     ButacasService butacasService;
