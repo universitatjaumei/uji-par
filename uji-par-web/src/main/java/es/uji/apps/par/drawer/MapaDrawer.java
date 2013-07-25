@@ -26,6 +26,8 @@ import es.uji.apps.par.services.ButacasService;
 @Service
 public class MapaDrawer
 {
+    private static final String[] LOCALIZACIONES = new String[] { "anfiteatro", "platea1" };
+
     @InjectParam
     ButacasService butacasService;
 
@@ -48,27 +50,36 @@ public class MapaDrawer
     {
         if (datosButacas == null)
         {
-            List<DatosButaca> listaButacas = parseaJsonButacas();
-
             datosButacas = new HashMap<String, DatosButaca>();
-            for (DatosButaca datosButaca : listaButacas)
+
+            for (String localizacion : LOCALIZACIONES)
             {
-                datosButacas.put(
-                        String.format("%s_%d_%d", datosButaca.getLocalizacion(), datosButaca.getFila(),
-                                datosButaca.getNumero()), datosButaca);
+                loadJsonLocalizacion(localizacion);
             }
         }
     }
 
-    private List<DatosButaca> parseaJsonButacas()
+    private void loadJsonLocalizacion(String localizacion)
+    {
+        List<DatosButaca> listaButacas = parseaJsonButacas(localizacion);
+
+        for (DatosButaca datosButaca : listaButacas)
+        {
+            datosButacas.put(
+                    String.format("%s_%d_%d", datosButaca.getLocalizacion(), datosButaca.getFila(),
+                            datosButaca.getNumero()), datosButaca);
+        }
+    }
+
+    private List<DatosButaca> parseaJsonButacas(String localizacion)
     {
         Gson gson = new Gson();
         Type fooType = new TypeToken<List<DatosButaca>>()
         {
         }.getType();
 
-        InputStreamReader jsonReader = new InputStreamReader(
-                MapaDrawer.class.getResourceAsStream("/butacas/anfiteatro.json"));
+        InputStreamReader jsonReader = new InputStreamReader(MapaDrawer.class.getResourceAsStream("/butacas/"
+                + localizacion + ".json"));
 
         List<DatosButaca> listaButacas = gson.fromJson(jsonReader, fooType);
         return listaButacas;
@@ -109,7 +120,11 @@ public class MapaDrawer
         if (imagenes == null)
         {
             imagenes = new HashMap<String, BufferedImage>();
-            loadImage(imagesPath, "anfiteatro");
+
+            for (String localizacion : LOCALIZACIONES)
+            {
+                loadImage(imagesPath, localizacion);
+            }
         }
 
         if (butacaOcupada == null)
