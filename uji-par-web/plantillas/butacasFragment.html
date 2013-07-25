@@ -27,18 +27,20 @@
 	<input type="hidden" name="idSesion" th:value="${sesion.id}" value="" />
 	<input type="hidden" name="butacasSeleccionadas" value="[]" />
 	
-	<span class="titulo-tipo" th:text="#{localizacion}">Localización</span>
-	<select id="localizacion">
-		<option value="platea1">Platea 1</option>
-		<option value="platea2">Platea 2</option>
-		<option value="anfiteatro">Anfiteatro</option>
-	</select>
-
-	<span class="titulo-tipo" th:text="#{tipo}">Tipo de entrada</span>
-	<select id="tipo">
-		<option value="normal" th:text="#{tipoNormal}">Normal</option>
-		<option value="descuento" th:text="#{tipoDescuento}">Descuento</option>
-	</select>
+	<div id="filtros">
+		<span class="titulo-tipo" th:text="#{localizacion}">Localización</span>
+		<select id="localizacion">
+			<option value="platea1">Platea 1</option>
+			<option value="platea2">Platea 2</option>
+			<option value="anfiteatro">Anfiteatro</option>
+		</select>
+	
+		<span class="titulo-tipo" th:text="#{tipo}">Tipo de entrada</span>
+		<select id="tipo">
+			<option value="normal" th:text="#{tipoNormal}">Normal</option>
+			<option value="descuento" th:text="#{tipoDescuento}">Descuento</option>
+		</select>
+	</div>
 	
 	<div id="localizacion_anfiteatro" class="entrada-plano">
 		
