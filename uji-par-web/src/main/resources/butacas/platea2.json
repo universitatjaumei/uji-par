@@ -1,4 +1,31 @@
 [
+	{
+        "fila": 19,
+        "localizacion": "discapacitados2",
+        "numero": 19,
+        "xFin": 494,
+        "xIni": 475,
+        "yFin": 28,
+        "yIni": 0
+    },
+    {
+        "fila": 19,
+        "localizacion": "discapacitados2",
+        "numero": 21,
+        "xFin": 513,
+        "xIni": 494,
+        "yFin": 28,
+        "yIni": 0
+    },
+    {
+        "fila": 19,
+        "localizacion": "discapacitados2",
+        "numero": 23,
+        "xFin": 532,
+        "xIni": 513,
+        "yFin": 28,
+        "yIni": 0
+    },
     {
         "fila": 18,
         "localizacion": "platea2",

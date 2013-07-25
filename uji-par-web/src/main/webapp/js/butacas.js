@@ -43,11 +43,24 @@ Butacas = (function() {
 		return false;
 	}
 	
+	function imagenButaca(butaca)
+	{
+		if (esDiscapacitado(butaca.localizacion))
+			return "seleccionadaDiscapacitado.png";
+		else
+			return "seleccionada.png";
+	}
+	
 	function muestraButacaSeleccionada(butaca) {
-		var butacaSeleccionada = $('<img src="' + baseUrl + '/img/seleccionada.png" class="butaca-seleccionada"/>');
+		var butacaSeleccionada = $('<img src="' + baseUrl + '/img/' + imagenButaca(butaca) + '" class="butaca-seleccionada"/>');
 		butacaSeleccionada.css("left", butaca.x + "px");
 		butacaSeleccionada.css("top", butaca.y + "px");
-		$('#localizacion_' + butaca.localizacion).append(butacaSeleccionada);
+		
+		console.log(butacaSeleccionada);
+		
+		var idDiv = idDivLocalizacion(butaca.localizacion);
+		
+		$('#localizacion_' + idDiv).append(butacaSeleccionada);
 	
 		butacaSeleccionada.click(function() {
 			// console.log("Click sobre seleccionada: ", butaca);
@@ -83,7 +96,7 @@ Butacas = (function() {
 	
 	function refrescaImagen(localizacion)
 	{
-		var imagen = $("#imagen_" + localizacion);
+		var imagen = $("#imagen_" + idDivLocalizacion(localizacion));
 		
 		var url = imagen.attr("src").replace(/\?.*/, "");
 		
@@ -130,6 +143,23 @@ Butacas = (function() {
 		}
 	
 		refrescaEstadoButacas();
+	}
+	
+	function esDiscapacitado(localizacion)
+	{
+		return localizacion.indexOf('discapacitados') == 0;
+	}
+	
+	function idDivLocalizacion(localizacion)
+	{
+		if (localizacion == 'discapacitados1')
+			return 'platea1';
+		else if (localizacion == 'discapacitados2')
+			return 'platea2';
+		else if (localizacion == 'discapacitados3')
+			return 'anfiteatro';
+		else 
+			return localizacion;
 	}
 	
 	function refrescaEstadoButacas()

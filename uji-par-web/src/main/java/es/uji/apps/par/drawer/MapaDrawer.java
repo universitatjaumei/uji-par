@@ -32,8 +32,21 @@ public class MapaDrawer
     ButacasService butacasService;
 
     private BufferedImage butacaOcupada;
+    private BufferedImage butacaOcupadaDiscapacitado;
+
+    // Para cuando necesitamos saber el (x, y) que ocupa la butaca en la imagen
     private Map<String, DatosButaca> datosButacas;
     private Map<String, BufferedImage> imagenes;
+
+    private String[] getLocalizacionesEnImagen(String localizacion)
+    {
+        if (localizacion.equals("anfiteatro"))
+            return new String[] { "anfiteatro", "discapacitados3" };
+        else if (localizacion.equals("platea1"))
+            return new String[] { "platea1", "discapacitados1" };
+        else
+            return new String[] { "platea2", "discapacitados2" };
+    }
 
     public ByteArrayOutputStream generaImagen(String imagesPath, long idSesion, String codigoLocalizacion)
             throws IOException
@@ -93,26 +106,40 @@ public class MapaDrawer
         return bos;
     }
 
-    private BufferedImage dibujaButacas(long idSesion, String codigoLocalizacion)
+    private BufferedImage dibujaButacas(long idSesion, String localizacionDeImagen)
     {
-        BufferedImage imgButacas = imagenes.get(codigoLocalizacion);
+        BufferedImage imgButacas = imagenes.get(localizacionDeImagen);
         BufferedImage imgResult = new BufferedImage(imgButacas.getWidth(), imgButacas.getHeight(), imgButacas.getType());
         Graphics2D graphics = imgResult.createGraphics();
         graphics.drawImage(imgButacas, 0, 0, null);
 
-        List<ButacaDTO> butacas = butacasService.getButacas(idSesion, codigoLocalizacion);
-
-        for (ButacaDTO butacaDTO : butacas)
+        for (String localizacion : getLocalizacionesEnImagen(localizacionDeImagen))
         {
-            String key = String.format("%s_%s_%s", butacaDTO.getParLocalizacion().getCodigo(), butacaDTO.getFila(),
-                    butacaDTO.getNumero());
-            DatosButaca butaca = datosButacas.get(key);
+            List<ButacaDTO> butacas = butacasService.getButacas(idSesion, localizacion);
 
-            // Necesitamos saber el (x, y) que ocupa la butaca en la imagen
-            graphics.drawImage(butacaOcupada, butaca.getxIni(), butaca.getyIni(), null);
+            for (ButacaDTO butacaDTO : butacas)
+            {
+                String key = String.format("%s_%s_%s", butacaDTO.getParLocalizacion().getCodigo(), butacaDTO.getFila(),
+                        butacaDTO.getNumero());
+                DatosButaca butaca = datosButacas.get(key);
+
+                BufferedImage imagenOcupada;
+
+                if (esDiscapacitado(butaca))
+                    imagenOcupada = butacaOcupadaDiscapacitado;
+                else
+                    imagenOcupada = butacaOcupada;
+
+                graphics.drawImage(imagenOcupada, butaca.getxIni(), butaca.getyIni(), null);
+            }
         }
 
         return imgResult;
+    }
+
+    private boolean esDiscapacitado(DatosButaca butaca)
+    {
+        return butaca.getLocalizacion().startsWith("discapacitados");
     }
 
     private void cargaImagenes(String imagesPath) throws IOException
@@ -129,8 +156,12 @@ public class MapaDrawer
 
         if (butacaOcupada == null)
         {
-            File f = new File(imagesPath + "/img/ocupada.png");
-            butacaOcupada = ImageIO.read(f);
+            butacaOcupada = ImageIO.read(new File(imagesPath + "/img/ocupada.png"));
+        }
+
+        if (butacaOcupadaDiscapacitado == null)
+        {
+            butacaOcupadaDiscapacitado = ImageIO.read(new File(imagesPath + "/img/ocupadaDiscapacitado.png"));
         }
     }
 

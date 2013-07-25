@@ -1,7 +1,7 @@
 [
     {
         "fila": 9,
-        "localizacion": "platea1",
+        "localizacion": "discapacitados1",
         "numero": 30,
         "xFin": 19,
         "xIni": 0,
@@ -10,7 +10,7 @@
     },
     {
         "fila": 9,
-        "localizacion": "platea1",
+        "localizacion": "discapacitados1",
         "numero": 28,
         "xFin": 38,
         "xIni": 19,
@@ -19,19 +19,10 @@
     },
     {
         "fila": 9,
-        "localizacion": "platea1",
+        "localizacion": "discapacitados1",
         "numero": 26,
         "xFin": 57,
         "xIni": 38,
-        "yFin": 28,
-        "yIni": 0
-    },
-    {
-        "fila": 9,
-        "localizacion": "platea1",
-        "numero": 24,
-        "xFin": 76,
-        "xIni": 57,
         "yFin": 28,
         "yIni": 0
     },

@@ -1,5 +1,14 @@
 [
     {
+        "fila": 9,
+        "localizacion": "discapacitados3",
+        "numero": 1,
+        "xIni": 19,
+        "yIni": 0,
+        "xFin": 38,
+        "yFin": 29
+    },
+    {
         "fila": 8,
         "localizacion": "anfiteatro",
         "numero": 18,
