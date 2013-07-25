@@ -55,7 +55,7 @@ Ext.define('Paranimf.controller.Taquilla', {
          },    
          'formComprar #pagar': {
         	 click: this.pagar
-         },           
+         }           
          
          /*
          'gridPlantillas button[action=add]': {
@@ -110,13 +110,21 @@ Ext.define('Paranimf.controller.Taquilla', {
 		   
 		   me.butacasSeleccionadas = butacas;
 		   
-		   var layout = me.getFormComprarCards().getLayout();
-		   layout.setActiveItem(layout.getNext());
-		   
-		   me.rellenaDatosPasoPagar(butacas);
-		   
-		   me.cambiarEstadoBotonesComprar();
+		   me.avanzarAPasoDePago(butacas);
 	  });      
+   },
+   
+   avanzarAPasoDePago: function (butacas)
+   {
+	   var layout = this.getFormComprarCards().getLayout();
+	   layout.setActiveItem(layout.getNext());
+	   
+	   if (this.entradasNumeradas())
+		   this.rellenaDatosPasoPagar(this.sumaImportes(butacas).toFixed(2));
+	   else
+		   this.rellenaDatosPasoPagar('200.10');
+	   
+	   this.cambiarEstadoBotonesComprar();
    },
    
    pagar: function() {
@@ -153,12 +161,16 @@ Ext.define('Paranimf.controller.Taquilla', {
 	   return total;
    },
    
-   rellenaDatosPasoPagar: function(butacas) {
-	 Ext.getCmp('total').setText(UI.i18n.field.total + ": " + this.sumaImportes(butacas).toFixed(2) + " €");  
+   rellenaDatosPasoPagar: function(importe) {
+	 Ext.getCmp('total').setText(UI.i18n.field.total + ": " + importe + " €");  
    },
    
    cerrarComprar: function() {
 	   this.getFormComprar().up('window').close();  
+   },
+   
+   entradasNumeradas: function() {
+	   return Ext.getCmp('pasoSeleccionar').getLayout().activeItem.id == 'iframeButacas';
    },
    
    comprarAnterior: function() {
@@ -187,16 +199,29 @@ Ext.define('Paranimf.controller.Taquilla', {
 	   
 	   if (pasoActual == 'pasoSeleccionar')
 	   {
-		   // Llámamos al iframe para que nos pase las butacas seleccionadas
-		   pm({
-			   target: window.frames['iframeButacas'],
-			   type:'butacas', 
-			   data:{}
-		   });
+		   if (this.entradasNumeradas())
+			   this.comprarSiguienteNumeradas();
+		   else
+			   this.comprarSiguienteSinNumerar();
 	   }
-	
+	   
 	   this.cambiarEstadoBotonesComprar();
    },
+   
+   comprarSiguienteNumeradas: function() {
+	   console.log('Siguiente numeradas');
+
+	   // Llamamos al iframe para que nos pase las butacas seleccionadas
+	   pm({
+		   target: window.frames['iframeButacas'],
+		   type:'butacas', 
+		   data:{}
+	   });
+   },   
+   
+   comprarSiguienteSinNumerar: function() {
+	   this.avanzarAPasoDePago();
+   }, 
    
    cambiarEstadoBotonesComprar: function () {
 	   var layout = this.getFormComprarCards().getLayout();
@@ -221,8 +246,9 @@ Ext.define('Paranimf.controller.Taquilla', {
    },
 
    comprar: function(button, event, opts) {
-	 var selectedRecord = this.getGridSesionesTaquilla().getSelectedRecord();
-	 this.getGridSesionesTaquilla().showComprarWindow(selectedRecord.data['id']);
+	 var evento = this.getGridEventosTaquilla().getSelectedRecord();
+	 var sesion = this.getGridSesionesTaquilla().getSelectedRecord();
+	 this.getGridSesionesTaquilla().showComprarWindow(sesion.data['id'], evento.data['asientosNumerados']);
    }
    
    /*

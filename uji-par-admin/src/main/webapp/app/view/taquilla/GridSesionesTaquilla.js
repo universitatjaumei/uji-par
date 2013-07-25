@@ -60,12 +60,22 @@ Ext.define('Paranimf.view.taquilla.GridSesionesTaquilla', {
     //this.getDockedItems('toolbar[dock=top]')[0].hide();
   },
 
-  showComprarWindow: function(idSesion) {
+  showComprarWindow: function(idSesion, asientosNumerados) {
 	console.log("showComprarWindow: ", idSesion	);  
 	  
 	this.createModalWindow('formComprar', 700, 700).show();
 
-	Ext.getDom('iframeButacas').src = urlPublic + "/rest/entrada/butacasFragment/" + idSesion;
+	var cardLayout = Ext.getCmp('pasoSeleccionar').getLayout();
+	
+	if (asientosNumerados)
+	{
+		cardLayout.setActiveItem(0);
+		Ext.getDom('iframeButacas').src = urlPublic + "/rest/entrada/butacasFragment/" + idSesion;
+	}
+	else
+	{
+		cardLayout.setActiveItem(1);
+	}
   }
 
 });

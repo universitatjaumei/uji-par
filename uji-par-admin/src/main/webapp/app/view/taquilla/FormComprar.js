@@ -47,14 +47,19 @@ Ext.define('Paranimf.view.taquilla.FormComprar', {
 	   items: [{
 		        id    : 'pasoSeleccionar',
 		        xtype : 'panel',
+		        layout: 'card',
 		        items: [{
-			        id    : 'iframeButacas',
-			        xtype : 'component',
-			        autoEl : {
-			            tag : 'iframe',
-			            src : ''
-			        }
-		        }]
+					        id    : 'iframeButacas',
+					        xtype : 'component',
+					        autoEl : {
+					            tag : 'iframe',
+					            src : ''
+					        }
+				        },
+				        {
+					        id    : 'noNumeradas',
+					        html: '<h1>Comprar entradas no numeradas</h1>'
+					    }]
 		   },
 	       {
 		       	id: 'pasoPagar',
