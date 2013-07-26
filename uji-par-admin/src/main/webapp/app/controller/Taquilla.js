@@ -119,6 +119,8 @@ Ext.define('Paranimf.controller.Taquilla', {
       });
       
 	  var me = this;
+	  
+	  this.butacasSeleccionadas = [];
 
 	  pm.bind('respuestaButacas', function(butacas){
 		   console.log('Respuesta:', butacas);
