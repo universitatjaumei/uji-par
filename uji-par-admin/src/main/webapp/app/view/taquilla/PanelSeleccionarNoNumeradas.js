@@ -37,26 +37,32 @@ Ext.define('Paranimf.view.taquilla.PanelSeleccionarNoNumeradas', {
 			       {
 			    	   name: 'anfiteatro',
 			    	   xtype: 'panelNumeroEntradas',
+			    	   hidden: true
 			       },
 			       {
 			    	   name: 'platea1',
 			    	   xtype: 'panelNumeroEntradas',
+			    	   hidden: true
 			       },
 			       {
 			    	   name: 'platea2',
 			    	   xtype: 'panelNumeroEntradas',
+			    	   hidden: true
 			       },
 			       {
 			    	   name: 'discapacitados1',
 			    	   xtype: 'panelNumeroEntradas',
+			    	   hidden: true
 			       },
 			       {
 			    	   name: 'discapacitados2',
 			    	   xtype: 'panelNumeroEntradas',
+			    	   hidden: true
 			       },
 			       {
 			    	   name: 'discapacitados3',
 			    	   xtype: 'panelNumeroEntradas',
+			    	   hidden: true
 			       }	       
 			]
 		}
