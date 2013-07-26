@@ -3,6 +3,7 @@ Ext.define('Paranimf.view.taquilla.PanelTaquilla', {
   alias: 'widget.panelTaquilla',
   autoScroll: true,
   border: false,
+  frame: false,
 
   items: [{
     xtype: 'gridEventosTaquilla'

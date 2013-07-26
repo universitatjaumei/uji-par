@@ -1,7 +1,8 @@
 Ext.define('Paranimf.controller.Taquilla', {
    extend: 'Ext.app.Controller',
 
-   views: ['EditModalWindow', 'EditBaseForm', 'EditBaseGrid', 'taquilla.PanelTaquilla', 'taquilla.GridEventosTaquilla', 'taquilla.GridSesionesTaquilla', 'taquilla.FormComprar'],
+   views: ['EditModalWindow', 'EditBaseForm', 'EditBaseGrid', 'taquilla.PanelTaquilla', 'taquilla.GridEventosTaquilla', 'taquilla.GridSesionesTaquilla', 
+           'taquilla.FormComprar', 'taquilla.PanelSeleccionarNoNumeradas', 'taquilla.PanelNumeroEntradas'],
    stores: ['EventosTaquilla', 'SesionesTaquilla'],
    models: ['Evento'],
 
@@ -25,7 +26,15 @@ Ext.define('Paranimf.controller.Taquilla', {
       {
        	ref: 'formComprarCards',
         selector: '#formComprarCards'
-      }      
+      },
+      {
+       	ref: 'comboLocalizacionNoNumeradas',
+        selector: 'panelSeleccionarNoNumeradas combobox[name=localizacion]'
+      },
+      {
+       	ref: 'localizacionesNoNumeradas',
+        selector: 'panelSeleccionarNoNumeradas panel[name=localizaciones]'
+      }        
    ],
 
    init: function() {
@@ -55,7 +64,13 @@ Ext.define('Paranimf.controller.Taquilla', {
          },    
          'formComprar #pagar': {
         	 click: this.pagar
-         }           
+         },
+         'panelSeleccionarNoNumeradas': {
+             afterrender: this.panelSeleccionarNoNumeradasCreado
+         },
+         'panelSeleccionarNoNumeradas combobox[name=localizacion]': {
+        	 select: this.localizacionNoNumeradasCambiada
+         }          
          
          /*
          'gridPlantillas button[action=add]': {
@@ -114,17 +129,75 @@ Ext.define('Paranimf.controller.Taquilla', {
 	  });      
    },
    
-   avanzarAPasoDePago: function (butacas)
-   {
+   localizacionNoNumeradasCambiada: function() {
+	   var localizacion = this.getComboLocalizacionNoNumeradas().getValue();
+	   
+	   this.muestraLocalizacionesNoNumerada(localizacion);
+	   
+	   //console.log(localizacion.getValue());
+   },
+   
+   muestraLocalizacionesNoNumerada: function(localizacion) {
+	   /*
+	   var children = this.getLocalizacionesNoNumeradas().getEl().down('*');
+	   Ext.each(children,function(child){child.hide();});
+	   */
+	   
+	   //console.log(this.getLocalizacionesNoNumeradas().items);
+	   
+	   this.getLocalizacionesNoNumeradas().items.each(function(c){
+		   
+		   console.log('c.name:' + c.name);
+		   console.log('localizacion:' + localizacion);
+		   
+		   if (c.name == localizacion)
+			   c.show();
+		   else
+			   c.hide();
+	   });
+   },
+   
+   panelSeleccionarNoNumeradasCreado: function() {
+	   
+	   var me = this;
+	   var idSesion = this.getGridSesionesTaquilla().getSelectedRecord().data['id'];
+	   
+	   this.cargaPrecios(idSesion, function() {
+		   me.getFormComprar().cargaComboStore('localizacion', undefined);
+		   me.getComboLocalizacionNoNumeradas().setValue('anfiteatro');
+		   me.muestraLocalizacionesNoNumerada('anfiteatro');
+	   });
+   },
+   
+   avanzarAPasoDePago: function (butacas) {
+	   
 	   var layout = this.getFormComprarCards().getLayout();
 	   layout.setActiveItem(layout.getNext());
 	   
 	   if (this.entradasNumeradas())
 		   this.rellenaDatosPasoPagar(this.sumaImportes(butacas).toFixed(2));
 	   else
-		   this.rellenaDatosPasoPagar('200.10');
+		   this.rellenaDatosPasoPagar(this.sumaImportesNoNumeradas());
 	   
 	   this.cambiarEstadoBotonesComprar();
+   },
+   
+   sumaImportesNoNumeradas: function() {
+	   
+	   var me = this;
+	   var total = 0;
+	   
+	   this.getLocalizacionesNoNumeradas().items.each(function(panel){
+		   panel.items.each(function(field){
+			   console.log(panel.name + ' - ' + field.name + ' - ' + field.value);
+		
+			   total += field.value * me.precios[panel.name][field.name];			   
+		   });
+	   });
+	   
+	   console.log('total:', total);
+	   
+	   return total;
    },
    
    pagar: function() {
@@ -148,6 +221,36 @@ Ext.define('Paranimf.controller.Taquilla', {
 	    		   
 	    	  }, failure: function (response) {
     			  alert(UI.i18n.error.formSave);
+	    	  }
+	   	  });
+   },
+   
+   cargaPrecios: function(sesionId, callback) {
+	   
+	   var me = this;
+	   
+	   Ext.Ajax.request({
+	    	  url : urlPrefix + 'compra/' + sesionId + '/precios',
+	    	  method: 'GET',
+	    	  success: function (response) {
+	    		  
+	    		  var jsonData = Ext.decode(response.responseText);
+	    		  console.log(jsonData);
+	    		  
+	    		  me.precios = {};
+	    		  
+	    		  for (var i=0; i<jsonData.data.length; i++)
+	    		  {
+					var sesion = jsonData.data[i];
+					me.precios[sesion.localizacion.codigo] = {normal:sesion.precio, descuento:sesion.descuento, invitacion:sesion.invitacion};
+	    		  }
+
+	    		  console.log(me.precios);
+	    		  
+	    		  callback();
+	    		  
+	    	  }, failure: function (response) {
+	    		  alert(UI.i18n.error.loadingPreciosNoNumeradas);
 	    	  }
 	   	  });
    },

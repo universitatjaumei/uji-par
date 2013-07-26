@@ -58,7 +58,7 @@ Ext.define('Paranimf.view.taquilla.FormComprar', {
 				        },
 				        {
 					        id    : 'noNumeradas',
-					        html: '<h1>Comprar entradas no numeradas</h1>'
+					        xtype: 'panelSeleccionarNoNumeradas'
 					    }]
 		   },
 	       {

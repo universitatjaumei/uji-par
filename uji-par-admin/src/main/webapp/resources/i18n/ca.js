@@ -48,7 +48,8 @@ UI =
             "messageDelete": "S'ha produït un error esborrant el missatge",
             "error": "S'ha produït un error",
             "deletedImage": "S'ha produït un error a l'esborrar la imatge",
-            "loadingPrecios": "S'ha produït un error carregant els preus de la plantilla seleccionada"
+            "loadingPrecios": "S'ha produït un error carregant els preus de la plantilla seleccionada",
+            "loadingPreciosNoNumeradas": "S'ha produït un error carregant els preus"
         },
         "button": {
             "closeSession": "Tancar sessió",
@@ -171,7 +172,10 @@ UI =
             "tipoPago": "Pagament",
             "metalico": "Metàl·lic",
             "tarjeta": "Tarjeta",
-            "total": "Total"
+            "total": "Total",
+            "normal": "Normal",
+            "descuento": "Descuento",
+            "invitacion": "Invitación"
         }
     }
 }
