@@ -730,9 +730,9 @@
 	
 		<img id="imagen_platea1" th:src="${baseUrl + '/rest/imagenes/butacas/' + sesion.id + '/platea1'}" border="0" usemap="#mapPlatea1" />
 	</div>
-	
-	
-	
-	<h3 th:text="#{detallesSeleccionadas}">Butacas seleccionadas</h3>
+
+	<div id="tituloSeleccionadas">
+		<h3 th:text="#{detallesSeleccionadas}">Butacas seleccionadas</h3> <input type="button" id="limpiarSeleccion" th:value="#{limpiarSeleccion}"></input>
+	</div>
 	<div id="detallesSeleccionadas"></div>
 </div>

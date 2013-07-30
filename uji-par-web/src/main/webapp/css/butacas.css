@@ -24,3 +24,16 @@
 #localizacion_platea1 {
 	margin-top: 10px;
 }
+
+#tituloSeleccionadas h3 {
+	display: inline;
+}
+
+#tituloSeleccionadas {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+#limpiarSeleccion {
+	display: none;
+}

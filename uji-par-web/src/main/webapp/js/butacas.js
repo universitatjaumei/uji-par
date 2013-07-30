@@ -164,9 +164,26 @@ Butacas = (function() {
 	
 	function refrescaEstadoButacas()
 	{
+		muestraBotonLimpiarSeleccion();
 		redibujaButacasSeleccionadas();
 		muestraDetallesSeleccionadas();
 		guardaButacasEnHidden();
+	}
+	
+	function muestraBotonLimpiarSeleccion()
+	{
+		var boton = $('#limpiarSeleccion');
+		
+		if (butacasSeleccionadas.length == 0)
+			boton.hide();
+		else
+			boton.show();
+	}
+	
+	function limpiaSeleccion()
+	{
+		butacasSeleccionadas = [];
+		refrescaEstadoButacas();
 	}
 	
 	function guardaButacasEnHidden()
@@ -243,6 +260,10 @@ Butacas = (function() {
 		
 		$('#localizacion').change(function() {
 			muestraLocalizacion();
+		});
+		
+		$('#limpiarSeleccion').click(function(){
+			limpiaSeleccion();
 		});
 
 		muestraPrecios();
