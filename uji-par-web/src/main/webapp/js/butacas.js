@@ -224,7 +224,16 @@ Butacas = (function() {
 		var localizacion = $('#localizacion').val();
 		
 		$('div[id^=localizacion_]').hide();
-		$('#localizacion_' + localizacion).show();
+		
+		if (localizacion == 'platea')
+		{
+			$('#localizacion_platea1').show();
+			$('#localizacion_platea2').show();
+		}
+		else
+		{
+			$('#localizacion_anfiteatro').show();
+		}
 	}
 	
 	$(document).ready(function() {
