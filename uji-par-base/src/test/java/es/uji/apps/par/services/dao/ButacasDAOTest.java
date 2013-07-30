@@ -1,6 +1,7 @@
 package es.uji.apps.par.services.dao;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -15,6 +16,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import es.uji.apps.par.ButacaOcupadaException;
+import es.uji.apps.par.NoHayButacasLibresException;
 import es.uji.apps.par.dao.ButacasDAO;
 import es.uji.apps.par.dao.ComprasDAO;
 import es.uji.apps.par.db.ButacaDTO;
@@ -88,7 +91,7 @@ public class ButacasDAOTest extends BaseDAOTest
 
     @Test
     @Transactional
-    public void reservaButacas()
+    public void reservaButacas() throws NoHayButacasLibresException, ButacaOcupadaException
     {
         ButacaDTO butacaDTO = preparaButaca(sesion, Localizacion.localizacionToLocalizacionDTO(localizacion), "1", "2",
                 BigDecimal.ONE);
@@ -106,5 +109,42 @@ public class ButacasDAOTest extends BaseDAOTest
         Assert.assertEquals(butaca.getFila(), butacas.get(0).getFila());
         Assert.assertEquals(butaca.getNumero(), butacas.get(0).getNumero());
         Assert.assertEquals(BigDecimal.valueOf(10), butacas.get(0).getPrecio());
+    }
+    
+    @Test(expected=NoHayButacasLibresException.class)
+    @Transactional
+    public void reservaButacasNoHayLibres() throws NoHayButacasLibresException, ButacaOcupadaException
+    {
+        List<Butaca> butacas = new ArrayList<Butaca>();
+        
+        for (int i=0; i<50; i++)
+        {
+            ButacaDTO butacaDTO = preparaButaca(sesion, Localizacion.localizacionToLocalizacionDTO(localizacion), null, null,
+                BigDecimal.ONE);
+
+            Butaca butaca = new Butaca(butacaDTO);
+            butaca.setTipo("normal");
+            
+            butacas.add(butaca);
+        }
+
+        CompraDTO compraDTO = comprasDao.guardaCompra("Pepe", "Perez", "964123456", "prueba@example.com", new Date(), false);
+        butacasDao.reservaButacas(sesion.getId(), compraDTO, butacas);
+    }
+    
+    @Test(expected=ButacaOcupadaException.class)
+    public void reservaButacasButacaOcupada() throws NoHayButacasLibresException, ButacaOcupadaException
+    {
+        ButacaDTO butacaDTO = preparaButaca(sesion, Localizacion.localizacionToLocalizacionDTO(localizacion), "1", "2",
+            BigDecimal.ONE);
+
+        Butaca butaca = new Butaca(butacaDTO);
+        butaca.setTipo("normal");
+            
+        CompraDTO compraDTO = comprasDao.guardaCompra("Pepe", "Perez", "964123456", "prueba@example.com", new Date(), false);
+        butacasDao.reservaButacas(sesion.getId(), compraDTO, Arrays.asList(butaca));
+        
+        compraDTO = comprasDao.guardaCompra("Pepe", "Perez", "964123456", "prueba@example.com", new Date(), false);
+        butacasDao.reservaButacas(sesion.getId(), compraDTO, Arrays.asList(butaca));
     }
 }

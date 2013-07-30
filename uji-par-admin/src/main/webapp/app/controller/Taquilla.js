@@ -177,25 +177,58 @@ Ext.define('Paranimf.controller.Taquilla', {
 	   layout.setActiveItem(layout.getNext());
 	   
 	   if (this.entradasNumeradas())
+	   {
 		   this.rellenaDatosPasoPagar(this.sumaImportes(butacas).toFixed(2));
+	   }
 	   else
-		   this.rellenaDatosPasoPagar(this.sumaImportesNoNumeradas());
+	   {
+		   this.rellenaDatosPasoPagar(this.sumaImportesNoNumeradas(butacas));
+	   }
 	   
 	   this.cambiarEstadoBotonesComprar();
    },
    
-   sumaImportesNoNumeradas: function() {
+   getButacasNoNumeradas: function() {
 	   
 	   var me = this;
-	   var total = 0;
+	   var butacas = [];
 	   
 	   this.getLocalizacionesNoNumeradas().items.each(function(panel){
 		   panel.items.each(function(field){
 			   console.log(panel.name + ' - ' + field.name + ' - ' + field.value);
 		
-			   total += field.value * me.precios[panel.name][field.name];			   
+			   for (var i=0; i<parseInt(field.value); i++)
+			   {
+					var butaca = {
+							localizacion : panel.name,
+							fila : null,
+							numero : null,
+							x : null,
+							y : null,
+							tipo : field.name,
+							precio: me.precios[panel.name][field.name]
+						};
+					
+				   butacas.push(butaca);
+			   }
+			   //total += field.value * me.precios[panel.name][field.name];			   
 		   });
 	   });
+	   
+	   console.log(butacas);
+	   
+	   return butacas;
+   },
+   
+   sumaImportesNoNumeradas: function(butacas) {
+	   
+	   var me = this;
+	   var total = 0;
+	   
+	   for (var i=0; i<butacas.length; i++)
+	   {
+		   total += butacas[i].precio;
+	   }
 	   
 	   console.log('total:', total);
 	   
@@ -222,7 +255,15 @@ Ext.define('Paranimf.controller.Taquilla', {
 	    			   alert('Pagado con tarjeta');
 	    		   
 	    	  }, failure: function (response) {
-    			  alert(UI.i18n.error.formSave);
+
+	    		  var respuesta = Ext.JSON.decode(response.responseText, true);
+	    		  
+	    		  console.log(respuesta);
+	    		  
+	    		  if (respuesta['message']!=null)
+	    			  alert(respuesta['message']);
+	    		  else
+	    			  alert(UI.i18n.error.formSave);
 	    	  }
 	   	  });
    },
@@ -325,7 +366,10 @@ Ext.define('Paranimf.controller.Taquilla', {
    },   
    
    comprarSiguienteSinNumerar: function() {
-	   this.avanzarAPasoDePago();
+	   
+	   this.butacasSeleccionadas = this.getButacasNoNumeradas(); 
+	   
+	   this.avanzarAPasoDePago(this.butacasSeleccionadas);
    }, 
    
    cambiarEstadoBotonesComprar: function () {

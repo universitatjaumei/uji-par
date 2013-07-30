@@ -5,12 +5,20 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.mysema.query.jpa.impl.JPAQuery;
 
+import es.uji.apps.par.ButacaOcupadaException;
+import es.uji.apps.par.NoHayButacasLibresException;
 import es.uji.apps.par.db.ButacaDTO;
 import es.uji.apps.par.db.CompraDTO;
 import es.uji.apps.par.db.LocalizacionDTO;
@@ -75,31 +83,78 @@ public class ButacasDAO
     }
 
     @Transactional
-    public void reservaButacas(Long sesionId, CompraDTO compraDTO, List<Butaca> butacas)
+    public void reservaButacas(Long sesionId, CompraDTO compraDTO, List<Butaca> butacas) throws NoHayButacasLibresException, ButacaOcupadaException
     {
-        SesionDTO sesionDTO = sesionesDAO.getSesion(sesionId);
-
-        for (Butaca butaca : butacas)
+        reservaButacas(sesionId, compraDTO, butacas, 0);
+    }
+    
+    @Transactional(rollbackForClassName={"NoHayButacasLibresException","ButacaOcupadaException"})
+    public synchronized void reservaButacas(Long sesionId, CompraDTO compraDTO, List<Butaca> butacas, int sleep) throws NoHayButacasLibresException, ButacaOcupadaException
+    {
+        Butaca butacaActual = null;
+        
+        try
         {
-            LocalizacionDTO localizacionDTO = localizacionesDAO.getLocalizacionByCodigo(butaca.getLocalizacion());
-
-            ButacaDTO butacaDTO = Butaca.butacaToButacaDTO(butaca);
-            butacaDTO.setParSesion(sesionDTO);
-            butacaDTO.setParCompra(compraDTO);
-            butacaDTO.setParLocalizacion(localizacionDTO);
-
-            for (PreciosSesionDTO precioSesion : sesionDTO.getParPreciosSesions())
+            SesionDTO sesionDTO = sesionesDAO.getSesion(sesionId);
+            
+            for (Butaca butaca : butacas)
             {
-                if (precioSesion.getParLocalizacione().getCodigo().equals(butaca.getLocalizacion()))
+                butacaActual = butaca;
+                
+                if (butaca.getFila()==null && butaca.getNumero()==null)
                 {
-                    if (butaca.getTipo().equals("normal"))
-                        butacaDTO.setPrecio(precioSesion.getPrecio());
-                    else if (butaca.getTipo().equals("descuento"))
-                        butacaDTO.setPrecio(precioSesion.getDescuento());
+                    int libres = numeroButacasLibres(sesionId, butaca.getLocalizacion());
+                    
+                    if (libres == 0)
+                        throw new NoHayButacasLibresException(sesionId, butaca.getLocalizacion());
                 }
+                
+                LocalizacionDTO localizacionDTO = localizacionesDAO.getLocalizacionByCodigo(butaca.getLocalizacion());
+    
+                ButacaDTO butacaDTO = Butaca.butacaToButacaDTO(butaca);
+                butacaDTO.setParSesion(sesionDTO);
+                butacaDTO.setParCompra(compraDTO);
+                butacaDTO.setParLocalizacion(localizacionDTO);
+    
+                for (PreciosSesionDTO precioSesion : sesionDTO.getParPreciosSesions())
+                {
+                    if (precioSesion.getParLocalizacione().getCodigo().equals(butaca.getLocalizacion()))
+                    {
+                        if (butaca.getTipo().equals("normal"))
+                            butacaDTO.setPrecio(precioSesion.getPrecio());
+                        else if (butaca.getTipo().equals("descuento"))
+                            butacaDTO.setPrecio(precioSesion.getDescuento());
+                    }
+                }
+                
+                entityManager.persist(butacaDTO);
+                entityManager.flush();
             }
-
-            entityManager.persist(butacaDTO);
         }
+        catch (JpaSystemException e)
+        {
+            if (butacaActual != null && e.getCause().getCause() instanceof ConstraintViolationException)
+                throw new ButacaOcupadaException(sesionId, butacaActual.getLocalizacion(), butacaActual.getFila(), butacaActual.getNumero());
+            else
+                throw e;
+        }
+    }
+
+    private int numeroButacasLibres(Long idSesion, String codigoLocalizacion)
+    {
+        QLocalizacionDTO qLocalizacionDTO = QLocalizacionDTO.localizacionDTO;
+        QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
+        JPAQuery query = new JPAQuery(entityManager);
+        
+        
+        LocalizacionDTO localizacionDTO = localizacionesDAO.getLocalizacionByCodigo(codigoLocalizacion);
+        
+        long ocupadas = query
+                .from(qButacaDTO, qSesionDTO, qLocalizacionDTO)
+                .where(qButacaDTO.parSesion.id.eq(qSesionDTO.id).and(qSesionDTO.id.eq(idSesion))
+                        .and(qLocalizacionDTO.codigo.eq(codigoLocalizacion))
+                        .and(qButacaDTO.parLocalizacion.id.eq(qLocalizacionDTO.id))).count();
+
+        return (int) (localizacionDTO.getTotalEntradas().intValue() - ocupadas);
     }
 }

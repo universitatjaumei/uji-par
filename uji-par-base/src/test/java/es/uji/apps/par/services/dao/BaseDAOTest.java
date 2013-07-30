@@ -37,6 +37,7 @@ public class BaseDAOTest
     {
         Localizacion localizacion = new Localizacion();
         localizacion.setCodigo(codigoLocalizacion);
+        localizacion.setTotalEntradas(10);
         
         return localizacionesDao.add(localizacion);
     }

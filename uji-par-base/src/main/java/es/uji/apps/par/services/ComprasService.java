@@ -3,11 +3,17 @@ package es.uji.apps.par.services;
 import java.util.Date;
 import java.util.List;
 
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import es.uji.apps.par.ButacaOcupadaException;
 import es.uji.apps.par.FueraDePlazoVentaInternetException;
+import es.uji.apps.par.NoHayButacasLibresException;
+import es.uji.apps.par.ResponseMessage;
 import es.uji.apps.par.dao.ButacasDAO;
 import es.uji.apps.par.dao.ComprasDAO;
 import es.uji.apps.par.db.CompraDTO;
@@ -27,13 +33,13 @@ public class ComprasService
     @Autowired
     private SesionesService sesionesService;
 
-    public ResultadoCompra realizaCompraTaquilla(Long sesionId, List<Butaca> butacasSeleccionadas)
+    public ResultadoCompra realizaCompraTaquilla(Long sesionId, List<Butaca> butacasSeleccionadas) throws NoHayButacasLibresException, ButacaOcupadaException
     {
         return realizaCompra(sesionId, "", "", "", "", butacasSeleccionadas, true);
     }
 
     public ResultadoCompra realizaCompraInternet(Long sesionId, String nombre, String apellidos, String telefono,
-            String email, List<Butaca> butacasSeleccionadas) throws FueraDePlazoVentaInternetException
+            String email, List<Butaca> butacasSeleccionadas) throws FueraDePlazoVentaInternetException, NoHayButacasLibresException, ButacaOcupadaException
     {
         Sesion sesion = sesionesService.getSesion(sesionId);
 
@@ -45,15 +51,15 @@ public class ComprasService
     }
     
     @Transactional
-    private ResultadoCompra realizaCompra(Long sesionId, String nombre, String apellidos, String telefono, String email,
-            List<Butaca> butacasSeleccionadas, boolean taquilla)
+    private synchronized ResultadoCompra realizaCompra(Long sesionId, String nombre, String apellidos, String telefono, String email,
+            List<Butaca> butacasSeleccionadas, boolean taquilla) throws NoHayButacasLibresException, ButacaOcupadaException
     {
         ResultadoCompra resultadoCompra = new ResultadoCompra();
 
         CompraDTO compraDTO = comprasDAO.guardaCompra(nombre, apellidos, telefono, email, new Date(), taquilla);
         butacasDAO.reservaButacas(sesionId, compraDTO, butacasSeleccionadas);
         resultadoCompra.setCorrecta(true);
-
+            
         return resultadoCompra;
     }
 
