@@ -17,22 +17,42 @@ Ext.define('Paranimf.view.taquilla.PanelSeleccionarNoNumeradas', {
   
    items: [
 		{
-		    fieldLabel: UI.i18n.field.localizacion,
-		    name: 'localizacion',
-		    xtype: 'combobox',
-		    displayField: 'nombreVa',
-		    valueField: 'codigo',
-		    store: 'Localizaciones',
-		    queryMode: 'local',
-		    typeAhead: false,
-		    width: 400,
-		    editable: false
+			xtype: 'panel',
+			layout: 'hbox',
+			border: 0,
+			frame: false,
+			items: [
+					{
+					    fieldLabel: UI.i18n.field.localizacion,
+					    name: 'localizacion',
+					    xtype: 'combobox',
+					    displayField: 'nombreVa',
+					    valueField: 'codigo',
+					    store: 'Localizaciones',
+					    queryMode: 'local',
+					    typeAhead: false,
+					    width: 400,
+					    editable: false
+					},
+			        {
+			        	xtype: 'label',
+			        	text: UI.i18n.field.disponibles,
+			        	style: 'margin-left: 20px'
+			        },
+			        {
+			        	name: 'disponibles',
+			        	xtype: 'label',
+			        	text: '-',
+			        	style: 'margin-left: 10px'
+			        }
+			       ]
 		},
 		{
 			name: 'localizaciones',
 			xtype: 'panel',
 	    	frame: false,
 	    	border: 0,
+	    	style: 'margin-top: 20px',
 			items:[
 			       {
 			    	   name: 'anfiteatro',

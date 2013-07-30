@@ -7,13 +7,9 @@ import javax.persistence.PersistenceContext;
 
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.mysema.query.jpa.impl.JPAQuery;
 
@@ -141,7 +137,7 @@ public class ButacasDAO
         else
             return ocupadas.get(0);
     }
-
+    
     private void ocupaButacaNoNumerada(Long idSesion, String codigoLocalizacion)
     {
         LocalizacionOcupadasDTO ocupadasLocalizacion = getOcupadas(idSesion, codigoLocalizacion);
@@ -201,21 +197,20 @@ public class ButacasDAO
         }
     }
 
-    private int numeroButacasLibres(Long idSesion, String codigoLocalizacion)
+    public List<LocalizacionOcupadasDTO> getDisponiblesSesion(long idSesion)
     {
         QLocalizacionDTO qLocalizacionDTO = QLocalizacionDTO.localizacionDTO;
         QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
+        QLocalizacionOcupadasDTO qOcupadasDTO = QLocalizacionOcupadasDTO.localizacionOcupadasDTO;
+        
         JPAQuery query = new JPAQuery(entityManager);
         
-        
-        LocalizacionDTO localizacionDTO = localizacionesDAO.getLocalizacionByCodigo(codigoLocalizacion);
-        
-        long ocupadas = query
-                .from(qButacaDTO, qSesionDTO, qLocalizacionDTO)
-                .where(qButacaDTO.parSesion.id.eq(qSesionDTO.id).and(qSesionDTO.id.eq(idSesion))
-                        .and(qLocalizacionDTO.codigo.eq(codigoLocalizacion))
-                        .and(qButacaDTO.parLocalizacion.id.eq(qLocalizacionDTO.id))).count();
-
-        return (int) (localizacionDTO.getTotalEntradas().intValue() - ocupadas);
+          List<LocalizacionOcupadasDTO> ocupadas = query
+        .from(qOcupadasDTO, qSesionDTO, qLocalizacionDTO)
+        .where(qOcupadasDTO.parSesion.id.eq(qSesionDTO.id).and(qSesionDTO.id.eq(idSesion))
+                .and(qOcupadasDTO.parLocalizacion.id.eq(qLocalizacionDTO.id))).list(qOcupadasDTO);
+         
+         return ocupadas;
     }
+
 }

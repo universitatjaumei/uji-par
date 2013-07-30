@@ -23,6 +23,7 @@ import es.uji.apps.par.NoHayButacasLibresException;
 import es.uji.apps.par.ResponseMessage;
 import es.uji.apps.par.model.Butaca;
 import es.uji.apps.par.model.ResultadoCompra;
+import es.uji.apps.par.services.ButacasService;
 import es.uji.apps.par.services.ComprasService;
 import es.uji.apps.par.services.SesionesService;
 
@@ -36,6 +37,9 @@ public class TaquillaResource extends BaseResource
     
     @InjectParam
     private SesionesService sesionesService;
+    
+    @InjectParam
+    private ButacasService butacasService;
 
     @Context
     HttpServletResponse currentResponse;
@@ -68,4 +72,14 @@ public class TaquillaResource extends BaseResource
     {
         return Response.ok().entity(new RestResponse(true, sesionesService.getPreciosSesion(sesionId))).build();
     }
-  }
+    
+    
+    // Para una sesión no numerada devuelve las butacas disponibles por localización
+    @GET
+    @Path("{id}/disponibles")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getOcupacionesNoNumerada(@PathParam("id") Long sesionId)
+    {
+        return Response.ok().entity(new RestResponse(true, butacasService.getDisponiblesNoNumerada(sesionId))).build();
+    }
+}

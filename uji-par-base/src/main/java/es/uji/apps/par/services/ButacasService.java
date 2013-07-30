@@ -7,14 +7,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.uji.apps.par.dao.ButacasDAO;
+import es.uji.apps.par.dao.LocalizacionesDAO;
 import es.uji.apps.par.db.ButacaDTO;
+import es.uji.apps.par.db.LocalizacionDTO;
+import es.uji.apps.par.db.LocalizacionOcupadasDTO;
 import es.uji.apps.par.model.Butaca;
+import es.uji.apps.par.model.DisponiblesLocalizacion;
 
 @Service
 public class ButacasService
 {
     @Autowired
     private ButacasDAO butacasDAO;
+    
+    @Autowired
+    private LocalizacionesDAO localizacionesDAO;
 
     public List<ButacaDTO> getButacas(long idSesion, String codigoLocalizacion)
     {
@@ -38,5 +45,29 @@ public class ButacasService
 
         return ocupadas;
     }
-
+    
+    public List<DisponiblesLocalizacion> getDisponiblesNoNumerada(long idSesion)
+    {
+        List<DisponiblesLocalizacion> disponibles = new ArrayList<DisponiblesLocalizacion>();
+        List<LocalizacionOcupadasDTO> ocupadas = butacasDAO.getDisponiblesSesion(idSesion);
+        List<LocalizacionDTO> localizaciones = localizacionesDAO.get();
+        
+        for (LocalizacionDTO localizacion: localizaciones)
+        {
+            DisponiblesLocalizacion disponible = new DisponiblesLocalizacion(localizacion.getCodigo(), localizacion.getTotalEntradas().intValue());
+            
+            for (LocalizacionOcupadasDTO ocupada: ocupadas)
+            {
+                if (ocupada.getParLocalizacion().getCodigo().equals(localizacion.getCodigo()))
+                {
+                    disponible.setDisponibles(localizacion.getTotalEntradas().intValue() - ocupada.getOcupadas());
+                    break;
+                }
+            }
+            
+            disponibles.add(disponible);
+        }
+            
+        return disponibles;
+    }
 }

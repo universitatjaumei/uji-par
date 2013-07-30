@@ -32,6 +32,10 @@ Ext.define('Paranimf.controller.Taquilla', {
         selector: 'panelSeleccionarNoNumeradas combobox[name=localizacion]'
       },
       {
+       	ref: 'disponiblesNoNumeradas',
+        selector: 'panelSeleccionarNoNumeradas label[name=disponibles]'
+      },      
+      {
        	ref: 'localizacionesNoNumeradas',
         selector: 'panelSeleccionarNoNumeradas panel[name=localizaciones]'
       }        
@@ -134,12 +138,17 @@ Ext.define('Paranimf.controller.Taquilla', {
    localizacionNoNumeradasCambiada: function() {
 	   var localizacion = this.getComboLocalizacionNoNumeradas().getValue();
 	   
-	   this.muestraLocalizacionesNoNumerada(localizacion);
+	   this.cambiaLocalizacionNoNumerada(localizacion);
 	   
 	   //console.log(localizacion.getValue());
    },
    
-   muestraLocalizacionesNoNumerada: function(localizacion) {
+   cambiaLocalizacionNoNumerada: function(localizacion) {
+	   this.muestraLocalizacionNoNumerada(localizacion);
+	   this.muestraDisponiblesLocalizacion(localizacion);
+   },
+   
+   muestraLocalizacionNoNumerada: function(localizacion) {
 	   /*
 	   var children = this.getLocalizacionesNoNumeradas().getEl().down('*');
 	   Ext.each(children,function(child){child.hide();});
@@ -159,15 +168,22 @@ Ext.define('Paranimf.controller.Taquilla', {
 	   });
    },
    
+   muestraDisponiblesLocalizacion: function(localizacion) {
+	   
+	   this.getDisponiblesNoNumeradas().setText(this.disponibles[localizacion]);
+   },
+   
    panelSeleccionarNoNumeradasCreado: function() {
 	   
 	   var me = this;
 	   var idSesion = this.getGridSesionesTaquilla().getSelectedRecord().data['id'];
 	   
 	   this.cargaPrecios(idSesion, function() {
-		   me.getFormComprar().cargaComboStore('localizacion', undefined);
-		   me.getComboLocalizacionNoNumeradas().setValue('anfiteatro');
-		   me.muestraLocalizacionesNoNumerada('anfiteatro');
+		   me.cargaDisponibles(idSesion, function() {
+			   me.getFormComprar().cargaComboStore('localizacion', undefined);
+			   me.getComboLocalizacionNoNumeradas().setValue('anfiteatro');
+			   me.cambiaLocalizacionNoNumerada('anfiteatro');
+		   });
 	   });
    },
    
@@ -297,6 +313,36 @@ Ext.define('Paranimf.controller.Taquilla', {
 	    	  }
 	   	  });
    },
+   
+   cargaDisponibles: function(sesionId, callback) {
+	   
+	   var me = this;
+	   
+	   Ext.Ajax.request({
+	    	  url : urlPrefix + 'compra/' + sesionId + '/disponibles',
+	    	  method: 'GET',
+	    	  success: function (response) {
+	    		  
+	    		  var jsonData = Ext.decode(response.responseText);
+	    		  console.log(jsonData);
+	    		  
+	    		  me.disponibles = {};
+	    		  
+	    		  for (var i=0; i<jsonData.data.length; i++)
+	    		  {
+					var disponible = jsonData.data[i];
+					me.disponibles[disponible.localizacion] = disponible.disponibles;
+	    		  }
+
+	    		  console.log(me.disponibles);
+	    		  
+	    		  callback();
+	    		  
+	    	  }, failure: function (response) {
+	    		  alert(UI.i18n.error.loadingDisponiblesNoNumeradas);
+	    	  }
+	   	  });
+   },   
    
    sumaImportes: function(butacas) {
 	   var total = 0.0;

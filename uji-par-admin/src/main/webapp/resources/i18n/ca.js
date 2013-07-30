@@ -49,7 +49,8 @@ UI =
             "error": "S'ha produït un error",
             "deletedImage": "S'ha produït un error a l'esborrar la imatge",
             "loadingPrecios": "S'ha produït un error carregant els preus de la plantilla seleccionada",
-            "loadingPreciosNoNumeradas": "S'ha produït un error carregant els preus"
+            "loadingPreciosNoNumeradas": "S'ha produït un error carregant els preus",
+            "loadingDisponiblesNoNumeradas": "S'ha produït un error carregant les butaques disponibles"
         },
         "button": {
             "closeSession": "Tancar sessió",
@@ -175,7 +176,8 @@ UI =
             "total": "Total",
             "normal": "Normal",
             "descuento": "Descuento",
-            "invitacion": "Invitación"
+            "invitacion": "Invitación",
+            "disponibles":"Disponibles"
         }
     }
 }
