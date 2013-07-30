@@ -115,6 +115,8 @@ public class ButacasDAOTest extends BaseDAOTest
     @Transactional
     public void reservaButacasNoHayLibres() throws NoHayButacasLibresException, ButacaOcupadaException
     {
+        setSesionNoNumerada(sesion);
+        
         List<Butaca> butacas = new ArrayList<Butaca>();
         
         for (int i=0; i<50; i++)
