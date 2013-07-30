@@ -111,15 +111,26 @@ public class ButacasDAOTest extends BaseDAOTest
         Assert.assertEquals(BigDecimal.valueOf(10), butacas.get(0).getPrecio());
     }
     
+    @Transactional
+    public void reservaNoNumeradasHayLibres() throws NoHayButacasLibresException, ButacaOcupadaException
+    {
+        reservaNoNumeradas(localizacion.getTotalEntradas());
+    }
+
     @Test(expected=NoHayButacasLibresException.class)
     @Transactional
-    public void reservaButacasNoHayLibres() throws NoHayButacasLibresException, ButacaOcupadaException
+    public void reservaNoNumeradasNoHayLibres() throws NoHayButacasLibresException, ButacaOcupadaException
+    {
+        reservaNoNumeradas(localizacion.getTotalEntradas()+1);
+    }
+
+    private void reservaNoNumeradas(int butacasAReservar) throws NoHayButacasLibresException, ButacaOcupadaException
     {
         setSesionNoNumerada(sesion);
         
         List<Butaca> butacas = new ArrayList<Butaca>();
         
-        for (int i=0; i<localizacion.getTotalEntradas()+1; i++)
+        for (int i=0; i<butacasAReservar; i++)
         {
             ButacaDTO butacaDTO = preparaButaca(sesion, Localizacion.localizacionToLocalizacionDTO(localizacion), null, null,
                 BigDecimal.ONE);
