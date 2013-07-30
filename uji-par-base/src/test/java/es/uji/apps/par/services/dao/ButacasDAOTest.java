@@ -119,7 +119,7 @@ public class ButacasDAOTest extends BaseDAOTest
         
         List<Butaca> butacas = new ArrayList<Butaca>();
         
-        for (int i=0; i<50; i++)
+        for (int i=0; i<localizacion.getTotalEntradas()+1; i++)
         {
             ButacaDTO butacaDTO = preparaButaca(sesion, Localizacion.localizacionToLocalizacionDTO(localizacion), null, null,
                 BigDecimal.ONE);
