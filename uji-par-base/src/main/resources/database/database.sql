@@ -134,7 +134,7 @@
 --  DDL for Table PAR_COMPRAS
 --------------------------------------------------------
 
-	CREATE TABLE "PARANIMF"."PAR_COMPRAS" 
+	CREATE TABLE "PAR_COMPRAS" 
    (	"ID" NUMBER, 
 	"NOMBRE" VARCHAR2(255 BYTE), 
 	"APELLIDOS" VARCHAR2(255 BYTE), 
