@@ -4,6 +4,10 @@ import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
+
+import es.uji.apps.par.ResponseMessage;
+import es.uji.apps.par.i18n.ResourceProperties;
 
 public class BaseResource
 {
@@ -46,4 +50,15 @@ public class BaseResource
     {
         return currentRequest.getScheme() + "://" + currentRequest.getServerName() + ":" + currentRequest.getServerPort() + currentRequest.getContextPath();
     }  
+    
+    public Response errorResponse(String messageProperty, Object ... values)
+    {
+        String errorMessage = getProperty(messageProperty, values);
+        return Response.serverError().entity(new ResponseMessage(false, errorMessage)).build();
+    }
+    
+    public String getProperty(String messageProperty, Object ... values)
+    {
+        return ResourceProperties.getProperty(getLocale(), messageProperty, values);
+    }
 }
