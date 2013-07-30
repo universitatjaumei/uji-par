@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import es.uji.apps.par.ButacaOcupadaException;
+import es.uji.apps.par.CompraSinButacasException;
 import es.uji.apps.par.FueraDePlazoVentaInternetException;
 import es.uji.apps.par.NoHayButacasLibresException;
 import es.uji.apps.par.ResponseMessage;
@@ -33,13 +34,13 @@ public class ComprasService
     @Autowired
     private SesionesService sesionesService;
 
-    public ResultadoCompra realizaCompraTaquilla(Long sesionId, List<Butaca> butacasSeleccionadas) throws NoHayButacasLibresException, ButacaOcupadaException
+    public ResultadoCompra realizaCompraTaquilla(Long sesionId, List<Butaca> butacasSeleccionadas) throws NoHayButacasLibresException, ButacaOcupadaException, CompraSinButacasException
     {
         return realizaCompra(sesionId, "", "", "", "", butacasSeleccionadas, true);
     }
 
     public ResultadoCompra realizaCompraInternet(Long sesionId, String nombre, String apellidos, String telefono,
-            String email, List<Butaca> butacasSeleccionadas) throws FueraDePlazoVentaInternetException, NoHayButacasLibresException, ButacaOcupadaException
+            String email, List<Butaca> butacasSeleccionadas) throws FueraDePlazoVentaInternetException, NoHayButacasLibresException, ButacaOcupadaException, CompraSinButacasException
     {
         Sesion sesion = sesionesService.getSesion(sesionId);
 
@@ -52,8 +53,11 @@ public class ComprasService
     
     @Transactional
     private synchronized ResultadoCompra realizaCompra(Long sesionId, String nombre, String apellidos, String telefono, String email,
-            List<Butaca> butacasSeleccionadas, boolean taquilla) throws NoHayButacasLibresException, ButacaOcupadaException
+            List<Butaca> butacasSeleccionadas, boolean taquilla) throws NoHayButacasLibresException, ButacaOcupadaException, CompraSinButacasException
     {
+        if (butacasSeleccionadas.size() == 0)
+            throw new CompraSinButacasException();
+        
         ResultadoCompra resultadoCompra = new ResultadoCompra();
 
         CompraDTO compraDTO = comprasDAO.guardaCompra(nombre, apellidos, telefono, email, new Date(), taquilla);

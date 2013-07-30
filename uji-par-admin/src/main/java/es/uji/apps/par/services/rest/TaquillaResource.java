@@ -19,6 +19,7 @@ import com.sun.jersey.api.core.InjectParam;
 import com.sun.jersey.core.spi.scanning.PackageNamesScanner.ResourcesProvider;
 
 import es.uji.apps.par.ButacaOcupadaException;
+import es.uji.apps.par.CompraSinButacasException;
 import es.uji.apps.par.NoHayButacasLibresException;
 import es.uji.apps.par.ResponseMessage;
 import es.uji.apps.par.model.Butaca;
@@ -63,6 +64,10 @@ public class TaquillaResource extends BaseResource
         {   
             return errorResponse("error.butacaOcupada", getProperty("localizacion." +e.getLocalizacion()), e.getFila(), e.getNumero());
         }
+        catch (CompraSinButacasException e)
+        {   
+            return errorResponse("error.compraSinButacas");
+        }        
     }
     
     @GET
