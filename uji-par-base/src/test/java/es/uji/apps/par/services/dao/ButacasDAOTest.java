@@ -104,7 +104,7 @@ public class ButacasDAOTest extends BaseDAOTest
         List<ButacaDTO> butacas = butacasDao.getButacas(sesion.getId(), localizacion.getCodigo());
 
         Assert.assertEquals(sesion.getId(), butacas.get(0).getParSesion().getId());
-        Assert.assertEquals(localizacion.getId(), butacas.get(0).getParLocalizacion().getId());
+        Assert.assertEquals(localizacion.getCodigo(), butacas.get(0).getParLocalizacion().getCodigo());
         Assert.assertEquals(butaca.getFila(), butacas.get(0).getFila());
         Assert.assertEquals(butaca.getNumero(), butacas.get(0).getNumero());
         Assert.assertEquals(BigDecimal.valueOf(10), butacas.get(0).getPrecio());
