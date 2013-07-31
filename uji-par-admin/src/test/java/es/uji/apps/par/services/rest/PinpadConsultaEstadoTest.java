@@ -14,7 +14,7 @@ import es.uji.apps.par.pinpad.EstadoPinpad;
 import es.uji.apps.par.services.Pinpad;
 import es.uji.apps.par.services.PinpadDataService;
 
-public class PinpadTest
+public class PinpadConsultaEstadoTest
 {
     private Pinpad pinpad;
     private PinpadDataService pinpadService;
