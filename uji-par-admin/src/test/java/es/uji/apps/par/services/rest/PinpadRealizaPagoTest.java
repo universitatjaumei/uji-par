@@ -50,7 +50,7 @@ public class PinpadRealizaPagoTest
     @Test
     public void testrecuperaIdResultado()
     {
-        when(pinpadService.realizaPago(anyString(), (BigDecimal) anyObject(), anyString())).thenReturn("12345");
+        when(pinpadService.realizaPago(anyString(), (BigDecimal) anyObject(), anyString())).thenReturn("12345\n");
 
         ResultadoPagoPinpad resultado = pinpad.realizaPago("1", new BigDecimal("1.02"), "Test");
 
