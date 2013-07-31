@@ -1,7 +1,9 @@
 package es.uji.apps.par.services;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.net.URLEncoder;
 import java.security.MessageDigest;
 
 import org.apache.log4j.Logger;
@@ -37,7 +39,7 @@ public class PinpadWebService implements PinpadDataService
 
         if (response.getStatus() != 200)
         {
-            throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+            throw new RuntimeException("Error respuesta HTTP : " + response.getStatus());
         }
 
         String output = response.getEntity(String.class);
@@ -59,19 +61,28 @@ public class PinpadWebService implements PinpadDataService
 
         String sha1String = sha1(id + importeEnviar + SECRET);
 
-        //https://e-ujier.uji.es/pls/www/!pinpad.cobrar?tpv_identificador=23&tpv_concepto=prueba&tpv_importe=103&tpv_hash=a
-        String url = String.format("https://e-ujier.uji.es/pls/www/!pinpad.cobrar?tpv_identificador=%s&tpv_concepto=%s&tpv_importe=%s&tpv_hash=%s",
-                id, concepto, importeEnviar, sha1String);
+        String conceptoEncoded;
+        try
+        {
+            conceptoEncoded = URLEncoder.encode(concepto, "UTF-8");
+        }
+        catch (UnsupportedEncodingException e)
+        {
+            throw new RuntimeException("Error en URLEncoder.encode: " + concepto);
+        }
         
-        System.out.println(url);
+        String url = String.format("https://e-ujier.uji.es/pls/www/!pinpad.cobrar?tpv_identificador=%s&tpv_concepto=%s&tpv_importe=%s&tpv_hash=%s",
+                id, conceptoEncoded, importeEnviar, sha1String);
 
+        log.info("URL pagar: " + url);
+        
         WebResource webResource = client.resource(url);
 
         ClientResponse response = webResource.get(ClientResponse.class);
 
         if (response.getStatus() != 200)
         {
-            throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+            throw new RuntimeException("Error respuesta HTTP: " + response.getStatus());
         }
 
         String output = response.getEntity(String.class);
