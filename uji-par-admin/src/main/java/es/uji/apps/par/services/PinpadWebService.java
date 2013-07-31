@@ -2,7 +2,6 @@ package es.uji.apps.par.services;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.net.URLEncoder;
 import java.security.MessageDigest;
 
@@ -26,7 +25,7 @@ public class PinpadWebService implements PinpadDataService
     @Override
     public String consultaEstado(String id)
     {
-        Client client = Client.create();
+        Client client = createClient();
 
         String sha1String = sha1(id + SECRET);
 
@@ -49,10 +48,7 @@ public class PinpadWebService implements PinpadDataService
     @Override
     public String realizaPago(String id, BigDecimal importe, String concepto)
     {
-        Client client = Client.create();
-
-        client.setConnectTimeout(CONNECT_TIMEOUT);
-        client.setReadTimeout(READ_TIMEOUT);
+        Client client = createClient();
         
         BigDecimal importeCentimos = importe.multiply(new BigDecimal(100));
         String importeEnviar = Integer.toString(importeCentimos.intValue());
@@ -88,6 +84,16 @@ public class PinpadWebService implements PinpadDataService
         String output = response.getEntity(String.class);
         
         return output;
+    }
+
+    private Client createClient()
+    {
+        Client client = Client.create();
+
+        client.setConnectTimeout(CONNECT_TIMEOUT);
+        client.setReadTimeout(READ_TIMEOUT);
+        
+        return client;
     }
 
     private String sha1(String string)
