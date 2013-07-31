@@ -15,6 +15,9 @@ import com.sun.jersey.api.client.WebResource;
 public class PinpadWebService implements PinpadDataService
 {
     private static Logger log = Logger.getLogger(PinpadWebService.class);
+    
+    private static final int CONNECT_TIMEOUT = 5000;
+    private static final int READ_TIMEOUT = 30000;
 
     private static final String SECRET = "ertyudfghjcvbnm";
 
@@ -45,6 +48,9 @@ public class PinpadWebService implements PinpadDataService
     public String realizaPago(String id, BigDecimal importe, String concepto)
     {
         Client client = Client.create();
+
+        client.setConnectTimeout(CONNECT_TIMEOUT);
+        client.setReadTimeout(READ_TIMEOUT);
         
         BigDecimal importeCentimos = importe.multiply(new BigDecimal(100));
         String importeEnviar = Integer.toString(importeCentimos.intValue());
