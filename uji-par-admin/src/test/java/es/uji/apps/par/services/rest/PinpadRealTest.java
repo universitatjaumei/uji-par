@@ -22,15 +22,15 @@ public class PinpadRealTest
     @Ignore
     public void realizaPago() throws InterruptedException
     {
-        String id = "24";
+        String id = "26";
 
-        String resultado = pinpadReal.realizaPago(id, new BigDecimal(1.02), "PruebaJava");
+        String resultado = pinpadReal.realizaPago(id, new BigDecimal(1.02), "Prueba desde Java");
         System.out.println(resultado);
 
         while (true)
         {
             System.out.println(pinpadReal.getEstadoPinpad(id));
-            Thread.sleep(5000);
+            Thread.sleep(2000);
         }
     }
 
