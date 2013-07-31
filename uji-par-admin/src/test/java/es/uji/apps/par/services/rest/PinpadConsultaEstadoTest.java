@@ -37,14 +37,14 @@ public class PinpadConsultaEstadoTest
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void testError()
     {
-        when(pinpadService.consultaEstado(anyString())).thenThrow(Exception.class);
+        when(pinpadService.consultaEstado(anyString())).thenThrow(new RuntimeException("Mensaje de error"));
 
         EstadoPinpad estado = pinpad.getEstadoPinpad("");
 
-        assertTrue("Error", estado.getError());
+        assertTrue("Error valor", estado.getError());
+        assertEquals("Error mensaje", "Mensaje de error", estado.getMensajeExcepcion());
     }
 
     @Test

@@ -8,10 +8,17 @@ public class EstadoPinpad
     private String mensaje;
     private boolean pagoCorrecto;
     private String recibo;
+    private String mensajeExcepcion;
 
     public EstadoPinpad(boolean error)
     {
         this.error = error;
+    }
+
+    public EstadoPinpad(boolean error, String mensajeExcepcion)
+    {
+        this.error = error;
+        this.mensajeExcepcion = mensajeExcepcion;
     }
 
     public boolean getReady()
@@ -74,11 +81,21 @@ public class EstadoPinpad
         this.recibo = recibo;
     }
 
+    public String getMensajeExcepcion()
+    {
+        return mensajeExcepcion;
+    }
+
+    public void setMensajeExcepcion(String mensajeExcepcion)
+    {
+        this.mensajeExcepcion = mensajeExcepcion;
+    }
+
     @Override
     public String toString()
     {
         StringBuffer buff = new StringBuffer();
-        
+
         buff.append("<error:" + error);
         buff.append(", ready:" + ready);
         buff.append(", codigoAccion:" + codigoAccion);
@@ -86,7 +103,7 @@ public class EstadoPinpad
         buff.append(", pagoCorrecto:" + pagoCorrecto);
         buff.append(", recibo:" + recibo);
         buff.append(">\n");
-        
+
         return buff.toString();
     }
 }

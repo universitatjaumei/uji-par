@@ -44,7 +44,7 @@ public class Pinpad
         catch (Exception e)
         {
             log.error("Error obteniendo estado pinpad", e);
-            return new EstadoPinpad(true);
+            return new EstadoPinpad(true, e.getMessage());
         }
     }
 
