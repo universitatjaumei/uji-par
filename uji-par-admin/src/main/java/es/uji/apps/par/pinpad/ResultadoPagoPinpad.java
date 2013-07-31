@@ -4,7 +4,7 @@ public class ResultadoPagoPinpad
 {
     private boolean error;
     private String codigo;
-    private String mensajeError;
+    private String mensajeExcepcion;
 
     public ResultadoPagoPinpad()
     {
@@ -13,7 +13,7 @@ public class ResultadoPagoPinpad
     public ResultadoPagoPinpad(boolean error, String mensajeError)
     {
         this.error = error;
-        this.mensajeError = mensajeError;
+        this.mensajeExcepcion = mensajeError;
     }
 
     public boolean getError()
@@ -36,14 +36,14 @@ public class ResultadoPagoPinpad
         this.codigo = codigo;
     }
 
-    public String getMensajeError()
+    public String getMensajeExcepcion()
     {
-        return mensajeError;
+        return mensajeExcepcion;
     }
 
-    public void setMensajeError(String mensajeError)
+    public void setMensajeExcepcion(String mensajeError)
     {
-        this.mensajeError = mensajeError;
+        this.mensajeExcepcion = mensajeError;
     }
 
     @Override
@@ -56,7 +56,7 @@ public class ResultadoPagoPinpad
         buff.append(", codigo:");
         buff.append(codigo);
         buff.append(", mensajeError:");
-        buff.append(mensajeError);
+        buff.append(mensajeExcepcion);
         buff.append(">");
         
         return buff.toString();

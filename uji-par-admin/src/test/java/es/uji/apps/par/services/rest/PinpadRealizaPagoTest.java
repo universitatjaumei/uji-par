@@ -65,6 +65,6 @@ public class PinpadRealizaPagoTest
         ResultadoPagoPinpad resultado = pinpad.realizaPago("1", new BigDecimal("1.02"), "Test");
 
         assertTrue("Lanza excepción", resultado.getError());
-        assertEquals("Lanza excepción mensaje", "Error de conexión", resultado.getMensajeError());
+        assertEquals("Lanza excepción mensaje", "Error de conexión", resultado.getMensajeExcepcion());
     }
 }
