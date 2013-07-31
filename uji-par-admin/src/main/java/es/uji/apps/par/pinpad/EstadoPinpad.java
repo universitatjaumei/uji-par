@@ -74,4 +74,19 @@ public class EstadoPinpad
         this.recibo = recibo;
     }
 
+    @Override
+    public String toString()
+    {
+        StringBuffer buff = new StringBuffer();
+        
+        buff.append("error:" + error);
+        buff.append(", ready:" + ready);
+        buff.append(", codigoAccion:" + codigoAccion);
+        buff.append(", mensaje:" + mensaje);
+        buff.append(", pagoCorrecto:" + pagoCorrecto);
+        buff.append(", recibo:" + recibo);
+        buff.append("\n");
+        
+        return buff.toString();
+    }
 }

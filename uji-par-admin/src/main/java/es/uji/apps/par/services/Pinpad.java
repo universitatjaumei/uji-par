@@ -1,5 +1,7 @@
 package es.uji.apps.par.services;
 
+import java.math.BigDecimal;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,10 @@ public class Pinpad
 
     @Autowired
     PinpadDataService dataService;
+    
+    public Pinpad()
+    {
+    }
 
     public Pinpad(PinpadDataService dataService)
     {
@@ -29,12 +35,26 @@ public class Pinpad
         try
         {
             String resultado = dataService.consultaEstado(id);
+            System.out.println(resultado);
             return parseRespuesta(resultado);
         }
         catch (Exception e)
         {
             log.error("Error obteniendo estado pinpad", e);
             return new EstadoPinpad(true);
+        }
+    }
+    
+    public String realizaPago(String id, BigDecimal importe, String concepto)
+    {
+        try
+        {
+            return dataService.realizaPago(id, importe, concepto);
+        }
+        catch (Exception e)
+        {
+            log.error("Error obteniendo estado pinpad", e);
+            return "";
         }
     }
 
