@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.uji.apps.par.pinpad.EstadoPinpad;
+import es.uji.apps.par.pinpad.ResultadoPagoPinpad;
 
 @Service
 public class Pinpad
@@ -36,7 +37,7 @@ public class Pinpad
         {
             String resultado = dataService.consultaEstado(id);
             System.out.println(resultado);
-            return parseRespuesta(resultado);
+            return parseEstado(resultado);
         }
         catch (Exception e)
         {
@@ -45,20 +46,38 @@ public class Pinpad
         }
     }
     
-    public String realizaPago(String id, BigDecimal importe, String concepto)
+    public ResultadoPagoPinpad realizaPago(String id, BigDecimal importe, String concepto)
     {
         try
         {
-            return dataService.realizaPago(id, importe, concepto);
+             String resultado = dataService.realizaPago(id, importe, concepto);
+             return parseResultadoPago(resultado);
         }
         catch (Exception e)
         {
-            log.error("Error obteniendo estado pinpad", e);
-            return "";
+            log.error("Error realizando pago pinpad", e);
+            return new ResultadoPagoPinpad(true, e.getMessage());
         }
     }
 
-    private EstadoPinpad parseRespuesta(String resultado)
+    private ResultadoPagoPinpad parseResultadoPago(String textoResultado)
+    {
+        ResultadoPagoPinpad resultado = new ResultadoPagoPinpad();
+        
+        if (textoResultado.equals(""))
+        {
+            resultado.setError(true);
+        }
+        else
+        {
+            resultado.setError(false);
+            resultado.setCodigo(textoResultado);
+        }
+            
+        return resultado;
+    }
+
+    private EstadoPinpad parseEstado(String resultado)
     {
         EstadoPinpad estado = new EstadoPinpad(false);
 

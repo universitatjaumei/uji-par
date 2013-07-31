@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import es.uji.apps.par.pinpad.ResultadoPagoPinpad;
 import es.uji.apps.par.services.Pinpad;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -24,7 +25,7 @@ public class PinpadRealTest
     {
         String id = "26";
 
-        String resultado = pinpadReal.realizaPago(id, new BigDecimal(1.02), "Prueba desde Java");
+        ResultadoPagoPinpad resultado = pinpadReal.realizaPago(id, new BigDecimal(1.02), "Prueba desde Java");
         System.out.println(resultado);
 
         while (true)
