@@ -46,4 +46,20 @@ public class ResultadoPagoPinpad
         this.mensajeError = mensajeError;
     }
 
+    @Override
+    public String toString()
+    {
+        StringBuffer buff = new StringBuffer();
+        
+        buff.append("<error:");
+        buff.append(error);
+        buff.append(", codigo:");
+        buff.append(codigo);
+        buff.append(", mensajeError:");
+        buff.append(mensajeError);
+        buff.append(">");
+        
+        return buff.toString();
+    }
+
 }

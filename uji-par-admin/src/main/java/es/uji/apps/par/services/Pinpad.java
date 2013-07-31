@@ -16,7 +16,7 @@ public class Pinpad
 
     @Autowired
     PinpadDataService dataService;
-    
+
     public Pinpad()
     {
     }
@@ -35,8 +35,10 @@ public class Pinpad
     {
         try
         {
+            log.info(String.format("llamando consultaEstado(\"%s\")...", id));
             String resultado = dataService.consultaEstado(id);
-            System.out.println(resultado);
+            log.info(String.format("llamado consultaEstado(\"%s\") -> \"%s\"", id, resultado));
+
             return parseEstado(resultado);
         }
         catch (Exception e)
@@ -45,13 +47,16 @@ public class Pinpad
             return new EstadoPinpad(true);
         }
     }
-    
+
     public ResultadoPagoPinpad realizaPago(String id, BigDecimal importe, String concepto)
     {
         try
         {
-             String resultado = dataService.realizaPago(id, importe, concepto);
-             return parseResultadoPago(resultado);
+            log.info(String.format("llamando realizaPago(\"%s\", \"%s\", \"%s\")...", id, importe.floatValue(), concepto));
+            String resultado = dataService.realizaPago(id, importe, concepto);
+            log.info(String.format("llamado realizaPago(\"%s\", \"%s\", \"%s\") -> \"%s\"", id, importe, concepto, resultado));
+            
+            return parseResultadoPago(resultado);
         }
         catch (Exception e)
         {

@@ -31,10 +31,14 @@ public class PinpadWebService implements PinpadDataService
 
         String url = String.format("https://e-ujier.uji.es/pls/www/!pinpad.estado?tpv_identificador=%s&tpv_hash=%s",
                 id, sha1String);
+        
+        log.info("antes consultaEstado: " + url);
 
         WebResource webResource = client.resource(url);
 
         ClientResponse response = webResource.get(ClientResponse.class);
+        
+        log.info("status consultaEstado: " + url + ", status: " + response.getStatus());
 
         if (response.getStatus() != 200)
         {
@@ -42,6 +46,9 @@ public class PinpadWebService implements PinpadDataService
         }
 
         String output = response.getEntity(String.class);
+        
+        log.info(String.format("body consultaEstado: \"%s\", body:\"%s\"", url, output));
+        
         return output;
     }
     
@@ -52,9 +59,6 @@ public class PinpadWebService implements PinpadDataService
         
         BigDecimal importeCentimos = importe.multiply(new BigDecimal(100));
         String importeEnviar = Integer.toString(importeCentimos.intValue());
-        
-        System.out.println(importeEnviar);
-
         String sha1String = sha1(id + importeEnviar + SECRET);
 
         String conceptoEncoded;
@@ -70,18 +74,22 @@ public class PinpadWebService implements PinpadDataService
         String url = String.format("https://e-ujier.uji.es/pls/www/!pinpad.cobrar?tpv_identificador=%s&tpv_concepto=%s&tpv_importe=%s&tpv_hash=%s",
                 id, conceptoEncoded, importeEnviar, sha1String);
 
-        log.info("URL pagar: " + url);
+        log.info("antes realizaPago: " + url);
         
         WebResource webResource = client.resource(url);
 
         ClientResponse response = webResource.get(ClientResponse.class);
+        
+        log.info(String.format("status realizaPago: \"%s\", status:\"%s\"", url, response.getStatus()));
 
         if (response.getStatus() != 200)
         {
             throw new RuntimeException("Error respuesta HTTP: " + response.getStatus());
         }
-
+        
         String output = response.getEntity(String.class);
+        
+        log.info(String.format("body realizaPago: \"%s\", body:\"%s\"", url, output));
         
         return output;
     }
