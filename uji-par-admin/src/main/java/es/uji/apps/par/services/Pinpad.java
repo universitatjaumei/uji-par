@@ -68,7 +68,7 @@ public class Pinpad
     private ResultadoPagoPinpad parseResultadoPago(String textoResultado)
     {
         ResultadoPagoPinpad resultado = new ResultadoPagoPinpad();
-        
+
         if (textoResultado.equals(""))
         {
             resultado.setError(true);
@@ -76,9 +76,9 @@ public class Pinpad
         else
         {
             resultado.setError(false);
-            resultado.setCodigo(textoResultado);
+            resultado.setCodigo(textoResultado.trim());
         }
-            
+
         return resultado;
     }
 
