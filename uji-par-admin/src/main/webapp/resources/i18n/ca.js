@@ -50,7 +50,8 @@ UI =
             "deletedImage": "S'ha produït un error a l'esborrar la imatge",
             "loadingPrecios": "S'ha produït un error carregant els preus de la plantilla seleccionada",
             "loadingPreciosNoNumeradas": "S'ha produït un error carregant els preus",
-            "loadingDisponiblesNoNumeradas": "S'ha produït un error carregant les butaques disponibles"
+            "loadingDisponiblesNoNumeradas": "S'ha produït un error carregant les butaques disponibles",
+            "errorRealizaPago": "S'ha produït un error iniciant el pagament amb tarjeta"
         },
         "button": {
             "closeSession": "Tancar sessió",

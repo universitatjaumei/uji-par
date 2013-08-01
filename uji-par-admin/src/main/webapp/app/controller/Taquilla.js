@@ -67,7 +67,7 @@ Ext.define('Paranimf.controller.Taquilla', {
              afterrender: this.cambiarEstadoBotonesComprar
          },    
          'formComprar #pagar': {
-        	 click: this.pagar
+        	 click: this.registraCompra
          },
          'panelSeleccionarNoNumeradas': {
              afterrender: this.panelSeleccionarNoNumeradasCreado
@@ -124,6 +124,7 @@ Ext.define('Paranimf.controller.Taquilla', {
       
 	  var me = this;
 	  
+	  this.idCompra = null;
 	  this.butacasSeleccionadas = [];
 
 	  pm.bind('respuestaButacas', function(butacas){
@@ -192,16 +193,41 @@ Ext.define('Paranimf.controller.Taquilla', {
 	   var layout = this.getFormComprarCards().getLayout();
 	   layout.setActiveItem(layout.getNext());
 	   
-	   if (this.entradasNumeradas())
-	   {
-		   this.rellenaDatosPasoPagar(this.sumaImportes(butacas).toFixed(2));
-	   }
-	   else
-	   {
-		   this.rellenaDatosPasoPagar(this.sumaImportesNoNumeradas(butacas));
-	   }
-	   
+	   this.consultaImportes(butacas);
+
 	   this.cambiarEstadoBotonesComprar();
+   },
+   
+   consultaImportes: function(butacas) {
+
+	   var me = this;
+	   var idSesion = this.getGridSesionesTaquilla().getSelectedRecord().data['id'];
+	   
+	   me.rellenaDatosPasoPagar("-");
+	   
+	   Ext.Ajax.request({
+	    	  url : urlPrefix + 'compra/' + idSesion + '/importe',
+	    	  method: 'POST',
+	    	  jsonData: butacas,
+	    	  success: function (response) {
+	    		  
+	    		  console.log(response);
+
+	    		  var importe = Ext.JSON.decode(response.responseText, true);
+	    		  me.rellenaDatosPasoPagar(importe);
+	    		   
+	    	  }, failure: function (response) {
+
+	    		  var respuesta = Ext.JSON.decode(response.responseText, true);
+	    		  console.log(respuesta);
+	    		  
+	    		  if (respuesta['message']!=null)
+	    			  alert(respuesta['message']);
+	    		  else
+	    			  alert(UI.i18n.error.formSave);
+	    	  }
+	   	  });
+	   
    },
    
    getButacasNoNumeradas: function() {
@@ -236,22 +262,31 @@ Ext.define('Paranimf.controller.Taquilla', {
 	   return butacas;
    },
    
-   sumaImportesNoNumeradas: function(butacas) {
+   pagarConTarjeta: function(id, importe, concepto) {
 	   
-	   var me = this;
-	   var total = 0;
-	   
-	   for (var i=0; i<butacas.length; i++)
-	   {
-		   total += butacas[i].precio;
-	   }
-	   
-	   console.log('total:', total);
-	   
-	   return total;
+	   Ext.Ajax.request({
+	    	  url : urlPrefix + 'pago/' + id,
+	    	  method: 'POST',
+	    	  jsonData: {concepto:concepto},
+	    	  success: function (response) {
+	    		  
+	    		  console.log(response);
+	    		  
+    			  var respuesta = Ext.JSON.decode(response.responseText, true);
+    			   
+	    	  }, failure: function (response) {
+
+	    		  var respuesta = Ext.JSON.decode(response.responseText, true);
+	    		  
+	    		  if (respuesta!=null && respuesta['message']!=null)
+	    			  alert(respuesta['message']);
+	    		  else
+	    			  alert(UI.i18n.error.errorRealizaPago);
+	    	  }
+	   	  });
    },
    
-   pagar: function() {
+   registraCompra: function() {
 	   var tipoPago = Ext.getCmp('tipoPago').value;
 	   
 	   var idSesion = this.getGridSesionesTaquilla().getSelectedRecord().data['id'];
@@ -261,14 +296,21 @@ Ext.define('Paranimf.controller.Taquilla', {
 	   Ext.Ajax.request({
 	    	  url : urlPrefix + 'compra/' + idSesion,
 	    	  method: 'POST',
-	    	  jsonData: this.butacasSeleccionadas,
+	    	  jsonData: {idCompra:me.idCompra, butacasSeleccionadas:this.butacasSeleccionadas},
 	    	  success: function (response) {
-	    		  me.getFormComprar().up('window').close();
 	    		  
 	    		   if (tipoPago == 'metalico')
+	    		   {
 	    			   alert('Pagado en metálico');
+	    			   me.getFormComprar().up('window').close();
+	    		   }   
 	    		   else
-	    			   alert('Pagado con tarjeta');
+	    		   {
+	    			   var respuesta = Ext.JSON.decode(response.responseText, true);
+
+	    			   me.idCompra = respuesta['id'];
+	    			   me.pagarConTarjeta(respuesta['id'], 'Entradas Paranimf UJI');
+	    		   }   
 	    		   
 	    	  }, failure: function (response) {
 
@@ -343,15 +385,6 @@ Ext.define('Paranimf.controller.Taquilla', {
 	    	  }
 	   	  });
    },   
-   
-   sumaImportes: function(butacas) {
-	   var total = 0.0;
-	   
-	   for(var i=0; i<butacas.length; i++)
-		   total += butacas[i].precio;
-	   
-	   return total;
-   },
    
    rellenaDatosPasoPagar: function(importe) {
 	 Ext.getCmp('total').setText(UI.i18n.field.total + ": " + importe + " €");  
