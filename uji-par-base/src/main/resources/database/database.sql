@@ -141,7 +141,8 @@
 	"TFNO" VARCHAR2(255 BYTE), 
 	"EMAIL" VARCHAR2(255 BYTE), 
 	"FECHA" TIMESTAMP (6), 
-	"TAQUILLA" NUMBER(1,0) DEFAULT 0
+	"TAQUILLA" NUMBER(1,0) DEFAULT 0,
+	"IMPORTE" NUMBER
    );
 --------------------------------------------------------
 --  DDL for Table PAR_LOCALIZACION_OCUPADAS

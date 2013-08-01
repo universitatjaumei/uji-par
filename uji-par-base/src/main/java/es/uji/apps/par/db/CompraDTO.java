@@ -1,6 +1,7 @@
 package es.uji.apps.par.db;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -44,6 +45,9 @@ public class CompraDTO implements Serializable {
 	
 	@Column(name = "TAQUILLA")
 	private Boolean taquilla;
+	
+	@Column(name = "IMPORTE")
+	private BigDecimal importe;
 
 	// bi-directional many-to-one association to ButacaDTO
 	@OneToMany(mappedBy = "parCompra")
@@ -53,13 +57,14 @@ public class CompraDTO implements Serializable {
 	}
 
 	public CompraDTO(String nombre, String apellidos, String telefono,
-			String email, Timestamp fecha, Boolean taquilla) {
+			String email, Timestamp fecha, Boolean taquilla, BigDecimal importe) {
 		this.nombre = nombre;
 		this.apellidos = apellidos;
 		this.telefono = telefono;
 		this.email = email;
 		this.fecha = fecha;
 		this.taquilla = taquilla;
+        this.importe = importe;
 	}
 
 	public long getId() {
@@ -124,5 +129,13 @@ public class CompraDTO implements Serializable {
 
     public void setTaquilla(Boolean taquilla) {
         this.taquilla = taquilla;
+    }
+
+    public BigDecimal getImporte() {
+        return importe;
+    }
+
+    public void setImporte(BigDecimal importe) {
+        this.importe = importe;
     }
 }

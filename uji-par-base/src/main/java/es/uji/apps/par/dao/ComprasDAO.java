@@ -1,5 +1,6 @@
 package es.uji.apps.par.dao;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -18,13 +19,18 @@ public class ComprasDAO
     private EntityManager entityManager;
 
     @Transactional
-    public CompraDTO guardaCompra(String nombre, String apellidos, String telefono, String email, Date fecha, boolean taquilla)
+    public CompraDTO guardaCompra(String nombre, String apellidos, String telefono, String email, Date fecha, boolean taquilla, BigDecimal importe)
     {
-        CompraDTO compraDTO = new CompraDTO(nombre, apellidos, telefono, email, new Timestamp(fecha.getTime()), taquilla);
+        CompraDTO compraDTO = new CompraDTO(nombre, apellidos, telefono, email, new Timestamp(fecha.getTime()), taquilla, importe);
 
         entityManager.persist(compraDTO);
 
         return compraDTO;
+    }
+
+    public CompraDTO getCompraById(long id)
+    {
+        return entityManager.find(CompraDTO.class, id);
     }
 
 }

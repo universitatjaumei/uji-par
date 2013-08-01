@@ -2,6 +2,7 @@ package es.uji.apps.par.services.dao;
 
 import static org.junit.Assert.assertNotNull;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import org.junit.Before;
@@ -33,7 +34,7 @@ public class ComprasDAOTest extends BaseDAOTest
     @Transactional
     public void guardaCompraOk()
     {
-        CompraDTO compraDTO = comprasDAO.guardaCompra("Pepe", "Perez", "964123456", "pepe@example.com", new Date(), true);
+        CompraDTO compraDTO = comprasDAO.guardaCompra("Pepe", "Perez", "964123456", "pepe@example.com", new Date(), true, BigDecimal.ONE);
 
         assertNotNull(compraDTO.getId());
     }

@@ -145,7 +145,7 @@ public class ButacasDAOTest extends BaseDAOTest
 
     private CompraDTO creaCompra()
     {
-        return comprasDao.guardaCompra("Pepe", "Perez", "964123456", "prueba@example.com", new Date(), false);
+        return comprasDao.guardaCompra("Pepe", "Perez", "964123456", "prueba@example.com", new Date(), false, BigDecimal.ONE);
     }
     
     @Test(expected=ButacaOcupadaException.class)
