@@ -136,6 +136,7 @@
 
 	CREATE TABLE "PAR_COMPRAS" 
    (	"ID" NUMBER, 
+    "SESION_ID" NUMBER, 
 	"NOMBRE" VARCHAR2(255 BYTE), 
 	"APELLIDOS" VARCHAR2(255 BYTE), 
 	"TFNO" VARCHAR2(255 BYTE), 
@@ -416,6 +417,14 @@
  
   ALTER TABLE "PAR_SESIONES" ADD CONSTRAINT "PAR_SESIONES_PAR_PLANTILL_FK1" FOREIGN KEY ("PLANTILLA_ID")
 	  REFERENCES "PAR_PLANTILLAS" ("ID") ENABLE;
+
+--------------------------------------------------------
+--  Ref Constraints for Table PAR_COMPRAS
+-------------------------------------------------------
+	  
+  ALTER TABLE "PAR_COMPRAS" ADD CONSTRAINT "PAR_COMPRAS_SE_FK1" FOREIGN KEY ("SESION_ID")
+	  REFERENCES "PAR_SESIONES" ("ID") ON DELETE CASCADE ENABLE;	
+	  	  
 --------------------------------------------------------
 --  Ref Constraints for Table PAR_BUTACAS
 --------------------------------------------------------

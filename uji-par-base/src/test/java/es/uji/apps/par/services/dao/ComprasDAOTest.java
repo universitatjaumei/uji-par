@@ -16,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import es.uji.apps.par.dao.ComprasDAO;
 import es.uji.apps.par.db.CompraDTO;
+import es.uji.apps.par.db.SesionDTO;
+import es.uji.apps.par.model.Localizacion;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @TransactionConfiguration(transactionManager = "transactionManager")
@@ -24,17 +26,22 @@ public class ComprasDAOTest extends BaseDAOTest
 {
     @Autowired
     ComprasDAO comprasDAO;
+    
+    private Localizacion localizacion;
+    private SesionDTO sesion;
 
     @Before
     public void before()
     {
+        localizacion = preparaLocalizacion("anfiteatro");
+        sesion = preparaSesion(Localizacion.localizacionToLocalizacionDTO(localizacion));
     }
 
     @Test
     @Transactional
     public void guardaCompraOk()
     {
-        CompraDTO compraDTO = comprasDAO.guardaCompra("Pepe", "Perez", "964123456", "pepe@example.com", new Date(), true, BigDecimal.ONE);
+        CompraDTO compraDTO = comprasDAO.insertaCompra(sesion.getId(), "Pepe", "Perez", "964123456", "pepe@example.com", new Date(), true, BigDecimal.ONE);
 
         assertNotNull(compraDTO.getId());
     }

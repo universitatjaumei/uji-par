@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -48,17 +50,23 @@ public class CompraDTO implements Serializable {
 	
 	@Column(name = "IMPORTE")
 	private BigDecimal importe;
+	
+    @ManyToOne
+    @JoinColumn(name="SESION_ID")
+    private SesionDTO parSesion;
 
 	// bi-directional many-to-one association to ButacaDTO
 	@OneToMany(mappedBy = "parCompra")
 	private List<ButacaDTO> parButacas;
 
-	public CompraDTO() {
-	}
+	public CompraDTO()
+    {
+    }
 
-	public CompraDTO(String nombre, String apellidos, String telefono,
+	public CompraDTO(SesionDTO sesion, String nombre, String apellidos, String telefono,
 			String email, Timestamp fecha, Boolean taquilla, BigDecimal importe) {
-		this.nombre = nombre;
+		this.parSesion = sesion;
+        this.nombre = nombre;
 		this.apellidos = apellidos;
 		this.telefono = telefono;
 		this.email = email;
@@ -137,5 +145,13 @@ public class CompraDTO implements Serializable {
 
     public void setImporte(BigDecimal importe) {
         this.importe = importe;
+    }
+
+    public SesionDTO getParSesion() {
+        return parSesion;
+    }
+
+    public void setParSesion(SesionDTO parSesion) {
+        this.parSesion = parSesion;
     }
 }
