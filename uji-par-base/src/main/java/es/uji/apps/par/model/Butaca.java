@@ -142,5 +142,24 @@ public class Butaca
     {
         this.tipo = tipo;
     }
+    
+    @Override
+    public String toString()
+    {
+        StringBuffer buff = new StringBuffer();
+        
+        buff.append("<id=");
+        buff.append(id);
+        buff.append(", localizacion=");
+        buff.append(localizacion);
+        buff.append(", fila=");
+        buff.append(fila);
+        buff.append(", numero=");
+        buff.append(numero);
+        buff.append(", tipo=");
+        buff.append(tipo);        
+        
+        return buff.toString();
+    }
 
 }
