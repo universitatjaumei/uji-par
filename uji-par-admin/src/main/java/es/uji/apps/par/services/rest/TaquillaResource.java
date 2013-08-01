@@ -1,5 +1,6 @@
 package es.uji.apps.par.services.rest;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -16,13 +17,12 @@ import javax.ws.rs.core.Response;
 import org.apache.log4j.Logger;
 
 import com.sun.jersey.api.core.InjectParam;
-import com.sun.jersey.core.spi.scanning.PackageNamesScanner.ResourcesProvider;
 
 import es.uji.apps.par.ButacaOcupadaException;
 import es.uji.apps.par.CompraSinButacasException;
 import es.uji.apps.par.NoHayButacasLibresException;
-import es.uji.apps.par.ResponseMessage;
 import es.uji.apps.par.model.Butaca;
+import es.uji.apps.par.model.CompraRequest;
 import es.uji.apps.par.model.ResultadoCompra;
 import es.uji.apps.par.services.ButacasService;
 import es.uji.apps.par.services.ComprasService;
@@ -47,13 +47,12 @@ public class TaquillaResource extends BaseResource
 
     @POST
     @Path("{id}")
-    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response compraEntrada(@PathParam("id") Long sesionId, List<Butaca> butacasSeleccionadas) throws NoHayButacasLibresException, ButacaOcupadaException
+    public Response compraEntrada(@PathParam("id") Long sesionId, CompraRequest compraRequest) throws NoHayButacasLibresException, ButacaOcupadaException
     {
         try
         {
-            ResultadoCompra resultadoCompra =  comprasService.realizaCompraTaquilla(sesionId, butacasSeleccionadas);
+            ResultadoCompra resultadoCompra =  comprasService.registraCompraTaquilla(sesionId, compraRequest.getIdCompra(), compraRequest.getButacasSeleccionadas());
             return Response.ok(resultadoCompra).build();
         }
         catch (NoHayButacasLibresException e)
@@ -87,4 +86,16 @@ public class TaquillaResource extends BaseResource
     {
         return Response.ok().entity(new RestResponse(true, butacasService.getDisponiblesNoNumerada(sesionId))).build();
     }
+    
+    @POST
+    @Path("{id}/importe")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getImportesButacas(@PathParam("id") Long sesionId, List<Butaca> butacasSeleccionadas)
+    {
+        BigDecimal importe = comprasService.calculaImporteButacas(sesionId, butacasSeleccionadas);
+        
+        return Response.ok().entity(importe.setScale(2).toString()).build();
+    }
+    
 }

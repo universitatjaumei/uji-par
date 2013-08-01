@@ -1,10 +1,9 @@
 package es.uji.apps.par.services;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,11 +13,11 @@ import es.uji.apps.par.ButacaOcupadaException;
 import es.uji.apps.par.CompraSinButacasException;
 import es.uji.apps.par.FueraDePlazoVentaInternetException;
 import es.uji.apps.par.NoHayButacasLibresException;
-import es.uji.apps.par.ResponseMessage;
 import es.uji.apps.par.dao.ButacasDAO;
 import es.uji.apps.par.dao.ComprasDAO;
 import es.uji.apps.par.db.CompraDTO;
 import es.uji.apps.par.model.Butaca;
+import es.uji.apps.par.model.PreciosSesion;
 import es.uji.apps.par.model.ResultadoCompra;
 import es.uji.apps.par.model.Sesion;
 
@@ -34,9 +33,9 @@ public class ComprasService
     @Autowired
     private SesionesService sesionesService;
 
-    public ResultadoCompra realizaCompraTaquilla(Long sesionId, List<Butaca> butacasSeleccionadas) throws NoHayButacasLibresException, ButacaOcupadaException, CompraSinButacasException
+    public ResultadoCompra registraCompraTaquilla(Long sesionId, Long compraId, List<Butaca> butacasSeleccionadas) throws NoHayButacasLibresException, ButacaOcupadaException, CompraSinButacasException
     {
-        return realizaCompra(sesionId, "", "", "", "", butacasSeleccionadas, true);
+        return registraCompra(sesionId, compraId, "", "", "", "", butacasSeleccionadas, true);
     }
 
     public ResultadoCompra realizaCompraInternet(Long sesionId, String nombre, String apellidos, String telefono,
@@ -47,24 +46,55 @@ public class ComprasService
         if (!sesion.getEnPlazoVentaInternet())
             throw new FueraDePlazoVentaInternetException(sesionId);
 
-        return realizaCompra(sesionId, nombre, apellidos, telefono, email, butacasSeleccionadas, false);
-
+        return registraCompra(sesionId, null, nombre, apellidos, telefono, email, butacasSeleccionadas, false);
     }
     
     @Transactional
-    private synchronized ResultadoCompra realizaCompra(Long sesionId, String nombre, String apellidos, String telefono, String email,
+    private synchronized ResultadoCompra registraCompra(Long sesionId, Long compraId, String nombre, String apellidos, String telefono, String email,
             List<Butaca> butacasSeleccionadas, boolean taquilla) throws NoHayButacasLibresException, ButacaOcupadaException, CompraSinButacasException
     {
         if (butacasSeleccionadas.size() == 0)
             throw new CompraSinButacasException();
         
         ResultadoCompra resultadoCompra = new ResultadoCompra();
+        
+        BigDecimal importe = calculaImporteButacas(sesionId, butacasSeleccionadas);
 
-        CompraDTO compraDTO = comprasDAO.guardaCompra(nombre, apellidos, telefono, email, new Date(), taquilla);
+        CompraDTO compraDTO;
+        
+        if (compraId == null)
+            compraDTO = comprasDAO.insertaCompra(sesionId, nombre, apellidos, telefono, email, new Date(), taquilla, importe);
+        else
+            compraDTO = comprasDAO.guardaCompra(compraId, sesionId, nombre, apellidos, telefono, email, new Date(), taquilla, importe);
+        
         butacasDAO.reservaButacas(sesionId, compraDTO, butacasSeleccionadas);
+        
         resultadoCompra.setCorrecta(true);
+        resultadoCompra.setId(compraDTO.getId());
             
         return resultadoCompra;
     }
 
+    public BigDecimal calculaImporteButacas(Long sesionId, List<Butaca> butacasSeleccionadas)
+    {
+        BigDecimal importe = new BigDecimal("0");
+        Map<String, PreciosSesion> preciosLocalizacion = sesionesService.getPreciosSesionPorLocalizacion(sesionId);
+        
+        for (Butaca butaca: butacasSeleccionadas)
+        {
+            PreciosSesion precioLocalizacion = preciosLocalizacion.get(butaca.getLocalizacion());
+            
+            if (butaca.getTipo().equals("normal"))
+                importe = importe.add(precioLocalizacion.getPrecio());
+            else if (butaca.getTipo().equals("descuento"))
+                importe = importe.add(precioLocalizacion.getDescuento());
+            else if (butaca.getTipo().equals("invitacion"))
+                importe = importe.add(precioLocalizacion.getInvitacion());
+            else
+                throw new RuntimeException("Butaca con tipo de precio no reconocido: " + butaca);
+        }
+        
+        return importe;
+    }
+    
 }

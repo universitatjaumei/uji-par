@@ -2,7 +2,9 @@ package es.uji.apps.par.services;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -210,6 +212,18 @@ public class SesionesService
 		}
 		
         return listaPreciosSesion;
+	}
+	
+	public Map<String, PreciosSesion> getPreciosSesionPorLocalizacion(Long sesionId)
+	{
+	    Map<String, PreciosSesion> resultado = new HashMap<String, PreciosSesion>();
+	    
+	    for (PreciosSesion precio: getPreciosSesion(sesionId))
+	    {
+	        resultado.put(precio.getLocalizacion().getCodigo(), precio);
+	    }
+	    
+        return resultado;
 	}
 	
 	public Sesion getSesion(long id)
