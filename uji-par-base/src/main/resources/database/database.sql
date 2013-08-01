@@ -146,16 +146,6 @@
 	"IMPORTE" NUMBER
    );
 --------------------------------------------------------
---  DDL for Table PAR_LOCALIZACION_OCUPADAS
---------------------------------------------------------   
-  CREATE TABLE "PAR_LOCALIZACION_OCUPADAS" 
-   (	
-    "ID" NUMBER,
-	"SESION_ID" NUMBER, 
-	"LOCALIZACION_ID" NUMBER, 
-	"OCUPADAS" NUMBER 
-   ) ;   
---------------------------------------------------------
 --  Constraints for Table PAR_EVENTOS
 --------------------------------------------------------
 
@@ -280,21 +270,6 @@
   ALTER TABLE "PAR_COMPRAS" MODIFY ("TAQUILLA" NOT NULL ENABLE);
 
 --------------------------------------------------------
---  Constraints for Table PAR_LOCALIZACION_OCUPADAS
---------------------------------------------------------
-
-  ALTER TABLE "PAR_LOCALIZACION_OCUPADAS" ADD CONSTRAINT "PAR_LOCALIZACION_OCUPADAS_PK" PRIMARY KEY ("ID") ENABLE;
- 
-  ALTER TABLE "PAR_LOCALIZACION_OCUPADAS" ADD CONSTRAINT "PAR_LOCALIZACION_OCUPADAS_UK1" UNIQUE ("SESION_ID", "LOCALIZACION_ID") ENABLE;
- 
-  ALTER TABLE "PAR_LOCALIZACION_OCUPADAS" MODIFY ("ID" NOT NULL ENABLE);
- 
-  ALTER TABLE "PAR_LOCALIZACION_OCUPADAS" MODIFY ("LOCALIZACION_ID" NOT NULL ENABLE);
- 
-  ALTER TABLE "PAR_LOCALIZACION_OCUPADAS" MODIFY ("SESION_ID" NOT NULL ENABLE);
-  
-  ALTER TABLE "PAR_LOCALIZACION_OCUPADAS" MODIFY ("OCUPADAS" NOT NULL ENABLE);          
---------------------------------------------------------
 --  DDL for Index PAR_EVENTOS_PK
 --------------------------------------------------------
 
@@ -380,12 +355,6 @@
   ;    
 
 --------------------------------------------------------
---  DDL for Index PAR_LOCALIZACION_OCUPADAS_PK
---------------------------------------------------------
-
-  CREATE UNIQUE INDEX "PAR_LOCALIZACION_OCUPADAS_PK" ON "PAR_LOCALIZACION_OCUPADAS" ("ID") 
-  ;  
---------------------------------------------------------
 --  Ref Constraints for Table PAR_EVENTOS
 --------------------------------------------------------
 
@@ -439,13 +408,3 @@
   ALTER TABLE "PAR_BUTACAS" ADD CONSTRAINT "PAR_BUTACAS_CO_FK1" FOREIGN KEY ("COMPRA_ID")
 	  REFERENCES "PAR_COMPRAS" ("ID") ON DELETE CASCADE ENABLE;		   
 	  
---------------------------------------------------------
---  Ref Constraints for Table PAR_LOCALIZACION_OCUPADAS
---------------------------------------------------------
-
-  ALTER TABLE "PAR_LOCALIZACION_OCUPADAS" ADD CONSTRAINT "PAR_LOCALIZACION_OCUPADAS_PAR_LO_FK1" FOREIGN KEY ("LOCALIZACION_ID")
-	  REFERENCES "PAR_LOCALIZACIONES" ("ID") ENABLE;
- 
-  ALTER TABLE "PAR_LOCALIZACION_OCUPADAS" ADD CONSTRAINT "PAR_LOCALIZACION_OCUPADAS_PAR_SE_FK1" FOREIGN KEY ("SESION_ID")
-	  REFERENCES "PAR_SESIONES" ("ID") ON DELETE CASCADE ENABLE;
-	  	   
