@@ -257,7 +257,8 @@
 
   ALTER TABLE "PAR_BUTACAS" ADD CONSTRAINT "PAR_BUTACAS_PK" PRIMARY KEY ("ID") ENABLE;
  
-  ALTER TABLE "PAR_BUTACAS" ADD CONSTRAINT "PAR_BUTACAS_UK1" UNIQUE ("SESION_ID", "LOCALIZACION_ID", "FILA", "NUMERO") ENABLE;
+  -- Permite que unique por (sesion, localizacion, fila, numero) pero sin dar problemas cuando fila=null y numero=null (las butacas no numeradas)
+  ALTER TABLE "PAR_BUTACAS" ADD CONSTRAINT "PAR_BUTACAS_UK1" UNIQUE ("SESION_ID", "LOCALIZACION_ID", (NVL2(fila, fila, id)), (NVL2(numero, numero, id))) ENABLE;
   
   ALTER TABLE "PAR_BUTACAS" MODIFY ("COMPRA_ID" NOT NULL ENABLE);
  

@@ -11,6 +11,7 @@ import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
 
 import es.uji.apps.par.ButacaOcupadaException;
@@ -18,11 +19,9 @@ import es.uji.apps.par.NoHayButacasLibresException;
 import es.uji.apps.par.db.ButacaDTO;
 import es.uji.apps.par.db.CompraDTO;
 import es.uji.apps.par.db.LocalizacionDTO;
-import es.uji.apps.par.db.LocalizacionOcupadasDTO;
 import es.uji.apps.par.db.PreciosSesionDTO;
 import es.uji.apps.par.db.QButacaDTO;
 import es.uji.apps.par.db.QLocalizacionDTO;
-import es.uji.apps.par.db.QLocalizacionOcupadasDTO;
 import es.uji.apps.par.db.QSesionDTO;
 import es.uji.apps.par.db.SesionDTO;
 import es.uji.apps.par.model.Butaca;
@@ -81,84 +80,22 @@ public class ButacasDAO
     }
 
     
-    @Transactional(rollbackForClassName={"NoHayButacasLibresException","ButacaOcupadaException"})
-    public synchronized void reservaButacas(Long sesionId, CompraDTO compraDTO, List<Butaca> butacas) throws NoHayButacasLibresException, ButacaOcupadaException
+    private void deleteButacas(CompraDTO compraDTO)
     {
-        SesionDTO sesionDTO = sesionesDAO.getSesion(sesionId);
+        QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
         
-        if (sesionDTO.getParEvento().getAsientosNumerados().intValue() == 0)
-            reservaButacasNoNumeradas(sesionId, compraDTO, butacas);
-        else
-            reservaButacasNumeradas(sesionId, compraDTO, butacas);
+        new JPADeleteClause(entityManager, qButacaDTO).where(qButacaDTO.id.eq(compraDTO.getId())).execute();  
     }
-    
-    private void reservaButacasNoNumeradas(Long sesionId, CompraDTO compraDTO, List<Butaca> butacas) throws NoHayButacasLibresException
-    {
-        for (Butaca butaca : butacas)
-        {
-            if (hayButacasNoNumeradasLibres(sesionId, butaca.getLocalizacion()))
-            {
-                ocupaButacaNoNumerada(sesionId, butaca.getLocalizacion());
-            }
-            else
-            {
-                throw new NoHayButacasLibresException(sesionId, butaca.getLocalizacion());
-            }
-        }
-    }
-    
-    private boolean hayButacasNoNumeradasLibres(Long idSesion, String codigoLocalizacion)
-    {
-        LocalizacionDTO localizacionDTO = localizacionesDAO.getLocalizacionByCodigo(codigoLocalizacion);
-        LocalizacionOcupadasDTO ocupadas = getOcupadas(idSesion, codigoLocalizacion);
-        
-        if (ocupadas == null)
-            return true;
-        else
-            return ocupadas.getOcupadas() < localizacionDTO.getTotalEntradas().intValue();
-    }
-    
-    private LocalizacionOcupadasDTO getOcupadas(Long idSesion, String codigoLocalizacion)
-    {
-        QLocalizacionDTO qLocalizacionDTO = QLocalizacionDTO.localizacionDTO;
-        QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
-        QLocalizacionOcupadasDTO qOcupadasDTO = QLocalizacionOcupadasDTO.localizacionOcupadasDTO;
-        
-        JPAQuery query = new JPAQuery(entityManager);
-        
-         List<LocalizacionOcupadasDTO> ocupadas = query
-                .from(qOcupadasDTO, qSesionDTO, qLocalizacionDTO)
-                .where(qOcupadasDTO.parSesion.id.eq(qSesionDTO.id).and(qSesionDTO.id.eq(idSesion))
-                        .and(qLocalizacionDTO.codigo.eq(codigoLocalizacion))
-                        .and(qOcupadasDTO.parLocalizacion.id.eq(qLocalizacionDTO.id))).list(qOcupadasDTO);
 
-        if (ocupadas.size() == 0)
-            return null;
-        else
-            return ocupadas.get(0);
-    }
-    
-    private void ocupaButacaNoNumerada(Long idSesion, String codigoLocalizacion)
-    {
-        LocalizacionOcupadasDTO ocupadasLocalizacion = getOcupadas(idSesion, codigoLocalizacion);
-        
-        if (ocupadasLocalizacion == null)
-        {
-            ocupadasLocalizacion = new LocalizacionOcupadasDTO(sesionesDAO.getSesion(idSesion), localizacionesDAO.getLocalizacionByCodigo(codigoLocalizacion));
-            ocupadasLocalizacion.setOcupadas(0);
-        }
-        
-        ocupadasLocalizacion.setOcupadas(ocupadasLocalizacion.getOcupadas()+1);
-        
-        entityManager.persist(ocupadasLocalizacion);
-    }
-    
-    private void reservaButacasNumeradas(Long sesionId, CompraDTO compraDTO, List<Butaca> butacas) throws ButacaOcupadaException
+    @Transactional(rollbackForClassName={"NoHayButacasLibresException","ButacaOcupadaException"})
+    public void reservaButacas(Long sesionId, CompraDTO compraDTO, List<Butaca> butacas) throws ButacaOcupadaException, NoHayButacasLibresException
     {
         Butaca butacaActual = null;
         
         try
         {
+            deleteButacas(compraDTO);
+            
             SesionDTO sesionDTO = sesionesDAO.getSesion(sesionId);
             List<PreciosSesionDTO> parPreciosSesions = sesionDTO.getParPreciosSesions();
             
@@ -167,11 +104,18 @@ public class ButacasDAO
                 butacaActual = butaca;
                 
                 LocalizacionDTO localizacionDTO = localizacionesDAO.getLocalizacionByCodigo(butaca.getLocalizacion());
+                
+                if (butaca.getFila()==null && butaca.getNumero()==null && 
+                    noHayButacasLibres(sesionDTO, localizacionDTO))
+                {
+                    throw new NoHayButacasLibresException(sesionId, butaca.getLocalizacion());
+                }
     
                 ButacaDTO butacaDTO = Butaca.butacaToButacaDTO(butaca);
                 butacaDTO.setParSesion(sesionDTO);
                 butacaDTO.setParCompra(compraDTO);
                 butacaDTO.setParLocalizacion(localizacionDTO);
+                butacaDTO.setTipo(butaca.getTipo());
     
                 for (PreciosSesionDTO precioSesion : parPreciosSesions)
                 {
@@ -181,6 +125,8 @@ public class ButacasDAO
                             butacaDTO.setPrecio(precioSesion.getPrecio());
                         else if (butaca.getTipo().equals("descuento"))
                             butacaDTO.setPrecio(precioSesion.getDescuento());
+                        else if (butaca.getTipo().equals("invitacion"))
+                            butacaDTO.setPrecio(precioSesion.getInvitacion());                        
                     }
                 }
                 
@@ -197,20 +143,28 @@ public class ButacasDAO
         }
     }
 
-    public List<LocalizacionOcupadasDTO> getDisponiblesSesion(long idSesion)
+    private boolean noHayButacasLibres(SesionDTO sesionDTO, LocalizacionDTO localizacionDTO)
+    {
+        return getOcupadas(sesionDTO.getId(), localizacionDTO.getCodigo()) >= localizacionDTO.getTotalEntradas().intValue();
+    }
+
+    public int getOcupadas(long sesionId, String codigoLocalizacion)
     {
         QLocalizacionDTO qLocalizacionDTO = QLocalizacionDTO.localizacionDTO;
         QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
-        QLocalizacionOcupadasDTO qOcupadasDTO = QLocalizacionOcupadasDTO.localizacionOcupadasDTO;
+        QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
         
         JPAQuery query = new JPAQuery(entityManager);
         
-          List<LocalizacionOcupadasDTO> ocupadas = query
-        .from(qOcupadasDTO, qSesionDTO, qLocalizacionDTO)
-        .where(qOcupadasDTO.parSesion.id.eq(qSesionDTO.id).and(qSesionDTO.id.eq(idSesion))
-                .and(qOcupadasDTO.parLocalizacion.id.eq(qLocalizacionDTO.id))).list(qOcupadasDTO);
-         
-         return ocupadas;
+        List<ButacaDTO> list = query.from(qButacaDTO)
+                .innerJoin(qButacaDTO.parSesion, qSesionDTO)
+                .innerJoin(qButacaDTO.parLocalizacion, qLocalizacionDTO)
+                .where(qSesionDTO.id.eq(sesionId)
+                        .and(qLocalizacionDTO.codigo.eq(codigoLocalizacion))).listDistinct(qButacaDTO);
+        
+        long ocupadas = list.size();
+        
+        return (int) ocupadas;
     }
 
 }
