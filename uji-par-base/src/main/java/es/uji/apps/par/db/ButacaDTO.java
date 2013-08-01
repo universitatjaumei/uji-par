@@ -47,11 +47,14 @@ public class ButacaDTO implements Serializable{
     @ManyToOne
     @JoinColumn(name="LOCALIZACION_ID")
     private LocalizacionDTO parLocalizacion;
-
+    
     //bi-directional many-to-one association to CompraDTO
     @ManyToOne
     @JoinColumn(name="COMPRA_ID")
     private CompraDTO parCompra;
+    
+    @Column(name="TIPO")
+    private String tipo;
 
 
 	public ButacaDTO() {
@@ -104,7 +107,7 @@ public class ButacaDTO implements Serializable{
     {
         this.parSesion = parSesion;
     }
-
+    
     public LocalizacionDTO getParLocalizacion()
     {
         return parLocalizacion;
@@ -113,7 +116,7 @@ public class ButacaDTO implements Serializable{
     public void setParLocalizacion(LocalizacionDTO parLocalizacion)
     {
         this.parLocalizacion = parLocalizacion;
-    }
+    }    
 
     public CompraDTO getParCompra()
     {
@@ -124,5 +127,14 @@ public class ButacaDTO implements Serializable{
     {
         this.parCompra = parCompra;
     }
-    
+
+    public String getTipo()
+    {
+        return tipo;
+    }
+
+    public void setTipo(String tipo)
+    {
+        this.tipo = tipo;
+    }
 }
