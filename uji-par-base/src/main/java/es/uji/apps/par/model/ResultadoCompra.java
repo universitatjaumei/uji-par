@@ -8,8 +8,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class ResultadoCompra
 {
     private boolean correcta;
+    private long id;
     private List<Butaca> butacasOcupadas;
-    
+
     public ResultadoCompra()
     {
     }
@@ -32,6 +33,16 @@ public class ResultadoCompra
     public void setButacasOcupadas(List<Butaca> butacasOcupadas)
     {
         this.butacasOcupadas = butacasOcupadas;
+    }
+
+    public long getId()
+    {
+        return id;
+    }
+
+    public void setId(long id)
+    {
+        this.id = id;
     }
 
 }
