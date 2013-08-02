@@ -297,7 +297,7 @@ Ext.define('Paranimf.controller.Taquilla', {
 	    		  
 	    		   if (tipoPago == 'metalico')
 	    		   {
-	    			   this.getBotonPagar().setDisabled(false);
+	    			   me.getBotonPagar().setDisabled(false);
 	    			   alert('Pagado en metálico');
 	    			   me.muestraMensajePagoTarjeta('');
 	    			   me.getFormComprar().up('window').close();
@@ -314,7 +314,7 @@ Ext.define('Paranimf.controller.Taquilla', {
 	    		  
 	    		  console.log(respuesta);
 	    		  
-	    		  this.getBotonPagar().setDisabled(false);
+	    		  me.getBotonPagar().setDisabled(false);
 
 	    		  me.muestraMensajePagoTarjeta(UI.i18n.message.errorRegistrandoCompra);
 	    		  
