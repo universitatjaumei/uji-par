@@ -72,7 +72,7 @@ public class ComprasDAO
     }
 
     @Transactional
-    public void marcarPagada(int idCompra)
+    public void marcarPagada(Long idCompra)
     {
         CompraDTO compra = getCompraById(idCompra);
         
@@ -82,7 +82,7 @@ public class ComprasDAO
     }
 
     @Transactional
-    public void borrarCompraNoPagada(Integer idCompra)
+    public void borrarCompraNoPagada(Long idCompra)
     {
         CompraDTO compra = getCompraById(idCompra);
         
