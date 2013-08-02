@@ -31,7 +31,8 @@ UI =
             "plantillaPrecios": "És obligatori seleccionar una plantilla de preus",
             "registroConMismaLocalizacionExiste": "Ja existeix un registre per a aquesta localització, modifique l'existent o esborri'l",
             "pagoTarjetaEnviando": "Enviant pagament a lector de tarjetes...",
-            "pagoTarjetaEnviadoLector": "El pagament ha sigut enviat correctament al lector de tarjetes... Introduïu la tarjeta"
+            "pagoTarjetaEnviadoLector": "El pagament ha sigut enviat correctament al lector de tarjetes... Introduïu la tarjeta",
+            "pagoTarjetaCorrecto": "Pagament amb tarjeta correcte"
         },
         "storeWeekDay": {
             "wed": "Dimecres",

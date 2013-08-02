@@ -71,4 +71,14 @@ public class ComprasDAO
         entityManager.persist(compra);
     }
 
+    @Transactional
+    public void marcarPagada(int idCompra)
+    {
+        CompraDTO compra = getCompraById(idCompra);
+        
+        compra.setPagada(true);
+        
+        entityManager.persist(compra);        
+    }
+
 }

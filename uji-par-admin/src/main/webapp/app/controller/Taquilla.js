@@ -230,55 +230,6 @@ Ext.define('Paranimf.controller.Taquilla', {
 	   this.getEstadoPagoTarjeta().setText(mensaje);
    },
    
-   pagarConTarjeta: function(id, concepto) {
-	   
-	   var me = this;
-	   
-	   me.muestraMensajePagoTarjeta(UI.i18n.message.pagoTarjetaEnviando);
-	   
-	   Ext.Ajax.request({
-	    	  url : urlPrefix + 'pago/' + id,
-	    	  method: 'POST',
-	    	  jsonData: {concepto:concepto},
-	    	  success: function (response) {
-	   
-	    		  me.getBotonPagar().setDisabled(false);
-	    		  
-	    		  console.log('Pago con tarjeta aceptado:', response);
-	    		  
-    			  var respuesta = Ext.JSON.decode(response.responseText, true);
-    			  
-	    		  if (respuesta==null || respuesta.error)
-	    		  {
-	    			  var msj = UI.i18n.error.errorRealizaPago;
-	    			  
-	    			  if (respuesta['mensajeExcepcion'])
-	    				  msj += ' (' + respuesta['mensajeExcepcion']  + ')';
-	    			  
-	    			  alert(msj);
-	    			  me.muestraMensajePagoTarjeta(UI.i18n.error.errorRealizaPago);
-	    		  }
-	    		  else
-	    		  {
-	    			  me.idPagoTarjeta = respuesta.codigo;
-	    			  me.muestraMensajePagoTarjeta(UI.i18n.message.pagoTarjetaEnviadoLector);
-	    		  }
-    			  
-	    	  }, failure: function (response) {
-	    		  
-	    		  me.getBotonPagar().setDisabled(false);
-	    		  me.muestraMensajePagoTarjeta(UI.i18n.error.errorRealizaPago);
-
-	    		  var respuesta = Ext.JSON.decode(response.responseText, true);
-	    		  
-	    		  if (respuesta!=null && respuesta['message']!=null)
-	    			  alert(respuesta['message']);
-	    		  else
-	    			  alert(UI.i18n.error.errorRealizaPago);
-	    	  }
-	   	  });
-   },
-   
    registraCompra: function() {
 	   
 	   var tipoPago = Ext.getCmp('tipoPago').value;
@@ -316,7 +267,7 @@ Ext.define('Paranimf.controller.Taquilla', {
 	    		  
 	    		  me.getBotonPagar().setDisabled(false);
 
-	    		  me.muestraMensajePagoTarjeta(UI.i18n.message.errorRegistrandoCompra);
+	    		  me.muestraMensajePagoTarjeta(UI.i18n.error.errorRegistrandoCompra);
 	    		  
 	    		  var respuesta = Ext.JSON.decode(response.responseText, true);
 	    		  
@@ -326,7 +277,131 @@ Ext.define('Paranimf.controller.Taquilla', {
 	    			  alert(UI.i18n.error.formSave);
 	    	  }
 	   	  });
+   },   
+   
+   pagarConTarjeta: function(id, concepto) {
+	   
+	   var me = this;
+	   
+	   me.muestraMensajePagoTarjeta(UI.i18n.message.pagoTarjetaEnviando);
+	   
+	   Ext.Ajax.request({
+	    	  url : urlPrefix + 'pago/' + id,
+	    	  method: 'POST',
+	    	  jsonData: {concepto:concepto},
+	    	  success: function (response) {
+	   
+	    		  console.log('Pago con tarjeta aceptado:', response);
+	    		  
+    			  var respuesta = Ext.JSON.decode(response.responseText, true);
+    			  
+	    		  if (respuesta==null || respuesta.error)
+	    		  {
+	    			  var msj = UI.i18n.error.errorRealizaPago;
+	    			  
+	    			  if (respuesta['mensajeExcepcion'])
+	    				  msj += ' (' + respuesta['mensajeExcepcion']  + ')';
+	    			  
+	    			  alert(msj);
+	    			  me.muestraMensajePagoTarjeta(UI.i18n.error.errorRealizaPago);
+		    		  me.getBotonPagar().setDisabled(false);
+	    		  }
+	    		  else
+	    		  {
+	    			  me.idPagoTarjeta = respuesta.codigo;
+	    			  me.muestraMensajePagoTarjeta(UI.i18n.message.pagoTarjetaEnviadoLector);
+	    			  
+	    			  me.lanzaComprobacionEstadoPago(id);
+	    		  }
+    			  
+	    	  }, failure: function (response) {
+	    		  
+	    		  me.getBotonPagar().setDisabled(false);
+	    		  me.muestraMensajePagoTarjeta(UI.i18n.error.errorRealizaPago);
+
+	    		  var respuesta = Ext.JSON.decode(response.responseText, true);
+	    		  
+	    		  if (respuesta!=null && respuesta['message']!=null)
+	    			  alert(respuesta['message']);
+	    		  else
+	    			  alert(UI.i18n.error.errorRealizaPago);
+	    	  }
+	   	  });
    },
+
+   lanzaComprobacionEstadoPago: function(idPago) {
+	   var me = this;
+	   
+	   this.intervalEstadoPago = window.setInterval(function(){me.compruebaEstadoPago(idPago)}, 1000);
+   },
+   
+   paraComprobacionEstadoPago: function() {
+	   window.clearInterval(this.intervalEstadoPago);
+   },
+   
+   compruebaEstadoPago: function(idPago) {
+	   
+	   var me = this;
+	   
+	   Ext.Ajax.request({
+	    	  url : urlPrefix + 'pago/' + idPago,
+	    	  method: 'GET',
+	    	  success: function (response) {
+	   
+	    		  //me.getBotonPagar().setDisabled(false);
+	    		  
+	    		  console.log('Estado del pago con tarjeta:', response);
+	    		  
+	    		  var respuesta = Ext.JSON.decode(response.responseText, true);
+ 			  
+	    		  if (respuesta==null || respuesta.error)
+	    		  {
+	    			  var msj = UI.i18n.error.errorRealizaPago;
+	    			  
+	    			  if (respuesta['mensajeExcepcion'])
+	    				  msj += ' (' + respuesta['mensajeExcepcion']  + ')';
+	    			  
+	    			  //alert(msj);
+	    			  me.muestraMensajePagoTarjeta(msj);
+	    		  }
+	    		  else
+	    		  {
+	    			  if (respuesta['codigoAccion'] == '')
+	    			  {
+	    				  // El pago está en proceso
+	    			  }
+	    			  else if (respuesta['codigoAccion'] == '20' || respuesta['codigoAccion'] == '30' )
+	    			  {
+	    				  me.paraComprobacionEstadoPago();
+	    				  me.muestraMensajePagoTarjeta('');
+	    				  me.getBotonPagar().setDisabled(false);
+	    				  alert(UI.i18n.message.pagoTarjetaCorrecto);
+	    				  me.cerrarComprar();
+	    			  }
+	    			  else
+	    			  {
+	    				  me.paraComprobacionEstadoPago();
+	    				  me.muestraMensajePagoTarjeta('Error pago: ' + respuesta['codigoAccion'] + ': ' + respuesta['mensaje']);
+	    				  me.getBotonPagar().setDisabled(false);
+	    		      }
+	    		  }
+ 			  
+	    	  }, failure: function (response) {
+	    		  
+	    		  me.getBotonPagar().setDisabled(false);
+	    		  me.muestraMensajePagoTarjeta(UI.i18n.error.errorRealizaPago);
+
+	    		  var respuesta = Ext.JSON.decode(response.responseText, true);
+	    		  
+	    		  if (respuesta!=null && respuesta['message']!=null)
+	    			  alert(respuesta['message']);
+	    		  else
+	    			  alert(UI.i18n.error.errorRealizaPago);
+	    	  }
+	   	  });
+   },
+   
+
    
    cargaPrecios: function(sesionId, callback) {
 	   

@@ -61,6 +61,9 @@ public class CompraDTO implements Serializable {
 	
     @Column(name = "CODIGO_PAGO_TARJETA")
     private String codigoPagoTarjeta;	
+    
+    @Column(name = "PAGADA")
+    private Boolean pagada;    
 
 	public CompraDTO()
     {
@@ -76,6 +79,7 @@ public class CompraDTO implements Serializable {
 		this.fecha = fecha;
 		this.taquilla = taquilla;
         this.importe = importe;
+        this.pagada = false;
 	}
 
 	public long getId() {
@@ -164,5 +168,13 @@ public class CompraDTO implements Serializable {
 
     public void setCodigoPagoTarjeta(String codigoPagoTarjeta) {
         this.codigoPagoTarjeta = codigoPagoTarjeta;
+    }
+
+    public Boolean getPagada() {
+        return pagada;
+    }
+
+    public void setPagada(Boolean pagada) {
+        this.pagada = pagada;
     }
 }

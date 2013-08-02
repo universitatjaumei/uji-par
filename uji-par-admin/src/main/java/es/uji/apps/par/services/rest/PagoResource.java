@@ -23,6 +23,9 @@ import es.uji.apps.par.services.Pinpad;
 @Path("pago")
 public class PagoResource extends BaseResource
 {
+    private static final String PAGO_OK_TARJETA_MAGNETICA = "20";
+    private static final String PAGO_OK_TARJETA_CHIP = "30";
+
     public static Logger log = Logger.getLogger(PagoResource.class);
 
     @InjectParam
@@ -45,6 +48,7 @@ public class PagoResource extends BaseResource
         
         if (!resultado.getError())
         {
+            log.info("guardandoCodigoPago: idCompra:" + idCompra);
             compras.guardarCodigoPago(compra.getId(), resultado.getCodigo());
         }
 
@@ -56,7 +60,15 @@ public class PagoResource extends BaseResource
     @Produces(MediaType.APPLICATION_JSON)
     public EstadoPinpad estadoPago(@PathParam("idCompra") String idCompra)
     {
-        return pinpad.getEstadoPinpad(idCompra);
+        EstadoPinpad estado = pinpad.getEstadoPinpad(idCompra);
+        
+        if (estado.getCodigoAccion().equals(PAGO_OK_TARJETA_MAGNETICA) || estado.getCodigoAccion().equals(PAGO_OK_TARJETA_CHIP))
+        {
+            log.info("marcarPagada: idCompra:" + idCompra);
+            compras.marcarPagada(Integer.parseInt(idCompra));
+        }
+        
+        return estado;
     }
 
 }

@@ -144,7 +144,8 @@
 	"FECHA" TIMESTAMP (6), 
 	"TAQUILLA" NUMBER(1,0) DEFAULT 0,
 	"IMPORTE" NUMBER,
-	"CODIGO_PAGO_TARJETA" VARCHAR2(255 BYTE)
+	"CODIGO_PAGO_TARJETA" VARCHAR2(255 BYTE),
+	"PAGADA" NUMBER(1,0) DEFAULT 0
    );
 --------------------------------------------------------
 --  Constraints for Table PAR_EVENTOS
