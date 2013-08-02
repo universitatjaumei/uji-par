@@ -118,6 +118,23 @@ Ext.define('Paranimf.view.taquilla.FormComprar', {
 								 scale: 'large',
 								 text: UI.i18n.button.pagar
 						     }]
+						 },
+						 {
+							 layout: {
+							        align: 'middle',
+							        pack: 'center',
+							        type: 'hbox'
+							 },
+							 frame: false,
+							 border: 0,
+						     items: [{
+						    	 xtype: 'label',
+								 name: 'estadoPagoTarjeta',
+							     style: {
+							    	fontSize: '20px',
+							    	margin: '30px'
+							     }
+						     }]
 						 }
 				]
 	    }]

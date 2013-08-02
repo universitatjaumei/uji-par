@@ -50,6 +50,13 @@ public class PagoResource extends BaseResource
 
         return resultado;
     }
-
+    
+    @GET
+    @Path("{idCompra}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public EstadoPinpad estadoPago(@PathParam("idCompra") String idCompra)
+    {
+        return pinpad.getEstadoPinpad(idCompra);
+    }
 
 }

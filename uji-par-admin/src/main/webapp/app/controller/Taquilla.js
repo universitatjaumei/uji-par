@@ -38,7 +38,15 @@ Ext.define('Paranimf.controller.Taquilla', {
       {
        	ref: 'localizacionesNoNumeradas',
         selector: 'panelSeleccionarNoNumeradas panel[name=localizaciones]'
-      }        
+      },
+      {
+    	ref: 'estadoPagoTarjeta',
+        selector: '#formComprarCards label[name=estadoPagoTarjeta]'
+      },
+      {
+      	ref: 'botonPagar',
+        selector: 'formComprar #pagar'
+      }
    ],
 
    init: function() {
@@ -80,6 +88,7 @@ Ext.define('Paranimf.controller.Taquilla', {
 	  var me = this;
 	  
 	  this.idCompra = null;
+	  this.idPagoTarjeta = null;
 	  this.butacasSeleccionadas = [];
 
 	  pm.bind('respuestaButacas', function(butacas){
@@ -217,19 +226,48 @@ Ext.define('Paranimf.controller.Taquilla', {
 	   return butacas;
    },
    
-   pagarConTarjeta: function(id, importe, concepto) {
+   muestraMensajePagoTarjeta: function(mensaje) {
+	   this.getEstadoPagoTarjeta().setText(mensaje);
+   },
+   
+   pagarConTarjeta: function(id, concepto) {
+	   
+	   var me = this;
+	   
+	   me.muestraMensajePagoTarjeta(UI.i18n.message.pagoTarjetaEnviando);
 	   
 	   Ext.Ajax.request({
 	    	  url : urlPrefix + 'pago/' + id,
 	    	  method: 'POST',
 	    	  jsonData: {concepto:concepto},
 	    	  success: function (response) {
+	   
+	    		  me.getBotonPagar().setDisabled(false);
 	    		  
-	    		  console.log(response);
+	    		  console.log('Pago con tarjeta aceptado:', response);
 	    		  
     			  var respuesta = Ext.JSON.decode(response.responseText, true);
-    			   
+    			  
+	    		  if (respuesta==null || respuesta.error)
+	    		  {
+	    			  var msj = UI.i18n.error.errorRealizaPago;
+	    			  
+	    			  if (respuesta['mensajeExcepcion'])
+	    				  msj += ' (' + respuesta['mensajeExcepcion']  + ')';
+	    			  
+	    			  alert(msj);
+	    			  me.muestraMensajePagoTarjeta(UI.i18n.error.errorRealizaPago);
+	    		  }
+	    		  else
+	    		  {
+	    			  me.idPagoTarjeta = respuesta.codigo;
+	    			  me.muestraMensajePagoTarjeta(UI.i18n.message.pagoTarjetaEnviadoLector);
+	    		  }
+    			  
 	    	  }, failure: function (response) {
+	    		  
+	    		  me.getBotonPagar().setDisabled(false);
+	    		  me.muestraMensajePagoTarjeta(UI.i18n.error.errorRealizaPago);
 
 	    		  var respuesta = Ext.JSON.decode(response.responseText, true);
 	    		  
@@ -242,7 +280,10 @@ Ext.define('Paranimf.controller.Taquilla', {
    },
    
    registraCompra: function() {
+	   
 	   var tipoPago = Ext.getCmp('tipoPago').value;
+	   
+	   this.getBotonPagar().setDisabled(true);
 	   
 	   var idSesion = this.getGridSesionesTaquilla().getSelectedRecord().data['id'];
 
@@ -256,7 +297,9 @@ Ext.define('Paranimf.controller.Taquilla', {
 	    		  
 	    		   if (tipoPago == 'metalico')
 	    		   {
+	    			   this.getBotonPagar().setDisabled(false);
 	    			   alert('Pagado en metálico');
+	    			   me.muestraMensajePagoTarjeta('');
 	    			   me.getFormComprar().up('window').close();
 	    		   }   
 	    		   else
@@ -268,10 +311,14 @@ Ext.define('Paranimf.controller.Taquilla', {
 	    		   }   
 	    		   
 	    	  }, failure: function (response) {
-
-	    		  var respuesta = Ext.JSON.decode(response.responseText, true);
 	    		  
 	    		  console.log(respuesta);
+	    		  
+	    		  this.getBotonPagar().setDisabled(false);
+
+	    		  me.muestraMensajePagoTarjeta(UI.i18n.message.errorRegistrandoCompra);
+	    		  
+	    		  var respuesta = Ext.JSON.decode(response.responseText, true);
 	    		  
 	    		  if (respuesta['message']!=null)
 	    			  alert(respuesta['message']);

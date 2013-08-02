@@ -29,7 +29,9 @@ UI =
             "si": "Si",
             "no": "No",
             "plantillaPrecios": "És obligatori seleccionar una plantilla de preus",
-            "registroConMismaLocalizacionExiste": "Ja existeix un registre per a aquesta localització, modifique l'existent o esborri'l"
+            "registroConMismaLocalizacionExiste": "Ja existeix un registre per a aquesta localització, modifique l'existent o esborri'l",
+            "pagoTarjetaEnviando": "Enviant pagament a lector de tarjetes...",
+            "pagoTarjetaEnviadoLector": "El pagament ha sigut enviat correctament al lector de tarjetes... Introduïu la tarjeta"
         },
         "storeWeekDay": {
             "wed": "Dimecres",
@@ -51,6 +53,7 @@ UI =
             "loadingPrecios": "S'ha produït un error carregant els preus de la plantilla seleccionada",
             "loadingPreciosNoNumeradas": "S'ha produït un error carregant els preus",
             "loadingDisponiblesNoNumeradas": "S'ha produït un error carregant les butaques disponibles",
+            "errorRegistrandoCompra": "S'ha produït un error registrant la compra a la base de dades",
             "errorRealizaPago": "S'ha produït un error iniciant el pagament amb tarjeta"
         },
         "button": {
