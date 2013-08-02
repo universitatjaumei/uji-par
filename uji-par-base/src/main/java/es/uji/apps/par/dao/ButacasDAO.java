@@ -84,7 +84,7 @@ public class ButacasDAO
     {
         QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
         
-        new JPADeleteClause(entityManager, qButacaDTO).where(qButacaDTO.id.eq(compraDTO.getId())).execute();  
+        new JPADeleteClause(entityManager, qButacaDTO).where(qButacaDTO.parCompra.id.eq(compraDTO.getId())).execute();  
     }
 
     @Transactional(rollbackForClassName={"NoHayButacasLibresException","ButacaOcupadaException"})
