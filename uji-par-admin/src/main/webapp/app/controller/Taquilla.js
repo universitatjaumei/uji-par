@@ -72,7 +72,7 @@ Ext.define('Paranimf.controller.Taquilla', {
         	 click: this.cerrarComprar
          },         
          'formComprar': {
-             afterrender: this.cambiarEstadoBotonesComprar
+             afterrender: this.iniciaFormComprar
          },    
          'formComprar #pagar': {
         	 click: this.registraCompra
@@ -87,10 +87,6 @@ Ext.define('Paranimf.controller.Taquilla', {
       
 	  var me = this;
 	  
-	  this.idCompra = null;
-	  this.idPagoTarjeta = null;
-	  this.butacasSeleccionadas = [];
-
 	  pm.bind('respuestaButacas', function(butacas){
 		   console.log('Respuesta:', butacas);
 		   
@@ -98,6 +94,15 @@ Ext.define('Paranimf.controller.Taquilla', {
 		   
 		   me.avanzarAPasoDePago(butacas);
 	  });      
+   },
+   
+   iniciaFormComprar: function() {
+	   
+	   this.idCompra = null;
+	   this.idPagoTarjeta = null;
+	   this.butacasSeleccionadas = [];  
+	  
+	   this.cambiarEstadoBotonesComprar();
    },
    
    localizacionNoNumeradasCambiada: function() {
