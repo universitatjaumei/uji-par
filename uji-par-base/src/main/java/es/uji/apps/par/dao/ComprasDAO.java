@@ -38,20 +38,26 @@ public class ComprasDAO
     @Transactional
     public CompraDTO guardaCompra(Long compraId, Long sesionId, String nombre, String apellidos, String telefono, String email, Date fecha, boolean taquilla, BigDecimal importe)
     {
-        SesionDTO sesion = sesionDAO.getSesion(sesionId);
-        
         CompraDTO compraDTO = getCompraById(compraId);
         
-        compraDTO.setParSesion(sesion);
-        compraDTO.setNombre(nombre);
-        compraDTO.setApellidos(apellidos);
-        compraDTO.setTelefono(telefono);
-        compraDTO.setEmail(email);
-        compraDTO.setFecha(new Timestamp(fecha.getTime()));
-        compraDTO.setTaquilla(taquilla);
-        compraDTO.setImporte(importe);
-        
-        entityManager.persist(compraDTO);
+        if (compraDTO == null)
+        {
+            compraDTO = insertaCompra(sesionId, nombre, apellidos, telefono, email, fecha, taquilla, importe);
+        }
+        else
+        {
+            SesionDTO sesion = sesionDAO.getSesion(sesionId);
+            compraDTO.setParSesion(sesion);
+            compraDTO.setNombre(nombre);
+            compraDTO.setApellidos(apellidos);
+            compraDTO.setTelefono(telefono);
+            compraDTO.setEmail(email);
+            compraDTO.setFecha(new Timestamp(fecha.getTime()));
+            compraDTO.setTaquilla(taquilla);
+            compraDTO.setImporte(importe);
+            
+            entityManager.persist(compraDTO);
+        }
 
         return compraDTO;
     }
