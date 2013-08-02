@@ -227,7 +227,7 @@ Ext.define('Paranimf.controller.Taquilla', {
    },
    
    muestraMensajePagoTarjeta: function(mensaje) {
-	   this.getEstadoPagoTarjeta().setText(mensaje);
+	   this.getEstadoPagoTarjeta().setText(mensaje, false);
    },
    
    registraCompra: function() {
@@ -381,7 +381,7 @@ Ext.define('Paranimf.controller.Taquilla', {
 	    			  else
 	    			  {
 	    				  me.paraComprobacionEstadoPago();
-	    				  me.muestraMensajePagoTarjeta('Error pago: ' + respuesta['codigoAccion'] + ': ' + respuesta['mensaje']);
+	    				  me.muestraMensajePagoTarjeta(UI.i18n.error.errorRealizaPago + '<br/>(' + respuesta['codigoAccion'] + ': ' + UI.i18n.error.pinpad[respuesta['codigoAccion']] + ')');
 	    				  me.getBotonPagar().setDisabled(false);
 	    		      }
 	    		  }
