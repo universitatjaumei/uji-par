@@ -58,6 +58,9 @@ public class CompraDTO implements Serializable {
 	// bi-directional many-to-one association to ButacaDTO
 	@OneToMany(mappedBy = "parCompra")
 	private List<ButacaDTO> parButacas;
+	
+    @Column(name = "CODIGO_PAGO_TARJETA")
+    private String codigoPagoTarjeta;	
 
 	public CompraDTO()
     {
@@ -153,5 +156,13 @@ public class CompraDTO implements Serializable {
 
     public void setParSesion(SesionDTO parSesion) {
         this.parSesion = parSesion;
+    }
+
+    public String getCodigoPagoTarjeta() {
+        return codigoPagoTarjeta;
+    }
+
+    public void setCodigoPagoTarjeta(String codigoPagoTarjeta) {
+        this.codigoPagoTarjeta = codigoPagoTarjeta;
     }
 }

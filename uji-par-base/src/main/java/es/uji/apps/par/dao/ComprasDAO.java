@@ -61,4 +61,14 @@ public class ComprasDAO
         return entityManager.find(CompraDTO.class, id);
     }
 
+    @Transactional
+    public void guardarCodigoPago(long idCompra, String codigo)
+    {
+        CompraDTO compra = getCompraById(idCompra);
+       
+        compra.setCodigoPagoTarjeta(codigo);
+        
+        entityManager.persist(compra);
+    }
+
 }

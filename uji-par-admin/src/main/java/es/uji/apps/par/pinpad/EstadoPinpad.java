@@ -1,5 +1,8 @@
 package es.uji.apps.par.pinpad;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class EstadoPinpad
 {
     private boolean error;

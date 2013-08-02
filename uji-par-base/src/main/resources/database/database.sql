@@ -143,7 +143,8 @@
 	"EMAIL" VARCHAR2(255 BYTE), 
 	"FECHA" TIMESTAMP (6), 
 	"TAQUILLA" NUMBER(1,0) DEFAULT 0,
-	"IMPORTE" NUMBER
+	"IMPORTE" NUMBER,
+	"CODIGO_PAGO_TARJETA" VARCHAR2(255 BYTE)
    );
 --------------------------------------------------------
 --  Constraints for Table PAR_EVENTOS
