@@ -15,26 +15,18 @@ import org.apache.log4j.Logger;
 
 import com.sun.jersey.api.core.InjectParam;
 
-import es.uji.apps.par.dao.ComprasDAO;
-import es.uji.apps.par.db.CompraDTO;
 import es.uji.apps.par.pinpad.EstadoPinpad;
 import es.uji.apps.par.pinpad.ResultadoPagoPinpad;
-import es.uji.apps.par.services.Pinpad;
+import es.uji.apps.par.services.PagoTarjetaService;
 
 @Path("pago")
 public class PagoResource extends BaseResource
 {
-    private static final String PAGO_OK_TARJETA_MAGNETICA = "20";
-    private static final String PAGO_OK_TARJETA_CHIP = "30";
-
     public static Logger log = Logger.getLogger(PagoResource.class);
 
     @InjectParam
-    private Pinpad pinpad;
+    PagoTarjetaService compras;
     
-    @InjectParam
-    private ComprasDAO compras;
-
     @Context
     HttpServletResponse currentResponse;
 
@@ -44,39 +36,21 @@ public class PagoResource extends BaseResource
     @Produces(MediaType.APPLICATION_JSON)
     public ResultadoPagoPinpad realizaPago(@PathParam("idCompra") Integer idCompra, String concepto)
     {
-        CompraDTO compra = compras.getCompraById(idCompra);
-        ResultadoPagoPinpad resultado = pinpad.realizaPago(Integer.toString(idCompra), compra.getImporte() , concepto);
-        
-        if (!resultado.getError())
-        {
-            log.info("guardandoCodigoPago: idCompra:" + idCompra);
-            compras.guardarCodigoPago(compra.getId(), resultado.getCodigo());
-        }
-
-        return resultado;
+        return compras.realizaPago(idCompra, concepto);
     }
-    
+
     @GET
     @Path("{idCompra}")
     @Produces(MediaType.APPLICATION_JSON)
-    public EstadoPinpad estadoPago(@PathParam("idCompra") String idCompra)
+    public EstadoPinpad estadoPago(@PathParam("idCompra") Long idCompra)
     {
-        EstadoPinpad estado = pinpad.getEstadoPinpad(idCompra);
-        
-        if (estado.getCodigoAccion().equals(PAGO_OK_TARJETA_MAGNETICA) || estado.getCodigoAccion().equals(PAGO_OK_TARJETA_CHIP))
-        {
-            log.info("marcarPagada: idCompra:" + idCompra);
-            compras.marcarPagada(Integer.parseInt(idCompra));
-        }
-        
-        return estado;
+        return compras.consultaEstadoPago(idCompra);
     }
     
     @DELETE
     @Path("{idCompra}/pendiente")
-    public void borrarCompraPendiente(@PathParam("idCompra") Integer idCompra)
+    public void borrarCompraPendiente(@PathParam("idCompra") Long idCompra)
     {
-        compras.borrarCompraNoPagada(idCompra);
+        compras.borraCompraPendiente(idCompra);
     }
-
 }
