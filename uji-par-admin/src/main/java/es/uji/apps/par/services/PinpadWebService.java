@@ -18,7 +18,7 @@ public class PinpadWebService implements PinpadDataService
     private static Logger log = Logger.getLogger(PinpadWebService.class);
     
     private static final int CONNECT_TIMEOUT = 5000;
-    private static final int READ_TIMEOUT = 30000;
+    private static final int READ_TIMEOUT = 10000;
 
     private static final String SECRET = "ertyudfghjcvbnm";
 
