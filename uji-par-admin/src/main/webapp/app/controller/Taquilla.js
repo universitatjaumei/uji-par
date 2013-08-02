@@ -72,8 +72,7 @@ Ext.define('Paranimf.controller.Taquilla', {
         	 click: this.cerrarComprar
          },         
          'formComprar': {
-             afterrender: this.iniciaFormComprar,
-             beforedestroy: this.eliminaCompraPendiente 
+             afterrender: this.iniciaFormComprar
          },    
          'formComprar #pagar': {
         	 click: this.registraCompra
@@ -86,8 +85,10 @@ Ext.define('Paranimf.controller.Taquilla', {
          }
       });
       
-	  var me = this;
 	  
+	  this.intervalEstadoPago = {};
+	  
+	  var me = this;
 	  pm.bind('respuestaButacas', function(butacas){
 		   console.log('Respuesta:', butacas);
 		   
@@ -104,35 +105,6 @@ Ext.define('Paranimf.controller.Taquilla', {
 	   this.butacasSeleccionadas = [];  
 	  
 	   this.cambiarEstadoBotonesComprar();
-   },
-   
-   eliminaCompraPendiente: function() {
-	   
-	   console.log('eliminaCompraPendiente');
-
-	   this.paraComprobacionEstadoPago();
-	   
-	   if (this.idCompra != null)
-	   {
-		   Ext.Ajax.request({
-	    	  url : urlPrefix + 'pago/' + this.idCompra + '/pendiente',
-	    	  method: 'DELETE',
-	    	  success: function (response) {
-	    		  
-	    		  console.log('Eliminada compra pendiente: ' + response);
-	    		   
-	    	  }, failure: function (response) {
-
-	    		  var respuesta = Ext.JSON.decode(response.responseText, true);
-	    		  console.log(respuesta);
-	    		  
-	    		  if (respuesta['message']!=null)
-	    			  alert(respuesta['message']);
-	    		  else
-	    			  alert(UI.i18n.error.formSave);
-	    	  }
-	   	  	});
-	   }
    },
    
    localizacionNoNumeradasCambiada: function() {
@@ -262,14 +234,27 @@ Ext.define('Paranimf.controller.Taquilla', {
    },
    
    muestraMensajePagoTarjeta: function(mensaje) {
-	   this.getEstadoPagoTarjeta().setText(mensaje, false);
+	   if (this.getEstadoPagoTarjeta()!=null)
+		   this.getEstadoPagoTarjeta().setText(mensaje, false);
+   },
+   
+   habilitaBotonPagar: function()
+   {
+	   if (this.getBotonPagar()!=null)
+		   this.getBotonPagar().setDisabled(false);
+   },
+
+   deshabilitaBotonPagar: function()
+   {
+	   if (this.getBotonPagar()!=null)
+		   this.getBotonPagar().setDisabled(true);   
    },
    
    registraCompra: function() {
 	   
 	   var tipoPago = Ext.getCmp('tipoPago').value;
 	   
-	   this.getBotonPagar().setDisabled(true);
+	   this.deshabilitaBotonPagar();
 	   
 	   var idSesion = this.getGridSesionesTaquilla().getSelectedRecord().data['id'];
 
@@ -278,12 +263,12 @@ Ext.define('Paranimf.controller.Taquilla', {
 	   Ext.Ajax.request({
 	    	  url : urlPrefix + 'compra/' + idSesion,
 	    	  method: 'POST',
-	    	  jsonData: {idCompra:me.idCompra, butacasSeleccionadas:this.butacasSeleccionadas},
+	    	  jsonData: this.butacasSeleccionadas,
 	    	  success: function (response) {
 	    		  
 	    		   if (tipoPago == 'metalico')
 	    		   {
-	    			   me.getBotonPagar().setDisabled(false);
+	    			   me.habilitaBotonPagar();
 	    			   alert('Pagado en metálico');
 	    			   me.muestraMensajePagoTarjeta('');
 	    			   me.getFormComprar().up('window').close();
@@ -300,7 +285,7 @@ Ext.define('Paranimf.controller.Taquilla', {
 	    		  
 	    		  console.log(respuesta);
 	    		  
-	    		  me.getBotonPagar().setDisabled(false);
+	    		  me.habilitaBotonPagar();
 
 	    		  me.muestraMensajePagoTarjeta(UI.i18n.error.errorRegistrandoCompra);
 	    		  
@@ -339,7 +324,7 @@ Ext.define('Paranimf.controller.Taquilla', {
 	    			  
 	    			  alert(msj);
 	    			  me.muestraMensajePagoTarjeta(UI.i18n.error.errorRealizaPago);
-		    		  me.getBotonPagar().setDisabled(false);
+		    		  me.habilitaBotonPagar();
 	    		  }
 	    		  else
 	    		  {
@@ -351,7 +336,7 @@ Ext.define('Paranimf.controller.Taquilla', {
     			  
 	    	  }, failure: function (response) {
 	    		  
-	    		  me.getBotonPagar().setDisabled(false);
+	    		  me.habilitaBotonPagar();
 	    		  me.muestraMensajePagoTarjeta(UI.i18n.error.errorRealizaPago);
 
 	    		  var respuesta = Ext.JSON.decode(response.responseText, true);
@@ -367,11 +352,12 @@ Ext.define('Paranimf.controller.Taquilla', {
    lanzaComprobacionEstadoPago: function(idPago) {
 	   var me = this;
 	   
-	   this.intervalEstadoPago = window.setInterval(function(){me.compruebaEstadoPago(idPago)}, 1000);
+	   this.intervalEstadoPago[idPago] = window.setInterval(function(){me.compruebaEstadoPago(idPago)}, 1000);
    },
    
-   paraComprobacionEstadoPago: function() {
-	   window.clearInterval(this.intervalEstadoPago);
+   paraComprobacionEstadoPago: function(idPago) {
+	   window.clearInterval(this.intervalEstadoPago[idPago]);
+	   delete this.intervalEstadoPago[idPago];
    },
    
    compruebaEstadoPago: function(idPago) {
@@ -383,7 +369,7 @@ Ext.define('Paranimf.controller.Taquilla', {
 	    	  method: 'GET',
 	    	  success: function (response) {
 	   
-	    		  //me.getBotonPagar().setDisabled(false);
+	    		  //habilitaBotonPagar();
 	    		  
 	    		  console.log('Estado del pago con tarjeta:', response);
 	    		  
@@ -391,9 +377,11 @@ Ext.define('Paranimf.controller.Taquilla', {
  			  
 	    		  if (respuesta==null || respuesta.error)
 	    		  {
+	    			  me.paraComprobacionEstadoPago(idPago);
+
 	    			  var msj = UI.i18n.error.errorRealizaPago;
 	    			  
-	    			  if (respuesta['mensajeExcepcion'])
+	    			  if (respuesta!=null && respuesta['mensajeExcepcion'])
 	    				  msj += ' (' + respuesta['mensajeExcepcion']  + ')';
 	    			  
 	    			  //alert(msj);
@@ -407,23 +395,23 @@ Ext.define('Paranimf.controller.Taquilla', {
 	    			  }
 	    			  else if (respuesta['codigoAccion'] == '20' || respuesta['codigoAccion'] == '30' )
 	    			  {
-	    				  me.paraComprobacionEstadoPago();
+	    				  me.paraComprobacionEstadoPago(idPago);
 	    				  me.muestraMensajePagoTarjeta('');
-	    				  me.getBotonPagar().setDisabled(false);
+	    				  me.habilitaBotonPagar();
 	    				  alert(UI.i18n.message.pagoTarjetaCorrecto);
 	    				  me.cerrarComprar();
 	    			  }
 	    			  else
 	    			  {
-	    				  me.paraComprobacionEstadoPago();
+	    				  me.paraComprobacionEstadoPago(idPago);
 	    				  me.muestraMensajePagoTarjeta(UI.i18n.error.errorRealizaPago + '<br/>(' + respuesta['codigoAccion'] + ': ' + UI.i18n.error.pinpad[respuesta['codigoAccion']] + ')');
-	    				  me.getBotonPagar().setDisabled(false);
+	    				  me.habilitaBotonPagar();
 	    		      }
 	    		  }
  			  
 	    	  }, failure: function (response) {
 	    		  
-	    		  me.getBotonPagar().setDisabled(false);
+	    		  me.habilitaBotonPagar();
 	    		  me.muestraMensajePagoTarjeta(UI.i18n.error.errorRealizaPago);
 
 	    		  var respuesta = Ext.JSON.decode(response.responseText, true);

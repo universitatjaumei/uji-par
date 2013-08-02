@@ -22,7 +22,6 @@ import es.uji.apps.par.ButacaOcupadaException;
 import es.uji.apps.par.CompraSinButacasException;
 import es.uji.apps.par.NoHayButacasLibresException;
 import es.uji.apps.par.model.Butaca;
-import es.uji.apps.par.model.CompraRequest;
 import es.uji.apps.par.model.ResultadoCompra;
 import es.uji.apps.par.services.ButacasService;
 import es.uji.apps.par.services.ComprasService;
@@ -48,11 +47,11 @@ public class TaquillaResource extends BaseResource
     @POST
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response compraEntrada(@PathParam("id") Long sesionId, CompraRequest compraRequest) throws NoHayButacasLibresException, ButacaOcupadaException
+    public Response compraEntrada(@PathParam("id") Long sesionId, List<Butaca> butacasSeleccionadas) throws NoHayButacasLibresException, ButacaOcupadaException
     {
         try
         {
-            ResultadoCompra resultadoCompra =  comprasService.registraCompraTaquilla(sesionId, compraRequest.getIdCompra(), compraRequest.getButacasSeleccionadas());
+            ResultadoCompra resultadoCompra =  comprasService.registraCompraTaquilla(sesionId, butacasSeleccionadas);
             return Response.ok(resultadoCompra).build();
         }
         catch (NoHayButacasLibresException e)
