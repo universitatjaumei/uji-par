@@ -63,6 +63,10 @@ public class PagoTarjetaService
                             log.info("marcarPagada: idCompra:" + idCompra);
                             compras.marcarPagada(idCompra);
                         }
+                        else
+                        {
+                            compras.borrarCompraNoPagada(idCompra);
+                        }
 
                         return;
                     }
@@ -91,7 +95,7 @@ public class PagoTarjetaService
     
     private boolean tieneCodigoAccion(EstadoPinpad estado)
     {
-        return estado != null && !estado.getCodigoAccion().equals("");
+        return estado != null && estado.getCodigoAccion()!=null && !estado.getCodigoAccion().equals("");
     }
 
     public EstadoPinpad consultaEstadoPago(Long idCompra)
