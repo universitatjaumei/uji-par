@@ -1,5 +1,6 @@
 Ext.define('Paranimf.view.EditModalWindow', {
   extend: 'Ext.window.Window',
+  alias: 'widget.editmodalwindow',
   layout: 'fit',
   
   //autoHeight: true,

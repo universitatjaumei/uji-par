@@ -72,7 +72,8 @@ Ext.define('Paranimf.controller.Taquilla', {
         	 click: this.cerrarComprar
          },         
          'formComprar': {
-             afterrender: this.iniciaFormComprar
+             afterrender: this.iniciaFormComprar,
+             beforedestroy: this.eliminaCompraPendiente 
          },    
          'formComprar #pagar': {
         	 click: this.registraCompra
@@ -82,7 +83,7 @@ Ext.define('Paranimf.controller.Taquilla', {
          },
          'panelSeleccionarNoNumeradas combobox[name=localizacion]': {
         	 select: this.localizacionNoNumeradasCambiada
-         }          
+         }
       });
       
 	  var me = this;
@@ -103,6 +104,35 @@ Ext.define('Paranimf.controller.Taquilla', {
 	   this.butacasSeleccionadas = [];  
 	  
 	   this.cambiarEstadoBotonesComprar();
+   },
+   
+   eliminaCompraPendiente: function() {
+	   
+	   console.log('eliminaCompraPendiente');
+
+	   this.paraComprobacionEstadoPago();
+	   
+	   if (this.idCompra != null)
+	   {
+		   Ext.Ajax.request({
+	    	  url : urlPrefix + 'pago/' + this.idCompra + '/pendiente',
+	    	  method: 'DELETE',
+	    	  success: function (response) {
+	    		  
+	    		  console.log('Eliminada compra pendiente: ' + response);
+	    		   
+	    	  }, failure: function (response) {
+
+	    		  var respuesta = Ext.JSON.decode(response.responseText, true);
+	    		  console.log(respuesta);
+	    		  
+	    		  if (respuesta['message']!=null)
+	    			  alert(respuesta['message']);
+	    		  else
+	    			  alert(UI.i18n.error.formSave);
+	    	  }
+	   	  	});
+	   }
    },
    
    localizacionNoNumeradasCambiada: function() {

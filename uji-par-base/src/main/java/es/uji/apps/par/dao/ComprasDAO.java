@@ -81,4 +81,15 @@ public class ComprasDAO
         entityManager.persist(compra);        
     }
 
+    @Transactional
+    public void borrarCompraNoPagada(Integer idCompra)
+    {
+        CompraDTO compra = getCompraById(idCompra);
+        
+        if (!compra.getPagada())
+        {
+            entityManager.remove(compra);
+        }
+    }
+
 }

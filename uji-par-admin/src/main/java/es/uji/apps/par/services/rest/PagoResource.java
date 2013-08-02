@@ -2,6 +2,7 @@ package es.uji.apps.par.services.rest;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -69,6 +70,13 @@ public class PagoResource extends BaseResource
         }
         
         return estado;
+    }
+    
+    @DELETE
+    @Path("{idCompra}/pendiente")
+    public void borrarCompraPendiente(@PathParam("idCompra") Integer idCompra)
+    {
+        compras.borrarCompraNoPagada(idCompra);
     }
 
 }
