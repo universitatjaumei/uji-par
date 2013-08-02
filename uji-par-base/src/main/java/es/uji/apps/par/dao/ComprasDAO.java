@@ -92,7 +92,7 @@ public class ComprasDAO
     {
         CompraDTO compra = getCompraById(idCompra);
         
-        if (!compra.getPagada())
+        if (compra!=null && !compra.getPagada())
         {
             entityManager.remove(compra);
         }
