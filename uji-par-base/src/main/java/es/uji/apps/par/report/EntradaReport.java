@@ -2,6 +2,7 @@ package es.uji.apps.par.report;
 
 import java.io.File;
 import java.io.OutputStream;
+import java.util.Locale;
 
 import es.uji.apps.fopreports.Report;
 import es.uji.apps.fopreports.fop.Block;
@@ -19,6 +20,7 @@ import es.uji.apps.fopreports.serialization.ReportSerializationException;
 import es.uji.apps.fopreports.serialization.ReportSerializer;
 import es.uji.apps.fopreports.serialization.ReportSerializerInitException;
 import es.uji.apps.fopreports.style.ReportStyle;
+import es.uji.apps.par.i18n.ResourceProperties;
 import es.uji.apps.par.report.components.BaseTable;
 import es.uji.apps.par.report.components.EntradaReportStyle;
 
@@ -30,12 +32,14 @@ public class EntradaReport extends Report
     private static FopPDFSerializer reportSerializer;
 
     private Table secciones;
-    private TableRow entrada;
-    private TableRow condiciones;
+    private final Locale locale;
 
-    private EntradaReport(ReportSerializer serializer, ReportStyle style) throws ReportSerializerInitException
+    private EntradaReport(ReportSerializer serializer, ReportStyle style, Locale locale)
+            throws ReportSerializerInitException
     {
         super(serializer, style);
+
+        this.locale = locale;
         creaSecciones();
     }
 
@@ -69,7 +73,7 @@ public class EntradaReport extends Report
 
         TableCell cellDerecha = entradaTable.withNewCell(createEntradaDerecha());
         cellDerecha.setPadding("0.3cm");
-        cellDerecha.setPaddingTop("0.3cm");        
+        cellDerecha.setPaddingTop("0.3cm");
         cellDerecha.setBackgroundColor(FONDO_GRIS);
         cellDerecha.setBorderLeftWidth("0.03cm");
         cellDerecha.setBorderLeftColor("white");
@@ -77,10 +81,7 @@ public class EntradaReport extends Report
 
         TableRow rowAbajo = entradaTable.withNewRow();
         rowAbajo.setBackgroundColor(FONDO_GRIS);
-        entradaTable
-                .withNewCell(
-                        "*Aquesta és una entrada vàlida i et permet l’accès directe al recinte. Sense cues ni esperes en taquilla.",
-                        "2");
+        entradaTable.withNewCell(ResourceProperties.getProperty(locale, "entrada.entradaValida"), "2");
 
         entradaBlock.getContent().add(entradaTable);
     }
@@ -108,10 +109,10 @@ public class EntradaReport extends Report
         cell.setDisplayAlign(DisplayAlignType.CENTER);
 
         table.withNewRow();
-        table.withNewCell("Universitat Jaume I", "2");
+        table.withNewCell(ResourceProperties.getProperty(locale, "entrada.universitat"), "2");
 
         table.withNewRow();
-        table.withNewCell("Avinguda Sos Baynat S/N. 12071 Castelló de la Plana", "2");
+        table.withNewCell(ResourceProperties.getProperty(locale, "entrada.direccion"), "2");
 
         return table;
     }
@@ -180,9 +181,9 @@ public class EntradaReport extends Report
         table.withNewCell(titulo, "3");
 
         table.withNewRow();
-        table.withNewCell("Fecha");
-        table.withNewCell("Hora");
-        table.withNewCell("Apertura de puertas");
+        table.withNewCell(ResourceProperties.getProperty(locale, "entrada.fecha"));
+        table.withNewCell(ResourceProperties.getProperty(locale, "entrada.hora"));
+        table.withNewCell(ResourceProperties.getProperty(locale, "entrada.apertura"));
 
         table.withNewRow();
         table.withNewCell("19/04/2013");
@@ -190,13 +191,13 @@ public class EntradaReport extends Report
         table.withNewCell("19:30");
 
         table.withNewRow();
-        TableCell cell = table.withNewCell("Zona", "3");
+        TableCell cell = table.withNewCell(ResourceProperties.getProperty(locale, "entrada.zona"), "3");
         cell.setPaddingTop("0.2cm");
 
         Block zona = new Block();
         zona.getContent().add("PLATEA NIVEL 2");
         zona.setFontSize("12pt");
-        
+
         table.withNewRow();
         table.withNewCell(zona, "3");
 
@@ -211,16 +212,16 @@ public class EntradaReport extends Report
     private BaseTable createEntradaIzquierdaAbajo()
     {
         BaseTable table = new BaseTable(new EntradaReportStyle(), 2, "9.2cm", "1cm");
-        
+
         table.setMarginTop("0.2cm");
 
         table.withNewRow();
-        table.withNewCell("CIF XXXXX");
-        table.withNewCell("TOTAL");
+        table.withNewCell(ResourceProperties.getProperty(locale, "entrada.cif", "XXXXX"));
+        table.withNewCell(ResourceProperties.getProperty(locale, "entrada.total"));
 
         table.withNewRow();
         table.withNewCell("113540612587569562354154114   5455665466874");
-        table.withNewCell("0,00 €");
+        table.withNewCell(ResourceProperties.getProperty(locale, "entrada.importe", "0,00"));
 
         table.withNewRow();
         TableCell cell = table.withNewCell("", "2");
@@ -248,13 +249,16 @@ public class EntradaReport extends Report
 
         table.withNewRow();
         table.withNewCell(createTextParanimf("18pt"));
-        
+
         TableCell cell = table.withNewCell(logoUji());
         cell.setTextAlign(TextAlignType.CENTER);
         cell.setDisplayAlign(DisplayAlignType.CENTER);
 
         table.withNewRow();
-        table.withNewCell("Universitat Jaume I\nAvinguda Sos Baynat S/N. 12071 Castelló de la Plana", "2");
+        table.withNewCell(ResourceProperties.getProperty(locale, "entrada.universitat"), "2");
+
+        table.withNewRow();
+        table.withNewCell(ResourceProperties.getProperty(locale, "entrada.direccion"), "2");
 
         return table;
     }
@@ -262,7 +266,7 @@ public class EntradaReport extends Report
     private Block createTextParanimf(String fontSize)
     {
         Block textParanimf = new Block();
-        textParanimf.getContent().add("Paranimf");
+        textParanimf.getContent().add(ResourceProperties.getProperty(locale, "entrada.paranimf"));
         textParanimf.setFontSize(fontSize);
         textParanimf.setFontStyle(FontStyleType.ITALIC);
         return textParanimf;
@@ -271,7 +275,7 @@ public class EntradaReport extends Report
     private BaseTable createEntradaDerechaCentro()
     {
         BaseTable table = new BaseTable(new EntradaReportStyle(), 2, "2.5cm", "2.5cm");
-        
+
         String margin = "0.3cm";
         table.setMarginTop("0.5cm");
         table.setMarginBottom(margin);
@@ -288,36 +292,36 @@ public class EntradaReport extends Report
 
         table.withNewRow();
         TableCell tituloCell = table.withNewCell(titulo, "2");
-        tituloCell.setPaddingTop("0.2cm");  
+        tituloCell.setPaddingTop("0.2cm");
 
         table.withNewRow();
-        table.withNewCell("Fecha");
-        table.withNewCell("Hora");
-        
+        table.withNewCell(ResourceProperties.getProperty(locale, "entrada.fecha"));
+        table.withNewCell(ResourceProperties.getProperty(locale, "entrada.hora"));
+
         table.withNewRow();
         table.withNewCell("19/04/2013");
         table.withNewCell("20:00");
-        
+
         table.withNewRow();
-        TableCell aperturaCell = table.withNewCell("Apertura de puertas", "2");
+        TableCell aperturaCell = table.withNewCell(ResourceProperties.getProperty(locale, "entrada.apertura"), "2");
         aperturaCell.setPaddingTop("0.2cm");
 
         table.withNewRow();
         table.withNewCell("19:30", "2");
 
         table.withNewRow();
-        TableCell cell = table.withNewCell("Zona", "2");
+        TableCell cell = table.withNewCell(ResourceProperties.getProperty(locale, "entrada.zona"), "2");
         cell.setPaddingTop("0.2cm");
 
         Block zona = new Block();
         zona.getContent().add("PLATEA NIVEL 2");
         zona.setFontSize("12pt");
-        
+
         table.withNewRow();
         table.withNewCell(zona, "2");
 
         table.withNewRow();
-        TableCell butacaCell = table.withNewCell("F:10 B:15", "2");
+        TableCell butacaCell = table.withNewCell(ResourceProperties.getProperty(locale, "entrada.paranimf", "10", "15"), "2");
         butacaCell.setPaddingBottom("0.2cm");
 
         return table;
@@ -329,11 +333,11 @@ public class EntradaReport extends Report
 
         table.withNewRow();
         table.withNewCell("");
-        table.withNewCell("Total");
+        table.withNewCell(ResourceProperties.getProperty(locale, "entrada.total"));
 
         table.withNewRow();
         table.withNewCell("");
-        table.withNewCell("0,00 €");
+        table.withNewCell(ResourceProperties.getProperty(locale, "entrada.importe", "0,00"));
 
         return table;
     }
@@ -359,13 +363,13 @@ public class EntradaReport extends Report
             reportSerializer = new FopPDFSerializer();
     }
 
-    public static EntradaReport create()
+    public static EntradaReport create(Locale locale)
     {
         try
         {
             initStatics();
 
-            return new EntradaReport(reportSerializer, new ReportStyle());
+            return new EntradaReport(reportSerializer, new ReportStyle(), locale);
         }
         catch (ReportSerializerInitException e)
         {

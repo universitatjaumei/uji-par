@@ -3,6 +3,7 @@ package es.uji.apps.par.services;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.util.Locale;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -16,7 +17,7 @@ public class EntradasService
 {
     public void generaEntrada(long idCompra, OutputStream outputStream) throws ReportSerializationException
     {
-        EntradaReport entrada = EntradaReport.create();
+        EntradaReport entrada = EntradaReport.create(new Locale("ca"));
 
         rellenaEntrada(idCompra, entrada);
 
