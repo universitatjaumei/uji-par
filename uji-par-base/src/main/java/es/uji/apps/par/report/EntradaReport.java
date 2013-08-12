@@ -5,6 +5,7 @@ import java.io.OutputStream;
 
 import es.uji.apps.fopreports.Report;
 import es.uji.apps.fopreports.fop.Block;
+import es.uji.apps.fopreports.fop.BorderStyleType;
 import es.uji.apps.fopreports.fop.DisplayAlignType;
 import es.uji.apps.fopreports.fop.ExternalGraphic;
 import es.uji.apps.fopreports.fop.FontStyleType;
@@ -70,6 +71,9 @@ public class EntradaReport extends Report
         cellDerecha.setPadding("0.3cm");
         cellDerecha.setPaddingTop("0.3cm");        
         cellDerecha.setBackgroundColor(FONDO_GRIS);
+        cellDerecha.setBorderLeftWidth("0.03cm");
+        cellDerecha.setBorderLeftColor("white");
+        cellDerecha.setBorderLeftStyle(BorderStyleType.DOTTED);
 
         TableRow rowAbajo = entradaTable.withNewRow();
         rowAbajo.setBackgroundColor(FONDO_GRIS);
