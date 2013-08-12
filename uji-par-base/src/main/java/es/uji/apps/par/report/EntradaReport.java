@@ -31,8 +31,16 @@ public class EntradaReport extends Report
 
     private static FopPDFSerializer reportSerializer;
 
-    private Table secciones;
-    private final Locale locale;
+    private Locale locale;
+
+    private String titulo;
+    private String fecha;
+    private String hora;
+    private String horaApertura;
+    private String zona;
+    private String fila;
+    private String butaca;
+    private String total;
 
     private EntradaReport(ReportSerializer serializer, ReportStyle style, Locale locale)
             throws ReportSerializerInitException
@@ -40,12 +48,11 @@ public class EntradaReport extends Report
         super(serializer, style);
 
         this.locale = locale;
-        creaSecciones();
     }
-
+    
     private void creaSecciones()
     {
-        secciones = withNewTable();
+        Table secciones = withNewTable();
         TableBody seccionesBody = new TableBody();
         secciones.getTableBody().add(seccionesBody);
 
@@ -174,7 +181,7 @@ public class EntradaReport extends Report
         Block titulo = new Block();
         titulo.setFontSize("14pt");
         titulo.setFontStyle(FontStyleType.ITALIC);
-        titulo.getContent().add("El muerto y ser feliz");
+        titulo.getContent().add(this.titulo);
         titulo.setMarginBottom("0.2cm");
 
         table.withNewRow();
@@ -186,23 +193,23 @@ public class EntradaReport extends Report
         table.withNewCell(ResourceProperties.getProperty(locale, "entrada.apertura"));
 
         table.withNewRow();
-        table.withNewCell("19/04/2013");
-        table.withNewCell("20:00");
-        table.withNewCell("19:30");
+        table.withNewCell(this.fecha);
+        table.withNewCell(this.hora);
+        table.withNewCell(this.horaApertura);
 
         table.withNewRow();
         TableCell cell = table.withNewCell(ResourceProperties.getProperty(locale, "entrada.zona"), "3");
         cell.setPaddingTop("0.2cm");
 
         Block zona = new Block();
-        zona.getContent().add("PLATEA NIVEL 2");
+        zona.getContent().add(this.zona);
         zona.setFontSize("12pt");
 
         table.withNewRow();
         table.withNewCell(zona, "3");
 
         table.withNewRow();
-        table.withNewCell("F:10 B:15", "3");
+        table.withNewCell(ResourceProperties.getProperty(locale, "entrada.butaca", this.fila, this.butaca), "3");
 
         block.getContent().add(table);
 
@@ -216,12 +223,12 @@ public class EntradaReport extends Report
         table.setMarginTop("0.2cm");
 
         table.withNewRow();
-        table.withNewCell(ResourceProperties.getProperty(locale, "entrada.cif", "XXXXX"));
+        table.withNewCell(ResourceProperties.getProperty(locale, "entrada.cif"));
         table.withNewCell(ResourceProperties.getProperty(locale, "entrada.total"));
 
         table.withNewRow();
         table.withNewCell("113540612587569562354154114   5455665466874");
-        table.withNewCell(ResourceProperties.getProperty(locale, "entrada.importe", "0,00"));
+        table.withNewCell(ResourceProperties.getProperty(locale, "entrada.importe", this.total));
 
         table.withNewRow();
         TableCell cell = table.withNewCell("", "2");
@@ -287,7 +294,7 @@ public class EntradaReport extends Report
         Block titulo = new Block();
         titulo.setFontSize("14pt");
         titulo.setFontStyle(FontStyleType.ITALIC);
-        titulo.getContent().add("El muerto y ser feliz");
+        titulo.getContent().add(this.titulo);
         titulo.setMarginBottom("0.2cm");
 
         table.withNewRow();
@@ -299,29 +306,30 @@ public class EntradaReport extends Report
         table.withNewCell(ResourceProperties.getProperty(locale, "entrada.hora"));
 
         table.withNewRow();
-        table.withNewCell("19/04/2013");
-        table.withNewCell("20:00");
+        table.withNewCell(this.fecha);
+        table.withNewCell(this.hora);
 
         table.withNewRow();
         TableCell aperturaCell = table.withNewCell(ResourceProperties.getProperty(locale, "entrada.apertura"), "2");
         aperturaCell.setPaddingTop("0.2cm");
 
         table.withNewRow();
-        table.withNewCell("19:30", "2");
+        table.withNewCell(this.horaApertura, "2");
 
         table.withNewRow();
         TableCell cell = table.withNewCell(ResourceProperties.getProperty(locale, "entrada.zona"), "2");
         cell.setPaddingTop("0.2cm");
 
         Block zona = new Block();
-        zona.getContent().add("PLATEA NIVEL 2");
+        zona.getContent().add(this.zona);
         zona.setFontSize("12pt");
 
         table.withNewRow();
         table.withNewCell(zona, "2");
 
         table.withNewRow();
-        TableCell butacaCell = table.withNewCell(ResourceProperties.getProperty(locale, "entrada.paranimf", "10", "15"), "2");
+        TableCell butacaCell = table.withNewCell(
+                ResourceProperties.getProperty(locale, "entrada.butaca", this.fila, this.butaca), "2");
         butacaCell.setPaddingBottom("0.2cm");
 
         return table;
@@ -337,7 +345,7 @@ public class EntradaReport extends Report
 
         table.withNewRow();
         table.withNewCell("");
-        table.withNewCell(ResourceProperties.getProperty(locale, "entrada.importe", "0,00"));
+        table.withNewCell(ResourceProperties.getProperty(locale, "entrada.importe", this.total));
 
         return table;
     }
@@ -379,6 +387,97 @@ public class EntradaReport extends Report
 
     public void serialize(OutputStream output) throws ReportSerializationException
     {
+        creaSecciones();
         super.serialize(output);
+    }
+
+    public Locale getLocale()
+    {
+        return locale;
+    }
+
+    public void setLocale(Locale locale)
+    {
+        this.locale = locale;
+    }
+
+    public String getTitulo()
+    {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo)
+    {
+        this.titulo = titulo;
+    }
+
+    public String getFecha()
+    {
+        return fecha;
+    }
+
+    public void setFecha(String fecha)
+    {
+        this.fecha = fecha;
+    }
+
+    public String getHora()
+    {
+        return hora;
+    }
+
+    public void setHora(String hora)
+    {
+        this.hora = hora;
+    }
+
+    public String getHoraApertura()
+    {
+        return horaApertura;
+    }
+
+    public void setHoraApertura(String horaApertura)
+    {
+        this.horaApertura = horaApertura;
+    }
+
+    public String getZona()
+    {
+        return zona;
+    }
+
+    public void setZona(String zona)
+    {
+        this.zona = zona;
+    }
+
+    public String getFila()
+    {
+        return fila;
+    }
+
+    public void setFila(String fila)
+    {
+        this.fila = fila;
+    }
+
+    public String getButaca()
+    {
+        return butaca;
+    }
+
+    public void setButaca(String butaca)
+    {
+        this.butaca = butaca;
+    }
+
+    public String getTotal()
+    {
+        return total;
+    }
+
+    public void setTotal(String total)
+    {
+        this.total = total;
     }
 }

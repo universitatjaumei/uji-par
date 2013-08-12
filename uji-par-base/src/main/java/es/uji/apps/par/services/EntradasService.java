@@ -26,7 +26,14 @@ public class EntradasService
 
     private void rellenaEntrada(long idCompra, EntradaReport entrada)
     {
-        
+        entrada.setTitulo("El muerto y ser feliz");
+        entrada.setFecha("12/08/2013");
+        entrada.setHora("15:05");
+        entrada.setHoraApertura("12:30");
+        entrada.setFila("10");
+        entrada.setButaca("15");
+        entrada.setZona("Platea 2");
+        entrada.setTotal("10,05");
     }
 
     public static void main(String[] args) throws FileNotFoundException, ReportSerializationException
