@@ -69,11 +69,21 @@ public class EntradaReport extends Report
     private void creaSeccionCondiciones(Block condicionesBlock)
     {
         condicionesBlock.setMarginTop("0.3cm");
-        
+
+        Block block = new Block();
+        block.setFontSize("8pt");
+        block.setColor("#666666");
+        block.setFontWeight("bold");
+        block.setMarginBottom("0.2em");
+        block.getContent().add(ResourceProperties.getProperty(locale, "entrada.condiciones"));
+        condicionesBlock.getContent().add(block);
+
         for (int i = 1; i <= 10; i++)
         {
-            Block block = new Block();
+            block = new Block();
             block.setFontSize("8pt");
+            block.setColor("#666666");
+            block.setMarginBottom("0.2em");
             block.getContent().add(ResourceProperties.getProperty(locale, String.format("entrada.condicion%d", i)));
             condicionesBlock.getContent().add(block);
         }
