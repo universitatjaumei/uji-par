@@ -49,7 +49,7 @@ public class EntradaReport extends Report
 
         this.locale = locale;
     }
-    
+
     private void creaSecciones()
     {
         Table secciones = withNewTable();
@@ -60,10 +60,23 @@ public class EntradaReport extends Report
         creaSeccionEntrada(entradaBlock);
 
         Block condicionesBlock = createSeccion(seccionesBody);
-        condicionesBlock.getContent().add("Condiciones");
+        creaSeccionCondiciones(condicionesBlock);
 
         Block publicidadBlock = createSeccion(seccionesBody);
         publicidadBlock.getContent().add("Publicidad");
+    }
+
+    private void creaSeccionCondiciones(Block condicionesBlock)
+    {
+        condicionesBlock.setMarginTop("0.3cm");
+        
+        for (int i = 1; i <= 10; i++)
+        {
+            Block block = new Block();
+            block.setFontSize("8pt");
+            block.getContent().add(ResourceProperties.getProperty(locale, String.format("entrada.condicion%d", i)));
+            condicionesBlock.getContent().add(block);
+        }
     }
 
     private void creaSeccionEntrada(Block entradaBlock)
