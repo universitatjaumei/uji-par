@@ -34,6 +34,7 @@ public class EntradasService
         entrada.setButaca("15");
         entrada.setZona("Platea 2");
         entrada.setTotal("10,05");
+        entrada.setUrlPublicidad("http://static.uji.es/templates/common/latest/img/panoramica.jpg");
     }
 
     public static void main(String[] args) throws FileNotFoundException, ReportSerializationException

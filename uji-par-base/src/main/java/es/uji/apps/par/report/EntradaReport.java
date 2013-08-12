@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.OutputStream;
 import java.util.Locale;
 
+import org.apache.xml.utils.URI;
+
 import es.uji.apps.fopreports.Report;
 import es.uji.apps.fopreports.fop.Block;
 import es.uji.apps.fopreports.fop.BorderStyleType;
@@ -41,6 +43,7 @@ public class EntradaReport extends Report
     private String fila;
     private String butaca;
     private String total;
+    private String urlPublicidad;
 
     private EntradaReport(ReportSerializer serializer, ReportStyle style, Locale locale)
             throws ReportSerializerInitException
@@ -63,7 +66,15 @@ public class EntradaReport extends Report
         creaSeccionCondiciones(condicionesBlock);
 
         Block publicidadBlock = createSeccion(seccionesBody);
-        publicidadBlock.getContent().add("Publicidad");
+        creaSeccionPublicidad(publicidadBlock);
+    }
+
+    private void creaSeccionPublicidad(Block publicidadBlock)
+    {
+        ExternalGraphic externalGraphic = new ExternalGraphic();
+        externalGraphic.setSrc(this.urlPublicidad);
+
+        publicidadBlock.getContent().add(externalGraphic);
     }
 
     private void creaSeccionCondiciones(Block condicionesBlock)
@@ -501,5 +512,15 @@ public class EntradaReport extends Report
     public void setTotal(String total)
     {
         this.total = total;
+    }
+
+    public String getUrlPublicidad()
+    {
+        return urlPublicidad;
+    }
+
+    public void setUrlPublicidad(String urlPublicidad)
+    {
+        this.urlPublicidad = urlPublicidad;
     }
 }
