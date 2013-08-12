@@ -354,7 +354,6 @@ public class EntradaReport extends Report
     {
         TableRow seccionRow = new TableRow();
         seccionesBody.getTableRow().add(seccionRow);
-        seccionRow.setMinHeight("7.5cm");
 
         TableCell seccionCell = new TableCell();
         seccionRow.getTableCell().add(seccionCell);
