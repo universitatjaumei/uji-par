@@ -10,6 +10,7 @@ import es.uji.apps.fopreports.fop.BorderStyleType;
 import es.uji.apps.fopreports.fop.DisplayAlignType;
 import es.uji.apps.fopreports.fop.ExternalGraphic;
 import es.uji.apps.fopreports.fop.FontStyleType;
+import es.uji.apps.fopreports.fop.Leader;
 import es.uji.apps.fopreports.fop.PageBreakAfterType;
 import es.uji.apps.fopreports.fop.Table;
 import es.uji.apps.fopreports.fop.TableBody;
@@ -29,6 +30,7 @@ import es.uji.apps.par.utils.Utils;
 
 public class EntradaReport extends Report
 {
+    private static final String GRIS_OSCURO = "#666666";
     private static final String FONDO_GRIS = "#EEEEEE";
     private static final String FONDO_BLANCO = "#FFFFFF";
 
@@ -62,38 +64,35 @@ public class EntradaReport extends Report
         this.setZona(butaca.getParLocalizacion().getNombreEs());
         this.setTotal(Utils.formatEuros(butaca.getPrecio()));
 
-        Table secciones = withNewTable();
-        TableBody seccionesBody = new TableBody();
-        secciones.getTableBody().add(seccionesBody);
+        creaSeccionEntrada();
+        add(createHorizontalLine());
 
-        Block entradaBlock = createSeccion(seccionesBody);
-        creaSeccionEntrada(entradaBlock);
-
-        Block condicionesBlock = createSeccion(seccionesBody);
-        creaSeccionCondiciones(condicionesBlock);
-
-        Block publicidadBlock = createSeccion(seccionesBody);
-        creaSeccionPublicidad(publicidadBlock);
+        creaSeccionCondiciones();
+        creaSeccionPublicidad();
 
         Block pageBreak = withNewBlock();
         pageBreak.setPageBreakAfter(PageBreakAfterType.ALWAYS);
     }
 
-    private void creaSeccionPublicidad(Block publicidadBlock)
+    private void creaSeccionPublicidad()
     {
+        Block publicidadBlock = withNewBlock();
+
         ExternalGraphic externalGraphic = new ExternalGraphic();
         externalGraphic.setSrc(this.urlPublicidad);
 
         publicidadBlock.getContent().add(externalGraphic);
     }
 
-    private void creaSeccionCondiciones(Block condicionesBlock)
+    private void creaSeccionCondiciones()
     {
+        Block condicionesBlock = withNewBlock();
+
         condicionesBlock.setMarginTop("0.3cm");
 
         Block block = new Block();
         block.setFontSize("8pt");
-        block.setColor("#666666");
+        block.setColor(GRIS_OSCURO);
         block.setFontWeight("bold");
         block.setMarginBottom("0.2em");
         block.getContent().add(ResourceProperties.getProperty(locale, "entrada.condiciones"));
@@ -103,15 +102,17 @@ public class EntradaReport extends Report
         {
             block = new Block();
             block.setFontSize("8pt");
-            block.setColor("#666666");
+            block.setColor(GRIS_OSCURO);
             block.setMarginBottom("0.2em");
             block.getContent().add(ResourceProperties.getProperty(locale, String.format("entrada.condicion%d", i)));
             condicionesBlock.getContent().add(block);
         }
     }
 
-    private void creaSeccionEntrada(Block entradaBlock)
+    private void creaSeccionEntrada()
     {
+        Block entradaBlock = withNewBlock();
+
         EntradaReportStyle style = new EntradaReportStyle();
         BaseTable entradaTable = new BaseTable(style, 2, "11.8cm", "6.1cm");
 
@@ -406,6 +407,19 @@ public class EntradaReport extends Report
         seccionCell.getMarkerOrBlockOrBlockContainer().add(seccionBlock);
 
         return seccionBlock;
+    }
+
+    public Block createHorizontalLine()
+    {
+        Leader line = new Leader();
+        line.setColor(GRIS_OSCURO);
+        line.setBorderAfterStyle(BorderStyleType.DASHED);
+        line.setLeaderLengthOptimum("100%");
+
+        Block b = new Block();
+        b.getContent().add(line);
+
+        return b;
     }
 
     private static void initStatics() throws ReportSerializerInitException
