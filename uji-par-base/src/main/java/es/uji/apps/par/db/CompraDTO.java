@@ -63,14 +63,17 @@ public class CompraDTO implements Serializable {
     private String codigoPagoTarjeta;	
     
     @Column(name = "PAGADA")
-    private Boolean pagada;    
+    private Boolean pagada;
+    
+    @Column(name = "UUID")
+    private String uuid;   
 
 	public CompraDTO()
     {
     }
 
 	public CompraDTO(SesionDTO sesion, String nombre, String apellidos, String telefono,
-			String email, Timestamp fecha, Boolean taquilla, BigDecimal importe) {
+			String email, Timestamp fecha, Boolean taquilla, BigDecimal importe, String uuid) {
 		this.parSesion = sesion;
         this.nombre = nombre;
 		this.apellidos = apellidos;
@@ -80,6 +83,7 @@ public class CompraDTO implements Serializable {
 		this.taquilla = taquilla;
         this.importe = importe;
         this.pagada = false;
+        this.uuid = uuid;
 	}
 
 	public long getId() {
@@ -176,5 +180,13 @@ public class CompraDTO implements Serializable {
 
     public void setPagada(Boolean pagada) {
         this.pagada = pagada;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 }

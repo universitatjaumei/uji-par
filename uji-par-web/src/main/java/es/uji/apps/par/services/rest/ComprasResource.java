@@ -30,11 +30,11 @@ public class ComprasResource extends BaseResource
     @GET
     @Path("{id}/pdf")
     @Produces("application/pdf")
-    public Response datosEntrada(@PathParam("id") Long idCompra) throws Exception
+    public Response datosEntrada(@PathParam("id") String uuidCompra) throws Exception
     {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
-        entradasService.generaEntrada(idCompra, bos);
+        entradasService.generaEntrada(uuidCompra, bos);
 
         Response response = Response.ok(bos.toByteArray())
                 .header("Cache-Control", "no-cache, no-store, must-revalidate").header("Pragma", "no-cache")

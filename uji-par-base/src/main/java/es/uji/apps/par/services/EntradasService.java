@@ -24,18 +24,18 @@ public class EntradasService
     @Autowired
     private ComprasDAO comprasDAO;
     
-    public void generaEntrada(long idCompra, OutputStream outputStream) throws ReportSerializationException
+    public void generaEntrada(String uuidCompra, OutputStream outputStream) throws ReportSerializationException
     {
         EntradaReport entrada = EntradaReport.create(new Locale("ca"));
         
-        rellenaEntrada(idCompra, entrada);
+        rellenaEntrada(uuidCompra, entrada);
 
         entrada.serialize(outputStream);
     }
 
-    private void rellenaEntrada(long idCompra, EntradaReport entrada)
+    private void rellenaEntrada(String uuidCompra, EntradaReport entrada)
     {
-        CompraDTO compra = comprasDAO.getCompraById(idCompra);
+        CompraDTO compra = comprasDAO.getCompraByUuid(uuidCompra);
         
         String tituloEs = compra.getParSesion().getParEvento().getTituloEs();
         String fecha = DateUtils.timestampToSpanishString(compra.getParSesion().getFechaCelebracion());
@@ -61,6 +61,6 @@ public class EntradasService
 
         EntradasService service = ctx.getBean(EntradasService.class);
 
-        service.generaEntrada(0, new FileOutputStream("/tmp/entrada.pdf"));
+        service.generaEntrada("", new FileOutputStream("/tmp/entrada.pdf"));
     }
 }

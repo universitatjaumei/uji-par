@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -34,7 +35,7 @@ public class ComprasDAO
     {
         SesionDTO sesion = sesionDAO.getSesion(sesionId);
         
-        CompraDTO compraDTO = new CompraDTO(sesion, nombre, apellidos, telefono, email, new Timestamp(fecha.getTime()), taquilla, importe);
+        CompraDTO compraDTO = new CompraDTO(sesion, nombre, apellidos, telefono, email, new Timestamp(fecha.getTime()), taquilla, importe, UUID.randomUUID().toString());
 
         entityManager.persist(compraDTO);
 
@@ -119,6 +120,26 @@ public class ComprasDAO
         {
             entityManager.remove(compra);
         }
+    }
+
+    public CompraDTO getCompraByUuid(String uuid)
+    {
+        QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
+        QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
+        
+        JPAQuery query = new JPAQuery(entityManager);
+
+         List<CompraDTO> compras = query
+                .from(qCompraDTO, qButacaDTO)
+                .join(qCompraDTO.parButacas, qButacaDTO).fetch()
+                .where(qCompraDTO.uuid.eq(uuid))
+                .distinct()
+                .list(qCompraDTO);
+         
+         if (compras.size() == 0)
+             return null;
+         else
+             return compras.get(0);
     }
 
 }

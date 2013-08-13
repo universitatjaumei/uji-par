@@ -145,7 +145,8 @@
 	"TAQUILLA" NUMBER(1,0) DEFAULT 0,
 	"IMPORTE" NUMBER,
 	"CODIGO_PAGO_TARJETA" VARCHAR2(255 BYTE),
-	"PAGADA" NUMBER(1,0) DEFAULT 0
+	"PAGADA" NUMBER(1,0) DEFAULT 0,
+	"UUID" VARCHAR2(36 BYTE) 
    );
 --------------------------------------------------------
 --  Constraints for Table PAR_EVENTOS
