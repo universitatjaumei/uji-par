@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import es.uji.apps.par.CampoRequeridoException;
-import es.uji.apps.par.DateUtils;
 import es.uji.apps.par.FechasInvalidasException;
 import es.uji.apps.par.dao.EventosDAO;
 import es.uji.apps.par.dao.LocalizacionesDAO;
@@ -23,6 +22,7 @@ import es.uji.apps.par.model.Localizacion;
 import es.uji.apps.par.model.PreciosPlantilla;
 import es.uji.apps.par.model.PreciosSesion;
 import es.uji.apps.par.model.Sesion;
+import es.uji.apps.par.utils.DateUtils;
 
 @Service
 public class SesionesService

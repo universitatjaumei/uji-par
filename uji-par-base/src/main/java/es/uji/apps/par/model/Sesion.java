@@ -11,8 +11,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import es.uji.apps.par.DateUtils;
 import es.uji.apps.par.db.SesionDTO;
+import es.uji.apps.par.utils.DateUtils;
 
 @XmlRootElement
 public class Sesion

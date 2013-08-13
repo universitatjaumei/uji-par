@@ -1,4 +1,4 @@
-package es.uji.apps.par;
+package es.uji.apps.par.utils;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;

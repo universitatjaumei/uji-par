@@ -17,7 +17,6 @@ import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.jpa.impl.JPAUpdateClause;
 
-import es.uji.apps.par.DateUtils;
 import es.uji.apps.par.db.PreciosSesionDTO;
 import es.uji.apps.par.db.QPreciosSesionDTO;
 import es.uji.apps.par.db.QSesionDTO;
@@ -25,6 +24,7 @@ import es.uji.apps.par.db.SesionDTO;
 import es.uji.apps.par.model.Evento;
 import es.uji.apps.par.model.Plantilla;
 import es.uji.apps.par.model.Sesion;
+import es.uji.apps.par.utils.DateUtils;
 
 @Repository
 public class SesionesDAO

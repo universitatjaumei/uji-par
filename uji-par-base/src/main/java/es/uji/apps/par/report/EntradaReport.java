@@ -23,11 +23,11 @@ import es.uji.apps.fopreports.serialization.ReportSerializationException;
 import es.uji.apps.fopreports.serialization.ReportSerializer;
 import es.uji.apps.fopreports.serialization.ReportSerializerInitException;
 import es.uji.apps.fopreports.style.ReportStyle;
-import es.uji.apps.par.Utils;
 import es.uji.apps.par.db.ButacaDTO;
 import es.uji.apps.par.i18n.ResourceProperties;
 import es.uji.apps.par.report.components.BaseTable;
 import es.uji.apps.par.report.components.EntradaReportStyle;
+import es.uji.apps.par.utils.Utils;
 
 public class EntradaReport extends Report
 {

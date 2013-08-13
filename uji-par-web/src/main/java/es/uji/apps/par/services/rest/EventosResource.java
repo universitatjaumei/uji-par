@@ -16,11 +16,11 @@ import com.sun.jersey.api.core.InjectParam;
 
 import es.uji.apps.par.Constantes;
 import es.uji.apps.par.EventoNoEncontradoException;
-import es.uji.apps.par.ImageUtils;
 import es.uji.apps.par.model.Evento;
 import es.uji.apps.par.model.Sesion;
 import es.uji.apps.par.services.EventosService;
 import es.uji.apps.par.services.SesionesService;
+import es.uji.apps.par.utils.ImageUtils;
 import es.uji.commons.web.template.HTMLTemplate;
 import es.uji.commons.web.template.Template;
 

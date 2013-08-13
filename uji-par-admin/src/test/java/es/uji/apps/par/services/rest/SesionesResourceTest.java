@@ -26,12 +26,12 @@ import com.sun.jersey.test.framework.spi.container.TestContainerFactory;
 import com.sun.jersey.test.framework.spi.container.grizzly.web.GrizzlyWebTestContainerFactory;
 
 import es.uji.apps.par.CampoRequeridoException;
-import es.uji.apps.par.DateUtils;
 import es.uji.apps.par.FechasInvalidasException;
 import es.uji.apps.par.ResponseMessage;
 import es.uji.apps.par.model.Plantilla;
 import es.uji.apps.par.model.Sesion;
 import es.uji.apps.par.model.TipoEvento;
+import es.uji.apps.par.utils.DateUtils;
 
 public class SesionesResourceTest extends JerseyTest
 {

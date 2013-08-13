@@ -11,12 +11,12 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
 
 import es.uji.apps.fopreports.serialization.ReportSerializationException;
-import es.uji.apps.par.DateUtils;
 import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.dao.ComprasDAO;
 import es.uji.apps.par.db.ButacaDTO;
 import es.uji.apps.par.db.CompraDTO;
 import es.uji.apps.par.report.EntradaReport;
+import es.uji.apps.par.utils.DateUtils;
 
 @Service
 public class EntradasService
