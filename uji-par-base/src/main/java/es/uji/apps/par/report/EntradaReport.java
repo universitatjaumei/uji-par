@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.OutputStream;
 import java.util.Locale;
 
-import org.apache.xml.utils.URI;
-
 import es.uji.apps.fopreports.Report;
 import es.uji.apps.fopreports.fop.Block;
 import es.uji.apps.fopreports.fop.BorderStyleType;
@@ -63,7 +61,7 @@ public class EntradaReport extends Report
         this.setNumero(butaca.getNumero());
         this.setZona(butaca.getParLocalizacion().getNombreEs());
         this.setTotal(Utils.formatEuros(butaca.getPrecio()));
-      
+
         Table secciones = withNewTable();
         TableBody seccionesBody = new TableBody();
         secciones.getTableBody().add(seccionesBody);
@@ -76,7 +74,7 @@ public class EntradaReport extends Report
 
         Block publicidadBlock = createSeccion(seccionesBody);
         creaSeccionPublicidad(publicidadBlock);
-        
+
         Block pageBreak = withNewBlock();
         pageBreak.setPageBreakAfter(PageBreakAfterType.ALWAYS);
     }
@@ -422,7 +420,7 @@ public class EntradaReport extends Report
         {
             initStatics();
 
-            return new EntradaReport(reportSerializer, new ReportStyle(), locale);
+            return new EntradaReport(reportSerializer, new EntradaReportStyle(), locale);
         }
         catch (ReportSerializerInitException e)
         {

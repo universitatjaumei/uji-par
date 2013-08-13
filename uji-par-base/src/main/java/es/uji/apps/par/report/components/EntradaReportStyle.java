@@ -40,6 +40,8 @@ public class EntradaReportStyle extends ReportStyle
         this.setSimplePageMasterMarginLeft("1.5cm");
         this.setSimplePageMasterMarginRight("1.5cm");
         this.setSimplePageMasterRegionBodyMarginTop("0cm");
+        this.setSimplePageMasterRegionBeforeExtent("0cm");
+        
         this.cellVerticalAlign = "top";
         this.displayAlign = DisplayAlignType.AUTO;
         this.whiteSpaceTreatment = WhiteSpaceTreatmentType.PRESERVE;
