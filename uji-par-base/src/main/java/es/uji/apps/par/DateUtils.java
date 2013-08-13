@@ -7,6 +7,8 @@ import java.util.Date;
 
 public class DateUtils
 {
+    private static final SimpleDateFormat FORMAT_DAY = new SimpleDateFormat("dd/MM/yyyy");
+    private static final SimpleDateFormat FORMAT_HOUR = new SimpleDateFormat("hh:mm");
 
     public static Date spanishStringToDate(String spanishDate)
     {
@@ -66,8 +68,14 @@ public class DateUtils
     	if (fecha == null)
     		throw new NullPointerException();
     	
-    	SimpleDateFormat f = new SimpleDateFormat("dd/MM/yyyy");
-    	return f.format(fecha);
+    	return FORMAT_DAY.format(fecha);
+    }
+    
+    public static String timestampToHourString(Timestamp fecha) {
+        if (fecha == null)
+            throw new NullPointerException();
+
+        return FORMAT_HOUR.format(fecha);
     }
     
     public static long millisecondsToSeconds(long time) {
