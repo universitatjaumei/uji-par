@@ -13,7 +13,6 @@ import es.uji.apps.fopreports.fop.FontStyleType;
 import es.uji.apps.fopreports.fop.Leader;
 import es.uji.apps.fopreports.fop.PageBreakAfterType;
 import es.uji.apps.fopreports.fop.Table;
-import es.uji.apps.fopreports.fop.TableBody;
 import es.uji.apps.fopreports.fop.TableCell;
 import es.uji.apps.fopreports.fop.TableRow;
 import es.uji.apps.fopreports.fop.TextAlignType;
@@ -22,7 +21,9 @@ import es.uji.apps.fopreports.serialization.ReportSerializationException;
 import es.uji.apps.fopreports.serialization.ReportSerializer;
 import es.uji.apps.fopreports.serialization.ReportSerializerInitException;
 import es.uji.apps.fopreports.style.ReportStyle;
+import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.db.ButacaDTO;
+import es.uji.apps.par.db.CompraDTO;
 import es.uji.apps.par.i18n.ResourceProperties;
 import es.uji.apps.par.report.components.BaseTable;
 import es.uji.apps.par.report.components.EntradaReportStyle;
@@ -48,6 +49,7 @@ public class EntradaReport extends Report
     private String total;
     private String urlPublicidad;
     private String urlPortada;
+    private String barcode;
 
     private EntradaReport(ReportSerializer serializer, ReportStyle style, Locale locale)
             throws ReportSerializerInitException
@@ -57,12 +59,13 @@ public class EntradaReport extends Report
         this.locale = locale;
     }
 
-    public void generaPaginaButaca(ButacaDTO butaca)
+    public void generaPaginaButaca(CompraDTO compra, ButacaDTO butaca)
     {
         this.setFila(butaca.getFila());
         this.setNumero(butaca.getNumero());
         this.setZona(butaca.getParLocalizacion().getNombreEs());
         this.setTotal(Utils.formatEuros(butaca.getPrecio()));
+        this.setBarcode(compra.getUuid() + "-" + butaca.getId());
 
         creaSeccionEntrada();
         add(createHorizontalLine());
@@ -272,16 +275,24 @@ public class EntradaReport extends Report
         table.withNewCell(ResourceProperties.getProperty(locale, "entrada.total"));
 
         table.withNewRow();
-        table.withNewCell("113540612587569562354154114   5455665466874");
+        table.withNewCell(this.barcode);
         table.withNewCell(ResourceProperties.getProperty(locale, "entrada.importe", this.total));
 
         table.withNewRow();
-        TableCell cell = table.withNewCell("", "2");
-        cell.setPaddingTop("0.2cm");
-        cell.setMinHeight("0.4cm");
-        cell.setBackgroundColor("black");
+        table.withNewCell(createBarcode(), "2");
 
         return table;
+    }
+
+    private Block createBarcode()
+    {
+        ExternalGraphic externalGraphic = new ExternalGraphic();
+        externalGraphic.setSrc(Configuration.getUrlPublic() + "/rest/barcode/" + this.barcode);
+        
+        Block blockCodebar = new Block();
+        blockCodebar.getContent().add(externalGraphic);
+        
+        return blockCodebar;
     }
 
     private Block createEntradaDerecha()
@@ -393,20 +404,6 @@ public class EntradaReport extends Report
         table.withNewCell(ResourceProperties.getProperty(locale, "entrada.importe", this.total));
 
         return table;
-    }
-
-    private Block createSeccion(TableBody seccionesBody)
-    {
-        TableRow seccionRow = new TableRow();
-        seccionesBody.getTableRow().add(seccionRow);
-
-        TableCell seccionCell = new TableCell();
-        seccionRow.getTableCell().add(seccionCell);
-
-        Block seccionBlock = new Block();
-        seccionCell.getMarkerOrBlockOrBlockContainer().add(seccionBlock);
-
-        return seccionBlock;
     }
 
     public Block createHorizontalLine()
@@ -557,4 +554,13 @@ public class EntradaReport extends Report
         this.urlPortada = urlPortada;
     }
 
+    public String getBarcode()
+    {
+        return barcode;
+    }
+
+    public void setBarcode(String barcode)
+    {
+        this.barcode = barcode;
+    }
 }

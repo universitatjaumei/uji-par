@@ -23,11 +23,11 @@ public class EntradasService
 {
     @Autowired
     private ComprasDAO comprasDAO;
-    
+
     public void generaEntrada(String uuidCompra, OutputStream outputStream) throws ReportSerializationException
     {
         EntradaReport entrada = EntradaReport.create(new Locale("ca"));
-        
+
         rellenaEntrada(uuidCompra, entrada);
 
         entrada.serialize(outputStream);
@@ -36,22 +36,23 @@ public class EntradasService
     private void rellenaEntrada(String uuidCompra, EntradaReport entrada)
     {
         CompraDTO compra = comprasDAO.getCompraByUuid(uuidCompra);
-        
+
         String tituloEs = compra.getParSesion().getParEvento().getTituloEs();
         String fecha = DateUtils.timestampToSpanishString(compra.getParSesion().getFechaCelebracion());
         String hora = DateUtils.timestampToHourString(compra.getParSesion().getFechaCelebracion());
         String horaApertura = compra.getParSesion().getHoraApertura();
-        
+
         entrada.setTitulo(tituloEs);
         entrada.setFecha(fecha);
         entrada.setHora(hora);
         entrada.setHoraApertura(horaApertura);
-        entrada.setUrlPortada(Configuration.getUrlPublic() + "/rest/evento/" + compra.getParSesion().getParEvento().getId() + "/imagenEntrada");
+        entrada.setUrlPortada(Configuration.getUrlPublic() + "/rest/evento/"
+                + compra.getParSesion().getParEvento().getId() + "/imagenEntrada");
         entrada.setUrlPublicidad("http://static.uji.es/templates/common/latest/img/panoramica.jpg");
-        
-        for (ButacaDTO butaca:compra.getParButacas())
+
+        for (ButacaDTO butaca : compra.getParButacas())
         {
-            entrada.generaPaginaButaca(butaca);
+            entrada.generaPaginaButaca(compra, butaca);
         }
     }
 
