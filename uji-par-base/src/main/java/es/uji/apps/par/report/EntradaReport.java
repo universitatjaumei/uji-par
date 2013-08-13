@@ -12,6 +12,7 @@ import es.uji.apps.fopreports.fop.BorderStyleType;
 import es.uji.apps.fopreports.fop.DisplayAlignType;
 import es.uji.apps.fopreports.fop.ExternalGraphic;
 import es.uji.apps.fopreports.fop.FontStyleType;
+import es.uji.apps.fopreports.fop.PageBreakAfterType;
 import es.uji.apps.fopreports.fop.Table;
 import es.uji.apps.fopreports.fop.TableBody;
 import es.uji.apps.fopreports.fop.TableCell;
@@ -22,6 +23,8 @@ import es.uji.apps.fopreports.serialization.ReportSerializationException;
 import es.uji.apps.fopreports.serialization.ReportSerializer;
 import es.uji.apps.fopreports.serialization.ReportSerializerInitException;
 import es.uji.apps.fopreports.style.ReportStyle;
+import es.uji.apps.par.Utils;
+import es.uji.apps.par.db.ButacaDTO;
 import es.uji.apps.par.i18n.ResourceProperties;
 import es.uji.apps.par.report.components.BaseTable;
 import es.uji.apps.par.report.components.EntradaReportStyle;
@@ -41,9 +44,10 @@ public class EntradaReport extends Report
     private String horaApertura;
     private String zona;
     private String fila;
-    private String butaca;
+    private String numero;
     private String total;
     private String urlPublicidad;
+    private String urlPortada;
 
     private EntradaReport(ReportSerializer serializer, ReportStyle style, Locale locale)
             throws ReportSerializerInitException
@@ -53,8 +57,13 @@ public class EntradaReport extends Report
         this.locale = locale;
     }
 
-    private void creaSecciones()
+    public void generaPaginaButaca(ButacaDTO butaca)
     {
+        this.setFila(butaca.getFila());
+        this.setNumero(butaca.getNumero());
+        this.setZona(butaca.getParLocalizacion().getNombreEs());
+        this.setTotal(Utils.formatEuros(butaca.getPrecio()));
+      
         Table secciones = withNewTable();
         TableBody seccionesBody = new TableBody();
         secciones.getTableBody().add(seccionesBody);
@@ -67,6 +76,9 @@ public class EntradaReport extends Report
 
         Block publicidadBlock = createSeccion(seccionesBody);
         creaSeccionPublicidad(publicidadBlock);
+        
+        Block pageBreak = withNewBlock();
+        pageBreak.setPageBreakAfter(PageBreakAfterType.ALWAYS);
     }
 
     private void creaSeccionPublicidad(Block publicidadBlock)
@@ -189,7 +201,7 @@ public class EntradaReport extends Report
         Block block = new Block();
 
         ExternalGraphic externalGraphic = new ExternalGraphic();
-        externalGraphic.setSrc(new File("/tmp/peli.jpg").getAbsolutePath());
+        externalGraphic.setSrc(this.urlPortada);
         externalGraphic.setMaxWidth("2.5cm");
 
         block.getContent().add(externalGraphic);
@@ -243,7 +255,7 @@ public class EntradaReport extends Report
         table.withNewCell(zona, "3");
 
         table.withNewRow();
-        table.withNewCell(ResourceProperties.getProperty(locale, "entrada.butaca", this.fila, this.butaca), "3");
+        table.withNewCell(ResourceProperties.getProperty(locale, "entrada.butaca", this.fila, this.numero), "3");
 
         block.getContent().add(table);
 
@@ -363,7 +375,7 @@ public class EntradaReport extends Report
 
         table.withNewRow();
         TableCell butacaCell = table.withNewCell(
-                ResourceProperties.getProperty(locale, "entrada.butaca", this.fila, this.butaca), "2");
+                ResourceProperties.getProperty(locale, "entrada.butaca", this.fila, this.numero), "2");
         butacaCell.setPaddingBottom("0.2cm");
 
         return table;
@@ -420,7 +432,6 @@ public class EntradaReport extends Report
 
     public void serialize(OutputStream output) throws ReportSerializationException
     {
-        creaSecciones();
         super.serialize(output);
     }
 
@@ -494,14 +505,14 @@ public class EntradaReport extends Report
         this.fila = fila;
     }
 
-    public String getButaca()
+    public String getNumero()
     {
-        return butaca;
+        return numero;
     }
 
-    public void setButaca(String butaca)
+    public void setNumero(String numero)
     {
-        this.butaca = butaca;
+        this.numero = numero;
     }
 
     public String getTotal()
@@ -523,4 +534,15 @@ public class EntradaReport extends Report
     {
         this.urlPublicidad = urlPublicidad;
     }
+
+    public String getUrlPortada()
+    {
+        return urlPortada;
+    }
+
+    public void setUrlPortada(String urlPortada)
+    {
+        this.urlPortada = urlPortada;
+    }
+
 }
