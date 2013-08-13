@@ -3,6 +3,7 @@ package es.uji.apps.par.dao;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -11,7 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mysema.query.jpa.impl.JPAQuery;
+
 import es.uji.apps.par.db.CompraDTO;
+import es.uji.apps.par.db.QButacaDTO;
+import es.uji.apps.par.db.QCompraDTO;
+import es.uji.apps.par.db.QTipoEventoDTO;
 import es.uji.apps.par.db.SesionDTO;
 
 @Repository
@@ -64,7 +70,24 @@ public class ComprasDAO
 
     public CompraDTO getCompraById(long id)
     {
-        return entityManager.find(CompraDTO.class, id);
+        QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
+        QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
+        
+        JPAQuery query = new JPAQuery(entityManager);
+
+         List<CompraDTO> compras = query
+                .from(qCompraDTO, qButacaDTO)
+                .join(qCompraDTO.parButacas, qButacaDTO).fetch()
+                .where(qCompraDTO.id.eq(id))
+                .distinct()
+                .list(qCompraDTO);
+         
+         if (compras.size() == 0)
+             return null;
+         else
+             return compras.get(0);
+        
+        //return entityManager.find(CompraDTO.class, id);
     }
 
     @Transactional
