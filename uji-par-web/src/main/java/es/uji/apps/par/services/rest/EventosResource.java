@@ -1,5 +1,6 @@
 package es.uji.apps.par.services.rest;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.ws.rs.GET;
@@ -9,10 +10,13 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.io.output.ByteArrayOutputStream;
+
 import com.sun.jersey.api.core.InjectParam;
 
 import es.uji.apps.par.Constantes;
 import es.uji.apps.par.EventoNoEncontradoException;
+import es.uji.apps.par.ImageUtils;
 import es.uji.apps.par.model.Evento;
 import es.uji.apps.par.model.Sesion;
 import es.uji.apps.par.services.EventosService;
@@ -59,4 +63,25 @@ public class EventosResource extends BaseResource
             return Response.noContent().build();
         }
     }
+
+    @GET
+    @Path("{id}/imagenEntrada")
+    public Response getImagenEntrada(@PathParam("id") Integer eventoId) throws IOException
+    {
+        try
+        {
+            Evento evento = eventosService.getEvento(eventoId);
+
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
+            ImageUtils.changeDpi(evento.getImagen(), bos, 3);
+
+            return Response.ok(bos.toByteArray()).type(evento.getImagenContentType()).build();
+        }
+        catch (EventoNoEncontradoException e)
+        {
+            return Response.noContent().build();
+        }
+    }
+
 }
