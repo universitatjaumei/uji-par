@@ -2,6 +2,7 @@ package es.uji.apps.par.dao;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
 
 import es.uji.apps.par.db.CompraDTO;
@@ -24,6 +26,8 @@ import es.uji.apps.par.db.SesionDTO;
 @Repository
 public class ComprasDAO
 {
+    private static final int ELIMINA_PENDIENTES_MINUTOS = 10;
+
     @PersistenceContext
     private EntityManager entityManager;
     
@@ -140,6 +144,19 @@ public class ComprasDAO
              return null;
          else
              return compras.get(0);
+    }
+
+    @Transactional
+    public void eliminaComprasPendientes()
+    {
+        QCompraDTO qComprasDTO = QCompraDTO.compraDTO;
+        
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MINUTE, -ELIMINA_PENDIENTES_MINUTOS);
+        
+        Timestamp limite = new Timestamp(calendar.getTimeInMillis());
+        
+        new JPADeleteClause(entityManager, qComprasDTO).where(qComprasDTO.pagada.eq(false).and(qComprasDTO.fecha.lt(limite))).execute();          
     }
 
 }

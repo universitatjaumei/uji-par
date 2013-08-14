@@ -20,5 +20,30 @@
   </bean>
 
   <tx:annotation-driven mode="aspectj" transaction-manager="transactionManager" />
+  
+  <bean id="limpiaComprasPendientesJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	<property name="targetObject" ref="limpiaComprasPendientes" />
+	<property name="targetMethod" value="ejecuta" />
+  </bean>
+  
+  <bean id="limpiaComprasPendientesTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+	<property name="jobDetail" ref="limpiaComprasPendientesJob" />
+	<property name="repeatInterval" value="60000" />
+	<property name="startDelay" value="1000" />
+  </bean>
+
+  <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+	<property name="jobDetails">
+	   <list>
+	      <ref bean="limpiaComprasPendientesJob" />
+	   </list>
+	</property>
+ 
+	<property name="triggers">
+	    <list>
+		  <ref bean="limpiaComprasPendientesTrigger" />
+	    </list>
+	</property>
+  </bean>
 
 </beans>

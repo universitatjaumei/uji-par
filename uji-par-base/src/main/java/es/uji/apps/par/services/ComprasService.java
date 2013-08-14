@@ -100,4 +100,8 @@ public class ComprasService
         comprasDAO.marcarPagada(idCompra);
     }
     
+    public void eliminaPendientes()
+    {
+        comprasDAO.eliminaComprasPendientes();
+    }
 }
