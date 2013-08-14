@@ -44,6 +44,10 @@ Ext.define('Paranimf.controller.Taquilla', {
         selector: '#formComprarCards label[name=estadoPagoTarjeta]'
       },
       {
+        ref: 'verEntrada',
+        selector: 'formComprar panel[name=verEntrada]'
+      },      
+      {
       	ref: 'botonPagar',
         selector: 'formComprar #pagar'
       }
@@ -266,18 +270,21 @@ Ext.define('Paranimf.controller.Taquilla', {
 	    	  jsonData: this.butacasSeleccionadas,
 	    	  success: function (response) {
 	    		  
+	    		   var respuesta = Ext.JSON.decode(response.responseText, true);
+
+	    		   me.idCompra = respuesta['id'];
+	    		   me.uuidCompra = respuesta['uuid'];
+	    		  
 	    		   if (tipoPago == 'metalico')
 	    		   {
-	    			   me.habilitaBotonPagar();
-	    			   alert('Pagado en metálico');
-	    			   me.muestraMensajePagoTarjeta('');
-	    			   me.getFormComprar().up('window').close();
+	    			   //me.habilitaBotonPagar();
+	    			   //alert('Pagado en metálico');
+	    			   me.muestraMensajePagoTarjeta(UI.i18n.message.compraRegistradaOk);
+	    			   me.muestraEnlacePdf();
+	    			   //me.getFormComprar().up('window').close();
 	    		   }   
 	    		   else
 	    		   {
-	    			   var respuesta = Ext.JSON.decode(response.responseText, true);
-
-	    			   me.idCompra = respuesta['id'];
 	    			   me.pagarConTarjeta(respuesta['id'], 'Entradas Paranimf UJI');
 	    		   }   
 	    		   
@@ -396,10 +403,12 @@ Ext.define('Paranimf.controller.Taquilla', {
 	    			  else if (respuesta['codigoAccion'] == '20' || respuesta['codigoAccion'] == '30' )
 	    			  {
 	    				  me.paraComprobacionEstadoPago(idPago);
-	    				  me.muestraMensajePagoTarjeta('');
-	    				  me.habilitaBotonPagar();
-	    				  alert(UI.i18n.message.pagoTarjetaCorrecto);
-	    				  me.cerrarComprar();
+	    				  me.muestraMensajePagoTarjeta(UI.i18n.message.pagoTarjetaCorrecto);
+	    				  me.muestraEnlacePdf();
+	    				  
+	    				  //me.habilitaBotonPagar();
+	    				  //alert(UI.i18n.message.pagoTarjetaCorrecto);
+	    				  //me.cerrarComprar();
 	    			  }
 	    			  else
 	    			  {
@@ -424,7 +433,14 @@ Ext.define('Paranimf.controller.Taquilla', {
 	   	  });
    },
    
-
+   muestraEnlacePdf: function() {
+	   console.log(this.getVerEntrada());
+	   
+	   var href = urlPublic + '/rest/compra/' + this.uuidCompra + '/pdf';
+	   
+	   this.getVerEntrada().update('<a href="' + href + '" target="_blank">' + UI.i18n.button.verEntrada + '</a>');
+	   this.getVerEntrada().show();
+   },
    
    cargaPrecios: function(sesionId, callback) {
 	   

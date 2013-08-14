@@ -9,6 +9,7 @@ public class ResultadoCompra
 {
     private boolean correcta;
     private long id;
+    private String uuid;
     private List<Butaca> butacasOcupadas;
 
     public ResultadoCompra()
@@ -43,6 +44,16 @@ public class ResultadoCompra
     public void setId(long id)
     {
         this.id = id;
+    }
+
+    public String getUuid()
+    {
+        return uuid;
+    }
+
+    public void setUuid(String uuid)
+    {
+        this.uuid = uuid;
     }
 
 }

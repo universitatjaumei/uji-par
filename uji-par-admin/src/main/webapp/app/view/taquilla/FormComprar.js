@@ -137,7 +137,24 @@ Ext.define('Paranimf.view.taquilla.FormComprar', {
 							    	display: 'block'
 							     }
 						     }]
-						 }
+						 },
+						 {
+							 layout: {
+							        align: 'middle',
+							        pack: 'center',
+							        type: 'hbox'
+							 },
+							 frame: false,
+							 border: 0,
+						     items: [{
+								    	 xtype: 'panel',
+										 name: 'verEntrada',
+										 frame: false,
+										 border: 0,
+										 hidden: true
+						             }	 
+						     ]
+						 },
 				]
 	    }]
    }]

@@ -68,6 +68,7 @@ public class ComprasService
         
         resultadoCompra.setCorrecta(true);
         resultadoCompra.setId(compraDTO.getId());
+        resultadoCompra.setUuid(compraDTO.getUuid());
             
         return resultadoCompra;
     }
