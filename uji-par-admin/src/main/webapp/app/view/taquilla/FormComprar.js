@@ -35,7 +35,7 @@ Ext.define('Paranimf.view.taquilla.FormComprar', {
    },
    {
 	   id: 'comprarCancelar',
-	   text: UI.i18n.button.cancel
+	   text: UI.i18n.button.close
    }],
 
    items: [{

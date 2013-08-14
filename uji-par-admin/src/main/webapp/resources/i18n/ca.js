@@ -106,6 +106,7 @@ UI =
             "del": "Eliminar",
             "new": "Nou",
             "cancel": "Cancel·lar",
+            "close": "Tancar",
             "edit": "Editar",
             "activateBooking":"Permetre reserves",
             "deactivateBooking":"Bloquejar per a reserves",
