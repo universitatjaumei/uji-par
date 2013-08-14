@@ -29,12 +29,16 @@ public class PagoTarjetaService
     @InjectParam
     private ComprasDAO compras;
 
-    public ResultadoPagoPinpad realizaPago(Integer idCompra, String concepto)
+    public ResultadoPagoPinpad realizaPago(long idCompra, String concepto)
     {
         CompraDTO compra = compras.getCompraById(idCompra);
-        ResultadoPagoPinpad resultado = pinpad.realizaPago(Integer.toString(idCompra), compra.getImporte(), concepto);
+        ResultadoPagoPinpad resultado = pinpad.realizaPago(Long.toString(idCompra), compra.getImporte(), concepto);
 
-        if (!resultado.getError())
+        if (resultado.getError())
+        {
+            compras.borrarCompraNoPagada(idCompra);
+        }
+        else
         {
             log.info("guardandoCodigoPago: idCompra:" + idCompra);
             compras.guardarCodigoPago(compra.getId(), resultado.getCodigo());
