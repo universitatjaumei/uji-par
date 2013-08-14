@@ -400,11 +400,8 @@ Ext.define('Paranimf.controller.Taquilla', {
 	    			  {
 	    				  me.paraComprobacionEstadoPago(idPago);
 	    				  me.muestraMensajePagoTarjeta(UI.i18n.message.pagoTarjetaCorrecto);
+	    				  me.desahiblitaEstadoBotonesComprar();
 	    				  me.muestraEnlacePdf();
-	    				  
-	    				  //me.habilitaBotonPagar();
-	    				  //alert(UI.i18n.message.pagoTarjetaCorrecto);
-	    				  //me.cerrarComprar();
 	    			  }
 	    			  else
 	    			  {
@@ -569,6 +566,11 @@ Ext.define('Paranimf.controller.Taquilla', {
 	   Ext.getCmp('comprarAnterior').setDisabled(!layout.getPrev());
 	   Ext.getCmp('comprarSiguiente').setDisabled(!layout.getNext());	
    },
+   
+   desahiblitaEstadoBotonesComprar: function () {
+	   Ext.getCmp('comprarAnterior').setDisabled(true);
+	   Ext.getCmp('comprarSiguiente').setDisabled(true);	
+   },   
 
    recargaStore: function(comp, opts) {
       console.log('RECARGA STORE EVENTOS TAQUILLA');
@@ -603,6 +605,7 @@ Ext.define('Paranimf.controller.Taquilla', {
 	    		  console.log('Compra marcada como pagada:', response);
 	    		  
    			      me.muestraMensajePagoTarjeta(UI.i18n.message.compraRegistradaOk);
+   			      me.desahiblitaEstadoBotonesComprar();
 			      me.muestraEnlacePdf();
     			  
 	    	  }, failure: function (response) {
