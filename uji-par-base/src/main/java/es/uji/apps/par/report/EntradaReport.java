@@ -256,8 +256,11 @@ public class EntradaReport extends Report
         table.withNewRow();
         table.withNewCell(zona, "3");
 
-        table.withNewRow();
-        table.withNewCell(ResourceProperties.getProperty(locale, "entrada.butaca", this.fila, this.numero), "3");
+        if (this.fila != null && this.numero != null)
+        {
+            table.withNewRow();
+            table.withNewCell(ResourceProperties.getProperty(locale, "entrada.butaca", this.fila, this.numero), "3");
+        }
 
         block.getContent().add(table);
 
@@ -288,10 +291,10 @@ public class EntradaReport extends Report
     {
         ExternalGraphic externalGraphic = new ExternalGraphic();
         externalGraphic.setSrc(Configuration.getUrlPublic() + "/rest/barcode/" + this.barcode);
-        
+
         Block blockCodebar = new Block();
         blockCodebar.getContent().add(externalGraphic);
-        
+
         return blockCodebar;
     }
 
@@ -381,12 +384,19 @@ public class EntradaReport extends Report
         zona.setFontSize("12pt");
 
         table.withNewRow();
-        table.withNewCell(zona, "2");
+        TableCell zonaCell = table.withNewCell(zona, "2");
 
-        table.withNewRow();
-        TableCell butacaCell = table.withNewCell(
-                ResourceProperties.getProperty(locale, "entrada.butaca", this.fila, this.numero), "2");
-        butacaCell.setPaddingBottom("0.2cm");
+        if (this.fila != null && this.numero != null)
+        {
+            table.withNewRow();
+            TableCell butacaCell = table.withNewCell(
+                    ResourceProperties.getProperty(locale, "entrada.butaca", this.fila, this.numero), "2");
+            butacaCell.setPaddingBottom("0.2cm");
+        }
+        else
+        {
+            zonaCell.setPaddingBottom("0.2cm");
+        }
 
         return table;
     }
