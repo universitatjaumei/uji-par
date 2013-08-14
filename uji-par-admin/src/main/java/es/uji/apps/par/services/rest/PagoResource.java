@@ -17,6 +17,7 @@ import com.sun.jersey.api.core.InjectParam;
 
 import es.uji.apps.par.pinpad.EstadoPinpad;
 import es.uji.apps.par.pinpad.ResultadoPagoPinpad;
+import es.uji.apps.par.services.ComprasService;
 import es.uji.apps.par.services.PagoTarjetaService;
 
 @Path("pago")
@@ -25,8 +26,11 @@ public class PagoResource extends BaseResource
     public static Logger log = Logger.getLogger(PagoResource.class);
 
     @InjectParam
-    PagoTarjetaService compras;
-    
+    PagoTarjetaService pagoTarjeta;
+
+    @InjectParam
+    ComprasService compras;
+
     @Context
     HttpServletResponse currentResponse;
 
@@ -36,7 +40,7 @@ public class PagoResource extends BaseResource
     @Produces(MediaType.APPLICATION_JSON)
     public ResultadoPagoPinpad realizaPago(@PathParam("idCompra") Integer idCompra, String concepto)
     {
-        return compras.realizaPago(idCompra, concepto);
+        return pagoTarjeta.realizaPago(idCompra, concepto);
     }
 
     @GET
@@ -44,13 +48,21 @@ public class PagoResource extends BaseResource
     @Produces(MediaType.APPLICATION_JSON)
     public EstadoPinpad estadoPago(@PathParam("idCompra") Long idCompra)
     {
-        return compras.consultaEstadoPago(idCompra);
+        return pagoTarjeta.consultaEstadoPago(idCompra);
     }
-    
+
     @DELETE
     @Path("{idCompra}/pendiente")
     public void borrarCompraPendiente(@PathParam("idCompra") Long idCompra)
     {
-        compras.borraCompraPendiente(idCompra);
+        pagoTarjeta.borraCompraPendiente(idCompra);
+    }
+
+    @POST
+    @Path("{idCompra}/pagada")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void marcaPagada(@PathParam("idCompra") Long idCompra)
+    {
+        compras.marcaPagada(idCompra);
     }
 }

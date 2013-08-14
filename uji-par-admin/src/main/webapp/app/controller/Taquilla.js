@@ -277,11 +277,7 @@ Ext.define('Paranimf.controller.Taquilla', {
 	    		  
 	    		   if (tipoPago == 'metalico')
 	    		   {
-	    			   //me.habilitaBotonPagar();
-	    			   //alert('Pagado en metálico');
-	    			   me.muestraMensajePagoTarjeta(UI.i18n.message.compraRegistradaOk);
-	    			   me.muestraEnlacePdf();
-	    			   //me.getFormComprar().up('window').close();
+	    			   me.marcaPagada(me.idCompra);
 	    		   }   
 	    		   else
 	    		   {
@@ -593,6 +589,35 @@ Ext.define('Paranimf.controller.Taquilla', {
 	 var evento = this.getGridEventosTaquilla().getSelectedRecord();
 	 var sesion = this.getGridSesionesTaquilla().getSelectedRecord();
 	 this.getGridSesionesTaquilla().showComprarWindow(sesion.data['id'], evento.data['asientosNumerados']);
+   },
+   
+   marcaPagada: function(idCompra) {
+	   
+	   var me = this;
+	   
+	   Ext.Ajax.request({
+	    	  url : urlPrefix + 'pago/' + idCompra + '/pagada',
+	    	  method: 'POST',
+	    	  success: function (response) {
+	   
+	    		  console.log('Compra marcada como pagada:', response);
+	    		  
+   			      me.muestraMensajePagoTarjeta(UI.i18n.message.compraRegistradaOk);
+			      me.muestraEnlacePdf();
+    			  
+	    	  }, failure: function (response) {
+	    		  
+	    		  me.habilitaBotonPagar();
+	    		  me.muestraMensajePagoTarjeta(UI.i18n.error.errorRealizaPago);
+
+	    		  var respuesta = Ext.JSON.decode(response.responseText, true);
+	    		  
+	    		  if (respuesta!=null && respuesta['message']!=null)
+	    			  alert(respuesta['message']);
+	    		  else
+	    			  alert(UI.i18n.error.errorRealizaPago);
+	    	  }
+	   	  });
    }
 
 });

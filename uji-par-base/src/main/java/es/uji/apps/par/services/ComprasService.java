@@ -94,5 +94,10 @@ public class ComprasService
         
         return importe;
     }
+
+    public void marcaPagada(long idCompra)
+    {
+        comprasDAO.marcarPagada(idCompra);
+    }
     
 }
