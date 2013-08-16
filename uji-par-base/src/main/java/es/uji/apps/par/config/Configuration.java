@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 
 public class Configuration
 {
+    private static final String SECRET = "uji.par.secret";
     private static final String URL_PUBLIC = "uji.par.urlPublic";
 
     public static Logger log = Logger.getLogger(Configuration.class);
@@ -47,11 +48,16 @@ public class Configuration
 
     private static String getProperty(String propertyName)
     {
-        return (String) instance.properties.getProperty(propertyName);
+        return (String) instance.properties.getProperty(propertyName).trim();
     }
 
     public static String getUrlPublic()
     {
         return getProperty(URL_PUBLIC);
+    }
+
+    public static String getSecret()
+    {
+        return getProperty(SECRET);
     }
 }

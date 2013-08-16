@@ -5,19 +5,10 @@
 <link rel="stylesheet" type="text/css" href="../../css/estilo.css"></link>
 </head>
 <body>
-	<h1 th:text="#{titulo}">Compra correcta - Entrada válida</h1>
+	<h1 th:text="#{titulo}">Compra correcta</h1>
 	
 	<h2 th:text="#{mensajes}">Compra realizada con éxito</h2>
 
-	<div class="compra-referencia">
-		<span th:text="#{referencia}">Referencia:</span> XXXXXXX
-	</div>
-		
-	<div class="compra-sesion">
-		<span th:text="#{tituloObra}">Título:</span> <span></span>
-		<span th:text="#{fecha}">Fecha:</span> <span></span>
-		<span th:text="#{hora}">Hora:</span> <span></span>
-	</div>
-	
+	<a th:href="${url}" target="_blank" th:text="#{descargar}">Descargar entradas</a>	
 </body>
 </html>

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<header> </header>
+<body onload="submit()">
+	<form action="https://e-ujier.uji.es/pls/www/!uji_recibos.entradas" method="POST">
+		<input type="hidden" name="tpv_identificador" th:value="${identificador}" /> 
+		<input type="hidden" name="tpv_concepto" th:value="${concepto}"/>
+		<input type="hidden" name="tpv_importe" th:value="${importe}" /> 
+		<input type="hidden" name="tpv_correo" th:value="${correo}" /> 
+		<input type="hidden" name="tpv_url" th:value="${url}" /> 
+		<input type="hidden" name="tpv_hash" th:value="${hash}" /> 
+	</form>
+	<script type="text/javascript">
+		document.forms[0].submit();
+	</script>
+</body>
+</html>

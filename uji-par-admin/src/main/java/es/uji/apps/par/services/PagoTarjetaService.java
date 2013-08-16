@@ -41,7 +41,7 @@ public class PagoTarjetaService
         else
         {
             log.info("guardandoCodigoPago: idCompra:" + idCompra);
-            compras.guardarCodigoPago(compra.getId(), resultado.getCodigo());
+            compras.guardarCodigoPagoTarjeta(compra.getId(), resultado.getCodigo());
             lanzaThreadConsultaEstado(compra.getId());
         }
 

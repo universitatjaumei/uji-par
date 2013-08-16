@@ -29,17 +29,19 @@ public class ComprasService
 
     @Autowired
     private ButacasDAO butacasDAO;
-    
+
     @Autowired
     private SesionesService sesionesService;
 
-    public ResultadoCompra registraCompraTaquilla(Long sesionId, List<Butaca> butacasSeleccionadas) throws NoHayButacasLibresException, ButacaOcupadaException, CompraSinButacasException
+    public ResultadoCompra registraCompraTaquilla(Long sesionId, List<Butaca> butacasSeleccionadas)
+            throws NoHayButacasLibresException, ButacaOcupadaException, CompraSinButacasException
     {
         return registraCompra(sesionId, "", "", "", "", butacasSeleccionadas, true);
     }
 
     public ResultadoCompra realizaCompraInternet(Long sesionId, String nombre, String apellidos, String telefono,
-            String email, List<Butaca> butacasSeleccionadas) throws FueraDePlazoVentaInternetException, NoHayButacasLibresException, ButacaOcupadaException, CompraSinButacasException
+            String email, List<Butaca> butacasSeleccionadas) throws FueraDePlazoVentaInternetException,
+            NoHayButacasLibresException, ButacaOcupadaException, CompraSinButacasException
     {
         Sesion sesion = sesionesService.getSesion(sesionId);
 
@@ -48,28 +50,30 @@ public class ComprasService
 
         return registraCompra(sesionId, nombre, apellidos, telefono, email, butacasSeleccionadas, false);
     }
-    
+
     @Transactional
-    private synchronized ResultadoCompra registraCompra(Long sesionId, String nombre, String apellidos, String telefono, String email,
-            List<Butaca> butacasSeleccionadas, boolean taquilla) throws NoHayButacasLibresException, ButacaOcupadaException, CompraSinButacasException
+    private synchronized ResultadoCompra registraCompra(Long sesionId, String nombre, String apellidos,
+            String telefono, String email, List<Butaca> butacasSeleccionadas, boolean taquilla)
+            throws NoHayButacasLibresException, ButacaOcupadaException, CompraSinButacasException
     {
         if (butacasSeleccionadas.size() == 0)
             throw new CompraSinButacasException();
-        
+
         ResultadoCompra resultadoCompra = new ResultadoCompra();
-        
+
         BigDecimal importe = calculaImporteButacas(sesionId, butacasSeleccionadas);
 
         CompraDTO compraDTO;
-        
-        compraDTO = comprasDAO.insertaCompra(sesionId, nombre, apellidos, telefono, email, new Date(), taquilla, importe);
-        
+
+        compraDTO = comprasDAO.insertaCompra(sesionId, nombre, apellidos, telefono, email, new Date(), taquilla,
+                importe);
+
         butacasDAO.reservaButacas(sesionId, compraDTO, butacasSeleccionadas);
-        
+
         resultadoCompra.setCorrecta(true);
         resultadoCompra.setId(compraDTO.getId());
         resultadoCompra.setUuid(compraDTO.getUuid());
-            
+
         return resultadoCompra;
     }
 
@@ -77,11 +81,11 @@ public class ComprasService
     {
         BigDecimal importe = new BigDecimal("0");
         Map<String, PreciosSesion> preciosLocalizacion = sesionesService.getPreciosSesionPorLocalizacion(sesionId);
-        
-        for (Butaca butaca: butacasSeleccionadas)
+
+        for (Butaca butaca : butacasSeleccionadas)
         {
             PreciosSesion precioLocalizacion = preciosLocalizacion.get(butaca.getLocalizacion());
-            
+
             if (butaca.getTipo().equals("normal"))
                 importe = importe.add(precioLocalizacion.getPrecio());
             else if (butaca.getTipo().equals("descuento"))
@@ -91,7 +95,7 @@ public class ComprasService
             else
                 throw new RuntimeException("Butaca con tipo de precio no reconocido: " + butaca);
         }
-        
+
         return importe;
     }
 
@@ -99,9 +103,19 @@ public class ComprasService
     {
         comprasDAO.marcarPagada(idCompra);
     }
-    
+
     public void eliminaPendientes()
     {
         comprasDAO.eliminaComprasPendientes();
+    }
+
+    public CompraDTO getCompraById(long idCompra)
+    {
+        return comprasDAO.getCompraById(idCompra);
+    }
+
+    public void marcaPagadaPasarela(long idCompra, String codigoPago)
+    {
+        comprasDAO.marcarPagadaPasarela(idCompra, codigoPago);
     }
 }

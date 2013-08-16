@@ -96,7 +96,7 @@ public class ComprasDAO
     }
 
     @Transactional
-    public void guardarCodigoPago(long idCompra, String codigo)
+    public void guardarCodigoPagoTarjeta(long idCompra, String codigo)
     {
         CompraDTO compra = getCompraById(idCompra);
        
@@ -110,6 +110,17 @@ public class ComprasDAO
     {
         CompraDTO compra = getCompraById(idCompra);
         
+        compra.setPagada(true);
+        
+        entityManager.persist(compra);        
+    }
+    
+    @Transactional
+    public void marcarPagadaPasarela(Long idCompra, String codigoPago)
+    {
+        CompraDTO compra = getCompraById(idCompra);
+        
+        compra.setCodigoPagoPasarela(codigoPago);
         compra.setPagada(true);
         
         entityManager.persist(compra);        

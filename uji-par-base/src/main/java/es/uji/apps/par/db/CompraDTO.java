@@ -62,6 +62,9 @@ public class CompraDTO implements Serializable {
     @Column(name = "CODIGO_PAGO_TARJETA")
     private String codigoPagoTarjeta;	
     
+    @Column(name = "CODIGO_PAGO_PASARELA")
+    private String codigoPagoPasarela;
+    
     @Column(name = "PAGADA")
     private Boolean pagada;
     
@@ -188,5 +191,13 @@ public class CompraDTO implements Serializable {
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
+    }
+
+    public String getCodigoPagoPasarela() {
+        return codigoPagoPasarela;
+    }
+
+    public void setCodigoPagoPasarela(String codigoPagoPasarela) {
+        this.codigoPagoPasarela = codigoPagoPasarela;
     }
 }

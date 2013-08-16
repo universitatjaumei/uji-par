@@ -21,6 +21,8 @@ import com.sun.jersey.api.core.InjectParam;
 
 import es.uji.apps.par.Constantes;
 import es.uji.apps.par.FueraDePlazoVentaInternetException;
+import es.uji.apps.par.config.Configuration;
+import es.uji.apps.par.db.CompraDTO;
 import es.uji.apps.par.model.Butaca;
 import es.uji.apps.par.model.Evento;
 import es.uji.apps.par.model.PreciosSesion;
@@ -29,6 +31,7 @@ import es.uji.apps.par.model.Sesion;
 import es.uji.apps.par.services.ButacasService;
 import es.uji.apps.par.services.ComprasService;
 import es.uji.apps.par.services.SesionesService;
+import es.uji.apps.par.utils.Utils;
 import es.uji.commons.web.template.HTMLTemplate;
 import es.uji.commons.web.template.Template;
 
@@ -111,13 +114,33 @@ public class EntradasResource extends BaseResource
 
         if (resultadoCompra.getCorrecta())
         {
-            currentResponse.sendRedirect("compraValida");
-            return null;
+            return formularioParaTpv(resultadoCompra.getId(), email);
         }
         else
         {
             return paginaSeleccionEntradas(sesionId, butacasSeleccionadas, resultadoCompra.getButacasOcupadas());
         }
+    }
+
+    private Response formularioParaTpv(long idCompra, String correo)
+    {
+        CompraDTO compra = comprasService.getCompraById(idCompra);
+
+        Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "tpv", getLocale());
+        template.put("idioma", getLocale().getLanguage());
+        template.put("baseUrl", getBaseUrl());
+
+        String importe = Utils.monedaToCents(compra.getImporte());
+        String url = Configuration.getUrlPublic() + "/rest/tpv/resultado";
+
+        template.put("identificador", compra.getId());
+        template.put("concepto", "Entradas Paranimf");
+        template.put("importe", importe);
+        template.put("correo", correo);
+        template.put("url", url);
+        template.put("hash", Utils.sha1(compra.getId() + importe + correo + url + Configuration.getSecret()));
+
+        return Response.ok(template).build();
     }
     
     @GET
