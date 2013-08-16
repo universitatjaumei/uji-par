@@ -1,7 +1,6 @@
 package es.uji.apps.par.services.rest;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.GET;
@@ -30,8 +29,7 @@ public class ImagenesResource extends BaseResource
     public Response datosEntrada(@PathParam("sesion") Long sesion, @PathParam("seccion") String seccion)
             throws Exception
     {
-        String realPath = context.getRealPath(File.separator);
-        ByteArrayOutputStream os = mapaDrawer.generaImagen(realPath, sesion, seccion);
+        ByteArrayOutputStream os = mapaDrawer.generaImagen(sesion, seccion);
 
         Response response = Response.ok(os.toByteArray())
                 .header("Cache-Control", "no-cache, no-store, must-revalidate").header("Pragma", "no-cache")

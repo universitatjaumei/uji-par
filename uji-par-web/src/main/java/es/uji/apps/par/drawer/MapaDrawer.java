@@ -27,6 +27,7 @@ import es.uji.apps.par.services.ButacasService;
 public class MapaDrawer
 {
     private static final String[] LOCALIZACIONES = new String[] { "anfiteatro", "platea1", "platea2" };
+    private static final String IMAGES_PATH = "/etc/uji/par/imagenes/";
 
     @InjectParam
     ButacasService butacasService;
@@ -38,6 +39,12 @@ public class MapaDrawer
     private Map<String, DatosButaca> datosButacas;
     private Map<String, BufferedImage> imagenes;
 
+    public MapaDrawer() throws IOException
+    {
+        cargaImagenes();
+        leeJson();
+    }
+
     private String[] getLocalizacionesEnImagen(String localizacion)
     {
         if (localizacion.equals("anfiteatro"))
@@ -48,11 +55,9 @@ public class MapaDrawer
             return new String[] { "platea2", "discapacitados2" };
     }
 
-    public ByteArrayOutputStream generaImagen(String imagesPath, long idSesion, String codigoLocalizacion)
+    public ByteArrayOutputStream generaImagen(long idSesion, String codigoLocalizacion)
             throws IOException
     {
-        cargaImagenes(imagesPath);
-        leeJson();
 
         BufferedImage img = dibujaButacas(idSesion, codigoLocalizacion);
 
@@ -142,7 +147,7 @@ public class MapaDrawer
         return butaca.getLocalizacion().startsWith("discapacitados");
     }
 
-    private void cargaImagenes(String imagesPath) throws IOException
+    private void cargaImagenes() throws IOException
     {
         if (imagenes == null)
         {
@@ -150,24 +155,24 @@ public class MapaDrawer
 
             for (String localizacion : LOCALIZACIONES)
             {
-                loadImage(imagesPath, localizacion);
+                loadImage(IMAGES_PATH, localizacion);
             }
         }
 
         if (butacaOcupada == null)
         {
-            butacaOcupada = ImageIO.read(new File(imagesPath + "/img/ocupada.png"));
+            butacaOcupada = ImageIO.read(new File(IMAGES_PATH + "/ocupada.png"));
         }
 
         if (butacaOcupadaDiscapacitado == null)
         {
-            butacaOcupadaDiscapacitado = ImageIO.read(new File(imagesPath + "/img/ocupadaDiscapacitado.png"));
+            butacaOcupadaDiscapacitado = ImageIO.read(new File(IMAGES_PATH + "/ocupadaDiscapacitado.png"));
         }
     }
 
     private void loadImage(String imagesPath, String localizacion) throws IOException
     {
-        File f = new File(imagesPath + "/img/" + localizacion + ".png");
+        File f = new File(imagesPath + localizacion + ".png");
         imagenes.put(localizacion, ImageIO.read(f));
     }
 
