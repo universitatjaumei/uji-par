@@ -139,6 +139,18 @@ Butacas = (function() {
 		return st;
 	}
 	
+	function actualizaTotal()
+	{
+		var total = 0;
+		
+		for (var i=0; i<butacasSeleccionadas.length; i++)
+		{
+			total += butacasSeleccionadas[i].precio;
+		}
+		
+		$('#totalSeleccionadas').text(total.toFixed(2));
+	}
+	
 	function cambiaTipoButaca(posicion, tipo)
 	{
 		var butaca = butacasSeleccionadas[posicion];
@@ -198,6 +210,7 @@ Butacas = (function() {
 		redibujaButacasSeleccionadas();
 		muestraDetallesSeleccionadas();
 		guardaButacasEnHidden();
+		actualizaTotal();
 	}
 	
 	function muestraBotonLimpiarSeleccion()
