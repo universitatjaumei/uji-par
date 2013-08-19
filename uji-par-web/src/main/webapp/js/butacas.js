@@ -112,9 +112,9 @@ Butacas = (function() {
 			var fila = $('<div class="entrada-seleccionada">'
 					+ butacasSeleccionadas[i].localizacion
 					+ ', <span>' + UI.i18n.butacas.fila + '</span>'
-					+ '<b>' + butacasSeleccionadas[i].fila + '</b>'
+					+ butacasSeleccionadas[i].fila
 					+ ', <span>' + UI.i18n.butacas.butaca + '</span>'
-					+ '<b>' + butacasSeleccionadas[i].numero + '</b><br>'
+					+ butacasSeleccionadas[i].numero + '<br>'
 					+ getSelectTipoButaca(i)
 					+ '<span>(<b>' + butacasSeleccionadas[i].precio.toFixed(2) + '</b> €)</span></div>');
 			$('#detallesSeleccionadas').append(fila);

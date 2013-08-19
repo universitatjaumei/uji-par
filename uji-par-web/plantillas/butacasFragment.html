@@ -728,17 +728,17 @@
 		</div>
 			
 		<div id="divSeleccionadas" class="three columns">
-			<div>
-				<span th:text="#{espectaculo}">Espectáculo:</span><span th:text="${titulo}"></span>
+			<div class="titulo">
+				<span th:text="${titulo}"></span>
 			</div>
-			<div>
+			<div class="fecha">
 				<span th:text="#{fecha}">Fecha:</span><span th:text="${fecha}"></span>
 			</div>
-			<div>	
+			<div class="hora">	
 				<span th:text="#{sesion}">Sesión:</span><span th:text="${hora}"></span>
 			</div> 
 			<div id="detallesSeleccionadas"></div>
-			<div id="total"><span ht:text="#{total}">Total: </span><span id="totalSeleccionadas"></span></div>
+			<div id="total"><span ht:text="#{total}">Total: </span><span id="totalSeleccionadas">0.00 €</span></div>
 			<input type="button" id="limpiarSeleccion" th:value="#{limpiarSeleccion}"></input>
 		</div>
 	</div>

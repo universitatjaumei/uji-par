@@ -3,6 +3,10 @@
 		max-width: 850px;
 		width: 850px;
 	}
+	
+	#divSeleccionadas {
+		width: 230px !important;
+	}
 }
 
 body {
@@ -74,4 +78,33 @@ input[type=text] {
 
 .evento-sesiones {
 	clear: both;
+}
+
+#divSeleccionadas {
+	background: #EEE;
+	padding: 15px;
+}
+
+#divSeleccionadas .titulo, #divSeleccionadas .fecha, #divSeleccionadas .hora {
+	margin-top: 4px;
+}
+
+#divSeleccionadas .titulo {
+	font-style: italic;
+	font-weight: bold;
+}
+
+.entrada-seleccionada {
+	background: #DDD;
+	margin-top: 5px;
+	padding: 5px;
+}
+
+#total {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+#totalSeleccionadas {
+	font-weight: bold;
 }
