@@ -148,7 +148,7 @@ Butacas = (function() {
 			total += butacasSeleccionadas[i].precio;
 		}
 		
-		$('#totalSeleccionadas').text(total.toFixed(2));
+		$('#totalSeleccionadas').text(total.toFixed(2) + ' €');
 	}
 	
 	function cambiaTipoButaca(posicion, tipo)
