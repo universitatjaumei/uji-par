@@ -4,9 +4,11 @@ UI =
         "butacas": {
             "ocupadas": "La butaca seleccionada está ocupada",
             "localizacion": "Localización",
-            "fila": "Fila",
-            "butaca": "Butaca",
-            "tipo": "Tipus"
+            "fila": "F.",
+            "butaca": "B.",
+            "tipo": "Tipus",
+            "tipoNormal": "Normal",
+            "tipoDescuento": "Descuento"
         }
     }
 };

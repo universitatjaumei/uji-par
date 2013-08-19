@@ -31,6 +31,7 @@ import es.uji.apps.par.model.Sesion;
 import es.uji.apps.par.services.ButacasService;
 import es.uji.apps.par.services.ComprasService;
 import es.uji.apps.par.services.SesionesService;
+import es.uji.apps.par.utils.DateUtils;
 import es.uji.apps.par.utils.Utils;
 import es.uji.commons.web.template.HTMLTemplate;
 import es.uji.commons.web.template.Template;
@@ -75,6 +76,18 @@ public class EntradasResource extends BaseResource
         template.put("sesion", sesion);
         template.put("idioma", getLocale().getLanguage());
         template.put("baseUrl", getBaseUrl());
+        
+        template.put("fecha", DateUtils.dateToSpanishString(sesion.getFechaCelebracion()));
+        template.put("hora", sesion.getHoraCelebracion());
+        
+        if (getLocale().getLanguage().equals("ca"))
+        {
+            template.put("titulo", evento.getTituloVa());
+        }
+        else
+        {
+            template.put("titulo", evento.getTituloEs());
+        }
         
         if (butacasSeleccionadas != null)
             template.put("butacasSeleccionadas", butacasSeleccionadas);

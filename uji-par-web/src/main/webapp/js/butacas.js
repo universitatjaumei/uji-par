@@ -111,17 +111,47 @@ Butacas = (function() {
 		for ( var i = 0; i < butacasSeleccionadas.length; i++) {
 			var fila = $('<div class="entrada-seleccionada">'
 					+ butacasSeleccionadas[i].localizacion
-					+ ', <span>' + UI.i18n.butacas.fila + '=</span>'
+					+ ', <span>' + UI.i18n.butacas.fila + '</span>'
 					+ '<b>' + butacasSeleccionadas[i].fila + '</b>'
-					+ ', <span>' + UI.i18n.butacas.butaca + '=</span>'
-					+ '<b>' + butacasSeleccionadas[i].numero + '</b>'
-					+ '<span> (' + butacasSeleccionadas[i].tipo + ': <b>' + butacasSeleccionadas[i].precio.toFixed(2) + '</b> €)</span></div>');
+					+ ', <span>' + UI.i18n.butacas.butaca + '</span>'
+					+ '<b>' + butacasSeleccionadas[i].numero + '</b><br>'
+					+ getSelectTipoButaca(i)
+					+ '<span>(<b>' + butacasSeleccionadas[i].precio.toFixed(2) + '</b> €)</span></div>');
 			$('#detallesSeleccionadas').append(fila);
 		}
 	}
 	
+	function getSelectTipoButaca(posicion)
+	{
+		var st = '<select onchange="Butacas.cambiaTipoButaca(' + posicion + ', this.value)">';
+		
+		var selecNormal = 'selected',
+			selecDescuento = '';
+		
+		if (butacasSeleccionadas[posicion]['tipo'] == 'descuento')
+		{
+			selecNormal = '';
+			selecDescuento = 'selected';
+		}
+		
+		st += '<option ' + selecNormal + ' value="normal">' + UI.i18n.butacas.tipoNormal + '</option><option ' + selecDescuento + ' value="descuento">' + UI.i18n.butacas.tipoDescuento + '</option></select>';
+		
+		return st;
+	}
+	
+	function cambiaTipoButaca(posicion, tipo)
+	{
+		var butaca = butacasSeleccionadas[posicion];
+		
+		butaca.tipo = tipo;
+		butaca.precio = precios[butaca.localizacion][tipo];
+		
+		refrescaEstadoButacas();
+	}
+	
 	function selecciona(localizacion, fila, numero, x, y) {
-		var tipoEntrada = $('#tipo').val();
+
+		var tipoEntrada = 'normal';
 		
 		var butaca = {
 			localizacion : localizacion,
@@ -282,7 +312,8 @@ Butacas = (function() {
 	return {
 		selecciona:selecciona,
 		init:init,
-		cargaPrecios:cargaPrecios
+		cargaPrecios:cargaPrecios,
+		cambiaTipoButaca: cambiaTipoButaca
 	};
 	
 }());
