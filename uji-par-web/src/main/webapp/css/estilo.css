@@ -1,3 +1,37 @@
+body {
+	margin-top: 30px;
+}
+
+.evento-sesiones {
+	padding-top: 20px;
+}
+
+
+.evento-sesiones .comprarEntradas {
+	background: #FF0000;
+	text-align: center;
+}
+
+.evento-sesiones .comprarEntradas a {
+	color: #FFFFFF;
+	font-weight: bold;
+}
+
+.evento-sesiones table {
+	border: 0px;
+}
+
+.evento-sesiones td {
+	background: #EEEEEE;
+	padding: 4px;
+	padding-left: 8px;
+	padding-right: 8px;
+}
+
+.evento-sesiones td {
+	vertical-align: middle;
+}
+
 .evento-imagen {
 	float: left;
 	margin-right: 10px;

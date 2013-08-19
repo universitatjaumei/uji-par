@@ -1,52 +1,54 @@
 <!DOCTYPE html>
+
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+
 <meta charset="utf-8" />
-<link rel="stylesheet" type="text/css" href="../../css/estilo.css"></link>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<link rel="stylesheet" href="../../css/foundation.min.css"></link>
+<link rel="stylesheet" type="text/css" href="../../css/estilo.css"></link>
+
+<script src="../../js/modernizr.foundation.js"></script>
+
 </head>
 <body>
-	<h1 th:text="#{titulo}">Datos del evento seleccionado</h1>
-	<div class="evento-tipo" th:text="${evento.parTipoEvento.nombreEs}"></div>
-	<div class="evento-imagen">
-		<img th:src="${evento.id} + '/imagen'" />
+	<div class="row">
+		<div class="twelve columns">
+			<div class="evento-imagen">
+				<img th:src="${evento.id} + '/imagen'" />
+			</div>
+			<div class="evento-detalles">
+				<div class="evento-titulo"><span th:text="${tipoEvento}"></span>: <span th:text="${titulo}"></span></div>
+				<div class="evento-companyia" th:text="${companyia}"></div>
+				<div class="evento-duracion" th:text="${duracion}"></div>
+				<div class="evento-caracteristicas"
+					th:text="${caracteristicas}"></div>
+				<div class="evento-premios" th:text="${premios}"></div>
+				<div class="evento-interpretes" th:text="${interpretes}"></div>
+				<div class="evento-descripcion" th:text="${descripcion}"></div>
+			</div>
+			<div class="evento-sesiones">
+				<table>
+					<tr th:each="sesion : ${sesionesPlantilla}">
+						<td>
+							<span th:text="${sesion.texto}"></span>
+						</td>	
+						<td th:class="${sesion.clase}">
+							<div th:if="${sesion.canalInternet} != 1">
+								<span th:text="#{comprarEntradasNoDisponiblesInternet}">No disponibles por internet</span>
+							</div>
+							<div th:if="${sesion.canalInternet}==1 and !${sesion.enPlazoVentaInternet}">
+								<span th:text="${sesion.textoFechasInternet}"></span>
+							</div>
+							<a th:href="'../entrada/' + ${sesion.id}" th:text="#{comprarEntradas}" th:if="${sesion.enPlazoVentaInternet}">Comprar entradas</a>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
 	</div>
-	<div class="evento-detalles">
-		<div class="evento-titulo" th:text="${evento.tituloEs}"></div>
-		<div class="evento-companyia" th:text="${evento.companyiaEs}"></div>
-		<div class="evento-duracion" th:text="${evento.duracionEs}"></div>
-		<div class="evento-caracteristicas"
-			th:text="${evento.caracteristicasEs}"></div>
-		<div class="evento-premios" th:text="${evento.premiosEs}"></div>
-		<div class="evento-interpretes" th:text="${evento.interpretesEs}"></div>
-		<div class="evento-descripcion" th:text="${evento.descripcionEs}"></div>
-	</div>
-	<div class="evento-sesiones">
-		<table>
-			<thead>
-				<th th:text="#{dia}">Día</th>
-				<th th:text="#{hora}">Hora</th>
-				<th th:text="#{precio}">Precio</th>
-				<th></th>
-			</thead>
-			<tbody>
-				<tr th:each="sesion : ${sesiones}">
-					<td th:text="${#dates.format(sesion.fechaCelebracion, 'dd/MM/yyyy')}"></td>
-					<td th:text="${sesion.horaCelebracion}"></td>
-					<td th:text="${sesion.canalInternet}"></td>
-					<td>
-						<a th:href="'../entrada/' + ${sesion.id}" th:text="#{comprarEntradas}" th:if="${sesion.enPlazoVentaInternet}">Comprar entradas</a>
-						<div th:if="${sesion.canalInternet} != 1">
-							<span th:text="#{comprarEntradasNoDisponiblesInternet}">No disponibles por internet</span>
-						</div>
-						<div th:if="${sesion.canalInternet}==1 and !${sesion.enPlazoVentaInternet}">
-							<span th:text="#{comprarEntradasNoDisponibles}">Venta por internet desde</span> <span th:text="${#dates.format(sesion.fechaInicioVentaOnline, 'dd/MM/yyyy')}"></span>
-							<span th:text="#{comprarEntradasNoDisponiblesHasta}">hasta</span> <span th:text="${#dates.format(sesion.fechaFinVentaOnline, 'dd/MM/yyyy')}"></span>
-						</div>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
+	
+	<script src="../../js/foundation.min.js"></script>
 </body>
 </html>

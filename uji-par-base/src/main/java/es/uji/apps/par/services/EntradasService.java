@@ -38,8 +38,8 @@ public class EntradasService
         CompraDTO compra = comprasDAO.getCompraByUuid(uuidCompra);
 
         String tituloEs = compra.getParSesion().getParEvento().getTituloEs();
-        String fecha = DateUtils.timestampToSpanishString(compra.getParSesion().getFechaCelebracion());
-        String hora = DateUtils.timestampToHourString(compra.getParSesion().getFechaCelebracion());
+        String fecha = DateUtils.dateToSpanishString(compra.getParSesion().getFechaCelebracion());
+        String hora = DateUtils.dateToHourString(compra.getParSesion().getFechaCelebracion());
         String horaApertura = compra.getParSesion().getHoraApertura();
 
         entrada.setTitulo(tituloEs);

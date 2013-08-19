@@ -170,8 +170,8 @@ public class Sesion
 		sesion.setCanalTaquilla(sesionDTO.getCanalTaquilla().toString());
 		sesion.setEvento(Evento.eventoDTOtoEvento(sesionDTO.getParEvento()));
 		sesion.setFechaCelebracionWithDate(sesionDTO.getFechaCelebracion());
-		sesion.setFechaFinVentaOnline(DateUtils.timestampToSpanishString(sesionDTO.getFechaFinVentaOnline()));
-		sesion.setFechaInicioVentaOnline(DateUtils.timestampToSpanishString(sesionDTO.getFechaInicioVentaOnline()));
+		sesion.setFechaFinVentaOnline(DateUtils.dateToSpanishString(sesionDTO.getFechaFinVentaOnline()));
+		sesion.setFechaInicioVentaOnline(DateUtils.dateToSpanishString(sesionDTO.getFechaInicioVentaOnline()));
 		
 		sesion.setHoraAperturaPuertas(sesionDTO.getHoraApertura());
 		sesion.setHoraInicioVentaOnline(DateUtils.getHourAndMinutesWithLeadingZeros(sesionDTO.getFechaInicioVentaOnline()));

@@ -64,14 +64,14 @@ public class DateUtils
         return cal.getTime();
     }
     
-    public static String timestampToSpanishString(Timestamp fecha) {
+    public static String dateToSpanishString(Date fecha) {
     	if (fecha == null)
     		throw new NullPointerException();
     	
     	return FORMAT_DAY.format(fecha);
     }
     
-    public static String timestampToHourString(Timestamp fecha) {
+    public static String dateToHourString(Date fecha) {
         if (fecha == null)
             throw new NullPointerException();
 
