@@ -7,7 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
 <link rel="stylesheet" href="../../css/foundation.min.css"></link>
-<link rel="stylesheet" type="text/css" href="../../css/estilo.css"></link>
+<link rel="stylesheet" href="../../css/estilo.css"></link>
+<link rel="stylesheet" href="../../css/font-awesome.min.css"></link>
+<link rel="stylesheet" href="../../css/buttons.css"></link>
 
 <script src="../../js/modernizr.foundation.js"></script>
 
@@ -41,7 +43,7 @@
 							<div th:if="${sesion.canalInternet}==1 and !${sesion.enPlazoVentaInternet}">
 								<span th:text="${sesion.textoFechasInternet}"></span>
 							</div>
-							<a th:href="'../entrada/' + ${sesion.id}" th:text="#{comprarEntradas}" th:if="${sesion.enPlazoVentaInternet}">Comprar entradas</a>
+							<a th:href="'../entrada/' + ${sesion.id}" th:text="#{comprarEntradas}" class="button button-flat-caution" th:if="${sesion.enPlazoVentaInternet}">Comprar entradas</a>
 						</td>
 					</tr>
 				</table>

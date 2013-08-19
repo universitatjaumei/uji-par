@@ -12,9 +12,14 @@ body {
 	text-align: center;
 }
 
-.evento-sesiones .comprarEntradas a {
+.evento-sesiones .contieneBoton {
+	padding: 0px;
+}
+
+.evento-sesiones a {
 	color: #FFFFFF;
 	font-weight: bold;
+	width: 100%;
 }
 
 .evento-sesiones table {

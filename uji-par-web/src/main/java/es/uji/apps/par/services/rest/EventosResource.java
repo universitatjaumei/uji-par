@@ -115,10 +115,7 @@ public class EventosResource extends BaseResource
                             DateUtils.dateToSpanishString(sesion.getFechaFinVentaOnline())));
             
             if (sesion.getEnPlazoVentaInternet())
-                datos.put("clase", "comprarEntradas");
-            else
-                datos.put("clase", "");
-                    
+                datos.put("clase", "contieneBoton");
 
             sesionesPlantilla.add(datos);
         }
