@@ -35,6 +35,7 @@ body {
 
 .evento-sesiones td {
 	vertical-align: middle;
+	height: 32px;
 }
 
 .evento-imagen {
