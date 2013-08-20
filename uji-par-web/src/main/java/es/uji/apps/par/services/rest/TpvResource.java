@@ -56,11 +56,13 @@ public class TpvResource extends BaseResource
             CompraDTO compra = compras.getCompraById(Long.parseLong(identificador));
 
             compras.marcaPagadaPasarela(compra.getId(), recibo);
+            currentRequest.getSession().removeAttribute(EntradasResource.BUTACAS_COMPRA);
+            currentRequest.getSession().removeAttribute(EntradasResource.UUID_COMPRA);
+            
             template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "compraValida", getLocale());
             template.put("url", Configuration.getUrlPublic() + "/rest/compra/" + compra.getUuid() + "/pdf");
             
-            currentRequest.getSession().removeAttribute(EntradasResource.BUTACAS_COMPRA);
-            currentRequest.getSession().removeAttribute(EntradasResource.UUID_COMPRA);
+            //TODO: Enviar mail con link entradas
         }
         else
         {
