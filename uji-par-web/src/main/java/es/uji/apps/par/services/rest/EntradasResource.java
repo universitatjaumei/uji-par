@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 import com.sun.jersey.api.client.ClientResponse.Status;
 import com.sun.jersey.api.core.InjectParam;
 
+import es.uji.apps.par.ButacaOcupadaException;
 import es.uji.apps.par.Constantes;
 import es.uji.apps.par.FueraDePlazoVentaInternetException;
 import es.uji.apps.par.butacas.EstadoButacasRequest;
@@ -67,11 +68,11 @@ public class EntradasResource extends BaseResource
     @Produces(MediaType.TEXT_HTML)
     public Response datosEntrada(@PathParam("id") Long sesionId) throws Exception
     {
-        return paginaSeleccionEntradas(sesionId, null, null);
+        return paginaSeleccionEntradas(sesionId, null, null, null);
     }
 
     private Response paginaSeleccionEntradas(long sesionId, List<Butaca> butacasSeleccionadas,
-            List<Butaca> butacasOcupadas)
+            List<Butaca> butacasOcupadas, String error)
     {
         Sesion sesion = sesionesService.getSesion(sesionId);
 
@@ -87,6 +88,11 @@ public class EntradasResource extends BaseResource
         template.put("baseUrl", getBaseUrl());
         template.put("fecha", DateUtils.dateToSpanishString(sesion.getFechaCelebracion()));
         template.put("hora", sesion.getHoraCelebracion());
+
+        if (error != null && !error.equals(""))
+        {
+            template.put("error", error);
+        }
 
         String butacasSesion = (String) currentRequest.getSession().getAttribute(BUTACAS_COMPRA);
         if (butacasSesion == null)
@@ -147,6 +153,11 @@ public class EntradasResource extends BaseResource
             log.error("Fuera de plazo", e);
             return paginaProhibida();
         }
+        catch (ButacaOcupadaException e)
+        {
+            String error = ResourceProperties.getProperty(getLocale(), "error.seleccionEntradas.ocupadas");
+            return paginaSeleccionEntradas(sesionId, butacasSeleccionadas, null, error);
+        }
 
         if (resultadoCompra.getCorrecta())
         {
@@ -158,7 +169,7 @@ public class EntradasResource extends BaseResource
         }
         else
         {
-            return paginaSeleccionEntradas(sesionId, butacasSeleccionadas, resultadoCompra.getButacasOcupadas());
+            return paginaSeleccionEntradas(sesionId, butacasSeleccionadas, resultadoCompra.getButacasOcupadas(), null);
         }
     }
 

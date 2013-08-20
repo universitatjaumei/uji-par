@@ -4,6 +4,10 @@
 <body>
 	<div class="row">
 		<div class="twelve columns">
+			<div class="alert-box alert"  th:if="${error}">
+			  <span th:text="${error}"></span>
+			  <a href="" class="close">&times;</a>
+			</div>
 			<form action="" method="POST">
 				<h3 th:text="#{plano}">Plano del Paraninfo</h3>
 		
