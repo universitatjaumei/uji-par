@@ -41,8 +41,19 @@ public class ButacasService
         {
             CompraDTO compra = butacasDAO.getCompra(sesionId, butaca.getLocalizacion(), butaca.getFila(), butaca.getNumero());
             
-            if (compra!=null && !compra.getUuid().equals(uuidCompra))        
-                ocupadas.add(butaca);
+            if (compra!=null)
+            {
+                if (compra.getPagada())
+                {
+                    ocupadas.add(butaca);
+                }
+                else
+                {
+                    if (!compra.getUuid().equals(uuidCompra))        
+                        ocupadas.add(butaca);
+                }
+            }
+            
         }
 
         return ocupadas;
