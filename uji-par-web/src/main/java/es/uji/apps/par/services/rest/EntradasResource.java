@@ -209,25 +209,29 @@ public class EntradasResource extends BaseResource
         if (nombre == null || nombre.equals(""))
         {
             return rellenaDatosComprador(uuidCompra, nombre, apellidos, direccion, poblacion, cp, provincia, telefono,
-                    email, infoPeriodica, condicionesPrivacidad, ResourceProperties.getProperty(getLocale(), "error.datosComprador.nombre"));
+                    email, infoPeriodica, condicionesPrivacidad,
+                    ResourceProperties.getProperty(getLocale(), "error.datosComprador.nombre"));
         }
-        
+
         if (email == null || email.equals(""))
         {
             return rellenaDatosComprador(uuidCompra, nombre, apellidos, direccion, poblacion, cp, provincia, telefono,
-                    email, infoPeriodica, condicionesPrivacidad, ResourceProperties.getProperty(getLocale(), "error.datosComprador.email"));
+                    email, infoPeriodica, condicionesPrivacidad,
+                    ResourceProperties.getProperty(getLocale(), "error.datosComprador.email"));
         }
 
         if (infoPeriodica == null || infoPeriodica.equals(""))
         {
             return rellenaDatosComprador(uuidCompra, nombre, apellidos, direccion, poblacion, cp, provincia, telefono,
-                    email, infoPeriodica, condicionesPrivacidad, ResourceProperties.getProperty(getLocale(), "error.datosComprador.infoPeriodica"));
+                    email, infoPeriodica, condicionesPrivacidad,
+                    ResourceProperties.getProperty(getLocale(), "error.datosComprador.infoPeriodica"));
         }
-        
+
         if (condicionesPrivacidad == null || condicionesPrivacidad.equals(""))
         {
             return rellenaDatosComprador(uuidCompra, nombre, apellidos, direccion, poblacion, cp, provincia, telefono,
-                    email, infoPeriodica, condicionesPrivacidad, ResourceProperties.getProperty(getLocale(), "error.datosComprador.condicionesPrivacidad"));
+                    email, infoPeriodica, condicionesPrivacidad,
+                    ResourceProperties.getProperty(getLocale(), "error.datosComprador.condicionesPrivacidad"));
         }
 
         comprasService.rellenaDatosComprador(uuidCompra, nombre, apellidos, direccion, poblacion, cp, provincia,
