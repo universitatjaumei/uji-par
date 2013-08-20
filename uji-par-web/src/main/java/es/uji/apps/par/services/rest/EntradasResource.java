@@ -183,9 +183,13 @@ public class EntradasResource extends BaseResource
         template.put("provincia", provincia);
         template.put("telefono", telefono);
         template.put("email", email);
-        template.put("infoPeriodica", infoPeriodica);
         template.put("condicionesPrivacidad", condicionesPrivacidad);
 
+        if (infoPeriodica==null || infoPeriodica.equals(""))
+            infoPeriodica = "no";
+        
+        template.put("infoPeriodica", infoPeriodica);
+        
         if (error != null && !error.equals(""))
         {
             template.put("error", error);
