@@ -3,10 +3,9 @@
 <head th:include="paranimf/common :: headerFragment"/>
 <body>
 	<div class="row">
-		<div class="eight columns offset-by-two">
+		<div class="eight columns centered">
 			<div class="alert-box alert"  th:if="${error}">
 			  <span th:text="${error}"></span>
-			  <a href="" class="close">&times;</a>
 			</div>
 			<form action="" method="POST">
 				<input type="hidden" value="${uuidCompra}"/>
@@ -22,17 +21,21 @@
 					<label th:text="#{telefono}">Teléfono confirmación</label> <input type="text" name="telefono" th:placeholder="#{telefono}" th:value="${telefono}" /> <br /> 
 					<label th:text="#{email}">Email</label> <input type="email" name="email" th:placeholder="#{email}" th:value="${email}" required="" /><br />
 				</div>
-				<div>
+				<div id="infoPeriodica">
 					<span th:text="#{infoPeriodica}"></span>
 					<input type="radio" name="infoPeriodica" value="si" th:checked="${infoPeriodica} == 'si'"/><span th:text="#{infoPeriodicaSi}"></span>
 					<input type="radio" name="infoPeriodica" value="no" th:checked="${infoPeriodica} == 'no'"/><span th:text="#{infoPeriodicaNo}"></span>
 				</div>
-				<div>
+				<div id="condicionesPrivacidad">
 					<input type="checkbox" name="condicionesPrivacidad" value="si" th:checked="${condicionesPrivacidad} == 'si'"/><span th:text="#{condicionesPrivacidad}"></span>
 				</div>
-				<div th:text="#{observaciones}"></div>
+				<div id="observaciones" th:text="#{observaciones}"></div>
 				
-				<input class="button button-flat-primary" type="submit" th:value="#{comprar}" value="Pagar compra" />
+				<div class="row">
+					<div class="one columns offset-by-nine">
+						<input class="button button-flat-primary" type="submit" th:value="#{comprar}" value="Pagar compra" />
+					</div>
+				</div>
 			</form>
 		</div>
 	</div>
