@@ -37,3 +37,40 @@
 #limpiarSeleccion {
 	display: none;
 }
+
+#divSeleccionadas {
+	background: #EEE;
+	padding: 15px;
+}
+
+#divSeleccionadas .titulo, #divSeleccionadas .fecha, #divSeleccionadas .hora {
+	margin-top: 4px;
+}
+
+#divSeleccionadas .titulo {
+	font-style: italic;
+	font-weight: bold;
+}
+
+.entrada-seleccionada {
+	background: #DDD;
+	margin-top: 5px;
+	padding: 5px;
+}
+
+#total {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+#totalSeleccionadas {
+	font-weight: bold;
+}
+
+select {
+	width: auto !important;
+}
+
+input[type=text] {
+	width: auto !important;
+}
