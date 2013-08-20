@@ -130,19 +130,16 @@ public class EntradasResource extends BaseResource
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.TEXT_HTML)
-    public Response compraEntradaHtml(@PathParam("id") Long sesionId, @FormParam("nombre") String nombre,
-            @FormParam("apellidos") String apellidos, @FormParam("telefono") String telefono,
-            @FormParam("email") String email, @FormParam("butacasSeleccionadas") String butacasSeleccionadasJSON,
-            @FormParam("uuidCompra") String uuidCompra)
-            throws Exception
+    public Response compraEntradaHtml(@PathParam("id") Long sesionId,
+            @FormParam("butacasSeleccionadas") String butacasSeleccionadasJSON,
+            @FormParam("uuidCompra") String uuidCompra) throws Exception
     {
         ResultadoCompra resultadoCompra;
         List<Butaca> butacasSeleccionadas = Butaca.parseaJSON(butacasSeleccionadasJSON);
 
         try
         {
-            resultadoCompra = comprasService.realizaCompraInternet(sesionId, nombre, apellidos, telefono, email,
-                    butacasSeleccionadas, uuidCompra);
+            resultadoCompra = comprasService.realizaCompraInternet(sesionId, butacasSeleccionadas, uuidCompra);
         }
         catch (FueraDePlazoVentaInternetException e)
         {

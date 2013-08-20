@@ -41,7 +41,7 @@ public class ComprasDAOTest extends BaseDAOTest
     @Transactional
     public void guardaCompraOk()
     {
-        CompraDTO compraDTO = comprasDAO.insertaCompra(sesion.getId(), "Pepe", "Perez", "964123456", "pepe@example.com", new Date(), true, BigDecimal.ONE);
+        CompraDTO compraDTO = comprasDAO.insertaCompra(sesion.getId(), new Date(), true, BigDecimal.ONE);
 
         assertNotNull(compraDTO.getId());
     }

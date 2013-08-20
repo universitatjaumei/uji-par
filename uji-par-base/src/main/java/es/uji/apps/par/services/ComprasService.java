@@ -36,12 +36,11 @@ public class ComprasService
     public ResultadoCompra registraCompraTaquilla(Long sesionId, List<Butaca> butacasSeleccionadas)
             throws NoHayButacasLibresException, ButacaOcupadaException, CompraSinButacasException
     {
-        return registraCompra(sesionId, "", "", "", "", butacasSeleccionadas, true);
+        return registraCompra(sesionId, butacasSeleccionadas, true);
     }
 
     @Transactional
-    public ResultadoCompra realizaCompraInternet(Long sesionId, String nombre, String apellidos, String telefono,
-            String email, List<Butaca> butacasSeleccionadas, String uuidCompraActual) throws FueraDePlazoVentaInternetException,
+    public ResultadoCompra realizaCompraInternet(Long sesionId, List<Butaca> butacasSeleccionadas, String uuidCompraActual) throws FueraDePlazoVentaInternetException,
             NoHayButacasLibresException, ButacaOcupadaException, CompraSinButacasException
     {
         Sesion sesion = sesionesService.getSesion(sesionId);
@@ -53,12 +52,11 @@ public class ComprasService
         if (uuidCompraActual != null && !uuidCompraActual.equals(""))
             comprasDAO.borrarCompraNoPagada(uuidCompraActual);
 
-        return registraCompra(sesionId, nombre, apellidos, telefono, email, butacasSeleccionadas, false);
+        return registraCompra(sesionId, butacasSeleccionadas, false);
     }
 
     @Transactional
-    private synchronized ResultadoCompra registraCompra(Long sesionId, String nombre, String apellidos,
-            String telefono, String email, List<Butaca> butacasSeleccionadas, boolean taquilla)
+    private synchronized ResultadoCompra registraCompra(Long sesionId, List<Butaca> butacasSeleccionadas, boolean taquilla)
             throws NoHayButacasLibresException, ButacaOcupadaException, CompraSinButacasException
     {
         if (butacasSeleccionadas.size() == 0)
@@ -70,7 +68,7 @@ public class ComprasService
 
         CompraDTO compraDTO;
 
-        compraDTO = comprasDAO.insertaCompra(sesionId, nombre, apellidos, telefono, email, new Date(), taquilla,
+        compraDTO = comprasDAO.insertaCompra(sesionId, new Date(), taquilla,
                 importe);
 
         butacasDAO.reservaButacas(sesionId, compraDTO, butacasSeleccionadas);
