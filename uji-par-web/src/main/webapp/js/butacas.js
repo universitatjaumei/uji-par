@@ -122,7 +122,7 @@ Butacas = (function() {
 					+ ', <span>' + UI.i18n.butacas.butaca + '</span>'
 					+ butacasSeleccionadas[i].numero + '<br>'
 					+ getSelectTipoButaca(i)
-					+ '<span>(<b>' + butacasSeleccionadas[i].precio.toFixed(2) + '</b> €)</span></div>');
+					+ '<span><b>' + butacasSeleccionadas[i].precio.toFixed(2) + '</b> €</span></div>');
 			$('#detallesSeleccionadas').append(fila);
 		}
 	}
