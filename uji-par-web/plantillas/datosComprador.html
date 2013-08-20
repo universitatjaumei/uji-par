@@ -23,11 +23,11 @@
 				</div>
 				<div id="infoPeriodica">
 					<span th:text="#{infoPeriodica}"></span>
-					<input type="radio" name="infoPeriodica" value="si" th:checked="${infoPeriodica} == 'si'"/><span th:text="#{infoPeriodicaSi}"></span>
-					<input type="radio" name="infoPeriodica" value="no" th:checked="${infoPeriodica} == 'no'"/><span th:text="#{infoPeriodicaNo}"></span>
+					<label for="infoPeriodicaSi"><input type="radio" name="infoPeriodica" id="infoPeriodicaSi" value="si" th:checked="${infoPeriodica} == 'si'"/><span th:text="#{infoPeriodicaSi}"></span></label>
+					<label for="infoPeriodicaNo"><input type="radio" name="infoPeriodica" id="infoPeriodicaNo" value="no" th:checked="${infoPeriodica} == 'no'"/><span th:text="#{infoPeriodicaNo}"></span></label>
 				</div>
-				<div id="condicionesPrivacidad">
-					<input type="checkbox" name="condicionesPrivacidad" value="si" th:checked="${condicionesPrivacidad} == 'si'"/><span th:text="#{condicionesPrivacidad}"></span>
+				<div id="divCondicionesPrivacidad">
+					<label for="condicionesPrivacidad"><input type="checkbox" name="condicionesPrivacidad" id="condicionesPrivacidad" value="si" th:checked="${condicionesPrivacidad} == 'si'"/><span th:text="#{condicionesPrivacidad}"></span></label>
 				</div>
 				<div id="observaciones" th:text="#{observaciones}"></div>
 				
