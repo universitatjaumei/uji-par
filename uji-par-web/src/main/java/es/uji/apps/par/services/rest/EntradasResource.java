@@ -233,6 +233,19 @@ public class EntradasResource extends BaseResource
         template.put("baseUrl", getBaseUrl());
         template.put("idioma", getLocale().getLanguage());
         template.put("sesion", sesion);
+        template.put("fecha", DateUtils.dateToSpanishString(sesion.getFechaCelebracion()));
+        template.put("hora", sesion.getHoraCelebracion());
+        
+        if (getLocale().getLanguage().equals("ca"))
+        {
+            template.put("titulo", sesion.getEvento().getTituloVa());
+        }
+        else
+        {
+            template.put("titulo", sesion.getEvento().getTituloEs());
+        }
+        
+        template.put("butacasSesion", "[]");
 
         return template;
     }
