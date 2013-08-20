@@ -9,14 +9,6 @@
 		
 				<div th:include="paranimf/butacasFragment :: butacasFragment"></div>
 				
-				<h3 th:text="#{datosPersonales}">Datos personales</h3>
-				<div class="entrada-datos">
-					<label th:text="#{nombre}">Nombre</label> <input type="text" name="nombre" th:placeholder="#{nombre}" placeholder="Nombre" /><br /> <label
-						th:text="#{apellidos}">Apellidos</label> <input type="text" name="apellidos" th:placeholder="#{apellidos}" placeholder="Apellidos" /><br />
-					<label th:text="#{telefono}">Teléfono confirmación</label> <input type="text" name="telefono" th:placeholder="#{telefono}"
-						placeholder="Teléfono" /> <br /> <label th:text="#{email}">Email</label> <input type="text" name="email" th:placeholder="#{email}"
-						placeholder="Email" /><br />
-				</div>
 				<input type="submit" th:value="#{comprar}" value="Comprar" />
 			</form>
 		</div>

@@ -117,8 +117,19 @@ public class ComprasService
         return comprasDAO.getCompraById(idCompra);
     }
 
+    public CompraDTO getCompraByUuid(String uuidCompra)
+    {
+        return comprasDAO.getCompraByUuid(uuidCompra);
+    }
+
     public void marcaPagadaPasarela(long idCompra, String codigoPago)
     {
         comprasDAO.marcarPagadaPasarela(idCompra, codigoPago);
+    }
+
+    public void rellenaDatosComprador(String uuidCompra, String nombre, String apellidos, String direccion,
+            String poblacion, String cp, String provincia, String telefono, String email, String infoPeriodica)
+    {
+        comprasDAO.rellenaDatosComprador(uuidCompra, nombre, apellidos, direccion, poblacion, cp, provincia, telefono, email, infoPeriodica);
     }
 }

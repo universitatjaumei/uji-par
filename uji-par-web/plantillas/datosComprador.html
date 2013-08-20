@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="paranimf/common :: headerFragment"/>
+<body>
+	<div class="row">
+		<div class="eight columns offset-by-two">
+			<div class="alert-box alert"  th:if="${error}">
+			  <span th:text="${error}"></span>
+			  <a href="" class="close">&times;</a>
+			</div>
+			<form action="" method="POST">
+				<input type="hidden" value="${uuidCompra}"/>
+			
+				<div id="entradasDetalles" th:text="#{entradasDetalles}"></div>
+				<div class="entrada-datos">
+					<label th:text="#{nombre}">Nombre</label> <input type="text" name="nombre" th:placeholder="#{nombre}" th:value="${nombre}" required=""/><br /> 
+					<label th:text="#{apellidos}">Apellidos</label> <input type="text" name="apellidos" th:placeholder="#{apellidos}" th:value="${apellidos}" /><br />
+					<label th:text="#{direccion}">Dirección</label> <input type="text" name="direccion" th:placeholder="#{direccion}" th:value="${direccion}" /> <br />
+					<label th:text="#{poblacion}">Población</label> <input type="text" name="poblacion" th:placeholder="#{poblacion}" th:value="${poblacion}" /> <br />
+					<label th:text="#{cp}">Código postal</label> <input type="text" name="cp" th:placeholder="#{cp}" th:value="${cp}" /> <br />
+					<label th:text="#{provincia}">Provincia</label> <input type="text" name="provincia" th:placeholder="#{provincia}" th:value="${provincia}" /> <br />
+					<label th:text="#{telefono}">Teléfono confirmación</label> <input type="text" name="telefono" th:placeholder="#{telefono}" th:value="${telefono}" /> <br /> 
+					<label th:text="#{email}">Email</label> <input type="email" name="email" th:placeholder="#{email}" th:value="${email}" required="" /><br />
+				</div>
+				<div>
+					<span th:text="#{infoPeriodica}"></span>
+					<input type="radio" name="infoPeriodica" value="si" th:checked="${infoPeriodica} == 'si'"/><span th:text="#{infoPeriodicaSi}"></span>
+					<input type="radio" name="infoPeriodica" value="no" th:checked="${infoPeriodica} == 'no'"/><span th:text="#{infoPeriodicaNo}"></span>
+				</div>
+				<div>
+					<input type="checkbox" name="condicionesPrivacidad" value="si" th:checked="${condicionesPrivacidad} == 'si'"/><span th:text="#{condicionesPrivacidad}"></span>
+				</div>
+				<div th:text="#{observaciones}"></div>
+				
+				<input class="button button-flat-primary" type="submit" th:value="#{comprar}" value="Pagar compra" />
+			</form>
+		</div>
+	</div>
+</body>
+</html>

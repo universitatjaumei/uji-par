@@ -25,6 +25,7 @@ import es.uji.apps.par.FueraDePlazoVentaInternetException;
 import es.uji.apps.par.butacas.EstadoButacasRequest;
 import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.db.CompraDTO;
+import es.uji.apps.par.i18n.ResourceProperties;
 import es.uji.apps.par.model.Butaca;
 import es.uji.apps.par.model.Evento;
 import es.uji.apps.par.model.PreciosSesion;
@@ -86,7 +87,7 @@ public class EntradasResource extends BaseResource
         template.put("baseUrl", getBaseUrl());
         template.put("fecha", DateUtils.dateToSpanishString(sesion.getFechaCelebracion()));
         template.put("hora", sesion.getHoraCelebracion());
-        
+
         String butacasSesion = (String) currentRequest.getSession().getAttribute(BUTACAS_COMPRA);
         if (butacasSesion == null)
         {
@@ -96,7 +97,7 @@ public class EntradasResource extends BaseResource
         {
             template.put("butacasSesion", butacasSesion);
         }
-        
+
         String uuidCompra = (String) currentRequest.getSession().getAttribute(UUID_COMPRA);
         if (uuidCompra != null)
         {
@@ -151,7 +152,9 @@ public class EntradasResource extends BaseResource
         {
             currentRequest.getSession().setAttribute(BUTACAS_COMPRA, butacasSeleccionadasJSON);
             currentRequest.getSession().setAttribute(UUID_COMPRA, resultadoCompra.getUuid());
-            return formularioParaTpv(resultadoCompra.getId(), email);
+
+            currentResponse.sendRedirect(resultadoCompra.getUuid() + "/datosComprador");
+            return null;
         }
         else
         {
@@ -159,9 +162,78 @@ public class EntradasResource extends BaseResource
         }
     }
 
-    private Response formularioParaTpv(long idCompra, String correo)
+    @GET
+    @Path("{uuidCompra}/datosComprador")
+    @Produces(MediaType.TEXT_HTML)
+    public Response rellenaDatosComprador(@PathParam("uuidCompra") String uuidCompra, String nombre, String apellidos,
+            String direccion, String poblacion, String cp, String provincia, String telefono, String email,
+            String infoPeriodica, String condicionesPrivacidad, String error) throws Exception
     {
-        CompraDTO compra = comprasService.getCompraById(idCompra);
+        Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "datosComprador", getLocale());
+        template.put("idioma", getLocale().getLanguage());
+        template.put("baseUrl", getBaseUrl());
+
+        template.put("uuidCompra", uuidCompra);
+
+        template.put("nombre", nombre);
+        template.put("apellidos", apellidos);
+        template.put("direccion", direccion);
+        template.put("poblacion", poblacion);
+        template.put("cp", cp);
+        template.put("provincia", provincia);
+        template.put("telefono", telefono);
+        template.put("email", email);
+        template.put("infoPeriodica", infoPeriodica);
+        template.put("condicionesPrivacidad", condicionesPrivacidad);
+
+        if (error != null && !error.equals(""))
+        {
+            template.put("error", error);
+        }
+
+        return Response.ok(template).build();
+    }
+
+    @POST
+    @Path("{uuidCompra}/datosComprador")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Produces(MediaType.TEXT_HTML)
+    public Response guardaDatosComprador(@PathParam("uuidCompra") String uuidCompra,
+            @FormParam("nombre") String nombre, @FormParam("apellidos") String apellidos,
+            @FormParam("direccion") String direccion, @FormParam("poblacion") String poblacion,
+            @FormParam("cp") String cp, @FormParam("provincia") String provincia,
+            @FormParam("telefono") String telefono, @FormParam("email") String email,
+            @FormParam("infoPeriodica") String infoPeriodica,
+            @FormParam("condicionesPrivacidad") String condicionesPrivacidad) throws Exception
+    {
+        if (nombre == null || nombre.equals(""))
+        {
+            return rellenaDatosComprador(uuidCompra, nombre, apellidos, direccion, poblacion, cp, provincia, telefono,
+                    email, infoPeriodica, condicionesPrivacidad, ResourceProperties.getProperty(getLocale(), "error.datosComprador.nombre"));
+        }
+        
+        if (email == null || email.equals(""))
+        {
+            return rellenaDatosComprador(uuidCompra, nombre, apellidos, direccion, poblacion, cp, provincia, telefono,
+                    email, infoPeriodica, condicionesPrivacidad, ResourceProperties.getProperty(getLocale(), "error.datosComprador.email"));
+        }
+
+        if (infoPeriodica == null || infoPeriodica.equals(""))
+        {
+            return rellenaDatosComprador(uuidCompra, nombre, apellidos, direccion, poblacion, cp, provincia, telefono,
+                    email, infoPeriodica, condicionesPrivacidad, ResourceProperties.getProperty(getLocale(), "error.datosComprador.infoPeriodica"));
+        }
+        
+        if (condicionesPrivacidad == null || condicionesPrivacidad.equals(""))
+        {
+            return rellenaDatosComprador(uuidCompra, nombre, apellidos, direccion, poblacion, cp, provincia, telefono,
+                    email, infoPeriodica, condicionesPrivacidad, ResourceProperties.getProperty(getLocale(), "error.datosComprador.condicionesPrivacidad"));
+        }
+
+        comprasService.rellenaDatosComprador(uuidCompra, nombre, apellidos, direccion, poblacion, cp, provincia,
+                telefono, email, infoPeriodica);
+
+        CompraDTO compra = comprasService.getCompraByUuid(uuidCompra);
 
         Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "tpv", getLocale());
         template.put("idioma", getLocale().getLanguage());
@@ -173,9 +245,9 @@ public class EntradasResource extends BaseResource
         template.put("identificador", compra.getId());
         template.put("concepto", "Entradas Paranimf");
         template.put("importe", importe);
-        template.put("correo", correo);
+        template.put("correo", email);
         template.put("url", url);
-        template.put("hash", Utils.sha1(compra.getId() + importe + correo + url + Configuration.getSecret()));
+        template.put("hash", Utils.sha1(compra.getId() + importe + email + url + Configuration.getSecret()));
 
         return Response.ok(template).build();
     }
@@ -232,7 +304,7 @@ public class EntradasResource extends BaseResource
         template.put("sesion", sesion);
         template.put("fecha", DateUtils.dateToSpanishString(sesion.getFechaCelebracion()));
         template.put("hora", sesion.getHoraCelebracion());
-        
+
         if (getLocale().getLanguage().equals("ca"))
         {
             template.put("titulo", sesion.getEvento().getTituloVa());
@@ -241,7 +313,7 @@ public class EntradasResource extends BaseResource
         {
             template.put("titulo", sesion.getEvento().getTituloEs());
         }
-        
+
         template.put("butacasSesion", "[]");
 
         return template;

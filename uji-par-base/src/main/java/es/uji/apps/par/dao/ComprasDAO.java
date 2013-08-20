@@ -20,7 +20,6 @@ import com.mysema.query.jpa.impl.JPAQuery;
 import es.uji.apps.par.db.CompraDTO;
 import es.uji.apps.par.db.QButacaDTO;
 import es.uji.apps.par.db.QCompraDTO;
-import es.uji.apps.par.db.QTipoEventoDTO;
 import es.uji.apps.par.db.SesionDTO;
 
 @Repository
@@ -175,6 +174,24 @@ public class ComprasDAO
         Timestamp limite = new Timestamp(calendar.getTimeInMillis());
         
         new JPADeleteClause(entityManager, qComprasDTO).where(qComprasDTO.pagada.eq(false).and(qComprasDTO.fecha.lt(limite))).execute();          
+    }
+
+    @Transactional
+    public void rellenaDatosComprador(String uuidCompra, String nombre, String apellidos, String direccion, String poblacion, String cp, String provincia, String telefono, String email, Object infoPeriodica)
+    {
+        CompraDTO compra = getCompraByUuid(uuidCompra);
+        
+        compra.setNombre(nombre);
+        compra.setApellidos(apellidos);
+        compra.setDireccion(direccion);
+        compra.setPoblacion(poblacion);
+        compra.setCp(cp);
+        compra.setProvincia(provincia);
+        compra.setTelefono(telefono);
+        compra.setEmail(email);
+        compra.setInfoPeriodica(infoPeriodica!=null && infoPeriodica.equals("si"));
+        
+        entityManager.persist(compra);
     }
 
 }
