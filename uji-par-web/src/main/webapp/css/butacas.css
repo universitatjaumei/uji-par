@@ -18,7 +18,7 @@
 }
 
 #filtros {
-	margin-bottom: 20px;	
+	margin-bottom: 20px;
 }
 
 #localizacion_platea1 {
@@ -43,7 +43,8 @@
 	padding: 15px;
 }
 
-#divSeleccionadas .titulo, #divSeleccionadas .fecha, #divSeleccionadas .hora {
+#divSeleccionadas .titulo,#divSeleccionadas .fecha,#divSeleccionadas .hora
+	{
 	margin-top: 4px;
 }
 
