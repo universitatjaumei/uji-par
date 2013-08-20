@@ -77,6 +77,8 @@ public class EventosResource extends BaseResource
             descripcion = evento.getDescripcionEs();
         }
 
+        template.put("baseUrl", getBaseUrl());
+        
         template.put("tipoEvento", tipoEvento);
         template.put("titulo", titulo);
         template.put("companyia", companyia);
