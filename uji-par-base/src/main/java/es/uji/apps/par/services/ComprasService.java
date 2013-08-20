@@ -39,14 +39,19 @@ public class ComprasService
         return registraCompra(sesionId, "", "", "", "", butacasSeleccionadas, true);
     }
 
+    @Transactional
     public ResultadoCompra realizaCompraInternet(Long sesionId, String nombre, String apellidos, String telefono,
-            String email, List<Butaca> butacasSeleccionadas) throws FueraDePlazoVentaInternetException,
+            String email, List<Butaca> butacasSeleccionadas, String uuidCompraActual) throws FueraDePlazoVentaInternetException,
             NoHayButacasLibresException, ButacaOcupadaException, CompraSinButacasException
     {
         Sesion sesion = sesionesService.getSesion(sesionId);
 
         if (!sesion.getEnPlazoVentaInternet())
             throw new FueraDePlazoVentaInternetException(sesionId);
+        
+        // Si teníamos una compra en marcha la eliminamos (puede pasar cuando intentamos pagar con tarjeta y volvemos atrás)        
+        if (uuidCompraActual != null && !uuidCompraActual.equals(""))
+            comprasDAO.borrarCompraNoPagada(uuidCompraActual);
 
         return registraCompra(sesionId, nombre, apellidos, telefono, email, butacasSeleccionadas, false);
     }

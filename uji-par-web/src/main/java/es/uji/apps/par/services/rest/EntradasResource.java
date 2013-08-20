@@ -2,6 +2,7 @@ package es.uji.apps.par.services.rest;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -21,6 +22,7 @@ import com.sun.jersey.api.core.InjectParam;
 
 import es.uji.apps.par.Constantes;
 import es.uji.apps.par.FueraDePlazoVentaInternetException;
+import es.uji.apps.par.butacas.EstadoButacasRequest;
 import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.db.CompraDTO;
 import es.uji.apps.par.model.Butaca;
@@ -39,8 +41,11 @@ import es.uji.commons.web.template.Template;
 @Path("entrada")
 public class EntradasResource extends BaseResource
 {
+    public static final String BUTACAS_COMPRA = "butacasCompra";
+    public static final String UUID_COMPRA = "uuidCompra";
+
     public static Logger log = Logger.getLogger(EntradasResource.class);
-    
+
     @InjectParam
     private SesionesService sesionesService;
 
@@ -52,6 +57,9 @@ public class EntradasResource extends BaseResource
 
     @Context
     HttpServletResponse currentResponse;
+
+    @Context
+    HttpServletRequest currentRequest;
 
     @GET
     @Path("{id}")
@@ -76,10 +84,25 @@ public class EntradasResource extends BaseResource
         template.put("sesion", sesion);
         template.put("idioma", getLocale().getLanguage());
         template.put("baseUrl", getBaseUrl());
-        
         template.put("fecha", DateUtils.dateToSpanishString(sesion.getFechaCelebracion()));
         template.put("hora", sesion.getHoraCelebracion());
         
+        String butacasSesion = (String) currentRequest.getSession().getAttribute(BUTACAS_COMPRA);
+        if (butacasSesion == null)
+        {
+            template.put("butacasSesion", "[]");
+        }
+        else
+        {
+            template.put("butacasSesion", butacasSesion);
+        }
+        
+        String uuidCompra = (String) currentRequest.getSession().getAttribute(UUID_COMPRA);
+        if (uuidCompra != null)
+        {
+            template.put("uuidCompra", uuidCompra);
+        }
+
         if (getLocale().getLanguage().equals("ca"))
         {
             template.put("titulo", evento.getTituloVa());
@@ -88,7 +111,7 @@ public class EntradasResource extends BaseResource
         {
             template.put("titulo", evento.getTituloEs());
         }
-        
+
         if (butacasSeleccionadas != null)
             template.put("butacasSeleccionadas", butacasSeleccionadas);
 
@@ -109,15 +132,17 @@ public class EntradasResource extends BaseResource
     @Produces(MediaType.TEXT_HTML)
     public Response compraEntradaHtml(@PathParam("id") Long sesionId, @FormParam("nombre") String nombre,
             @FormParam("apellidos") String apellidos, @FormParam("telefono") String telefono,
-            @FormParam("email") String email, @FormParam("butacasSeleccionadas") String butacasSeleccionadasJSON)
+            @FormParam("email") String email, @FormParam("butacasSeleccionadas") String butacasSeleccionadasJSON,
+            @FormParam("uuidCompra") String uuidCompra)
             throws Exception
     {
         ResultadoCompra resultadoCompra;
         List<Butaca> butacasSeleccionadas = Butaca.parseaJSON(butacasSeleccionadasJSON);
-        
+
         try
         {
-            resultadoCompra =  comprasService.realizaCompraInternet(sesionId, nombre, apellidos, telefono, email, butacasSeleccionadas);
+            resultadoCompra = comprasService.realizaCompraInternet(sesionId, nombre, apellidos, telefono, email,
+                    butacasSeleccionadas, uuidCompra);
         }
         catch (FueraDePlazoVentaInternetException e)
         {
@@ -127,6 +152,8 @@ public class EntradasResource extends BaseResource
 
         if (resultadoCompra.getCorrecta())
         {
+            currentRequest.getSession().setAttribute(BUTACAS_COMPRA, butacasSeleccionadasJSON);
+            currentRequest.getSession().setAttribute(UUID_COMPRA, resultadoCompra.getUuid());
             return formularioParaTpv(resultadoCompra.getId(), email);
         }
         else
@@ -155,7 +182,7 @@ public class EntradasResource extends BaseResource
 
         return Response.ok(template).build();
     }
-    
+
     @GET
     @Path("compraValida")
     @Produces(MediaType.TEXT_HTML)
@@ -171,7 +198,7 @@ public class EntradasResource extends BaseResource
     {
         return new HTMLTemplate(Constantes.PLANTILLAS_DIR + "compraNoValida", getLocale());
     }
-    
+
     private Response paginaProhibida()
     {
         return Response.status(Status.FORBIDDEN.getStatusCode()).build();
@@ -181,12 +208,11 @@ public class EntradasResource extends BaseResource
     @Path("{id}/ocupadas")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Butaca> estadoButaca(@PathParam("id") Integer idSesion, List<Butaca> butacas) throws Exception
+    public List<Butaca> estadoButaca(@PathParam("id") Integer idSesion, EstadoButacasRequest params) throws Exception
     {
-        return butacasService.estanOcupadas(idSesion, butacas);
+        return butacasService.estanOcupadas(idSesion, params.getButacas(), params.getUuidCompra());
     }
-    
-    
+
     @GET
     @Path("{id}/precios")
     @Produces(MediaType.APPLICATION_JSON)
@@ -195,20 +221,19 @@ public class EntradasResource extends BaseResource
         return Response.ok().entity(new RestResponse(true, sesionesService.getPreciosSesion(sesionId))).build();
     }
 
-    
     @GET
     @Path("butacasFragment/{id}")
     @Produces(MediaType.TEXT_HTML)
     public Template butacasFragment(@PathParam("id") long sesionId) throws Exception
     {
         HTMLTemplate template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "butacasFragment", getLocale());
-        
+
         Sesion sesion = sesionesService.getSesion(sesionId);
-        
+
         template.put("baseUrl", getBaseUrl());
         template.put("idioma", getLocale().getLanguage());
         template.put("sesion", sesion);
-        
+
         return template;
     }
 

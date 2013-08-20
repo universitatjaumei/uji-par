@@ -3,12 +3,18 @@ Butacas = (function() {
 	var baseUrl = "";
 	var sesionId;
 	var precios = {};
+	var uuidCompra;
 	
 	var butacasSeleccionadas = [];
 	
-	function init(url, sesId) {
+	function init(url, sesId, butacas, uuid) {
 		baseUrl = url;
 		sesionId = sesId;
+		butacasSeleccionadas = butacas;
+		uuidCompra = uuid;
+		
+		refrescaEstadoButacas();
+		compruebaEstadoButacas();
 	}
 	
 	function cargaPrecios(callback) {
@@ -181,7 +187,7 @@ Butacas = (function() {
 		} else {
 			// console.log('Añade a seleccionadas:', butaca);
 			anyadeButacaSeleccionada(butaca);
-			compruebaEstadoButaca(butaca);
+			compruebaEstadoButacas();
 		}
 	
 		refrescaEstadoButacas();
@@ -253,14 +259,14 @@ Butacas = (function() {
 		}
 	}
 	
-	function compruebaEstadoButaca(butaca) {
+	function compruebaEstadoButacas() {
 		
 		var path = baseUrl + "/rest/entrada/" + $("input[name=idSesion]").val() + "/ocupadas";
 		
 		$.ajax({
 			  url: path,
 			  type:"POST",
-			  data: $.toJSON(butacasSeleccionadas),
+			  data: $.toJSON({uuidCompra:uuidCompra, butacas:butacasSeleccionadas}),
 			  contentType: "application/json; charset=utf-8",
 			  dataType: "json",
 			  success: ocupadasSuccess});

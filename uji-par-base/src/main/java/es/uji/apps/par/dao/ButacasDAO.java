@@ -21,6 +21,7 @@ import es.uji.apps.par.db.CompraDTO;
 import es.uji.apps.par.db.LocalizacionDTO;
 import es.uji.apps.par.db.PreciosSesionDTO;
 import es.uji.apps.par.db.QButacaDTO;
+import es.uji.apps.par.db.QCompraDTO;
 import es.uji.apps.par.db.QLocalizacionDTO;
 import es.uji.apps.par.db.QSesionDTO;
 import es.uji.apps.par.db.SesionDTO;
@@ -79,6 +80,29 @@ public class ButacasDAO
         return list.size() > 0;
     }
 
+    public CompraDTO getCompra(long idSesion, String codigoLocalizacion, String fila, String numero)
+    {
+        QLocalizacionDTO qLocalizacionDTO = QLocalizacionDTO.localizacionDTO;
+        QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
+        QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
+
+        JPAQuery query = new JPAQuery(entityManager);
+
+        List<CompraDTO> list = query
+                .from(qButacaDTO)
+                .join(qButacaDTO.parSesion, qSesionDTO)
+                .join(qButacaDTO.parLocalizacion, qLocalizacionDTO)
+                .join(qButacaDTO.parCompra, qCompraDTO)
+                .where(qSesionDTO.id.eq(idSesion)
+                        .and(qLocalizacionDTO.codigo.eq(codigoLocalizacion))
+                        .and(qButacaDTO.fila.eq(fila))
+                        .and(qButacaDTO.numero.eq(numero))).list(qCompraDTO);
+
+        if (list.size() == 0)
+            return null;
+        else
+            return list.get(0);
+    }
     
     private void deleteButacas(CompraDTO compraDTO)
     {

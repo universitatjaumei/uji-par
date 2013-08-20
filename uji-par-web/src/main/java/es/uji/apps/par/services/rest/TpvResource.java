@@ -58,6 +58,9 @@ public class TpvResource extends BaseResource
             compras.marcaPagadaPasarela(compra.getId(), recibo);
             template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "compraValida", getLocale());
             template.put("url", Configuration.getUrlPublic() + "/rest/compra/" + compra.getUuid() + "/pdf");
+            
+            currentRequest.getSession().removeAttribute(EntradasResource.BUTACAS_COMPRA);
+            currentRequest.getSession().removeAttribute(EntradasResource.UUID_COMPRA);
         }
         else
         {

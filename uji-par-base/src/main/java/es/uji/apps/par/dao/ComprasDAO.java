@@ -136,6 +136,17 @@ public class ComprasDAO
             entityManager.remove(compra);
         }
     }
+    
+    @Transactional
+    public void borrarCompraNoPagada(String uuidCompra)
+    {
+        CompraDTO compra = getCompraByUuid(uuidCompra);
+        
+        if (compra!=null && !compra.getPagada())
+        {
+            entityManager.remove(compra);
+        }
+    }
 
     public CompraDTO getCompraByUuid(String uuid)
     {

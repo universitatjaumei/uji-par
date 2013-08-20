@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import es.uji.apps.par.dao.ButacasDAO;
 import es.uji.apps.par.dao.LocalizacionesDAO;
 import es.uji.apps.par.db.ButacaDTO;
+import es.uji.apps.par.db.CompraDTO;
 import es.uji.apps.par.db.LocalizacionDTO;
 import es.uji.apps.par.model.Butaca;
 import es.uji.apps.par.model.DisponiblesLocalizacion;
@@ -32,13 +33,15 @@ public class ButacasService
         return butacasDAO.estaOcupada(idSesion, codigoLocalizacion, fila, numero);
     }
 
-    public List<Butaca> estanOcupadas(long sesionId, List<Butaca> butacas)
+    public List<Butaca> estanOcupadas(long sesionId, List<Butaca> butacas, String uuidCompra)
     {
         List<Butaca> ocupadas = new ArrayList<Butaca>();
 
         for (Butaca butaca : butacas)
         {
-            if (estaOcupada(sesionId, butaca.getLocalizacion(), butaca.getFila(), butaca.getNumero()))
+            CompraDTO compra = butacasDAO.getCompra(sesionId, butaca.getLocalizacion(), butaca.getFila(), butaca.getNumero());
+            
+            if (compra!=null && !compra.getUuid().equals(uuidCompra))        
                 ocupadas.add(butaca);
         }
 

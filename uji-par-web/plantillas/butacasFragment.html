@@ -10,17 +10,21 @@
 
 	<script type="text/javascript" th:inline="javascript">
     /*<![CDATA[*/
-   		var baseUrl = /*[[${baseUrl}]]*/ "";
-    	var sesionId = /*[[${sesion.id}]]*/"";
-    
-    	$('#butacas').hide();
-    	
-    	Butacas.init(baseUrl, sesionId);
-    	
-    	Butacas.cargaPrecios(function(precios){
-    		console.log(precios);
-    		$('#butacas').show();    		
-    	});
+        $(document).ready(function() {       
+	   		var baseUrl = /*[[${baseUrl}]]*/ "";
+	    	var sesionId = /*[[${sesion.id}]]*/"";
+	    	var butacasSesion = /*[[${butacasSesion}]]*/"";
+	    	var uuidCompra = $('input[name=uuidCompra]').val();
+	    
+	    	$('#butacas').hide();
+	    	
+	    	Butacas.init(baseUrl, sesionId, JSON.parse(butacasSesion), uuidCompra);
+	    	
+	    	Butacas.cargaPrecios(function(precios){
+	    		console.log(precios);
+	    		$('#butacas').show();    		
+	    	});
+        });	
     /*]]>*/
 	</script>
 
@@ -28,6 +32,7 @@
 		<div id="divButacas" class="nine columns">	
 			<input type="hidden" name="idSesion" th:value="${sesion.id}" value="" />
 			<input type="hidden" name="butacasSeleccionadas" value="[]" />
+			<input type="hidden" name="uuidCompra" th:value="${uuidCompra}" value="" />
 			
 			<div id="filtros">
 				<span class="titulo-tipo" th:text="#{localizacion}">Localización</span>
