@@ -68,7 +68,7 @@ public class TpvResource extends BaseResource
             currentRequest.getSession().removeAttribute(EntradasResource.BUTACAS_COMPRA);
             currentRequest.getSession().removeAttribute(EntradasResource.UUID_COMPRA);
 
-            template = paginaExito(compra);
+            template = paginaExito(compra, recibo);
         }
         else
         {
@@ -78,13 +78,13 @@ public class TpvResource extends BaseResource
         return Response.ok(template).build();
     }
 
-    private Template paginaExito(CompraDTO compra)
+    private Template paginaExito(CompraDTO compra, String recibo)
     {
         Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "compraValida", getLocale());
 
         template.put("baseUrl", getBaseUrl());
 
-        template.put("referencia", compra.getCodigoPagoPasarela());
+        template.put("referencia", recibo);
         template.put("email", compra.getEmail());
         template.put("url", Configuration.getUrlPublic() + "/rest/compra/" + compra.getUuid() + "/pdf");
         template.put("urlComoLlegar", Configuration.getUrlComoLlegar());
