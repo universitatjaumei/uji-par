@@ -27,7 +27,7 @@
 					<label for="infoPeriodicaNo"><input type="radio" name="infoPeriodica" id="infoPeriodicaNo" value="no" th:checked="${infoPeriodica} == 'no'"/><span th:text="#{infoPeriodicaNo}"></span></label>
 				</div>
 				<div id="divCondicionesPrivacidad">
-					<label for="condicionesPrivacidad"><input type="checkbox" name="condicionesPrivacidad" id="condicionesPrivacidad" value="si" th:checked="${condicionesPrivacidad} == 'si'"/><span th:text="#{condicionesPrivacidad}"></span></label>
+					<label><input type="checkbox" name="condicionesPrivacidad" id="condicionesPrivacidad" value="si" th:checked="${condicionesPrivacidad} == 'si'"/><span th:text="#{condicionesPrivacidadPre}"></span><a target="_blank" th:text="#{condicionesPrivacidad}" th:href="${urlCondicionesPrivacidad}"></a></label>
 				</div>
 				<div id="observaciones" th:text="#{observaciones}"></div>
 				

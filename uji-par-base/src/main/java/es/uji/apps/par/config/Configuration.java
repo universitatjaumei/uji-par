@@ -14,6 +14,7 @@ public class Configuration
     private static final String MAIL_HOST = "uji.par.mail.host";
     private static final String MAIL_FROM = "uji.par.mail.from";
     private static final String COMO_LLEGAR = "uji.par.urlComoLlegar";
+    private static final String URL_CONDICIONES_PRIVACIDAD = "uji.par.urlCondicionesPrivacidad";
 
     public static Logger log = Logger.getLogger(Configuration.class);
 
@@ -77,5 +78,10 @@ public class Configuration
     public static String getUrlComoLlegar()
     {
         return getProperty(COMO_LLEGAR);
+    }
+
+    public static String getUrlCondicionesPrivacidad()
+    {
+        return getProperty(URL_CONDICIONES_PRIVACIDAD);
     }
 }

@@ -204,6 +204,7 @@ public class EntradasResource extends BaseResource
         template.put("telefono", telefono);
         template.put("email", email);
         template.put("condicionesPrivacidad", condicionesPrivacidad);
+        template.put("urlCondicionesPrivacidad", Configuration.getUrlCondicionesPrivacidad());
 
         if (infoPeriodica == null || infoPeriodica.equals(""))
             infoPeriodica = "no";
