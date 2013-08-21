@@ -58,10 +58,10 @@ public class TpvResource extends BaseResource
                 estado, recibo, identificador, importe, firma);
         log.info(msg);
 
+        CompraDTO compra = compras.getCompraById(Long.parseLong(identificador));
+        
         if (estado != null && estado.equals("OK"))
         {
-            CompraDTO compra = compras.getCompraById(Long.parseLong(identificador));
-
             compras.marcaPagadaPasarela(compra.getId(), recibo);
             enviaMail(compra.getEmail(), compra.getUuid());
 
@@ -72,7 +72,7 @@ public class TpvResource extends BaseResource
         }
         else
         {
-            template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "compraIncorrecta", getLocale());
+            template = paginaError(compra);
         }
 
         return Response.ok(template).build();
@@ -89,6 +89,17 @@ public class TpvResource extends BaseResource
         template.put("url", Configuration.getUrlPublic() + "/rest/compra/" + compra.getUuid() + "/pdf");
         template.put("urlComoLlegar", Configuration.getUrlComoLlegar());
 
+        return template;
+    }
+
+    private HTMLTemplate paginaError(CompraDTO compra)
+    {
+        HTMLTemplate template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "compraIncorrecta", getLocale());
+        
+        template.put("baseUrl", getBaseUrl());
+
+        template.put("urlReintentar", getBaseUrl() + "/rest/entrada/" + compra.getParSesion().getId());
+        
         return template;
     }
 

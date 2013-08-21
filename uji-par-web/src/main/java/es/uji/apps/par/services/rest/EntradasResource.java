@@ -280,14 +280,6 @@ public class EntradasResource extends BaseResource
         return Response.ok(template).build();
     }
 
-    @GET
-    @Path("compraNoValida")
-    @Produces(MediaType.TEXT_HTML)
-    public Template compraNoValida() throws Exception
-    {
-        return new HTMLTemplate(Constantes.PLANTILLAS_DIR + "compraNoValida", getLocale());
-    }
-
     private Response paginaProhibida()
     {
         return Response.status(Status.FORBIDDEN.getStatusCode()).build();
