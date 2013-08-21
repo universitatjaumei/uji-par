@@ -324,6 +324,7 @@ public class EntradasResource extends BaseResource
         template.put("sesion", sesion);
         template.put("fecha", DateUtils.dateToSpanishString(sesion.getFechaCelebracion()));
         template.put("hora", sesion.getHoraCelebracion());
+        template.put("ocultaComprar", "true");
 
         if (getLocale().getLanguage().equals("ca"))
         {
