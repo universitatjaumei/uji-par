@@ -7,6 +7,8 @@
 			<div class="alert-box alert"  th:if="${error}">
 			  <span th:text="${error}"></span>
 			</div>
+			<div th:text="#{detallesSeleccionEntrada}" />
+			<div th:text="#{limiteTiempo}" />
 			<form action="" method="POST">
 				<div th:include="paranimf/butacasFragment :: butacasFragment"></div>
 			</form>
