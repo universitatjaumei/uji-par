@@ -154,6 +154,20 @@
 	"UUID" VARCHAR2(36 BYTE),
 	"CODIGO_PAGO_PASARELA" VARCHAR2(255 BYTE)
    );
+   
+--------------------------------------------------------
+--  DDL for Table PAR_MAILS
+--------------------------------------------------------
+   	CREATE TABLE "PAR_MAILS" 
+   (	
+    "ID" NUMBER, 
+	"PARA" VARCHAR2(255 BYTE), 
+	"DE" VARCHAR2(255 BYTE),
+	"TITULO" CLOB,
+	"TEXTO" CLOB,
+	"FECHA_CREADO" TIMESTAMP (6), 
+	"FECHA_ENVIADO" TIMESTAMP (6)
+   );
 --------------------------------------------------------
 --  Constraints for Table PAR_EVENTOS
 --------------------------------------------------------
@@ -277,6 +291,16 @@
   ALTER TABLE "PAR_COMPRAS" MODIFY ("FECHA" NOT NULL ENABLE);
   
   ALTER TABLE "PAR_COMPRAS" MODIFY ("TAQUILLA" NOT NULL ENABLE);
+  
+--------------------------------------------------------
+--  Constraints for Table PAR_MAILS
+--------------------------------------------------------
+
+  ALTER TABLE "PAR_MAILS" ADD CONSTRAINT "PAR_MAILS_PK" PRIMARY KEY ("ID");
+  
+  ALTER TABLE "PAR_MAILS" MODIFY ("PARA" NOT NULL ENABLE);
+  
+  ALTER TABLE "PAR_MAILS" MODIFY ("DE" NOT NULL ENABLE);
 
 --------------------------------------------------------
 --  DDL for Index PAR_EVENTOS_PK
@@ -362,6 +386,13 @@
 
   CREATE UNIQUE INDEX "PAR_COMPRAS_PK" ON "PAR_COMPRAS" ("ID") 
   ;    
+
+--------------------------------------------------------
+--  DDL for Index PAR_MAILS_PK
+--------------------------------------------------------
+
+  CREATE UNIQUE INDEX "PAR_MAILS_PK" ON "PAR_MAILS" ("ID") 
+  ;
 
 --------------------------------------------------------
 --  Ref Constraints for Table PAR_EVENTOS

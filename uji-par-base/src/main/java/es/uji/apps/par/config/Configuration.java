@@ -11,6 +11,8 @@ public class Configuration
 {
     private static final String SECRET = "uji.par.secret";
     private static final String URL_PUBLIC = "uji.par.urlPublic";
+    private static final String MAIL_HOST = "uji.par.mail.host";
+    private static final String MAIL_FROM = "uji.par.mail.from";
 
     public static Logger log = Logger.getLogger(Configuration.class);
 
@@ -59,5 +61,15 @@ public class Configuration
     public static String getSecret()
     {
         return getProperty(SECRET);
+    }
+    
+    public static String getMailHost()
+    {
+        return getProperty(MAIL_HOST);
+    }
+
+    public static String getMailFrom()
+    {
+        return getProperty(MAIL_FROM);
     }
 }
