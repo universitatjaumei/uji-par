@@ -70,8 +70,6 @@ public class TpvResource extends BaseResource
 
             template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "compraValida", getLocale());
             template.put("url", Configuration.getUrlPublic() + "/rest/compra/" + compra.getUuid() + "/pdf");
-
-            //TODO: Enviar mail con link entradas
         }
         else
         {
