@@ -23,10 +23,10 @@ import es.uji.apps.par.db.MailDTO;
 @Service
 public class MailService
 {
+    public static Logger log = Logger.getLogger(MailService.class);
+    
     @Autowired
     MailDAO mailDao;
-
-    public static Logger log = Logger.getLogger(MailService.class);
 
     public void anyadeEnvio(String to, String titulo, String texto)
     {
