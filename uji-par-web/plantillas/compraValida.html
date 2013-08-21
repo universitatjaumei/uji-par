@@ -1,14 +1,20 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta charset="utf-8" />
-<link rel="stylesheet" type="text/css" href="../../css/estilo.css"></link>
-</head>
-<body>
-	<h1 th:text="#{titulo}">Compra correcta</h1>
-	
-	<h2 th:text="#{mensajes}">Compra realizada con éxito</h2>
-
-	<a th:href="${url}" target="_blank" th:text="#{descargar}">Descargar entradas</a>	
-</body>
+	<head th:include="paranimf/common :: headerFragment"/>
+	<body>
+		<div class="row">
+			<div class="six columns centered" id="compraValida">
+				<h3 th:text="#{mensajes}">Compra realizada con éxito</h3>
+				
+				<div id="referencia"><span th:text="#{referencia}">Referencia: </span> <span th:text="${referencia}"></span></div>
+				<div id="email"><span th:text="#{email}">Email: </span> <span th:text="${email}"></span></div>
+				<div id="observaciones" th:text="#{observaciones}"></div>
+			
+				<div class="botonera row twelve columns centered">
+					<a class="five columns button button-flat-primary" th:href="${url}" target="_blank" th:text="#{imprimirEntrada}">Imprimir entrada</a>
+					<a class="five columns button button-flat-primary" th:href="${urlComoLlegar}" target="_blank" th:text="#{comoLlegar}">Como llegar</a>
+				</div>
+			</div>	
+		</div>
+	</body>
 </html>

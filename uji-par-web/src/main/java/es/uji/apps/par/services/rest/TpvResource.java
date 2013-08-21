@@ -68,8 +68,7 @@ public class TpvResource extends BaseResource
             currentRequest.getSession().removeAttribute(EntradasResource.BUTACAS_COMPRA);
             currentRequest.getSession().removeAttribute(EntradasResource.UUID_COMPRA);
 
-            template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "compraValida", getLocale());
-            template.put("url", Configuration.getUrlPublic() + "/rest/compra/" + compra.getUuid() + "/pdf");
+            template = paginaExito(compra);
         }
         else
         {
@@ -79,10 +78,24 @@ public class TpvResource extends BaseResource
         return Response.ok(template).build();
     }
 
+    private Template paginaExito(CompraDTO compra)
+    {
+        Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "compraValida", getLocale());
+
+        template.put("baseUrl", getBaseUrl());
+
+        template.put("referencia", compra.getCodigoPagoPasarela());
+        template.put("email", compra.getEmail());
+        template.put("url", Configuration.getUrlPublic() + "/rest/compra/" + compra.getUuid() + "/pdf");
+        template.put("urlComoLlegar", Configuration.getUrlComoLlegar());
+
+        return template;
+    }
+
     private void enviaMail(String email, String uuid)
     {
         String urlEntradas = String.format("%s/rest/compra/%s/pdf", getBaseUrl(), uuid);
-        
+
         String titulo = ResourceProperties.getProperty(new Locale("es"), "mail.entradas.titulo");
         String texto = ResourceProperties.getProperty(new Locale("es"), "mail.entradas.texto", urlEntradas);
 

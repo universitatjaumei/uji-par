@@ -133,7 +133,7 @@ public class EntradasResource extends BaseResource
         }
 
         ResponseBuilder builder = Response.ok(template);
-        
+
         return Utils.noCache(builder).build();
     }
 
@@ -205,11 +205,11 @@ public class EntradasResource extends BaseResource
         template.put("email", email);
         template.put("condicionesPrivacidad", condicionesPrivacidad);
 
-        if (infoPeriodica==null || infoPeriodica.equals(""))
+        if (infoPeriodica == null || infoPeriodica.equals(""))
             infoPeriodica = "no";
-        
+
         template.put("infoPeriodica", infoPeriodica);
-        
+
         if (error != null && !error.equals(""))
         {
             template.put("error", error);
@@ -278,14 +278,6 @@ public class EntradasResource extends BaseResource
         template.put("hash", Utils.sha1(compra.getId() + importe + email + url + Configuration.getSecret()));
 
         return Response.ok(template).build();
-    }
-
-    @GET
-    @Path("compraValida")
-    @Produces(MediaType.TEXT_HTML)
-    public Template compraValida() throws Exception
-    {
-        return new HTMLTemplate(Constantes.PLANTILLAS_DIR + "compraValida", getLocale());
     }
 
     @GET

@@ -3,7 +3,6 @@
 		max-width: 850px;
 		width: 850px;
 	}
-	
 	#divSeleccionadas {
 		width: 230px !important;
 	}
@@ -86,4 +85,17 @@ body {
 
 #observaciones {
 	margin-bottom: 10px;
+}
+
+#compraValida .botonera {
+	margin-top: 30px;
+	padding: 0px;
+}
+
+#compraValida #referencia, #compraValida #email {
+	margin-top: 10px;
+}
+
+#compraValida #observaciones {
+	margin-top: 20px;
 }

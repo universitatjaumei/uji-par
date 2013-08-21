@@ -13,6 +13,7 @@ public class Configuration
     private static final String URL_PUBLIC = "uji.par.urlPublic";
     private static final String MAIL_HOST = "uji.par.mail.host";
     private static final String MAIL_FROM = "uji.par.mail.from";
+    private static final String COMO_LLEGAR = "uji.par.urlComoLlegar";
 
     public static Logger log = Logger.getLogger(Configuration.class);
 
@@ -62,7 +63,7 @@ public class Configuration
     {
         return getProperty(SECRET);
     }
-    
+
     public static String getMailHost()
     {
         return getProperty(MAIL_HOST);
@@ -71,5 +72,10 @@ public class Configuration
     public static String getMailFrom()
     {
         return getProperty(MAIL_FROM);
+    }
+
+    public static String getUrlComoLlegar()
+    {
+        return getProperty(COMO_LLEGAR);
     }
 }
