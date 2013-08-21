@@ -21,6 +21,7 @@ import com.sun.jersey.api.client.ClientResponse.Status;
 import com.sun.jersey.api.core.InjectParam;
 
 import es.uji.apps.par.ButacaOcupadaException;
+import es.uji.apps.par.CompraSinButacasException;
 import es.uji.apps.par.Constantes;
 import es.uji.apps.par.FueraDePlazoVentaInternetException;
 import es.uji.apps.par.butacas.EstadoButacasRequest;
@@ -156,6 +157,11 @@ public class EntradasResource extends BaseResource
         catch (ButacaOcupadaException e)
         {
             String error = ResourceProperties.getProperty(getLocale(), "error.seleccionEntradas.ocupadas");
+            return paginaSeleccionEntradas(sesionId, butacasSeleccionadas, null, error);
+        }
+        catch (CompraSinButacasException e)
+        {
+            String error = ResourceProperties.getProperty(getLocale(), "error.seleccionEntradas.noSeleccionadas");
             return paginaSeleccionEntradas(sesionId, butacasSeleccionadas, null, error);
         }
 
