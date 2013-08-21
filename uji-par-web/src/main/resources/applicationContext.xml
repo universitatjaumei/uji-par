@@ -24,6 +24,7 @@
   <bean id="enviaMailsJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 	<property name="targetObject" ref="enviaMails" />
 	<property name="targetMethod" value="ejecuta" />
+	<property name="concurrent" value="false" />
   </bean>
   
   <bean id="enviaMailsTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
