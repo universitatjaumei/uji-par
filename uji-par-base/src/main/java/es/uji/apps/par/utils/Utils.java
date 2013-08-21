@@ -3,6 +3,8 @@ package es.uji.apps.par.utils;
 import java.math.BigDecimal;
 import java.security.MessageDigest;
 
+import javax.ws.rs.core.Response.ResponseBuilder;
+
 public class Utils
 {
     public static String formatEuros(BigDecimal importe)
@@ -40,4 +42,10 @@ public class Utils
         return Integer.toString(importeCentimos.intValue());
     }
 
+    public static ResponseBuilder noCache(ResponseBuilder builder)
+    {
+        return builder
+                .header("Cache-Control", "no-cache, no-store, must-revalidate").header("Pragma", "no-cache")
+                .header("Expires", "0");
+    }
 }

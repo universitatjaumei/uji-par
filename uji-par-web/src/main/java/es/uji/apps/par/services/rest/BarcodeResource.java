@@ -9,12 +9,14 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.apache.log4j.Logger;
 
 import com.sun.jersey.api.core.InjectParam;
 
 import es.uji.apps.par.services.BarcodeService;
+import es.uji.apps.par.utils.Utils;
 
 @Path("barcode")
 public class BarcodeResource extends BaseResource
@@ -36,10 +38,9 @@ public class BarcodeResource extends BaseResource
 
         barcodeService.generaBarcode(text, bos);
 
-        Response response = Response.ok(bos.toByteArray())
-                .header("Cache-Control", "no-cache, no-store, must-revalidate").header("Pragma", "no-cache")
-                .header("Expires", "0").build();
-
-        return response;
+        ResponseBuilder builder = Response.ok(bos.toByteArray());
+        
+        return Utils.noCache(builder).build();
     }
+
 }
