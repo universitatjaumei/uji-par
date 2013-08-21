@@ -37,6 +37,7 @@
 			<input type="hidden" name="butacasSeleccionadas" value="[]" />
 			<input type="hidden" name="uuidCompra" th:value="${uuidCompra}" value="" />
 			
+			<!-- 
 			<div id="filtros">
 				<span class="titulo-tipo" th:text="#{localizacion}">Localización</span>
 				<select id="localizacion">
@@ -44,6 +45,7 @@
 					<option value="anfiteatro">Anfiteatro</option>
 				</select>
 			</div>
+			-->
 			
 			<div id="localizacion_anfiteatro" class="entrada-plano">
 				
@@ -750,7 +752,7 @@
 			</div> 
 			<div id="detallesSeleccionadas"></div>
 			<div id="total"><span ht:text="#{total}">Total: </span><span id="totalSeleccionadas">0.00 €</span></div>
-			<input class="six columns offset-by-three button-flat-primary button-small" type="submit" th:value="#{comprar}" value="Comprar" />
+			<input id="seleccionComprar" class="six columns offset-by-three button-flat-primary button-small" type="submit" th:value="#{comprar}" value="Comprar" />
 		</div>
 	</div>
 </div>

@@ -316,7 +316,7 @@ Butacas = (function() {
 		});
 
 		muestraPrecios();
-		muestraLocalizacion();
+		//muestraLocalizacion();
 	});
 	
 	// Desde fuera del iframe nos han pedido que le pasemos las butacas seleccionadas 
