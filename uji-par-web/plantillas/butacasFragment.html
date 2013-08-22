@@ -18,10 +18,11 @@
 	    	var sesionId = /*[[${sesion.id}]]*/"";
 	    	var butacasSesion = /*[[${butacasSesion}]]*/"";
 	    	var uuidCompra = $('input[name=uuidCompra]').val();
+	    	var gastosGestion = /*[[${gastosGestion}]]*/ "";
 	    
 	    	$('#butacas').hide();
 	    	
-	    	Butacas.init(baseUrl, sesionId, JSON.parse(butacasSesion), uuidCompra);
+	    	Butacas.init(baseUrl, sesionId, JSON.parse(butacasSesion), uuidCompra, gastosGestion);
 	    	
 	    	Butacas.cargaPrecios(function(precios){
 	    		console.log(precios);
@@ -751,6 +752,7 @@
 				<span th:text="#{sesion}">Sesión:</span><span th:text="${hora}"></span>
 			</div> 
 			<div id="detallesSeleccionadas"></div>
+			<div class="gastosGestion"><span th:text="#{gastosGestion}">Gastos de gestión: </span><span id="gastosGestion" th:text="${#numbers.formatDecimal(gastosGestion, 1, 'POINT', 2, 'COMMA')}"></span> €</div>
 			<div id="total"><span ht:text="#{total}">Total: </span><span id="totalSeleccionadas">0.00 €</span></div>
 			<input th:if="!${ocultaComprar}" id="seleccionComprar" class="six columns offset-by-three button-flat-primary button-small" type="submit" th:value="#{comprar}" value="Comprar" />
 		</div>

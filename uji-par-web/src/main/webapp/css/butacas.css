@@ -43,8 +43,12 @@
 	padding: 15px;
 }
 
-#divSeleccionadas .titulo,#divSeleccionadas .hora {
+#divSeleccionadas .titulo,#divSeleccionadas .hora, #divSeleccionadas .gastosGestion  {
 	margin-top: 4px;
+}
+
+ #divSeleccionadas .gastosGestion {
+	margin-top: 16px;
 }
 
 #divSeleccionadas .fecha {

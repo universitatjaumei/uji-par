@@ -4,14 +4,16 @@ Butacas = (function() {
 	var sesionId;
 	var precios = {};
 	var uuidCompra;
+	var gastosGestion;
 	
 	var butacasSeleccionadas = [];
 	
-	function init(url, sesId, butacas, uuid) {
+	function init(url, sesId, butacas, uuid, gastosGest) {
 		baseUrl = url;
 		sesionId = sesId;
 		butacasSeleccionadas = butacas;
 		uuidCompra = uuid;
+		gastosGestion = gastosGest;
 		
 		refrescaEstadoButacas();
 		compruebaEstadoButacas();
@@ -153,6 +155,11 @@ Butacas = (function() {
 		{
 			total += butacasSeleccionadas[i].precio;
 		}
+		
+		if (total > 0)
+		{
+			total += gastosGestion;
+		}	
 		
 		$('#totalSeleccionadas').text(total.toFixed(2) + ' €');
 	}

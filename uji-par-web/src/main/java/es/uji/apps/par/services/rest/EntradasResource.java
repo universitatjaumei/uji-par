@@ -142,6 +142,8 @@ public class EntradasResource extends BaseResource
             template.put("precioDescuento_" + precio.getLocalizacion().getCodigo(), precio.getDescuento());
         }
 
+        template.put("gastosGestion", Float.parseFloat(Configuration.getGastosGestion()));
+        
         ResponseBuilder builder = Response.ok(template);
 
         return Utils.noCache(builder).build();
@@ -471,6 +473,7 @@ public class EntradasResource extends BaseResource
         template.put("fecha", DateUtils.dateToSpanishString(sesion.getFechaCelebracion()));
         template.put("hora", sesion.getHoraCelebracion());
         template.put("ocultaComprar", "true");
+        template.put("gastosGestion", 0.0);
 
         if (getLocale().getLanguage().equals("ca"))
         {
