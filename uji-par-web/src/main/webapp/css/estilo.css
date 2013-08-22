@@ -99,3 +99,25 @@ body {
 #compraValida #observaciones {
 	margin-top: 20px;
 }
+
+#totalNoNumeradas {
+	background: #EEE;
+	padding: 10px;
+}
+
+#totalNoNumeradas div {
+	margin-top: 8px;
+}
+
+#lineaTotalNoNumeradas {
+	font-size: 16pt;
+	margin-top: 16px !important;
+}
+
+#totalNoNumeradas #total {
+	font-weight: bold;
+}
+
+#botonPagarNoNumeradas{
+	margin-top: 16px;
+}
