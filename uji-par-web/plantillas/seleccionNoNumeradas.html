@@ -57,9 +57,9 @@
 				</div>	
 				
 				<div id="totalNoNumeradas" class="six columns row">
-					<div><span>Butacas: </span><span id="totalButacas">0</span> €</div>
-					<div><span>Gastos de gestión: </span><span id="gastosGestion" th:text="${#numbers.formatDecimal(gastosGestion, 1, 'POINT', 2, 'COMMA')}"></span> €</div>
-					<div id="lineaTotalNoNumeradas"><span>Total: </span><span id="total">0</span> €</div>
+					<div><span th:text="#{butacas}">Butacas: </span><span id="totalButacas">0</span> €</div>
+					<div><span th:text="#{gastosGestion}">Gastos de gestión: </span><span id="gastosGestion" th:text="${#numbers.formatDecimal(gastosGestion, 1, 'POINT', 2, 'COMMA')}"></span> €</div>
+					<div id="lineaTotalNoNumeradas"><span th:text="#{total}">Total: </span><span id="total">0</span> €</div>
 					<div id="botonPagarNoNumeradas" class="six columns centered">
 						<input class="button button-flat-primary " type="submit" th:value="#{comprar}" value="Pagar compra" />
 					</div>
