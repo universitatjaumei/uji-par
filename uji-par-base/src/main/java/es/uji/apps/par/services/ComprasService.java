@@ -14,6 +14,7 @@ import es.uji.apps.par.ButacaOcupadaException;
 import es.uji.apps.par.CompraSinButacasException;
 import es.uji.apps.par.FueraDePlazoVentaInternetException;
 import es.uji.apps.par.NoHayButacasLibresException;
+import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.dao.ButacasDAO;
 import es.uji.apps.par.dao.ComprasDAO;
 import es.uji.apps.par.db.CompraDTO;
@@ -86,7 +87,7 @@ public class ComprasService
 
         ResultadoCompra resultadoCompra = new ResultadoCompra();
 
-        BigDecimal importe = calculaImporteButacas(sesionId, butacasSeleccionadas);
+        BigDecimal importe = calculaImporteButacas(sesionId, butacasSeleccionadas, taquilla);
 
         CompraDTO compraDTO;
 
@@ -102,7 +103,7 @@ public class ComprasService
         return resultadoCompra;
     }
 
-    public BigDecimal calculaImporteButacas(Long sesionId, List<Butaca> butacasSeleccionadas)
+    public BigDecimal calculaImporteButacas(Long sesionId, List<Butaca> butacasSeleccionadas, boolean taquilla)
     {
         BigDecimal importe = new BigDecimal("0");
         Map<String, PreciosSesion> preciosLocalizacion = sesionesService.getPreciosSesionPorLocalizacion(sesionId);
@@ -121,6 +122,13 @@ public class ComprasService
                 throw new RuntimeException("Butaca con tipo de precio no reconocido: " + butaca);
         }
 
+        if (!taquilla)
+        {
+            BigDecimal gastosGestion = new BigDecimal(Configuration.getGastosGestion());
+                    
+            importe = importe.add(gastosGestion);
+        }
+        
         return importe;
     }
 

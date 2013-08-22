@@ -92,7 +92,7 @@ public class TaquillaResource extends BaseResource
     @Produces(MediaType.APPLICATION_JSON)
     public Response getImportesButacas(@PathParam("id") Long sesionId, List<Butaca> butacasSeleccionadas)
     {
-        BigDecimal importe = comprasService.calculaImporteButacas(sesionId, butacasSeleccionadas);
+        BigDecimal importe = comprasService.calculaImporteButacas(sesionId, butacasSeleccionadas, true);
         
         return Response.ok().entity(importe.setScale(2).toString()).build();
     }
