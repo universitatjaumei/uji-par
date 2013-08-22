@@ -1,5 +1,6 @@
 package es.uji.apps.par.services.rest;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -72,7 +73,7 @@ public class EntradasResource extends BaseResource
     {
         Sesion sesion = sesionesService.getSesion(sesionId);
 
-        if (sesion.getEvento().getAsientosNumerados().equals(1))
+        if (sesion.getEvento().getAsientosNumerados().equals(BigDecimal.ONE))
         {
             return paginaSeleccionEntradasNumeradas(sesionId, null, null, null);
         }
@@ -231,7 +232,7 @@ public class EntradasResource extends BaseResource
     {
         Sesion sesion = sesionesService.getSesion(sesionId);
 
-        if (sesion.getEvento().getAsientosNumerados().equals(1))
+        if (sesion.getEvento().getAsientosNumerados().equals(BigDecimal.ONE))
         {
             return compraEntradaNumeradaHtml(sesionId, butacasSeleccionadasJSON, uuidCompra);
         }
