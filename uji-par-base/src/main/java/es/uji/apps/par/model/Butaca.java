@@ -38,6 +38,12 @@ public class Butaca
     {
     }
 
+    public Butaca(String localizacion, String tipo)
+    {
+        this.localizacion = localizacion;
+        this.tipo = tipo;
+    }
+
     public Butaca(ButacaDTO butacaDTO)
     {
         id = butacaDTO.getId();

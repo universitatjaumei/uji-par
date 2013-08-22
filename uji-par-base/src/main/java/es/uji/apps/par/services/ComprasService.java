@@ -1,6 +1,7 @@
 package es.uji.apps.par.services;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -54,6 +55,27 @@ public class ComprasService
 
         return registraCompra(sesionId, butacasSeleccionadas, false);
     }
+    
+
+    public ResultadoCompra realizaCompraInternet(Long sesionId, int platea1Normal, int platea1Descuento,
+            int platea2Normal, int platea2Descuento, String uuidCompra) throws FueraDePlazoVentaInternetException, NoHayButacasLibresException, ButacaOcupadaException, CompraSinButacasException
+    {
+        List<Butaca> butacasSeleccionadas = new ArrayList<Butaca>();
+        
+        for (int i=0; i<platea1Normal; i++)
+            butacasSeleccionadas.add(new Butaca("platea1", "normal"));
+
+        for (int i=0; i<platea1Descuento; i++)
+            butacasSeleccionadas.add(new Butaca("platea1", "descuento"));
+        
+        for (int i=0; i<platea2Normal; i++)
+            butacasSeleccionadas.add(new Butaca("platea2", "normal"));
+
+        for (int i=0; i<platea2Descuento; i++)
+            butacasSeleccionadas.add(new Butaca("platea2", "descuento"));
+        
+        return realizaCompraInternet(sesionId, butacasSeleccionadas, uuidCompra);
+    }    
 
     @Transactional
     private synchronized ResultadoCompra registraCompra(Long sesionId, List<Butaca> butacasSeleccionadas, boolean taquilla)

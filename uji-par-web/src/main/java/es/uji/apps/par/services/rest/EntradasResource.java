@@ -70,10 +70,19 @@ public class EntradasResource extends BaseResource
     @Produces(MediaType.TEXT_HTML)
     public Response datosEntrada(@PathParam("id") Long sesionId) throws Exception
     {
-        return paginaSeleccionEntradas(sesionId, null, null, null);
+        Sesion sesion = sesionesService.getSesion(sesionId);
+
+        if (sesion.getEvento().getAsientosNumerados().equals(1))
+        {
+            return paginaSeleccionEntradasNumeradas(sesionId, null, null, null);
+        }
+        else
+        {
+            return paginaSeleccionEntradasNoNumeradas(sesionId, null, null, null, null, null);
+        }
     }
 
-    private Response paginaSeleccionEntradas(long sesionId, List<Butaca> butacasSeleccionadas,
+    private Response paginaSeleccionEntradasNumeradas(long sesionId, List<Butaca> butacasSeleccionadas,
             List<Butaca> butacasOcupadas, String error)
     {
         Sesion sesion = sesionesService.getSesion(sesionId);
@@ -137,13 +146,103 @@ public class EntradasResource extends BaseResource
         return Utils.noCache(builder).build();
     }
 
+    private Response paginaSeleccionEntradasNoNumeradas(long sesionId, String platea1Normal, String platea1Descuento,
+            String platea2Normal, String platea2Descuento, String error)
+    {
+        Sesion sesion = sesionesService.getSesion(sesionId);
+
+        if (!sesion.getEnPlazoVentaInternet())
+            return paginaProhibida();
+
+        Evento evento = sesion.getEvento();
+
+        Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "seleccionNoNumeradas", getLocale());
+        template.put("evento", evento);
+        template.put("sesion", sesion);
+        template.put("idioma", getLocale().getLanguage());
+        template.put("baseUrl", getBaseUrl());
+        template.put("fecha", DateUtils.dateToSpanishString(sesion.getFechaCelebracion()));
+        template.put("hora", sesion.getHoraCelebracion());
+
+        if (platea1Normal == null || platea1Normal.equals(""))
+            template.put("platea1Normal", "0");
+        else
+            template.put("platea2Normal", platea1Normal);
+
+        if (platea1Descuento == null || platea1Descuento.equals(""))
+            template.put("platea1Descuento", "0");
+        else
+            template.put("platea1Descuento", platea1Descuento);
+
+        if (platea2Normal == null || platea2Normal.equals(""))
+            template.put("platea2Normal", "0");
+        else
+            template.put("platea2Normal", platea2Normal);
+
+        if (platea2Descuento == null || platea2Descuento.equals(""))
+            template.put("platea2Descuento", "0");
+        else
+            template.put("platea2Descuento", platea2Descuento);
+
+        if (error != null && !error.equals(""))
+        {
+            template.put("error", error);
+        }
+
+        String uuidCompra = (String) currentRequest.getSession().getAttribute(UUID_COMPRA);
+        if (uuidCompra != null)
+        {
+            template.put("uuidCompra", uuidCompra);
+        }
+
+        if (getLocale().getLanguage().equals("ca"))
+        {
+            template.put("titulo", evento.getTituloVa());
+        }
+        else
+        {
+            template.put("titulo", evento.getTituloEs());
+        }
+
+        List<PreciosSesion> precios = sesionesService.getPreciosSesion(sesion.getId());
+
+        for (PreciosSesion precio : precios)
+        {
+            template.put("precioNormal_" + precio.getLocalizacion().getCodigo(), precio.getPrecio());
+            template.put("precioDescuento_" + precio.getLocalizacion().getCodigo(), precio.getDescuento());
+        }
+
+        template.put("gastosGestion", Float.parseFloat(Configuration.getGastosGestion()));
+
+        ResponseBuilder builder = Response.ok(template);
+
+        return Utils.noCache(builder).build();
+    }
+
     @POST
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.TEXT_HTML)
     public Response compraEntradaHtml(@PathParam("id") Long sesionId,
             @FormParam("butacasSeleccionadas") String butacasSeleccionadasJSON,
+            @FormParam("platea1Normal") String platea1Normal, @FormParam("platea1Descuento") String platea1Descuento,
+            @FormParam("platea2Normal") String platea2Normal, @FormParam("platea2Descuento") String platea2Descuento,
             @FormParam("uuidCompra") String uuidCompra) throws Exception
+    {
+        Sesion sesion = sesionesService.getSesion(sesionId);
+
+        if (sesion.getEvento().getAsientosNumerados().equals(1))
+        {
+            return compraEntradaNumeradaHtml(sesionId, butacasSeleccionadasJSON, uuidCompra);
+        }
+        else
+        {
+            return compraEntradaNoNumeradaHtml(sesionId, platea1Normal, platea1Descuento, platea2Normal, platea2Descuento, uuidCompra);
+        }
+    }
+
+    public Response compraEntradaNumeradaHtml(Long sesionId, String butacasSeleccionadasJSON, String uuidCompra)
+            throws Exception
     {
         ResultadoCompra resultadoCompra;
         List<Butaca> butacasSeleccionadas = Butaca.parseaJSON(butacasSeleccionadasJSON);
@@ -160,12 +259,12 @@ public class EntradasResource extends BaseResource
         catch (ButacaOcupadaException e)
         {
             String error = ResourceProperties.getProperty(getLocale(), "error.seleccionEntradas.ocupadas");
-            return paginaSeleccionEntradas(sesionId, butacasSeleccionadas, null, error);
+            return paginaSeleccionEntradasNumeradas(sesionId, butacasSeleccionadas, null, error);
         }
         catch (CompraSinButacasException e)
         {
             String error = ResourceProperties.getProperty(getLocale(), "error.seleccionEntradas.noSeleccionadas");
-            return paginaSeleccionEntradas(sesionId, butacasSeleccionadas, null, error);
+            return paginaSeleccionEntradasNumeradas(sesionId, butacasSeleccionadas, null, error);
         }
 
         if (resultadoCompra.getCorrecta())
@@ -178,7 +277,60 @@ public class EntradasResource extends BaseResource
         }
         else
         {
-            return paginaSeleccionEntradas(sesionId, butacasSeleccionadas, resultadoCompra.getButacasOcupadas(), null);
+            return paginaSeleccionEntradasNumeradas(sesionId, butacasSeleccionadas,
+                    resultadoCompra.getButacasOcupadas(), null);
+        }
+    }
+
+    public Response compraEntradaNoNumeradaHtml(Long sesionId, String platea1NormalSt, String platea1DescuentoSt,
+            String platea2NormalSt, String platea2DescuentoSt, String uuidCompra) throws Exception
+    {
+        ResultadoCompra resultadoCompra;
+        int platea1Normal = 0, platea1Descuento = 0, platea2Normal = 0, platea2Descuento = 0;
+
+        try
+        {
+            platea1Normal = Integer.parseInt(platea1NormalSt);
+            platea1Descuento = Integer.parseInt(platea1DescuentoSt);
+            platea2Normal = Integer.parseInt(platea2NormalSt);
+            platea2Descuento = Integer.parseInt(platea2DescuentoSt);
+        }
+        catch (NumberFormatException e)
+        {
+            String error = ResourceProperties.getProperty(getLocale(), "error.seleccionEntradas.noNumeros");
+            return paginaSeleccionEntradasNoNumeradas(sesionId, platea1NormalSt, platea1DescuentoSt, platea2NormalSt, platea2DescuentoSt, error);
+        }
+        
+        try
+        {
+            resultadoCompra = comprasService.realizaCompraInternet(sesionId, platea1Normal, platea1Descuento, platea2Normal, platea2Descuento, uuidCompra);
+        }
+        catch (FueraDePlazoVentaInternetException e)
+        {
+            log.error("Fuera de plazo", e);
+            return paginaProhibida();
+        }
+        catch (ButacaOcupadaException e)
+        {
+            String error = ResourceProperties.getProperty(getLocale(), "error.seleccionEntradas.ocupadas");
+            return paginaSeleccionEntradasNoNumeradas(sesionId, platea1NormalSt, platea1DescuentoSt, platea2NormalSt, platea2DescuentoSt, error);
+        }
+        catch (CompraSinButacasException e)
+        {
+            String error = ResourceProperties.getProperty(getLocale(), "error.seleccionEntradas.noSeleccionadas");
+            return paginaSeleccionEntradasNoNumeradas(sesionId, platea1NormalSt, platea1DescuentoSt, platea2NormalSt, platea2DescuentoSt, error);
+        }
+
+        if (resultadoCompra.getCorrecta())
+        {
+            currentRequest.getSession().setAttribute(UUID_COMPRA, resultadoCompra.getUuid());
+
+            currentResponse.sendRedirect(resultadoCompra.getUuid() + "/datosComprador");
+            return null;
+        }
+        else
+        {
+            return paginaSeleccionEntradasNoNumeradas(sesionId, platea1NormalSt, platea1DescuentoSt, platea2NormalSt, platea2DescuentoSt, "");
         }
     }
 
