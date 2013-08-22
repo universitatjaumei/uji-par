@@ -157,7 +157,7 @@ public class EntradasResource extends BaseResource
 
         Evento evento = sesion.getEvento();
 
-        Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "seleccionNoNumeradas", getLocale());
+        Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "seleccionEntradaNoNumerada", getLocale());
         template.put("evento", evento);
         template.put("sesion", sesion);
         template.put("idioma", getLocale().getLanguage());
