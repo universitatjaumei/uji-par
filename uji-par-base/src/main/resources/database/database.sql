@@ -156,7 +156,7 @@
 	"RESERVA" NUMBER(1,0) DEFAULT 0,
 	"DESDE" TIMESTAMP (6),
 	"HASTA" TIMESTAMP (6),
-	"OBSERVACIONES_RESERVA" CLOB 
+	"OBSERVACIONES_RESERVA" VARCHAR2(36 BYTE) 
    );
    
 --------------------------------------------------------
