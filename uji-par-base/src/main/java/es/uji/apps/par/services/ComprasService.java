@@ -19,6 +19,7 @@ import es.uji.apps.par.dao.ButacasDAO;
 import es.uji.apps.par.dao.ComprasDAO;
 import es.uji.apps.par.db.CompraDTO;
 import es.uji.apps.par.model.Butaca;
+import es.uji.apps.par.model.Compra;
 import es.uji.apps.par.model.PreciosSesion;
 import es.uji.apps.par.model.ResultadoCompra;
 import es.uji.apps.par.model.Sesion;
@@ -187,5 +188,17 @@ public class ComprasService
         resultadoCompra.setUuid(compraDTO.getUuid());
 
         return resultadoCompra;
+    }
+
+    public List<Compra> get()
+    {
+        List<Compra> result = new ArrayList<Compra>();
+        
+        List<CompraDTO> compras = comprasDAO.get();
+
+        for (CompraDTO compraDTO: compras)
+            result.add(new Compra(compraDTO));
+        
+        return result;
     }
 }

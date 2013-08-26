@@ -84,6 +84,8 @@ Ext.application({
                      xtype: 'panelPlantillas'
                   }, {
                      xtype: 'panelTaquilla'
+                  }, {
+                     xtype: 'panelCompras'
                   }],
                listeners: {
                   afterlayout: function(container, layout, opts) {

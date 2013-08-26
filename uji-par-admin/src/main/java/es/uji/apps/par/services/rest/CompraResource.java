@@ -44,6 +44,14 @@ public class CompraResource extends BaseResource
     @Context
     HttpServletResponse currentResponse;
 
+    @GET
+    @Path("")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getCompras()
+    {
+        return Response.ok().entity(new RestResponse(true, comprasService.get())).build();
+    }
+    
     @POST
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)

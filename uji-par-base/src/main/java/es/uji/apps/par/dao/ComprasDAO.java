@@ -212,4 +212,17 @@ public class ComprasDAO
         entityManager.persist(compra);
     }
 
+    public List<CompraDTO> get()
+    {
+        QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
+        
+        JPAQuery query = new JPAQuery(entityManager);
+
+         List<CompraDTO> compras = query
+                .from(qCompraDTO)
+                .list(qCompraDTO);
+         
+         return compras;
+    }
+
 }

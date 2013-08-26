@@ -1,0 +1,66 @@
+Ext.define('Paranimf.view.compra.GridCompras', {
+   extend: 'Paranimf.view.EditBaseGrid',
+
+   alias: 'widget.gridCompras',
+   store: 'Compras',
+
+   title: UI.i18n.gridTitle.compras,
+
+   tbar:{
+   },
+   
+   dockedItems: [{
+     xtype: 'pagingtoolbar',
+     store: 'Compras',
+     dock: 'bottom',
+     displayInfo: true
+   }],
+
+
+   initComponent: function() {
+
+      this.columns = [{
+         dataIndex: 'id',
+         hidden: true
+      }, {
+          dataIndex: 'fecha',
+          text: UI.i18n.field.date,
+          format:'d/m/Y H:i',
+          xtype: 'datecolumn',          
+          flex: 5
+      }, {
+          dataIndex: 'nombre',
+          text: UI.i18n.field.nameMulti,
+          flex: 5
+      }, {
+         dataIndex: 'apellidos',
+         text: UI.i18n.field.surnameMulti,
+         flex: 5
+      }, {
+          dataIndex: 'email',
+          flex: 5,
+          text: UI.i18n.field.email,
+      }, {
+          dataIndex: 'pagada',
+          flex: 2,
+          text: UI.i18n.field.pagada,
+          renderer: function (val, p) {
+              return (val)?'Sí':'No';
+          }
+      }, {
+          dataIndex: 'reserva',
+          flex: 2,
+          text: UI.i18n.field.reserva,
+          renderer: function (val, p) {
+        	  return (val)?'Sí':'No';
+          }
+      }];
+
+      this.callParent(arguments);
+   },
+
+
+   showAddCompraWindow: function() {
+      this.createModalWindow('formCompras').show();
+   }
+});

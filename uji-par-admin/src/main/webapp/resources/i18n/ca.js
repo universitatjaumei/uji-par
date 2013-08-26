@@ -139,7 +139,8 @@ UI =
             "plantillasprecios": "Gestió de les plantilles de preus",
             "precios": "Gestió dels preus per localització i plantilla seleccionada",
             "menu": "Menú d'opcions",
-            "comprar": "Comprar entrades"
+            "comprar": "Comprar entrades",
+            "compras": "Gestió de compres"
         },
         
         "field": {
@@ -172,6 +173,8 @@ UI =
             "characteristicsMulti":"Característiques",
             "commentsMulti":"Comentaris",
             "nameMulti": "Nom",
+            
+            "surnameMulti": "Cognoms",
 			
 			"totalEntradas": "Total d'entrades",
             "code":"Codi",
@@ -229,7 +232,9 @@ UI =
             "disponibles":"Disponibles",
             "desde": "Des de",
             "hasta": "Fins a",
-            "observacionesReserva": "Observaciones"
+            "observacionesReserva": "Observaciones",
+            "pagada": "Pagada",
+            "reserva": "Reserva"
         }
     }
 }

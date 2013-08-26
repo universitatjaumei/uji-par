@@ -1,5 +1,6 @@
 package es.uji.apps.par.model;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -14,7 +15,10 @@ public class Compra
     private String apellidos;
     private String telefono;
     private String email;
+    private boolean reserva;
+    private boolean pagada;
     private List<Butaca> parButacas;
+    private Date fecha;
 
     public Compra(CompraDTO compraDTO)
     {
@@ -23,6 +27,9 @@ public class Compra
         this.setApellidos(compraDTO.getApellidos());
         this.setTelefono(compraDTO.getTelefono());
         this.setEmail(compraDTO.getEmail());
+        this.setPagada(compraDTO.getPagada());
+        this.setReserva(compraDTO.getReserva());
+        this.setFecha(compraDTO.getFecha());
     }
 
     public static Compra compraDTOtoCompra(CompraDTO compraDTO)
@@ -90,4 +97,34 @@ public class Compra
         this.parButacas = parButacas;
     }
 
+    public boolean isReserva()
+    {
+        return reserva;
+    }
+
+    public void setReserva(boolean reserva)
+    {
+        this.reserva = reserva;
+    }
+
+    public boolean isPagada()
+    {
+        return pagada;
+    }
+
+    public void setPagada(boolean pagada)
+    {
+        this.pagada = pagada;
+    }
+
+    public Date getFecha()
+    {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha)
+    {
+        this.fecha = fecha;
+    }
+    
 }
