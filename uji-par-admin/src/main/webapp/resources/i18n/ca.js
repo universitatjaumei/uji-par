@@ -5,7 +5,9 @@ UI =
             "spaces": "Reserva d'espais",
             "config": "Configuració del sistema",
             "warn": "Incidència",
-            "pagar": "Realizar pago"
+            "pagar": "Realizar pago",
+            "comprar": "Realizar compra",
+            "reservar": "Realizar reserva"
         },
         "message": {
         	"event": "És obligatori seleccionar un event",
@@ -56,6 +58,7 @@ UI =
             "loadingPreciosNoNumeradas": "S'ha produït un error carregant els preus",
             "loadingDisponiblesNoNumeradas": "S'ha produït un error carregant les butaques disponibles",
             "errorRegistrandoCompra": "S'ha produït un error registrant la compra a la base de dades",
+            "errorReservandoButacas": "S'ha produït un error registrant la reserva de butaques",
             "errorRealizaPago": "S'ha produït un error iniciant el pagament amb tarjeta",
             "pinpad": {
             	"-1":"Inicialització de pagaments incorrecta",
@@ -115,7 +118,8 @@ UI =
             "pagar": "Pagar",
             "anterior": "&laquo; Anterior",
             "siguiente": "Següent &raquo;",
-            "verEntrada": "Imprimir entrada"
+            "verEntrada": "Imprimir entrada",
+            "reservar": "Reservar"
         },
         "calendar": {
             "calendar": "Calendari de reserves",
@@ -222,7 +226,10 @@ UI =
             "normal": "Normal",
             "descuento": "Descuento",
             "invitacion": "Invitación",
-            "disponibles":"Disponibles"
+            "disponibles":"Disponibles",
+            "desde": "Des de",
+            "hasta": "Fins a",
+            "observacionesReserva": "Observaciones"
         }
     }
 }

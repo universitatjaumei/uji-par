@@ -39,9 +39,9 @@ Ext.define('Paranimf.view.EditBaseGrid', {
       return indiceFilaSeleccionada;
    },
 
-   createModalWindow: function(xtype, width, height) {
+   createModalWindow: function(xtype, width, height, title) {
       return Ext.create('Paranimf.view.EditModalWindow', {
-         title: this.title,
+         title: (title)?title:this.title,
          items: [{
             autoScroll: true,
             xtype: xtype,

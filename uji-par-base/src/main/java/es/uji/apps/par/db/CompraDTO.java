@@ -85,7 +85,19 @@ public class CompraDTO implements Serializable {
     
     @Column(name = "UUID")
     private String uuid;   
-
+    
+    @Column(name = "RESERVA")
+    private Boolean reserva;    
+    
+    @Column(name = "DESDE")
+    private Timestamp desde;
+    
+    @Column(name = "HASTA")
+    private Timestamp hasta;    
+    
+    @Column(name = "OBSERVACIONES_RESERVA")
+    private String observacionesReserva;
+    
 	public CompraDTO()
     {
     }
@@ -97,6 +109,7 @@ public class CompraDTO implements Serializable {
         this.importe = importe;
         this.pagada = false;
         this.uuid = uuid;
+        this.reserva = false;
 	}
 
 	public long getId() {
@@ -250,4 +263,37 @@ public class CompraDTO implements Serializable {
     public void setCodigoPagoPasarela(String codigoPagoPasarela) {
         this.codigoPagoPasarela = codigoPagoPasarela;
     }
+
+    public Boolean getReserva() {
+        return reserva;
+    }
+
+    public void setReserva(Boolean reserva) {
+        this.reserva = reserva;
+    }
+
+    public Timestamp getDesde() {
+        return desde;
+    }
+
+    public void setDesde(Timestamp desde) {
+        this.desde = desde;
+    }
+
+    public Timestamp getHasta() {
+        return hasta;
+    }
+
+    public void setHasta(Timestamp hasta) {
+        this.hasta = hasta;
+    }
+
+    public String getObservacionesReserva() {
+        return observacionesReserva;
+    }
+
+    public void setObservacionesReserva(String observacionesReserva) {
+        this.observacionesReserva = observacionesReserva;
+    }
+
 }

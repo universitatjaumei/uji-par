@@ -5,15 +5,17 @@ Butacas = (function() {
 	var precios = {};
 	var uuidCompra;
 	var gastosGestion;
+	var reserva;
 	
 	var butacasSeleccionadas = [];
 	
-	function init(url, sesId, butacas, uuid, gastosGest) {
+	function init(url, sesId, butacas, uuid, gastosGest, modoReserva) {
 		baseUrl = url;
 		sesionId = sesId;
 		butacasSeleccionadas = butacas;
 		uuidCompra = uuid;
 		gastosGestion = gastosGest;
+		reserva = modoReserva;
 		
 		refrescaEstadoButacas();
 		compruebaEstadoButacas();
@@ -149,19 +151,26 @@ Butacas = (function() {
 	
 	function actualizaTotal()
 	{
-		var total = 0;
-		
-		for (var i=0; i<butacasSeleccionadas.length; i++)
+		if (reserva)
 		{
-			total += butacasSeleccionadas[i].precio;
+			$('#totalSeleccionadas').text('RESERVA');
 		}
-		
-		if (total > 0)
+		else
 		{
-			total += gastosGestion;
+			var total = 0;
+			
+			for (var i=0; i<butacasSeleccionadas.length; i++)
+			{
+				total += butacasSeleccionadas[i].precio;
+			}
+			
+			if (total > 0)
+			{
+				total += gastosGestion;
+			}	
+			
+			$('#totalSeleccionadas').text(total.toFixed(2) + ' €');
 		}	
-		
-		$('#totalSeleccionadas').text(total.toFixed(2) + ' €');
 	}
 	
 	function cambiaTipoButaca(posicion, tipo)

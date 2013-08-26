@@ -19,10 +19,11 @@
 	    	var butacasSesion = /*[[${butacasSesion}]]*/"";
 	    	var uuidCompra = $('input[name=uuidCompra]').val();
 	    	var gastosGestion = /*[[${gastosGestion}]]*/ "";
+	    	var modoReserva = /*[[${modoReserva}]]*/ "";
 	    
 	    	$('#butacas').hide();
 	    	
-	    	Butacas.init(baseUrl, sesionId, JSON.parse(butacasSesion), uuidCompra, gastosGestion);
+	    	Butacas.init(baseUrl, sesionId, JSON.parse(butacasSesion), uuidCompra, gastosGestion, modoReserva);
 	    	
 	    	Butacas.cargaPrecios(function(precios){
 	    		console.log(precios);

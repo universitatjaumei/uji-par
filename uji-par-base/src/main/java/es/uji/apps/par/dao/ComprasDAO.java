@@ -21,6 +21,7 @@ import es.uji.apps.par.db.CompraDTO;
 import es.uji.apps.par.db.QButacaDTO;
 import es.uji.apps.par.db.QCompraDTO;
 import es.uji.apps.par.db.SesionDTO;
+import es.uji.apps.par.utils.DateUtils;
 
 @Repository
 public class ComprasDAO
@@ -39,6 +40,23 @@ public class ComprasDAO
         SesionDTO sesion = sesionDAO.getSesion(sesionId);
         
         CompraDTO compraDTO = new CompraDTO(sesion, new Timestamp(fecha.getTime()), taquilla, importe, UUID.randomUUID().toString());
+
+        entityManager.persist(compraDTO);
+
+        return compraDTO;
+    }
+
+    @Transactional
+    public CompraDTO reserva(Long sesionId, Date fecha, Date desde, Date hasta, String observaciones)
+    {
+        SesionDTO sesion = sesionDAO.getSesion(sesionId);
+        
+        CompraDTO compraDTO = new CompraDTO(sesion, new Timestamp(fecha.getTime()), true, BigDecimal.ZERO, UUID.randomUUID().toString());
+        
+        compraDTO.setReserva(true);
+        compraDTO.setDesde(DateUtils.dateToTimestampSafe(desde));
+        compraDTO.setHasta(DateUtils.dateToTimestampSafe(hasta));
+        compraDTO.setObservacionesReserva(observaciones);
 
         entityManager.persist(compraDTO);
 
@@ -173,7 +191,7 @@ public class ComprasDAO
         
         Timestamp limite = new Timestamp(calendar.getTimeInMillis());
         
-        new JPADeleteClause(entityManager, qComprasDTO).where(qComprasDTO.pagada.eq(false).and(qComprasDTO.fecha.lt(limite))).execute();          
+        new JPADeleteClause(entityManager, qComprasDTO).where(qComprasDTO.pagada.eq(false).and(qComprasDTO.reserva.eq(false)).and(qComprasDTO.fecha.lt(limite))).execute();          
     }
 
     @Transactional

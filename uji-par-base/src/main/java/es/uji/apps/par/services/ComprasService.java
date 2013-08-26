@@ -40,6 +40,12 @@ public class ComprasService
     {
         return registraCompra(sesionId, butacasSeleccionadas, true);
     }
+    
+    public ResultadoCompra reservaCompraTaquilla(Long sesionId, Date desde, Date hasta, List<Butaca> butacasSeleccionadas)
+            throws NoHayButacasLibresException, ButacaOcupadaException, CompraSinButacasException
+    {
+        return registraCompra(sesionId, butacasSeleccionadas, true);
+    }
 
     @Transactional
     public ResultadoCompra realizaCompraInternet(Long sesionId, List<Butaca> butacasSeleccionadas, String uuidCompraActual) throws FueraDePlazoVentaInternetException,
@@ -161,5 +167,25 @@ public class ComprasService
             String poblacion, String cp, String provincia, String telefono, String email, String infoPeriodica)
     {
         comprasDAO.rellenaDatosComprador(uuidCompra, nombre, apellidos, direccion, poblacion, cp, provincia, telefono, email, infoPeriodica);
+    }
+
+    @Transactional
+    public ResultadoCompra reservaButacas(Long sesionId, Date desde, Date hasta, List<Butaca> butacasSeleccionadas, String observaciones) 
+            throws NoHayButacasLibresException, ButacaOcupadaException, CompraSinButacasException
+    {
+        if (butacasSeleccionadas.size() == 0)
+            throw new CompraSinButacasException();
+
+        ResultadoCompra resultadoCompra = new ResultadoCompra();
+
+        CompraDTO compraDTO = comprasDAO.reserva(sesionId, new Date(), desde, hasta, observaciones);
+
+        butacasDAO.reservaButacas(sesionId, compraDTO, butacasSeleccionadas);
+
+        resultadoCompra.setCorrecta(true);
+        resultadoCompra.setId(compraDTO.getId());
+        resultadoCompra.setUuid(compraDTO.getUuid());
+
+        return resultadoCompra;
     }
 }

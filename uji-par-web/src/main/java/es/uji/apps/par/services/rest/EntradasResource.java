@@ -12,6 +12,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -461,7 +462,7 @@ public class EntradasResource extends BaseResource
     @GET
     @Path("butacasFragment/{id}")
     @Produces(MediaType.TEXT_HTML)
-    public Template butacasFragment(@PathParam("id") long sesionId) throws Exception
+    public Template butacasFragment(@PathParam("id") long sesionId, @QueryParam("reserva") String reserva) throws Exception
     {
         HTMLTemplate template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "butacasFragment", getLocale());
 
@@ -474,6 +475,7 @@ public class EntradasResource extends BaseResource
         template.put("hora", sesion.getHoraCelebracion());
         template.put("ocultaComprar", "true");
         template.put("gastosGestion", 0.0);
+        template.put("modoReserva", reserva!=null && reserva.equals("true"));
 
         if (getLocale().getLanguage().equals("ca"))
         {

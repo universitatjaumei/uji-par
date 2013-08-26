@@ -28,9 +28,9 @@ import es.uji.apps.par.services.ComprasService;
 import es.uji.apps.par.services.SesionesService;
 
 @Path("compra")
-public class TaquillaResource extends BaseResource
+public class CompraResource extends BaseResource
 {
-    public static Logger log = Logger.getLogger(TaquillaResource.class);
+    public static Logger log = Logger.getLogger(CompraResource.class);
     
     @InjectParam
     private ComprasService comprasService;

@@ -14,10 +14,16 @@ Ext.define('Paranimf.view.taquilla.GridSesionesTaquilla', {
    }],
    
    tbar: [{
-      xtype: 'button',
-      text: UI.i18n.button.comprar,
-      action: 'comprar'
-   }],   
+	         xtype: 'button',
+	         text: UI.i18n.button.comprar,
+	         action: 'comprar'
+   	  	  },
+   	  	  {
+ 	         xtype: 'button',
+ 	         text: UI.i18n.button.reservar,
+ 	         action: 'reservar'
+    	  }   	  	  
+   ],   
    
    comprar: function() {
 	 console.log('COMPRAR ENTRADA');  
@@ -60,22 +66,27 @@ Ext.define('Paranimf.view.taquilla.GridSesionesTaquilla', {
     //this.getDockedItems('toolbar[dock=top]')[0].hide();
   },
 
-  showComprarWindow: function(idSesion, asientosNumerados) {
-	console.log("showComprarWindow: ", idSesion	);  
+  showComprarWindow: function(idSesion, asientosNumerados, title, modoReserva) {
+	console.log("showComprarWindow: ", idSesion);  
 	  
-	this.createModalWindow('formComprar', 940, 750).show();
+	var window = this.createModalWindow('formComprar', 940, 750, title).show();
 
 	var cardLayout = Ext.getCmp('pasoSeleccionar').getLayout();
 	
 	if (asientosNumerados)
 	{
 		cardLayout.setActiveItem(0);
-		Ext.getDom('iframeButacas').src = urlPublic + "/rest/entrada/butacasFragment/" + idSesion;
+		var url = urlPublic + "/rest/entrada/butacasFragment/" + idSesion;
+		
+		if (modoReserva)
+			url += '?reserva=true';
+		
+		Ext.getDom('iframeButacas').src = url;
 	}
 	else
 	{
 		cardLayout.setActiveItem(1);
 	}
   }
-
+  
 });

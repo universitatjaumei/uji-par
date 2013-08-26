@@ -50,7 +50,31 @@ Ext.define('Paranimf.controller.Taquilla', {
       {
       	ref: 'botonPagar',
         selector: 'formComprar #pagar'
-      }
+      },
+      {
+       	ref: 'botonReservar',
+        selector: 'formComprar #reservar'
+      },
+      {
+          ref: 'panelComprar',
+          selector: 'formComprar panel[name=panelComprar]'
+      },         
+      {
+          ref: 'panelReservar',
+          selector: 'formComprar panel[name=panelReservar]'
+      },
+      {
+          ref: 'reservarDesde',
+          selector: 'formComprar datepicker[name=desde]'
+      },               
+      {
+          ref: 'reservarHasta',
+          selector: 'formComprar datepicker[name=hasta]'
+      },
+      {
+          ref: 'observacionesReserva',
+          selector: 'formComprar textareafield[name=observacionesReserva]'
+      }              
    ],
 
    init: function() {
@@ -66,6 +90,9 @@ Ext.define('Paranimf.controller.Taquilla', {
          'gridSesionesTaquilla button[action=comprar]': {
              click: this.comprar
          },
+         'gridSesionesTaquilla button[action=reservar]': {
+             click: this.reservar
+         },         
          'formComprar #comprarAnterior': {
         	 click: this.comprarAnterior
          },
@@ -81,6 +108,9 @@ Ext.define('Paranimf.controller.Taquilla', {
          'formComprar #pagar': {
         	 click: this.registraCompra
          },
+         'formComprar #reservar': {
+        	 click: this.registraReserva
+         },         
          'panelSeleccionarNoNumeradas': {
              afterrender: this.panelSeleccionarNoNumeradasCreado
          },
@@ -89,6 +119,8 @@ Ext.define('Paranimf.controller.Taquilla', {
          }
       });
       
+      // 'comprar' o 'reservar'
+	  this.tipo = 'comprar';
 	  
 	  this.intervalEstadoPago = {};
 	  
@@ -254,6 +286,18 @@ Ext.define('Paranimf.controller.Taquilla', {
 		   this.getBotonPagar().setDisabled(true);   
    },
    
+   habilitaBotonReservar: function()
+   {
+	   if (this.getBotonReservar()!=null)
+		   this.getBotonReservar().setDisabled(false);
+   },
+   
+   deshabilitaBotonReservar: function()
+   {
+	   if (this.getBotonReservar()!=null)
+		   this.getBotonReservar().setDisabled(true);   
+   },
+   
    registraCompra: function() {
 	   
 	   var tipoPago = Ext.getCmp('tipoPago').value;
@@ -299,8 +343,42 @@ Ext.define('Paranimf.controller.Taquilla', {
 	    		  else
 	    			  alert(UI.i18n.error.formSave);
 	    	  }
-	   	  });
-   },   
+	   	  });  
+   },
+   
+   registraReserva: function() {
+	   
+	   this.deshabilitaBotonReservar();
+	   
+	   var idSesion = this.getGridSesionesTaquilla().getSelectedRecord().data['id'];
+
+	   var me = this;
+	   
+	   Ext.Ajax.request({
+	    	  url : urlPrefix + 'reserva/' + idSesion,
+	    	  method: 'POST',
+	    	  jsonData: {butacasSeleccionadas:this.butacasSeleccionadas, desde:this.getReservarDesde().getValue(), hasta:this.getReservarHasta().getValue()
+	    		  		 , observaciones: this.getObservacionesReserva().getValue()},
+	    	  success: function (response) {
+	    		  
+	    		   me.habilitaBotonReservar();
+	    		   me.cerrarComprar();
+	    		  
+	    	  }, failure: function (response) {
+	    		  
+	    		  console.log(respuesta);
+	    		  
+	    		  me.habilitaBotonReservar();
+	    		  
+	    		  var respuesta = Ext.JSON.decode(response.responseText, true);
+	    		  
+	    		  if (respuesta['message']!=null)
+	    			  alert(respuesta['message']);
+	    		  else
+	    			  alert(UI.i18n.error.formSave);
+	    	  }
+	   	  });  
+   },
    
    pagarConTarjeta: function(id, concepto) {
 	   
@@ -355,7 +433,7 @@ Ext.define('Paranimf.controller.Taquilla', {
    lanzaComprobacionEstadoPago: function(idPago) {
 	   var me = this;
 	   
-	   this.intervalEstadoPago[idPago] = window.setInterval(function(){me.compruebaEstadoPago(idPago)}, 1000);
+	   this.intervalEstadoPago[idPago] = window.setInterval(function(){me.compruebaEstadoPago(idPago);}, 1000);
    },
    
    paraComprobacionEstadoPago: function(idPago) {
@@ -590,8 +668,23 @@ Ext.define('Paranimf.controller.Taquilla', {
    comprar: function(button, event, opts) {
 	 var evento = this.getGridEventosTaquilla().getSelectedRecord();
 	 var sesion = this.getGridSesionesTaquilla().getSelectedRecord();
-	 this.getGridSesionesTaquilla().showComprarWindow(sesion.data['id'], evento.data['asientosNumerados']);
+
+	 this.getGridSesionesTaquilla().showComprarWindow(sesion.data['id'], evento.data['asientosNumerados'], UI.i18n.formTitle.comprar, false);
+	 
+	 this.getPanelComprar().show();
+	 this.getPanelReservar().hide();
+	 
    },
+   
+   reservar: function(button, event, opts) {
+	 var evento = this.getGridEventosTaquilla().getSelectedRecord();
+	 var sesion = this.getGridSesionesTaquilla().getSelectedRecord();
+	 
+	 this.getGridSesionesTaquilla().showComprarWindow(sesion.data['id'], evento.data['asientosNumerados'], UI.i18n.formTitle.reservar, true);
+	 
+	 this.getPanelReservar().show();
+	 this.getPanelComprar().hide();
+   },   
    
    marcaPagada: function(idCompra) {
 	   
