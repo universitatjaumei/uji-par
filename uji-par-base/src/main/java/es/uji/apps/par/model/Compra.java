@@ -17,6 +17,7 @@ public class Compra
     private String email;
     private boolean reserva;
     private boolean pagada;
+    private boolean taquilla;
     private List<Butaca> parButacas;
     private Date fecha;
 
@@ -30,6 +31,7 @@ public class Compra
         this.setPagada(compraDTO.getPagada());
         this.setReserva(compraDTO.getReserva());
         this.setFecha(compraDTO.getFecha());
+        this.setTaquilla(compraDTO.getTaquilla());
     }
 
     public static Compra compraDTOtoCompra(CompraDTO compraDTO)
@@ -125,6 +127,16 @@ public class Compra
     public void setFecha(Date fecha)
     {
         this.fecha = fecha;
+    }
+
+    public boolean isTaquilla()
+    {
+        return taquilla;
+    }
+
+    public void setTaquilla(boolean taquilla)
+    {
+        this.taquilla = taquilla;
     }
     
 }

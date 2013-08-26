@@ -39,6 +39,13 @@ Ext.define('Paranimf.view.compra.GridCompras', {
           flex: 5,
           text: UI.i18n.field.email,
       }, {
+          dataIndex: 'taquilla',
+          flex: 2,
+          text: UI.i18n.field.taquilla,
+          renderer: function (val, p) {
+              return (val)?'Sí':'No';
+          }
+      }, {
           dataIndex: 'pagada',
           flex: 2,
           text: UI.i18n.field.pagada,
