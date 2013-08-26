@@ -119,7 +119,8 @@ UI =
             "anterior": "&laquo; Anterior",
             "siguiente": "Següent &raquo;",
             "verEntrada": "Imprimir entrada",
-            "reservar": "Reservar"
+            "reservar": "Reservar",
+            "verCompras": "Veure compres/reserves"
         },
         "calendar": {
             "calendar": "Calendari de reserves",

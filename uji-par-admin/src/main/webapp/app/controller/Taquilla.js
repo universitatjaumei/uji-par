@@ -2,9 +2,9 @@ Ext.define('Paranimf.controller.Taquilla', {
    extend: 'Ext.app.Controller',
 
    views: ['EditModalWindow', 'EditBaseForm', 'EditBaseGrid', 'taquilla.PanelTaquilla', 'taquilla.GridEventosTaquilla', 'taquilla.GridSesionesTaquilla', 
-           'taquilla.FormComprar', 'taquilla.PanelSeleccionarNoNumeradas', 'taquilla.PanelNumeroEntradas'],
-   stores: ['EventosTaquilla', 'SesionesTaquilla'],
-   models: ['Evento'],
+           'taquilla.FormComprar', 'taquilla.PanelSeleccionarNoNumeradas', 'taquilla.PanelNumeroEntradas', 'compra.PanelCompras', 'compra.GridCompras'],
+   stores: ['EventosTaquilla', 'SesionesTaquilla', 'Compras'],
+   models: ['Evento', 'Compra'],
 
    refs: [
       {
@@ -20,8 +20,16 @@ Ext.define('Paranimf.controller.Taquilla', {
       	selector: 'gridSesionesTaquilla'
       },
       {
-       	ref: 'formComprar',
+    	ref: 'gridCompras',
+    	selector: 'gridCompras'
+      },      
+      {
+        ref: 'formComprar',
         selector: 'formComprar'
+      },
+      {
+       	ref: 'panelVerCompras',
+        selector: 'panelCompras'
       },
       {
        	ref: 'formComprarCards',
@@ -56,6 +64,10 @@ Ext.define('Paranimf.controller.Taquilla', {
         selector: 'formComprar #reservar'
       },
       {
+    	  ref: 'botonVerCompras',
+          selector: 'formComprar #verCompras'
+      },      
+      {
           ref: 'panelComprar',
           selector: 'formComprar panel[name=panelComprar]'
       },         
@@ -87,12 +99,18 @@ Ext.define('Paranimf.controller.Taquilla', {
          'gridEventosTaquilla': {
              selectionchange: this.loadSesiones
          },
+    	 'panelCompras': {
+    		 afterrender: this.loadCompras
+         },         
          'gridSesionesTaquilla button[action=comprar]': {
              click: this.comprar
          },
          'gridSesionesTaquilla button[action=reservar]': {
              click: this.reservar
          },         
+         'gridSesionesTaquilla button[action=verCompras]': {
+             click: this.verCompras
+         },              
          'formComprar #comprarAnterior': {
         	 click: this.comprarAnterior
          },
@@ -102,6 +120,9 @@ Ext.define('Paranimf.controller.Taquilla', {
          'formComprar #comprarCancelar': {
         	 click: this.cerrarComprar
          },         
+         'panelCompras button[name=verComprasCerrar]': {
+        	 click: this.cerrarVerCompras
+         },         
          'formComprar': {
              afterrender: this.iniciaFormComprar
          },    
@@ -110,7 +131,7 @@ Ext.define('Paranimf.controller.Taquilla', {
          },
          'formComprar #reservar': {
         	 click: this.registraReserva
-         },         
+         },        
          'panelSeleccionarNoNumeradas': {
              afterrender: this.panelSeleccionarNoNumeradasCreado
          },
@@ -119,9 +140,6 @@ Ext.define('Paranimf.controller.Taquilla', {
          }
       });
       
-      // 'comprar' o 'reservar'
-	  this.tipo = 'comprar';
-	  
 	  this.intervalEstadoPago = {};
 	  
 	  var me = this;
@@ -581,6 +599,10 @@ Ext.define('Paranimf.controller.Taquilla', {
 	   this.getFormComprar().up('window').close();  
    },
    
+   cerrarVerCompras: function() {
+	   this.getPanelVerCompras().up('window').close();  
+   },
+   
    entradasNumeradas: function() {
 	   return Ext.getCmp('pasoSeleccionar').getLayout().activeItem.id == 'iframeButacas';
    },
@@ -664,6 +686,16 @@ Ext.define('Paranimf.controller.Taquilla', {
          storeSesiones.load();
       }
    },
+   
+   loadCompras: function() {
+	 console.log('loadCompras'); 
+
+	 var storeCompras = this.getGridCompras().getStore();
+	 var sesion = this.getGridSesionesTaquilla().getSelectedRecord();
+
+     storeCompras.getProxy().url = urlPrefix + 'compra/' + sesion.data['id'];
+     storeCompras.load();
+   },   
 
    comprar: function(button, event, opts) {
 	 var evento = this.getGridEventosTaquilla().getSelectedRecord();
@@ -685,6 +717,13 @@ Ext.define('Paranimf.controller.Taquilla', {
 	 this.getPanelReservar().show();
 	 this.getPanelComprar().hide();
    },   
+   
+   verCompras: function(button, event, opts) {
+	 var evento = this.getGridEventosTaquilla().getSelectedRecord();
+	 var sesion = this.getGridSesionesTaquilla().getSelectedRecord();
+	 
+	 this.getGridSesionesTaquilla().showVerComprasWindow(sesion.data['id']);
+   },      
    
    marcaPagada: function(idCompra) {
 	   

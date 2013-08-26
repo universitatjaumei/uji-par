@@ -45,11 +45,11 @@ public class CompraResource extends BaseResource
     HttpServletResponse currentResponse;
 
     @GET
-    @Path("")
+    @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getCompras()
+    public Response getCompras(@PathParam("id") Long sesionId)
     {
-        return Response.ok().entity(new RestResponse(true, comprasService.get())).build();
+        return Response.ok().entity(new RestResponse(true, comprasService.getComprasBySesionFechaSegundos(sesionId))).build();
     }
     
     @POST

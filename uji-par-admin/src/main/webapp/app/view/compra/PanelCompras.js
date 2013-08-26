@@ -5,6 +5,12 @@ Ext.define('Paranimf.view.compra.PanelCompras', {
   border: false,
   frame: false,
 
+  bbar: ['->',
+  {
+	   name: 'verComprasCerrar',
+	   text: UI.i18n.button.close
+  }],
+  
   items: [{
     xtype: 'gridCompras'
   }]

@@ -22,7 +22,12 @@ Ext.define('Paranimf.view.taquilla.GridSesionesTaquilla', {
  	         xtype: 'button',
  	         text: UI.i18n.button.reservar,
  	         action: 'reservar'
-    	  }   	  	  
+    	  },
+   	  	  {
+  	         xtype: 'button',
+  	         text: UI.i18n.button.verCompras,
+  	         action: 'verCompras'
+     	  }      	  
    ],   
    
    comprar: function() {
@@ -87,6 +92,12 @@ Ext.define('Paranimf.view.taquilla.GridSesionesTaquilla', {
 	{
 		cardLayout.setActiveItem(1);
 	}
-  }
+  },
+  
+  showVerComprasWindow: function(idSesion) {
+	
+	console.log("showVerComprasWindow: ", idSesion);  
+	this.createModalWindow('panelCompras', 940, 750, UI.i18n.gridTitle.compras).show();
+  }  
   
 });

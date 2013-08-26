@@ -212,7 +212,7 @@ public class ComprasDAO
         entityManager.persist(compra);
     }
 
-    public List<CompraDTO> get()
+    public List<CompraDTO> getComprasBySesion(long sesionId)
     {
         QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
         
@@ -220,9 +220,9 @@ public class ComprasDAO
 
          List<CompraDTO> compras = query
                 .from(qCompraDTO)
+                .where(qCompraDTO.parSesion.id.eq(sesionId))
                 .list(qCompraDTO);
          
          return compras;
     }
-
 }

@@ -190,15 +190,30 @@ public class ComprasService
         return resultadoCompra;
     }
 
-    public List<Compra> get()
+    public List<Compra> getComprasBySesion(long sesionId)
     {
         List<Compra> result = new ArrayList<Compra>();
         
-        List<CompraDTO> compras = comprasDAO.get();
+        List<CompraDTO> compras = comprasDAO.getComprasBySesion(sesionId);
 
         for (CompraDTO compraDTO: compras)
             result.add(new Compra(compraDTO));
         
         return result;
     }
+    
+
+    public List<Compra> getComprasBySesionFechaSegundos(long sesionId)
+    {
+        List<Compra> compras = getComprasBySesion(sesionId);
+        
+        for (Compra compra : compras)
+        {
+            compra.setFecha(new Date(compra.getFecha().getTime()/1000));
+        }
+        
+        return compras;
+    }
 }
+
+
