@@ -20,6 +20,6 @@ public class CommonExceptionMapper implements ExceptionMapper<Exception>
                 .getMessage() : GeneralPARException.ERROR_GENERAL_MESS);
 
         return Response.serverError().type(MediaType.APPLICATION_JSON)
-                .entity(new ResponseMessage(false, message)).build();
+                .entity(new ResponseMessage(false, "CommonExceptionMapper: " + message)).build();
     }
 }
