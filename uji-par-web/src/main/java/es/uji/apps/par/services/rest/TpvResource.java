@@ -80,7 +80,7 @@ public class TpvResource extends BaseResource
 
     private Template paginaExito(CompraDTO compra, String recibo)
     {
-        Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "compraValida", getLocale());
+        Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "compraValida", getLocale(), APP);
 
         template.put("baseUrl", getBaseUrl());
 
@@ -94,7 +94,7 @@ public class TpvResource extends BaseResource
 
     private HTMLTemplate paginaError(CompraDTO compra)
     {
-        HTMLTemplate template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "compraIncorrecta", getLocale());
+        HTMLTemplate template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "compraIncorrecta", getLocale(), APP);
         
         template.put("baseUrl", getBaseUrl());
 

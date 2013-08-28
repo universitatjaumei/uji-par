@@ -50,7 +50,7 @@ public class EventosResource extends BaseResource
         Evento evento = eventosService.getEvento(id);
         List<Sesion> sesiones = sesionesService.getSesiones(id);
 
-        Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "eventoDetalle", getLocale());
+        Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "eventoDetalle", getLocale(), APP);
 
         String tipoEvento, titulo, companyia, duracion, caracteristicas, premios, interpretes, descripcion;
 

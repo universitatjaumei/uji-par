@@ -17,7 +17,7 @@ public class IndexResource extends BaseResource
     @Produces(MediaType.TEXT_HTML)
     public Template index() throws Exception
     {
-        Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "admin", getLocale());
+        Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "admin", getLocale(), APP);
 
         template.put("urlPublic", Configuration.getUrlPublic());
 

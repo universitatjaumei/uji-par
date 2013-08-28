@@ -94,7 +94,7 @@ public class EntradasResource extends BaseResource
 
         Evento evento = sesion.getEvento();
 
-        Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "seleccionEntrada", getLocale());
+        Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "seleccionEntrada", getLocale(), APP);
         template.put("evento", evento);
         template.put("sesion", sesion);
         template.put("idioma", getLocale().getLanguage());
@@ -160,7 +160,7 @@ public class EntradasResource extends BaseResource
 
         Evento evento = sesion.getEvento();
 
-        Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "seleccionEntradaNoNumerada", getLocale());
+        Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "seleccionEntradaNoNumerada", getLocale(), APP);
         template.put("evento", evento);
         template.put("sesion", sesion);
         template.put("idioma", getLocale().getLanguage());
@@ -345,7 +345,7 @@ public class EntradasResource extends BaseResource
             String direccion, String poblacion, String cp, String provincia, String telefono, String email,
             String infoPeriodica, String condicionesPrivacidad, String error) throws Exception
     {
-        Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "datosComprador", getLocale());
+        Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "datosComprador", getLocale(), APP);
         template.put("idioma", getLocale().getLanguage());
         template.put("baseUrl", getBaseUrl());
 
@@ -420,7 +420,7 @@ public class EntradasResource extends BaseResource
 
         CompraDTO compra = comprasService.getCompraByUuid(uuidCompra);
 
-        Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "tpv", getLocale());
+        Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "tpv", getLocale(), APP);
         template.put("idioma", getLocale().getLanguage());
         template.put("baseUrl", getBaseUrl());
 
@@ -465,7 +465,7 @@ public class EntradasResource extends BaseResource
     @Produces(MediaType.TEXT_HTML)
     public Template butacasFragment(@PathParam("id") long sesionId, @QueryParam("reserva") String reserva) throws Exception
     {
-        HTMLTemplate template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "butacasFragment", getLocale());
+        HTMLTemplate template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "butacasFragment", getLocale(), APP);
 
         Sesion sesion = sesionesService.getSesion(sesionId);
 

@@ -12,6 +12,7 @@ import es.uji.apps.par.i18n.ResourceProperties;
 public class BaseResource
 {
     private static final String IDIOMA = "idioma";
+    protected static final String APP = "par";
 
     @Context
     HttpServletRequest currentRequest;
