@@ -80,8 +80,6 @@ Ext.application({
                   }, {
                      xtype: 'panelEventos'
                   }, {
-                     xtype: 'gridLocalizaciones'
-                  }, {
                      xtype: 'panelPlantillas'
                   }, {
                      xtype: 'panelTaquilla'
