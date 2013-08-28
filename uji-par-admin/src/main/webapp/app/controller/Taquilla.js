@@ -36,10 +36,6 @@ Ext.define('Paranimf.controller.Taquilla', {
         selector: '#formComprarCards'
       },
       {
-       	ref: 'comboLocalizacionNoNumeradas',
-        selector: 'panelSeleccionarNoNumeradas combobox[name=localizacion]'
-      },
-      {
        	ref: 'disponiblesNoNumeradas',
         selector: 'panelSeleccionarNoNumeradas label[name=disponibles]'
       },      
@@ -86,7 +82,35 @@ Ext.define('Paranimf.controller.Taquilla', {
       {
           ref: 'observacionesReserva',
           selector: 'formComprar textareafield[name=observacionesReserva]'
-      }              
+      },
+      {
+      	ref: 'panelAnfiteatro',
+      	selector: 'panelSeleccionarNoNumeradas panelNumeroEntradas[name=anfiteatro]'
+      },
+      {
+      	ref: 'panelPlatea1',
+      	selector: 'panelSeleccionarNoNumeradas panelNumeroEntradas[name=platea1]'
+      },
+      {
+      	ref: 'panelPlatea2',
+      	selector: 'panelSeleccionarNoNumeradas panelNumeroEntradas[name=platea2]'
+      },
+      {
+      	ref: 'panelDiscapacitados1',
+      	selector: 'panelSeleccionarNoNumeradas panelNumeroEntradas[name=discapacitados1]'
+      },
+      {
+      	ref: 'panelDiscapacitados2',
+      	selector: 'panelSeleccionarNoNumeradas panelNumeroEntradas[name=discapacitados2]'
+      },
+      {
+      	ref: 'panelDiscapacitados3',
+      	selector: 'panelSeleccionarNoNumeradas panelNumeroEntradas[name=discapacitados3]'
+      },
+      {
+      	ref: 'totalPrecioCompra',
+      	selector: 'panelSeleccionarNoNumeradas label[name=totalPrecios]'
+      }
    ],
 
    init: function() {
@@ -135,8 +159,8 @@ Ext.define('Paranimf.controller.Taquilla', {
          'panelSeleccionarNoNumeradas': {
              afterrender: this.panelSeleccionarNoNumeradasCreado
          },
-         'panelSeleccionarNoNumeradas combobox[name=localizacion]': {
-        	 select: this.localizacionNoNumeradasCambiada
+         'panelNumeroEntradas numberfield': {
+         	change: this.actualizaPrecio
          }
       });
       
@@ -151,6 +175,25 @@ Ext.define('Paranimf.controller.Taquilla', {
 		   me.avanzarAPasoDePago(butacas);
 	  });      
    },
+
+   	actualizaPrecio: function() {
+   		var precio = 0;
+   		var EURO = '€';
+   		for (var key in this.precios) {
+   			var panel = Ext.ComponentQuery.query('panelSeleccionarNoNumeradas panelNumeroEntradas[name=' + key + ']');
+   			if (panel != undefined) {
+   				var numeroEntradasNormal = (panel[0].down('numberfield[name=normal]').getValue() == '')?0:panel[0].down('numberfield[name=normal]').getValue();
+   				var numeroEntradasDescuento = (panel[0].down('numberfield[name=descuento]').getValue() == '')?0:panel[0].down('numberfield[name=descuento]').getValue();
+   				var numeroEntradasInvitacion = (panel[0].down('numberfield[name=invitacion]').getValue() == '')?0:panel[0].down('numberfield[name=invitacion]').getValue();
+   				var precioNormal = (this.precios[key] != undefined)?this.precios[key]['normal']:0;
+   				var precioDescuento = (this.precios[key] != undefined)?this.precios[key]['descuento']:0;
+   				var precioInvitacion = (this.precios[key] != undefined)?this.precios[key]['invitacion']:0;
+
+   				precio += numeroEntradasNormal*precioNormal + numeroEntradasDescuento*precioDescuento + numeroEntradasInvitacion*precioInvitacion;
+   			}
+   		}
+   		this.getTotalPrecioCompra().setText(UI.i18n.field.totalCompra + precio.toFixed(2) + EURO);
+   	},
    
    iniciaFormComprar: function() {
 	   
@@ -161,57 +204,104 @@ Ext.define('Paranimf.controller.Taquilla', {
 	   this.cambiarEstadoBotonesComprar();
    },
    
-   localizacionNoNumeradasCambiada: function() {
-	   var localizacion = this.getComboLocalizacionNoNumeradas().getValue();
-	   
-	   this.cambiaLocalizacionNoNumerada(localizacion);
-	   
-	   //console.log(localizacion.getValue());
-   },
+   	muestraDisponibles: function() {
+   		var DISPONIBLES = UI.i18n.field.entradesDisponibles;
+   		for (var key in this.disponibles) {
+   			var panel = Ext.ComponentQuery.query('panelSeleccionarNoNumeradas panelNumeroEntradas[name=' + key + ']');
+   			
+   			if (panel != undefined && panel.length >= 1)
+   				panel[0].down('label[name=disponibles]').setText(DISPONIBLES + this.disponibles[key]);
+   		}
+   	},
+
+   	muestraPrecios: function() {
+   		var PRECIOS = UI.i18n.field.precioPorEntrada;
+   		var EURO = '&euro;';
+   		for (var key in this.precios) {
+   			var panel = Ext.ComponentQuery.query('panelSeleccionarNoNumeradas panelNumeroEntradas[name=' + key + ']');
+   			if (panel != undefined && panel.length >= 1) {
+   				panel[0].down('panel[name=preuNormal]').update(PRECIOS + this.precios[key]['normal'] + EURO);
+   				panel[0].down('panel[name=preuDescuento]').update(PRECIOS + this.precios[key]['descuento'] + EURO);
+   				panel[0].down('panel[name=preuInvitacion]').update(PRECIOS + this.precios[key]['invitacion'] + EURO);
+   			}
+   		}
+   		/*this.getPanelAnfiteatro().down('panel[name=preuNormal]').update(PRECIOS + this.precios['anfiteatro']['normal'] + EURO);
+   		this.getPanelPlatea1().down('panel[name=preuNormal]').update(PRECIOS + this.precios['platea1']['normal'] + EURO);
+   		this.getPanelPlatea2().down('panel[name=preuNormal]').update(PRECIOS + this.precios['platea2']['normal'] + EURO);
+   		this.getPanelDiscapacitados1().down('panel[name=preuNormal]').update(PRECIOS + this.precios['discapacitados1']['normal'] + EURO);
+   		this.getPanelDiscapacitados2().down('panel[name=preuNormal]').update(PRECIOS + this.precios['discapacitados2']['normal'] + EURO);
+   		this.getPanelDiscapacitados3().down('panel[name=preuNormal]').update(PRECIOS + this.precios['discapacitados3']['normal'] + EURO);
+
+   		this.getPanelAnfiteatro().down('panel[name=preuDescuento]').update(PRECIOS + this.precios['anfiteatro']['descuento'] + EURO);
+   		this.getPanelPlatea1().down('panel[name=preuDescuento]').update(PRECIOS + this.precios['platea1']['descuento'] + EURO);
+   		this.getPanelPlatea2().down('panel[name=preuDescuento]').update(PRECIOS + this.precios['platea2']['descuento'] + EURO);
+   		this.getPanelDiscapacitados1().down('panel[name=preuDescuento]').update(PRECIOS + this.precios['discapacitados1']['descuento'] + EURO);
+   		this.getPanelDiscapacitados2().down('panel[name=preuDescuento]').update(PRECIOS + this.precios['discapacitados2']['descuento'] + EURO);
+   		this.getPanelDiscapacitados3().down('panel[name=preuDescuento]').update(PRECIOS + this.precios['discapacitados3']['descuento'] + EURO);
+
+   		this.getPanelAnfiteatro().down('panel[name=preuInvitacion]').update(PRECIOS + this.precios['anfiteatro']['invitacion'] + EURO);
+   		this.getPanelPlatea1().down('panel[name=preuInvitacion]').update(PRECIOS + this.precios['platea1']['invitacion'] + EURO);
+   		this.getPanelPlatea2().down('panel[name=preuInvitacion]').update(PRECIOS + this.precios['platea2']['invitacion'] + EURO);
+   		this.getPanelDiscapacitados1().down('panel[name=preuInvitacion]').update(PRECIOS + this.precios['discapacitados1']['invitacion'] + EURO);
+   		this.getPanelDiscapacitados2().down('panel[name=preuInvitacion]').update(PRECIOS + this.precios['discapacitados2']['invitacion'] + EURO);
+   		this.getPanelDiscapacitados3().down('panel[name=preuInvitacion]').update(PRECIOS + this.precios['discapacitados3']['invitacion'] + EURO);*/
+   	},
+
+   	activaCamposCompra: function() {
+   		for (var key in this.disponibles) {
+   			//console.log(key);
+   			//console.log(this.disponibles[key]);
+   			var hayDisponibles = (this.disponibles[key]==0)?false:true;
+   			var hayPrecioNormal = false, hayPrecioDescuento = false, hayPrecioInvitacion = false;
+   			var panel;
+   			
+   			if (this.precios[key] != undefined && this.precios[key] != '' && this.precios[key] != 0) {
+   				//console.log(this.precios[key]['normal']);
+   				hayPrecioNormal = (this.precios[key]['normal'] == undefined)?false:true;
+   				hayPrecioDescuento = (this.precios[key]['descuento'] == undefined)?false:true;
+   				hayPrecioInvitacion = (this.precios[key]['invitacion'] == undefined)?false:true;
+   			}
+
+   			if (hayDisponibles) {
+   				switch (key) {
+   					case 'anfiteatro':
+   						panel = this.getPanelAnfiteatro();
+   						break;
+   					case 'platea1':
+   						panel = this.getPanelPlatea1();
+   						break;
+   					case 'platea2':
+   						panel = this.getPanelPlatea2();
+   						break;
+   					case 'discapacitados1':
+   						panel = this.getPanelDiscapacitados1();
+   						break;
+   					case 'discapacitados2':
+   						panel = this.getPanelDiscapacitados2();
+   						break;
+   					case 'discapacitados2':
+   						panel = this.getPanelDiscapacitados2();
+   						break;
+   				}
+				panel.down('numberfield[name=normal]').setDisabled(!hayPrecioNormal);
+				panel.down('numberfield[name=descuento]').setDisabled(!hayPrecioDescuento);
+				panel.down('numberfield[name=invitacion]').setDisabled(!hayPrecioInvitacion);
+   			}
+   		}
+   	},
    
-   cambiaLocalizacionNoNumerada: function(localizacion) {
-	   this.muestraLocalizacionNoNumerada(localizacion);
-	   this.muestraDisponiblesLocalizacion(localizacion);
-   },
-   
-   muestraLocalizacionNoNumerada: function(localizacion) {
-	   /*
-	   var children = this.getLocalizacionesNoNumeradas().getEl().down('*');
-	   Ext.each(children,function(child){child.hide();});
-	   */
-	   
-	   //console.log(this.getLocalizacionesNoNumeradas().items);
-	   
-	   this.getLocalizacionesNoNumeradas().items.each(function(c){
-		   
-		   console.log('c.name:' + c.name);
-		   console.log('localizacion:' + localizacion);
-		   
-		   if (c.name == localizacion)
-			   c.show();
-		   else
-			   c.hide();
-	   });
-   },
-   
-   muestraDisponiblesLocalizacion: function(localizacion) {
-	   
-	   this.getDisponiblesNoNumeradas().setText(this.disponibles[localizacion]);
-   },
-   
-   panelSeleccionarNoNumeradasCreado: function() {
-	   
+   	panelSeleccionarNoNumeradasCreado: function() {
 	   var me = this;
 	   var idSesion = this.getGridSesionesTaquilla().getSelectedRecord().data['id'];
 	   
 	   this.cargaPrecios(idSesion, function() {
 		   me.cargaDisponibles(idSesion, function() {
-			   me.getFormComprar().cargaComboStore('localizacion', undefined);
-			   me.getComboLocalizacionNoNumeradas().setValue('anfiteatro');
-			   me.cambiaLocalizacionNoNumerada('anfiteatro');
+			   me.muestraDisponibles();
+			   me.muestraPrecios();
+			   me.activaCamposCompra();
 		   });
 	   });
-   },
+   	},
    
    avanzarAPasoDePago: function (butacas) {
 	   
@@ -255,37 +345,37 @@ Ext.define('Paranimf.controller.Taquilla', {
 	   
    },
    
-   getButacasNoNumeradas: function() {
-	   
-	   var me = this;
-	   var butacas = [];
-	   
-	   this.getLocalizacionesNoNumeradas().items.each(function(panel){
-		   panel.items.each(function(field){
-			   console.log(panel.name + ' - ' + field.name + ' - ' + field.value);
-		
-			   for (var i=0; i<parseInt(field.value); i++)
-			   {
-					var butaca = {
-							localizacion : panel.name,
-							fila : null,
-							numero : null,
-							x : null,
-							y : null,
-							tipo : field.name,
-							precio: me.precios[panel.name][field.name]
-						};
-					
-				   butacas.push(butaca);
-			   }
-			   //total += field.value * me.precios[panel.name][field.name];			   
-		   });
-	   });
-	   
-	   console.log(butacas);
-	   
-	   return butacas;
-   },
+   	getButacasNoNumeradas: function() {
+	   	var me = this;
+	   	var butacas = [];
+	   	var tipos = {};tipos['normal'] = '';tipos['descuento'] = '';tipos['invitacion'] = '';
+	   	for (var key in this.precios) {
+	   		var panel = Ext.ComponentQuery.query('panelSeleccionarNoNumeradas panelNumeroEntradas[name=' + key + ']');
+   			if (panel != undefined && panel.length >= 1) {
+   				for (var tipoEntrada in tipos) {
+   					//console.log(tipoEntrada);
+   					//console.log(panel[0].down('numberfield[name=' + tipoEntrada + ']'));
+   					var value = panel[0].down('numberfield[name=' + tipoEntrada + ']').value;
+   					for (var i=0; i<parseInt(value); i++)
+				   	{
+						var butaca = {
+								localizacion : key,
+								fila : null,
+								numero : null,
+								x : null,
+								y : null,
+								tipo : tipoEntrada,
+								precio: me.precios[key][tipoEntrada]
+							};
+						
+					   	butacas.push(butaca);
+				   	}
+   				}
+   			}
+	   	}
+	   	//console.log(butacas);
+	   	return butacas;
+   	},
    
    muestraMensajePagoTarjeta: function(mensaje) {
 	   if (this.getEstadoPagoTarjeta()!=null)
@@ -523,7 +613,7 @@ Ext.define('Paranimf.controller.Taquilla', {
    },
    
    muestraEnlacePdf: function() {
-	   console.log(this.getVerEntrada());
+	   //console.log(this.getVerEntrada());
 	   
 	   var href = urlPublic + '/rest/compra/' + this.uuidCompra + '/pdf';
 	   
@@ -541,7 +631,7 @@ Ext.define('Paranimf.controller.Taquilla', {
 	    	  success: function (response) {
 	    		  
 	    		  var jsonData = Ext.decode(response.responseText);
-	    		  console.log(jsonData);
+	    		  //console.log(jsonData);
 	    		  
 	    		  me.precios = {};
 	    		  
@@ -551,7 +641,7 @@ Ext.define('Paranimf.controller.Taquilla', {
 					me.precios[sesion.localizacion.codigo] = {normal:sesion.precio, descuento:sesion.descuento, invitacion:sesion.invitacion};
 	    		  }
 
-	    		  console.log(me.precios);
+	    		  //console.log(me.precios);
 	    		  
 	    		  callback();
 	    		  
@@ -571,7 +661,7 @@ Ext.define('Paranimf.controller.Taquilla', {
 	    	  success: function (response) {
 	    		  
 	    		  var jsonData = Ext.decode(response.responseText);
-	    		  console.log(jsonData);
+	    		  //console.log(jsonData);
 	    		  
 	    		  me.disponibles = {};
 	    		  
@@ -581,7 +671,7 @@ Ext.define('Paranimf.controller.Taquilla', {
 					me.disponibles[disponible.localizacion] = disponible.disponibles;
 	    		  }
 
-	    		  console.log(me.disponibles);
+	    		  //console.log(me.disponibles);
 	    		  
 	    		  callback();
 	    		  
@@ -608,12 +698,12 @@ Ext.define('Paranimf.controller.Taquilla', {
    },
    
    comprarAnterior: function() {
-	   console.log('Anterior');
+	   //console.log('Anterior');
 	   
 	   var layout = this.getFormComprarCards().getLayout();
 	   var pasoActual = layout.activeItem.id;
 	   
-	   console.log(pasoActual);
+	   //console.log(pasoActual);
 	   
 	   if (pasoActual != 'pasoSeleccionar')
 	   {
@@ -624,12 +714,12 @@ Ext.define('Paranimf.controller.Taquilla', {
    },
 
    comprarSiguiente: function() {
-	   console.log('Siguiente');
+	   //console.log('Siguiente');
 	   
 	   var layout = this.getFormComprarCards().getLayout();
 	   var pasoActual = layout.activeItem.id;
 	   
-	   console.log(pasoActual);
+	   //console.log(pasoActual);
 	   
 	   if (pasoActual == 'pasoSeleccionar')
 	   {

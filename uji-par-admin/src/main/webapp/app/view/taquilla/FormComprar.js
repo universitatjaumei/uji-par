@@ -11,20 +11,7 @@ Ext.define('Paranimf.view.taquilla.FormComprar', {
       labelWidth: 190
    },
    
-   /*
-   buttons: [{
-	      xtype: 'button',
-	      text: UI.i18n.button.pagar,
-	      action: 'pagar'
-	   }, {
-	      xtype: 'button',
-	      text: UI.i18n.button.cancel,
-	      handler: function() {
-	         this.up('window').close();
-	      }
-	   }],
-    */
-   buttons: [],
+   buttons: undefined,
    
    bbar: ['->', {
 	   id: 'comprarAnterior',
@@ -43,11 +30,13 @@ Ext.define('Paranimf.view.taquilla.FormComprar', {
 	   id: 'formComprarCards',
 	   frame: false,
 	   layout: 'card',
-	   border: 0,
+	   border: false,
 	   items: [{
 		        id    : 'pasoSeleccionar',
 		        xtype : 'panel',
 		        layout: 'card',
+		        border: false,
+		        frame: false,
 		        items: [{
 					        id    : 'iframeButacas',
 					        xtype : 'component',
@@ -57,6 +46,8 @@ Ext.define('Paranimf.view.taquilla.FormComprar', {
 					        }
 				        },
 				        {
+				        	border: false,
+				        	frame: false,
 					        id    : 'noNumeradas',
 					        xtype: 'panelSeleccionarNoNumeradas'
 					    }]

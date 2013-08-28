@@ -5,9 +5,9 @@ UI =
             "spaces": "Reserva d'espais",
             "config": "Configuració del sistema",
             "warn": "Incidència",
-            "pagar": "Realizar pago",
-            "comprar": "Realizar compra",
-            "reservar": "Realizar reserva"
+            "pagar": "Realitzar pagament",
+            "comprar": "Realitzar compra",
+            "reservar": "Realitzar reserva"
         },
         "message": {
         	"event": "És obligatori seleccionar un event",
@@ -31,9 +31,9 @@ UI =
             "si": "Sí",
             "no": "No",
             "plantillaPrecios": "És obligatori seleccionar una plantilla de preus",
-            "registroConMismaLocalizacionExiste": "Ja existeix un registre per a aquesta localització, modifique l'existent o esborri'l",
+            "registroConMismaLocalizacionExiste": "Ja existeix un registre per a aquesta localització, modifique l'existent o esborre'l",
             "compraRegistradaOk": "Compra registrada correctament",
-            "pagoTarjetaEnviando": "Enviant pagament a lector de tarjetes...",
+            "pagoTarjetaEnviando": "Enviant pagament al lector de tarjetes...",
             "pagoTarjetaEnviadoLector": "El pagament ha sigut enviat correctament al lector de tarjetes... Introduïu la tarjeta",
             "pagoTarjetaCorrecto": "Pagament amb tarjeta correcte"
         },
@@ -75,7 +75,7 @@ UI =
             	"8":"Resposta desconeguda",
             	"9":"Pinpad no retorna dades",
             	"10":"Resposta no dessitjada",
-            	"20":"Transacció de banda aprobada",
+            	"20":"Transacció de banda aprovada",
             	"21":"Transacció de banda denegada",
             	"22":"Sense dades",
             	"23":"Dades d'entrada incorrectes",
@@ -85,7 +85,7 @@ UI =
             	"27":"Error en RTS",
             	"28":"Pista 2 incorrecta",
             	"29":"Luhn incorrecte",
-            	"30":"Operació aprobada",
+            	"30":"Operació aprovada",
             	"31":"Operació denegada",
             	"32":"Operació cancel·lada",
             	"33":"Aplicació incorrecta",
@@ -198,7 +198,7 @@ UI =
 			"user":"Usuari",
 			"days":"Dies",
 			"activeUser":"Usuari actiu",
-			"active":"Activu",
+			"active":"Actiu",
 			"hours":"Horaris",
 			"eventDate": "Data de celebració",
 			"opening": "Obertura de portes",
@@ -229,16 +229,28 @@ UI =
             "tarjeta": "Tarjeta",
             "total": "Total",
             "normal": "Normal",
-            "descuento": "Descuento",
-            "invitacion": "Invitación",
+            "descuento": "Descompte",
+            "invitacion": "Invitació",
             "disponibles":"Disponibles",
+            "entradesDisponibles": "Entrades disponibles: ",
             "desde": "Des de",
             "hasta": "Fins a",
             "observacionesReserva": "Observaciones",
             "pagada": "Pagada",
             "reserva": "Reserva",
             "idLocalitzacio": "Identificador intern de la localització",
-            "plantillaPreusInterna": "Identificador intern de la plantilla de preus"
+            "plantillaPreusInterna": "Identificador intern de la plantilla de preus",
+            "precioPorEntrada": "Preu per entrada: ",
+            "totalCompra": "Total de les entrades comprades: "
+        },
+
+        "legends": {
+            "entradesAmfiteatre": "Entrades AMFITEATRE",
+            "entradesPlatea1": "Entrades PLATEA NIVELL 1",
+            "entradesPlatea2": "Entrades PLATEA NIVELL 2",
+            "entradesDiscapacitados1": "Entrades DISCAPACITATS PLATEA NIVELL 1",
+            "entradesDiscapacitados2": "Entrades DISCAPACITATS PLATEA NIVELL 2",
+            "entradesDiscapacitados3": "Entrades DISCAPACITATS AMFITEATRE"
         }
     }
 }
