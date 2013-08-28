@@ -36,7 +36,7 @@ public class UsuariosDAOTest
     @Transactional
     public void getUsuarios()
     {
-        Assert.assertNotNull(usuariosDAO.getUsers());
+        Assert.assertNotNull(usuariosDAO.getUsers("", 0, 100));
     }
 
     @Test
@@ -77,7 +77,7 @@ public class UsuariosDAOTest
     public void updateUsuarioBorrandoMail() throws UsuarioYaExisteException
     {
         Usuario parUsuario = new Usuario();
-        parUsuario.setId(usuariosDAO.getUsers().get(0).getId());
+        parUsuario.setId(usuariosDAO.getUsers("", 0, 100).get(0).getId());
         parUsuario.setNombre("Prueba2");
         usuariosDAO.updateUser(parUsuario);
     }

@@ -2,7 +2,7 @@ Ext.define('Paranimf.store.TiposEventos', {
    extend: 'Ext.data.Store',
    model: 'Paranimf.model.TipoEvento',
 
-   sorters: ['nombre_es'],
+   sorters: ['nombreEs'],
    autoLoad: false,
    autoSync: true,
    pageSize: 10,

@@ -71,6 +71,7 @@ Ext.application({
                border: false,
                flex: 1,
                items: [{
+                     border: false,
                      xtype: 'dashboard'
                   }, {
                      xtype: 'gridUsuarios'

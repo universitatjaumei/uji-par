@@ -190,11 +190,11 @@ public class ComprasService
         return resultadoCompra;
     }
 
-    public List<Compra> getComprasBySesion(long sesionId)
+    public List<Compra> getComprasBySesion(long sesionId, String sortParameter, int start, int limit)
     {
         List<Compra> result = new ArrayList<Compra>();
         
-        List<CompraDTO> compras = comprasDAO.getComprasBySesion(sesionId);
+        List<CompraDTO> compras = comprasDAO.getComprasBySesion(sesionId, sortParameter, start, limit);
 
         for (CompraDTO compraDTO: compras)
             result.add(new Compra(compraDTO));
@@ -203,9 +203,9 @@ public class ComprasService
     }
     
 
-    public List<Compra> getComprasBySesionFechaSegundos(long sesionId)
+    public List<Compra> getComprasBySesionFechaSegundos(long sesionId, String sortParameter, int start, int limit)
     {
-        List<Compra> compras = getComprasBySesion(sesionId);
+        List<Compra> compras = getComprasBySesion(sesionId, sortParameter, start, limit);
         
         for (Compra compra : compras)
         {
@@ -214,6 +214,10 @@ public class ComprasService
         
         return compras;
     }
+
+	public int getTotalComprasBySesion(Long sesionId) {
+		return comprasDAO.getTotalComprasBySesion(sesionId);
+	}
 }
 
 

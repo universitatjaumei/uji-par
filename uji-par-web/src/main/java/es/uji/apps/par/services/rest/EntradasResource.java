@@ -456,7 +456,8 @@ public class EntradasResource extends BaseResource
     @Produces(MediaType.APPLICATION_JSON)
     public Response getPreciosSesion(@PathParam("id") Long sesionId)
     {
-        return Response.ok().entity(new RestResponse(true, sesionesService.getPreciosSesion(sesionId))).build();
+        return Response.ok().entity(new RestResponse(true, sesionesService.getPreciosSesion(sesionId), 
+        		sesionesService.getTotalPreciosSesion(sesionId))).build();
     }
 
     @GET

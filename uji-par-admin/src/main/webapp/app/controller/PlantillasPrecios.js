@@ -79,7 +79,7 @@ Ext.define('Paranimf.controller.PlantillasPrecios', {
    recargaStores: function(comp, opts) {
       var localizacionId = undefined;
       if (this.getGridPrecios().getSelectedColumnId() != undefined)
-         localizacionId = this.getGridPrecios().getSelectedRecord(this.getGridPrecios()).data.localizacion_id;
+         localizacionId = this.getGridPrecios().getSelectedRecord(this.getGridPrecios()).data.parLocalizacione;
 
       this.getFormPrecios().cargaComboStore('localizacion', localizacionId);
       this.getFormPrecios().cargaComboStore('plantillaPrecios', this.getGridPlantillas().getSelectedColumnId());

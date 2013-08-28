@@ -5,9 +5,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,31 +22,25 @@ import es.uji.apps.par.db.TipoEventoDTO;
 import es.uji.apps.par.model.Evento;
 
 @Repository
-public class EventosDAO
+public class EventosDAO extends BaseDAO
 {
-    @PersistenceContext
-    private EntityManager entityManager;
-
     private QEventoDTO qEventoDTO = QEventoDTO.eventoDTO;
 
     @Transactional
-    public List<EventoDTO> getEventos()
+    public List<EventoDTO> getEventos(String sortParameter, int start, int limit)
     {
-        return getEventos(false);
+        return getEventos(false, sortParameter, start, limit);
     }
     
     @Transactional
-    public List<EventoDTO> getEventosActivos()
+    public List<EventoDTO> getEventosActivos(String sortParameter, int start, int limit)
     {
-        return getEventos(true);
+        return getEventos(true, sortParameter, start, limit);
     }    
     
-    public List<EventoDTO> getEventos(boolean activos)
+    @Transactional
+    public List<EventoDTO> getEventos(boolean activos, String sortParameter, int start, int limit)
     {
-        QTipoEventoDTO qTipoEventoDTO = QTipoEventoDTO.tipoEventoDTO;
-        QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
-        
-        JPAQuery query = new JPAQuery(entityManager);
         QTuple fields = new QTuple(qEventoDTO.caracteristicasEs, qEventoDTO.caracteristicasVa,
                 qEventoDTO.comentariosEs, qEventoDTO.comentariosVa, qEventoDTO.companyiaEs,
                 qEventoDTO.companyiaVa, qEventoDTO.descripcionEs, qEventoDTO.descripcionVa,
@@ -63,27 +54,36 @@ public class EventosDAO
         List<Tuple> listadoTuples;
         
         if (activos)
-        {
-            Timestamp now = new Timestamp(new Date().getTime());
-            
-            listadoTuples = query
-                .from(qEventoDTO, qTipoEventoDTO)
-                .innerJoin(qEventoDTO.parSesiones, qSesionDTO)
-                .distinct()
-                .where(qEventoDTO.parTiposEvento.id.eq(qTipoEventoDTO.id).and(qSesionDTO.fechaCelebracion.after(now)))
-                .list(fields);
-        }
+            listadoTuples = getQueryEventosActivos().orderBy(getSort(qEventoDTO, sortParameter)).offset(start).limit(limit).list(fields);
         else
-        {
-            listadoTuples = query
-                    .from(qEventoDTO, qTipoEventoDTO)
-                    .where(qEventoDTO.parTiposEvento.id.eq(qTipoEventoDTO.id))
-                    .list(fields);            
-        }
+            listadoTuples = getQueryEventos().orderBy(getSort(qEventoDTO, sortParameter)).offset(start).limit(limit).list(fields);            
 
         return tuplesToParEventoDTO(listadoTuples);
-    }    
+    }
 
+    @Transactional
+	private JPAQuery getQueryEventos() {
+		JPAQuery query = new JPAQuery(entityManager);
+		QTipoEventoDTO qTipoEventoDTO = QTipoEventoDTO.tipoEventoDTO;
+		return query
+		        .from(qEventoDTO, qTipoEventoDTO)
+		        .where(qEventoDTO.parTiposEvento.id.eq(qTipoEventoDTO.id));
+	}
+
+    @Transactional
+	private JPAQuery getQueryEventosActivos() {
+		QTipoEventoDTO qTipoEventoDTO = QTipoEventoDTO.tipoEventoDTO;
+        QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
+		JPAQuery query = new JPAQuery(entityManager);
+		Timestamp now = new Timestamp(new Date().getTime());
+		return query
+		    .from(qEventoDTO, qTipoEventoDTO)
+		    .innerJoin(qEventoDTO.parSesiones, qSesionDTO)
+		    .distinct()
+		    .where(qEventoDTO.parTiposEvento.id.eq(qTipoEventoDTO.id).and(qSesionDTO.fechaCelebracion.after(now)));
+	}    
+
+    @Transactional
     private List<EventoDTO> tuplesToParEventoDTO(List<Tuple> listadoTuples)
     {
         List<EventoDTO> listadoParEventoDTO = new ArrayList<EventoDTO>();
@@ -96,6 +96,7 @@ public class EventosDAO
         return listadoParEventoDTO;
     }
 
+    @Transactional
     private EventoDTO rellenarParEventoDTOConTupla(Tuple tupla)
     {
         EventoDTO parEventoDTO = new EventoDTO();
@@ -141,6 +142,7 @@ public class EventosDAO
         return parEventoDTO;
     }
 
+    @Transactional
     public List<EventoDTO> getEventoDTO(Long id)
     {
         QTipoEventoDTO qTipoEventoDTO = QTipoEventoDTO.tipoEventoDTO;
@@ -171,6 +173,7 @@ public class EventosDAO
         return evento;
     }
 
+    @Transactional
     private EventoDTO rellenarParEventoDTOConParEvento(Evento evento, EventoDTO eventoDTO)
     {
         eventoDTO.setCaracteristicasEs(evento.getCaracteristicasEs());
@@ -198,10 +201,10 @@ public class EventosDAO
         eventoDTO.setInterpretesEs(evento.getInterpretesEs());
         eventoDTO.setInterpretesVa(evento.getInterpretesVa());
 
-        if (evento.getParTipoEvento() != null)
+        if (evento.getParTiposEvento() != null)
         {
             TipoEventoDTO parTipoEventoDTO = new TipoEventoDTO();
-            parTipoEventoDTO.setId(evento.getParTipoEvento().getId());
+            parTipoEventoDTO.setId(evento.getParTiposEvento().getId());
             eventoDTO.setParTiposEvento(parTipoEventoDTO);
         }
         eventoDTO.setPremiosEs(evento.getPremiosEs());
@@ -260,7 +263,18 @@ public class EventosDAO
                 .setNull(qEventoDTO.imagenSrc).where(qEventoDTO.id.eq(eventoId)).execute();
     }
 
+    @Transactional
 	public EventoDTO getEventoById(long eventoId) {
 		return entityManager.find(EventoDTO.class, eventoId);
+	}
+
+    @Transactional
+	public int getTotalEventosActivos() {
+		return (int) getQueryEventosActivos().count();
+	}
+
+    @Transactional
+	public int getTotalEventos() {
+		return (int) getQueryEventos().count();
 	}
 }

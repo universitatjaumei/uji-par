@@ -1,7 +1,7 @@
 package es.uji.apps.par.services.rest;
 
 import java.net.URI;
-import java.util.Collections;
+import java.util.Arrays;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -11,6 +11,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -21,6 +22,7 @@ import es.uji.apps.par.model.Plantilla;
 import es.uji.apps.par.model.PreciosPlantilla;
 import es.uji.apps.par.services.PlantillasService;
 import es.uji.apps.par.services.PreciosPlantillaService;
+import es.uji.apps.par.utils.Utils;
 
 @Path("plantillaprecios")
 public class PlantillasPreciosResource {
@@ -33,9 +35,11 @@ public class PlantillasPreciosResource {
 	
 	@GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAll()
+    public Response getAll(@QueryParam("sort") String sort, @QueryParam("start") int start, @QueryParam("limit") int limit)
     {
-        return Response.ok().entity(new RestResponse(true, plantillaPreciosService.getAll())).build();
+		limit = Utils.inicializarLimitSiNecesario(limit);
+        return Response.ok().entity(new RestResponse(true, plantillaPreciosService.getAll(sort, start, limit), 
+        		plantillaPreciosService.getTotalPlantillaPrecios())).build();
     }
 
     @DELETE
@@ -55,7 +59,7 @@ public class PlantillasPreciosResource {
         Plantilla newPlantillaPrecios = plantillaPreciosService.add(plantillaPrecios);
         // TODO crear URI
         return Response.created(URI.create(""))
-                .entity(new RestResponse(true, Collections.singletonList(newPlantillaPrecios))).build();
+                .entity(new RestResponse(true, Arrays.asList(newPlantillaPrecios), 1)).build();
     }
 
     @PUT
@@ -67,23 +71,29 @@ public class PlantillasPreciosResource {
     	plantillaPrecios.setId(Long.valueOf(id));
     	plantillaPreciosService.update(plantillaPrecios);
         return Response.ok()
-                .entity(new RestResponse(true, Collections.singletonList(plantillaPrecios))).build();
+                .entity(new RestResponse(true, Arrays.asList(plantillaPrecios), 1)).build();
     }
     
     @GET
     @Path("{id}/precios")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getPrecios(@PathParam("id") String id)
+    public Response getPrecios(@PathParam("id") String id, @QueryParam("sort") String sort, @QueryParam("start") int start, @QueryParam("limit") int limit)
     {
-        return Response.ok().entity(new RestResponse(true, preciosService.getPreciosOfPlantilla(Long.valueOf(id)))).build();
+    	limit = Utils.inicializarLimitSiNecesario(limit);
+        return Response.ok().entity(new RestResponse(true, 
+        		preciosService.getPreciosOfPlantilla(Long.valueOf(id), sort, start, limit), 
+        		preciosService.getTotalPreciosOfPlantilla(Long.valueOf(id)))).build();
     }
     
     @GET
     @Path("editables")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getPlantillasEditables()
+    public Response getPlantillasEditables(@QueryParam("sort") String sort, @QueryParam("start") int start, @QueryParam("limit") int limit)
     {
-        return Response.ok().entity(new RestResponse(true,  plantillaPreciosService.getEditables())).build();
+    	limit = Utils.inicializarLimitSiNecesario(limit);
+        return Response.ok().entity(new RestResponse(true, 
+        		plantillaPreciosService.getEditables(sort, start, limit), 
+        		plantillaPreciosService.getTotalPlantillasEditables())).build();
     }
     
     @DELETE
@@ -104,18 +114,19 @@ public class PlantillasPreciosResource {
         PreciosPlantilla newPrecio = preciosService.add(precio);
         // TODO crear URI
         return Response.created(URI.create(""))
-                .entity(new RestResponse(true, Collections.singletonList(newPrecio))).build();
+                .entity(new RestResponse(true, Arrays.asList(newPrecio), 1)).build();
     }
 
     @PUT
     @Path("{plantillaId}/precios/{precioId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updatePrecio(@PathParam("plantillaId") String plantillaId, @PathParam("precioId") String precioId, PreciosPlantilla precio) throws GeneralPARException
+    public Response updatePrecio(@PathParam("plantillaId") String plantillaId, 
+    		@PathParam("precioId") String precioId, PreciosPlantilla precio) throws GeneralPARException
     {
     	precio.setId(Long.valueOf(precioId));
     	preciosService.update(precio);
         return Response.ok()
-                .entity(new RestResponse(true, Collections.singletonList(precio))).build();
+                .entity(new RestResponse(true, Arrays.asList(precio), 1)).build();
     }
 }

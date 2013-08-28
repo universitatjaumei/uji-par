@@ -3,7 +3,7 @@ package es.uji.apps.par.services.rest;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,7 +56,7 @@ public class EventosResource extends BaseResource
 
         if (getLocale().getLanguage().equals("ca"))
         {
-            tipoEvento = evento.getParTipoEvento().getNombreVa();
+            tipoEvento = evento.getParTiposEvento().getNombreVa();
             titulo = evento.getTituloVa();
             companyia = evento.getCompanyiaVa();
             duracion = evento.getDuracionVa();
@@ -67,7 +67,7 @@ public class EventosResource extends BaseResource
         }
         else
         {
-            tipoEvento = evento.getParTipoEvento().getNombreEs();
+            tipoEvento = evento.getParTiposEvento().getNombreEs();
             titulo = evento.getTituloEs();
             companyia = evento.getCompanyiaEs();
             duracion = evento.getDuracionEs();
@@ -127,12 +127,13 @@ public class EventosResource extends BaseResource
 
     private String getFechaSesion(Sesion sesion)
     {
-        Date fecha = sesion.getFechaCelebracion();
+    	Calendar cal = Calendar.getInstance();
+    	cal.setTime(sesion.getFechaCelebracion());
         SimpleDateFormat format = new SimpleDateFormat("dd MMMM HH.mm", getLocale());
         
-        String diaSemana = ResourceProperties.getProperty(getLocale(), "dia.abreviado." + fecha.getDay());
+        String diaSemana = ResourceProperties.getProperty(getLocale(), "dia.abreviado." + cal.get(Calendar.DAY_OF_WEEK));
         
-        return diaSemana + " " + format.format(fecha) + " / " + getPrecioSesion(sesion) + " euros";
+        return diaSemana + " " + format.format(cal.getTime()) + " / " + getPrecioSesion(sesion) + " euros";
     }
     
     private String getPrecioSesion(Sesion sesion)

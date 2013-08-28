@@ -21,7 +21,7 @@ Ext.define('Paranimf.model.Evento', {
       'comentariosVa',
       'tipoEvento',
       
-      'parTipoEvento',
+      'parTiposEvento',
       
       'dataBinary',
       'dataBinaryDetail',

@@ -17,12 +17,20 @@ Ext.define('Paranimf.view.evento.GridEventos', {
 
       this.columns = [{
         dataIndex: 'id',
-        hidden: true
+        hidden: true,
+        text: UI.i18n.field.idIntern
       }, {
         dataIndex: 'asientosNumerados',
-        hidden: true
+        hidden: true,
+        text: UI.i18n.field.asientosNumerados,
+        renderer: function(val) {
+          if (val ==0)
+            return 'No';
+          else
+            return 'Sí';
+        }
       }, {
-        dataIndex: 'parTipoEvento',
+        dataIndex: 'parTiposEvento',
         text: UI.i18n.field.type,
         flex: 2,
         renderer: function (val, p) {

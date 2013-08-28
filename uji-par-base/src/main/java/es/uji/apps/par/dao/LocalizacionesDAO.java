@@ -4,9 +4,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,28 +16,33 @@ import es.uji.apps.par.db.QLocalizacionDTO;
 import es.uji.apps.par.model.Localizacion;
 
 @Repository
-public class LocalizacionesDAO
+public class LocalizacionesDAO extends BaseDAO
 {
-
-    @PersistenceContext
-    private EntityManager entityManager;
-
     private QLocalizacionDTO qParLocalizacionDTO = QLocalizacionDTO.localizacionDTO;
 
     @Transactional
-    public List<LocalizacionDTO> get()
+    public List<LocalizacionDTO> get(String sortParameter, int start, int limit)
     {
-        JPAQuery query = new JPAQuery(entityManager);
+    	List<LocalizacionDTO> localizacion = new ArrayList<LocalizacionDTO>();
 
-        List<LocalizacionDTO> localizacion = new ArrayList<LocalizacionDTO>();
-
-        for (LocalizacionDTO localizacionDB : query.from(qParLocalizacionDTO)
-                .orderBy(qParLocalizacionDTO.nombreVa.asc()).list(qParLocalizacionDTO))
+    	//.orderBy(qParLocalizacionDTO.nombreVa.asc()
+        for (LocalizacionDTO localizacionDB : getQueryLocalizaciones().
+        		orderBy(getSort(qParLocalizacionDTO, sortParameter)).offset(start).limit(limit).list(qParLocalizacionDTO))
         {
             localizacion.add(localizacionDB);
         }
 
         return localizacion;
+    }
+    
+    public List<LocalizacionDTO> get() {
+		return get("", 0, 100);
+	}
+    
+    @Transactional
+    private JPAQuery getQueryLocalizaciones() {
+    	JPAQuery query = new JPAQuery(entityManager);
+    	return query.from(qParLocalizacionDTO);
     }
 
     @Transactional
@@ -91,4 +93,7 @@ public class LocalizacionesDAO
                 .singleResult(qParLocalizacionDTO);
     }
 
+	public int getTotalLocalizaciones() {
+		return (int) getQueryLocalizaciones().count();
+	}
 }

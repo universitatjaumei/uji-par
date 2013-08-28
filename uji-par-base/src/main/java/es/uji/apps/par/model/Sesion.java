@@ -22,7 +22,7 @@ public class Sesion
     private Date fechaCelebracion;
     private Date fechaInicioVentaOnline;
     private Date fechaFinVentaOnline;
-    private String horaAperturaPuertas;
+    private String horaApertura;
     private BigDecimal canalInternet;
     private BigDecimal canalTaquilla;
     private String horaCelebracion;
@@ -44,7 +44,7 @@ public class Sesion
         this.fechaInicioVentaOnline = new Date(
                 sesionDTO.getFechaInicioVentaOnline().getTime());
         this.fechaFinVentaOnline = new Date(sesionDTO.getFechaFinVentaOnline().getTime());
-        this.horaAperturaPuertas = sesionDTO.getHoraApertura();
+        this.horaApertura = sesionDTO.getHoraApertura();
         this.canalInternet = sesionDTO.getCanalInternet();
         this.canalTaquilla = sesionDTO.getCanalTaquilla();
         this.plantillaPrecios = Plantilla.plantillaPreciosDTOtoPlantillaPrecios(sesionDTO.getParPlantilla());
@@ -89,14 +89,14 @@ public class Sesion
         return fechaFinVentaOnline;
     }
 
-    public String getHoraAperturaPuertas()
+    public String getHoraApertura()
     {
-        return horaAperturaPuertas;
+        return horaApertura;
     }
 
-    public void setHoraAperturaPuertas(String horaAperturaPuertas)
+    public void setHoraApertura(String horaApertura)
     {
-        this.horaAperturaPuertas = horaAperturaPuertas;
+        this.horaApertura = horaApertura;
     }
 
     public BigDecimal getCanalInternet()
@@ -173,7 +173,7 @@ public class Sesion
 		sesion.setFechaFinVentaOnline(DateUtils.dateToSpanishString(sesionDTO.getFechaFinVentaOnline()));
 		sesion.setFechaInicioVentaOnline(DateUtils.dateToSpanishString(sesionDTO.getFechaInicioVentaOnline()));
 		
-		sesion.setHoraAperturaPuertas(sesionDTO.getHoraApertura());
+		sesion.setHoraApertura(sesionDTO.getHoraApertura());
 		sesion.setHoraInicioVentaOnline(DateUtils.getHourAndMinutesWithLeadingZeros(sesionDTO.getFechaInicioVentaOnline()));
 		sesion.setHoraFinVentaOnline(DateUtils.getHourAndMinutesWithLeadingZeros(sesionDTO.getFechaFinVentaOnline()));
 		
@@ -195,7 +195,7 @@ public class Sesion
 		sesionDTO.setFechaFinVentaOnline(DateUtils.dateToTimestampSafe(sesion.getFechaFinVentaOnline()));
 		sesionDTO.setFechaInicioVentaOnline(DateUtils.dateToTimestampSafe(sesion.getFechaInicioVentaOnline()));
 		
-		sesionDTO.setHoraApertura(sesion.getHoraAperturaPuertas());
+		sesionDTO.setHoraApertura(sesion.getHoraApertura());
 		sesionDTO.setId(sesion.getId());
 		sesionDTO.setParPlantilla(Plantilla.plantillaPreciosToPlantillaPreciosDTO(sesion.getPlantillaPrecios()));
 		

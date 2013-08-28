@@ -11,11 +11,13 @@ Ext.define('Paranimf.view.evento.GridPreciosSesion', {
       this.columns = [{
         dataIndex: 'id',
         hidden: true,
-        sortable: false
+        sortable: false,
+        text: UI.i18n.field.idIntern
       }, {
         dataIndex: 'localizacion',
         hidden: true,
-        sortable: false
+        sortable: false,
+        text: UI.i18n.field.idLocalitzacio
       }, {
         dataIndex: 'localizacion_nombre',
         text: UI.i18n.field.localizacion,

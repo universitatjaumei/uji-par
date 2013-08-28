@@ -3,9 +3,6 @@ package es.uji.apps.par.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,24 +15,21 @@ import es.uji.apps.par.db.QPlantillaDTO;
 import es.uji.apps.par.model.Plantilla;
 
 @Repository
-public class PlantillasDAO {
+public class PlantillasDAO extends BaseDAO {
 
-	@PersistenceContext
-    private EntityManager entityManager;
 	private QPlantillaDTO qPlantillaDTO = QPlantillaDTO.plantillaDTO;
 	
-	
 	@Transactional
-	public List<PlantillaDTO> get(boolean filtrarEditables) {
-		JPAQuery query = new JPAQuery(entityManager);
-
+	public List<PlantillaDTO> get(boolean filtrarEditables, String sortParameter, int start, int limit) {
         List<PlantillaDTO> plantillaPrecios = new ArrayList<PlantillaDTO>();
         List<PlantillaDTO> listaPlantillaPreciosDTO = new ArrayList<PlantillaDTO>();
         
         if (filtrarEditables)
-        	listaPlantillaPreciosDTO = query.from(qPlantillaDTO).where(qPlantillaDTO.id.ne(Long.valueOf("-1"))).orderBy(qPlantillaDTO.nombre.asc()).list(qPlantillaDTO);
+        	listaPlantillaPreciosDTO = getQueryPlantillasEditables().orderBy(getSort(qPlantillaDTO, sortParameter)).
+        		offset(start).limit(limit).list(qPlantillaDTO);
         else
-        	listaPlantillaPreciosDTO = query.from(qPlantillaDTO).orderBy(qPlantillaDTO.nombre.asc()).list(qPlantillaDTO);
+        	listaPlantillaPreciosDTO = getQueryPlantillas().orderBy(getSort(qPlantillaDTO, sortParameter)).
+        		offset(start).limit(limit).list(qPlantillaDTO);
 
         for (PlantillaDTO plantillaPreciosDB : listaPlantillaPreciosDTO)
         {
@@ -43,6 +37,18 @@ public class PlantillasDAO {
         }
 
         return plantillaPrecios;
+	}
+
+	@Transactional
+	private JPAQuery getQueryPlantillasEditables() {
+		JPAQuery query = new JPAQuery(entityManager);
+		return query.from(qPlantillaDTO).where(qPlantillaDTO.id.ne(Long.valueOf("-1")));
+	}
+	
+	@Transactional
+	private JPAQuery getQueryPlantillas() {
+		JPAQuery query = new JPAQuery(entityManager);
+		return query.from(qPlantillaDTO);
 	}
 	
 	@Transactional
@@ -71,7 +77,18 @@ public class PlantillasDAO {
         return plantillaPrecios;
 	}
 
+	@Transactional
 	public PlantillaDTO getPlantillaById(long id) {
 		return entityManager.find(PlantillaDTO.class, id); 
+	}
+
+	@Transactional
+	public int getTotalPlantillaPrecios() {
+		return (int) getQueryPlantillas().count();
+	}
+
+	@Transactional
+	public int getTotalPlantillasEditables() {
+		return (int) getQueryPlantillasEditables().count();
 	}
 }

@@ -1,9 +1,17 @@
 package es.uji.apps.par.utils;
 
+import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.security.MessageDigest;
+import java.util.HashMap;
+import java.util.List;
 
 import javax.ws.rs.core.Response.ResponseBuilder;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import es.uji.apps.par.model.OrdreGrid;
 
 public class Utils
 {
@@ -47,4 +55,25 @@ public class Utils
         return builder.header("Cache-Control", "no-cache, no-store, must-revalidate").header("Pragma", "no-cache")
                 .header("Expires", "0");
     }
+    
+    public static OrdreGrid getSortFromParameter(String sortParameter) {
+		try {
+			if (sortParameter != null && !sortParameter.equals("")) {
+				Gson gson = new Gson();
+				OrdreGrid sort = new OrdreGrid();
+				Type collectionType = new TypeToken<List<HashMap<String,String>>>(){}.getType();
+				List<HashMap<String,String>> list = gson.fromJson(sortParameter, collectionType);
+				sort.setPropietat(list.get(0).get("property"));
+				sort.setOrdre(list.get(0).get("direction"));
+				return sort;
+			} else
+				return null;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	public static int inicializarLimitSiNecesario(int limit) {
+		return (limit==0)?1000:limit;
+	}
 }

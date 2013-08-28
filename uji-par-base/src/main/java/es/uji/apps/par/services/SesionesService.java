@@ -39,26 +39,30 @@ public class SesionesService
     @Autowired
     private PreciosPlantillaService preciosPlantillaService;
     
-    public List<Sesion> getSesiones(Integer eventoId)
+    public List<Sesion> getSesiones(Integer eventoId, String sortParameter, int start, int limit)
     {
-    	return getSesiones(eventoId, false);
+    	return getSesiones(eventoId, false, sortParameter, start, limit);
     }
     
-    public List<Sesion> getSesionesActivas(Integer eventoId)
+    public List<Sesion> getSesiones(Integer eventoId) {
+		return getSesiones(eventoId, false, "", 0, 100);
+	}
+    
+    public List<Sesion> getSesionesActivas(Integer eventoId, String sortParameter, int start, int limit)
     {
-        return getSesiones(eventoId, true);
+        return getSesiones(eventoId, true, sortParameter, start, limit);
     }
     
-    private List<Sesion> getSesiones(Integer eventoId, boolean activos)
+    private List<Sesion> getSesiones(Integer eventoId, boolean activos, String sortParameter, int start, int limit)
     {
         List<Sesion> listaSesiones = new ArrayList<Sesion>();
         
         List<SesionDTO> sesiones;
         
         if (activos)
-            sesiones = sesionDAO.getSesionesActivas(eventoId);
+            sesiones = sesionDAO.getSesionesActivas(eventoId, sortParameter, start, limit);
         else
-            sesiones = sesionDAO.getSesiones(eventoId);
+            sesiones = sesionDAO.getSesiones(eventoId, sortParameter, start, limit);
         
         for (SesionDTO sesionDB: sesiones) {
             listaSesiones.add(new Sesion(sesionDB));
@@ -67,25 +71,25 @@ public class SesionesService
     }
     
     // Para el Ext que espera recibir segundos en vez de milisegundos
-    public List<Sesion> getSesionesDateEnSegundos(Integer eventoId)
+    public List<Sesion> getSesionesDateEnSegundos(Integer eventoId, String sortParameter, int start, int limit)
     {
-      return getSesionesDateEnSegundos(eventoId, false);
+      return getSesionesDateEnSegundos(eventoId, false, sortParameter, start, limit);
     }
     
     // Para el Ext que espera recibir segundos en vez de milisegundos
-    public List<Sesion> getSesionesActivasDateEnSegundos(Integer eventoId)
+    public List<Sesion> getSesionesActivasDateEnSegundos(Integer eventoId, String sortParameter, int start, int limit)
     {
-      return getSesionesDateEnSegundos(eventoId, true);
+    	return getSesionesDateEnSegundos(eventoId, true, sortParameter, start, limit);
     }    
     
-    public List<Sesion> getSesionesDateEnSegundos(Integer eventoId, boolean activos)
+    public List<Sesion> getSesionesDateEnSegundos(Integer eventoId, boolean activos, String sortParameter, int start, int limit)
     {
         List<Sesion> sesiones;
         
         if (activos)
-            sesiones = getSesionesActivas(eventoId);
+            sesiones = getSesionesActivas(eventoId, sortParameter, start, limit);
         else
-            sesiones = getSesiones(eventoId);
+            sesiones = getSesiones(eventoId, sortParameter, start, limit);
         
         for (Sesion sesion : sesiones)
         {
@@ -190,28 +194,29 @@ public class SesionesService
 			throw new CampoRequeridoException("Hora de fin de la venta online");
 	}
 
-	public List<PreciosSesion> getPreciosSesion(Long sesionId) {
+	public List<PreciosSesion> getPreciosSesion(Long sesionId, String sortParameter, int start, int limit) {
 		List<PreciosSesion> listaPreciosSesion = new ArrayList<PreciosSesion>();
     	
 		Sesion sesion = getSesion(sesionId);
 		
 		if (sesion.getPlantillaPrecios().getId() == -1)
 		{
-        	for (PreciosSesionDTO precioSesionDB: sesionDAO.getPreciosSesion(sesionId)) {
+        	for (PreciosSesionDTO precioSesionDB: sesionDAO.getPreciosSesion(sesionId, sortParameter, start, limit))
         		listaPreciosSesion.add(new PreciosSesion(precioSesionDB));
-        	}
 		}
 		else
 		{
-		    List<PreciosPlantilla> preciosPlantilla = preciosPlantillaService.getPreciosOfPlantilla(sesion.getPlantillaPrecios().getId());
+		    List<PreciosPlantilla> preciosPlantilla = preciosPlantillaService.getPreciosOfPlantilla(sesion.getPlantillaPrecios().getId(), sortParameter, start, limit);
             
             for(PreciosPlantilla precioPlantilla: preciosPlantilla)
-            {
                 listaPreciosSesion.add(new PreciosSesion(precioPlantilla));
-            }
 		}
 		
         return listaPreciosSesion;
+	}
+	
+	public List<PreciosSesion> getPreciosSesion(Long sesionId) {
+		return getPreciosSesion(sesionId, "", 0, 100);
 	}
 	
 	public Map<String, PreciosSesion> getPreciosSesionPorLocalizacion(Long sesionId)
@@ -219,9 +224,7 @@ public class SesionesService
 	    Map<String, PreciosSesion> resultado = new HashMap<String, PreciosSesion>();
 	    
 	    for (PreciosSesion precio: getPreciosSesion(sesionId))
-	    {
 	        resultado.put(precio.getLocalizacion().getCodigo(), precio);
-	    }
 	    
         return resultado;
 	}
@@ -230,5 +233,16 @@ public class SesionesService
 	{
 	    return new Sesion(sesionDAO.getSesion(id));
 	}
-	
+
+	public int getTotalSesionesActivas(Integer eventoId) {
+		return sesionDAO.getTotalSesionesActivas(eventoId);
+	}
+
+	public int getTotalSesiones(Integer eventoId) {
+		return sesionDAO.getTotalSesiones(eventoId);
+	}
+
+	public int getTotalPreciosSesion(Long sesionId) {
+		return sesionDAO.getTotalPreciosSesion(sesionId);
+	}
 }

@@ -19,7 +19,8 @@ Ext.define('Paranimf.view.tipoevento.GridTiposEventos', {
 
       this.columns = [{
          dataIndex: 'id',
-         hidden: true
+         hidden: true,
+         text: UI.i18n.field.idIntern
       }, {
          dataIndex: 'nombreEs',
          text: UI.i18n.field.name,

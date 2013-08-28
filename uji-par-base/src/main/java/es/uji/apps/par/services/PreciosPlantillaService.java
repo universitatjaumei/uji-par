@@ -16,12 +16,11 @@ public class PreciosPlantillaService {
 	@Autowired
     private PreciosPlantillaDAO preciosDAO;
 
-	public List<PreciosPlantilla> getPreciosOfPlantilla(long plantillaPreciosId) {
+	public List<PreciosPlantilla> getPreciosOfPlantilla(long plantillaPreciosId, String sortParameter, int start, int limit) {
 		List<PreciosPlantilla> listaPrecios = new ArrayList<PreciosPlantilla>();
-		for (PreciosPlantillaDTO preciosPlantillaDB : preciosDAO.getPreciosOfPlantilla(plantillaPreciosId))
-        {
+
+		for (PreciosPlantillaDTO preciosPlantillaDB : preciosDAO.getPreciosOfPlantilla(plantillaPreciosId, sortParameter, start, limit))
             listaPrecios.add(new PreciosPlantilla(preciosPlantillaDB));
-        }
         return listaPrecios;
 	}
 
@@ -45,5 +44,9 @@ public class PreciosPlantillaService {
 	public void update(PreciosPlantilla precio) throws CampoRequeridoException {
 		checkRequiredFields(precio);
 		preciosDAO.update(precio);
+	}
+
+	public int getTotalPreciosOfPlantilla(long plantillaPreciosId) {
+		return preciosDAO.getTotalPreciosOfPlantilla(plantillaPreciosId);
 	}
 }

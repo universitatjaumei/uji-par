@@ -6,10 +6,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
-import javax.persistence.PersistenceContext;
-
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,52 +23,48 @@ import es.uji.apps.par.model.Sesion;
 import es.uji.apps.par.utils.DateUtils;
 
 @Repository
-public class SesionesDAO
+public class SesionesDAO extends BaseDAO
 {
-    @PersistenceContext
-    private EntityManager entityManager;
-
     private QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
     private QPreciosSesionDTO qPreciosSesionDTO = QPreciosSesionDTO.preciosSesionDTO;
 
     @Transactional
-    public List<SesionDTO> getSesiones(long eventoId)
+    public List<SesionDTO> getSesiones(long eventoId, String sortParameter, int start, int limit)
     {
-        return getSesiones(eventoId, false);
+        return getSesiones(eventoId, false, sortParameter, start, limit);
     }
     
     @Transactional
-    public List<SesionDTO> getSesionesActivas(long eventoId)
+    public List<SesionDTO> getSesionesActivas(long eventoId, String sortParameter, int start, int limit)
     {
-        return getSesiones(eventoId, true);
+        return getSesiones(eventoId, true, sortParameter, start, limit);
     }    
 
     @Transactional
-    private List<SesionDTO> getSesiones(long eventoId, boolean activos)
+    private List<SesionDTO> getSesiones(long eventoId, boolean activos, String sortParameter, int start, int limit)
     {
         List<SesionDTO> sesion = new ArrayList<SesionDTO>();
-
-        JPAQuery query;
         
         if (activos)
-        {
-            Timestamp now = new Timestamp(new Date().getTime());
-            
-            query = new JPAQuery(entityManager).from(qSesionDTO)
-                .where(qSesionDTO.parEvento.id.eq(eventoId).and(qSesionDTO.fechaCelebracion.after(now)));
-        }
+        	sesion = getQuerySesionesActivas(eventoId).orderBy(getSort(qSesionDTO, sortParameter)).offset(start).limit(limit).list(qSesionDTO);
         else
-        {
-            query = new JPAQuery(entityManager).from(qSesionDTO)
-                    .where(qSesionDTO.parEvento.id.eq(eventoId));            
-        }
-        
-        for (SesionDTO sesionDB : query.list(qSesionDTO))
-        {
-            sesion.add(sesionDB);
-        }
+            sesion = getQuerySesiones(eventoId).orderBy(getSort(qSesionDTO, sortParameter)).offset(start).limit(limit).list(qSesionDTO);
 
         return sesion;
+    }
+    
+    @Transactional
+    private JPAQuery getQuerySesionesActivas(long eventoId) {
+    	JPAQuery query = new JPAQuery(entityManager);
+    	Timestamp now = new Timestamp(new Date().getTime());
+    	return query.from(qSesionDTO)
+        .where(qSesionDTO.parEvento.id.eq(eventoId).and(qSesionDTO.fechaCelebracion.after(now)));
+    }
+    
+    @Transactional
+    private JPAQuery getQuerySesiones(long eventoId) {
+    	JPAQuery query = new JPAQuery(entityManager);
+    	return query.from(qSesionDTO).where(qSesionDTO.parEvento.id.eq(eventoId));
     }
 
     @Transactional
@@ -93,8 +85,6 @@ public class SesionesDAO
     @Transactional
     public void updateSesion(Sesion sesion)
     {
-        boolean actualTransactionActive = org.springframework.transaction.support.TransactionSynchronizationManager.isActualTransactionActive();
-        
         JPAUpdateClause update = new JPAUpdateClause(entityManager, qSesionDTO);
         update.
         	/*set(qSesionDTO.canalInternet, sesion.getCanalInternet())
@@ -107,7 +97,7 @@ public class SesionesDAO
                  DateUtils.dateToTimestampSafe(sesion.getFechaFinVentaOnline()))
             .set(qSesionDTO.fechaInicioVentaOnline,
                  DateUtils.dateToTimestampSafe(sesion.getFechaInicioVentaOnline()))
-            .set(qSesionDTO.horaApertura, sesion.getHoraAperturaPuertas())
+            .set(qSesionDTO.horaApertura, sesion.getHoraApertura())
             .set(qSesionDTO.parEvento, Evento.eventoToEventoDTO(sesion.getEvento()))
             .set(qSesionDTO.parPlantilla, Plantilla.plantillaPreciosToPlantillaPreciosDTO(sesion.getPlantillaPrecios()))
             .where(qSesionDTO.id.eq(sesion.getId())).execute();
@@ -125,20 +115,16 @@ public class SesionesDAO
 	}
 
 	@Transactional
-    public List<PreciosSesionDTO> getPreciosSesion(long sesionId)
+    public List<PreciosSesionDTO> getPreciosSesion(long sesionId, String sortParameter, int start, int limit)
     {
-        JPAQuery query = new JPAQuery(entityManager);
-
-        List<PreciosSesionDTO> preciosSesion = new ArrayList<PreciosSesionDTO>();
-
-        for (PreciosSesionDTO preciosSesionDB : query.from(qPreciosSesionDTO)
-                .where(qPreciosSesionDTO.parSesione.id.eq(sesionId)).list(qPreciosSesionDTO))
-        {
-            preciosSesion.add(preciosSesionDB);
-        }
-
-        return preciosSesion;
+		return getQueryPreciosSesion(sesionId).orderBy(getSort(qPreciosSesionDTO, sortParameter)).offset(start).limit(limit).list(qPreciosSesionDTO);
     }
+
+	@Transactional
+	private JPAQuery getQueryPreciosSesion(long sesionId) {
+		JPAQuery query = new JPAQuery(entityManager);
+		return query.from(qPreciosSesionDTO).where(qPreciosSesionDTO.parSesione.id.eq(sesionId));
+	}
 
 	@Transactional
 	public PreciosSesionDTO persistPreciosSesion(PreciosSesionDTO precioSesionDTO) {
@@ -153,4 +139,19 @@ public class SesionesDAO
         return query.from(qSesionDTO).leftJoin(qSesionDTO.parPreciosSesions, qPreciosSesionDTO).
                 where(qSesionDTO.id.eq(sesionId)).uniqueResult(qSesionDTO);
     }
+
+	@Transactional
+	public int getTotalSesionesActivas(Integer eventoId) {
+		return (int) getQuerySesionesActivas(eventoId).count();
+	}
+
+	@Transactional
+	public int getTotalSesiones(Integer eventoId) {
+		return (int) getQuerySesiones(eventoId).count();
+	}
+
+	@Transactional
+	public int getTotalPreciosSesion(Long sesionId) {
+		return (int) getQueryPreciosSesion(sesionId).count();
+	}
 }

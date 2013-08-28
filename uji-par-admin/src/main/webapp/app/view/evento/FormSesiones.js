@@ -41,7 +41,7 @@ Ext.define('Paranimf.view.evento.FormSesiones', {
          format: 'H:i',
          increment: 30
       }, {
-         name: 'horaAperturaPuertas',
+         name: 'horaApertura',
          xtype: 'timefield',
          fieldLabel: UI.i18n.field.opening,
          minValue: '8:00 AM',

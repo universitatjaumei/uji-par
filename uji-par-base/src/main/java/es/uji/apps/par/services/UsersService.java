@@ -17,9 +17,9 @@ public class UsersService
     @Autowired
     private UsuariosDAO usuariosDAO;
 
-    public List<Usuario> getUsuarios()
+    public List<Usuario> getUsuarios(String sortParameter, int start, int limit)
     {
-        return usuariosDAO.getUsers();
+        return usuariosDAO.getUsers(sortParameter, start, limit);
     }
 
     public void removeUser(Integer id)
@@ -52,4 +52,8 @@ public class UsersService
         checkRequiredFields(user);
         usuariosDAO.updateUser(user);
     }
+
+	public int getTotalUsuarios() {
+		return usuariosDAO.getTotalUsuarios();
+	}
 }

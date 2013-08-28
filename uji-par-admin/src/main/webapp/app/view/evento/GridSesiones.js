@@ -16,11 +16,13 @@ Ext.define('Paranimf.view.evento.GridSesiones', {
    initComponent: function() {
 
     this.columns = [{
-       dataIndex: 'id',
-       hidden: true
+      dataIndex: 'id',
+      hidden: true,
+      text: UI.i18n.field.idIntern
     }, {
       hidden: true,
-      dataIndex: 'horaCelebracion'
+      dataIndex: 'horaCelebracion',
+      text: UI.i18n.field.sessionTime
     }, {
       dataIndex: 'fechaCelebracion',
       text: UI.i18n.field.eventDate,
@@ -28,7 +30,7 @@ Ext.define('Paranimf.view.evento.GridSesiones', {
       xtype: 'datecolumn',
       flex: 1
     }, {
-      dataIndex: 'horaAperturaPuertas',
+      dataIndex: 'horaApertura',
       text: UI.i18n.field.opening,
       flex: 1
     }, {
@@ -46,6 +48,7 @@ Ext.define('Paranimf.view.evento.GridSesiones', {
     }, {
       dataIndex: 'plantillaPrecios_nombre',
       text: UI.i18n.field.plantillaprecios,
+      sortable: false,
       flex: 1
     }];
 

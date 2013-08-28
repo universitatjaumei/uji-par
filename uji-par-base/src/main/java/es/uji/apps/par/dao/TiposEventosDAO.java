@@ -3,9 +3,6 @@ package es.uji.apps.par.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,27 +15,30 @@ import es.uji.apps.par.db.TipoEventoDTO;
 import es.uji.apps.par.model.TipoEvento;
 
 @Repository
-public class TiposEventosDAO
+public class TiposEventosDAO extends BaseDAO
 {
-    @PersistenceContext
-    private EntityManager entityManager;
-
     private QTipoEventoDTO qTipoEventoDTO = QTipoEventoDTO.tipoEventoDTO;
 
     @Transactional
-    public List<TipoEvento> getTiposEventos()
+    public List<TipoEvento> getTiposEventos(String sortParameter, int start, int limit)
     {
-        JPAQuery query = new JPAQuery(entityManager);
-
         List<TipoEvento> tipoEvento = new ArrayList<TipoEvento>();
+        List<TipoEventoDTO> tipusEventosDTO = getQueryTiposEventos().orderBy(getSort(qTipoEventoDTO, sortParameter)).
+        		offset(start).limit(limit).list(qTipoEventoDTO);
 
-        for (TipoEventoDTO tipoEventoDB : query.from(qTipoEventoDTO).list(qTipoEventoDTO))
+        for (TipoEventoDTO tipoEventoDB : tipusEventosDTO)
         {
             tipoEvento.add(new TipoEvento(tipoEventoDB));
         }
 
         return tipoEvento;
     }
+
+    @Transactional
+	private JPAQuery getQueryTiposEventos() {
+		JPAQuery query = new JPAQuery(entityManager);
+		return query.from(qTipoEventoDTO);
+	}
 
     @Transactional
     public long removeTipoEvento(long id)
@@ -70,4 +70,9 @@ public class TiposEventosDAO
 
         return tipoEvento;
     }
+    
+    @Transactional
+	public int getTotalTipusEventos() {
+		return (int) getQueryTiposEventos().count();
+	}
 }

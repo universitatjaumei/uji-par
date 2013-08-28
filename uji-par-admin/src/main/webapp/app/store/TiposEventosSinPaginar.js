@@ -2,7 +2,7 @@ Ext.define('Paranimf.store.TiposEventosSinPaginar', {
    extend: 'Ext.data.Store',
    model: 'Paranimf.model.TipoEvento',
 
-   sorters: ['nombre_es'],
+   sorters: ['nombreEs'],
    autoLoad: true,
    autoSync: false,
    pageSize: 1000,

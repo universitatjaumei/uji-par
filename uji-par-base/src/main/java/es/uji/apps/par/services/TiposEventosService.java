@@ -15,9 +15,9 @@ public class TiposEventosService
     @Autowired
     private TiposEventosDAO tiposEventosDAO;
 
-    public List<TipoEvento> getTiposEventos()
+    public List<TipoEvento> getTiposEventos(String sortParameter, int start, int limit)
     {
-        return tiposEventosDAO.getTiposEventos();
+        return tiposEventosDAO.getTiposEventos(sortParameter, start, limit);
     }
 
     public void removeTipoEvento(Integer id)
@@ -42,4 +42,8 @@ public class TiposEventosService
         if (tipoEvento.getNombreEs() == null || tipoEvento.getNombreEs().isEmpty())
             throw new CampoRequeridoException("Nombre");
     }
+
+	public int getTotalTipusEventos() {
+		return tiposEventosDAO.getTotalTipusEventos();
+	}
 }

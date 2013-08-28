@@ -28,7 +28,7 @@ UI =
             "sureDeleteImage":"Està segur/a d'esborrar la imatge de l'event? Aquesta acció no es pot cancel·lar",
             "deletedImage":"La imatge ha sigut esborrada satisfactòriament",
             "toolTipAvailableEspacios": "* Passar el ratolí sobre les columnes d'espais i dies per obtindre informació extra",
-            "si": "Si",
+            "si": "Sí",
             "no": "No",
             "plantillaPrecios": "És obligatori seleccionar una plantilla de preus",
             "registroConMismaLocalizacionExiste": "Ja existeix un registre per a aquesta localització, modifique l'existent o esborri'l",
@@ -181,6 +181,7 @@ UI =
             "code":"Codi",
 			"type":"Tipus",
 			"id":"Id",
+            "idIntern": "Identificador intern",
 			"state":"Estat",
 			"date":"Data",
 			"email":"E-mail",
@@ -235,7 +236,9 @@ UI =
             "hasta": "Fins a",
             "observacionesReserva": "Observaciones",
             "pagada": "Pagada",
-            "reserva": "Reserva"
+            "reserva": "Reserva",
+            "idLocalitzacio": "Identificador intern de la localització",
+            "plantillaPreusInterna": "Identificador intern de la plantilla de preus"
         }
     }
 }

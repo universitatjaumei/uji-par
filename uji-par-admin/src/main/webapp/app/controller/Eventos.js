@@ -150,22 +150,26 @@ Ext.define('Paranimf.controller.Eventos', {
    cargarPreciosSesion: function(plantillaId) {
       var gridPreciosSesion = this.getGridPreciosSesion();
       
-      var idEvento = this.getGridEventos().getSelectedRecord().data["id"];
-      var idSesion = this.getGridSesiones().getSelectedRecord().data["id"];
-      
-      console.log('idEvento:', idEvento);
-      console.log('idSesion:', idSesion);
-      
-      Ext.Ajax.request({
-        url : urlPrefix + 'evento/' + idEvento + '/sesiones/' + idSesion + '/precios',
-        method: 'GET',
-        success: function (response) {
-            var respuesta = Ext.JSON.decode(response.responseText, true);
-            gridPreciosSesion.store.loadRawData(respuesta.data);
-        }, failure: function (response) {
-           alert(UI.i18n.error.loadingPrecios);
-        }
-      });
+      if (this.getGridEventos().hasRowSelected() && this.getGridSesiones().hasRowSelected()) {
+         var idEvento = this.getGridEventos().getSelectedRecord().data["id"];
+         var idSesion = this.getGridSesiones().getSelectedRecord().data["id"];
+         
+         if (idEvento != undefined && idSesion != undefined) {
+            console.log('idEvento:', idEvento);
+            console.log('idSesion:', idSesion);
+            
+            Ext.Ajax.request({
+              url : urlPrefix + 'evento/' + idEvento + '/sesiones/' + idSesion + '/precios',
+              method: 'GET',
+              success: function (response) {
+                  var respuesta = Ext.JSON.decode(response.responseText, true);
+                  gridPreciosSesion.store.loadRawData(respuesta.data);
+              }, failure: function (response) {
+                 alert(UI.i18n.error.loadingPrecios);
+              }
+            });
+         }
+      }
    },   
 
    cargaLocalizaciones: function(comp, opts) {

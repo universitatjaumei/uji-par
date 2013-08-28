@@ -10,6 +10,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -22,10 +23,12 @@ import es.uji.apps.par.ButacaOcupadaException;
 import es.uji.apps.par.CompraSinButacasException;
 import es.uji.apps.par.NoHayButacasLibresException;
 import es.uji.apps.par.model.Butaca;
+import es.uji.apps.par.model.DisponiblesLocalizacion;
 import es.uji.apps.par.model.ResultadoCompra;
 import es.uji.apps.par.services.ButacasService;
 import es.uji.apps.par.services.ComprasService;
 import es.uji.apps.par.services.SesionesService;
+import es.uji.apps.par.utils.Utils;
 
 @Path("compra")
 public class CompraResource extends BaseResource
@@ -47,9 +50,13 @@ public class CompraResource extends BaseResource
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getCompras(@PathParam("id") Long sesionId)
+    public Response getCompras(@PathParam("id") Long sesionId, @QueryParam("sort") String sort, 
+    		@QueryParam("start") int start, @QueryParam("limit") int limit)
     {
-        return Response.ok().entity(new RestResponse(true, comprasService.getComprasBySesionFechaSegundos(sesionId))).build();
+    	limit = Utils.inicializarLimitSiNecesario(limit);
+        return Response.ok().entity(new RestResponse(true, 
+        		comprasService.getComprasBySesionFechaSegundos(sesionId, sort, start, limit), 
+        		comprasService.getTotalComprasBySesion(sesionId))).build();
     }
     
     @POST
@@ -79,9 +86,13 @@ public class CompraResource extends BaseResource
     @GET
     @Path("{id}/precios")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getPreciosSesion(@PathParam("id") Long sesionId)
+    public Response getPreciosSesion(@PathParam("id") Long sesionId, @QueryParam("sort") String sort, 
+    		@QueryParam("start") int start, @QueryParam("limit") int limit)
     {
-        return Response.ok().entity(new RestResponse(true, sesionesService.getPreciosSesion(sesionId))).build();
+    	limit = Utils.inicializarLimitSiNecesario(limit);
+        return Response.ok().entity(new RestResponse(true, 
+        		sesionesService.getPreciosSesion(sesionId, sort, start, limit), 
+        		sesionesService.getTotalPreciosSesion(sesionId))).build();
     }
     
     
@@ -91,7 +102,9 @@ public class CompraResource extends BaseResource
     @Produces(MediaType.APPLICATION_JSON)
     public Response getOcupacionesNoNumerada(@PathParam("id") Long sesionId)
     {
-        return Response.ok().entity(new RestResponse(true, butacasService.getDisponiblesNoNumerada(sesionId))).build();
+    	List<DisponiblesLocalizacion> listadoOcupacionesNoNumeradas = butacasService.getDisponiblesNoNumerada(sesionId);
+        return Response.ok().entity(new RestResponse(true, 
+        		listadoOcupacionesNoNumeradas, listadoOcupacionesNoNumeradas.size())).build();
     }
     
     @POST

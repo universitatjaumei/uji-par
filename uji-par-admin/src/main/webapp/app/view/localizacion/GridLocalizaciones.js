@@ -18,7 +18,8 @@ Ext.define('Paranimf.view.localizacion.GridLocalizaciones', {
 
       this.columns = [{
          dataIndex: 'id',
-         hidden: true
+         hidden: true,
+         text: UI.i18n.field.idIntern
       }, {
           dataIndex: 'codigo',
           text: UI.i18n.field.codigo,

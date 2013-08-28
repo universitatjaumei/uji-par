@@ -17,6 +17,9 @@ import es.uji.apps.par.model.TipoEvento;
 @ContextConfiguration(locations = { "/applicationContext-db-test.xml" })
 public class TiposEventosDAOTest
 {
+	private static final String SORT = "";
+	private static final int START = 0;
+	private static final int LIMIT = 100;
 
     @Autowired
     TiposEventosDAO tiposEventosDAO;
@@ -25,7 +28,7 @@ public class TiposEventosDAOTest
     @Transactional
     public void getTiposEventos()
     {
-        Assert.assertNotNull(tiposEventosDAO.getTiposEventos());
+        Assert.assertNotNull(tiposEventosDAO.getTiposEventos(TiposEventosDAOTest.SORT, TiposEventosDAOTest.START, TiposEventosDAOTest.LIMIT));
     }
 
     @Test

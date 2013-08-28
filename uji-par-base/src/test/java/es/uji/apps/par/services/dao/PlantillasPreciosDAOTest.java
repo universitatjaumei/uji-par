@@ -16,6 +16,9 @@ import es.uji.apps.par.model.Plantilla;
 @TransactionConfiguration(transactionManager = "transactionManager")
 @ContextConfiguration(locations = { "/applicationContext-db-test.xml" })
 public class PlantillasPreciosDAOTest {
+	private static final String SORT = "";
+	private static final int START = 0;
+	private static final int LIMIT = 100;
 
 	@Autowired
 	PlantillasDAO plantillasPreciosDAO;
@@ -24,7 +27,7 @@ public class PlantillasPreciosDAOTest {
     @Transactional
     public void getPlantillasPrecios()
     {
-        Assert.assertNotNull(plantillasPreciosDAO.get(true));
+        Assert.assertNotNull(plantillasPreciosDAO.get(true, PlantillasPreciosDAOTest.SORT, PlantillasPreciosDAOTest.START, PlantillasPreciosDAOTest.LIMIT));
     }
 
     @Test

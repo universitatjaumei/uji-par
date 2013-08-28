@@ -5,7 +5,7 @@ Ext.define('Paranimf.model.Precio', {
     	'id', 
 	  	'plantillaPrecios',
 	  	{name: 'localizacion_nombre', mapping: 'localizacion.nombreVa'},
-	  	{name: 'localizacion_id', mapping: 'localizacion.id'},
+	  	{name: 'parLocalizacione', mapping: 'localizacion.id'},
 	  	'localizacion',
 	  	'precio',
 	  	'descuento',

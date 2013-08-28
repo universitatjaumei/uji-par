@@ -31,17 +31,19 @@ Ext.define('Paranimf.view.taquilla.GridSesionesTaquilla', {
    ],   
    
    comprar: function() {
-	 console.log('COMPRAR ENTRADA');  
+	   console.log('COMPRAR ENTRADA');  
    },
 
    initComponent: function() {
 
     this.columns = [{
-       dataIndex: 'id',
-       hidden: true
+      dataIndex: 'id',
+      hidden: true,
+      text: UI.i18n.field.idIntern
     }, {
       hidden: true,
-      dataIndex: 'horaCelebracion'
+      dataIndex: 'horaCelebracion',
+      text: UI.i18n.field.sessionTime
     }, {
       dataIndex: 'fechaCelebracion',
       text: UI.i18n.field.eventDate,
@@ -49,7 +51,7 @@ Ext.define('Paranimf.view.taquilla.GridSesionesTaquilla', {
       xtype: 'datecolumn',
       flex: 1
     }, {
-      dataIndex: 'horaAperturaPuertas',
+      dataIndex: 'horaApertura',
       text: UI.i18n.field.opening,
       flex: 1
     }, {
@@ -72,32 +74,27 @@ Ext.define('Paranimf.view.taquilla.GridSesionesTaquilla', {
   },
 
   showComprarWindow: function(idSesion, asientosNumerados, title, modoReserva) {
-	console.log("showComprarWindow: ", idSesion);  
-	  
-	var window = this.createModalWindow('formComprar', 940, 750, title).show();
-
-	var cardLayout = Ext.getCmp('pasoSeleccionar').getLayout();
-	
-	if (asientosNumerados)
-	{
-		cardLayout.setActiveItem(0);
-		var url = urlPublic + "/rest/entrada/butacasFragment/" + idSesion;
-		
-		if (modoReserva)
-			url += '?reserva=true';
-		
-		Ext.getDom('iframeButacas').src = url;
-	}
-	else
-	{
-		cardLayout.setActiveItem(1);
-	}
+  	console.log("showComprarWindow: ", idSesion);  
+  	var window = this.createModalWindow('formComprar', 940, 750, title).show();
+  	var cardLayout = Ext.getCmp('pasoSeleccionar').getLayout();
+  	
+  	if (asientosNumerados)
+  	{
+  		cardLayout.setActiveItem(0);
+  		var url = urlPublic + "/rest/entrada/butacasFragment/" + idSesion;
+  		
+  		if (modoReserva)
+  			url += '?reserva=true';
+  		
+  		Ext.getDom('iframeButacas').src = url;
+  	}
+  	else
+  		cardLayout.setActiveItem(1);
   },
   
   showVerComprasWindow: function(idSesion) {
-	
-	console.log("showVerComprasWindow: ", idSesion);  
-	this.createModalWindow('panelCompras', 940, 750, UI.i18n.gridTitle.compras).show();
+	 console.log("showVerComprasWindow: ", idSesion);  
+	 this.createModalWindow('panelCompras', 940, 750, UI.i18n.gridTitle.compras).show();
   }  
   
 });

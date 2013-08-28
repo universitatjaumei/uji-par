@@ -2,7 +2,7 @@ Ext.define('Paranimf.store.PreciosSesion', {
    extend: 'Ext.data.Store',
    model: 'Paranimf.model.PrecioSesion',
 
-   sorters: ['localizacion_id'],
+   sorters: ['parLocalizacione'],
    autoLoad: false,
    autoSync: false,
    pageSize: 20,

@@ -697,33 +697,41 @@ Ext.define('Paranimf.controller.Taquilla', {
      storeCompras.load();
    },   
 
-   comprar: function(button, event, opts) {
-	 var evento = this.getGridEventosTaquilla().getSelectedRecord();
-	 var sesion = this.getGridSesionesTaquilla().getSelectedRecord();
+   	comprar: function(button, event, opts) {
+   		if (this.getGridEventosTaquilla().hasRowSelected() && this.getGridSesionesTaquilla().hasRowSelected()) {
+			var evento = this.getGridEventosTaquilla().getSelectedRecord();
+			var sesion = this.getGridSesionesTaquilla().getSelectedRecord();
 
-	 this.getGridSesionesTaquilla().showComprarWindow(sesion.data['id'], evento.data['asientosNumerados'], UI.i18n.formTitle.comprar, false);
-	 
-	 this.getPanelComprar().show();
-	 this.getPanelReservar().hide();
-	 
-   },
+			this.getGridSesionesTaquilla().showComprarWindow(sesion.data['id'], evento.data['asientosNumerados'], UI.i18n.formTitle.comprar, false);
+			
+			this.getPanelComprar().show();
+			this.getPanelReservar().hide();
+		} else
+			alert(UI.i18n.message.selectRow);
+   	},
    
-   reservar: function(button, event, opts) {
-	 var evento = this.getGridEventosTaquilla().getSelectedRecord();
-	 var sesion = this.getGridSesionesTaquilla().getSelectedRecord();
-	 
-	 this.getGridSesionesTaquilla().showComprarWindow(sesion.data['id'], evento.data['asientosNumerados'], UI.i18n.formTitle.reservar, true);
-	 
-	 this.getPanelReservar().show();
-	 this.getPanelComprar().hide();
-   },   
+   	reservar: function(button, event, opts) {
+   		if (this.getGridEventosTaquilla().hasRowSelected() && this.getGridSesionesTaquilla().hasRowSelected()) {
+			var evento = this.getGridEventosTaquilla().getSelectedRecord();
+			var sesion = this.getGridSesionesTaquilla().getSelectedRecord();
+
+			this.getGridSesionesTaquilla().showComprarWindow(sesion.data['id'], evento.data['asientosNumerados'], UI.i18n.formTitle.reservar, true);
+
+			this.getPanelReservar().show();
+			this.getPanelComprar().hide();
+		} else
+			alert(UI.i18n.message.selectRow);
+   	},
    
-   verCompras: function(button, event, opts) {
-	 var evento = this.getGridEventosTaquilla().getSelectedRecord();
-	 var sesion = this.getGridSesionesTaquilla().getSelectedRecord();
+   	verCompras: function(button, event, opts) {
+   		if (this.getGridEventosTaquilla().hasRowSelected() && this.getGridSesionesTaquilla().hasRowSelected()) {
+			var evento = this.getGridEventosTaquilla().getSelectedRecord();
+	 		var sesion = this.getGridSesionesTaquilla().getSelectedRecord();
 	 
-	 this.getGridSesionesTaquilla().showVerComprasWindow(sesion.data['id']);
-   },      
+	 		this.getGridSesionesTaquilla().showVerComprasWindow(sesion.data['id']);
+	 	} else
+	 		alert(UI.i18n.message.selectRow);
+   	},
    
    marcaPagada: function(idCompra) {
 	   

@@ -3,9 +3,6 @@ package es.uji.apps.par.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,27 +15,29 @@ import es.uji.apps.par.db.UsuarioDTO;
 import es.uji.apps.par.model.Usuario;
 
 @Repository
-public class UsuariosDAO
+public class UsuariosDAO extends BaseDAO
 {
-    @PersistenceContext
-    private EntityManager entityManager;
-
     private QUsuarioDTO qUserDTO = QUsuarioDTO.usuarioDTO;
 
     @Transactional
-    public List<Usuario> getUsers()
+    public List<Usuario> getUsers(String sortParameter, int start, int limit)
     {
-        JPAQuery query = new JPAQuery(entityManager);
-
         List<Usuario> users = new ArrayList<Usuario>();
+        List<UsuarioDTO> usuariosDTO = getQueryUsuarios().orderBy(getSort(qUserDTO, sortParameter)).limit(limit).offset(start).list(qUserDTO);
 
-        for (UsuarioDTO userDB : query.from(qUserDTO).list(qUserDTO))
+        for (UsuarioDTO userDB : usuariosDTO)
         {
             users.add(new Usuario(userDB));
         }
 
         return users;
     }
+
+    @Transactional
+	private JPAQuery getQueryUsuarios() {
+		JPAQuery query = new JPAQuery(entityManager);
+		return query.from(qUserDTO);
+	}
 
     @Transactional
     public long removeUser(long id)
@@ -72,10 +71,10 @@ public class UsuariosDAO
         return user;
     }
 
+    @Transactional
     public boolean userExists(Usuario user)
     {
-        JPAQuery query = new JPAQuery(entityManager);
-
+    	JPAQuery query = new JPAQuery(entityManager);
         List<UsuarioDTO> usuarios = query.from(qUserDTO)
                 .where(qUserDTO.usuario.eq(user.getUsuario())).list(qUserDTO);
 
@@ -84,4 +83,9 @@ public class UsuariosDAO
         else
             return false;
     }
+    
+    @Transactional
+	public int getTotalUsuarios() {
+		return (int) getQueryUsuarios().count();
+	}
 }

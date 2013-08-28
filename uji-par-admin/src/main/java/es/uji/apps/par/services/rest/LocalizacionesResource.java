@@ -1,7 +1,7 @@
 package es.uji.apps.par.services.rest;
 
 import java.net.URI;
-import java.util.Collections;
+import java.util.Arrays;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -11,6 +11,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -19,6 +20,7 @@ import com.sun.jersey.api.core.InjectParam;
 import es.uji.apps.par.GeneralPARException;
 import es.uji.apps.par.model.Localizacion;
 import es.uji.apps.par.services.LocalizacionesService;
+import es.uji.apps.par.utils.Utils;
 
 @Path("localizacion")
 public class LocalizacionesResource
@@ -28,9 +30,11 @@ public class LocalizacionesResource
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAll()
+    public Response getAll(@QueryParam("sort") String sort, @QueryParam("start") int start, @QueryParam("limit") int limit)
     {
-        return Response.ok().entity(new RestResponse(true, localizacionesService.get())).build();
+    	limit = Utils.inicializarLimitSiNecesario(limit);
+        return Response.ok().entity(new RestResponse(true, localizacionesService.get(sort, start, limit), 
+        		localizacionesService.getTotalLocalizaciones())).build();
     }
 
     @DELETE
@@ -50,7 +54,7 @@ public class LocalizacionesResource
         Localizacion newLocalizacion = localizacionesService.add(localizacion);
         // TODO crear URI
         return Response.created(URI.create(""))
-                .entity(new RestResponse(true, Collections.singletonList(newLocalizacion))).build();
+                .entity(new RestResponse(true, Arrays.asList(newLocalizacion), 1)).build();
     }
 
     @PUT
@@ -61,6 +65,6 @@ public class LocalizacionesResource
     {
         localizacionesService.update(localizacion);
         return Response.ok()
-                .entity(new RestResponse(true, Collections.singletonList(localizacion))).build();
+                .entity(new RestResponse(true, Arrays.asList(localizacion), 1)).build();
     }
 }

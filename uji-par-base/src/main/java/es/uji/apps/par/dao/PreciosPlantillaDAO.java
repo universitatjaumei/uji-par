@@ -3,9 +3,6 @@ package es.uji.apps.par.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,27 +18,30 @@ import es.uji.apps.par.model.Plantilla;
 import es.uji.apps.par.model.PreciosPlantilla;
 
 @Repository
-public class PreciosPlantillaDAO {
-
-	@PersistenceContext
-    private EntityManager entityManager;
+public class PreciosPlantillaDAO extends BaseDAO {
 	private QPreciosPlantillaDTO qPreciosPlantillaDTO = QPreciosPlantillaDTO.preciosPlantillaDTO;
 	
-	
 	@Transactional
-	public List<PreciosPlantillaDTO> getPreciosOfPlantilla(long plantillaPreciosId) {
-		JPAQuery query = new JPAQuery(entityManager);
-		QLocalizacionDTO qLocalizacionDTO = QLocalizacionDTO.localizacionDTO;
-
+	public List<PreciosPlantillaDTO> getPreciosOfPlantilla(long plantillaPreciosId, String sortParameter, int start, int limit) {
         List<PreciosPlantillaDTO> precios = new ArrayList<PreciosPlantillaDTO>();
+        List<PreciosPlantillaDTO> preciosPlantillaDTO = getQueryPreciosPlantilla(plantillaPreciosId).
+        		orderBy(getSort(qPreciosPlantillaDTO, sortParameter)).offset(start).limit(limit).
+        		list(qPreciosPlantillaDTO);
 
-        for (PreciosPlantillaDTO precioDB : query.from(qPreciosPlantillaDTO, qLocalizacionDTO).where(qPreciosPlantillaDTO.parPlantilla.id.eq(plantillaPreciosId).
-        		and(qLocalizacionDTO.id.eq(qPreciosPlantillaDTO.parLocalizacione.id))).list(qPreciosPlantillaDTO))
+        for (PreciosPlantillaDTO precioDB : preciosPlantillaDTO)
         {
             precios.add(precioDB);
         }
 
         return precios;
+	}
+
+	@Transactional
+	private JPAQuery getQueryPreciosPlantilla(long plantillaPreciosId) {
+		JPAQuery query = new JPAQuery(entityManager);
+		QLocalizacionDTO qLocalizacionDTO = QLocalizacionDTO.localizacionDTO;
+		return query.from(qPreciosPlantillaDTO, qLocalizacionDTO).where(qPreciosPlantillaDTO.parPlantilla.id.eq(plantillaPreciosId).
+        		and(qLocalizacionDTO.id.eq(qPreciosPlantillaDTO.parLocalizacione.id)));
 	}
 	
 	@Transactional
@@ -78,5 +78,10 @@ public class PreciosPlantillaDAO {
                 .where(qPreciosPlantillaDTO.id.eq(precio.getId())).execute();
 
         return precio;
+	}
+
+	@Transactional
+	public int getTotalPreciosOfPlantilla(long plantillaPreciosId) {
+		return (int) getQueryPreciosPlantilla(plantillaPreciosId).count();
 	}
 }

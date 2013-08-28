@@ -18,30 +18,28 @@ public class EventosService
     @Autowired
     private EventosDAO eventosDAO;
 
-    public List<Evento> getEventos()
+    public List<Evento> getEventos(String sort, int start, int limit)
     {
-       return getEventos(false);
+       return getEventos(false, sort, start, limit);
     }
     
-    public List<Evento> getEventosActivos()
+    public List<Evento> getEventosActivos(String sort, int start, int limit)
     {
-       return getEventos(true);
+       return getEventos(true, sort, start, limit);
     }
     
-    private List<Evento> getEventos(boolean activos)
+    private List<Evento> getEventos(boolean activos, String sort, int start, int limit)
     {
         List<Evento> listaParEvento = new ArrayList<Evento>();
-        
         List<EventoDTO> eventos;
+        
         if (activos)
-            eventos = eventosDAO.getEventosActivos();
+            eventos = eventosDAO.getEventosActivos(sort, start, limit);
         else
-            eventos = eventosDAO.getEventos();
+            eventos = eventosDAO.getEventos(sort, start, limit);
         
         for (EventoDTO eventoDB : eventos)
-        {
             listaParEvento.add(new Evento(eventoDB, false));
-        }
         
         return listaParEvento;
     }
@@ -61,7 +59,7 @@ public class EventosService
     {
         if (evento.getTituloEs() == null || evento.getTituloEs().isEmpty())
             throw new CampoRequeridoException("Título");
-        if (evento.getParTipoEvento() == null)
+        if (evento.getParTiposEvento() == null)
             throw new CampoRequeridoException("Tipo de evento");
     }
 
@@ -85,4 +83,12 @@ public class EventosService
     {
         eventosDAO.deleteImagen(eventoId);
     }
+
+	public int getTotalEventosActivos() {
+		return eventosDAO.getTotalEventosActivos();
+	}
+
+	public int getTotalEventos() {
+		return eventosDAO.getTotalEventos();
+	}
 }

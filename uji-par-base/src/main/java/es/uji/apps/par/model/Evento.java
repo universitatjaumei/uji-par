@@ -29,7 +29,7 @@ public class Evento
     private String caracteristicasVa;
     private String comentariosEs;
     private String comentariosVa;
-    private TipoEvento parTipoEvento;
+    private TipoEvento parTiposEvento;
     private long tipoEvento;
     private BigDecimal asientosNumerados;
     private BigDecimal porcentajeIVA;
@@ -116,7 +116,7 @@ public class Evento
     	eventoDTO.setComentariosVa(evento.getComentariosVa());
 
         if (eventoDTO.getParTiposEvento() != null)
-        	eventoDTO.setParTiposEvento(TipoEvento.tipoEventoToTipoEventoDTO(evento.getParTipoEvento()));
+        	eventoDTO.setParTiposEvento(TipoEvento.tipoEventoToTipoEventoDTO(evento.getParTiposEvento()));
         
         eventoDTO.setAsientosNumerados(evento.getAsientosNumerados());
         eventoDTO.setIvaSgae(evento.getIvaSGAE());
@@ -163,10 +163,10 @@ public class Evento
 
         if (eventoDTO.getParTiposEvento() != null)
         {
-            this.parTipoEvento = new TipoEvento();
-            this.parTipoEvento.setId(eventoDTO.getParTiposEvento().getId());
-            this.parTipoEvento.setNombreEs(eventoDTO.getParTiposEvento().getNombreEs());
-            this.parTipoEvento.setNombreVa(eventoDTO.getParTiposEvento().getNombreVa());
+            this.parTiposEvento = new TipoEvento();
+            this.parTiposEvento.setId(eventoDTO.getParTiposEvento().getId());
+            this.parTiposEvento.setNombreEs(eventoDTO.getParTiposEvento().getNombreEs());
+            this.parTiposEvento.setNombreVa(eventoDTO.getParTiposEvento().getNombreVa());
             this.tipoEvento = eventoDTO.getParTiposEvento().getId();
         }
         
@@ -178,8 +178,8 @@ public class Evento
 
     public Evento(String tituloEs, TipoEvento tipoEvento)
     {
-        this.parTipoEvento = new TipoEvento();
-        this.parTipoEvento = tipoEvento;
+        this.parTiposEvento = new TipoEvento();
+        this.parTiposEvento = tipoEvento;
         this.tituloEs = tituloEs;
     }
 
@@ -215,8 +215,8 @@ public class Evento
 
         if (tipoEventoId != null)
         {
-            this.parTipoEvento = new TipoEvento();
-            this.parTipoEvento.setId(tipoEventoId);
+            this.parTiposEvento = new TipoEvento();
+            this.parTiposEvento.setId(tipoEventoId);
             this.tipoEvento = tipoEventoId;
         }
         
@@ -261,14 +261,14 @@ public class Evento
         this.imagenContentType = imagenContentType;
     }
 
-    public TipoEvento getParTipoEvento()
+    public TipoEvento getParTiposEvento()
     {
-        return parTipoEvento;
+        return parTiposEvento;
     }
 
-    public void setParTipoEvento(TipoEvento parTipoEvento)
+    public void setParTipoEvento(TipoEvento parTiposEvento)
     {
-        this.parTipoEvento = parTipoEvento;
+        this.parTiposEvento = parTiposEvento;
     }
 
     public long getTipoEvento()

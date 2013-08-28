@@ -17,10 +17,10 @@ public class PlantillasService {
 	@Autowired
     private PlantillasDAO plantillasPreciosDAO;
 
-	private List<Plantilla> get(boolean filtrarEditables) {
+	private List<Plantilla> get(boolean filtrarEditables, String sortParameter, int start, int limit) {
 		List<Plantilla> plantillaPrecios = new ArrayList<Plantilla>();
 		
-		for (PlantillaDTO plantillaDTO: plantillasPreciosDAO.get(filtrarEditables)) {
+		for (PlantillaDTO plantillaDTO: plantillasPreciosDAO.get(filtrarEditables, sortParameter, start, limit)) {
 			plantillaPrecios.add(new Plantilla(plantillaDTO));
 		}
 		return plantillaPrecios;
@@ -45,13 +45,21 @@ public class PlantillasService {
 		plantillasPreciosDAO.update(plantillaPrecios);
 	}
 
-	public List<Plantilla> getEditables() {
+	public List<Plantilla> getEditables(String sortParameter, int start, int limit) {
 		boolean filtrarEditables = true;
-		return get(filtrarEditables);
+		return get(filtrarEditables, sortParameter, start, limit);
 	}
 	
-	public List<Plantilla> getAll() {
+	public List<Plantilla> getAll(String sortParameter, int start, int limit) {
 		boolean filtrarEditables = false;
-		return get(filtrarEditables);
+		return get(filtrarEditables, sortParameter, start, limit);
+	}
+
+	public int getTotalPlantillaPrecios() {
+		return plantillasPreciosDAO.getTotalPlantillaPrecios();
+	}
+
+	public int getTotalPlantillasEditables() {
+		return plantillasPreciosDAO.getTotalPlantillasEditables();
 	}
 }

@@ -26,6 +26,9 @@ import es.uji.apps.par.model.TipoEvento;
 @TransactionConfiguration(transactionManager = "transactionManager")
 @ContextConfiguration(locations = { "/applicationContext-db-test.xml" })
 public class PreciosDAOTest {
+	private static final String SORT = "";
+	private static final int START = 0;
+	private static final int LIMIT = 100;
 
 	@Autowired
 	PreciosPlantillaDAO preciosDAO;
@@ -46,7 +49,7 @@ public class PreciosDAOTest {
     @Transactional
     public void getPrecios()
     {
-        Assert.assertNotNull(preciosDAO.getPreciosOfPlantilla(Long.valueOf("1")));
+        Assert.assertNotNull(preciosDAO.getPreciosOfPlantilla(Long.valueOf("1"), PreciosDAOTest.SORT, PreciosDAOTest.START, PreciosDAOTest.LIMIT));
     }
 
     @Test
@@ -74,7 +77,7 @@ public class PreciosDAOTest {
     	plantillaPrecios = plantillaPreciosDAO.add(plantillaPrecios);
     	
         return new PreciosPlantilla(Localizacion.localizacionDTOtoLocalizacion(localizacionesDAO.get().get(0)), 
-        		Plantilla.plantillaPreciosDTOtoPlantillaPrecios(plantillaPreciosDAO.get(false).get(0)));
+        		Plantilla.plantillaPreciosDTOtoPlantillaPrecios(plantillaPreciosDAO.get(false, PreciosDAOTest.SORT, PreciosDAOTest.START, PreciosDAOTest.LIMIT).get(0)));
     }
 
     @Test

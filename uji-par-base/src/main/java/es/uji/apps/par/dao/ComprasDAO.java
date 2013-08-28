@@ -7,9 +7,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,12 +21,9 @@ import es.uji.apps.par.db.SesionDTO;
 import es.uji.apps.par.utils.DateUtils;
 
 @Repository
-public class ComprasDAO
+public class ComprasDAO extends BaseDAO
 {
     private static final int ELIMINA_PENDIENTES_MINUTOS = 10;
-
-    @PersistenceContext
-    private EntityManager entityManager;
     
     @Autowired
     private SesionesDAO sesionDAO;
@@ -86,6 +80,7 @@ public class ComprasDAO
         return compraDTO;
     }
 
+    @Transactional
     public CompraDTO getCompraById(long id)
     {
         QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
@@ -160,7 +155,8 @@ public class ComprasDAO
             entityManager.remove(compra);
         }
     }
-
+    
+    @Transactional
     public CompraDTO getCompraByUuid(String uuid)
     {
         QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
@@ -211,18 +207,26 @@ public class ComprasDAO
         
         entityManager.persist(compra);
     }
-
-    public List<CompraDTO> getComprasBySesion(long sesionId)
+    
+    @Transactional
+    public List<CompraDTO> getComprasBySesion(long sesionId, String sortParameter, int start, int limit)
     {
-        QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
-        
-        JPAQuery query = new JPAQuery(entityManager);
-
-         List<CompraDTO> compras = query
-                .from(qCompraDTO)
-                .where(qCompraDTO.parSesion.id.eq(sesionId))
-                .list(qCompraDTO);
-         
-         return compras;
+    	QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
+    	return getQueryComprasBySesion(sesionId).orderBy(getSort(qCompraDTO, sortParameter)).
+    			offset(start).limit(limit).list(qCompraDTO);
     }
+
+    @Transactional
+	private JPAQuery getQueryComprasBySesion(long sesionId) {
+		JPAQuery query = new JPAQuery(entityManager);
+		QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
+		return query
+                .from(qCompraDTO)
+                .where(qCompraDTO.parSesion.id.eq(sesionId));
+	}
+
+    @Transactional
+	public int getTotalComprasBySesion(Long sesionId) {
+		return (int) getQueryComprasBySesion(sesionId).count();
+	}
 }

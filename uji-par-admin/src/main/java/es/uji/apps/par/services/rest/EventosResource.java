@@ -2,7 +2,7 @@ package es.uji.apps.par.services.rest;
 
 import java.math.BigDecimal;
 import java.net.URI;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -28,6 +28,7 @@ import es.uji.apps.par.model.Evento;
 import es.uji.apps.par.model.Sesion;
 import es.uji.apps.par.services.EventosService;
 import es.uji.apps.par.services.SesionesService;
+import es.uji.apps.par.utils.Utils;
 
 @Path("evento")
 public class EventosResource
@@ -40,16 +41,23 @@ public class EventosResource
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAll(@QueryParam("activos") boolean activos)
+    public Response getAll(@QueryParam("activos") boolean activos, @QueryParam("sort") String sort, 
+    		@QueryParam("start") int start, @QueryParam("limit") int limit)
     {
-        List<Evento> eventos; 
+    	limit = Utils.inicializarLimitSiNecesario(limit);
+        List<Evento> eventos;
+        int total = 0;
         
-        if (activos)
-            eventos = eventosService.getEventosActivos();
-        else
-            eventos = eventosService.getEventos();
+        if (activos) {
+            eventos = eventosService.getEventosActivos(sort, start, limit);
+            total = eventosService.getTotalEventosActivos();
+        }
+        else {
+            eventos = eventosService.getEventos(sort, start, limit);
+            total = eventosService.getTotalEventos();
+        }
                 
-        return Response.ok().entity(new RestResponse(true, eventos)).build();
+        return Response.ok().entity(new RestResponse(true, eventos, total)).build();
     }
 
     @GET
@@ -71,26 +79,36 @@ public class EventosResource
     @GET
     @Path("{id}/sesiones")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getSesiones(@PathParam("id") Integer eventoId, @QueryParam("activos") boolean activos)
+    public Response getSesiones(@PathParam("id") Integer eventoId, @QueryParam("activos") boolean activos,
+    		@QueryParam("sort") String sort, @QueryParam("start") int start, @QueryParam("limit") int limit)
     {
+    	limit = Utils.inicializarLimitSiNecesario(limit);
         List<Sesion> sesiones;
+        int total;
         
-        if (activos)
-            sesiones = sesionesService.getSesionesActivasDateEnSegundos(eventoId);
-        else
-            sesiones = sesionesService.getSesionesDateEnSegundos(eventoId);
+        if (activos) {
+            sesiones = sesionesService.getSesionesActivasDateEnSegundos(eventoId, sort, start, limit);
+            total = sesionesService.getTotalSesionesActivas(eventoId);
+        }
+        else {
+            sesiones = sesionesService.getSesionesDateEnSegundos(eventoId, sort, start, limit);
+            total = sesionesService.getTotalSesiones(eventoId);
+        }
         
         
-        return Response.ok().entity(new RestResponse(true, sesiones))
-                .build();
+        return Response.ok().entity(new RestResponse(true, sesiones, total)).build();
     }
     
     @GET
     @Path("{eventoId}/sesiones/{sesionId}/precios")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getPreciosSesion(@PathParam("eventoId") Integer eventoId, @PathParam("sesionId") Long sesionId)
+    public Response getPreciosSesion(@PathParam("eventoId") Integer eventoId, @PathParam("sesionId") Long sesionId, 
+    		@QueryParam("sort") String sort, @QueryParam("start") int start, @QueryParam("limit") int limit)
     {
-        return Response.ok().entity(new RestResponse(true, sesionesService.getPreciosSesion(sesionId)))
+    	limit = Utils.inicializarLimitSiNecesario(limit);
+        return Response.ok().entity(new RestResponse(true, 
+        		sesionesService.getPreciosSesion(sesionId, sort, start, limit), 
+        		sesionesService.getTotalPreciosSesion(sesionId)))
                 .build();
     }
 
@@ -133,7 +151,7 @@ public class EventosResource
 
         // TODO -> crear URL
         return Response.created(URI.create(""))
-                .entity(new RestResponse(true, Collections.singletonList(newEvento))).build();
+                .entity(new RestResponse(true, Arrays.asList(newEvento), 1)).build();
     }
 
     @POST
@@ -144,7 +162,7 @@ public class EventosResource
     {
         Sesion newSesion = sesionesService.addSesion(eventoId, sesion);
         //TODO -> crear URL
-        return Response.created(URI.create("")).entity(new RestResponse(true, Collections.singletonList(newSesion)))
+        return Response.created(URI.create("")).entity(new RestResponse(true, Arrays.asList(newSesion), 1))
                 .build();
     }
 
@@ -202,7 +220,7 @@ public class EventosResource
     {
         sesion.setId(sesionId);
         sesionesService.updateSesion(eventoId, sesion);
-        return Response.ok().entity(new RestResponse(true, Collections.singletonList(sesion)))
+        return Response.ok().entity(new RestResponse(true, Arrays.asList(sesion), 1))
                 .build();
     }
     

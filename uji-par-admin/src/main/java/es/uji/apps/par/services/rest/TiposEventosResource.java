@@ -1,7 +1,7 @@
 package es.uji.apps.par.services.rest;
 
 import java.net.URI;
-import java.util.Collections;
+import java.util.Arrays;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -11,6 +11,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -19,6 +20,7 @@ import com.sun.jersey.api.core.InjectParam;
 import es.uji.apps.par.GeneralPARException;
 import es.uji.apps.par.model.TipoEvento;
 import es.uji.apps.par.services.TiposEventosService;
+import es.uji.apps.par.utils.Utils;
 
 @Path("tipoevento")
 public class TiposEventosResource
@@ -28,10 +30,11 @@ public class TiposEventosResource
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAll()
+    public Response getAll(@QueryParam("sort") String sort, @QueryParam("start") int start, @QueryParam("limit") int limit)
     {
-        return Response.ok().entity(new RestResponse(true, tiposEventosService.getTiposEventos()))
-                .build();
+    	limit = Utils.inicializarLimitSiNecesario(limit);
+        return Response.ok().entity(new RestResponse(true, tiposEventosService.getTiposEventos(sort, start, limit),
+        		tiposEventosService.getTotalTipusEventos())).build();
     }
 
     @DELETE
@@ -51,7 +54,7 @@ public class TiposEventosResource
         TipoEvento newTipoEvento = tiposEventosService.addTipoEvento(tipoEvento);
         // TODO crear URI
         return Response.created(URI.create(""))
-                .entity(new RestResponse(true, Collections.singletonList(newTipoEvento))).build();
+                .entity(new RestResponse(true, Arrays.asList(newTipoEvento), 1)).build();
     }
 
     @PUT
@@ -61,7 +64,7 @@ public class TiposEventosResource
     public Response update(TipoEvento tipoEvento) throws GeneralPARException
     {
         tiposEventosService.updateTipoEvento(tipoEvento);
-        return Response.ok().entity(new RestResponse(true, Collections.singletonList(tipoEvento)))
+        return Response.ok().entity(new RestResponse(true,Arrays.asList(tipoEvento), 1))
                 .build();
     }
 }
