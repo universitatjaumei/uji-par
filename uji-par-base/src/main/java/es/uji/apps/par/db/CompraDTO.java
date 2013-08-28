@@ -109,6 +109,7 @@ public class CompraDTO implements Serializable {
         this.importe = importe;
         this.pagada = false;
         this.uuid = uuid;
+        this.infoPeriodica = false;
         this.reserva = false;
 	}
 
