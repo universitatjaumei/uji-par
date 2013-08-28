@@ -10,7 +10,7 @@
 
 	<context-param>
 		<param-name>webAppRootKey</param-name>
-    	<param-value>paranimf-fw-uji.root</param-value>
+    	<param-value>paranimf-public-fw-uji.root</param-value>
 	</context-param>
 
 	<context-param>
