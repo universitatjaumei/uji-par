@@ -43,6 +43,6 @@ Ext.define('Paranimf.view.localizacion.GridLocalizaciones', {
 
 
    showAddLocalizacionWindow: function() {
-      this.createModalWindow('formLocalizaciones').show();
+      this.createPercentageModalWindow('formLocalizaciones').show();
    }
 });

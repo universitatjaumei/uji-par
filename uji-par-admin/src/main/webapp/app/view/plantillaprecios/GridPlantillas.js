@@ -30,6 +30,6 @@ Ext.define('Paranimf.view.plantillaprecios.GridPlantillas', {
 
 
    showAddPlantillaWindow: function() {
-      this.createModalWindow('formPlantillas', 600, 100).show();
+      this.createPercentageModalWindow('formPlantillas').show();
    }
 });

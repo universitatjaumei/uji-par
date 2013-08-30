@@ -51,6 +51,21 @@ Ext.define('Paranimf.view.EditBaseGrid', {
       });
    },
 
+   createPercentageModalWindow: function(xtype, percentageWidth, percentageHeight, title) {
+      var viewport = Ext.ComponentQuery.query('viewport')[0];
+      percentageWidth = (percentageWidth)?viewport.width*percentageWidth:viewport.width*0.8;
+      percentageHeight = (percentageHeight)?viewport.height*percentageHeight:'auto';
+      return Ext.create('Paranimf.view.EditModalWindow', {
+         title: (title)?title:this.title,
+         items: [{
+            autoScroll: true,
+            xtype: xtype,
+            width: percentageWidth,
+            height: percentageHeight
+         }]
+      });
+   },
+
    toJSON: function() {
       var jsonFilas = "";
 
@@ -64,14 +79,12 @@ Ext.define('Paranimf.view.EditBaseGrid', {
       return jsonFilas;
    },
 
-   edit: function(xtype, arrayComboClearFilter, width, height) {
+   edit: function(xtype, arrayComboClearFilter, percentageWidth, percentageHeight) {
       var selectedRows = this.getSelectionModel().getSelection();
       if (selectedRows.length == 0)
          alert(UI.i18n.message.selectRow);
       else {
-         if (!width) width = 500;
-
-         var modalWindow = this.createModalWindow(xtype, width, height);
+         var modalWindow = this.createPercentageModalWindow(xtype, percentageWidth, percentageHeight);
          var form = modalWindow.down('form').getForm();
          
          this.clearFilter(form, arrayComboClearFilter);

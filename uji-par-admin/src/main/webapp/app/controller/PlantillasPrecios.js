@@ -90,7 +90,7 @@ Ext.define('Paranimf.controller.PlantillasPrecios', {
    },
 
    editPlantilla: function(button, event, opts) {
-      this.getGridPlantillas().edit('formPlantillas', undefined, 600, 100);
+      this.getGridPlantillas().edit('formPlantillas');
    },
 
    removePlantilla: function(button, event, opts) {
@@ -147,6 +147,6 @@ Ext.define('Paranimf.controller.PlantillasPrecios', {
    },
    
    editPrecio: function(button, event, opts) {
-      this.getGridPrecios().edit('formPrecios', undefined, 600, 300);
+      this.getGridPrecios().edit('formPrecios');
    }
 });

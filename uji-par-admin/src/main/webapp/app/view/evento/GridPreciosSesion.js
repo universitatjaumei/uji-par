@@ -48,7 +48,7 @@ Ext.define('Paranimf.view.evento.GridPreciosSesion', {
 
 
    showAddPrecioSesionWindow: function() {
-      this.createModalWindow('formPreciosSesion').show();
+      this.createPercentageModalWindow('formPreciosSesion').show();
    },
 
    toJSON: function() {

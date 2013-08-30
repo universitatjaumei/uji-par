@@ -30,6 +30,17 @@ Ext.define('Paranimf.view.evento.GridEventos', {
             return 'Sí';
         }
       }, {
+        flex: 2,
+        dataIndex: 'fechaPrimeraSesion',
+        text: UI.i18n.field.fechaPrimeraSesion,
+        renderer: function(val) {
+          if (val != '' && val != undefined) {
+            var dt = new Date(val);
+            return Ext.Date.format(dt, 'd/m/Y H:i');
+          }
+          return '';
+        }
+    }, {
         dataIndex: 'parTiposEvento',
         text: UI.i18n.field.type,
         flex: 2,
@@ -58,9 +69,7 @@ Ext.define('Paranimf.view.evento.GridEventos', {
       this.callParent(arguments);
    },
 
-
    showAddEventoWindow: function() {
-      this.createModalWindow('formEventos', 600, 600).show();
+      this.createPercentageModalWindow('formEventos', undefined, 0.8).show();
    }
-
 });

@@ -40,6 +40,6 @@ Ext.define('Paranimf.view.usuario.GridUsuarios', {
 
 
    showAddUsuarioWindow: function() {
-      this.createModalWindow('formUsuarios').show();
+      this.createPercentageModalWindow('formUsuarios').show();
    }
 });

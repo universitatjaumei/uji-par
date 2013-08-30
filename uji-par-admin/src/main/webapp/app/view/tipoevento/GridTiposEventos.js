@@ -36,6 +36,6 @@ Ext.define('Paranimf.view.tipoevento.GridTiposEventos', {
 
 
    showAddTipoEventoWindow: function() {
-      this.createModalWindow('formTiposEventos').show();
+      this.createPercentageModalWindow('formTiposEventos').show();
    }
 });

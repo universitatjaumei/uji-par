@@ -22,12 +22,12 @@ Ext.define('Paranimf.view.taquilla.GridSesionesTaquilla', {
  	         xtype: 'button',
  	         text: UI.i18n.button.reservar,
  	         action: 'reservar'
-    	  },
+    	  }/*,
    	  	  {
   	         xtype: 'button',
   	         text: UI.i18n.button.verCompras,
   	         action: 'verCompras'
-     	  }      	  
+     	  }*/
    ],   
    
    comprar: function() {
@@ -69,13 +69,11 @@ Ext.define('Paranimf.view.taquilla.GridSesionesTaquilla', {
     }];
 
     this.callParent(arguments);
-    
-    //this.getDockedItems('toolbar[dock=top]')[0].hide();
   },
 
   showComprarWindow: function(idSesion, asientosNumerados, title, modoReserva) {
-  	console.log("showComprarWindow: ", idSesion);  
-  	var window = this.createModalWindow('formComprar', 940, 750, title).show();
+  	//console.log("showComprarWindow: ", idSesion);  
+  	var window = this.createPercentageModalWindow('formComprar', undefined, 0.8, title).show();
   	var cardLayout = Ext.getCmp('pasoSeleccionar').getLayout();
   	
   	if (asientosNumerados)
@@ -90,11 +88,5 @@ Ext.define('Paranimf.view.taquilla.GridSesionesTaquilla', {
   	}
   	else
   		cardLayout.setActiveItem(1);
-  },
-  
-  showVerComprasWindow: function(idSesion) {
-	 console.log("showVerComprasWindow: ", idSesion);  
-	 this.createModalWindow('panelCompras', 940, 750, UI.i18n.gridTitle.compras).show();
-  }  
-  
+  }
 });
