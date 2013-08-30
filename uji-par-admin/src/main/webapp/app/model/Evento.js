@@ -32,6 +32,8 @@ Ext.define('Paranimf.model.Evento', {
       'porcentajeIVA',
       'retencionSGAE',
       'ivaSGAE',
+      'fechaPrimeraSesion',
+      //{name: 'fechaPrimeraSesion', type: 'date', dateFormat: 'U'},
 
       {name: 'fechaInicio', type: 'date'},
       {name: 'fechaFin', type: 'date'}

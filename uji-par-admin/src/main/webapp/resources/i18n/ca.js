@@ -141,7 +141,8 @@ UI =
             "precios": "Gestió dels preus per localització i plantilla seleccionada",
             "menu": "Menú d'opcions",
             "comprar": "Comprar entrades",
-            "compras": "Gestió de compres"
+            "compras": "Gestió de compres i reserves",
+            "detalleCompras": "Detall compra/reserva seleccionada"
         },
         
         "field": {
@@ -241,7 +242,8 @@ UI =
             "idLocalitzacio": "Identificador intern de la localització",
             "plantillaPreusInterna": "Identificador intern de la plantilla de preus",
             "precioPorEntrada": "Preu per entrada: ",
-            "totalCompra": "Total de les entrades comprades: "
+            "totalCompra": "Total de les entrades comprades: ",
+            "fechaPrimeraSesion": "Data de la primera sessió"
         },
 
         "legends": {

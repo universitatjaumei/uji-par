@@ -66,6 +66,6 @@ Ext.define('Paranimf.view.compra.GridCompras', {
 
 
    showAddCompraWindow: function() {
-      this.createModalWindow('formCompras').show();
+      this.createPercentageModalWindow('formCompras').show();
    }
 });
