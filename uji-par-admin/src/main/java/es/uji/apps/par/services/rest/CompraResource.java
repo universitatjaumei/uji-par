@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -28,7 +29,6 @@ import es.uji.apps.par.model.ResultadoCompra;
 import es.uji.apps.par.services.ButacasService;
 import es.uji.apps.par.services.ComprasService;
 import es.uji.apps.par.services.SesionesService;
-import es.uji.apps.par.utils.Utils;
 
 @Path("compra")
 public class CompraResource extends BaseResource
@@ -51,9 +51,8 @@ public class CompraResource extends BaseResource
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getCompras(@PathParam("id") Long sesionId, @QueryParam("sort") String sort, 
-    		@QueryParam("start") int start, @QueryParam("limit") int limit)
+    		@QueryParam("start") int start, @QueryParam("limit") @DefaultValue("1000") int limit)
     {
-    	limit = Utils.inicializarLimitSiNecesario(limit);
         return Response.ok().entity(new RestResponse(true, 
         		comprasService.getComprasBySesionFechaSegundos(sesionId, sort, start, limit), 
         		comprasService.getTotalComprasBySesion(sesionId))).build();
@@ -87,9 +86,8 @@ public class CompraResource extends BaseResource
     @Path("{id}/precios")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getPreciosSesion(@PathParam("id") Long sesionId, @QueryParam("sort") String sort, 
-    		@QueryParam("start") int start, @QueryParam("limit") int limit)
+    		@QueryParam("start") int start, @QueryParam("limit") @DefaultValue("1000") int limit)
     {
-    	limit = Utils.inicializarLimitSiNecesario(limit);
         return Response.ok().entity(new RestResponse(true, 
         		sesionesService.getPreciosSesion(sesionId, sort, start, limit), 
         		sesionesService.getTotalPreciosSesion(sesionId))).build();
@@ -117,5 +115,4 @@ public class CompraResource extends BaseResource
         
         return Response.ok().entity(importe.setScale(2).toString()).build();
     }
-    
 }

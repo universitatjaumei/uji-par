@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -22,7 +23,6 @@ import es.uji.apps.par.model.Plantilla;
 import es.uji.apps.par.model.PreciosPlantilla;
 import es.uji.apps.par.services.PlantillasService;
 import es.uji.apps.par.services.PreciosPlantillaService;
-import es.uji.apps.par.utils.Utils;
 
 @Path("plantillaprecios")
 public class PlantillasPreciosResource {
@@ -35,9 +35,8 @@ public class PlantillasPreciosResource {
 	
 	@GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAll(@QueryParam("sort") String sort, @QueryParam("start") int start, @QueryParam("limit") int limit)
+    public Response getAll(@QueryParam("sort") String sort, @QueryParam("start") int start, @QueryParam("limit") @DefaultValue("1000") int limit)
     {
-		limit = Utils.inicializarLimitSiNecesario(limit);
         return Response.ok().entity(new RestResponse(true, plantillaPreciosService.getAll(sort, start, limit), 
         		plantillaPreciosService.getTotalPlantillaPrecios())).build();
     }
@@ -77,9 +76,9 @@ public class PlantillasPreciosResource {
     @GET
     @Path("{id}/precios")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getPrecios(@PathParam("id") String id, @QueryParam("sort") String sort, @QueryParam("start") int start, @QueryParam("limit") int limit)
+    public Response getPrecios(@PathParam("id") String id, @QueryParam("sort") String sort, @QueryParam("start") int start, 
+    		@QueryParam("limit") @DefaultValue("1000") int limit)
     {
-    	limit = Utils.inicializarLimitSiNecesario(limit);
         return Response.ok().entity(new RestResponse(true, 
         		preciosService.getPreciosOfPlantilla(Long.valueOf(id), sort, start, limit), 
         		preciosService.getTotalPreciosOfPlantilla(Long.valueOf(id)))).build();
@@ -88,9 +87,8 @@ public class PlantillasPreciosResource {
     @GET
     @Path("editables")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getPlantillasEditables(@QueryParam("sort") String sort, @QueryParam("start") int start, @QueryParam("limit") int limit)
+    public Response getPlantillasEditables(@QueryParam("sort") String sort, @QueryParam("start") int start, @QueryParam("limit") @DefaultValue("1000") int limit)
     {
-    	limit = Utils.inicializarLimitSiNecesario(limit);
         return Response.ok().entity(new RestResponse(true, 
         		plantillaPreciosService.getEditables(sort, start, limit), 
         		plantillaPreciosService.getTotalPlantillasEditables())).build();

@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -20,7 +21,6 @@ import com.sun.jersey.api.core.InjectParam;
 import es.uji.apps.par.GeneralPARException;
 import es.uji.apps.par.model.TipoEvento;
 import es.uji.apps.par.services.TiposEventosService;
-import es.uji.apps.par.utils.Utils;
 
 @Path("tipoevento")
 public class TiposEventosResource
@@ -30,9 +30,8 @@ public class TiposEventosResource
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAll(@QueryParam("sort") String sort, @QueryParam("start") int start, @QueryParam("limit") int limit)
+    public Response getAll(@QueryParam("sort") String sort, @QueryParam("start") int start, @QueryParam("limit") @DefaultValue("1000") int limit)
     {
-    	limit = Utils.inicializarLimitSiNecesario(limit);
         return Response.ok().entity(new RestResponse(true, tiposEventosService.getTiposEventos(sort, start, limit),
         		tiposEventosService.getTotalTipusEventos())).build();
     }

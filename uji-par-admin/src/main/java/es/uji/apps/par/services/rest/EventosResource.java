@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -28,7 +29,6 @@ import es.uji.apps.par.model.Evento;
 import es.uji.apps.par.model.Sesion;
 import es.uji.apps.par.services.EventosService;
 import es.uji.apps.par.services.SesionesService;
-import es.uji.apps.par.utils.Utils;
 
 @Path("evento")
 public class EventosResource
@@ -42,9 +42,8 @@ public class EventosResource
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAll(@QueryParam("activos") boolean activos, @QueryParam("sort") String sort, 
-    		@QueryParam("start") int start, @QueryParam("limit") int limit)
+    		@QueryParam("start") int start, @QueryParam("limit") @DefaultValue("1000") int limit)
     {
-    	limit = Utils.inicializarLimitSiNecesario(limit);
         List<Evento> eventos;
         int total = 0;
         
@@ -80,9 +79,8 @@ public class EventosResource
     @Path("{id}/sesiones")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getSesiones(@PathParam("id") Integer eventoId, @QueryParam("activos") boolean activos,
-    		@QueryParam("sort") String sort, @QueryParam("start") int start, @QueryParam("limit") int limit)
+    		@QueryParam("sort") String sort, @QueryParam("start") int start, @QueryParam("limit") @DefaultValue("1000") int limit)
     {
-    	limit = Utils.inicializarLimitSiNecesario(limit);
         List<Sesion> sesiones;
         int total;
         
@@ -103,9 +101,8 @@ public class EventosResource
     @Path("{eventoId}/sesiones/{sesionId}/precios")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getPreciosSesion(@PathParam("eventoId") Integer eventoId, @PathParam("sesionId") Long sesionId, 
-    		@QueryParam("sort") String sort, @QueryParam("start") int start, @QueryParam("limit") int limit)
+    		@QueryParam("sort") String sort, @QueryParam("start") int start, @QueryParam("limit") @DefaultValue("1000") int limit)
     {
-    	limit = Utils.inicializarLimitSiNecesario(limit);
         return Response.ok().entity(new RestResponse(true, 
         		sesionesService.getPreciosSesion(sesionId, sort, start, limit), 
         		sesionesService.getTotalPreciosSesion(sesionId)))
