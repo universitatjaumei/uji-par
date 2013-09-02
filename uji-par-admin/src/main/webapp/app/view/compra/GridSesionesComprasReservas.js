@@ -4,7 +4,7 @@ Ext.define('Paranimf.view.compra.GridSesionesComprasReservas', {
   alias: 'widget.gridSesionesComprasReservas',
   store: 'SesionesTaquillaAll',
 
-  title: UI.i18n.gridTitle.comprar,
+  title: UI.i18n.gridTitle.sesionesCompras,
 
   dockedItems: [{
     xtype: 'pagingtoolbar',
@@ -58,6 +58,6 @@ Ext.define('Paranimf.view.compra.GridSesionesComprasReservas', {
   },
 
   showVerComprasWindow: function() {
-    this.createPercentageModalWindow('panelCompras', undefined, 0.8, UI.i18n.gridTitle.compras).show();
+    this.createPercentageModalWindow('panelCompras', undefined, 0.8, UI.i18n.gridTitle.compras, false).show();
   }
 });

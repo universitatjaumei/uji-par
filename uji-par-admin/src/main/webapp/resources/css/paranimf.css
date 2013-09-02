@@ -138,3 +138,43 @@
 	height: 100%;
 	border: 0px;
 }
+
+.gridReserva .x-grid-cell {
+   background-color: yellow;
+   color: black;
+}
+.gridReserva.x-grid-row-selected .x-grid-cell {
+   background-color: #C1CDCD !important;
+   text-shadow: none;
+   font-style: italic;
+}
+
+.gridTaquilla .x-grid-cell {
+   background-color: #00FE6B;
+   color: black;
+}
+.gridTaquilla.x-grid-row-selected .x-grid-cell {
+   background-color: #C1CDCD !important;
+   text-shadow: none;
+   font-style: italic;
+}
+
+.gridOnline .x-grid-cell {
+   background-color: #8DEEEE;
+   color: black;
+}
+.gridOnline.x-grid-row-selected .x-grid-cell {
+   background-color: #C1CDCD !important;
+   text-shadow: none;
+   font-style: italic;
+}
+
+.gridAnulada .x-grid-cell {
+   background-color: red;
+   color: white;
+}
+.gridAnulada.x-grid-row-selected .x-grid-cell {
+   background-color: #C1CDCD !important;
+   text-shadow: none;
+   font-style: italic;
+}

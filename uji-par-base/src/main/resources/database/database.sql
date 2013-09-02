@@ -129,7 +129,8 @@
     "FILA" VARCHAR2(255), 
     "NUMERO" VARCHAR2(255),
     "TIPO" VARCHAR2(255),
-    "PRECIO" NUMBER
+    "PRECIO" NUMBER,
+    "ANULADA" NUMBER(1,0) DEFAULT 0
    ) ;
 --------------------------------------------------------
 --  DDL for Table PAR_COMPRAS
@@ -157,7 +158,8 @@
     "RESERVA" NUMBER(1,0) DEFAULT 0,
     "DESDE" TIMESTAMP (6),
     "HASTA" TIMESTAMP (6),
-    "OBSERVACIONES_RESERVA" VARCHAR2(36 BYTE) 
+    "OBSERVACIONES_RESERVA" VARCHAR2(36 BYTE),
+    "ANULADA" NUMBER(1,0) DEFAULT 0
    );
    
 --------------------------------------------------------
@@ -437,7 +439,7 @@
 --------------------------------------------------------
 
 -- Permite unique por (sesion, localizacion, fila, numero) pero sin dar problemas cuando fila=null y numero=null (las butacas no numeradas)
-CREATE UNIQUE INDEX "PAR_BUTACAS_UK" ON "PAR_BUTACAS" ("SESION_ID", "LOCALIZACION_ID", NVL2("FILA","FILA",TO_CHAR("ID")), NVL2("NUMERO","NUMERO",TO_CHAR("ID")));
+CREATE UNIQUE INDEX "PAR_BUTACAS_UK" ON "PAR_BUTACAS" ("SESION_ID", "LOCALIZACION_ID", NVL2("FILA","FILA",TO_CHAR("ID"+1000)), NVL2("NUMERO","NUMERO",TO_CHAR("ID"+1000)), DECODE(anulada, 1, TO_CHAR("ID"+1000), 1));
 
 
 Insert into PAR_LOCALIZACIONES (ID,NOMBRE_ES,TOTAL_ENTRADAS,NOMBRE_VA,CODIGO) values (1,'Platea nivel 2',225,'Platea nivell 2','platea2');

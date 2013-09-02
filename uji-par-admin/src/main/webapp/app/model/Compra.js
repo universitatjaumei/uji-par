@@ -9,6 +9,9 @@ Ext.define('Paranimf.model.Compra', {
       'email',
       'pagada',
       'reserva',
-      'taquilla'
+      'taquilla',
+      'telefono',
+      'importe',
+      'anulada'
    ]
 });

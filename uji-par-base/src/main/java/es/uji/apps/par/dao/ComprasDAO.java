@@ -11,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mysema.query.BooleanBuilder;
 import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
+import com.mysema.query.jpa.impl.JPAUpdateClause;
 
 import es.uji.apps.par.db.CompraDTO;
 import es.uji.apps.par.db.QButacaDTO;
@@ -209,24 +211,40 @@ public class ComprasDAO extends BaseDAO
     }
     
     @Transactional
-    public List<CompraDTO> getComprasBySesion(long sesionId, String sortParameter, int start, int limit)
+    public List<CompraDTO> getComprasBySesion(long sesionId, int showAnuladas, String sortParameter, int start, int limit)
     {
     	QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
-    	return getQueryComprasBySesion(sesionId).orderBy(getSort(qCompraDTO, sortParameter)).
+    	return getQueryComprasBySesion(sesionId, showAnuladas).orderBy(getSort(qCompraDTO, sortParameter)).
     			offset(start).limit(limit).list(qCompraDTO);
     }
 
     @Transactional
-	private JPAQuery getQueryComprasBySesion(long sesionId) {
+	private JPAQuery getQueryComprasBySesion(long sesionId, int showAnuladas) {
 		JPAQuery query = new JPAQuery(entityManager);
 		QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
-		return query
-                .from(qCompraDTO)
-                .where(qCompraDTO.parSesion.id.eq(sesionId));
+		BooleanBuilder builder = new BooleanBuilder();
+		builder.and(qCompraDTO.parSesion.id.eq(sesionId));
+		
+		if (showAnuladas == 0)
+			builder.and(qCompraDTO.anulada.isNull().or(qCompraDTO.anulada.eq(false)));
+		return query.from(qCompraDTO).where(builder);
 	}
 
     @Transactional
-	public int getTotalComprasBySesion(Long sesionId) {
-		return (int) getQueryComprasBySesion(sesionId).count();
+	public int getTotalComprasBySesion(Long sesionId, int showAnuladas) {
+		return (int) getQueryComprasBySesion(sesionId, showAnuladas).count();
+	}
+
+    @Transactional
+	public void anularCompraReserva(Long sesionId, Long idCompraReserva) {
+    	QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
+    	QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
+		JPAUpdateClause updateCompra = new JPAUpdateClause(entityManager, qCompraDTO);
+		updateCompra.set(qCompraDTO.anulada, true).
+			where(qCompraDTO.id.eq(idCompraReserva).and(qCompraDTO.parSesion.id.eq(sesionId))).execute();
+		
+		JPAUpdateClause updateButacas = new JPAUpdateClause(entityManager, qButacaDTO);
+		updateButacas.set(qButacaDTO.anulada, true).
+			where(qButacaDTO.parCompra.id.eq(idCompraReserva)).execute();
 	}
 }

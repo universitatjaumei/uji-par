@@ -98,6 +98,9 @@ public class CompraDTO implements Serializable {
     @Column(name = "OBSERVACIONES_RESERVA")
     private String observacionesReserva;
     
+    @Column(name = "ANULADA")
+    private Boolean anulada;
+    
 	public CompraDTO()
     {
     }
@@ -296,5 +299,13 @@ public class CompraDTO implements Serializable {
     public void setObservacionesReserva(String observacionesReserva) {
         this.observacionesReserva = observacionesReserva;
     }
+
+	public Boolean getAnulada() {
+		return anulada;
+	}
+
+	public void setAnulada(Boolean anulada) {
+		this.anulada = anulada;
+	}
 
 }

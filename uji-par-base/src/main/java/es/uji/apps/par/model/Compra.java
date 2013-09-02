@@ -20,6 +20,8 @@ public class Compra
     private boolean taquilla;
     private List<Butaca> parButacas;
     private Date fecha;
+    private Float importe;
+    private boolean anulada;
 
     public Compra(CompraDTO compraDTO)
     {
@@ -32,6 +34,9 @@ public class Compra
         this.setReserva(compraDTO.getReserva());
         this.setFecha(compraDTO.getFecha());
         this.setTaquilla(compraDTO.getTaquilla());
+        this.setImporte(compraDTO.getImporte().floatValue());
+        if (compraDTO.getAnulada() != null)
+        	this.setAnulada(compraDTO.getAnulada());
     }
 
     public static Compra compraDTOtoCompra(CompraDTO compraDTO)
@@ -138,5 +143,21 @@ public class Compra
     {
         this.taquilla = taquilla;
     }
+
+	public Float getImporte() {
+		return importe;
+	}
+
+	public void setImporte(Float importe) {
+		this.importe = importe;
+	}
+
+	public boolean isAnulada() {
+		return anulada;
+	}
+
+	public void setAnulada(boolean anulada) {
+		this.anulada = anulada;
+	}
     
 }

@@ -76,4 +76,20 @@ public class Utils
 	public static int inicializarLimitSiNecesario(int limit) {
 		return (limit==0)?1000:limit;
 	}
+
+	public static int getAnuladaFromParameter(String anuladaParameter) {
+		//try {
+			if (anuladaParameter != null && !anuladaParameter.equals("")) {
+				Gson gson = new Gson();
+				
+				Type collectionType = new TypeToken<List<HashMap<String, Object>>>(){}.getType();
+				List<HashMap<String, Object>> list = gson.fromJson(anuladaParameter, collectionType);
+				String value = list.get(0).get("value").toString();
+				return (int) Double.parseDouble(value);
+			} else
+				return 0;
+		/*} catch (Exception e) {
+			return 0;
+		}*/
+	}
 }

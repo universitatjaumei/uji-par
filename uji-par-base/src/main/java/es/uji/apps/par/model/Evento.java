@@ -1,6 +1,7 @@
 package es.uji.apps.par.model;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -35,6 +36,7 @@ public class Evento
     private BigDecimal porcentajeIVA;
     private BigDecimal ivaSGAE;
     private BigDecimal retencionSGAE;
+    private Date fechaPrimeraSesion;
 
     public Evento()
     {
@@ -476,5 +478,13 @@ public class Evento
 
 	public void setRetencionSGAE(BigDecimal retencionSGAE) {
 		this.retencionSGAE = retencionSGAE;
+	}
+
+	public Date getFechaPrimeraSesion() {
+		return fechaPrimeraSesion;
+	}
+
+	public void setFechaPrimeraSesion(Date fechaPrimeraSesion) {
+		this.fechaPrimeraSesion = fechaPrimeraSesion;
 	}
 }

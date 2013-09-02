@@ -1,6 +1,5 @@
 package es.uji.apps.par.services;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,18 +29,10 @@ public class EventosService
     
     private List<Evento> getEventos(boolean activos, String sort, int start, int limit)
     {
-        List<Evento> listaParEvento = new ArrayList<Evento>();
-        List<EventoDTO> eventos;
-        
         if (activos)
-            eventos = eventosDAO.getEventosActivos(sort, start, limit);
+            return eventosDAO.getEventosActivos(sort, start, limit);
         else
-            eventos = eventosDAO.getEventos(sort, start, limit);
-        
-        for (EventoDTO eventoDB : eventos)
-            listaParEvento.add(new Evento(eventoDB, false));
-        
-        return listaParEvento;
+            return eventosDAO.getEventos(sort, start, limit);
     }
 
     public void removeEvento(Integer id)

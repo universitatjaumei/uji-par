@@ -12,6 +12,20 @@ Ext.Loader.setConfig({
     }
 });*/
 
+delete Ext.tip.Tip.prototype.minWidth;
+  
+if(Ext.isIE10) { 
+   Ext.override(Ext.tip.Tip, {
+      componentLayout: {
+         type: 'fieldset',
+         getDockedItems: function() {
+            return [];
+         }
+      }
+   });
+}
+Ext.QuickTips.init();
+
 Ext.application({
    name: 'Paranimf',
    autoCreateViewport: false,

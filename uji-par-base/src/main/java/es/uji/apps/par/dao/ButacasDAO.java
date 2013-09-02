@@ -2,9 +2,6 @@ package es.uji.apps.par.dao;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.jpa.JpaSystemException;
@@ -28,11 +25,8 @@ import es.uji.apps.par.db.SesionDTO;
 import es.uji.apps.par.model.Butaca;
 
 @Repository
-public class ButacasDAO
+public class ButacasDAO extends BaseDAO
 {
-    @PersistenceContext
-    private EntityManager entityManager;
-
     @Autowired
     private LocalizacionesDAO localizacionesDAO;
 
@@ -63,6 +57,7 @@ public class ButacasDAO
         entityManager.persist(butacaDTO);
     }
 
+    @Transactional
     public boolean estaOcupada(long idSesion, String codigoLocalizacion, String fila, String numero)
     {
         QLocalizacionDTO qLocalizacionDTO = QLocalizacionDTO.localizacionDTO;
@@ -80,6 +75,7 @@ public class ButacasDAO
         return list.size() > 0;
     }
 
+    @Transactional
     public CompraDTO getCompra(long idSesion, String codigoLocalizacion, String fila, String numero)
     {
         QLocalizacionDTO qLocalizacionDTO = QLocalizacionDTO.localizacionDTO;
@@ -104,6 +100,7 @@ public class ButacasDAO
             return list.get(0);
     }
     
+    @Transactional
     private void deleteButacas(CompraDTO compraDTO)
     {
         QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
@@ -167,11 +164,13 @@ public class ButacasDAO
         }
     }
 
+    @Transactional
     private boolean noHayButacasLibres(SesionDTO sesionDTO, LocalizacionDTO localizacionDTO)
     {
         return getOcupadas(sesionDTO.getId(), localizacionDTO.getCodigo()) >= localizacionDTO.getTotalEntradas().intValue();
     }
 
+    @Transactional
     public int getOcupadas(long sesionId, String codigoLocalizacion)
     {
         QLocalizacionDTO qLocalizacionDTO = QLocalizacionDTO.localizacionDTO;
@@ -190,5 +189,21 @@ public class ButacasDAO
         
         return (int) ocupadas;
     }
+
+    @Transactional
+	public List<ButacaDTO> getButacasCompra(Long idCompra, String sortParameter, int start, int limit) {
+		return getQueryButacasCompra(idCompra).orderBy(getSort(qButacaDTO, sortParameter)).offset(start).limit(limit).list(qButacaDTO);
+	}
+    
+    @Transactional
+    private JPAQuery getQueryButacasCompra(Long idCompra) {
+    	JPAQuery query = new JPAQuery(entityManager);
+    	return query.from(qButacaDTO).where(qButacaDTO.parCompra.id.eq(idCompra));
+    }
+
+    @Transactional
+	public int getTotalButacasCompra(Long idCompra) {
+		return (int) getQueryButacasCompra(idCompra).count();
+	}
 
 }

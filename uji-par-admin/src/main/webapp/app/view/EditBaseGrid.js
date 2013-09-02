@@ -1,9 +1,13 @@
+Ext.override(Ext.grid.View,{
+   loadingText: UI.i18n.message.loading
+});
+
 Ext.define('Paranimf.view.EditBaseGrid', {
    extend: 'Ext.grid.Panel',
 
-   viewConfig: {
+   /*viewConfig: {
       loadingText: UI.i18n.message.loading
-   },
+   },*/
 
    tbar: [{
       xtype: 'button',
@@ -51,14 +55,15 @@ Ext.define('Paranimf.view.EditBaseGrid', {
       });
    },
 
-   createPercentageModalWindow: function(xtype, percentageWidth, percentageHeight, title) {
+   createPercentageModalWindow: function(xtype, percentageWidth, percentageHeight, title, autoScrollable) {
       var viewport = Ext.ComponentQuery.query('viewport')[0];
       percentageWidth = (percentageWidth)?viewport.width*percentageWidth:viewport.width*0.8;
       percentageHeight = (percentageHeight)?viewport.height*percentageHeight:'auto';
+      autoScrollable = (autoScrollable != undefined)?autoScrollable:true;
       return Ext.create('Paranimf.view.EditModalWindow', {
          title: (title)?title:this.title,
          items: [{
-            autoScroll: true,
+            autoScroll: autoScrollable,
             xtype: xtype,
             width: percentageWidth,
             height: percentageHeight

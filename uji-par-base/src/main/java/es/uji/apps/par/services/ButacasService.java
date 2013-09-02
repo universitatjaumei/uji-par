@@ -74,4 +74,17 @@ public class ButacasService
             
         return disponibles;
     }
+
+	public List<Butaca> getButacasCompra(Long idCompra, String sort, int start, int limit) {
+		List<ButacaDTO> listaButacasDTO = butacasDAO.getButacasCompra(idCompra, sort, start, limit);
+		List<Butaca> listaButacas = new ArrayList<Butaca>();
+		for (ButacaDTO butacaDTO: listaButacasDTO)
+			listaButacas.add(new Butaca(butacaDTO));
+		
+		return listaButacas;
+	}
+
+	public int getTotalButacasCompra(Long idCompra) {
+		return butacasDAO.getTotalButacasCompra(idCompra);
+	}
 }

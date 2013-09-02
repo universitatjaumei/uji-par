@@ -35,7 +35,9 @@ UI =
             "compraRegistradaOk": "Compra registrada correctament",
             "pagoTarjetaEnviando": "Enviant pagament al lector de tarjetes...",
             "pagoTarjetaEnviadoLector": "El pagament ha sigut enviat correctament al lector de tarjetes... Introduïu la tarjeta",
-            "pagoTarjetaCorrecto": "Pagament amb tarjeta correcte"
+            "pagoTarjetaCorrecto": "Pagament amb tarjeta correcte",
+            "noNumerada": "Sessió no numerada",
+            "sureAnular": "Està segur d'anul·lar la compra/reserva seleccionada? Aquesta operació no es pot cancel·lar"
         },
         "storeWeekDay": {
             "wed": "Dimecres",
@@ -96,7 +98,8 @@ UI =
             	"38":"Sense dades",
             	"39":"Resposta del servidor incorrecta",
             	"40":"Sense dades EMV des del servidor"
-            }
+            },
+            "anularCompraReserva": "S'ha produït un error anul·lant la compra/reserva"
         },
         "button": {
             "closeSession": "Tancar sessió",
@@ -120,7 +123,8 @@ UI =
             "siguiente": "Següent &raquo;",
             "verEntrada": "Imprimir entrada",
             "reservar": "Reservar",
-            "verCompras": "Veure compres/reserves"
+            "verCompras": "Veure compres/reserves",
+            "anular": "Anul·lar compra o reserva"
         },
         "calendar": {
             "calendar": "Calendari de reserves",
@@ -136,6 +140,8 @@ UI =
             "tipoEvento": "Gestió de tipus d'events",
             "eventos": "Gestió dels events",
             "sesiones": "Gestió de les sessions",
+            "sesionesCompras": "Sessions",
+            "eventosCompras": "Events",
             "localizaciones": "Gestió de les localitzacions",
             "plantillasprecios": "Gestió de les plantilles de preus",
             "precios": "Gestió dels preus per localització i plantilla seleccionada",
@@ -243,7 +249,12 @@ UI =
             "plantillaPreusInterna": "Identificador intern de la plantilla de preus",
             "precioPorEntrada": "Preu per entrada: ",
             "totalCompra": "Total de les entrades comprades: ",
-            "fechaPrimeraSesion": "Data de la primera sessió"
+            "fechaPrimeraSesion": "Data de la primera sessió",
+            "importe": "Import",
+            "fila": "Fila del seient",
+            "numeroSeient": "Número del seient",
+            "mostrarAnuladas": "Mostrar anul·lades",
+            "tipusEntrada": "Tipus d'entrada"
         },
 
         "legends": {
@@ -253,6 +264,21 @@ UI =
             "entradesDiscapacitados1": "Entrades DISCAPACITATS PLATEA NIVELL 1",
             "entradesDiscapacitados2": "Entrades DISCAPACITATS PLATEA NIVELL 2",
             "entradesDiscapacitados3": "Entrades DISCAPACITATS AMFITEATRE"
+        },
+
+        "tipos": {
+            "anfiteatro": "Amfiteatre",
+            "platea1": "Platea 1",
+            "platea2": "Platea 2",
+            "discapacitados1": "Discapacitats Platea nivell 1",
+            "discapacitados2": "Discapacitats Platea nivell 2",
+            "discapacitados3": "Discapacitats Amfiteatre"
+        },
+
+        "tipoEntrada": {
+            "normal": "Entrada normal",
+            "invitacion": "Invitació",
+            "descuento": "Entrada amb descompte"
         }
     }
 }

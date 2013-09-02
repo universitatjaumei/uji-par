@@ -5,7 +5,7 @@ Ext.define('Paranimf.view.compra.GridEventosComprasReservas', {
   store: 'EventosTaquillaAll',
   autoScroll: true,
 
-  title: UI.i18n.gridTitle.eventos,
+  title: UI.i18n.gridTitle.eventosCompras,
 
   dockedItems: [{
     xtype: 'pagingtoolbar',

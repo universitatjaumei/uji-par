@@ -8,6 +8,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -50,12 +51,21 @@ public class CompraResource extends BaseResource
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getCompras(@PathParam("id") Long sesionId, @QueryParam("sort") String sort, 
-    		@QueryParam("start") int start, @QueryParam("limit") @DefaultValue("1000") int limit)
+    public Response getCompras(@PathParam("id") Long sesionId, @QueryParam("showAnuladas") int showAnuladas,
+    		@QueryParam("sort") String sort, @QueryParam("start") int start, @QueryParam("limit") @DefaultValue("1000") int limit)
     {
         return Response.ok().entity(new RestResponse(true, 
-        		comprasService.getComprasBySesionFechaSegundos(sesionId, sort, start, limit), 
-        		comprasService.getTotalComprasBySesion(sesionId))).build();
+        		comprasService.getComprasBySesionFechaSegundos(sesionId, showAnuladas, sort, start, limit), 
+        		comprasService.getTotalComprasBySesion(sesionId, showAnuladas))).build();
+    }
+    
+    @PUT
+    @Path("{idSesion}/{idCompraReserva}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response anularCompraOReserva(@PathParam("idSesion") Long sesionId, @PathParam("idCompraReserva") Long idCompraReserva)
+    {
+    	comprasService.anularCompraReserva(sesionId, idCompraReserva);
+        return Response.ok().build();
     }
     
     @POST
@@ -114,5 +124,16 @@ public class CompraResource extends BaseResource
         BigDecimal importe = comprasService.calculaImporteButacas(sesionId, butacasSeleccionadas, true);
         
         return Response.ok().entity(importe.setScale(2).toString()).build();
+    }
+    
+    @GET
+    @Path("{idCompra}/butacas")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getButacasCompra(@PathParam("idCompra") Long idCompra, @QueryParam("sort") String sort, 
+    		@QueryParam("start") int start, @QueryParam("limit") @DefaultValue("1000") int limit)
+    {
+    	return Response.ok().entity(new RestResponse(true, 
+        		butacasService.getButacasCompra(idCompra, sort, start, limit), 
+        		butacasService.getTotalButacasCompra(idCompra))).build();
     }
 }

@@ -51,6 +51,7 @@ public class Butaca
         numero = butacaDTO.getNumero();
         precio = butacaDTO.getPrecio();
         localizacion = butacaDTO.getParLocalizacion().getCodigo();
+        tipo = butacaDTO.getTipo();
     }
 
     public static List<Butaca> parseaJSON(String jsonButacas)

@@ -3,13 +3,13 @@ Ext.define('Paranimf.view.compra.GridDetalleCompras', {
 
   alias: 'widget.gridDetalleCompras',
   title: UI.i18n.gridTitle.detalleCompras,
-  //store: 'Compras',
+  store: 'ButacasCompra',
 
   tbar:{},
    
   dockedItems: [{
     xtype: 'pagingtoolbar',
-    //store: 'Compras',
+    store: 'ButacasCompra',
     dock: 'bottom',
     displayInfo: true
   }],
@@ -21,46 +21,43 @@ Ext.define('Paranimf.view.compra.GridDetalleCompras', {
       dataIndex: 'id',
       hidden: true
     }, {
-      dataIndex: 'fecha',
-      text: UI.i18n.field.date,
-      format:'d/m/Y H:i',
-      xtype: 'datecolumn',          
-      flex: 5
+      dataIndex: 'localizacion',
+      text: UI.i18n.field.localizacion,
+      flex: 1,
+      renderer: function(val) {
+        return (!val)?'':eval("UI.i18n.tipos." + val);
+      }
     }, {
-      dataIndex: 'nombre',
-      text: UI.i18n.field.nameMulti,
-      flex: 5
-    }/*, {
-         dataIndex: 'apellidos',
-         text: UI.i18n.field.surnameMulti,
-         flex: 5
-      }, {
-          dataIndex: 'email',
-          flex: 5,
-          text: UI.i18n.field.email,
-      }, {
-          dataIndex: 'taquilla',
-          flex: 2,
-          text: UI.i18n.field.taquilla,
-          renderer: function (val, p) {
-              return (val)?'Sí':'No';
-          }
-      }, {
-          dataIndex: 'pagada',
-          flex: 2,
-          text: UI.i18n.field.pagada,
-          renderer: function (val, p) {
-              return (val)?'Sí':'No';
-          }
-      }, {
-          dataIndex: 'reserva',
-          flex: 2,
-          text: UI.i18n.field.reserva,
-          renderer: function (val, p) {
-        	  return (val)?'Sí':'No';
-          }
-      }*/
-    ];
+      dataIndex: 'fila',
+      text: UI.i18n.field.fila,
+      flex: 1,
+      renderer: function(val) {
+        return (val)?val:UI.i18n.message.noNumerada
+      }
+    }, {
+      dataIndex: 'numero',
+      text: UI.i18n.field.numeroSeient,
+      flex: 1,
+      renderer: function(val) {
+        return (val)?val:UI.i18n.message.noNumerada
+      }
+    }, {
+      dataIndex: 'tipo',
+      text: UI.i18n.field.tipusEntrada,
+      flex: 1,
+      renderer: function(val) {
+        console.log(val);
+        console.log(eval("UI.i18n.tipoEntrada." + val));
+        return (val!=undefined&&val!='')?eval("UI.i18n.tipoEntrada." + val):'';
+      }
+    }, {
+      dataIndex: 'precio',
+      text: UI.i18n.field.precio,
+      flex: 1,
+      renderer: function(val) {
+        return (val == 0)?'':val.toFixed(2) + '€';
+      }
+    }];
    
     this.callParent(arguments);
    }

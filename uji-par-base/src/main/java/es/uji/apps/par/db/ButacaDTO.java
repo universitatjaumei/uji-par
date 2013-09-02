@@ -55,6 +55,9 @@ public class ButacaDTO implements Serializable{
     
     @Column(name="TIPO")
     private String tipo;
+    
+    @Column(name = "ANULADA")
+    private Boolean anulada;
 
 
 	public ButacaDTO() {
@@ -137,4 +140,12 @@ public class ButacaDTO implements Serializable{
     {
         this.tipo = tipo;
     }
+
+	public Boolean getAnulada() {
+		return anulada;
+	}
+
+	public void setAnulada(Boolean anulada) {
+		this.anulada = anulada;
+	}
 }
