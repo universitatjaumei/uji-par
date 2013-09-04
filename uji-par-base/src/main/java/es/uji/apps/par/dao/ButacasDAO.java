@@ -137,6 +137,7 @@ public class ButacasDAO extends BaseDAO
                 butacaDTO.setParCompra(compraDTO);
                 butacaDTO.setParLocalizacion(localizacionDTO);
                 butacaDTO.setTipo(butaca.getTipo());
+                butacaDTO.setAnulada(false);
     
                 for (PreciosSesionDTO precioSesion : parPreciosSesions)
                 {
