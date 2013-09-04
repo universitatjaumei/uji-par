@@ -84,7 +84,7 @@ public class EventosDAO extends BaseDAO
 	private JPAQuery getQueryEventos() {
     	QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
 		JPAQuery query = new JPAQuery(entityManager);
-		return query.from(qEventoDTO).leftJoin(qEventoDTO.parSesiones, qSesionDTO).where(qSesionDTO.parEvento.id.eq(qEventoDTO.id)).distinct();
+		return query.from(qEventoDTO).leftJoin(qEventoDTO.parSesiones, qSesionDTO).distinct();
 	}
 
     @Transactional
