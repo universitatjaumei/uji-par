@@ -92,7 +92,9 @@ public class ButacasDAO extends BaseDAO
                 .where(qSesionDTO.id.eq(idSesion)
                         .and(qLocalizacionDTO.codigo.eq(codigoLocalizacion))
                         .and(qButacaDTO.fila.eq(fila))
-                        .and(qButacaDTO.numero.eq(numero))).list(qCompraDTO);
+                        .and(qButacaDTO.numero.eq(numero))
+                        .and(qButacaDTO.anulada.isNull().or(qButacaDTO.anulada.eq(false))))
+                        .list(qCompraDTO);
 
         if (list.size() == 0)
             return null;
