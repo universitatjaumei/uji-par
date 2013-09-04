@@ -55,8 +55,7 @@ public class MapaDrawer
             return new String[] { "platea2", "discapacitados2" };
     }
 
-    public ByteArrayOutputStream generaImagen(long idSesion, String codigoLocalizacion)
-            throws IOException
+    public ByteArrayOutputStream generaImagen(long idSesion, String codigoLocalizacion) throws IOException
     {
 
         BufferedImage img = dibujaButacas(idSesion, codigoLocalizacion);
@@ -124,18 +123,21 @@ public class MapaDrawer
 
             for (ButacaDTO butacaDTO : butacas)
             {
-                String key = String.format("%s_%s_%s", butacaDTO.getParLocalizacion().getCodigo(), butacaDTO.getFila(),
-                        butacaDTO.getNumero());
-                DatosButaca butaca = datosButacas.get(key);
+                if (butacaDTO.getAnulada()==null || !butacaDTO.getAnulada())
+                {
+                    String key = String.format("%s_%s_%s", butacaDTO.getParLocalizacion().getCodigo(),
+                            butacaDTO.getFila(), butacaDTO.getNumero());
+                    DatosButaca butaca = datosButacas.get(key);
 
-                BufferedImage imagenOcupada;
+                    BufferedImage imagenOcupada;
 
-                if (esDiscapacitado(butaca))
-                    imagenOcupada = butacaOcupadaDiscapacitado;
-                else
-                    imagenOcupada = butacaOcupada;
+                    if (esDiscapacitado(butaca))
+                        imagenOcupada = butacaOcupadaDiscapacitado;
+                    else
+                        imagenOcupada = butacaOcupada;
 
-                graphics.drawImage(imagenOcupada, butaca.getxIni(), butaca.getyIni(), null);
+                    graphics.drawImage(imagenOcupada, butaca.getxIni(), butaca.getyIni(), null);
+                }
             }
         }
 
