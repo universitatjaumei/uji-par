@@ -1,4 +1,4 @@
-package com.fourtic.paranimf.entradas.data;
+package com.fourtic.paranimf.entradas.rest;
 
 public class RestError
 {

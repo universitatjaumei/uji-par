@@ -1,4 +1,4 @@
-package com.fourtic.paranimf.entradas.data;
+package com.fourtic.paranimf.entradas.rest;
 
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -20,6 +20,8 @@ import android.util.Log;
 
 import com.fourtic.paranimf.entradas.R;
 import com.fourtic.paranimf.entradas.constants.Constants;
+import com.fourtic.paranimf.entradas.data.Evento;
+import com.fourtic.paranimf.entradas.data.ResponseEventos;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.AsyncHttpClient;
@@ -27,7 +29,7 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
 
-public class DataService
+public class RestService
 {
     private static String BASE_SECURE_URL = "http://192.168.3.102:8081/par-public/rest";
     private static String BASE_UNSECURE_URL = BASE_SECURE_URL;
@@ -37,7 +39,7 @@ public class DataService
 
     private final Context context;
 
-    public DataService(Context context)
+    public RestService(Context context)
     {
         this.context = context;
         this.client = new AsyncHttpClient();
