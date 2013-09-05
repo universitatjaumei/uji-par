@@ -15,6 +15,7 @@ import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.message.BasicHeader;
 
+import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
@@ -24,11 +25,14 @@ import com.fourtic.paranimf.entradas.data.Evento;
 import com.fourtic.paranimf.entradas.data.ResponseEventos;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
 
+@Singleton
 public class RestService
 {
     private static String BASE_SECURE_URL = "http://192.168.3.102:8081/par-public/rest";
@@ -36,12 +40,12 @@ public class RestService
 
     private AsyncHttpClient client;
     private Gson gson;
+    private Context context;
 
-    private final Context context;
-
-    public RestService(Context context)
+    @Inject
+    public RestService(Application application)
     {
-        this.context = context;
+        this.context = application;
         this.client = new AsyncHttpClient();
         this.gson = new Gson();
 

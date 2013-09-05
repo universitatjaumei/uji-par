@@ -1,12 +1,12 @@
 package com.fourtic.paranimf.entradas.activity;
 
 import java.sql.SQLException;
-import java.util.List;
 
 import roboguice.inject.InjectView;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -14,10 +14,9 @@ import com.fourtic.paranimf.entradas.R;
 import com.fourtic.paranimf.entradas.activity.base.BaseNormalActivity;
 import com.fourtic.paranimf.entradas.adapter.EventosListAdapter;
 import com.fourtic.paranimf.entradas.constants.Constants;
-import com.fourtic.paranimf.entradas.data.Evento;
 import com.fourtic.paranimf.entradas.db.EventoDao;
-import com.fourtic.paranimf.entradas.rest.RestService;
-import com.fourtic.paranimf.entradas.rest.RestService.ResultCallback;
+import com.fourtic.paranimf.entradas.sync.SyncEventos;
+import com.fourtic.paranimf.entradas.sync.SyncEventos.SyncCallback;
 import com.google.inject.Inject;
 
 public class EventosActivity extends BaseNormalActivity
@@ -27,6 +26,9 @@ public class EventosActivity extends BaseNormalActivity
 
     @Inject
     private EventoDao eventoDao;
+
+    @Inject
+    private SyncEventos sync;
 
     private EventosListAdapter adapter;
 
@@ -89,25 +91,13 @@ public class EventosActivity extends BaseNormalActivity
 
     private void sincronize()
     {
-
-    }
-
-    private void loadEventosFromRest()
-    {
-        new RestService(this).getEventos(new ResultCallback<List<Evento>>()
+        sync.loadEventosFromRest(new SyncCallback()
         {
             @Override
-            public void onSuccess(List<Evento> eventos)
+            public void onSuccess()
             {
-                try
-                {
-                    eventoDao.insert(eventos);
-                }
-                catch (SQLException e)
-                {
-                    Log.e(Constants.TAG, "Error insertando eventos en BD", e);
-                }
-                adapter.update(eventos);
+                Toast.makeText(EventosActivity.this, "Actualizado!", Toast.LENGTH_SHORT).show();
+                loadEventosFromDB();
             }
 
             @Override
@@ -117,4 +107,5 @@ public class EventosActivity extends BaseNormalActivity
             }
         });
     }
+
 }
