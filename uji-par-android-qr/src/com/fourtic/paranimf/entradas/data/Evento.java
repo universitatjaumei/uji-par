@@ -1,12 +1,17 @@
 package com.fourtic.paranimf.entradas.data;
 
 import com.google.gson.annotations.SerializedName;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 
+@DatabaseTable
 public class Evento
 {
+    @DatabaseField(columnName = "id")
     private int id;
 
     @SerializedName("tituloEs")
+    @DatabaseField(columnName = "titulo")
     private String titulo;
 
     public int getId()
@@ -28,5 +33,4 @@ public class Evento
     {
         this.titulo = titulo;
     }
-
 }
