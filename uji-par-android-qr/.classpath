@@ -11,6 +11,6 @@
 	<classpathentry kind="lib" path="libs/roboguice-2.0.jar"/>
 	<classpathentry kind="lib" path="libs/roboguice-sherlock-1.5.jar"/>
 	<classpathentry kind="lib" path="libs/gson-2.2.2.jar"/>
-	<classpathentry kind="lib" path="libs/android-async-http-1.4.2-31-ga5914f5.jar"/>
+	<classpathentry kind="lib" path="libs/android-async-http-1.4.3.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

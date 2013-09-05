@@ -164,7 +164,7 @@ public class DataService
 
     public void getEventos(final ResultCallback<List<Evento>> responseHandler)
     {
-        get(BASE_SECURE_URL + "/evento", new AsyncHttpResponseHandler(context, true)
+        get(BASE_SECURE_URL + "/evento", new AsyncHttpResponseHandler()
         {
             @Override
             public void onSuccess(String result)
@@ -183,31 +183,12 @@ public class DataService
 
     private void get(final String url, final AsyncHttpResponseHandler responseHandler)
     {
-        client.get(context, url, defaultHeaders(), null, new AsyncHttpResponseHandler(context, true)
+        client.get(context, url, defaultHeaders(), null, new AsyncHttpResponseHandler()
         {
             @Override
-            public void onSuccess(int status, String result, boolean fromCache)
+            public void onSuccess(int status, String result)
             {
-                responseHandler.onSuccess(status, result, fromCache);
-
-                // Si la respuesta ha venido de caché probamos a hacer una petición sin caché por detrás para obtener datos actualizados
-                if (fromCache)
-                {
-                    client.get(context, url, defaultHeaders(), null, new AsyncHttpResponseHandler(context, false)
-                    {
-                        @Override
-                        public void onSuccess(int status, String result, boolean fromCache)
-                        {
-                            responseHandler.onSuccess(status, result, fromCache);
-                        }
-
-                        @Override
-                        public void onFailure(Throwable throwable, String message)
-                        {
-                            responseHandler.onFailure(throwable, message);
-                        }
-                    });
-                }
+                responseHandler.onSuccess(status, result);
             }
 
             @Override
