@@ -1,4 +1,4 @@
-package com.fourtic.paranimf.entradas.entradas.activity;
+package com.fourtic.paranimf.entradas.activity;
 
 import java.sql.SQLException;
 import java.util.List;

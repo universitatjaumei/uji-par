@@ -17,7 +17,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.fourtic.paranimf.entradas.entradas.activity.EventosActivity"
+            android:name="com.fourtic.paranimf.entradas.activity.EventosActivity"
             android:label="@string/title_eventos" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
