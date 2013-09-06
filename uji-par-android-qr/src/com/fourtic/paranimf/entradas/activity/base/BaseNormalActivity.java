@@ -4,22 +4,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.actionbarsherlock.view.Window;
 import com.fourtic.paranimf.entradas.constants.Constants;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 
 public abstract class BaseNormalActivity extends RoboSherlockFragmentActivity implements BaseActivity
 {
-    public void setContentView(int layoutRes)
-    {
-        super.setContentView(layoutRes);
-
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        //requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         super.onCreate(savedInstanceState);
+
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setSupportProgressBarIndeterminateVisibility(false);
 
         getSupportActionBar().setHomeButtonEnabled(true);

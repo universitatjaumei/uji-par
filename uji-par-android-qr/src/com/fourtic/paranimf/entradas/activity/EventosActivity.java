@@ -42,6 +42,7 @@ public class EventosActivity extends BaseNormalActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.eventos_activity);
+        setSupportProgressBarIndeterminateVisibility(false);
 
         initList();
     }
@@ -109,15 +110,17 @@ public class EventosActivity extends BaseNormalActivity
         switch (item.getItemId())
         {
         case R.id.action_sync:
-            sincronize();
+            synchronize();
             return true;
         default:
             return super.onOptionsItemSelected(item);
         }
     }
 
-    private void sincronize()
+    private void synchronize()
     {
+        showProgress();
+        
         sync.loadEventosFromRest(new SyncCallback()
         {
             @Override
@@ -125,12 +128,15 @@ public class EventosActivity extends BaseNormalActivity
             {
                 Toast.makeText(EventosActivity.this, "Actualizado!", Toast.LENGTH_SHORT).show();
                 loadEventosFromDB();
+
+                hideProgress();
             }
 
             @Override
             public void onError(Throwable e, String errorMessage)
             {
                 handleError(errorMessage, e);
+                hideProgress();
             }
         });
     }

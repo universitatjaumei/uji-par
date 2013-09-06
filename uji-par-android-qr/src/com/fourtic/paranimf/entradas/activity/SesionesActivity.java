@@ -36,6 +36,7 @@ public class SesionesActivity extends BaseNormalActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sesiones_activity);
+        setSupportProgressBarIndeterminateVisibility(false);
         
         getSupportActionBar().setTitle(tituloEvento);
 
