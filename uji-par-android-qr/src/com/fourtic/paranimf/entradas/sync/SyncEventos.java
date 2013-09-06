@@ -1,6 +1,7 @@
 package com.fourtic.paranimf.entradas.sync;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 import android.util.Log;
@@ -39,8 +40,6 @@ public class SyncEventos
             {
                 try
                 {
-                    setSesionEventoId(eventos);
-                    
                     syncEventosToDB(eventos);
                     callback.onSuccess();
                 }
@@ -56,17 +55,6 @@ public class SyncEventos
                 callback.onError(e, errorMessage);
             }
         });
-    }
-
-    protected void setSesionEventoId(List<Evento> eventos)
-    {
-        for (Evento evento : eventos)
-        {
-            for (Sesion sesion:evento.getSesiones())
-            {
-                sesion.setEvento(evento);
-            }
-        }
     }
 
     private void syncEventosToDB(List<Evento> eventos) throws SQLException

@@ -1,6 +1,7 @@
 package com.fourtic.paranimf.entradas.db;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
 
@@ -80,11 +81,15 @@ public class EventoDao
 
             if (sesionDB == null)
             {
+                sesion.setEvento(evento);
+                sesion.setFecha(new Date(sesion.getFechaCelebracionEpoch()));
+                
                 sesionDao.insert(sesion);
             }
             else
             {
-                sesionDB.setFecha(sesion.getFecha());
+                sesionDB.setFecha(new Date(sesion.getFechaCelebracionEpoch()));
+                
                 sesionDao.update(sesionDB);
             }
         }
