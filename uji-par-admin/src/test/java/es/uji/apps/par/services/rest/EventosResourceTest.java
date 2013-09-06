@@ -31,7 +31,7 @@ import es.uji.apps.par.CampoRequeridoException;
 import es.uji.apps.par.ResponseMessage;
 import es.uji.apps.par.model.TipoEvento;
 
-public class EventosResourceTest extends JerseyTest
+public class EventosResourceTest extends BaseResourceTest
 {
     private WebResource resource;
 

@@ -18,7 +18,6 @@ import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.client.filter.LoggingFilter;
 import com.sun.jersey.spi.spring.container.servlet.SpringServlet;
-import com.sun.jersey.test.framework.JerseyTest;
 import com.sun.jersey.test.framework.WebAppDescriptor;
 import com.sun.jersey.test.framework.spi.container.TestContainerFactory;
 import com.sun.jersey.test.framework.spi.container.grizzly.web.GrizzlyWebTestContainerFactory;
@@ -27,7 +26,7 @@ import es.uji.apps.par.CampoRequeridoException;
 import es.uji.apps.par.ResponseMessage;
 import es.uji.apps.par.model.Localizacion;
 
-public class LocalizacionesResourceTest extends JerseyTest
+public class LocalizacionesResourceTest extends BaseResourceTest
 {
     private WebResource resource;
 

@@ -20,7 +20,6 @@ import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.client.filter.LoggingFilter;
 import com.sun.jersey.multipart.FormDataMultiPart;
 import com.sun.jersey.spi.spring.container.servlet.SpringServlet;
-import com.sun.jersey.test.framework.JerseyTest;
 import com.sun.jersey.test.framework.WebAppDescriptor;
 import com.sun.jersey.test.framework.spi.container.TestContainerFactory;
 import com.sun.jersey.test.framework.spi.container.grizzly.web.GrizzlyWebTestContainerFactory;
@@ -33,7 +32,7 @@ import es.uji.apps.par.model.Sesion;
 import es.uji.apps.par.model.TipoEvento;
 import es.uji.apps.par.utils.DateUtils;
 
-public class SesionesResourceTest extends JerseyTest
+public class SesionesResourceTest extends BaseResourceTest
 {
     private WebResource resource;
 

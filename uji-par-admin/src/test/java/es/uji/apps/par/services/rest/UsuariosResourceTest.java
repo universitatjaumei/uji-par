@@ -18,7 +18,6 @@ import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.client.filter.LoggingFilter;
 import com.sun.jersey.spi.spring.container.servlet.SpringServlet;
-import com.sun.jersey.test.framework.JerseyTest;
 import com.sun.jersey.test.framework.WebAppDescriptor;
 import com.sun.jersey.test.framework.spi.container.TestContainerFactory;
 import com.sun.jersey.test.framework.spi.container.grizzly.web.GrizzlyWebTestContainerFactory;
@@ -31,7 +30,7 @@ import es.uji.apps.par.model.Usuario;
 /*@RunWith(SpringJUnit4ClassRunner.class)
  @TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = false)
  @ContextConfiguration(locations = { "/applicationContext-db-test.xml" })*/
-public class UsuariosResourceTest extends JerseyTest
+public class UsuariosResourceTest extends BaseResourceTest
 {
     private WebResource resource;
 
