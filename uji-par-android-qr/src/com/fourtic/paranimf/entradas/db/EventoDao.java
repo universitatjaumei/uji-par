@@ -2,19 +2,25 @@ package com.fourtic.paranimf.entradas.db;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import android.util.Log;
 
 import com.fourtic.paranimf.entradas.constants.Constants;
 import com.fourtic.paranimf.entradas.data.Evento;
+import com.fourtic.paranimf.entradas.data.Sesion;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.misc.TransactionManager;
 
 @Singleton
 public class EventoDao
 {
     DbHelperService dbHelper;
+
+    @Inject
+    private SesionDao sesionDao;
 
     private Dao<Evento, Integer> dao;
 
@@ -33,11 +39,54 @@ public class EventoDao
         }
     }
 
-    public void insert(List<Evento> eventos) throws SQLException
+    public void persist(final List<Evento> eventos) throws SQLException
     {
-        for (Evento evento : eventos)
+        TransactionManager.callInTransaction(dao.getConnectionSource(), new Callable<Void>()
+        {
+            public Void call() throws Exception
+            {
+                for (Evento evento : eventos)
+                {
+                    updateDatosEvento(evento);
+                    updateSesionesEvento(evento);
+                }
+
+                return null;
+            }
+
+        });
+    }
+
+    private void updateDatosEvento(Evento evento) throws SQLException
+    {
+        Evento eventoDB = dao.queryForId(evento.getId());
+
+        if (eventoDB == null)
         {
             dao.create(evento);
+        }
+        else
+        {
+            eventoDB.setTitulo(evento.getTitulo());
+            dao.update(eventoDB);
+        }
+    }
+
+    private void updateSesionesEvento(Evento evento) throws SQLException
+    {
+        for (Sesion sesion : evento.getSesiones())
+        {
+            Sesion sesionDB = sesionDao.getById(sesion.getId());
+
+            if (sesionDB == null)
+            {
+                sesionDao.insert(sesion);
+            }
+            else
+            {
+                sesionDB.setFecha(sesion.getFecha());
+                sesionDao.update(sesionDB);
+            }
         }
     }
 

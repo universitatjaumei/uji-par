@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.fourtic.paranimf.entradas.constants.Constants;
 import com.fourtic.paranimf.entradas.data.Evento;
+import com.fourtic.paranimf.entradas.data.Sesion;
 import com.fourtic.paranimf.entradas.db.EventoDao;
 import com.fourtic.paranimf.entradas.rest.RestService;
 import com.fourtic.paranimf.entradas.rest.RestService.ResultCallback;
@@ -38,7 +39,9 @@ public class SyncEventos
             {
                 try
                 {
-                    eventoDao.insert(eventos);
+                    setSesionEventoId(eventos);
+                    
+                    syncEventosToDB(eventos);
                     callback.onSuccess();
                 }
                 catch (SQLException e)
@@ -53,5 +56,21 @@ public class SyncEventos
                 callback.onError(e, errorMessage);
             }
         });
+    }
+
+    protected void setSesionEventoId(List<Evento> eventos)
+    {
+        for (Evento evento : eventos)
+        {
+            for (Sesion sesion:evento.getSesiones())
+            {
+                sesion.setEvento(evento);
+            }
+        }
+    }
+
+    private void syncEventosToDB(List<Evento> eventos) throws SQLException
+    {
+        eventoDao.persist(eventos);
     }
 }

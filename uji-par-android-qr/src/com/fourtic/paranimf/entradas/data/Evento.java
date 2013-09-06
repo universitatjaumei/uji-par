@@ -1,5 +1,8 @@
 package com.fourtic.paranimf.entradas.data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
@@ -7,12 +10,19 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable
 public class Evento
 {
-    @DatabaseField(columnName = "id")
+    @DatabaseField(columnName = "id", id = true)
     private int id;
 
     @SerializedName("tituloEs")
     @DatabaseField(columnName = "titulo")
     private String titulo;
+
+    private List<Sesion> sesiones;
+
+    public Evento()
+    {
+        sesiones = new ArrayList<Sesion>();
+    }
 
     public int getId()
     {
@@ -33,4 +43,15 @@ public class Evento
     {
         this.titulo = titulo;
     }
+
+    public List<Sesion> getSesiones()
+    {
+        return sesiones;
+    }
+
+    public void setSesiones(List<Sesion> sesiones)
+    {
+        this.sesiones = sesiones;
+    }
+
 }

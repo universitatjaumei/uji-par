@@ -51,7 +51,6 @@ public class EventosActivity extends BaseNormalActivity
     protected void onStart()
     {
         super.onStart();
-        // loadEventosFromRest();
         loadEventosFromDB();
     }
 
