@@ -99,6 +99,6 @@ public class Configuration
 
     public static void desactivaLogGmail()
     {
-        instance.properties.setProperty(ENVIAR_MAILS_ERROR, "false");
+        //instance.properties.setProperty(ENVIAR_MAILS_ERROR, "false");
     }
 }
