@@ -16,6 +16,7 @@ public class Configuration
     private static final String COMO_LLEGAR = "uji.par.urlComoLlegar";
     private static final String URL_CONDICIONES_PRIVACIDAD = "uji.par.urlCondicionesPrivacidad";
     private static final String GASTOS_GESTION = "uji.par.gastosGestion";
+    private static final String ENVIAR_MAILS_ERROR = "uji.par.enviarMailsError";
 
     public static Logger log = Logger.getLogger(Configuration.class);
 
@@ -89,5 +90,15 @@ public class Configuration
     public static String getGastosGestion()
     {
         return getProperty(GASTOS_GESTION);
+    }
+    
+    public static String getEnviarMailsError()
+    {
+        return getProperty(ENVIAR_MAILS_ERROR);
+    }
+
+    public static void desactivaLogGmail()
+    {
+        instance.properties.setProperty(ENVIAR_MAILS_ERROR, "false");
     }
 }
