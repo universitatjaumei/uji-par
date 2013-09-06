@@ -52,8 +52,18 @@ public class EventosResource extends BaseResource
         List<Evento> eventos;
         
         eventos = eventosService.getEventosConSesiones();
+        
+        imagenesANull(eventos);
 
         return Response.ok().entity(new RestResponse(true, eventos, 0)).build();
+    }
+
+    private void imagenesANull(List<Evento> eventos)
+    {
+        for (Evento evento : eventos)
+        {
+            evento.setImagen(null);
+        }
     }
 
     @GET
@@ -92,7 +102,7 @@ public class EventosResource extends BaseResource
         }
 
         template.put("baseUrl", getBaseUrl());
-
+        
         template.put("tipoEvento", tipoEvento);
         template.put("titulo", titulo);
         template.put("companyia", companyia);
@@ -118,7 +128,7 @@ public class EventosResource extends BaseResource
             Map<String, Object> datos = new HashMap<String, Object>();
 
             datos.put("texto", getFechaSesion(sesion));
-
+            
             datos.put("id", sesion.getId());
             datos.put("enPlazoVentaInternet", sesion.getEnPlazoVentaInternet());
             datos.put("canalInternet", sesion.getCanalInternet());
@@ -129,7 +139,7 @@ public class EventosResource extends BaseResource
                     ResourceProperties.getProperty(getLocale(), "venta.plazoInternet",
                             DateUtils.dateToSpanishString(sesion.getFechaInicioVentaOnline()),
                             DateUtils.dateToSpanishString(sesion.getFechaFinVentaOnline())));
-
+            
             if (sesion.getEnPlazoVentaInternet())
                 datos.put("clase", "contieneBoton");
 
@@ -141,20 +151,19 @@ public class EventosResource extends BaseResource
 
     private String getFechaSesion(Sesion sesion)
     {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(sesion.getFechaCelebracion());
+    	Calendar cal = Calendar.getInstance();
+    	cal.setTime(sesion.getFechaCelebracion());
         SimpleDateFormat format = new SimpleDateFormat("dd MMMM HH.mm", getLocale());
-
-        String diaSemana = ResourceProperties
-                .getProperty(getLocale(), "dia.abreviado." + cal.get(Calendar.DAY_OF_WEEK));
-
+        
+        String diaSemana = ResourceProperties.getProperty(getLocale(), "dia.abreviado." + cal.get(Calendar.DAY_OF_WEEK));
+        
         return diaSemana + " " + format.format(cal.getTime()) + " / " + getPrecioSesion(sesion) + " euros";
     }
-
+    
     private String getPrecioSesion(Sesion sesion)
     {
         Map<String, PreciosSesion> preciosSesion = sesionesService.getPreciosSesionPorLocalizacion(sesion.getId());
-
+        
         if (preciosSesion != null && preciosSesion.get("platea1") != null)
         {
             return Utils.formatEuros(preciosSesion.get("platea1").getPrecio());
