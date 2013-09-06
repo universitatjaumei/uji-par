@@ -114,6 +114,7 @@ public class CompraDTO implements Serializable {
         this.uuid = uuid;
         this.infoPeriodica = false;
         this.reserva = false;
+        this.anulada = false;
 	}
 
 	public long getId() {
