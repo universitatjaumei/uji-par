@@ -3,7 +3,9 @@ package es.uji.apps.par.dao;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,8 +24,10 @@ import es.uji.apps.par.db.EventoDTO;
 import es.uji.apps.par.db.QEventoDTO;
 import es.uji.apps.par.db.QSesionDTO;
 import es.uji.apps.par.db.QTipoEventoDTO;
+import es.uji.apps.par.db.SesionDTO;
 import es.uji.apps.par.db.TipoEventoDTO;
 import es.uji.apps.par.model.Evento;
+import es.uji.apps.par.model.Sesion;
 import es.uji.apps.par.model.TipoEvento;
 
 @Repository
@@ -52,7 +56,61 @@ public class EventosDAO extends BaseDAO
 		return strPath.desc();
     }
     
-	@Transactional
+    @Transactional
+    public List<Evento> getEventosConSesiones()
+    {
+        QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
+        JPAQuery query = new JPAQuery(entityManager);
+        List<EventoDTO> eventos = query.from(qEventoDTO).leftJoin(qEventoDTO.parSesiones, qSesionDTO).fetch().list(qEventoDTO);
+
+        // En la consulta no podemos usar el distinct por culpa del BLOB
+        eventos = eliminaRepetidos(eventos);
+        
+        return toEventosConSesiones(eventos);
+    }
+    
+	private List<EventoDTO> eliminaRepetidos(List<EventoDTO> eventos)
+    {
+	    List<EventoDTO> result = new ArrayList<EventoDTO>();
+	    Set<Long> idsProcesados = new HashSet<Long>();
+	    
+	    for (EventoDTO eventoDTO : eventos)
+        {
+	        if (!idsProcesados.contains(eventoDTO.getId()))
+	        {
+	            result.add(eventoDTO);
+	            idsProcesados.add(eventoDTO.getId());
+	        }
+            
+        }
+	    
+        return result;
+    }
+
+    private List<Evento> toEventosConSesiones(List<EventoDTO> eventosDTO)
+    {
+	    List<Evento> eventos = new ArrayList<Evento>();
+	    
+	    for (EventoDTO eventoDTO: eventosDTO)
+	    {
+	        Evento evento = Evento.eventoDTOtoEvento(eventoDTO);
+	        
+	        List<Sesion> sesiones = new ArrayList<Sesion>();
+	        
+	        for (SesionDTO sesionDTO:eventoDTO.getParSesiones())
+	        {
+	            sesiones.add(Sesion.SesionDTOToSesionSinEvento(sesionDTO));
+	        }
+	        
+	        evento.setSesiones(sesiones);
+	        
+	        eventos.add(evento);
+	    }
+
+	    return eventos;
+    }
+
+    @Transactional
     private List<Evento> getEventosConPrimeraFechaCelebracion(boolean activos, String sortParameter, int start, int limit)
     {
     	QSesionDTO qSesion = QSesionDTO.sesionDTO;
@@ -62,7 +120,7 @@ public class EventosDAO extends BaseDAO
     	JPASubQuery subquery = new JPASubQuery();
     	subquery.from(qSesion);
     	
-    	//es necesario tenerlo por separado porque se evita enviar la columna blob de la imagen
+    	//es necesario tenerlo por separado porque se evita enviar la columna blob de la imagen (da problemas cuando en la query hay distinct, order by...)
     	QTuple fields = new QTuple(qEventoDTO.caracteristicasEs, qEventoDTO.caracteristicasVa,
                 qEventoDTO.comentariosEs, qEventoDTO.comentariosVa, qEventoDTO.companyiaEs,
                 qEventoDTO.companyiaVa, qEventoDTO.descripcionEs, qEventoDTO.descripcionVa,

@@ -1,7 +1,9 @@
 package es.uji.apps.par.model;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -37,9 +39,11 @@ public class Evento
     private BigDecimal ivaSGAE;
     private BigDecimal retencionSGAE;
     private Date fechaPrimeraSesion;
+    private List<Sesion> sesiones;
 
     public Evento()
     {
+        sesiones = new ArrayList<Sesion>();
     }
     
     public static Evento eventoDTOtoEvento(EventoDTO eventoDTO) {
@@ -130,6 +134,8 @@ public class Evento
 
     public Evento(EventoDTO eventoDTO, boolean crearConImagen)
     {
+        this.sesiones = new ArrayList<Sesion>();
+        
         this.id = eventoDTO.getId();
         this.tituloEs = eventoDTO.getTituloEs();
         this.tituloVa = eventoDTO.getTituloVa();
@@ -180,6 +186,7 @@ public class Evento
 
     public Evento(String tituloEs, TipoEvento tipoEvento)
     {
+        this.sesiones = new ArrayList<Sesion>();
         this.parTiposEvento = new TipoEvento();
         this.parTiposEvento = tipoEvento;
         this.tituloEs = tituloEs;
@@ -192,7 +199,7 @@ public class Evento
             byte[] dataBinary, String nombreArchivo, String mediaType, Integer tipoEventoId,
             BigDecimal porcentajeIVA, BigDecimal retencionSGAE, BigDecimal ivaSGAE, BigDecimal asientosNumerados)
     {
-
+        this.sesiones = new ArrayList<Sesion>();
         this.tituloEs = tituloEs;
         this.descripcionEs = descripcionEs;
         this.companyiaEs = companyiaEs;
@@ -487,4 +494,13 @@ public class Evento
 	public void setFechaPrimeraSesion(Date fechaPrimeraSesion) {
 		this.fechaPrimeraSesion = fechaPrimeraSesion;
 	}
+
+    public List<Sesion> getSesiones() {
+        return sesiones;
+    }
+
+    public void setSesiones(List<Sesion> sesiones) {
+        this.sesiones = sesiones;
+    }
+	
 }

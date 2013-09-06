@@ -16,6 +16,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.commons.io.output.ByteArrayOutputStream;
+import org.apache.log4j.Logger;
 
 import com.sun.jersey.api.core.InjectParam;
 
@@ -36,11 +37,24 @@ import es.uji.commons.web.template.Template;
 @Path("evento")
 public class EventosResource extends BaseResource
 {
+    public static Logger log = Logger.getLogger(EventosResource.class);
+    
     @InjectParam
     private EventosService eventosService;
 
     @InjectParam
     private SesionesService sesionesService;
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getEventos()
+    {
+        List<Evento> eventos;
+        
+        eventos = eventosService.getEventosConSesiones();
+
+        return Response.ok().entity(new RestResponse(true, eventos, 0)).build();
+    }
 
     @GET
     @Path("{id}")

@@ -17,6 +17,11 @@ public class EventosService
     @Autowired
     private EventosDAO eventosDAO;
 
+    public List<Evento> getEventosConSesiones()
+    {
+       return eventosDAO.getEventosConSesiones();
+    }
+    
     public List<Evento> getEventos(String sort, int start, int limit)
     {
        return getEventos(false, sort, start, limit);

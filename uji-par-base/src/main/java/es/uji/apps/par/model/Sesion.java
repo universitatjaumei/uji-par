@@ -184,6 +184,13 @@ public class Sesion
 		return sesion;
 	}
 	
+	public static Sesion SesionDTOToSesionSinEvento(SesionDTO sesionDTO) {
+	    Sesion sesion = SesionDTOToSesion(sesionDTO);
+	    sesion.setEvento(null);
+	    
+	    return sesion;
+	}
+	
 	public static SesionDTO SesionToSesionDTO(Sesion sesion) {
 		SesionDTO sesionDTO = new SesionDTO();
 		sesionDTO.setCanalInternet(new BigDecimal(1));
