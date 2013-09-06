@@ -62,6 +62,8 @@ public class EventosDAO extends BaseDAO
         QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
         JPAQuery query = new JPAQuery(entityManager);
         List<EventoDTO> eventos = query.from(qEventoDTO).leftJoin(qEventoDTO.parSesiones, qSesionDTO).fetch().list(qEventoDTO);
+        
+        int i = 1/0;
 
         // En la consulta no podemos usar el distinct por culpa del BLOB
         eventos = eliminaRepetidos(eventos);
