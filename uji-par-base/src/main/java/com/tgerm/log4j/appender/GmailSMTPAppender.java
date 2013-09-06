@@ -46,6 +46,8 @@ import org.apache.log4j.spi.LoggingEvent;
 
 import com.sun.mail.smtp.SMTPTransport;
 
+import es.uji.apps.par.config.Configuration;
+
 /**
  * Extension of Log4j {@link SMTPAppender} for Gmail support
  * 
@@ -105,6 +107,11 @@ public class GmailSMTPAppender extends SMTPAppender
      */
     protected void sendBuffer()
     {
+        if (!Configuration.getEnviarMailsError().equals("true"))
+        {
+            return;
+        }
+        
         try
         {
             MimeBodyPart part = new MimeBodyPart();
