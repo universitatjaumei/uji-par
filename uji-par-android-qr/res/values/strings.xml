@@ -6,5 +6,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_eventos">Eventos</string>
     <string name="action_sincronizar">Sincronizar</string>
+    <string name="title_sesiones">Sesiones</string>
 
 </resources>

@@ -25,6 +25,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.fourtic.paranimf.entradas.activity.SesionesActivity"
+            android:label="@string/title_sesiones" >
+        </activity>
     </application>
 
 </manifest>

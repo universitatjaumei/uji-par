@@ -3,6 +3,7 @@ package com.fourtic.paranimf.entradas.db;
 import java.sql.SQLException;
 import java.util.List;
 
+import android.accounts.Account;
 import android.util.Log;
 
 import com.fourtic.paranimf.entradas.constants.Constants;
@@ -10,6 +11,7 @@ import com.fourtic.paranimf.entradas.data.Sesion;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.QueryBuilder;
 
 @Singleton
 public class SesionDao
@@ -40,7 +42,7 @@ public class SesionDao
 
     public List<Sesion> getSesiones(int idEvento) throws SQLException
     {
-        return dao.queryForAll();
+        return dao.queryForEq("evento_id", idEvento);
     }
 
     public Sesion getById(int id) throws SQLException

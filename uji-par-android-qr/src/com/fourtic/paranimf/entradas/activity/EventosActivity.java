@@ -3,8 +3,12 @@ package com.fourtic.paranimf.entradas.activity;
 import java.sql.SQLException;
 
 import roboguice.inject.InjectView;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -14,6 +18,7 @@ import com.fourtic.paranimf.entradas.R;
 import com.fourtic.paranimf.entradas.activity.base.BaseNormalActivity;
 import com.fourtic.paranimf.entradas.adapter.EventosListAdapter;
 import com.fourtic.paranimf.entradas.constants.Constants;
+import com.fourtic.paranimf.entradas.data.Evento;
 import com.fourtic.paranimf.entradas.db.EventoDao;
 import com.fourtic.paranimf.entradas.sync.SyncEventos;
 import com.fourtic.paranimf.entradas.sync.SyncEventos.SyncCallback;
@@ -45,6 +50,29 @@ public class EventosActivity extends BaseNormalActivity
     {
         adapter = new EventosListAdapter(this);
         listEventos.setAdapter(adapter);
+
+        listEventos.setOnItemClickListener(new OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                if (position < listEventos.getAdapter().getCount())
+                {
+                    Evento evento = (Evento) listEventos.getAdapter().getItem(position);
+
+                    openSesionesActivity(evento);
+                }
+            }
+        });
+    }
+
+    protected void openSesionesActivity(Evento evento)
+    {
+        Intent intent = new Intent(this, SesionesActivity.class);
+        intent.putExtra(Constants.ID_EVENTO, evento.getId());
+        intent.putExtra(Constants.TITULO_EVENTO, evento.getTitulo());
+
+        startActivity(intent);
     }
 
     @Override
