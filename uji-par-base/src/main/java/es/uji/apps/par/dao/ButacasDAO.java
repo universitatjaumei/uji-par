@@ -209,4 +209,10 @@ public class ButacasDAO extends BaseDAO
 		return (int) getQueryButacasCompra(idCompra).count();
 	}
 
+    public List<ButacaDTO> getButacasNoAnuladas(Long idSesion)
+    {
+        JPAQuery query = new JPAQuery(entityManager);
+        return query.from(qButacaDTO).where(qButacaDTO.parSesion.id.eq(idSesion).and(qButacaDTO.anulada.eq(false))).distinct().list(qButacaDTO);
+    }
+
 }

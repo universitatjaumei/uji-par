@@ -87,4 +87,10 @@ public class ButacasService
 	public int getTotalButacasCompra(Long idCompra) {
 		return butacasDAO.getTotalButacasCompra(idCompra);
 	}
+
+    public List<Butaca> getButacasNoAnuladas(Long idSesion)
+    {
+         return Butaca.butacasDTOToButacas(butacasDAO.getButacasNoAnuladas(idSesion));
+    }
+
 }
