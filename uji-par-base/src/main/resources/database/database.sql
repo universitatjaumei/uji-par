@@ -130,8 +130,7 @@
     "NUMERO" VARCHAR2(255),
     "TIPO" VARCHAR2(255),
     "PRECIO" NUMBER,
-    "ANULADA" NUMBER(1,0) DEFAULT 0,
-    "PRESENTADA" TIMESTAMP (6)
+    "ANULADA" NUMBER(1,0) DEFAULT 0
    ) ;
 --------------------------------------------------------
 --  DDL for Table PAR_COMPRAS
