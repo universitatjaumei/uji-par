@@ -10,12 +10,15 @@ import android.util.Log;
 import com.fourtic.paranimf.entradas.constants.Constants;
 import com.fourtic.paranimf.entradas.data.Butaca;
 import com.fourtic.paranimf.entradas.data.Sesion;
+import com.fourtic.paranimf.entradas.exception.ButacaFromAnotherSesionException;
+import com.fourtic.paranimf.entradas.exception.ButacaNotFoundException;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.misc.TransactionManager;
 import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.UpdateBuilder;
 
 @Singleton
 public class ButacaDao
@@ -70,6 +73,30 @@ public class ButacaDao
         return builder.where().eq("sesion_id", sesionId).and().isNotNull("presentada").countOf();
     }
 
+    public Date getFechaPresentada(int sesionId, String uuid) throws SQLException, ButacaNotFoundException,
+            ButacaFromAnotherSesionException
+    {
+        List<Butaca> butacas = dao.queryForEq("uuid", uuid);
+
+        if (butacas.size() == 0)
+        {
+            throw new ButacaNotFoundException();
+        }
+        else
+        {
+            Butaca butaca = butacas.get(0);
+
+            if (butaca.getSesion().getId() != sesionId)
+            {
+                throw new ButacaFromAnotherSesionException();
+            }
+            else
+            {
+                return butacas.get(0).getFechaPresentada();
+            }
+        }
+    }
+
     public void persist(final int sesionId, final List<Butaca> butacas) throws SQLException
     {
         TransactionManager.callInTransaction(dao.getConnectionSource(), new Callable<Void>()
@@ -108,6 +135,14 @@ public class ButacaDao
         butaca.setModificada(false);
 
         dao.create(butaca);
+    }
+
+    public void updateFechaPresentada(String uuid, Date date) throws SQLException
+    {
+        UpdateBuilder<Butaca, Integer> builder = dao.updateBuilder();
+        builder.where().eq("uuid", uuid);
+        builder.updateColumnValue("presentada", date);
+        builder.update();
     }
 
     /*
