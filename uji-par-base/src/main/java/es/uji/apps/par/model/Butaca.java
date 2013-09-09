@@ -69,7 +69,9 @@ public class Butaca
         localizacion = butacaDTO.getParLocalizacion().getCodigo();
         tipo = butacaDTO.getTipo();
         presentada = butacaDTO.getPresentada();
-        uuid = butacaDTO.getParCompra().getUuid() + "-" + butacaDTO.getId();
+        
+        if (butacaDTO.getParCompra() != null)
+            uuid = butacaDTO.getParCompra().getUuid() + "-" + butacaDTO.getId();
     }
 
     public static List<Butaca> parseaJSON(String jsonButacas)
