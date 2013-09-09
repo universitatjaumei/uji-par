@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -70,8 +69,8 @@ public class EventosActivity extends BaseNormalActivity
     protected void openSesionesActivity(Evento evento)
     {
         Intent intent = new Intent(this, SesionesActivity.class);
-        intent.putExtra(Constants.ID_EVENTO, evento.getId());
-        intent.putExtra(Constants.TITULO_EVENTO, evento.getTitulo());
+        intent.putExtra(Constants.EVENTO_ID, evento.getId());
+        intent.putExtra(Constants.EVENTO_TITULO, evento.getTitulo());
 
         startActivity(intent);
     }
@@ -120,13 +119,13 @@ public class EventosActivity extends BaseNormalActivity
     private void synchronize()
     {
         showProgress();
-        
+
         sync.loadEventosFromRest(new SyncCallback()
         {
             @Override
             public void onSuccess()
             {
-                Toast.makeText(EventosActivity.this, "Actualizado!", Toast.LENGTH_SHORT).show();
+                showMessage("Actualizado!");
                 loadEventosFromDB();
 
                 hideProgress();

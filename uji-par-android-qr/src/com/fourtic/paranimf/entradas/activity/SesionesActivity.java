@@ -1,17 +1,23 @@
 package com.fourtic.paranimf.entradas.activity;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import roboguice.inject.InjectExtra;
 import roboguice.inject.InjectView;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.fourtic.paranimf.entradas.R;
 import com.fourtic.paranimf.entradas.activity.base.BaseNormalActivity;
 import com.fourtic.paranimf.entradas.adapter.SesionesListAdapter;
 import com.fourtic.paranimf.entradas.constants.Constants;
+import com.fourtic.paranimf.entradas.data.Sesion;
 import com.fourtic.paranimf.entradas.db.SesionDao;
 import com.google.inject.Inject;
 
@@ -25,10 +31,10 @@ public class SesionesActivity extends BaseNormalActivity
 
     private SesionesListAdapter adapter;
 
-    @InjectExtra(value = Constants.ID_EVENTO)
+    @InjectExtra(value = Constants.EVENTO_ID)
     private int idEvento;
 
-    @InjectExtra(value = Constants.TITULO_EVENTO)
+    @InjectExtra(value = Constants.EVENTO_TITULO)
     private String tituloEvento;
 
     @Override
@@ -37,7 +43,7 @@ public class SesionesActivity extends BaseNormalActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sesiones_activity);
         setSupportProgressBarIndeterminateVisibility(false);
-        
+
         getSupportActionBar().setTitle(tituloEvento);
 
         initList();
@@ -47,6 +53,29 @@ public class SesionesActivity extends BaseNormalActivity
     {
         adapter = new SesionesListAdapter(this);
         listSesiones.setAdapter(adapter);
+
+        listSesiones.setOnItemClickListener(new OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                if (position < listSesiones.getAdapter().getCount())
+                {
+                    openInfoSesion((Sesion)listSesiones.getAdapter().getItem(position));
+                }
+            }
+        });
+    }
+
+    protected void openInfoSesion(Sesion sesion)
+    {
+        Intent intent = new Intent(this, SesionInfoActivity.class);
+        intent.putExtra(Constants.SESION_ID, sesion.getId());
+        intent.putExtra(Constants.EVENTO_TITULO, tituloEvento);
+        intent.putExtra(Constants.SESION_FECHA, sesion.getFecha().getTime());
+        intent.putExtra(Constants.SESION_HORA, sesion.getHoraCelebracion());
+        
+        startActivity(intent);        
     }
 
     @Override
@@ -60,7 +89,8 @@ public class SesionesActivity extends BaseNormalActivity
     {
         try
         {
-            adapter.update(sesionDao.getSesiones(idEvento));
+            List<Sesion> sesiones = sesionDao.getSesiones(idEvento);
+            adapter.update(sesiones);
         }
         catch (SQLException e)
         {

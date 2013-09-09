@@ -17,9 +17,15 @@ public class Sesion
 
     @DatabaseField(columnName = "fecha")
     private Date fecha;
-    
+
     @DatabaseField(foreign = true)
     private Evento evento;
+
+    @DatabaseField(columnName = "fecha_sync")
+    private Date fechaSync;
+
+    @DatabaseField(columnName = "hora")
+    private String horaCelebracion;
 
     public int getId()
     {
@@ -39,9 +45,6 @@ public class Sesion
     public void setFechaCelebracionEpoch(long fechaCelebracionEpoch)
     {
         this.fechaCelebracionEpoch = fechaCelebracionEpoch;
-
-        // Cuando se rellena fechaCelebracionEpoch por deserialización REST se actualiza fechaCelebracion
-        this.fecha = new Date(fechaCelebracionEpoch);
     }
 
     public Date getFecha()
@@ -63,5 +66,24 @@ public class Sesion
     {
         this.evento = evento;
     }
-    
+
+    public Date getFechaSync()
+    {
+        return fechaSync;
+    }
+
+    public void setFechaSync(Date fechaSync)
+    {
+        this.fechaSync = fechaSync;
+    }
+
+    public String getHoraCelebracion()
+    {
+        return horaCelebracion;
+    }
+
+    public void setHoraCelebracion(String horaCelebracion)
+    {
+        this.horaCelebracion = horaCelebracion;
+    }
 }

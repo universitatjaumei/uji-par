@@ -21,6 +21,7 @@ import android.util.Log;
 
 import com.fourtic.paranimf.entradas.R;
 import com.fourtic.paranimf.entradas.constants.Constants;
+import com.fourtic.paranimf.entradas.data.Butaca;
 import com.fourtic.paranimf.entradas.data.Evento;
 import com.fourtic.paranimf.entradas.data.ResponseEventos;
 import com.google.gson.Gson;
@@ -167,6 +168,15 @@ public class RestService
 
         return gson.fromJson(json, collectionType);
     }
+    
+    protected List<Butaca> parseButacas(String json)
+    {
+        Type collectionType = new TypeToken<List<Butaca>>()
+        {
+        }.getType();
+
+        return gson.fromJson(json, collectionType);
+    }
 
     public void getEventos(final ResultCallback<List<Evento>> responseHandler)
     {
@@ -177,6 +187,24 @@ public class RestService
             {
                 ResponseEventos response = parseEventos(result);
                 responseHandler.onSuccess(response.getEventos());
+            }
+
+            @Override
+            public void onFailure(Throwable error, String errorBody)
+            {
+                responseHandler.onError(error, getErrorMessage(errorBody));
+            }
+        });
+    }
+    
+    public void getButacas(int idSesion, final ResultCallback<List<Butaca>> responseHandler)
+    {
+        get(BASE_SECURE_URL + "/sesion/" + idSesion + "/butacas", new AsyncHttpResponseHandler()
+        {
+            @Override
+            public void onSuccess(String result)
+            {
+                responseHandler.onSuccess(parseButacas(result));
             }
 
             @Override

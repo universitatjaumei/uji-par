@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.fourtic.paranimf.entradas.data.Butaca;
 import com.fourtic.paranimf.entradas.data.Evento;
 import com.fourtic.paranimf.entradas.data.Sesion;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
@@ -19,6 +20,7 @@ public class DBHelper extends OrmLiteSqliteOpenHelper
 
     private Dao<Evento, Integer> eventoDao;
     private Dao<Sesion, Integer> sesionDao;
+    private Dao<Butaca, Integer> butacaDao;
 
     public DBHelper(Context context)
     {
@@ -32,6 +34,7 @@ public class DBHelper extends OrmLiteSqliteOpenHelper
         {
             TableUtils.createTable(connectionSource, Evento.class);
             TableUtils.createTable(connectionSource, Sesion.class);
+            TableUtils.createTable(connectionSource, Butaca.class);
         }
         catch (SQLException e)
         {
@@ -64,6 +67,17 @@ public class DBHelper extends OrmLiteSqliteOpenHelper
 
         return sesionDao;
     }
+    
+    public Dao<Butaca, Integer> getButacaDao() throws SQLException 
+    {
+        if (butacaDao == null)
+        {
+            butacaDao = getDao(Butaca.class);
+        }
+
+        return butacaDao;
+    }
+
 
     @Override
     public void close()
@@ -71,6 +85,7 @@ public class DBHelper extends OrmLiteSqliteOpenHelper
         super.close();
         eventoDao = null;
         sesionDao = null;
+        butacaDao = null;
     }
 
 }

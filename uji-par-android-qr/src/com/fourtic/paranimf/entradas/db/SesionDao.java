@@ -1,9 +1,9 @@
 package com.fourtic.paranimf.entradas.db;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
-import android.accounts.Account;
 import android.util.Log;
 
 import com.fourtic.paranimf.entradas.constants.Constants;
@@ -11,7 +11,7 @@ import com.fourtic.paranimf.entradas.data.Sesion;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.UpdateBuilder;
 
 @Singleton
 public class SesionDao
@@ -53,6 +53,16 @@ public class SesionDao
     public void update(Sesion sesionDB) throws SQLException
     {
         dao.update(sesionDB);
+    }
+
+    public void updateFechaSync(int sesionId, Date fechaSync) throws SQLException
+    {
+        UpdateBuilder<Sesion, Integer> builder = dao.updateBuilder();
+
+        builder.updateColumnValue("fecha_sync", fechaSync);
+        builder.where().eq("id", sesionId);
+
+        builder.update();
     }
 
 }
