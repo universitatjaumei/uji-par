@@ -1,14 +1,8 @@
 package es.uji.apps.par.services;
 
 import java.util.List;
-import java.util.Properties;
 
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
+import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,52 +13,44 @@ import org.springframework.stereotype.Service;
 import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.dao.MailDAO;
 import es.uji.apps.par.db.MailDTO;
+import es.uji.commons.messaging.client.MessageNotSentException;
+import es.uji.commons.messaging.client.MessagingClient;
+import es.uji.commons.messaging.client.model.MailMessage;
 
 @Service
 public class MailService
 {
     public static Logger log = Logger.getLogger(MailService.class);
-    
+
     @Autowired
     MailDAO mailDao;
+
+    private MessagingClient client;
+
+    public MailService()
+    {
+        client = new MessagingClient();
+    }
 
     public void anyadeEnvio(String to, String titulo, String texto)
     {
         mailDao.insertaMail(Configuration.getMailFrom(), to, titulo, texto);
     }
 
-    private void enviaSmtp(String de, String para, String titulo, String texto)
+    private void enviaMail(String de, String para, String titulo, String texto) throws MessageNotSentException
     {
-        Properties properties = System.getProperties();
-        properties.setProperty("mail.smtp.host", Configuration.getMailHost());
+        MailMessage mensaje = new MailMessage("PAR");
+        mensaje.setTitle(titulo);
+        mensaje.setContentType(MediaType.TEXT_PLAIN);
+        mensaje.setSender(de);
+        mensaje.setContent(texto);
 
-        Session session = Session.getDefaultInstance(properties);
+        mensaje.addToRecipient(para);
 
-        try
-        {
-            MimeMessage message = new MimeMessage(session);
-
-            message.setFrom(new InternetAddress(de));
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(para));
-
-            message.setSubject(titulo);
-            message.setText(texto);
-
-            log.info(String.format("Enviando mail a %s ...", para));
-
-            Transport.send(message);
-
-            log.info(String.format("Mail enviado a %s ...", para));
-        }
-        catch (MessagingException e)
-        {
-            String msj = String.format("Error enviando mail: to=%s, from=%s, título=%s, texto=%s", para, de, titulo,
-                    texto);
-            log.error(msj, e);
-        }
+        client.send(mensaje);
     }
 
-    public synchronized void enviaPendientes()
+    public synchronized void enviaPendientes() throws MessageNotSentException
     {
         log.info("Enviando mails pendientes...");
 
@@ -72,17 +58,17 @@ public class MailService
 
         for (MailDTO mail : mails)
         {
-            enviaSmtp(mail.getDe(), mail.getPara(), mail.getTitulo(), mail.getTexto());
+            enviaMail(mail.getDe(), mail.getPara(), mail.getTitulo(), mail.getTexto());
             mailDao.marcaEnviado(mail.getId());
         }
     }
 
-    public static void main(String[] args)
+    public static void main(String[] args) throws MessageNotSentException
     {
         ApplicationContext ctx = new ClassPathXmlApplicationContext("/applicationContext-db.xml");
 
         MailService mail = ctx.getBean(MailService.class);
 
-        mail.enviaPendientes();
+        mail.enviaMail("no_reply@uji.es", "soyangel@gmail.com", "Esto es el cuerpo", "Hola que tal!");
     }
 }
