@@ -15,4 +15,9 @@ public class BaseActivityHelper
         Toast.makeText(activity, errorMessage, Toast.LENGTH_LONG).show();
     }
 
+    public static void showMessage(BaseNormalActivity activity, String message)
+    {
+        Toast.makeText(activity, message, Toast.LENGTH_LONG).show();
+    }
+
 }

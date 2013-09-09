@@ -60,4 +60,9 @@ public abstract class BaseNormalActivity extends RoboSherlockFragmentActivity im
         Log.e(Constants.TAG, message, e);
         showError(message);
     }
+
+    protected void showMessage(String message)
+    {
+        BaseActivityHelper.showMessage(this, message);
+    }
 }
