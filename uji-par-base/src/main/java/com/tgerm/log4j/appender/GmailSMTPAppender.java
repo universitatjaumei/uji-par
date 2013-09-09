@@ -107,12 +107,10 @@ public class GmailSMTPAppender extends SMTPAppender
      */
     protected void sendBuffer()
     {
-        /*
         if (!Configuration.getEnviarMailsError().equals("true"))
         {
             return;
         }
-        */
         
         try
         {
