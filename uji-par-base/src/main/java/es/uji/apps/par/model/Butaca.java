@@ -1,6 +1,8 @@
 package es.uji.apps.par.model;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -21,6 +23,8 @@ public class Butaca
     private String x;
     private String y;
     private String tipo;
+    private Date presentada;
+    private String uuid;
 
     public static ButacaDTO butacaToButacaDTO(Butaca butaca)
     {
@@ -34,6 +38,18 @@ public class Butaca
         return butacaDTO;
     }
 
+    public static List<Butaca> butacasDTOToButacas(List<ButacaDTO> butacasDTO)
+    {
+        List<Butaca> butacas = new ArrayList<Butaca>();
+         
+         for (ButacaDTO butacaDTO: butacasDTO)
+         {
+             butacas.add(new Butaca(butacaDTO));
+         }
+         
+         return butacas;
+    }
+    
     public Butaca()
     {
     }
@@ -52,6 +68,8 @@ public class Butaca
         precio = butacaDTO.getPrecio();
         localizacion = butacaDTO.getParLocalizacion().getCodigo();
         tipo = butacaDTO.getTipo();
+        presentada = butacaDTO.getPresentada();
+        uuid = butacaDTO.getParCompra().getUuid() + "-" + butacaDTO.getId();
     }
 
     public static List<Butaca> parseaJSON(String jsonButacas)
@@ -169,4 +187,24 @@ public class Butaca
         return buff.toString();
     }
 
+    public Date getPresentada()
+    {
+        return presentada;
+    }
+
+    public void setPresentada(Date presentada)
+    {
+        this.presentada = presentada;
+    }
+
+    public String getUuid()
+    {
+        return uuid;
+    }
+
+    public void setUuid(String uuid)
+    {
+        this.uuid = uuid;
+    }
+    
 }
