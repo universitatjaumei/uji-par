@@ -2,6 +2,7 @@ package es.uji.apps.par.db;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -58,8 +59,10 @@ public class ButacaDTO implements Serializable{
     
     @Column(name = "ANULADA")
     private Boolean anulada;
-
-
+    
+    @Column(name = "PRESENTADA")
+    private Date presentada;
+    
 	public ButacaDTO() {
 	}
 
@@ -148,4 +151,12 @@ public class ButacaDTO implements Serializable{
 	public void setAnulada(Boolean anulada) {
 		this.anulada = anulada;
 	}
+
+    public Date getPresentada() {
+        return presentada;
+    }
+
+    public void setPresentada(Date presentada) {
+        this.presentada = presentada;
+    }
 }
