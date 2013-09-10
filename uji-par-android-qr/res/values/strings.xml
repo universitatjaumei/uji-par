@@ -15,7 +15,9 @@
     <string name="no_sincronizada">NO SINCRONIZADA</string>
     <string name="ultima_sinc">"ÚLTIMA SINC: "</string>
     <string name="entrada_ok">ENTRADA OK</string>
-    <string name="ya_presentada">"YA PRESENTADA: "</string>
+    <string name="ya_presentada">"YA PRESENTADA\n"</string>
     <string name="sincronizado">Sincronizado!</string>
+    <string name="entrada_no_sesion">NO ENCONTRADA EN ESTA SESIÓN (PRUEBE A SINCRONIZAR)</string>
+    <string name="entrada_otra_sesion">PERTENECE A OTRA SESIÓN</string>
 
 </resources>

@@ -83,12 +83,12 @@ public class SesionInfoActivity extends BaseNormalActivity
 
         initButtons();
     }
-    
+
     @Override
     protected void onStart()
     {
         super.onStart();
-        
+
         updateInfo();
     }
 
@@ -182,24 +182,32 @@ public class SesionInfoActivity extends BaseNormalActivity
             if (fechaPresentada == null)
             {
                 butacaDao.updateFechaPresentada(uuid, new Date());
-                showMessage(getString(R.string.entrada_ok));
+                showScanResultDialog(getString(R.string.entrada_ok), false);
             }
             else
             {
-                showMessage(getString(R.string.ya_presentada) + Utils.formatDateWithTime(fechaPresentada));
+                showScanResultDialog(getString(R.string.ya_presentada) + Utils.formatDateWithTime(fechaPresentada),
+                        true);
             }
         }
         catch (ButacaNotFoundException e)
         {
-            showError("Entrada no encontrada en esta sesión, pruebe a sincronizar");
+            showScanResultDialog(getString(R.string.entrada_no_sesion), true);
         }
         catch (ButacaFromAnotherSesionException e)
         {
-            showError("La entrada pertenece a otra sesión");
+            showScanResultDialog(getString(R.string.entrada_otra_sesion), true);
         }
     }
-    
-    
+
+    private void showScanResultDialog(String message, boolean error)
+    {
+        Intent intent = new Intent(this, DialogActivity.class);
+        intent.putExtra(Constants.DIALOG_MESSAGE, message);
+        intent.putExtra(Constants.DIALOG_ERROR, error);
+
+        startActivity(intent);
+    }
 
     private void updateInfo()
     {
@@ -220,7 +228,7 @@ public class SesionInfoActivity extends BaseNormalActivity
             }
             else
             {
-                textMensaje.setText(R.string.ultima_sinc + Utils.formatDateWithTime(lastSync));
+                textMensaje.setText(getString(R.string.ultima_sinc) + Utils.formatDateWithTime(lastSync));
             }
         }
         catch (Exception e)

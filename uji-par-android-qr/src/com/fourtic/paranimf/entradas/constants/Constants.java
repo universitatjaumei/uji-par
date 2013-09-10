@@ -11,4 +11,6 @@ public class Constants
     public static final String SESION_PRESENTADAS = "SESION_PRESENTADAS";
     public static final String SESION_ID = "SESION_ID";
     public static final String SESION_HORA = "SESION_HORA";
+    public static final String DIALOG_MESSAGE = "DIALOG_MESSAGE";
+    public static final String DIALOG_ERROR = "DIALOG_ERROR";
 }

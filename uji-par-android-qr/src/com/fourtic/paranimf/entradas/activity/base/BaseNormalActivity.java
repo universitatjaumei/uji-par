@@ -18,7 +18,8 @@ public abstract class BaseNormalActivity extends RoboSherlockFragmentActivity im
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setSupportProgressBarIndeterminateVisibility(false);
 
-        getSupportActionBar().setHomeButtonEnabled(true);
+        if (getSupportActionBar() != null)
+            getSupportActionBar().setHomeButtonEnabled(true);
 
         //        getSupportActionBar().setDisplayShowCustomEnabled(true);
         //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);

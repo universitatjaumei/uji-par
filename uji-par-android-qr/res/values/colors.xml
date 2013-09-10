@@ -4,5 +4,7 @@
     <color name="text">#666666</color>
     <color name="background">#FFFFFF</color>
     <color name="listSelection">#ffbb33</color>
+    <color name="dialog_scan_ok">#00FF00</color>
+    <color name="dialog_scan_error">#FF0000</color>
 
 </resources>
