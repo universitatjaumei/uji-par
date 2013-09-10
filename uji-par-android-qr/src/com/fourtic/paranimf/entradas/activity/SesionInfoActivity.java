@@ -198,6 +198,8 @@ public class SesionInfoActivity extends BaseNormalActivity
             showError("La entrada pertenece a otra sesión");
         }
     }
+    
+    
 
     private void updateInfo()
     {
@@ -214,11 +216,11 @@ public class SesionInfoActivity extends BaseNormalActivity
 
             if (lastSync == null)
             {
-                textMensaje.setText("NO SINCRONIZADA");
+                textMensaje.setText(R.string.no_sincronizada);
             }
             else
             {
-                textMensaje.setText("ÚLTIMA SINC: " + Utils.formatDateWithTime(lastSync));
+                textMensaje.setText(R.string.ultima_sinc + Utils.formatDateWithTime(lastSync));
             }
         }
         catch (Exception e)

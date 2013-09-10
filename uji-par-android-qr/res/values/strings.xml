@@ -12,5 +12,7 @@
     <string name="presentadas">Presentadas:</string>
     <string name="escanea">Escanear</string>
     <string name="presentadas_sin_sincronizar">Presentadas sin sincronizar:</string>
+    <string name="no_sincronizada">NO SINCRONIZADA</string>
+    <string name="ultima_sinc">"ÚLTIMA SINC: "</string>
 
 </resources>
