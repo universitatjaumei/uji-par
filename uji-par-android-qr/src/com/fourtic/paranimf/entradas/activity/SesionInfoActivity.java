@@ -79,8 +79,15 @@ public class SesionInfoActivity extends BaseNormalActivity
         setContentView(R.layout.sesion_info_activity);
         setSupportProgressBarIndeterminateVisibility(false);
 
-        updateInfo();
         initButtons();
+    }
+    
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
+        
+        updateInfo();
     }
 
     private void initButtons()
