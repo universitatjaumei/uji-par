@@ -14,5 +14,8 @@
     <string name="presentadas_sin_sincronizar">Presentadas sin sincronizar:</string>
     <string name="no_sincronizada">NO SINCRONIZADA</string>
     <string name="ultima_sinc">"ÚLTIMA SINC: "</string>
+    <string name="entrada_ok">ENTRADA OK</string>
+    <string name="ya_presentada">"YA PRESENTADA: "</string>
+    <string name="sincronizado">Sincronizado!</string>
 
 </resources>

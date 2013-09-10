@@ -131,7 +131,7 @@ public class SesionInfoActivity extends BaseNormalActivity
             public void onSuccess()
             {
                 updateInfo();
-                showMessage("Sincronizado!");
+                showMessage(getString(R.string.sincronizado));
                 hideProgress();
                 sincronizar.setEnabled(true);
             }
@@ -182,11 +182,11 @@ public class SesionInfoActivity extends BaseNormalActivity
             if (fechaPresentada == null)
             {
                 butacaDao.updateFechaPresentada(uuid, new Date());
-                showMessage("ENTRADA OK");
+                showMessage(getString(R.string.entrada_ok));
             }
             else
             {
-                showMessage("YA PRESENTADA: " + Utils.formatDateWithTime(fechaPresentada));
+                showMessage(getString(R.string.ya_presentada) + Utils.formatDateWithTime(fechaPresentada));
             }
         }
         catch (ButacaNotFoundException e)
