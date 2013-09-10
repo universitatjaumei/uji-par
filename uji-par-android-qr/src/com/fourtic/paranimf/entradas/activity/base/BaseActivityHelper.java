@@ -1,7 +1,8 @@
 package com.fourtic.paranimf.entradas.activity.base;
 
 import android.app.Activity;
-import android.widget.Toast;
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 
 public class BaseActivityHelper
 {
@@ -12,12 +13,12 @@ public class BaseActivityHelper
 
     public static void showError(Activity activity, String errorMessage)
     {
-        Toast.makeText(activity, errorMessage, Toast.LENGTH_LONG).show();
+        Crouton.makeText(activity, errorMessage, Style.ALERT).show();
     }
 
     public static void showMessage(BaseNormalActivity activity, String message)
     {
-        Toast.makeText(activity, message, Toast.LENGTH_LONG).show();
+        Crouton.makeText(activity, message, Style.CONFIRM).show();
     }
 
 }
