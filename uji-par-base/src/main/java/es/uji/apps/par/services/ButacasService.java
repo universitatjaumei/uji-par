@@ -93,4 +93,9 @@ public class ButacasService
          return Butaca.butacasDTOToButacas(butacasDAO.getButacasNoAnuladas(idSesion));
     }
 
+    public void updatePresentadas(Long sesionId, List<Butaca> butacas)
+    {
+        butacasDAO.updatePresentadas(sesionId, butacas); 
+    }
+
 }

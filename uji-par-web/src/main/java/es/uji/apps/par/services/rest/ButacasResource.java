@@ -3,6 +3,7 @@ package es.uji.apps.par.services.rest;
 import java.util.List;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -20,7 +21,7 @@ import es.uji.apps.par.services.ButacasService;
 public class ButacasResource extends BaseResource
 {
     public static Logger log = Logger.getLogger(ButacasResource.class);
-    
+
     @InjectParam
     private ButacasService butacasService;
 
@@ -30,8 +31,18 @@ public class ButacasResource extends BaseResource
     public Response getEventos(@PathParam("idSesion") Long idSesion) throws InterruptedException
     {
         List<Butaca> butacas = butacasService.getButacasNoAnuladas(idSesion);
-        
+
         return Response.ok().entity(butacas).build();
     }
 
- }
+    @POST
+    @Path("{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateEntradasPresentadas(@PathParam("id") Long sesionId, List<Butaca> butacas)
+    {
+        butacasService.updatePresentadas(sesionId, butacas);
+        
+        return Response.ok().build();
+    }
+
+}

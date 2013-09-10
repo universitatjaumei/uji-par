@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
+import com.mysema.query.jpa.impl.JPAUpdateClause;
 
 import es.uji.apps.par.ButacaOcupadaException;
 import es.uji.apps.par.NoHayButacasLibresException;
@@ -213,6 +214,17 @@ public class ButacasDAO extends BaseDAO
     {
         JPAQuery query = new JPAQuery(entityManager);
         return query.from(qButacaDTO).where(qButacaDTO.parSesion.id.eq(idSesion).and(qButacaDTO.anulada.eq(false))).distinct().list(qButacaDTO);
+    }
+
+    @Transactional
+    public void updatePresentadas(Long sesionId, List<Butaca> butacas)
+    {
+        for (Butaca butaca: butacas)
+        {
+            new JPAUpdateClause(entityManager, qButacaDTO)
+                .where(qButacaDTO.id.eq(butaca.getId()))
+                .set(qButacaDTO.presentada, butaca.getPresentada()).execute();
+        }
     }
 
 }
