@@ -168,7 +168,7 @@ public class RestService
 
         return gson.fromJson(json, collectionType);
     }
-    
+
     protected List<Butaca> parseButacas(String json)
     {
         Type collectionType = new TypeToken<List<Butaca>>()
@@ -196,7 +196,7 @@ public class RestService
             }
         });
     }
-    
+
     public void getButacas(int idSesion, final ResultCallback<List<Butaca>> responseHandler)
     {
         get(BASE_SECURE_URL + "/sesion/" + idSesion + "/butacas", new AsyncHttpResponseHandler()
@@ -211,6 +211,37 @@ public class RestService
             public void onFailure(Throwable error, String errorBody)
             {
                 responseHandler.onError(error, getErrorMessage(errorBody));
+            }
+        });
+    }
+
+    public void updatePresentadas(int idSesion, List<Butaca> butacas, final ResultCallback<Void> responseHandler)
+    {
+        String url = BASE_SECURE_URL + "/sesion/" + idSesion;
+
+        HttpEntity entity = null;
+        try
+        {
+            String json = gson.toJson(butacas);
+            entity = new StringEntity(json, "UTF-8");
+        }
+        catch (UnsupportedEncodingException e)
+        {
+            responseHandler.onError(e, "Error toJson en POST");
+        }
+
+        client.post(context, url, defaultHeaders(), entity, "application/json", new AsyncHttpResponseHandler()
+        {
+            @Override
+            public void onSuccess(int arg0, String response)
+            {
+                responseHandler.onSuccess(null);
+            }
+            
+            @Override
+            public void onFailure(Throwable throwable, String body)
+            {
+                responseHandler.onError(throwable, "Error enviando butacas presentadas");
             }
         });
     }

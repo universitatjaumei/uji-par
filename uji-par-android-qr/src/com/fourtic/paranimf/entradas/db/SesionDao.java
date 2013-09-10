@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.fourtic.paranimf.entradas.constants.Constants;
 import com.fourtic.paranimf.entradas.data.Sesion;
+import com.fourtic.paranimf.entradas.exception.SesionNotFoundException;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.j256.ormlite.dao.Dao;
@@ -63,6 +64,20 @@ public class SesionDao
         builder.where().eq("id", sesionId);
 
         builder.update();
+    }
+
+    public Date getFechaSync(int sesionId) throws SQLException, SesionNotFoundException
+    {
+        List<Sesion> sesiones = dao.queryForEq("id", sesionId);
+
+        if (sesiones.size() == 0)
+        {
+            throw new SesionNotFoundException();
+        }
+        else
+        {
+            return sesiones.get(0).getFechaSync();
+        }
     }
 
 }

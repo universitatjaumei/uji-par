@@ -28,13 +28,13 @@ public class Butaca
     private long fechaPresentadaEpoch;
 
     @DatabaseField(columnName = "presentada")
-    private Date fechaPresentada;
+    private transient Date fechaPresentada;
 
     @DatabaseField(columnName = "modificada")
-    private boolean modificada;
+    private transient boolean modificada;
 
     @DatabaseField(foreign = true)
-    private Sesion sesion;
+    private transient Sesion sesion;
 
     public int getId()
     {

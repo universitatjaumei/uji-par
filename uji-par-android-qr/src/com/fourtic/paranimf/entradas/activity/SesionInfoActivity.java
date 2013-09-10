@@ -17,6 +17,7 @@ import com.fourtic.paranimf.entradas.R;
 import com.fourtic.paranimf.entradas.activity.base.BaseNormalActivity;
 import com.fourtic.paranimf.entradas.constants.Constants;
 import com.fourtic.paranimf.entradas.db.ButacaDao;
+import com.fourtic.paranimf.entradas.db.SesionDao;
 import com.fourtic.paranimf.entradas.exception.ButacaFromAnotherSesionException;
 import com.fourtic.paranimf.entradas.exception.ButacaNotFoundException;
 import com.fourtic.paranimf.entradas.sync.SyncButacas;
@@ -31,7 +32,10 @@ public class SesionInfoActivity extends BaseNormalActivity
 
     @Inject
     private ButacaDao butacaDao;
-
+    
+    @Inject
+    private SesionDao sesionDao;
+    
     @Inject
     private SyncButacas sync;
 
@@ -46,6 +50,9 @@ public class SesionInfoActivity extends BaseNormalActivity
 
     @InjectView(R.id.numeroVendidas)
     private TextView textNumeroVendidas;
+
+    @InjectView(R.id.mensaje)
+    private TextView textMensaje;
 
     @InjectView(R.id.sincronizaButton)
     private Button sincronizar;
@@ -72,7 +79,7 @@ public class SesionInfoActivity extends BaseNormalActivity
         setContentView(R.layout.sesion_info_activity);
         setSupportProgressBarIndeterminateVisibility(false);
 
-        initInfo();
+        updateInfo();
         initButtons();
     }
 
@@ -83,28 +90,14 @@ public class SesionInfoActivity extends BaseNormalActivity
             @Override
             public void onClick(View arg0)
             {
-                sincronizar.setEnabled(false);
-                showProgress();
-
-                sync.syncButacasFromRest(sesionId, new SyncCallback()
+                try
                 {
-                    @Override
-                    public void onSuccess()
-                    {
-                        initInfo();
-                        showMessage("Sincronizado!");
-                        hideProgress();
-                        sincronizar.setEnabled(true);
-                    }
-
-                    @Override
-                    public void onError(Throwable e, String errorMessage)
-                    {
-                        handleError("Error sincronizando butacas", e);
-                        hideProgress();
-                        sincronizar.setEnabled(true);
-                    }
-                });
+                    syncButacas();
+                }
+                catch (SQLException e)
+                {
+                    handleError("Error consultando el estado de butacas en el móvil", e);
+                }
             }
         });
 
@@ -114,6 +107,32 @@ public class SesionInfoActivity extends BaseNormalActivity
             public void onClick(View arg0)
             {
                 openScanActivity();
+            }
+        });
+    }
+
+    private void syncButacas() throws SQLException
+    {
+        sincronizar.setEnabled(false);
+        showProgress();
+
+        sync.syncButacasFromRest(sesionId, new SyncCallback()
+        {
+            @Override
+            public void onSuccess()
+            {
+                updateInfo();
+                showMessage("Sincronizado!");
+                hideProgress();
+                sincronizar.setEnabled(true);
+            }
+
+            @Override
+            public void onError(Throwable e, String errorMessage)
+            {
+                handleError("Error sincronizando butacas", e);
+                hideProgress();
+                sincronizar.setEnabled(true);
             }
         });
     }
@@ -171,7 +190,7 @@ public class SesionInfoActivity extends BaseNormalActivity
         }
     }
 
-    private void initInfo()
+    private void updateInfo()
     {
         try
         {
@@ -180,11 +199,21 @@ public class SesionInfoActivity extends BaseNormalActivity
 
             textNumeroVendidas.setText(Long.toString(butacaDao.getButacasCount(sesionId)));
             textNumeroPresentadas.setText(Long.toString(butacaDao.getButacasPresentadasCount(sesionId)));
+            
+            Date lastSync = sesionDao.getFechaSync(sesionId);
+            
+            if (lastSync == null)
+            {
+                textMensaje.setText("NO SINCRONIZADA");
+            }
+            else
+            {
+                textMensaje.setText("ÚLTIMA SINC: " + Utils.formatDateWithTime(lastSync));
+            }
         }
         catch (Exception e)
         {
             handleError("Error recuperando datos de sesión", e);
         }
     }
-
 }
