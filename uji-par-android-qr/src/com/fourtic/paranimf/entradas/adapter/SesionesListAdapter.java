@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fourtic.paranimf.entradas.R;
@@ -65,7 +66,7 @@ public class SesionesListAdapter extends BaseAdapter
         Sesion sesion = (Sesion) getItem(position);
 
         viewHolder.titulo.setText(Utils.formatDateWithTime(sesion.getFecha()));
-        //ImageLoader.getInstance().displayImage(puntoInteres.getUrlImagen(), viewHolder.imagen);
+        viewHolder.imagenModificada.setVisibility(sesion.getModificado() ? View.VISIBLE : View.INVISIBLE);
 
         return convertView;
     }
@@ -74,7 +75,7 @@ public class SesionesListAdapter extends BaseAdapter
     {
         ViewHolder viewHolder = new ViewHolder();
         viewHolder.titulo = (TextView) convertView.findViewById(R.id.sesionFecha);
-        //viewHolder.imagen = (ImageView) convertView.findViewById(R.id.puntoInteresImagen);
+        viewHolder.imagenModificada = (ImageView) convertView.findViewById(R.id.sesionImagenModificada);
 
         return viewHolder;
     }
@@ -82,7 +83,7 @@ public class SesionesListAdapter extends BaseAdapter
     class ViewHolder
     {
         public TextView titulo;
-        //public ImageView imagen;
+        public ImageView imagenModificada;
     }
 
 }

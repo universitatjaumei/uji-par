@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fourtic.paranimf.entradas.R;
@@ -64,7 +65,7 @@ public class EventosListAdapter extends BaseAdapter
         Evento evento = (Evento) getItem(position);
 
         viewHolder.titulo.setText(evento.getTitulo());
-        //ImageLoader.getInstance().displayImage(puntoInteres.getUrlImagen(), viewHolder.imagen);
+        viewHolder.imagenModificado.setVisibility(evento.getModificado() ? View.VISIBLE : View.INVISIBLE);
 
         return convertView;
     }
@@ -73,15 +74,15 @@ public class EventosListAdapter extends BaseAdapter
     {
         ViewHolder viewHolder = new ViewHolder();
         viewHolder.titulo = (TextView) convertView.findViewById(R.id.eventoNombre);
-        //viewHolder.imagen = (ImageView) convertView.findViewById(R.id.puntoInteresImagen);
+        viewHolder.imagenModificado = (ImageView) convertView.findViewById(R.id.eventoImagenModificado);
 
         return viewHolder;
     }
 
     class ViewHolder
     {
+        public ImageView imagenModificado;
         public TextView titulo;
-        //public ImageView imagen;
     }
 
 }

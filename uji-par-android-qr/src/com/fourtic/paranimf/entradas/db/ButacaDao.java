@@ -49,12 +49,12 @@ public class ButacaDao
     {
         return dao.queryForEq("sesion_id", sesionId);
     }
-    
+
     public List<Butaca> getButacasModificadas(int sesionId) throws SQLException
     {
         QueryBuilder<Butaca, Integer> builder = dao.queryBuilder();
         builder.where().eq("sesion_id", sesionId).and().eq("modificada", true);
-        
+
         return builder.query();
     }
 
@@ -76,7 +76,7 @@ public class ButacaDao
 
         return builder.where().eq("sesion_id", sesionId).and().isNotNull("presentada").countOf();
     }
-    
+
     public long getButacasModificadasCount(int sesionId) throws SQLException
     {
         QueryBuilder<Butaca, Integer> builder = dao.queryBuilder();
@@ -155,6 +155,11 @@ public class ButacaDao
         builder.updateColumnValue("presentada", date);
         builder.updateColumnValue("modificada", true);
         builder.update();
+    }
+
+    public Dao<Butaca, Integer> getDaoInternal()
+    {
+        return dao;
     }
 
     /*

@@ -27,6 +27,8 @@ public class Sesion
     @DatabaseField(columnName = "hora")
     private String horaCelebracion;
 
+    private boolean modificado;
+
     public int getId()
     {
         return id;
@@ -85,5 +87,15 @@ public class Sesion
     public void setHoraCelebracion(String horaCelebracion)
     {
         this.horaCelebracion = horaCelebracion;
+    }
+
+    public boolean getModificado()
+    {
+        return modificado;
+    }
+
+    public void setModificado(boolean modificado)
+    {
+        this.modificado = modificado;
     }
 }

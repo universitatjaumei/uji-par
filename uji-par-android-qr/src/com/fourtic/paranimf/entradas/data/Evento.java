@@ -19,6 +19,8 @@ public class Evento
 
     private List<Sesion> sesiones;
 
+    private boolean modificado;
+
     public Evento()
     {
         sesiones = new ArrayList<Sesion>();
@@ -54,4 +56,13 @@ public class Evento
         this.sesiones = sesiones;
     }
 
+    public void setModificado(boolean modificado)
+    {
+        this.modificado = modificado;
+    }
+
+    public boolean getModificado()
+    {
+        return this.modificado;
+    }
 }

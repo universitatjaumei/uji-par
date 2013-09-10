@@ -2,7 +2,9 @@ package com.fourtic.paranimf.entradas.db;
 
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import android.util.Log;
 
@@ -12,6 +14,7 @@ import com.fourtic.paranimf.entradas.exception.SesionNotFoundException;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.GenericRawResults;
 import com.j256.ormlite.stmt.UpdateBuilder;
 
 @Singleton
@@ -43,7 +46,19 @@ public class SesionDao
 
     public List<Sesion> getSesiones(int idEvento) throws SQLException
     {
-        return dao.queryForEq("evento_id", idEvento);
+        List<Sesion> sesiones = dao.queryForEq("evento_id", idEvento);
+        
+        Set<Integer> idsModificados = getIdsSesionesModificadas();
+
+        for (Sesion sesion : sesiones)
+        {
+            if (idsModificados.contains(sesion.getId()))
+            {
+                sesion.setModificado(true);
+            }
+        }
+
+        return sesiones;
     }
 
     public Sesion getById(int id) throws SQLException
@@ -78,6 +93,29 @@ public class SesionDao
         {
             return sesiones.get(0).getFechaSync();
         }
+    }
+
+    public Dao<Sesion, Integer> getDaoInternal()
+    {
+        return dao;
+    }
+
+
+    private Set<Integer> getIdsSesionesModificadas() throws SQLException
+    {
+        Set<Integer> result = new HashSet<Integer>();
+
+        GenericRawResults<String[]> queryRaw = dao.queryRaw("select s.id from sesion s, butaca b "
+                + "where s.id=b.sesion_id and b.modificada=1");
+
+        List<String[]> ids = queryRaw.getResults();
+
+        for (String[] id : ids)
+        {
+            result.add(Integer.parseInt(id[0]));
+        }
+
+        return result;
     }
 
 }
