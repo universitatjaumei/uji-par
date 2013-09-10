@@ -76,6 +76,13 @@ public class ButacaDao
 
         return builder.where().eq("sesion_id", sesionId).and().isNotNull("presentada").countOf();
     }
+    
+    public long getButacasModificadasCount(int sesionId) throws SQLException
+    {
+        QueryBuilder<Butaca, Integer> builder = dao.queryBuilder();
+
+        return builder.where().eq("sesion_id", sesionId).and().eq("modificada", true).countOf();
+    }
 
     public Date getFechaPresentada(int sesionId, String uuid) throws SQLException, ButacaNotFoundException,
             ButacaFromAnotherSesionException

@@ -32,10 +32,10 @@ public class SesionInfoActivity extends BaseNormalActivity
 
     @Inject
     private ButacaDao butacaDao;
-    
+
     @Inject
     private SesionDao sesionDao;
-    
+
     @Inject
     private SyncButacas sync;
 
@@ -50,6 +50,9 @@ public class SesionInfoActivity extends BaseNormalActivity
 
     @InjectView(R.id.numeroVendidas)
     private TextView textNumeroVendidas;
+
+    @InjectView(R.id.numeroPresentadasSync)
+    private TextView textNumeroPresentadasSync;
 
     @InjectView(R.id.mensaje)
     private TextView textMensaje;
@@ -206,9 +209,10 @@ public class SesionInfoActivity extends BaseNormalActivity
 
             textNumeroVendidas.setText(Long.toString(butacaDao.getButacasCount(sesionId)));
             textNumeroPresentadas.setText(Long.toString(butacaDao.getButacasPresentadasCount(sesionId)));
-            
+            textNumeroPresentadasSync.setText(Long.toString(butacaDao.getButacasModificadasCount(sesionId)));
+
             Date lastSync = sesionDao.getFechaSync(sesionId);
-            
+
             if (lastSync == null)
             {
                 textMensaje.setText("NO SINCRONIZADA");
