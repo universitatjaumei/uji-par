@@ -28,7 +28,6 @@ import com.google.inject.Inject;
 public class SesionInfoActivity extends BaseNormalActivity
 {
     private static final int REQUEST_CODE = 1;
-    private static final int RESULT_OK = -1;
 
     @Inject
     private ButacaDao butacaDao;
