@@ -43,6 +43,8 @@ public class EventosActivity extends BaseNormalActivity
         setContentView(R.layout.eventos_activity);
         setSupportProgressBarIndeterminateVisibility(false);
 
+        setTitle(R.string.title_eventos);
+
         initList();
     }
 
