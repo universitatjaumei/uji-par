@@ -80,6 +80,8 @@ public class EntradaReport extends Report
     private void creaSeccionPublicidad()
     {
         Block publicidadBlock = withNewBlock();
+        
+        publicidadBlock.setMarginTop("0.3cm");
 
         ExternalGraphic externalGraphic = new ExternalGraphic();
         externalGraphic.setSrc(this.urlPublicidad);
