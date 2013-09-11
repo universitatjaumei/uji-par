@@ -74,7 +74,7 @@ Butacas = (function() {
 	
 		butacaSeleccionada.click(function() {
 			// console.log("Click sobre seleccionada: ", butaca);
-			selecciona(butaca.localizacion, butaca.fila, butaca.numero,
+			selecciona(butaca.localizacion, butaca.texto, butaca.fila, butaca.numero,
 					butaca.x, butaca.y);
 		});
 		butacaSeleccionada.show();
@@ -120,13 +120,13 @@ Butacas = (function() {
 	
 		for ( var i = 0; i < butacasSeleccionadas.length; i++) {
 			var fila = $('<div class="entrada-seleccionada">'
-					+ butacasSeleccionadas[i].localizacion
-					+ ', <span>' + UI.i18n.butacas.fila + '</span>'
+					+ butacasSeleccionadas[i].texto.toUpperCase()
+					+ '<br><span>' + UI.i18n.butacas.filaEntero + '</span>'
 					+ butacasSeleccionadas[i].fila
-					+ ', <span>' + UI.i18n.butacas.butaca + '</span>'
+					+ ', <span>' + UI.i18n.butacas.butacaEntero + '</span>'
 					+ butacasSeleccionadas[i].numero + '<br>'
 					+ getSelectTipoButaca(i)
-					+ '<span><b>' + butacasSeleccionadas[i].precio.toFixed(2) + '</b> €</span></div>');
+					+ '<span>' + butacasSeleccionadas[i].precio.toFixed(2) + ' €</span></div>');
 			$('#detallesSeleccionadas').append(fila);
 		}
 	}
@@ -153,6 +153,7 @@ Butacas = (function() {
 	{
 		if (reserva)
 		{
+			$('#totalEntradas').text(butacasSeleccionadas.length);
 			$('#totalSeleccionadas').text('RESERVA');
 		}
 		else
@@ -169,7 +170,8 @@ Butacas = (function() {
 				total += gastosGestion;
 			}	
 			
-			$('#totalSeleccionadas').text(total.toFixed(2) + ' €');
+			$('#totalEntradas').text(butacasSeleccionadas.length);
+			$('#totalSeleccionadas').text(UI.i18n.butacas.totalEntradas + total.toFixed(2) + ' €');
 		}	
 	}
 	
@@ -183,7 +185,7 @@ Butacas = (function() {
 		refrescaEstadoButacas();
 	}
 	
-	function selecciona(localizacion, fila, numero, x, y) {
+	function selecciona(localizacion, texto, fila, numero, x, y) {
 
 		var tipoEntrada = 'normal';
 		
@@ -194,7 +196,8 @@ Butacas = (function() {
 			x : x,
 			y : y,
 			tipo : tipoEntrada,
-			precio: precios[localizacion][tipoEntrada]
+			precio: precios[localizacion][tipoEntrada],
+			texto: texto
 		};
 	
 		if (estaSeleccionada(butaca)) {

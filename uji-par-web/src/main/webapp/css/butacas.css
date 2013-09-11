@@ -1,5 +1,7 @@
 .entrada-plano {
 	position: relative;
+	float:right;
+	margin-right: 31px;
 }
 
 .butaca-seleccionada {
@@ -22,7 +24,7 @@
 }
 
 #localizacion_platea1 {
-	margin-top: 10px;
+	margin-top: 34px;
 }
 
 #tituloSeleccionadas h3 {
@@ -43,19 +45,15 @@
 	padding: 15px;
 }
 
-#divSeleccionadas .titulo,#divSeleccionadas .hora, #divSeleccionadas .gastosGestion  {
+#divSeleccionadas .titulo,#divSeleccionadas .hora, #divSeleccionadas .fecha, #divSeleccionadas .localidades {
 	margin-top: 4px;
 }
 
- #divSeleccionadas .gastosGestion {
+ #divSeleccionadas .gastosGestion, #divSeleccionadas .totalEntradas {
 	margin-top: 16px;
 }
 
-#divSeleccionadas .fecha {
-	margin-top: 8px;
-}
-
-#divSeleccionadas .titulo {
+#divSeleccionadas .tituloEspectaculo {
 	font-style: italic;
 	font-weight: bold;
 }
@@ -67,12 +65,8 @@
 }
 
 #total {
-	margin-top: 10px;
+	margin-top: 16px;
 	margin-bottom: 10px;
-}
-
-#totalSeleccionadas {
-	font-weight: bold;
 }
 
 select {
@@ -87,15 +81,35 @@ input[type=text] {
 	height: 80px;
 	width: 606px;
 	background: #EEE;
-	margin: 10px 0px 10px 0px;
+	margin: 10px 34px 10px 0px;
 	text-align: center;
 	font-size: 14pt;
 	font-weight: bold;
 	color: #666;
 	display: table;
+	float: right;
 }
 
 #escenario div {
 	display: table-cell;
 	vertical-align: middle;
+}
+
+#divButacas #anfiteatro {
+	float: left;
+	padding-top: 30px;
+	font-size: 18pt;
+	color: #666;
+}
+
+#divButacas #platea {
+	float: left;
+	clear: both;
+	padding-top: 30px;
+	font-size: 18pt;
+	color: #666;
+}
+
+#localizacion_anfiteatro {
+	margin-bottom: 45px;
 }

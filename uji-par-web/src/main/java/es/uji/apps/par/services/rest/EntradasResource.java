@@ -32,6 +32,7 @@ import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.db.CompraDTO;
 import es.uji.apps.par.i18n.ResourceProperties;
 import es.uji.apps.par.model.Butaca;
+import es.uji.apps.par.model.Compra;
 import es.uji.apps.par.model.Evento;
 import es.uji.apps.par.model.PreciosSesion;
 import es.uji.apps.par.model.ResultadoCompra;
@@ -126,10 +127,12 @@ public class EntradasResource extends BaseResource
         if (getLocale().getLanguage().equals("ca"))
         {
             template.put("titulo", evento.getTituloVa());
+            template.put("tipoEvento", evento.getParTiposEvento().getNombreVa());
         }
         else
         {
             template.put("titulo", evento.getTituloEs());
+            template.put("tipoEvento", evento.getParTiposEvento().getNombreEs());
         }
 
         if (butacasSeleccionadas != null)
@@ -361,7 +364,14 @@ public class EntradasResource extends BaseResource
         template.put("email", email);
         template.put("condicionesPrivacidad", condicionesPrivacidad);
         template.put("urlCondicionesPrivacidad", Configuration.getUrlCondicionesPrivacidad());
-
+        
+        CompraDTO compra = comprasService.getCompraByUuid(uuidCompra);
+        
+        if (getLocale().getLanguage().equals("ca"))
+        	template.put("tipoEvento", compra.getParSesion().getParEvento().getParTiposEvento().getNombreVa());
+        else
+        	template.put("tipoEvento", compra.getParSesion().getParEvento().getParTiposEvento().getNombreEs());
+        
         if (infoPeriodica == null || infoPeriodica.equals(""))
             infoPeriodica = "no";
 

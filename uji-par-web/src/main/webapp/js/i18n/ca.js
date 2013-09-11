@@ -5,10 +5,13 @@ UI =
             "ocupadas": "La butaca seleccionada està ocupada",
             "localizacion": "Localització",
             "fila": "F.",
-            "butaca": "B.",
+            "butaca": "S.",
+            "butacaEntero": "Seient: ",
+            "filaEntero": "Fila: ",
             "tipo": "Tipus",
             "tipoNormal": "Normal",
-            "tipoDescuento": "Descompte"
+            "tipoDescuento": "Descompte llibret",
+            "totalEntradas": "Total compra (IVA incl.): "
         }
     }
 };

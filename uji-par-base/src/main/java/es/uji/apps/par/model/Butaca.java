@@ -25,6 +25,7 @@ public class Butaca
     private String tipo;
     private Date presentada;
     private String uuid;
+    private String texto;
 
     public static ButacaDTO butacaToButacaDTO(Butaca butaca)
     {
@@ -208,5 +209,13 @@ public class Butaca
     {
         this.uuid = uuid;
     }
+
+	public String getTexto() {
+		return texto;
+	}
+
+	public void setTexto(String texto) {
+		this.texto = texto;
+	}
     
 }

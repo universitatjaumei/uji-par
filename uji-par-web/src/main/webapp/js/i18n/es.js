@@ -6,9 +6,12 @@ UI =
             "localizacion": "Localización",
             "fila": "F.",
             "butaca": "B.",
+            "butacaEntero": "Butaca: ",
+            "filaEntero": "Fila: ",
             "tipo": "Tipus",
             "tipoNormal": "Normal",
-            "tipoDescuento": "Descuento"
+            "tipoDescuento": "Descuento",
+            "totalEntradas": "Total compra (IVA incl.): "
         }
     }
 };
