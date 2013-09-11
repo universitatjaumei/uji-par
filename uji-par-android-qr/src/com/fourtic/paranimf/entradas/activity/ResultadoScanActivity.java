@@ -13,7 +13,7 @@ import com.fourtic.paranimf.entradas.R;
 import com.fourtic.paranimf.entradas.activity.base.BaseNormalActivity;
 import com.fourtic.paranimf.entradas.constants.Constants;
 
-public class DialogActivity extends BaseNormalActivity
+public class ResultadoScanActivity extends BaseNormalActivity
 {
     private static final long DELAY_OK = 2000;
     private static final long DELAY_ERROR = 4000;
@@ -40,7 +40,7 @@ public class DialogActivity extends BaseNormalActivity
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.dialog_activity);
+        setContentView(R.layout.resultado_scan_activity);
 
         handler = new Handler();
 

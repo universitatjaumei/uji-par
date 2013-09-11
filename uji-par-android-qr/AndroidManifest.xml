@@ -31,7 +31,7 @@
             android:name="com.fourtic.paranimf.entradas.activity.SesionInfoActivity"
             android:label="Info sesión" >
         </activity>
-        <activity android:name="com.fourtic.paranimf.entradas.activity.DialogActivity" >
+        <activity android:name="com.fourtic.paranimf.entradas.activity.ResultadoScanActivity" >
         </activity>
     </application>
 

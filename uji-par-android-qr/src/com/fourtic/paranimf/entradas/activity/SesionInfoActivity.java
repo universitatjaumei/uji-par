@@ -202,7 +202,7 @@ public class SesionInfoActivity extends BaseNormalActivity
 
     private void showScanResultDialog(String message, boolean error)
     {
-        Intent intent = new Intent(this, DialogActivity.class);
+        Intent intent = new Intent(this, ResultadoScanActivity.class);
         intent.putExtra(Constants.DIALOG_MESSAGE, message);
         intent.putExtra(Constants.DIALOG_ERROR, error);
 
