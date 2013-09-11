@@ -473,7 +473,7 @@ public class EntradasResource extends BaseResource
     @GET
     @Path("butacasFragment/{id}")
     @Produces(MediaType.TEXT_HTML)
-    public Template butacasFragment(@PathParam("id") long sesionId, @QueryParam("reserva") String reserva) throws Exception
+    public Response butacasFragment(@PathParam("id") long sesionId, @QueryParam("reserva") String reserva) throws Exception
     {
         HTMLTemplate template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "butacasFragment", getLocale(), APP);
 
@@ -499,7 +499,7 @@ public class EntradasResource extends BaseResource
 
         template.put("butacasSesion", "[]");
 
-        return template;
+        return Response.ok().entity(template).header("Content-Type", "text/html; charset=utf-8").build();
     }
 
 }
