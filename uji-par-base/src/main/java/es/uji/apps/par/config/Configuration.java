@@ -17,6 +17,7 @@ public class Configuration
     private static final String URL_CONDICIONES_PRIVACIDAD = "uji.par.urlCondicionesPrivacidad";
     private static final String GASTOS_GESTION = "uji.par.gastosGestion";
     private static final String ENVIAR_MAILS_ERROR = "uji.par.enviarMailsError";
+    private static final String URL_PIE_ENTRADA = "uji.par.urlPieEntrada";
 
     public static Logger log = Logger.getLogger(Configuration.class);
 
@@ -100,5 +101,10 @@ public class Configuration
     public static void desactivaLogGmail()
     {
         instance.properties.setProperty(ENVIAR_MAILS_ERROR, "false");
+    }
+    
+    public static String getUrlPieEntrada()
+    {
+        return getProperty(URL_PIE_ENTRADA);
     }
 }

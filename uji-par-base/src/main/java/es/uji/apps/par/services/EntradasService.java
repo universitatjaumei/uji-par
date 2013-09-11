@@ -48,7 +48,7 @@ public class EntradasService
         entrada.setHoraApertura(horaApertura);
         entrada.setUrlPortada(Configuration.getUrlPublic() + "/rest/evento/"
                 + compra.getParSesion().getParEvento().getId() + "/imagenEntrada");
-        entrada.setUrlPublicidad("http://static.uji.es/templates/common/latest/img/panoramica.jpg");
+        entrada.setUrlPublicidad(Configuration.getUrlPieEntrada());
 
         for (ButacaDTO butaca : compra.getParButacas())
         {
