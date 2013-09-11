@@ -69,6 +69,6 @@ public class MailService
 
         MailService mail = ctx.getBean(MailService.class);
 
-        mail.enviaMail("no_reply@uji.es", "soyangel@gmail.com", "Esto es el cuerpo", "Hola que tal!");
+        mail.enviaMail("no_reply@uji.es", "soporte@4tic.com", "Esto es el cuerpo", "Hola que tal!");
     }
 }
