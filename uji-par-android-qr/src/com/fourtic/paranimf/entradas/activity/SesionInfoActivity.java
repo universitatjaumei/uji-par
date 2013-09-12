@@ -13,6 +13,8 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.fourtic.paranimf.entradas.R;
 import com.fourtic.paranimf.entradas.activity.base.BaseNormalActivity;
 import com.fourtic.paranimf.entradas.constants.Constants;
@@ -57,9 +59,6 @@ public class SesionInfoActivity extends BaseNormalActivity
     @InjectView(R.id.mensaje)
     private TextView textMensaje;
 
-    @InjectView(R.id.sincronizaButton)
-    private Button sincronizar;
-
     @InjectView(R.id.escaneaButton)
     private Button escanearBoton;
 
@@ -99,26 +98,50 @@ public class SesionInfoActivity extends BaseNormalActivity
         updateInfo();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        super.onCreateOptionsMenu(menu);
+        getSupportMenuInflater().inflate(R.menu.sesion_info, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+        case R.id.action_sync:
+
+            if (network.networkAvailable())
+                synchronize();
+            else
+                showError(getString(R.string.conexion_red_no_disponible));
+
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void synchronize()
+    {
+        try
+        {
+            if (network.networkAvailable())
+                syncButacas();
+            else
+                showError(getString(R.string.conexion_red_no_disponible));
+        }
+        catch (SQLException e)
+        {
+            handleError(getString(R.string.error_sincronizando_entradas), e);
+        }
+    }
+
     private void initButtons()
     {
-        sincronizar.setOnClickListener(new OnClickListener()
-        {
-            @Override
-            public void onClick(View arg0)
-            {
-                try
-                {
-                    if (network.networkAvailable())
-                        syncButacas();
-                    else
-                        showError(getString(R.string.conexion_red_no_disponible));
-                }
-                catch (SQLException e)
-                {
-                    handleError(getString(R.string.error_sincronizando_entradas), e);
-                }
-            }
-        });
 
         escanearBoton.setOnClickListener(new OnClickListener()
         {
@@ -141,7 +164,6 @@ public class SesionInfoActivity extends BaseNormalActivity
 
     private void syncButacas() throws SQLException
     {
-        sincronizar.setEnabled(false);
         showProgress();
 
         sync.syncButacasFromRest(sesionId, new SyncCallback()
@@ -152,7 +174,6 @@ public class SesionInfoActivity extends BaseNormalActivity
                 updateInfo();
                 showMessage(getString(R.string.sincronizado));
                 hideProgress();
-                sincronizar.setEnabled(true);
             }
 
             @Override
@@ -160,7 +181,6 @@ public class SesionInfoActivity extends BaseNormalActivity
             {
                 handleError(getString(R.string.error_sincronizando_butacas), e);
                 hideProgress();
-                sincronizar.setEnabled(true);
             }
         });
     }
