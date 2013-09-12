@@ -53,10 +53,20 @@ public class EventoDao
         {
             public Void call() throws Exception
             {
+                dao.deleteBuilder().delete();
+                sesionDao.deleteAll();
+
                 for (Evento evento : eventos)
                 {
-                    updateDatosEvento(evento);
-                    updateSesionesEvento(evento);
+                    dao.create(evento);
+
+                    for (Sesion sesion : evento.getSesiones())
+                    {
+                        sesion.setEvento(evento);
+                        sesion.setFecha(new Date(sesion.getFechaCelebracionEpoch()));
+
+                        sesionDao.insert(sesion);
+                    }
                 }
 
                 return null;
@@ -64,48 +74,11 @@ public class EventoDao
         });
     }
 
-    private void updateDatosEvento(Evento evento) throws SQLException
-    {
-        Evento eventoDB = dao.queryForId(evento.getId());
-
-        if (eventoDB == null)
-        {
-            dao.create(evento);
-        }
-        else
-        {
-            eventoDB.setTitulo(evento.getTitulo());
-            dao.update(eventoDB);
-        }
-    }
-
-    private void updateSesionesEvento(Evento evento) throws SQLException
-    {
-        for (Sesion sesion : evento.getSesiones())
-        {
-            Sesion sesionDB = sesionDao.getById(sesion.getId());
-
-            if (sesionDB == null)
-            {
-                sesion.setEvento(evento);
-                sesion.setFecha(new Date(sesion.getFechaCelebracionEpoch()));
-
-                sesionDao.insert(sesion);
-            }
-            else
-            {
-                sesionDB.setFecha(new Date(sesion.getFechaCelebracionEpoch()));
-
-                sesionDao.update(sesionDB);
-            }
-        }
-    }
-
     public List<Evento> getEventos() throws SQLException
     {
         QueryBuilder<Evento, Integer> builder = dao.queryBuilder();
         builder.orderBy("titulo", true);
-        
+
         List<Evento> eventos = builder.query();
 
         Set<Integer> idsModificados = getIdsEventosModificados();

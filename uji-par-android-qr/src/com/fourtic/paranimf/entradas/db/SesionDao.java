@@ -118,4 +118,9 @@ public class SesionDao
         return result;
     }
 
+    public void deleteAll() throws SQLException
+    {
+        dao.deleteBuilder().delete();
+    }
+
 }
