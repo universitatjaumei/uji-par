@@ -1,5 +1,6 @@
 package es.uji.apps.par.services.rest;
 
+import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -29,6 +30,7 @@ import es.uji.apps.par.model.DisponiblesLocalizacion;
 import es.uji.apps.par.model.ResultadoCompra;
 import es.uji.apps.par.services.ButacasService;
 import es.uji.apps.par.services.ComprasService;
+import es.uji.apps.par.services.EntradasService;
 import es.uji.apps.par.services.SesionesService;
 
 @Path("compra")
@@ -44,6 +46,9 @@ public class CompraResource extends BaseResource
     
     @InjectParam
     private ButacasService butacasService;
+    
+    @InjectParam
+    private EntradasService entradasService;
 
     @Context
     HttpServletResponse currentResponse;
@@ -135,5 +140,21 @@ public class CompraResource extends BaseResource
     	return Response.ok().entity(new RestResponse(true, 
         		butacasService.getButacasCompra(idCompra, sort, start, limit), 
         		butacasService.getTotalButacasCompra(idCompra))).build();
+    }
+    
+    @GET
+    @Path("{id}/pdf")
+    @Produces("application/pdf")
+    public Response datosEntrada(@PathParam("id") String uuidCompra) throws Exception
+    {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
+        entradasService.generaEntrada(uuidCompra, bos);
+
+        Response response = Response.ok(bos.toByteArray())
+                .header("Cache-Control", "no-cache, no-store, must-revalidate").header("Pragma", "no-cache")
+                .header("Expires", "0").build();
+
+        return response;
     }
 }

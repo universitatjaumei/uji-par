@@ -16,6 +16,7 @@ import es.uji.apps.par.dao.ComprasDAO;
 import es.uji.apps.par.db.ButacaDTO;
 import es.uji.apps.par.db.CompraDTO;
 import es.uji.apps.par.report.EntradaReport;
+import es.uji.apps.par.report.EntradaTaquillaReport;
 import es.uji.apps.par.utils.DateUtils;
 
 @Service
@@ -32,10 +33,17 @@ public class EntradasService
 
         entrada.serialize(outputStream);
     }
+    
+    public void generaEntradaTaquilla(String uuidCompra, OutputStream outputStream) throws ReportSerializationException {
+    	EntradaTaquillaReport entrada = EntradaTaquillaReport.create(new Locale("ca"));
 
-    private void rellenaEntrada(String uuidCompra, EntradaReport entrada)
-    {
-        CompraDTO compra = comprasDAO.getCompraByUuid(uuidCompra);
+        rellenaEntradaTaquilla(uuidCompra, entrada);
+
+        entrada.serialize(outputStream);
+	}
+
+    private void rellenaEntradaTaquilla(String uuidCompra, EntradaTaquillaReport entrada) {
+    	CompraDTO compra = comprasDAO.getCompraByUuid(uuidCompra);
 
         String tituloEs = compra.getParSesion().getParEvento().getTituloEs();
         String fecha = DateUtils.dateToSpanishString(compra.getParSesion().getFechaCelebracion());
@@ -43,6 +51,26 @@ public class EntradasService
         String horaApertura = compra.getParSesion().getHoraApertura();
 
         entrada.setTitulo(tituloEs);
+        entrada.setFecha(fecha);
+        entrada.setHora(hora);
+        entrada.setHoraApertura(horaApertura);
+
+        for (ButacaDTO butaca : compra.getParButacas())
+        {
+            entrada.generaPaginaButaca(compra, butaca);
+        }
+	}
+
+	private void rellenaEntrada(String uuidCompra, EntradaReport entrada)
+    {
+        CompraDTO compra = comprasDAO.getCompraByUuid(uuidCompra);
+
+        String tituloCa = compra.getParSesion().getParEvento().getTituloVa();
+        String fecha = DateUtils.dateToSpanishString(compra.getParSesion().getFechaCelebracion());
+        String hora = DateUtils.dateToHourString(compra.getParSesion().getFechaCelebracion());
+        String horaApertura = compra.getParSesion().getHoraApertura();
+
+        entrada.setTitulo(tituloCa);
         entrada.setFecha(fecha);
         entrada.setHora(hora);
         entrada.setHoraApertura(horaApertura);
@@ -62,6 +90,7 @@ public class EntradasService
 
         EntradasService service = ctx.getBean(EntradasService.class);
 
-        service.generaEntrada("", new FileOutputStream("/tmp/entrada.pdf"));
+        //service.generaEntradaTaquilla("e3a762c9-9107-47b7-b13d-175e308aa24f", new FileOutputStream("/tmp/entrada.pdf"));
+        service.generaEntrada("e3a762c9-9107-47b7-b13d-175e308aa24f", new FileOutputStream("/tmp/entrada.pdf"));
     }
 }

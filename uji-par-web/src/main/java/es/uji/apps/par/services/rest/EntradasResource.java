@@ -32,7 +32,6 @@ import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.db.CompraDTO;
 import es.uji.apps.par.i18n.ResourceProperties;
 import es.uji.apps.par.model.Butaca;
-import es.uji.apps.par.model.Compra;
 import es.uji.apps.par.model.Evento;
 import es.uji.apps.par.model.PreciosSesion;
 import es.uji.apps.par.model.ResultadoCompra;
