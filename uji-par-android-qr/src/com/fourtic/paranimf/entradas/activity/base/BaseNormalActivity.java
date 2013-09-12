@@ -13,6 +13,8 @@ import com.fourtic.paranimf.entradas.activity.EventosActivity;
 import com.fourtic.paranimf.entradas.constants.Constants;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+
 public abstract class BaseNormalActivity extends RoboSherlockFragmentActivity implements BaseActivity
 {
     @Override
@@ -28,6 +30,13 @@ public abstract class BaseNormalActivity extends RoboSherlockFragmentActivity im
 
         //        getSupportActionBar().setDisplayShowCustomEnabled(true);
         //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        Crouton.cancelAllCroutons();
+        super.onDestroy();
     }
 
     @Override
@@ -64,12 +73,12 @@ public abstract class BaseNormalActivity extends RoboSherlockFragmentActivity im
     protected void handleError(String message, Throwable e)
     {
         Log.e(Constants.TAG, message, e);
-        
+
         if (e instanceof HttpHostConnectException)
         {
             message += "\n(" + getString(R.string.error_de_conexion) + ")";
         }
-        
+
         showError(message);
     }
 
@@ -90,4 +99,5 @@ public abstract class BaseNormalActivity extends RoboSherlockFragmentActivity im
             return super.onOptionsItemSelected(item);
         }
     }
+
 }
