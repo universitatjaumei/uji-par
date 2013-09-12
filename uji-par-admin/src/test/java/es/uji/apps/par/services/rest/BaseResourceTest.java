@@ -11,7 +11,7 @@ public class BaseResourceTest extends JerseyTest
     {
         super(build);
 
-        //desactivarAppenderLogGmail();
+        desactivarAppenderLogGmail();
     }
 
     private void desactivarAppenderLogGmail()
