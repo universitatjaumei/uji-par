@@ -20,6 +20,7 @@ import com.fourtic.paranimf.entradas.db.ButacaDao;
 import com.fourtic.paranimf.entradas.db.SesionDao;
 import com.fourtic.paranimf.entradas.exception.ButacaFromAnotherSesionException;
 import com.fourtic.paranimf.entradas.exception.ButacaNotFoundException;
+import com.fourtic.paranimf.entradas.network.NetworkChecker;
 import com.fourtic.paranimf.entradas.sync.SyncButacas;
 import com.fourtic.paranimf.entradas.sync.SyncButacas.SyncCallback;
 import com.fourtic.paranimf.utils.Utils;
@@ -77,6 +78,9 @@ public class SesionInfoActivity extends BaseNormalActivity
     @InjectExtra(value = Constants.SESION_ID)
     private int sesionId;
 
+    @Inject
+    private NetworkChecker network;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -104,7 +108,10 @@ public class SesionInfoActivity extends BaseNormalActivity
             {
                 try
                 {
-                    syncButacas();
+                    if (network.networkAvailable())
+                        syncButacas();
+                    else
+                        showError(getString(R.string.conexion_red_no_disponible));
                 }
                 catch (SQLException e)
                 {

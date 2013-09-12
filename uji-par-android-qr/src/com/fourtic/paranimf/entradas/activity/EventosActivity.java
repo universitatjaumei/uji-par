@@ -20,6 +20,7 @@ import com.fourtic.paranimf.entradas.adapter.EventosListAdapter;
 import com.fourtic.paranimf.entradas.constants.Constants;
 import com.fourtic.paranimf.entradas.data.Evento;
 import com.fourtic.paranimf.entradas.db.EventoDao;
+import com.fourtic.paranimf.entradas.network.NetworkChecker;
 import com.fourtic.paranimf.entradas.sync.SyncEventos;
 import com.fourtic.paranimf.entradas.sync.SyncEventos.SyncCallback;
 import com.google.inject.Inject;
@@ -37,6 +38,9 @@ public class EventosActivity extends BaseNormalActivity
 
     @Inject
     private SyncEventos sync;
+
+    @Inject
+    private NetworkChecker network;
 
     private EventosListAdapter adapter;
 
@@ -117,7 +121,12 @@ public class EventosActivity extends BaseNormalActivity
         switch (item.getItemId())
         {
         case R.id.action_sync:
-            synchronize();
+            
+            if (network.networkAvailable())
+                synchronize();
+            else
+                showError(getString(R.string.conexion_red_no_disponible));
+
             return true;
         default:
             return super.onOptionsItemSelected(item);

@@ -32,5 +32,6 @@
     <string name="error_recuperando_datos_sesion">Error recuperant dades de sessió</string>
     <string name="error_sincronizando_eventos">Error sincronitzant els events</string>
     <string name="error_de_conexion">Error de connexió</string>
+    <string name="conexion_red_no_disponible">Connexió de xarxa no disponible</string>
 
 </resources>
