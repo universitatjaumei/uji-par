@@ -166,7 +166,7 @@ public class ButacaDao
     {
         QueryBuilder<Butaca, Integer> builder = dao.queryBuilder();
 
-        builder.where().eq("sesion_id", sesionId).and().isNull("presentada").and().like("uuid", "%" + uuid + "%");
+        builder.where().eq("sesion_id", sesionId).and().isNull("presentada").and().like("uuid", "%-%-%-%-%-%" + uuid + "%");
 
         return builder.query();
     }

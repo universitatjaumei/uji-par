@@ -21,7 +21,7 @@
     <string name="title_entrada_manual">Marcar entrada</string>
     <string name="title_info_sesion">Info sessió</string>
     <string name="manual_boton">Manual</string>
-    <string name="marcar_como_presentada">Marcar com presentada?</string>
+    <string name="marcar_como_presentada">Marcar entrada acabada en -%1$s com presentada?</string>
     <string name="actualizado">Events i sessions actualitzats</string>
     <string name="error_marcando_presentada">Error marcant butaca com presentada</string>
     <string name="error_recuperando_eventos_bd">Error recuperant events de BD</string>

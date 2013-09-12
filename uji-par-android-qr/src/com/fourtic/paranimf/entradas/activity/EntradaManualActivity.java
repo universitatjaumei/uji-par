@@ -97,7 +97,9 @@ public class EntradaManualActivity extends BaseNormalActivity
 
     protected void showDialogMarcar(final Butaca butaca)
     {
-        AlertDialog dialog = new AlertDialog.Builder(this).setMessage(R.string.marcar_como_presentada)
+        String mensaje = getString(R.string.marcar_como_presentada, butaca.getUltimoBloqueUuid());
+
+        AlertDialog dialog = new AlertDialog.Builder(this).setMessage(mensaje)
                 .setPositiveButton(android.R.string.yes, new OnClickListener()
                 {
                     @Override
@@ -114,7 +116,7 @@ public class EntradaManualActivity extends BaseNormalActivity
                         }
                     }
                 }).setNegativeButton(android.R.string.cancel, null).create();
-        
+
         dialog.show();
     }
 

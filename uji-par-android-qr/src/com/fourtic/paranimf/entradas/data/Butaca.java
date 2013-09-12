@@ -115,4 +115,11 @@ public class Butaca
     {
         this.modificada = modificada;
     }
+
+    public String getUltimoBloqueUuid()
+    {
+        String[] vec = uuid.split("-");
+
+        return vec[vec.length - 1];
+    }
 }

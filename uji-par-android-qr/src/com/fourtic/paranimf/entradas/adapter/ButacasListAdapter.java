@@ -63,7 +63,7 @@ public class ButacasListAdapter extends BaseAdapter
 
         Butaca butaca = (Butaca) getItem(position);
 
-        viewHolder.uuid.setText(butaca.getUuid());
+        viewHolder.idButaca.setText(butaca.getUltimoBloqueUuid());
 
         return convertView;
     }
@@ -71,14 +71,14 @@ public class ButacasListAdapter extends BaseAdapter
     private ViewHolder createViewHolder(View convertView)
     {
         ViewHolder viewHolder = new ViewHolder();
-        viewHolder.uuid = (TextView) convertView.findViewById(R.id.butacaUuid);
+        viewHolder.idButaca = (TextView) convertView.findViewById(R.id.idButaca);
 
         return viewHolder;
     }
 
     class ViewHolder
     {
-        public TextView uuid;
+        public TextView idButaca;
     }
 
 }
