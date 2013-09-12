@@ -131,12 +131,14 @@ public class MapaDrawer
 
                     BufferedImage imagenOcupada;
 
-                    if (esDiscapacitado(butaca))
-                        imagenOcupada = butacaOcupadaDiscapacitado;
-                    else
-                        imagenOcupada = butacaOcupada;
-
-                    graphics.drawImage(imagenOcupada, butaca.getxIni(), butaca.getyIni(), null);
+                    if (!esDiscapacitadoAnfiteatro(butaca)) {
+	                    if (esDiscapacitado(butaca))
+	                        imagenOcupada = butacaOcupadaDiscapacitado;
+	                    else
+	                        imagenOcupada = butacaOcupada;
+	
+	                    graphics.drawImage(imagenOcupada, butaca.getxIni(), butaca.getyIni(), null);
+                    }
                 }
             }
         }
@@ -144,7 +146,11 @@ public class MapaDrawer
         return imgResult;
     }
 
-    private boolean esDiscapacitado(DatosButaca butaca)
+	private boolean esDiscapacitadoAnfiteatro(DatosButaca butaca) {
+		return butaca.getLocalizacion().startsWith("discapacitados3");
+	}
+
+	private boolean esDiscapacitado(DatosButaca butaca)
     {
         return butaca.getLocalizacion().startsWith("discapacitados");
     }
