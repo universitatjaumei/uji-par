@@ -17,6 +17,7 @@ import com.google.inject.Singleton;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.GenericRawResults;
 import com.j256.ormlite.misc.TransactionManager;
+import com.j256.ormlite.stmt.QueryBuilder;
 
 @Singleton
 public class EventoDao
@@ -103,7 +104,10 @@ public class EventoDao
 
     public List<Evento> getEventos() throws SQLException
     {
-        List<Evento> eventos = dao.queryForAll();
+        QueryBuilder<Evento, Integer> builder = dao.queryBuilder();
+        builder.orderBy("titulo", true);
+        
+        List<Evento> eventos = builder.query();
 
         Set<Integer> idsModificados = getIdsEventosModificados();
 
