@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
+import com.fourtic.paranimf.entradas.activity.EventosActivity;
 import com.fourtic.paranimf.entradas.constants.Constants;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 
@@ -48,10 +50,10 @@ public abstract class BaseNormalActivity extends RoboSherlockFragmentActivity im
         BaseActivityHelper.showError(this, errorMessage);
     }
 
-    private void goToActivity(Class<?> activityClass)
+    private void goToHome()
     {
-        Intent intent = new Intent(this, activityClass);
-        //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        Intent intent = new Intent(this, EventosActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         startActivity(intent);
     }
@@ -65,5 +67,18 @@ public abstract class BaseNormalActivity extends RoboSherlockFragmentActivity im
     protected void showMessage(String message)
     {
         BaseActivityHelper.showMessage(this, message);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+        case android.R.id.home:
+            goToHome();
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
     }
 }
