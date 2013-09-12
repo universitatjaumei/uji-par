@@ -55,29 +55,25 @@
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_weight="1"
+        android:orientation="vertical" >
 
         <TextView
+            android:id="@+id/textFaltanSubir"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/presentadas_sin_sincronizar" />
-
-        <TextView
-            android:id="@+id/numeroPresentadasSync"
-            style="@style/sesionInfoValorNumero"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" >
+            android:layout_gravity="center_horizontal"
+            android:text="@string/presentadas_sin_subir"
+            android:textColor="@color/aviso_no_subidas"
+            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:layout_marginTop="8dp"
             android:orientation="vertical" >
 
             <Button

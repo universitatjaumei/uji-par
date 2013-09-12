@@ -9,14 +9,14 @@
     <string name="vendidas">Venudes:</string>
     <string name="presentadas">Han entrat:</string>
     <string name="escanea_boton">Escanejar</string>
-    <string name="presentadas_sin_sincronizar">FALTEN PER PUJAR:</string>
+    <string name="presentadas_sin_subir">N\'HI HAN ENTRADES PER PUJAR</string>
     <string name="no_sincronizada">NO SINCRONITZADA</string>
     <string name="ultima_sinc">"SINCRONITZADA: "</string>
     <string name="entrada_ok">ENTRADA CORRECTA</string>
     <string name="ya_presentada">"JA PRESENTADA\n"</string>
     <string name="sincronizado">Sincronització correcta</string>
     <string name="entrada_no_sesion">NO TROBADA EN AQUESTA SESSIÓ (PROVI A SINCRONITZAR)</string>
-    <string name="entrada_otra_sesion">PERTANY A ALTRA SESSIÓ</string>
+    <string name="entrada_otra_sesion">NO PERTANY A AQUESTA SESSIÓ</string>
     <string name="manual_buscar">Cercar</string>
     <string name="title_entrada_manual">Marcar entrada</string>
     <string name="title_info_sesion">Info sessió</string>

@@ -6,5 +6,6 @@
     <color name="listSelection">#ffbb33</color>
     <color name="dialog_scan_ok">#00FF00</color>
     <color name="dialog_scan_error">#FF0000</color>
+    <color name="aviso_no_subidas">#FF0000</color>
 
 </resources>

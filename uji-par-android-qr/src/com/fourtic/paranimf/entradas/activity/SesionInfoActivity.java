@@ -50,8 +50,8 @@ public class SesionInfoActivity extends BaseNormalActivity
     @InjectView(R.id.numeroVendidas)
     private TextView textNumeroVendidas;
 
-    @InjectView(R.id.numeroPresentadasSync)
-    private TextView textNumeroPresentadasSync;
+    @InjectView(R.id.textFaltanSubir)
+    private TextView textFaltanSubir;
 
     @InjectView(R.id.mensaje)
     private TextView textMensaje;
@@ -237,7 +237,10 @@ public class SesionInfoActivity extends BaseNormalActivity
 
             textNumeroVendidas.setText(Long.toString(butacaDao.getButacasCount(sesionId)));
             textNumeroPresentadas.setText(Long.toString(butacaDao.getButacasPresentadasCount(sesionId)));
-            textNumeroPresentadasSync.setText(Long.toString(butacaDao.getButacasModificadasCount(sesionId)));
+
+            long modificadas = butacaDao.getButacasModificadasCount(sesionId);
+
+            textFaltanSubir.setVisibility(modificadas == 0 ? View.INVISIBLE : View.VISIBLE);
 
             Date lastSync = sesionDao.getFechaSync(sesionId);
 
