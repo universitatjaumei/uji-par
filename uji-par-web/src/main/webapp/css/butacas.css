@@ -15,7 +15,7 @@
 }
 
 .titulo-tipo {
-	font-size: 18px;
+	font-size: 18px !important;
 	font-weight: bold;
 }
 
@@ -71,10 +71,11 @@
 
 select {
 	width: auto !important;
+	margin-right: 10px;
 }
 
 input[type=text] {
-	width: auto !important;
+	/*width: auto !important;*/
 }
 
 #escenario {
@@ -83,7 +84,7 @@ input[type=text] {
 	background: #EEE;
 	margin: 10px 34px 10px 0px;
 	text-align: center;
-	font-size: 14pt;
+	font-size: 14pt !important;
 	font-weight: bold;
 	color: #666;
 	display: table;
@@ -98,7 +99,7 @@ input[type=text] {
 #divButacas #anfiteatro {
 	float: left;
 	padding-top: 30px;
-	font-size: 18pt;
+	font-size: 18pt !important;
 	color: #666;
 }
 
@@ -106,7 +107,7 @@ input[type=text] {
 	float: left;
 	clear: both;
 	padding-top: 30px;
-	font-size: 18pt;
+	font-size: 18pt !important;
 	color: #666;
 }
 

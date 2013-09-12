@@ -66,6 +66,9 @@ public class EntradasResource extends BaseResource
 
     @Context
     HttpServletRequest currentRequest;
+    
+    @Context
+    private HttpServletRequest request;
 
     @GET
     @Path("{id}")
@@ -85,9 +88,11 @@ public class EntradasResource extends BaseResource
     }
 
     private Response paginaSeleccionEntradasNumeradas(long sesionId, List<Butaca> butacasSeleccionadas,
-            List<Butaca> butacasOcupadas, String error)
+            List<Butaca> butacasOcupadas, String error) throws Exception
     {
         Sesion sesion = sesionesService.getSesion(sesionId);
+        String urlBase = getUrlBase(request);
+        String url = request.getRequestURL().toString();
 
         if (!sesion.getEnPlazoVentaInternet())
             return paginaProhibida();
@@ -101,6 +106,7 @@ public class EntradasResource extends BaseResource
         template.put("baseUrl", getBaseUrl());
         template.put("fecha", DateUtils.dateToSpanishString(sesion.getFechaCelebracion()));
         template.put("hora", sesion.getHoraCelebracion());
+        template.put("pagina", buildPublicPageInfo(urlBase, url, getLocale().getLanguage().toString()));
 
         if (error != null && !error.equals(""))
         {
@@ -348,6 +354,11 @@ public class EntradasResource extends BaseResource
             String infoPeriodica, String condicionesPrivacidad, String error) throws Exception
     {
         Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "datosComprador", getLocale(), APP);
+        String urlBase = getUrlBase(request);
+        String url = request.getRequestURL().toString();
+        template.put("pagina", buildPublicPageInfo(urlBase, url, getLocale().getLanguage().toString()));
+        template.put("baseUrl", getBaseUrl());
+        
         template.put("idioma", getLocale().getLanguage());
         template.put("baseUrl", getBaseUrl());
 
@@ -366,15 +377,18 @@ public class EntradasResource extends BaseResource
         
         CompraDTO compra = comprasService.getCompraByUuid(uuidCompra);
         
-        if (getLocale().getLanguage().equals("ca"))
-        	template.put("tipoEvento", compra.getParSesion().getParEvento().getParTiposEvento().getNombreVa());
-        else
-        	template.put("tipoEvento", compra.getParSesion().getParEvento().getParTiposEvento().getNombreEs());
-        
-        if (infoPeriodica == null || infoPeriodica.equals(""))
-            infoPeriodica = "no";
-
-        template.put("infoPeriodica", infoPeriodica);
+        if (compra != null) {
+	        if (getLocale().getLanguage().equals("ca"))
+	        	template.put("tipoEvento", compra.getParSesion().getParEvento().getParTiposEvento().getNombreVa());
+	        else
+	        	template.put("tipoEvento", compra.getParSesion().getParEvento().getParTiposEvento().getNombreEs());
+	        
+	        if (infoPeriodica == null || infoPeriodica.equals(""))
+	            infoPeriodica = "no";
+	
+	        template.put("infoPeriodica", infoPeriodica);
+        } else
+        	error = ResourceProperties.getProperty(getLocale(), "error.compraCaducada");;
 
         if (error != null && !error.equals(""))
         {

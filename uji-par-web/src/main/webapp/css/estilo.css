@@ -12,16 +12,56 @@ body {
 	margin-top: 30px !important;
 }
 
+#divSeleccionadas {
+	font-size: 12pt !important;
+}
+
+.evento-imagen {
+	float: left;
+	margin-right: 20px;
+}
+
+.evento-imagen img {
+	width: 350px;
+}
+
+.evento-tipo {
+	font-size: 20pt !important;
+	font-weight: bold;
+	text-transform: uppercase;
+	margin-bottom: 16px;
+	padding-top: 30px;
+}
+
+.evento-titulo {
+	font-size: 28px !important;
+	color: #666;
+	font-style: italic;
+	margin-bottom: 28px;
+}
+
+.evento-descripcion {
+	margin-top: 10px;
+	margin-bottom: 60px;
+}
+
+.evento-sesiones {
+	/*clear: both;*/
+}
+
 .evento-sesiones {
 	padding-top: 20px;
+	padding-left: 370px;
 }
 
 .evento-sesiones table {
-	width: 100%;
+	width: auto;
 }
 
 .evento-sesiones table .diaEventoSesion {
 	width: 80%;
+	font-size: 11pt !important;
+	color: #666;
 }
 
 .evento-sesiones .comprarEntradas {
@@ -31,6 +71,7 @@ body {
 
 .evento-sesiones .contieneBoton {
 	padding: 0px;
+	font-size: 10pt !important;
 }
 
 .evento-sesiones a {
@@ -56,32 +97,9 @@ body {
 	height: 32px;
 }
 
-.evento-imagen {
-	float: left;
-	margin-right: 10px;
-}
-
-.evento-imagen img {
-	width: 400px;
-}
-
-.evento-tipo {
-	margin-bottom: 16px;
-}
-
-.evento-titulo {
-	font-size: 28px;
-	font-style: italic;
-	margin-bottom: 28px;
-}
-
-.evento-sesiones {
-	clear: both;
-}
-
 #entradasDetalles {
 	margin-bottom: 10px;
-	font-size: 13pt;
+	font-size: 13pt !important;
 	color: #666;
 }
 
@@ -94,6 +112,15 @@ body {
 #divCondicionesPrivacidad {
 	margin-bottom: 50px;
 	color: #666;
+}
+
+#divCondicionesPrivacidad, #divCondicionesPrivacidad span, #divCondicionesPrivacidad a {
+	font-size: 11pt !important;
+	font-weight: normal !important;
+}
+
+#divCondicionesPrivacidad a {
+	color: #2795b6;
 }
 
 #observaciones {
@@ -124,7 +151,7 @@ body {
 }
 
 #lineaTotalNoNumeradas {
-	font-size: 14pt;
+	font-size: 14pt !important;
 	margin-top: 16px !important;
 }
 
@@ -137,13 +164,13 @@ body {
 }
 
 .tipoEventoButacas {
-	font-size: 22pt;
+	font-size: 22pt !important;
 	font-weight: bold;
 	padding-bottom:2px;
 }
 
 .detallesSeleccionEntrada {
-	font-size: 15pt;
+	font-size: 15pt !important;
 	padding-bottom: 22px;
 	color: #666;
 }
@@ -157,6 +184,7 @@ body {
 	width: 100%;
 	background-color: #DDD;
 	margin-bottom: 10px;
+	padding-bottom: 4px;
 }
 
 .entrada-datos .campo span {
@@ -168,22 +196,32 @@ body {
 .entrada-datos label {
 	padding: 9px 10px 0 10px;
 	float: left;
+	font-weight: normal;
+	color:#666;
 }
 
 .entrada-datos input {
 	margin-bottom: 0px;
 	width:100%;
+	margin-top: 2px;
 }
 
 .entrada-datos input, #infoPeriodica input {
 	background-color: #DDD;
 	border: 0px;
+	font-size: 11pt !important;
 }
 
 #infoPeriodica label {
 	display: inline !important;
+	color: #666;
+	font-weight: normal !important;
 }
 
 #infoPeriodica input {
 	display: inline !important;
+}
+
+#infoPeriodica span {
+	font-size: 11pt !important;
 }

@@ -42,6 +42,9 @@ public class TpvResource extends BaseResource
 
     @Context
     HttpServletRequest currentRequest;
+    
+    @Context
+    private HttpServletRequest request;
 
     @POST
     @Path("resultado")
@@ -49,7 +52,7 @@ public class TpvResource extends BaseResource
     @Produces(MediaType.TEXT_HTML)
     public Response leeResultadoTpv(@FormParam("tpv_estado") String estado, @FormParam("tpv_recibo") String recibo,
             @FormParam("tpv_identificador") String identificador, @FormParam("tpv_importe") String importe,
-            @FormParam("tpv_firma") String firma)
+            @FormParam("tpv_firma") String firma) throws Exception
     {
         Template template;
 
@@ -78,10 +81,13 @@ public class TpvResource extends BaseResource
         return Response.ok(template).build();
     }
 
-    private Template paginaExito(CompraDTO compra, String recibo)
+    private Template paginaExito(CompraDTO compra, String recibo) throws Exception
     {
         Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "compraValida", getLocale(), APP);
+        String urlBase = getUrlBase(request);
+        String url = request.getRequestURL().toString();
 
+        template.put("pagina", buildPublicPageInfo(urlBase, url, getLocale().getLanguage().toString()));
         template.put("baseUrl", getBaseUrl());
 
         template.put("referencia", recibo);
@@ -92,10 +98,13 @@ public class TpvResource extends BaseResource
         return template;
     }
 
-    private HTMLTemplate paginaError(CompraDTO compra)
+    private HTMLTemplate paginaError(CompraDTO compra) throws Exception
     {
         HTMLTemplate template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "compraIncorrecta", getLocale(), APP);
-        
+        String urlBase = getUrlBase(request);
+        String url = request.getRequestURL().toString();
+
+        template.put("pagina", buildPublicPageInfo(urlBase, url, getLocale().getLanguage().toString()));
         template.put("baseUrl", getBaseUrl());
 
         template.put("urlReintentar", getBaseUrl() + "/rest/entrada/" + compra.getParSesion().getId());
