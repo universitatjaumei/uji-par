@@ -162,6 +162,15 @@ public class ButacaDao
         return dao;
     }
 
+    public List<Butaca> getButacasNoPresentadasByUuid(int sesionId, String uuid) throws SQLException
+    {
+        QueryBuilder<Butaca, Integer> builder = dao.queryBuilder();
+
+        builder.where().eq("sesion_id", sesionId).and().isNull("presentada").and().like("uuid", "%" + uuid + "%");
+
+        return builder.query();
+    }
+
     /*
     private void updateSesionesButaca(Butaca butaca) throws SQLException
     {

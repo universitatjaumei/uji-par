@@ -29,9 +29,13 @@
         </activity>
         <activity
             android:name="com.fourtic.paranimf.entradas.activity.SesionInfoActivity"
-            android:label="Info sesión" >
+            android:label="@string/title_info_sesion" >
         </activity>
         <activity android:name="com.fourtic.paranimf.entradas.activity.ResultadoScanActivity" >
+        </activity>
+        <activity
+            android:name="com.fourtic.paranimf.entradas.activity.EntradaManualActivity"
+            android:label="@string/title_entrada_manual" >
         </activity>
     </application>
 

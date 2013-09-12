@@ -10,7 +10,7 @@
     <string name="sincronizar">Sincronizar</string>
     <string name="vendidas">Vendidas:</string>
     <string name="presentadas">Presentadas:</string>
-    <string name="escanea">Escanear</string>
+    <string name="escanea_boton">Escanear</string>
     <string name="presentadas_sin_sincronizar">Presentadas sin sincronizar:</string>
     <string name="no_sincronizada">NO SINCRONIZADA</string>
     <string name="ultima_sinc">"ÚLTIMA SINC: "</string>
@@ -19,5 +19,10 @@
     <string name="sincronizado">Sincronizado!</string>
     <string name="entrada_no_sesion">NO ENCONTRADA EN ESTA SESIÓN (PRUEBE A SINCRONIZAR)</string>
     <string name="entrada_otra_sesion">PERTENECE A OTRA SESIÓN</string>
+    <string name="manual_buscar">Buscar</string>
+    <string name="title_entrada_manual">Marcar entrada</string>
+    <string name="title_info_sesion">Info sesión</string>
+    <string name="manual_boton">Manual</string>
+    <string name="marcar_como_presentada">¿Marcar entrada como presentada?</string>
 
 </resources>

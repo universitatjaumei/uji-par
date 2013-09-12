@@ -60,7 +60,10 @@ public class SesionInfoActivity extends BaseNormalActivity
     private Button sincronizar;
 
     @InjectView(R.id.escaneaButton)
-    private Button escanear;
+    private Button escanearBoton;
+
+    @InjectView(R.id.manualButton)
+    private Button manualBoton;
 
     @InjectExtra(value = Constants.EVENTO_TITULO)
     private String eventoTitulo;
@@ -110,12 +113,21 @@ public class SesionInfoActivity extends BaseNormalActivity
             }
         });
 
-        escanear.setOnClickListener(new OnClickListener()
+        escanearBoton.setOnClickListener(new OnClickListener()
         {
             @Override
             public void onClick(View arg0)
             {
                 openScanActivity();
+            }
+        });
+
+        manualBoton.setOnClickListener(new OnClickListener()
+        {
+            @Override
+            public void onClick(View arg0)
+            {
+                openManualActivity();
             }
         });
     }
@@ -151,6 +163,13 @@ public class SesionInfoActivity extends BaseNormalActivity
         Intent intent = new Intent("com.google.zxing.client.android.SCAN");
         intent.putExtra("SCAN_MODE", "DATA_MATRIX_MODE");
         startActivityForResult(intent, REQUEST_CODE);
+    }
+
+    protected void openManualActivity()
+    {
+        Intent intent = new Intent(this, EntradaManualActivity.class);
+        intent.putExtra(Constants.SESION_ID, sesionId);
+        startActivity(intent);
     }
 
     @Override
