@@ -108,7 +108,7 @@ public class SesionInfoActivity extends BaseNormalActivity
                 }
                 catch (SQLException e)
                 {
-                    handleError("Error consultando el estado de butacas en el móvil", e);
+                    handleError(getString(R.string.error_sincronizando_entradas), e);
                 }
             }
         });
@@ -151,7 +151,7 @@ public class SesionInfoActivity extends BaseNormalActivity
             @Override
             public void onError(Throwable e, String errorMessage)
             {
-                handleError("Error sincronizando butacas", e);
+                handleError(getString(R.string.error_sincronizando_butacas), e);
                 hideProgress();
                 sincronizar.setEnabled(true);
             }
@@ -183,7 +183,7 @@ public class SesionInfoActivity extends BaseNormalActivity
             }
             catch (Exception e)
             {
-                handleError("Error escaneando entrada", e);
+                handleError(getString(R.string.error_escaneando_entrada), e);
             }
         }
     };
@@ -252,7 +252,7 @@ public class SesionInfoActivity extends BaseNormalActivity
         }
         catch (Exception e)
         {
-            handleError("Error recuperando datos de sesión", e);
+            handleError(getString(R.string.error_recuperando_datos_sesion), e);
         }
     }
 }

@@ -110,7 +110,7 @@ public class EntradaManualActivity extends BaseNormalActivity
                         }
                         catch (SQLException e)
                         {
-                            handleError("Error marcando butaca como presentada", e);
+                            handleError(getString(R.string.error_marcando_presentada), e);
                         }
                     }
                 }).setNegativeButton(android.R.string.cancel, null).create();
@@ -140,7 +140,7 @@ public class EntradaManualActivity extends BaseNormalActivity
         }
         catch (SQLException e)
         {
-            Log.e(Constants.TAG, "Error recuperando eventos de BD", e);
+            Log.e(Constants.TAG, getString(R.string.error_recuperando_eventos_bd), e);
         }
     }
 

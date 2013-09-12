@@ -94,7 +94,7 @@ public class SesionesActivity extends BaseNormalActivity
         }
         catch (SQLException e)
         {
-            Log.e(Constants.TAG, "Error recuperando sesiones de BD", e);
+            Log.e(Constants.TAG, getString(R.string.error_recuperando_sesiones_bd), e);
         }
     }
 

@@ -13,7 +13,7 @@ public class Evento
     @DatabaseField(columnName = "id", id = true)
     private int id;
 
-    @SerializedName("tituloEs")
+    @SerializedName("tituloVa")
     @DatabaseField(columnName = "titulo")
     private String titulo;
 

@@ -92,7 +92,7 @@ public class EventosActivity extends BaseNormalActivity
         }
         catch (SQLException e)
         {
-            Log.e(Constants.TAG, "Error recuperando eventos de BD", e);
+            Log.e(Constants.TAG, getString(R.string.error_recuperando_eventos_bd), e);
         }
     }
 
@@ -127,7 +127,7 @@ public class EventosActivity extends BaseNormalActivity
             @Override
             public void onSuccess()
             {
-                showMessage("Actualizado!");
+                showMessage(getString(R.string.actualizado));
                 loadEventosFromDB();
 
                 hideProgress();

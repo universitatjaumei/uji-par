@@ -1,28 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Paranimf entradas</string>
-    <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="title_eventos">Eventos</string>
-    <string name="action_sincronizar">Sincronizar</string>
-    <string name="title_sesiones">Sesiones</string>
-    <string name="sincronizar">Sincronizar</string>
-    <string name="vendidas">Vendidas:</string>
-    <string name="presentadas">Presentadas:</string>
-    <string name="escanea_boton">Escanear</string>
-    <string name="presentadas_sin_sincronizar">Presentadas sin sincronizar:</string>
-    <string name="no_sincronizada">NO SINCRONIZADA</string>
-    <string name="ultima_sinc">"ÚLTIMA SINC: "</string>
-    <string name="entrada_ok">ENTRADA OK</string>
-    <string name="ya_presentada">"YA PRESENTADA\n"</string>
-    <string name="sincronizado">Sincronizado!</string>
-    <string name="entrada_no_sesion">NO ENCONTRADA EN ESTA SESIÓN (PRUEBE A SINCRONIZAR)</string>
-    <string name="entrada_otra_sesion">PERTENECE A OTRA SESIÓN</string>
-    <string name="manual_buscar">Buscar</string>
+    <string name="app_name">Entrades</string>
+    <string name="title_eventos">Events</string>
+    <string name="action_sincronizar">Sincronitzar</string>
+    <string name="title_sesiones">Sesions</string>
+    <string name="sincronizar">Sincronitzar</string>
+    <string name="vendidas">Venudes:</string>
+    <string name="presentadas">Han entrat:</string>
+    <string name="escanea_boton">Escanejar</string>
+    <string name="presentadas_sin_sincronizar">FALTEN PER PUJAR:</string>
+    <string name="no_sincronizada">NO SINCRONITZADA</string>
+    <string name="ultima_sinc">"SINCRONITZADA: "</string>
+    <string name="entrada_ok">ENTRADA CORRECTA</string>
+    <string name="ya_presentada">"JA PRESENTADA\n"</string>
+    <string name="sincronizado">Sincronització correcta</string>
+    <string name="entrada_no_sesion">NO TROBADA EN AQUESTA SESSIÓ (PROVI A SINCRONITZAR)</string>
+    <string name="entrada_otra_sesion">PERTANY A ALTRA SESSIÓ</string>
+    <string name="manual_buscar">Cercar</string>
     <string name="title_entrada_manual">Marcar entrada</string>
-    <string name="title_info_sesion">Info sesión</string>
+    <string name="title_info_sesion">Info sessió</string>
     <string name="manual_boton">Manual</string>
-    <string name="marcar_como_presentada">¿Marcar entrada como presentada?</string>
+    <string name="marcar_como_presentada">Marcar com presentada?</string>
+    <string name="actualizado">Events i sessions actualitzats</string>
+    <string name="error_marcando_presentada">Error marcant butaca com presentada</string>
+    <string name="error_recuperando_eventos_bd">Error recuperant events de BD</string>
+    <string name="error_recuperando_sesiones_bd">Error recuperant sessions de BD</string>
+    <string name="error_sincronizando_entradas">Error sincronitzant l\'estat de les butaques en el mòbil</string>
+    <string name="error_sincronizando_butacas">Error sincronitzant entrades</string>
+    <string name="error_escaneando_entrada">Error escanejant entrada</string>
+    <string name="error_recuperando_datos_sesion">Error recuperant dades de sessió</string>
 
 </resources>
