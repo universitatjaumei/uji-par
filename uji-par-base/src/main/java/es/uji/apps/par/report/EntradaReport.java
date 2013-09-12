@@ -442,8 +442,10 @@ public class EntradaReport extends Report
         try
         {
             initStatics();
-
-            return new EntradaReport(reportSerializer, new EntradaReportStyle(), locale);
+            EntradaReportStyle estilo = new EntradaReportStyle();
+            estilo.setSimplePageMasterMarginBottom("0cm");
+            estilo.setSimplePageMasterRegionBodyMarginBottom("0cm");
+            return new EntradaReport(reportSerializer, estilo, locale);
         }
         catch (ReportSerializerInitException e)
         {
