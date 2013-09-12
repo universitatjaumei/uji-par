@@ -30,5 +30,7 @@
     <string name="error_sincronizando_butacas">Error sincronitzant entrades</string>
     <string name="error_escaneando_entrada">Error escanejant entrada</string>
     <string name="error_recuperando_datos_sesion">Error recuperant dades de sessió</string>
+    <string name="error_sincronizando_eventos">Error sincronitzant els events</string>
+    <string name="error_de_conexion">Error de connexió</string>
 
 </resources>

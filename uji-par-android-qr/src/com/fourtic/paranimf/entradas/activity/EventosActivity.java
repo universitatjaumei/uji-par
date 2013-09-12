@@ -142,7 +142,7 @@ public class EventosActivity extends BaseNormalActivity
             @Override
             public void onError(Throwable e, String errorMessage)
             {
-                handleError(errorMessage, e);
+                handleError(getString(R.string.error_sincronizando_eventos), e);
                 hideProgress();
             }
         });

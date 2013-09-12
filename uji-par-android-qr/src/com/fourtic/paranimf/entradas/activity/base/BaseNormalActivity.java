@@ -1,11 +1,14 @@
 package com.fourtic.paranimf.entradas.activity.base;
 
+import org.apache.http.conn.HttpHostConnectException;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
+import com.fourtic.paranimf.entradas.R;
 import com.fourtic.paranimf.entradas.activity.EventosActivity;
 import com.fourtic.paranimf.entradas.constants.Constants;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
@@ -61,6 +64,12 @@ public abstract class BaseNormalActivity extends RoboSherlockFragmentActivity im
     protected void handleError(String message, Throwable e)
     {
         Log.e(Constants.TAG, message, e);
+        
+        if (e instanceof HttpHostConnectException)
+        {
+            message += "\n(" + getString(R.string.error_de_conexion) + ")";
+        }
+        
         showError(message);
     }
 
