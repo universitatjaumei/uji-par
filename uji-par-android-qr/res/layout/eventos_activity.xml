@@ -9,4 +9,18 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
 
+    <LinearLayout
+        android:id="@+id/sinEventos"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableBottom="@drawable/ic_refresh"
+            android:text="Per a sincronitzar els events premeu "
+            android:textSize="16sp" />
+    </LinearLayout>
+
 </RelativeLayout>

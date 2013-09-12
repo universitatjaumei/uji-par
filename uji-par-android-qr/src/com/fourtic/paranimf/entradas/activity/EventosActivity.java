@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -27,6 +28,9 @@ public class EventosActivity extends BaseNormalActivity
 {
     @InjectView(R.id.eventos)
     private ListView listEventos;
+
+    @InjectView(R.id.sinEventos)
+    private ViewGroup sinEventos;
 
     @Inject
     private EventoDao eventoDao;
@@ -52,6 +56,8 @@ public class EventosActivity extends BaseNormalActivity
     {
         adapter = new EventosListAdapter(this);
         listEventos.setAdapter(adapter);
+
+        listEventos.setEmptyView(sinEventos);
 
         listEventos.setOnItemClickListener(new OnItemClickListener()
         {
