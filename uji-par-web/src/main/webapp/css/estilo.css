@@ -225,3 +225,7 @@ body {
 #infoPeriodica span {
 	font-size: 11pt !important;
 }
+
+.button-flat-caution, .button-flat-primary {
+	background-color: #741f24 !important;
+}
