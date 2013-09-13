@@ -240,7 +240,7 @@ public class RestService
             @Override
             public void onFailure(Throwable throwable, String body)
             {
-                responseHandler.onError(throwable, "Error enviando butacas presentadas");
+                responseHandler.onError(throwable, getErrorMessage(body));
             }
         });
     }

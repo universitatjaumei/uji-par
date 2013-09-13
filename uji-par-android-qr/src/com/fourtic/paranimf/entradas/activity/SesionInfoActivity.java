@@ -183,7 +183,7 @@ public class SesionInfoActivity extends BaseNormalActivity
             @Override
             public void onError(Throwable e, String errorMessage)
             {
-                gestionaError(getString(R.string.error_sincronizando_butacas), e);
+                gestionaError(errorMessage, e);
                 ocultaProgreso();
             }
         });

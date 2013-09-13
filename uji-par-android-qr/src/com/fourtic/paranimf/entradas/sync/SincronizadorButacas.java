@@ -3,9 +3,9 @@ package com.fourtic.paranimf.entradas.sync;
 import java.sql.SQLException;
 import java.util.List;
 
-import android.util.Log;
+import android.content.Context;
 
-import com.fourtic.paranimf.entradas.constants.Constants;
+import com.fourtic.paranimf.entradas.R;
 import com.fourtic.paranimf.entradas.data.Butaca;
 import com.fourtic.paranimf.entradas.db.ButacaDao;
 import com.fourtic.paranimf.entradas.dump.ButacasBackup;
@@ -26,6 +26,9 @@ public class SincronizadorButacas
     @Inject
     private ButacasBackup backup;
 
+    @Inject
+    private Context context;
+
     public interface SyncCallback
     {
         public void onSuccess();
@@ -43,7 +46,7 @@ public class SincronizadorButacas
             }
             catch (Exception e)
             {
-                callback.onError(e, "Error guardando backup de butacas");
+                callback.onError(e, context.getString(R.string.error_guardando_backup_butacas));
                 return;
             }
 
@@ -78,7 +81,7 @@ public class SincronizadorButacas
         }
         catch (SQLException e)
         {
-            callback.onError(e, "Error consultando butacas de móvil");
+            callback.onError(e, context.getString(R.string.error_consultando_butacas_movil));
         }
 
         rest.updatePresentadas(sesionId, butacas, new ResultCallback<Void>()
@@ -92,7 +95,7 @@ public class SincronizadorButacas
             @Override
             public void onError(Throwable throwable, String errorMessage)
             {
-                callback.onError(throwable, errorMessage);
+                callback.onError(throwable, context.getString(R.string.error_enviando_butacas_rest));
             }
         });
     }
@@ -112,10 +115,7 @@ public class SincronizadorButacas
                 }
                 catch (SQLException e)
                 {
-                    String errorMessage = "Error actualizando butacas desde REST";
-
-                    Log.e(Constants.TAG, errorMessage, e);
-                    callback.onError(e, errorMessage);
+                    callback.onError(e, context.getString(R.string.error_actualizando_butacas_rest));
                 }
             }
 
