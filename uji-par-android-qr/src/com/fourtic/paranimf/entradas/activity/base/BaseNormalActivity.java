@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
+import com.crashlytics.android.Crashlytics;
 import com.fourtic.paranimf.entradas.R;
 import com.fourtic.paranimf.entradas.activity.EventosActivity;
 import com.fourtic.paranimf.entradas.constants.Constants;
@@ -74,6 +75,8 @@ public abstract class BaseNormalActivity extends RoboSherlockFragmentActivity im
 
     protected void gestionaError(String message, Throwable e)
     {
+        Crashlytics.logException(e);
+        
         Log.e(Constants.TAG, message, e);
 
         if (e instanceof HttpHostConnectException)

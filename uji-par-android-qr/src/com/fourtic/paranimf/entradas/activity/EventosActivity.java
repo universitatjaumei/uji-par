@@ -1,5 +1,6 @@
 package com.fourtic.paranimf.entradas.activity;
 
+import com.crashlytics.android.Crashlytics;
 import java.sql.SQLException;
 
 import roboguice.inject.InjectView;
@@ -48,6 +49,7 @@ public class EventosActivity extends BaseNormalActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        Crashlytics.start(this);
         setContentView(R.layout.eventos_activity);
         setSupportProgressBarIndeterminateVisibility(false);
 
