@@ -14,6 +14,7 @@
         <module>uji-par-base</module>
         <module>uji-par-admin</module>
         <module>uji-par-web</module>
+        <module>uji-par-sync</module>
     </modules>
 
     <build>
