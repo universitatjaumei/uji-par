@@ -14,7 +14,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 @Singleton
-public class SyncEventos
+public class SincronizadorEventos
 {
     @Inject
     private RestService rest;
@@ -29,7 +29,7 @@ public class SyncEventos
         public void onError(Throwable e, String errorMessage);
     }
 
-    public void loadEventosFromRest(final SyncCallback callback)
+    public void actualizaEventosDesdeRest(final SyncCallback callback)
     {
         rest.getEventos(new ResultCallback<List<Evento>>()
         {
@@ -38,7 +38,7 @@ public class SyncEventos
             {
                 try
                 {
-                    syncEventosToDB(eventos);
+                    eventoDao.actualizaEventos(eventos);
                     callback.onSuccess();
                 }
                 catch (SQLException e)
@@ -56,10 +56,5 @@ public class SyncEventos
                 callback.onError(e, errorMessage);
             }
         });
-    }
-
-    private void syncEventosToDB(List<Evento> eventos) throws SQLException
-    {
-        eventoDao.persist(eventos);
     }
 }

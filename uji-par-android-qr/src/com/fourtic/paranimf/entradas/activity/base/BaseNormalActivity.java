@@ -42,13 +42,13 @@ public abstract class BaseNormalActivity extends RoboSherlockFragmentActivity im
     }
 
     @Override
-    public void hideProgress()
+    public void ocultaProgreso()
     {
         setSupportProgressBarIndeterminateVisibility(false);
     }
 
     @Override
-    public void showProgress()
+    public void muestraProgreso()
     {
         setSupportProgressBarIndeterminateVisibility(true);
     }
@@ -59,7 +59,7 @@ public abstract class BaseNormalActivity extends RoboSherlockFragmentActivity im
         BaseActivityHelper.showError(this, exception);
     }
 
-    public void showError(String errorMessage)
+    public void muestraError(String errorMessage)
     {
         BaseActivityHelper.showError(this, errorMessage);
     }
@@ -72,7 +72,7 @@ public abstract class BaseNormalActivity extends RoboSherlockFragmentActivity im
         startActivity(intent);
     }
 
-    protected void handleError(String message, Throwable e)
+    protected void gestionaError(String message, Throwable e)
     {
         Log.e(Constants.TAG, message, e);
 
@@ -81,10 +81,10 @@ public abstract class BaseNormalActivity extends RoboSherlockFragmentActivity im
             message += "\n(" + getString(R.string.error_de_conexion) + ")";
         }
 
-        showError(message);
+        muestraError(message);
     }
 
-    protected void showMessage(String message)
+    protected void muestraMensaje(String message)
     {
         BaseActivityHelper.showMessage(this, message);
     }

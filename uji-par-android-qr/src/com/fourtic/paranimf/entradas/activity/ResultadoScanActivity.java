@@ -15,13 +15,13 @@ import com.fourtic.paranimf.entradas.constants.Constants;
 
 public class ResultadoScanActivity extends BaseNormalActivity
 {
-    private static final long DELAY_OK = 2000;
-    private static final long DELAY_ERROR = 4000;
+    private static final long RETARDO_OK = 2000;
+    private static final long RETARDO_ERROR = 4000;
 
     @InjectView(R.id.dialogRoot)
     private RelativeLayout rootLayout;
 
-    @InjectView(R.id.text)
+    @InjectView(R.id.texto)
     private TextView textView;
 
     @InjectExtra(value = Constants.DIALOG_MESSAGE)
@@ -45,12 +45,12 @@ public class ResultadoScanActivity extends BaseNormalActivity
         handler = new Handler();
 
         textView.setText(message);
-        changeBackgroundColor();
+        cambiaColorFondo();
 
-        programFinish();
+        programaCierreActivity();
     }
 
-    private void programFinish()
+    private void programaCierreActivity()
     {
         handler.postDelayed(new Runnable()
         {
@@ -59,10 +59,10 @@ public class ResultadoScanActivity extends BaseNormalActivity
             {
                 finish();
             }
-        }, error ? DELAY_ERROR : DELAY_OK);
+        }, error ? RETARDO_ERROR : RETARDO_OK);
     }
 
-    private void changeBackgroundColor()
+    private void cambiaColorFondo()
     {
         if (error)
         {

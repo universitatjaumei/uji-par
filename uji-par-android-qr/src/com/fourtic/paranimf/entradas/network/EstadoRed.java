@@ -5,12 +5,12 @@ import android.net.NetworkInfo;
 
 import com.google.inject.Inject;
 
-public class NetworkChecker
+public class EstadoRed
 {
     @Inject
     private ConnectivityManager connectivityManager;
 
-    public boolean networkAvailable()
+    public boolean estaActiva()
     {
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();

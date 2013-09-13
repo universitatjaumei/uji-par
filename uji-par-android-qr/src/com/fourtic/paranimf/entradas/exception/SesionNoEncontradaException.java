@@ -1,6 +1,6 @@
 package com.fourtic.paranimf.entradas.exception;
 
 @SuppressWarnings("serial")
-public class ButacaNotFoundException extends Exception
+public class SesionNoEncontradaException extends Exception
 {
 }

@@ -24,7 +24,7 @@ import com.google.inject.Inject;
 public class SesionesActivity extends BaseNormalActivity
 {
     @InjectView(R.id.sesiones)
-    private ListView listSesiones;
+    private ListView sesionesList;
 
     @Inject
     private SesionDao sesionDao;
@@ -46,22 +46,22 @@ public class SesionesActivity extends BaseNormalActivity
 
         getSupportActionBar().setTitle(tituloEvento);
 
-        initList();
+        iniciaList();
     }
 
-    private void initList()
+    private void iniciaList()
     {
         adapter = new SesionesListAdapter(this);
-        listSesiones.setAdapter(adapter);
+        sesionesList.setAdapter(adapter);
 
-        listSesiones.setOnItemClickListener(new OnItemClickListener()
+        sesionesList.setOnItemClickListener(new OnItemClickListener()
         {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                if (position < listSesiones.getAdapter().getCount())
+                if (position < sesionesList.getAdapter().getCount())
                 {
-                    openInfoSesion((Sesion)listSesiones.getAdapter().getItem(position));
+                    openInfoSesion((Sesion)sesionesList.getAdapter().getItem(position));
                 }
             }
         });
@@ -82,10 +82,10 @@ public class SesionesActivity extends BaseNormalActivity
     protected void onStart()
     {
         super.onStart();
-        loadSesionesFromDB();
+        cargaSesionesDesdeBd();
     }
 
-    private void loadSesionesFromDB()
+    private void cargaSesionesDesdeBd()
     {
         try
         {

@@ -33,5 +33,6 @@
     <string name="error_sincronizando_eventos">Error sincronitzant els events</string>
     <string name="error_de_conexion">Error de connexió</string>
     <string name="conexion_red_no_disponible">Connexió de xarxa no disponible</string>
+    <string name="eventos_list_empty">"Per a sincronitzar els events premeu "</string>
 
 </resources>

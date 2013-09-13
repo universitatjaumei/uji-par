@@ -47,7 +47,7 @@ public class EventoDao
         }
     }
 
-    public void persist(final List<Evento> eventos) throws SQLException
+    public void actualizaEventos(final List<Evento> eventos) throws SQLException
     {
         TransactionManager.callInTransaction(dao.getConnectionSource(), new Callable<Void>()
         {
@@ -65,7 +65,7 @@ public class EventoDao
                         sesion.setEvento(evento);
                         sesion.setFecha(new Date(sesion.getFechaCelebracionEpoch()));
 
-                        sesionDao.insert(sesion);
+                        sesionDao.inserta(sesion);
                     }
                 }
 

@@ -29,7 +29,7 @@ import com.google.inject.Inject;
 public class EntradaManualActivity extends BaseNormalActivity
 {
     @InjectView(R.id.manualButacas)
-    private ListView listButacas;
+    private ListView butacasList;
 
     @InjectView(R.id.manualBuscar)
     private TextView buscar;
@@ -51,37 +51,37 @@ public class EntradaManualActivity extends BaseNormalActivity
 
         setTitle(R.string.title_entrada_manual);
 
-        initList();
-        initBuscar();
+        iniciaList();
+        iniciaBuscar();
     }
 
-    private void initList()
+    private void iniciaList()
     {
         adapter = new ButacasListAdapter(this);
-        listButacas.setAdapter(adapter);
+        butacasList.setAdapter(adapter);
 
-        listButacas.setOnItemClickListener(new OnItemClickListener()
+        butacasList.setOnItemClickListener(new OnItemClickListener()
         {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                if (position < listButacas.getAdapter().getCount())
+                if (position < butacasList.getAdapter().getCount())
                 {
-                    Butaca butaca = (Butaca) listButacas.getAdapter().getItem(position);
+                    Butaca butaca = (Butaca) butacasList.getAdapter().getItem(position);
 
-                    showDialogMarcar(butaca);
+                    muestraDialogoMarcar(butaca);
                 }
             }
         });
     }
 
-    private void initBuscar()
+    private void iniciaBuscar()
     {
         buscar.addTextChangedListener(new TextWatcher()
         {
             public void afterTextChanged(Editable s)
             {
-                loadButacasFromDB();
+                cargaButacasDesdeBd();
             }
 
             public void beforeTextChanged(CharSequence s, int start, int count, int after)
@@ -94,7 +94,7 @@ public class EntradaManualActivity extends BaseNormalActivity
         });
     }
 
-    protected void showDialogMarcar(final Butaca butaca)
+    protected void muestraDialogoMarcar(final Butaca butaca)
     {
         String mensaje = getString(R.string.marcar_como_presentada, butaca.getUltimoBloqueUuid());
 
@@ -106,11 +106,11 @@ public class EntradaManualActivity extends BaseNormalActivity
                 try
                 {
                     marcaComoPresentada(butaca);
-                    loadButacasFromDB();
+                    cargaButacasDesdeBd();
                 }
                 catch (SQLException e)
                 {
-                    handleError(getString(R.string.error_marcando_presentada), e);
+                    gestionaError(getString(R.string.error_marcando_presentada), e);
                 }
             }
         });
@@ -118,21 +118,21 @@ public class EntradaManualActivity extends BaseNormalActivity
 
     protected void marcaComoPresentada(Butaca butaca) throws SQLException
     {
-        butacaDao.updateFechaPresentada(butaca.getUuid(), new Date());
+        butacaDao.actualizaFechaPresentada(butaca.getUuid(), new Date());
     }
 
     @Override
     protected void onStart()
     {
         super.onStart();
-        loadButacasFromDB();
+        cargaButacasDesdeBd();
     }
 
-    private void loadButacasFromDB()
+    private void cargaButacasDesdeBd()
     {
         try
         {
-            List<Butaca> butacas = butacaDao.getButacasNoPresentadasByUuid(sesionId, buscar.getText().toString());
+            List<Butaca> butacas = butacaDao.getButacasNoPresentadasPorUuid(sesionId, buscar.getText().toString());
 
             adapter.update(butacas);
         }

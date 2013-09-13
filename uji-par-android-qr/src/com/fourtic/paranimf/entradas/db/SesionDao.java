@@ -10,7 +10,7 @@ import android.util.Log;
 
 import com.fourtic.paranimf.entradas.constants.Constants;
 import com.fourtic.paranimf.entradas.data.Sesion;
-import com.fourtic.paranimf.entradas.exception.SesionNotFoundException;
+import com.fourtic.paranimf.entradas.exception.SesionNoEncontradaException;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.j256.ormlite.dao.Dao;
@@ -39,7 +39,7 @@ public class SesionDao
         }
     }
 
-    public void insert(Sesion sesion) throws SQLException
+    public void inserta(Sesion sesion) throws SQLException
     {
         dao.create(sesion);
     }
@@ -61,17 +61,17 @@ public class SesionDao
         return sesiones;
     }
 
-    public Sesion getById(int id) throws SQLException
+    public Sesion getPorId(int id) throws SQLException
     {
         return dao.queryForId(id);
     }
 
-    public void update(Sesion sesionDB) throws SQLException
+    public void actualiza(Sesion sesionDB) throws SQLException
     {
         dao.update(sesionDB);
     }
 
-    public void updateFechaSync(int sesionId, Date fechaSync) throws SQLException
+    public void actualizaFechaSincronizacion(int sesionId, Date fechaSync) throws SQLException
     {
         UpdateBuilder<Sesion, Integer> builder = dao.updateBuilder();
 
@@ -81,13 +81,13 @@ public class SesionDao
         builder.update();
     }
 
-    public Date getFechaSync(int sesionId) throws SQLException, SesionNotFoundException
+    public Date getFechaSincronizacion(int sesionId) throws SQLException, SesionNoEncontradaException
     {
         List<Sesion> sesiones = dao.queryForEq("id", sesionId);
 
         if (sesiones.size() == 0)
         {
-            throw new SesionNotFoundException();
+            throw new SesionNoEncontradaException();
         }
         else
         {

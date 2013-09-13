@@ -20,15 +20,15 @@ import com.fourtic.paranimf.entradas.adapter.EventosListAdapter;
 import com.fourtic.paranimf.entradas.constants.Constants;
 import com.fourtic.paranimf.entradas.data.Evento;
 import com.fourtic.paranimf.entradas.db.EventoDao;
-import com.fourtic.paranimf.entradas.network.NetworkChecker;
-import com.fourtic.paranimf.entradas.sync.SyncEventos;
-import com.fourtic.paranimf.entradas.sync.SyncEventos.SyncCallback;
+import com.fourtic.paranimf.entradas.network.EstadoRed;
+import com.fourtic.paranimf.entradas.sync.SincronizadorEventos;
+import com.fourtic.paranimf.entradas.sync.SincronizadorEventos.SyncCallback;
 import com.google.inject.Inject;
 
 public class EventosActivity extends BaseNormalActivity
 {
     @InjectView(R.id.eventos)
-    private ListView listEventos;
+    private ListView eventosList;
 
     @InjectView(R.id.sinEventos)
     private ViewGroup sinEventos;
@@ -37,10 +37,10 @@ public class EventosActivity extends BaseNormalActivity
     private EventoDao eventoDao;
 
     @Inject
-    private SyncEventos sync;
+    private SincronizadorEventos sync;
 
     @Inject
-    private NetworkChecker network;
+    private EstadoRed network;
 
     private EventosListAdapter adapter;
 
@@ -53,32 +53,32 @@ public class EventosActivity extends BaseNormalActivity
 
         setTitle(R.string.title_eventos);
 
-        initList();
+        iniciaList();
     }
 
-    private void initList()
+    private void iniciaList()
     {
         adapter = new EventosListAdapter(this);
-        listEventos.setAdapter(adapter);
+        eventosList.setAdapter(adapter);
 
-        listEventos.setEmptyView(sinEventos);
+        eventosList.setEmptyView(sinEventos);
 
-        listEventos.setOnItemClickListener(new OnItemClickListener()
+        eventosList.setOnItemClickListener(new OnItemClickListener()
         {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                if (position < listEventos.getAdapter().getCount())
+                if (position < eventosList.getAdapter().getCount())
                 {
-                    Evento evento = (Evento) listEventos.getAdapter().getItem(position);
+                    Evento evento = (Evento) eventosList.getAdapter().getItem(position);
 
-                    openSesionesActivity(evento);
+                    abreActivitySesiones(evento);
                 }
             }
         });
     }
 
-    protected void openSesionesActivity(Evento evento)
+    protected void abreActivitySesiones(Evento evento)
     {
         Intent intent = new Intent(this, SesionesActivity.class);
         intent.putExtra(Constants.EVENTO_ID, evento.getId());
@@ -91,10 +91,10 @@ public class EventosActivity extends BaseNormalActivity
     protected void onStart()
     {
         super.onStart();
-        loadEventosFromDB();
+        cargaEventosDesdeBd();
     }
 
-    private void loadEventosFromDB()
+    private void cargaEventosDesdeBd()
     {
         try
         {
@@ -122,10 +122,10 @@ public class EventosActivity extends BaseNormalActivity
         {
         case R.id.action_sync:
             
-            if (network.networkAvailable())
-                synchronize();
+            if (network.estaActiva())
+                sincroniza();
             else
-                showError(getString(R.string.conexion_red_no_disponible));
+                muestraError(getString(R.string.conexion_red_no_disponible));
 
             return true;
         default:
@@ -133,26 +133,26 @@ public class EventosActivity extends BaseNormalActivity
         }
     }
 
-    private void synchronize()
+    private void sincroniza()
     {
-        showProgress();
+        muestraProgreso();
 
-        sync.loadEventosFromRest(new SyncCallback()
+        sync.actualizaEventosDesdeRest(new SyncCallback()
         {
             @Override
             public void onSuccess()
             {
-                showMessage(getString(R.string.actualizado));
-                loadEventosFromDB();
+                muestraMensaje(getString(R.string.actualizado));
+                cargaEventosDesdeBd();
 
-                hideProgress();
+                ocultaProgreso();
             }
 
             @Override
             public void onError(Throwable e, String errorMessage)
             {
-                handleError(getString(R.string.error_sincronizando_eventos), e);
-                hideProgress();
+                gestionaError(getString(R.string.error_sincronizando_eventos), e);
+                ocultaProgreso();
             }
         });
     }

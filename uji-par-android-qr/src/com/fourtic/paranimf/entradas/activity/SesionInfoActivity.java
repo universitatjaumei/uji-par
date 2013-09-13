@@ -20,11 +20,11 @@ import com.fourtic.paranimf.entradas.activity.base.BaseNormalActivity;
 import com.fourtic.paranimf.entradas.constants.Constants;
 import com.fourtic.paranimf.entradas.db.ButacaDao;
 import com.fourtic.paranimf.entradas.db.SesionDao;
-import com.fourtic.paranimf.entradas.exception.ButacaFromAnotherSesionException;
-import com.fourtic.paranimf.entradas.exception.ButacaNotFoundException;
-import com.fourtic.paranimf.entradas.network.NetworkChecker;
-import com.fourtic.paranimf.entradas.sync.SyncButacas;
-import com.fourtic.paranimf.entradas.sync.SyncButacas.SyncCallback;
+import com.fourtic.paranimf.entradas.exception.ButacaDeOtraSesionException;
+import com.fourtic.paranimf.entradas.exception.ButacaNoEncontradaException;
+import com.fourtic.paranimf.entradas.network.EstadoRed;
+import com.fourtic.paranimf.entradas.sync.SincronizadorButacas;
+import com.fourtic.paranimf.entradas.sync.SincronizadorButacas.SyncCallback;
 import com.fourtic.paranimf.utils.Utils;
 import com.google.inject.Inject;
 
@@ -39,7 +39,7 @@ public class SesionInfoActivity extends BaseNormalActivity
     private SesionDao sesionDao;
 
     @Inject
-    private SyncButacas sync;
+    private SincronizadorButacas sync;
 
     @InjectView(R.id.eventoTitulo)
     private TextView textEventoTitulo;
@@ -78,7 +78,7 @@ public class SesionInfoActivity extends BaseNormalActivity
     private int sesionId;
 
     @Inject
-    private NetworkChecker network;
+    private EstadoRed red;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -87,7 +87,7 @@ public class SesionInfoActivity extends BaseNormalActivity
         setContentView(R.layout.sesion_info_activity);
         setSupportProgressBarIndeterminateVisibility(false);
 
-        initButtons();
+        iniciaBotones();
     }
 
     @Override
@@ -95,7 +95,7 @@ public class SesionInfoActivity extends BaseNormalActivity
     {
         super.onStart();
 
-        updateInfo();
+        actualizaInfo();
     }
 
     @Override
@@ -114,7 +114,14 @@ public class SesionInfoActivity extends BaseNormalActivity
         {
         case R.id.action_sync:
 
-            syncSelected();
+            if (red.estaActiva())
+            {
+                sincroniza();
+            }
+            else
+            {
+                muestraError(getString(R.string.conexion_red_no_disponible));
+            }
 
             return true;
         default:
@@ -122,34 +129,22 @@ public class SesionInfoActivity extends BaseNormalActivity
         }
     }
 
-    private void syncSelected()
-    {
-        if (network.networkAvailable())
-        {
-            synchronize();
-        }
-        else
-        {
-            showError(getString(R.string.conexion_red_no_disponible));
-        }
-    }
-
-    private void synchronize()
+    private void sincroniza()
     {
         try
         {
-            if (network.networkAvailable())
-                syncButacas();
+            if (red.estaActiva())
+                sincronizaButacas();
             else
-                showError(getString(R.string.conexion_red_no_disponible));
+                muestraError(getString(R.string.conexion_red_no_disponible));
         }
         catch (SQLException e)
         {
-            handleError(getString(R.string.error_sincronizando_entradas), e);
+            gestionaError(getString(R.string.error_sincronizando_entradas), e);
         }
     }
 
-    private void initButtons()
+    private void iniciaBotones()
     {
 
         escanearBoton.setOnClickListener(new OnClickListener()
@@ -157,7 +152,7 @@ public class SesionInfoActivity extends BaseNormalActivity
             @Override
             public void onClick(View arg0)
             {
-                openScanActivity();
+                abreActividadEscanear();
             }
         });
 
@@ -166,42 +161,42 @@ public class SesionInfoActivity extends BaseNormalActivity
             @Override
             public void onClick(View arg0)
             {
-                openManualActivity();
+                abreActividadManual();
             }
         });
     }
 
-    private void syncButacas() throws SQLException
+    private void sincronizaButacas() throws SQLException
     {
-        showProgress();
+        muestraProgreso();
 
-        sync.syncButacasFromRest(sesionId, new SyncCallback()
+        sync.sincronizaButacasDesdeRest(sesionId, new SyncCallback()
         {
             @Override
             public void onSuccess()
             {
-                updateInfo();
-                showMessage(getString(R.string.sincronizado));
-                hideProgress();
+                actualizaInfo();
+                muestraMensaje(getString(R.string.sincronizado));
+                ocultaProgreso();
             }
 
             @Override
             public void onError(Throwable e, String errorMessage)
             {
-                handleError(getString(R.string.error_sincronizando_butacas), e);
-                hideProgress();
+                gestionaError(getString(R.string.error_sincronizando_butacas), e);
+                ocultaProgreso();
             }
         });
     }
 
-    protected void openScanActivity()
+    protected void abreActividadEscanear()
     {
         Intent intent = new Intent("com.google.zxing.client.android.SCAN");
         intent.putExtra("SCAN_MODE", "DATA_MATRIX_MODE");
         startActivityForResult(intent, REQUEST_CODE);
     }
 
-    protected void openManualActivity()
+    protected void abreActividadManual()
     {
         Intent intent = new Intent(this, EntradaManualActivity.class);
         intent.putExtra(Constants.SESION_ID, sesionId);
@@ -215,18 +210,18 @@ public class SesionInfoActivity extends BaseNormalActivity
         {
             try
             {
-                processBarcode(data);
+                procesCodigoBarras(data);
             }
             catch (Exception e)
             {
-                handleError(getString(R.string.error_escaneando_entrada), e);
+                gestionaError(getString(R.string.error_escaneando_entrada), e);
             }
         }
     };
 
-    private void processBarcode(Intent data) throws SQLException
+    private void procesCodigoBarras(Intent data) throws SQLException
     {
-        openScanActivity();
+        abreActividadEscanear();
 
         String uuid = data.getStringExtra("SCAN_RESULT");
 
@@ -236,26 +231,26 @@ public class SesionInfoActivity extends BaseNormalActivity
 
             if (fechaPresentada == null)
             {
-                butacaDao.updateFechaPresentada(uuid, new Date());
-                showScanResultDialog(getString(R.string.entrada_ok), false);
+                butacaDao.actualizaFechaPresentada(uuid, new Date());
+                muestraDialogoResultadoScan(getString(R.string.entrada_ok), false);
             }
             else
             {
-                showScanResultDialog(getString(R.string.ya_presentada) + Utils.formatDateWithTime(fechaPresentada),
+                muestraDialogoResultadoScan(getString(R.string.ya_presentada) + Utils.formatDateWithTime(fechaPresentada),
                         true);
             }
         }
-        catch (ButacaNotFoundException e)
+        catch (ButacaNoEncontradaException e)
         {
-            showScanResultDialog(getString(R.string.entrada_no_sesion), true);
+            muestraDialogoResultadoScan(getString(R.string.entrada_no_sesion), true);
         }
-        catch (ButacaFromAnotherSesionException e)
+        catch (ButacaDeOtraSesionException e)
         {
-            showScanResultDialog(getString(R.string.entrada_otra_sesion), true);
+            muestraDialogoResultadoScan(getString(R.string.entrada_otra_sesion), true);
         }
     }
 
-    private void showScanResultDialog(String message, boolean error)
+    private void muestraDialogoResultadoScan(String message, boolean error)
     {
         Intent intent = new Intent(this, ResultadoScanActivity.class);
         intent.putExtra(Constants.DIALOG_MESSAGE, message);
@@ -264,21 +259,21 @@ public class SesionInfoActivity extends BaseNormalActivity
         startActivity(intent);
     }
 
-    private void updateInfo()
+    private void actualizaInfo()
     {
         try
         {
             textEventoTitulo.setText(eventoTitulo);
             textSesionFecha.setText(Utils.formatDate(new Date(sesionFechaEpoch)) + " " + sesionHora);
 
-            textNumeroVendidas.setText(Long.toString(butacaDao.getButacasCount(sesionId)));
-            textNumeroPresentadas.setText(Long.toString(butacaDao.getButacasPresentadasCount(sesionId)));
+            textNumeroVendidas.setText(Long.toString(butacaDao.getNumeroButacas(sesionId)));
+            textNumeroPresentadas.setText(Long.toString(butacaDao.getNumeroButacasPresentadas(sesionId)));
 
-            long modificadas = butacaDao.getButacasModificadasCount(sesionId);
+            long modificadas = butacaDao.getNumeroButacasModificadas(sesionId);
 
             textFaltanSubir.setVisibility(modificadas == 0 ? View.INVISIBLE : View.VISIBLE);
 
-            Date lastSync = sesionDao.getFechaSync(sesionId);
+            Date lastSync = sesionDao.getFechaSincronizacion(sesionId);
 
             if (lastSync == null)
             {
@@ -291,7 +286,7 @@ public class SesionInfoActivity extends BaseNormalActivity
         }
         catch (Exception e)
         {
-            handleError(getString(R.string.error_recuperando_datos_sesion), e);
+            gestionaError(getString(R.string.error_recuperando_datos_sesion), e);
         }
     }
 }

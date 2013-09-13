@@ -10,8 +10,8 @@ import android.util.Log;
 import com.fourtic.paranimf.entradas.constants.Constants;
 import com.fourtic.paranimf.entradas.data.Butaca;
 import com.fourtic.paranimf.entradas.data.Sesion;
-import com.fourtic.paranimf.entradas.exception.ButacaFromAnotherSesionException;
-import com.fourtic.paranimf.entradas.exception.ButacaNotFoundException;
+import com.fourtic.paranimf.entradas.exception.ButacaDeOtraSesionException;
+import com.fourtic.paranimf.entradas.exception.ButacaNoEncontradaException;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.j256.ormlite.dao.Dao;
@@ -58,40 +58,40 @@ public class ButacaDao
         return builder.query();
     }
 
-    public boolean butacasModified(int sesionId) throws SQLException
+    public boolean hayButacasModificadas(int sesionId) throws SQLException
     {
         return getButacasModificadas(sesionId).size() > 0;
     }
 
-    public long getButacasCount(int sesionId) throws SQLException
+    public long getNumeroButacas(int sesionId) throws SQLException
     {
         QueryBuilder<Butaca, Integer> builder = dao.queryBuilder();
 
         return builder.where().eq("sesion_id", sesionId).countOf();
     }
 
-    public long getButacasPresentadasCount(int sesionId) throws SQLException
+    public long getNumeroButacasPresentadas(int sesionId) throws SQLException
     {
         QueryBuilder<Butaca, Integer> builder = dao.queryBuilder();
 
         return builder.where().eq("sesion_id", sesionId).and().isNotNull("presentada").countOf();
     }
 
-    public long getButacasModificadasCount(int sesionId) throws SQLException
+    public long getNumeroButacasModificadas(int sesionId) throws SQLException
     {
         QueryBuilder<Butaca, Integer> builder = dao.queryBuilder();
 
         return builder.where().eq("sesion_id", sesionId).and().eq("modificada", true).countOf();
     }
 
-    public Date getFechaPresentada(int sesionId, String uuid) throws SQLException, ButacaNotFoundException,
-            ButacaFromAnotherSesionException
+    public Date getFechaPresentada(int sesionId, String uuid) throws SQLException, ButacaNoEncontradaException,
+            ButacaDeOtraSesionException
     {
         List<Butaca> butacas = dao.queryForEq("uuid", uuid);
 
         if (butacas.size() == 0)
         {
-            throw new ButacaNotFoundException();
+            throw new ButacaNoEncontradaException();
         }
         else
         {
@@ -99,7 +99,7 @@ public class ButacaDao
 
             if (butaca.getSesion().getId() != sesionId)
             {
-                throw new ButacaFromAnotherSesionException();
+                throw new ButacaDeOtraSesionException();
             }
             else
             {
@@ -108,23 +108,23 @@ public class ButacaDao
         }
     }
 
-    public void persist(final int sesionId, final List<Butaca> butacas) throws SQLException
+    public void actualizaButacas(final int sesionId, final List<Butaca> butacas) throws SQLException
     {
         TransactionManager.callInTransaction(dao.getConnectionSource(), new Callable<Void>()
         {
             public Void call() throws Exception
             {
-                updateButacas(sesionId, butacas);
-                sesionDao.updateFechaSync(sesionId, new Date());
+                guardaButacas(sesionId, butacas);
+                sesionDao.actualizaFechaSincronizacion(sesionId, new Date());
 
                 return null;
             }
         });
     }
 
-    private void updateButacas(final int sesionId, final List<Butaca> butacas) throws SQLException
+    private void guardaButacas(final int sesionId, final List<Butaca> butacas) throws SQLException
     {
-        Sesion sesion = sesionDao.getById(sesionId);
+        Sesion sesion = sesionDao.getPorId(sesionId);
 
         DeleteBuilder<Butaca, Integer> builder = dao.deleteBuilder();
         builder.where().eq("sesion_id", sesionId);
@@ -132,11 +132,11 @@ public class ButacaDao
 
         for (Butaca butaca : butacas)
         {
-            insertButaca(sesion, butaca);
+            insertaButaca(sesion, butaca);
         }
     }
 
-    private void insertButaca(Sesion sesion, Butaca butaca) throws SQLException
+    private void insertaButaca(Sesion sesion, Butaca butaca) throws SQLException
     {
         butaca.setSesion(sesion);
 
@@ -148,7 +148,7 @@ public class ButacaDao
         dao.create(butaca);
     }
 
-    public void updateFechaPresentada(String uuid, Date date) throws SQLException
+    public void actualizaFechaPresentada(String uuid, Date date) throws SQLException
     {
         UpdateBuilder<Butaca, Integer> builder = dao.updateBuilder();
         builder.where().eq("uuid", uuid);
@@ -162,7 +162,7 @@ public class ButacaDao
         return dao;
     }
 
-    public List<Butaca> getButacasNoPresentadasByUuid(int sesionId, String uuid) throws SQLException
+    public List<Butaca> getButacasNoPresentadasPorUuid(int sesionId, String uuid) throws SQLException
     {
         QueryBuilder<Butaca, Integer> builder = dao.queryBuilder();
 

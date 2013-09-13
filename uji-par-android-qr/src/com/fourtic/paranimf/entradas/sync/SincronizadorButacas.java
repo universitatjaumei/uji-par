@@ -14,7 +14,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 @Singleton
-public class SyncButacas
+public class SincronizadorButacas
 {
     @Inject
     private RestService rest;
@@ -29,16 +29,16 @@ public class SyncButacas
         public void onError(Throwable e, String errorMessage);
     }
 
-    public void syncButacasFromRest(final int sesionId, final SyncCallback callback) throws SQLException
+    public void sincronizaButacasDesdeRest(final int sesionId, final SyncCallback callback) throws SQLException
     {
-        if (butacasModified(sesionId))
+        if (butacaDao.hayButacasModificadas(sesionId))
         {
-            uploadButacas(sesionId, new SyncCallback()
+            subeButacas(sesionId, new SyncCallback()
             {
                 @Override
                 public void onSuccess()
                 {
-                    downloadButacas(sesionId, callback);
+                    descargaButacas(sesionId, callback);
                 }
 
                 @Override
@@ -50,11 +50,11 @@ public class SyncButacas
         }
         else
         {
-            downloadButacas(sesionId, callback);
+            descargaButacas(sesionId, callback);
         }
     }
 
-    private void uploadButacas(int sesionId, final SyncCallback callback)
+    private void subeButacas(int sesionId, final SyncCallback callback)
     {
         List<Butaca> butacas = null;
 
@@ -66,8 +66,8 @@ public class SyncButacas
         {
             callback.onError(e, "Error consultando butacas de móvil");
         }
-        
-        updateFechaPresentadaEpoch(butacas);
+
+        actualizaFechaPresentadaEpoch(butacas);
 
         rest.updatePresentadas(sesionId, butacas, new ResultCallback<Void>()
         {
@@ -85,7 +85,7 @@ public class SyncButacas
         });
     }
 
-    private void updateFechaPresentadaEpoch(List<Butaca> butacas)
+    private void actualizaFechaPresentadaEpoch(List<Butaca> butacas)
     {
         for (Butaca butaca : butacas)
         {
@@ -94,12 +94,7 @@ public class SyncButacas
         }
     }
 
-    private boolean butacasModified(int sesionId) throws SQLException
-    {
-        return butacaDao.butacasModified(sesionId);
-    }
-
-    private void downloadButacas(final int sesionId, final SyncCallback callback)
+    private void descargaButacas(final int sesionId, final SyncCallback callback)
     {
         rest.getButacas(sesionId, new ResultCallback<List<Butaca>>()
         {
@@ -108,7 +103,7 @@ public class SyncButacas
             {
                 try
                 {
-                    syncButacasToDB(sesionId, butacas);
+                    butacaDao.actualizaButacas(sesionId, butacas);
 
                     callback.onSuccess();
                 }
@@ -129,8 +124,4 @@ public class SyncButacas
         });
     }
 
-    private void syncButacasToDB(int sesionId, List<Butaca> butacas) throws SQLException
-    {
-        butacaDao.persist(sesionId, butacas);
-    }
 }
