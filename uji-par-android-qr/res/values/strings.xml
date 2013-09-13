@@ -39,5 +39,8 @@
     <string name="error_guardando_backup_butacas">Error guardant backup de entrades</string>
     <string name="error_actualizando_butacas_rest">Error recuperant dades de butaques des de la web</string>
     <string name="error_enviando_butacas_rest">Error enviant les dades de butaques a la web</string>
+    <string name="error_insertando_eventos_bd">Error insertant eventos en BD mòbil</string>
+    <string name="error_insertando_butacas_bd">Error insertant butaques en BD mòbil</string>
+    <string name="error_actualizando_eventos_rest">Error recuperant events des de la web</string>
 
 </resources>

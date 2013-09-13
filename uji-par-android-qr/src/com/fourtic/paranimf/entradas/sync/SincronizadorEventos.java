@@ -3,9 +3,9 @@ package com.fourtic.paranimf.entradas.sync;
 import java.sql.SQLException;
 import java.util.List;
 
-import android.util.Log;
+import android.content.Context;
 
-import com.fourtic.paranimf.entradas.constants.Constants;
+import com.fourtic.paranimf.entradas.R;
 import com.fourtic.paranimf.entradas.data.Evento;
 import com.fourtic.paranimf.entradas.db.EventoDao;
 import com.fourtic.paranimf.entradas.rest.RestService;
@@ -18,6 +18,9 @@ public class SincronizadorEventos
 {
     @Inject
     private RestService rest;
+
+    @Inject
+    Context context;
 
     @Inject
     private EventoDao eventoDao;
@@ -43,17 +46,14 @@ public class SincronizadorEventos
                 }
                 catch (SQLException e)
                 {
-                    String errorMessage = "Error insertando eventos en BD";
-                    
-                    Log.e(Constants.TAG, errorMessage, e);
-                    callback.onError(e, errorMessage);
+                    callback.onError(e, context.getString(R.string.error_insertando_eventos_bd));
                 }
             }
 
             @Override
             public void onError(Throwable e, String errorMessage)
             {
-                callback.onError(e, errorMessage);
+                callback.onError(e, context.getString(R.string.error_actualizando_eventos_rest));
             }
         });
     }

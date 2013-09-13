@@ -115,14 +115,14 @@ public class SincronizadorButacas
                 }
                 catch (SQLException e)
                 {
-                    callback.onError(e, context.getString(R.string.error_actualizando_butacas_rest));
+                    callback.onError(e, context.getString(R.string.error_insertando_butacas_bd));
                 }
             }
 
             @Override
             public void onError(Throwable e, String errorMessage)
             {
-                callback.onError(e, errorMessage);
+                callback.onError(e, context.getString(R.string.error_actualizando_butacas_rest));
             }
         });
     }
