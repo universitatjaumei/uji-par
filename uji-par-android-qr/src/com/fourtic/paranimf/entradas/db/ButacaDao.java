@@ -71,6 +71,7 @@ public class ButacaDao
         return getButacasModificadas(sesionId).size() > 0;
     }
 
+    // Cuando se interactua con REST se usa el campo fechaPresentadaEpoch, en cambio para guardar en base de datos se usa el fechaPresentada
     private void actualizaFechaPresentadaEpoch(List<Butaca> butacas)
     {
         for (Butaca butaca : butacas)
