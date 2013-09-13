@@ -23,7 +23,7 @@ public class BarcodeService
         final int dpi = 100;
 
         //makes the narrow bar width exactly one pixel
-        bean.setModuleWidth(UnitConv.in2mm(3.0f / dpi));
+        bean.setModuleWidth(UnitConv.in2mm(4.0f / dpi));
 
         bean.doQuietZone(false);
 

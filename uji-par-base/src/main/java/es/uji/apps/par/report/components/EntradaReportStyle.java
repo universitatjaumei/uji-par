@@ -30,7 +30,7 @@ public class EntradaReportStyle extends ReportStyle
     {
         this.fontWeight = "normal";
         this.textAlign = TextAlignType.LEFT;
-        this.fontFamily = "Verdana";
+        this.fontFamily = "Arial";
         this.setTableCellBorder("0cm");
         this.setTableCellDisplayAlign(DisplayAlignType.CENTER);
         this.setTableCellPadding("0cm");
