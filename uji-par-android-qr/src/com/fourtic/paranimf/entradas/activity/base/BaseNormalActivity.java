@@ -2,6 +2,8 @@ package com.fourtic.paranimf.entradas.activity.base;
 
 import org.apache.http.conn.HttpHostConnectException;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -98,6 +100,16 @@ public abstract class BaseNormalActivity extends RoboSherlockFragmentActivity im
         default:
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    protected void showConfirmDialog(String titulo, String mensaje, OnClickListener okListener)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    
+        builder.setTitle(titulo).setMessage(mensaje).setPositiveButton(android.R.string.yes, okListener)
+                .setNegativeButton(android.R.string.cancel, null);
+    
+        builder.create().show();
     }
 
 }

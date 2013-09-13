@@ -6,7 +6,6 @@ import java.util.List;
 
 import roboguice.inject.InjectExtra;
 import roboguice.inject.InjectView;
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
@@ -99,25 +98,22 @@ public class EntradaManualActivity extends BaseNormalActivity
     {
         String mensaje = getString(R.string.marcar_como_presentada, butaca.getUltimoBloqueUuid());
 
-        AlertDialog dialog = new AlertDialog.Builder(this).setMessage(mensaje)
-                .setPositiveButton(android.R.string.yes, new OnClickListener()
+        showConfirmDialog(null, mensaje, new OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int arg1)
+            {
+                try
                 {
-                    @Override
-                    public void onClick(DialogInterface dialog, int arg1)
-                    {
-                        try
-                        {
-                            marcaComoPresentada(butaca);
-                            loadButacasFromDB();
-                        }
-                        catch (SQLException e)
-                        {
-                            handleError(getString(R.string.error_marcando_presentada), e);
-                        }
-                    }
-                }).setNegativeButton(android.R.string.cancel, null).create();
-
-        dialog.show();
+                    marcaComoPresentada(butaca);
+                    loadButacasFromDB();
+                }
+                catch (SQLException e)
+                {
+                    handleError(getString(R.string.error_marcando_presentada), e);
+                }
+            }
+        });
     }
 
     protected void marcaComoPresentada(Butaca butaca) throws SQLException
