@@ -47,20 +47,37 @@ public class ButacaDao
 
     public List<Butaca> getButacas(int sesionId) throws SQLException
     {
-        return dao.queryForEq("sesion_id", sesionId);
+        List<Butaca> butacas = dao.queryForEq("sesion_id", sesionId);
+        
+        actualizaFechaPresentadaEpoch(butacas);
+
+        return butacas;
     }
 
     public List<Butaca> getButacasModificadas(int sesionId) throws SQLException
     {
         QueryBuilder<Butaca, Integer> builder = dao.queryBuilder();
         builder.where().eq("sesion_id", sesionId).and().eq("modificada", true);
+        
+        List<Butaca> butacas = builder.query();
+        
+        actualizaFechaPresentadaEpoch(butacas);
 
-        return builder.query();
+        return butacas;
     }
 
     public boolean hayButacasModificadas(int sesionId) throws SQLException
     {
         return getButacasModificadas(sesionId).size() > 0;
+    }
+
+    private void actualizaFechaPresentadaEpoch(List<Butaca> butacas)
+    {
+        for (Butaca butaca : butacas)
+        {
+            if (butaca.getFechaPresentada() != null)
+                butaca.setFechaPresentadaEpoch(butaca.getFechaPresentada().getTime());
+        }
     }
 
     public long getNumeroButacas(int sesionId) throws SQLException
@@ -166,7 +183,8 @@ public class ButacaDao
     {
         QueryBuilder<Butaca, Integer> builder = dao.queryBuilder();
 
-        builder.where().eq("sesion_id", sesionId).and().isNull("presentada").and().like("uuid", "%-%-%-%-%-%" + uuid + "%");
+        builder.where().eq("sesion_id", sesionId).and().isNull("presentada").and()
+                .like("uuid", "%-%-%-%-%-%" + uuid + "%");
 
         return builder.query();
     }

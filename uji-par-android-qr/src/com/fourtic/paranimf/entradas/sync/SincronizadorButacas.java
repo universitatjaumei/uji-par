@@ -8,6 +8,7 @@ import android.util.Log;
 import com.fourtic.paranimf.entradas.constants.Constants;
 import com.fourtic.paranimf.entradas.data.Butaca;
 import com.fourtic.paranimf.entradas.db.ButacaDao;
+import com.fourtic.paranimf.entradas.dump.ButacasBackup;
 import com.fourtic.paranimf.entradas.rest.RestService;
 import com.fourtic.paranimf.entradas.rest.RestService.ResultCallback;
 import com.google.inject.Inject;
@@ -22,6 +23,9 @@ public class SincronizadorButacas
     @Inject
     private ButacaDao butacaDao;
 
+    @Inject
+    private ButacasBackup backup;
+
     public interface SyncCallback
     {
         public void onSuccess();
@@ -33,6 +37,16 @@ public class SincronizadorButacas
     {
         if (butacaDao.hayButacasModificadas(sesionId))
         {
+            try
+            {
+                backup.guardaEntradas(sesionId);
+            }
+            catch (Exception e)
+            {
+                callback.onError(e, "Error guardando backup de butacas");
+                return;
+            }
+
             subeButacas(sesionId, new SyncCallback()
             {
                 @Override
@@ -67,8 +81,6 @@ public class SincronizadorButacas
             callback.onError(e, "Error consultando butacas de móvil");
         }
 
-        actualizaFechaPresentadaEpoch(butacas);
-
         rest.updatePresentadas(sesionId, butacas, new ResultCallback<Void>()
         {
             @Override
@@ -83,15 +95,6 @@ public class SincronizadorButacas
                 callback.onError(throwable, errorMessage);
             }
         });
-    }
-
-    private void actualizaFechaPresentadaEpoch(List<Butaca> butacas)
-    {
-        for (Butaca butaca : butacas)
-        {
-            if (butaca.getFechaPresentada() != null)
-                butaca.setFechaPresentadaEpoch(butaca.getFechaPresentada().getTime());
-        }
     }
 
     private void descargaButacas(final int sesionId, final SyncCallback callback)

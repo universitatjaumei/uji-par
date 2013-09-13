@@ -35,5 +35,6 @@
     <string name="conexion_red_no_disponible">Connexió de xarxa no disponible</string>
     <string name="eventos_list_empty">"Per a sincronitzar els events premeu "</string>
     <string name="action_sincronizar_entradas">Sincronitzar entrades</string>
+    <string name="error_consultando_butacas_movil">Error consultando butacas de móvil</string>
 
 </resources>
