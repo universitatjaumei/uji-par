@@ -114,14 +114,23 @@ public class SesionInfoActivity extends BaseNormalActivity
         {
         case R.id.action_sync:
 
-            if (network.networkAvailable())
-                synchronize();
-            else
-                showError(getString(R.string.conexion_red_no_disponible));
+            syncSelected();
 
             return true;
         default:
             return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void syncSelected()
+    {
+        if (network.networkAvailable())
+        {
+            synchronize();
+        }
+        else
+        {
+            showError(getString(R.string.conexion_red_no_disponible));
         }
     }
 
