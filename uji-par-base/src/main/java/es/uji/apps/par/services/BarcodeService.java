@@ -1,5 +1,6 @@
 package es.uji.apps.par.services;
 
+import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -23,7 +24,9 @@ public class BarcodeService
         final int dpi = 100;
 
         //makes the narrow bar width exactly one pixel
-        bean.setModuleWidth(UnitConv.in2mm(3.5f / dpi));
+        bean.setModuleWidth(UnitConv.in2mm(3.2f / dpi));
+        bean.setMaxSize(new Dimension(50,25));
+        bean.setMinSize(new Dimension(20,20));
         bean.doQuietZone(false);
 
         try
