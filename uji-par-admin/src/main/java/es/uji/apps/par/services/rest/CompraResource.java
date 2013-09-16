@@ -145,11 +145,27 @@ public class CompraResource extends BaseResource
     @GET
     @Path("{id}/pdf")
     @Produces("application/pdf")
-    public Response datosEntrada(@PathParam("id") String uuidCompra) throws Exception
+    public Response generaEntradaPrintAtHome(@PathParam("id") String uuidCompra) throws Exception
     {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
         entradasService.generaEntrada(uuidCompra, bos);
+
+        Response response = Response.ok(bos.toByteArray())
+                .header("Cache-Control", "no-cache, no-store, must-revalidate").header("Pragma", "no-cache")
+                .header("Expires", "0").build();
+
+        return response;
+    }
+    
+    @GET
+    @Path("{id}/pdftaquilla")
+    @Produces("application/pdf")
+    public Response generaEntradaTaquilla(@PathParam("id") String uuidCompra) throws Exception
+    {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
+        entradasService.generaEntradaTaquilla(uuidCompra, bos);
 
         Response response = Response.ok(bos.toByteArray())
                 .header("Cache-Control", "no-cache, no-store, must-revalidate").header("Pragma", "no-cache")

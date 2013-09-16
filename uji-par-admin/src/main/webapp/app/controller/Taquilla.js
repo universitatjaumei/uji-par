@@ -594,7 +594,7 @@ Ext.define('Paranimf.controller.Taquilla', {
    muestraEnlacePdf: function() {
 	   //console.log(this.getVerEntrada());
 	   
-	   var href = urlPrefix + 'compra/' + this.uuidCompra + '/pdf';
+	   var href = urlPrefix + 'compra/' + this.uuidCompra + '/pdftaquilla';
 	   
 	   this.getVerEntrada().update('<a href="' + href + '" target="_blank">' + UI.i18n.button.verEntrada + '</a>');
 	   this.getVerEntrada().show();
