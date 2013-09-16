@@ -20,7 +20,6 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.apache.log4j.Logger;
 
-import com.sun.jersey.api.client.ClientResponse.Status;
 import com.sun.jersey.api.core.InjectParam;
 
 import es.uji.apps.par.ButacaOcupadaException;
@@ -95,7 +94,7 @@ public class EntradasResource extends BaseResource
         String url = request.getRequestURL().toString();
 
         if (!sesion.getEnPlazoVentaInternet())
-            return paginaProhibida();
+            return paginaFueraDePlazo();
 
         Evento evento = sesion.getEvento();
 
@@ -159,12 +158,14 @@ public class EntradasResource extends BaseResource
     }
 
     private Response paginaSeleccionEntradasNoNumeradas(long sesionId, String platea1Normal, String platea1Descuento,
-            String platea2Normal, String platea2Descuento, String error)
+            String platea2Normal, String platea2Descuento, String error) throws Exception
     {
         Sesion sesion = sesionesService.getSesion(sesionId);
+        String urlBase = getUrlBase(request);
+        String url = request.getRequestURL().toString();
 
         if (!sesion.getEnPlazoVentaInternet())
-            return paginaProhibida();
+            return paginaFueraDePlazo();
 
         Evento evento = sesion.getEvento();
 
@@ -175,6 +176,7 @@ public class EntradasResource extends BaseResource
         template.put("baseUrl", getBaseUrl());
         template.put("fecha", DateUtils.dateToSpanishString(sesion.getFechaCelebracion()));
         template.put("hora", sesion.getHoraCelebracion());
+        template.put("pagina", buildPublicPageInfo(urlBase, url, getLocale().getLanguage().toString()));
 
         if (platea1Normal == null || platea1Normal.equals(""))
             template.put("platea1Normal", "0");
@@ -266,7 +268,7 @@ public class EntradasResource extends BaseResource
         catch (FueraDePlazoVentaInternetException e)
         {
             log.error("Fuera de plazo", e);
-            return paginaProhibida();
+            return paginaFueraDePlazo();
         }
         catch (ButacaOcupadaException e)
         {
@@ -320,7 +322,7 @@ public class EntradasResource extends BaseResource
         catch (FueraDePlazoVentaInternetException e)
         {
             log.error("Fuera de plazo", e);
-            return paginaProhibida();
+            return paginaFueraDePlazo();
         }
         catch (ButacaOcupadaException e)
         {
@@ -360,7 +362,6 @@ public class EntradasResource extends BaseResource
         template.put("baseUrl", getBaseUrl());
         
         template.put("idioma", getLocale().getLanguage());
-        template.put("baseUrl", getBaseUrl());
 
         template.put("uuidCompra", uuidCompra);
 
@@ -460,9 +461,17 @@ public class EntradasResource extends BaseResource
         return Response.ok(template).build();
     }
 
-    private Response paginaProhibida()
+    private Response paginaFueraDePlazo() throws Exception
     {
-        return Response.status(Status.FORBIDDEN.getStatusCode()).build();
+    	Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "compraFinalizada", getLocale(), APP);
+    	String urlBase = getUrlBase(request);
+        String url = request.getRequestURL().toString();
+        template.put("pagina", buildPublicPageInfo(urlBase, url, getLocale().getLanguage().toString()));
+        template.put("baseUrl", getBaseUrl());
+        
+        template.put("idioma", getLocale().getLanguage());
+    	
+        return Response.ok(template).build();
     }
 
     @POST

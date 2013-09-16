@@ -145,9 +145,9 @@ public class EventosResource extends BaseResource
 
             datos.put(
                     "textoFechasInternet",
-                    ResourceProperties.getProperty(getLocale(), "venta.plazoInternet",
-                            DateUtils.dateToSpanishString(sesion.getFechaInicioVentaOnline()),
-                            DateUtils.dateToSpanishString(sesion.getFechaFinVentaOnline())));
+                    	ResourceProperties.getProperty(getLocale(), "venta.plazoInternet",
+                            DateUtils.dateToSpanishStringWithHour(sesion.getFechaInicioVentaOnline()),
+                            DateUtils.dateToSpanishStringWithHour(sesion.getFechaFinVentaOnline())));
             
             if (sesion.getEnPlazoVentaInternet())
                 datos.put("clase", "contieneBoton");
@@ -166,7 +166,7 @@ public class EventosResource extends BaseResource
         
         String diaSemana = ResourceProperties.getProperty(getLocale(), "dia.abreviado." + cal.get(Calendar.DAY_OF_WEEK));
         
-        return diaSemana + " " + format.format(cal.getTime()) + " / " + getPrecioSesion(sesion) + " euros";
+        return diaSemana + " " + format.format(cal.getTime());// + " / " + getPrecioSesion(sesion) + " euros";
     }
     
     private String getPrecioSesion(Sesion sesion)

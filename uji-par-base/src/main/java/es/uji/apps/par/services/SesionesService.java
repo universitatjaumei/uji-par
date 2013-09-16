@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import es.uji.apps.par.CampoRequeridoException;
 import es.uji.apps.par.FechasInvalidasException;
-import es.uji.apps.par.dao.ButacasDAO;
 import es.uji.apps.par.dao.EventosDAO;
 import es.uji.apps.par.dao.LocalizacionesDAO;
 import es.uji.apps.par.dao.SesionesDAO;

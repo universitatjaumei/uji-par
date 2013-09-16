@@ -9,6 +9,7 @@ public class DateUtils
 {
     private static final SimpleDateFormat FORMAT_DAY = new SimpleDateFormat("dd/MM/yyyy");
     private static final SimpleDateFormat FORMAT_HOUR = new SimpleDateFormat("hh:mm");
+    private static final SimpleDateFormat FORMAT_DAY_HOUR = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
     public static Date spanishStringToDate(String spanishDate)
     {
@@ -81,4 +82,11 @@ public class DateUtils
     public static long millisecondsToSeconds(long time) {
     	return time/1000;
     }
+
+	public static Object dateToSpanishStringWithHour(Date fecha) {
+		if (fecha == null)
+    		throw new NullPointerException();
+    	
+    	return FORMAT_DAY_HOUR.format(fecha);
+	}
 }
