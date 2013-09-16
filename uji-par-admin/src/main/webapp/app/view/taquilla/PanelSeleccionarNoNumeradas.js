@@ -55,7 +55,7 @@ Ext.define('Paranimf.view.taquilla.PanelSeleccionarNoNumeradas', {
 		    	   		name: 'discapacitados2',
 		    	   		xtype: 'panelNumeroEntradas'
 		       		}]
-		       	},
+		       	}/*,
 		       {
 		       		columnWidth: 1/2,
 		       		title: UI.i18n.legends.entradesDiscapacitados3,
@@ -63,7 +63,7 @@ Ext.define('Paranimf.view.taquilla.PanelSeleccionarNoNumeradas', {
 		    	   		name: 'discapacitados3',
 		    	   		xtype: 'panelNumeroEntradas'
 		      		}]
-		      	}
+		      	}*/
 			]
 		},
 		{
