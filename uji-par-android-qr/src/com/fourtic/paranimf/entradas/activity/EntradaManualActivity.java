@@ -107,6 +107,7 @@ public class EntradaManualActivity extends BaseNormalActivity
                 {
                     marcaComoPresentada(butaca);
                     cargaButacasDesdeBd();
+                    muestraMensaje(getString(R.string.marcada_como_presentada));
                 }
                 catch (SQLException e)
                 {

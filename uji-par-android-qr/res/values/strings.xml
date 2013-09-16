@@ -42,5 +42,6 @@
     <string name="error_insertando_eventos_bd">Error insertant eventos en BD mòbil</string>
     <string name="error_insertando_butacas_bd">Error insertant butaques en BD mòbil</string>
     <string name="error_actualizando_eventos_rest">Error recuperant events des de la web</string>
+    <string name="marcada_como_presentada">Entrada marcada com presentada</string>
 
 </resources>
