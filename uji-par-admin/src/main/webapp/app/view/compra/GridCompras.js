@@ -3,6 +3,7 @@ Ext.define('Paranimf.view.compra.GridCompras', {
 
    alias: 'widget.gridCompras',
    store: 'Compras',
+   title: UI.i18n.gridTitle.comprasReservasHechas,
 
   tbar:[{
     action: 'anular',
@@ -37,6 +38,11 @@ Ext.define('Paranimf.view.compra.GridCompras', {
 
     this.columns = [{
       dataIndex: 'id',
+      text: UI.i18n.field.idIntern,
+      hidden: true
+    }, {
+      dataIndex: 'uuid',
+      text: UI.i18n.field.uuid,
       hidden: true
     }, {
       dataIndex: 'fecha',
@@ -58,7 +64,7 @@ Ext.define('Paranimf.view.compra.GridCompras', {
       text: UI.i18n.field.email,
     }, {
       dataIndex: 'telefono',
-      flex: 5,
+      flex: 2,
       text: UI.i18n.field.phone,
     }, {
       align: 'center',
@@ -98,6 +104,18 @@ Ext.define('Paranimf.view.compra.GridCompras', {
       text: UI.i18n.field.pagada,
       renderer: function (val, p) {
           return (val)?'<img src="../resources/images/tick.png" alt="Sí" title="Sí" />':'<img src="../resources/images/cross.png" alt="Sí" title="Sí" />';
+      }
+    }, {
+      flex: 2,
+      text: UI.i18n.message.printTaquilla,
+      renderer: function(val, p, rec) {
+        return '<a target="blank" href="' + urlPrefix + 'compra/' + rec.data.uuid + '/pdftaquilla">' + UI.i18n.message.print + '</a>';
+      }
+    }, {
+      flex: 2,
+      text: UI.i18n.message.printAtHome,
+      renderer: function(val, p, rec) {
+        return '<a target="blank" href="' + urlPrefix + 'compra/' + rec.data.uuid + '/pdf">' + UI.i18n.message.print + '</a>';
       }
     }];
 

@@ -19,6 +19,7 @@ Ext.define('Paranimf.view.compra.GridDetalleCompras', {
 
     this.columns = [{
       dataIndex: 'id',
+      text: UI.i18n.field.idIntern,
       hidden: true
     }, {
       dataIndex: 'localizacion',

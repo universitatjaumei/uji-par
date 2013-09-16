@@ -22,6 +22,7 @@ public class Compra
     private Date fecha;
     private Float importe;
     private boolean anulada;
+    private String uuid;
 
     public Compra(CompraDTO compraDTO)
     {
@@ -35,6 +36,7 @@ public class Compra
         this.setFecha(compraDTO.getFecha());
         this.setTaquilla(compraDTO.getTaquilla());
         this.setImporte(compraDTO.getImporte().floatValue());
+        this.setUuid(compraDTO.getUuid());
         if (compraDTO.getAnulada() != null)
         	this.setAnulada(compraDTO.getAnulada());
     }
@@ -158,6 +160,14 @@ public class Compra
 
 	public void setAnulada(boolean anulada) {
 		this.anulada = anulada;
+	}
+
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
 	}
     
 }

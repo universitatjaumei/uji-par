@@ -37,7 +37,10 @@ UI =
             "pagoTarjetaEnviadoLector": "El pagament ha sigut enviat correctament al lector de tarjetes... Introduïu la tarjeta",
             "pagoTarjetaCorrecto": "Pagament amb tarjeta correcte",
             "noNumerada": "Sessió no numerada",
-            "sureAnular": "Està segur d'anul·lar la compra/reserva seleccionada? Aquesta operació no es pot cancel·lar"
+            "sureAnular": "Està segur d'anul·lar la compra/reserva seleccionada? Aquesta operació no es pot cancel·lar",
+            "printTaquilla": "Taquilla",
+            "printAtHome": "Print-At-Home",
+            "print": "Imprimir"
         },
         "storeWeekDay": {
             "wed": "Dimecres",
@@ -148,7 +151,8 @@ UI =
             "menu": "Menú d'opcions",
             "comprar": "Comprar entrades",
             "compras": "Gestió de compres i reserves",
-            "detalleCompras": "Detall compra/reserva seleccionada"
+            "detalleCompras": "Detall compra/reserva seleccionada",
+            "comprasReservasHechas": "Compres i reserves realitzades"
         },
         
         "field": {
@@ -189,6 +193,7 @@ UI =
 			"type":"Tipus",
 			"id":"Id",
             "idIntern": "Identificador intern",
+            "uuid": "Indentificador únic de la compra",
 			"state":"Estat",
 			"date":"Data",
 			"email":"E-mail",
@@ -254,7 +259,8 @@ UI =
             "fila": "Fila del seient",
             "numeroSeient": "Número del seient",
             "mostrarAnuladas": "Mostrar anul·lades",
-            "tipusEntrada": "Tipus d'entrada"
+            "tipusEntrada": "Tipus d'entrada",
+            "printAtHome": "Marcar per a que l'entrada s'imprimisca amb format Print-At-Home"
         },
 
         "legends": {

@@ -1,9 +1,9 @@
 Ext.define('Paranimf.view.compra.PanelCompras', {
   extend: 'Ext.panel.Panel',
   alias: 'widget.panelCompras',
-  border: false,
-  frame: false,
-  //layout: 'border',
+  /*border: false,
+  frame: false,*/
+  layout: 'border',
   //autoScroll: false,
 
   buttons: [{
@@ -13,16 +13,20 @@ Ext.define('Paranimf.view.compra.PanelCompras', {
       this.up('window').close();
     }
   }],
-  
+
   items: [{
-    flex: 2,
-    autoScroll: true,
-    //region: 'north',
-    xtype: 'gridCompras'
-  }, {
-    flex: 1,
-    autoScroll: true,
-    //region: 'center',
-    xtype: 'gridDetalleCompras'
-  }]
+    region: 'north',
+      xtype: 'gridCompras',
+      collapsible: true,
+      minHeight: 100,
+      split: true,
+      header: true,
+      flex: 2
+    }, {
+      region: 'center',
+      xtype: 'gridDetalleCompras',
+      minHeight: 100,
+      split: true,
+      flex: 1
+    }]
 });
