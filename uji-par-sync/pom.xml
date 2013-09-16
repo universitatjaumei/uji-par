@@ -3,7 +3,7 @@
   <groupId>es.uji.apps.par</groupId>
   <artifactId>uji-par-sync</artifactId>
   <version>0.0.2-SNAPSHOT</version>
-  <packaging>war</packaging>
+  <packaging>jar</packaging>
   <name>uji-par-sync</name>
 
   <properties>
@@ -103,27 +103,6 @@
         </configuration>
       </plugin>
 
-      <plugin>
-        <artifactId>maven-war-plugin</artifactId>
-        <configuration>
-          <webXml>target/web.xml</webXml>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.mortbay.jetty</groupId>
-        <artifactId>maven-jetty-plugin</artifactId>
-        <version>6.1.22</version>
-        <configuration>
-          <connectors>
-            <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
-              <port>9001</port>
-            </connector>
-          </connectors>
-          <webXml>target/web.xml</webXml>
-          <contextPath>/par-public</contextPath>
-        </configuration>
-      </plugin>
     </plugins>
     <pluginManagement>
     	<plugins>
