@@ -15,6 +15,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.GenericRawResults;
+import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.UpdateBuilder;
 
 @Singleton
@@ -46,8 +47,12 @@ public class SesionDao
 
     public List<Sesion> getSesiones(int idEvento) throws SQLException
     {
-        List<Sesion> sesiones = dao.queryForEq("evento_id", idEvento);
-        
+        QueryBuilder<Sesion, Integer> builder = dao.queryBuilder();
+        builder.where().eq("evento_id", idEvento);
+        builder.orderBy("fecha", false);
+
+        List<Sesion> sesiones = builder.query();
+
         Set<Integer> idsModificados = getIdsSesionesModificadas();
 
         for (Sesion sesion : sesiones)
@@ -99,7 +104,6 @@ public class SesionDao
     {
         return dao;
     }
-
 
     private Set<Integer> getIdsSesionesModificadas() throws SQLException
     {
