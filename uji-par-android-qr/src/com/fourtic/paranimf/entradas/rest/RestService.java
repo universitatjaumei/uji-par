@@ -36,7 +36,8 @@ import com.loopj.android.http.RequestParams;
 @Singleton
 public class RestService
 {
-    private static String BASE_SECURE_URL = "http://192.168.3.102:8081/par-public/rest";
+    //private static String BASE_SECURE_URL = "http://192.168.3.102:8081/par-public/rest";
+    private static String BASE_SECURE_URL = "http://devel.uji.es/par-public/rest";
 
     private AsyncHttpClient client;
     private Gson gson;
