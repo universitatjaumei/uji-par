@@ -23,10 +23,10 @@ public class EventoDTO implements Serializable {
 	@Column(name="ASIENTOS_NUMERADOS")
 	private BigDecimal asientosNumerados;
 
-	@Column(name="CARACTERISTICAS_ES")
+	@Column(name="CARACTERISTICAS_ES", length=1700)
 	private String caracteristicasEs;
 
-	@Column(name="CARACTERISTICAS_VA")
+	@Column(name="CARACTERISTICAS_VA", length=1700)
 	private String caracteristicasVa;
 
 	@Column(name="COMENTARIOS_ES")
@@ -41,10 +41,10 @@ public class EventoDTO implements Serializable {
 	@Column(name="COMPANYIA_VA")
 	private String companyiaVa;
 
-	@Column(name="DESCRIPCION_ES")
+	@Column(name="DESCRIPCION_ES", length=1700)
 	private String descripcionEs;
 
-	@Column(name="DESCRIPCION_VA")
+	@Column(name="DESCRIPCION_VA", length=1700)
 	private String descripcionVa;
 
 	@Column(name="DURACION_ES")
@@ -89,6 +89,9 @@ public class EventoDTO implements Serializable {
 	@Column(name="TITULO_VA")
 	private String tituloVa;
 
+	@Column(name="RSS_ID")
+	private String rssId;
+	
 	//bi-directional many-to-one association to TipoEventoDTO
 	@ManyToOne
 	@JoinColumn(name="TIPO_EVENTO_ID")
@@ -309,4 +312,11 @@ public class EventoDTO implements Serializable {
 		this.parSesiones = parSesiones;
 	}
 
+    public String getRssId() {
+        return rssId;
+    }
+
+    public void setRssId(String rssId) {
+        this.rssId = rssId;
+    }
 }

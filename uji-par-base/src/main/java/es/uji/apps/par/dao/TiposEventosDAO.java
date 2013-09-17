@@ -10,6 +10,7 @@ import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.jpa.impl.JPAUpdateClause;
 
+import es.uji.apps.par.db.EventoDTO;
 import es.uji.apps.par.db.QTipoEventoDTO;
 import es.uji.apps.par.db.TipoEventoDTO;
 import es.uji.apps.par.model.TipoEvento;
@@ -32,6 +33,38 @@ public class TiposEventosDAO extends BaseDAO
         }
 
         return tipoEvento;
+    }
+    
+    @Transactional
+    public TipoEventoDTO getTipoEventoByNombreVa(String nombreVa) {
+        
+        JPAQuery query = new JPAQuery(entityManager);
+
+         List<TipoEventoDTO> tipos = query
+                .from(qTipoEventoDTO)
+                .where(qTipoEventoDTO.nombreVa.eq(nombreVa))
+                .list(qTipoEventoDTO);
+         
+         if (tipos.size() == 0)
+             return null;
+         else
+             return tipos.get(0);
+    }
+    
+    @Transactional
+    public TipoEventoDTO getTipoEventoByNombreEs(String nombreEs) {
+        
+        JPAQuery query = new JPAQuery(entityManager);
+
+         List<TipoEventoDTO> tipos = query
+                .from(qTipoEventoDTO)
+                .where(qTipoEventoDTO.nombreEs.eq(nombreEs))
+                .list(qTipoEventoDTO);
+         
+         if (tipos.size() == 0)
+             return null;
+         else
+             return tipos.get(0);
     }
 
     @Transactional

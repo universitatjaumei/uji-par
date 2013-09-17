@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>es.uji.apps.par</groupId>
   <artifactId>uji-par-base</artifactId>
-  <version>0.0.2-SNAPSHOT</version>
+  <version>0.0.4-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>uji-par-base</name>
 
@@ -16,7 +16,7 @@
   <parent>
       <groupId>es.uji.apps.par</groupId>
       <artifactId>uji-par</artifactId>
-      <version>0.0.2-SNAPSHOT</version>
+      <version>0.0.4-SNAPSHOT</version>
   </parent>
 
 

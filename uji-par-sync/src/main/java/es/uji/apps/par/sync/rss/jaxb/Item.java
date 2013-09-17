@@ -16,6 +16,9 @@ public class Item
     private String companyia;
     private String duracio;
     private String resumen;
+    private String contenidoId;
+    private String idioma;
+    private String esquema;
 
     public String getTitle()
     {
@@ -102,5 +105,38 @@ public class Item
     public void setResumen(String resumen)
     {
         this.resumen = resumen;
+    }
+
+    public String getContenidoId()
+    {
+        return contenidoId;
+    }
+
+    @XmlElement(namespace = "http://www.uji.es/namespaces/rss#")
+    public void setContenidoId(String contenidoId)
+    {
+        this.contenidoId = contenidoId;
+    }
+
+    public String getIdioma()
+    {
+        return idioma;
+    }
+
+    @XmlElement(namespace = "http://www.uji.es/namespaces/rss#")
+    public void setIdioma(String idioma)
+    {
+        this.idioma = idioma;
+    }
+
+    public String getEsquema()
+    {
+        return esquema;
+    }
+
+    @XmlElement(namespace = "http://www.uji.es/namespaces/rss#")
+    public void setEsquema(String esquema)
+    {
+        this.esquema = esquema;
     }
 }

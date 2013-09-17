@@ -97,9 +97,12 @@ public class EventosDAO extends BaseDAO
 	        
 	        List<Sesion> sesiones = new ArrayList<Sesion>();
 	        
-	        for (SesionDTO sesionDTO:eventoDTO.getParSesiones())
+	        if (eventoDTO.getParSesiones() != null)
 	        {
-	            sesiones.add(Sesion.SesionDTOToSesionSinEvento(sesionDTO));
+                for (SesionDTO sesionDTO:eventoDTO.getParSesiones())
+                {
+                    sesiones.add(Sesion.SesionDTOToSesionSinEvento(sesionDTO));
+                }
 	        }
 	        
 	        evento.setSesiones(sesiones);
@@ -328,7 +331,13 @@ public class EventosDAO extends BaseDAO
 
         return evento;
     }
-
+    
+    @Transactional
+    public void updateEventoDTO(EventoDTO eventoDTO)
+    {
+        entityManager.persist(eventoDTO);
+    }
+    
     @Transactional
     public void deleteImagen(long eventoId)
     {
@@ -342,6 +351,28 @@ public class EventosDAO extends BaseDAO
 	public EventoDTO getEventoById(long eventoId) {
 		return entityManager.find(EventoDTO.class, eventoId);
 	}
+    
+    @Transactional
+    public EventoDTO getEventoByRssId(String rssId) {
+        
+        QTipoEventoDTO qTipoEvento = QTipoEventoDTO.tipoEventoDTO;
+        
+        JPAQuery query = new JPAQuery(entityManager);
+
+         List<EventoDTO> eventos = query
+                .from(qEventoDTO)
+                .leftJoin(qEventoDTO.parTiposEvento, qTipoEvento)
+                .fetch()
+                .where(qEventoDTO.rssId.eq(rssId))
+                .list(qEventoDTO);
+         
+         if (eventos.size() == 0)
+             return null;
+         else if (eventos.size() == 1)
+             return eventos.get(0);
+         else
+             throw new RuntimeException("Hay varios eventos con el mismo RSS_ID");
+    }
 
     @Transactional
 	public int getTotalEventosActivos() {

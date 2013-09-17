@@ -6,8 +6,11 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
+import org.springframework.stereotype.Service;
+
 import es.uji.apps.par.sync.rss.jaxb.Rss;
 
+@Service
 public class RssParser
 {
     private Unmarshaller unmarshaller;

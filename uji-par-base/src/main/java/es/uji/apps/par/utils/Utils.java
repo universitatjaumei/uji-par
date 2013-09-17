@@ -92,4 +92,9 @@ public class Utils
 			return 0;
 		}*/
 	}
+	
+	public static String toUppercaseFirst(String text)
+	{
+	    return Character.toUpperCase(text.charAt(0)) + text.substring(1); 
+	}
 }

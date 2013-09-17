@@ -11,8 +11,8 @@
     <item>
       <title>Madre Coraje</title>
       <link>http://localhost:8080/cultura/paranimf/programacio/setembre/madre-coraje/madre-coraje.html</link>
-      <enclosure type="image/jpeg" url="http://localhost:8080/cultura/paranimf/programacio/setembre/madre-coraje/coraje.jpg"/>
-      <enclosure type="image/jpeg" url="http://localhost:8080/cultura/paranimf/programacio/setembre/madre-coraje/index.jpg"/>
+      <enclosure type="image/jpeg" url="https://www.google.es/images/srpr/logo4w.png"/>
+      <enclosure type="image/jpeg" url="https://www.google.es/images/srpr/logo4w.png"/>
       <pubDate>Tue, 10 Sep 2013 22:00:00 GMT</pubDate>
       <guid>http://localhost:8080/cultura/paranimf/programacio/setembre/madre-coraje/madre-coraje.html</guid>
       <dc:date>2013-09-10T22:00:00Z</dc:date>
@@ -23,6 +23,7 @@
       <upo-metadato:companyia xmlns:upo-metadato="http://www.uji.es/namespaces/rss#">Atalaya</upo-metadato:companyia>
       <upo-metadato:duracio xmlns:upo-metadato="http://www.uji.es/namespaces/rss#">120</upo-metadato:duracio>
       <upo-general:subtitulo/>
+      <upo-general:contenidoId>1</upo-general:contenidoId>
       <upo-general:titulo>Madre Coraje</upo-general:titulo>
       <upo-general:autor/>
       <upo-general:contenido>&lt;p&gt;&#13;
@@ -44,13 +45,15 @@
     <item>
       <title>Setembre</title>
       <link>http://localhost:8080/cultura/paranimf/programacio/setembre/setembre.html</link>
-      <enclosure type="image/jpeg" url="http://localhost:8080/cultura/paranimf/programacio/setembre/index.jpg"/>
+      <enclosure type="image/jpeg" url="https://www.google.es/images/srpr/logo4w.png"/>
       <pubDate>Tue, 10 Sep 2013 22:00:00 GMT</pubDate>
       <guid>http://localhost:8080/cultura/paranimf/programacio/setembre/setembre.html</guid>
+      <upo-metadato:tipo xmlns:upo-metadato="http://www.uji.es/namespaces/rss#">teatre</upo-metadato:tipo>
       <dc:date>2013-09-10T22:00:00Z</dc:date>
       <upo-general:subtitulo/>
       <upo-general:titulo>Setembre</upo-general:titulo>
       <upo-general:autor/>
+      <upo-general:contenidoId>2</upo-general:contenidoId>
       <upo-general:contenido/>
       <upo-general:tituloLargo>Setembre</upo-general:tituloLargo>
       <upo-general:lugar/>
@@ -62,8 +65,8 @@
     <item>
       <title>Wadjda / La bicicleta verde</title>
       <link>http://localhost:8080/cultura/paranimf/programacio/setembre/bicicleta-verde/bicicleta-verde.html</link>
-      <enclosure type="image/jpeg" url="http://localhost:8080/cultura/paranimf/programacio/setembre/bicicleta-verde/index.jpg"/>
-      <enclosure type="image/jpeg" url="http://localhost:8080/cultura/paranimf/programacio/setembre/bicicleta-verde/bicicleta.jpg"/>
+      <enclosure type="image/jpeg" url="https://www.google.es/images/srpr/logo4w.png"/>
+      <enclosure type="image/jpeg" url="https://www.google.es/images/srpr/logo4w.png"/>
       <pubDate>Thu, 05 Sep 2013 22:00:00 GMT</pubDate>
       <guid>http://localhost:8080/cultura/paranimf/programacio/setembre/bicicleta-verde/bicicleta-verde.html</guid>
       <dc:date>2013-09-05T22:00:00Z</dc:date>
@@ -73,6 +76,7 @@
       <upo-metadato:esquema xmlns:upo-metadato="http://www.uji.es/namespaces/rss#">paranimf</upo-metadato:esquema>
       <upo-metadato:duracio xmlns:upo-metadato="http://www.uji.es/namespaces/rss#">98</upo-metadato:duracio>
       <upo-general:subtitulo/>
+      <upo-general:contenidoId>3</upo-general:contenidoId>
       <upo-general:titulo>Wadjda / La bicicleta verde</upo-general:titulo>
       <upo-general:autor/>
       <upo-general:contenido>&lt;p&gt;&#13;

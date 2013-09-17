@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>es.uji.apps.par</groupId>
   <artifactId>uji-par-sync</artifactId>
-  <version>0.0.2-SNAPSHOT</version>
+  <version>0.0.4-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>uji-par-sync</name>
 
@@ -14,7 +14,7 @@
   <parent>
       <groupId>es.uji.apps.par</groupId>
       <artifactId>uji-par</artifactId>
-      <version>0.0.2-SNAPSHOT</version>
+      <version>0.0.4-SNAPSHOT</version>
   </parent>
 
 
@@ -23,7 +23,7 @@
     <dependency>
       <groupId>es.uji.apps.par</groupId>
       <artifactId>uji-par-base</artifactId>
-      <version>0.0.2-SNAPSHOT</version>
+      <version>0.0.4-SNAPSHOT</version>
     </dependency>
 
     <!-- jUnit -->
@@ -38,7 +38,7 @@
   </dependencies>
 
   <build>
-    <finalName>par-public</finalName>
+    <finalName>par-sync</finalName>
 
     <resources>
       <resource>
@@ -102,7 +102,48 @@
           <target>1.6</target>
         </configuration>
       </plugin>
-
+      
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.4</version>
+        <configuration>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+        </configuration>
+	  </plugin>              
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-shade-plugin</artifactId>
+            <version>1.4</version>
+            <executions>
+              <execution>
+                <phase>package</phase>
+                <goals>
+                  <goal>shade</goal>
+                </goals>
+                <configuration>
+                  <transformers>
+                    <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                      <resource>META-INF/spring.handlers</resource>
+                    </transformer>
+                    <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                      <resource>META-INF/spring.schemas</resource>
+                    </transformer>
+                  </transformers>
+                  <filters>
+                    <filter>
+                      <artifact>javax.mail:mail</artifact>
+                      <excludes>
+                        <exclude>META-INF/*.SF</exclude>
+                        <exclude>META-INF/*.RSA</exclude>
+                      </excludes>
+                    </filter>
+                  </filters>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
     </plugins>
     <pluginManagement>
     	<plugins>
