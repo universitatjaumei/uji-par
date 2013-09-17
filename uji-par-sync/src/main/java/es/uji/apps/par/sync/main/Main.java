@@ -17,6 +17,8 @@ import es.uji.apps.par.sync.EventosSyncService;
 @Service
 public class Main
 {
+    private static final int SYNC_SLEEP = 60000;
+
     public static Logger log = Logger.getLogger(Main.class);
 
     @Autowired
@@ -55,7 +57,7 @@ public class Main
 
                     try
                     {
-                        Thread.sleep(5000);
+                        Thread.sleep(SYNC_SLEEP);
                     }
                     catch (InterruptedException e)
                     {
