@@ -6,6 +6,12 @@ Ext.define('Paranimf.view.evento.GridEventos', {
 
    title: UI.i18n.gridTitle.eventos,
 
+   tbar: [{
+      xtype: 'button',
+      text: UI.i18n.button.edit,
+      action: 'edit'
+   }],
+
    dockedItems: [{
      xtype: 'pagingtoolbar',
      store: 'Eventos',
