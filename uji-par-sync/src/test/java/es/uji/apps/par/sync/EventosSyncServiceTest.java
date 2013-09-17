@@ -82,9 +82,11 @@ public class EventosSyncServiceTest extends SyncBaseTest
         assertEquals("rssId del evento", "1", evento.getRssId());
         assertEquals("Título VA del evento", "Madre Coraje", evento.getTituloVa());
         assertTrue(
-                "Características VA del evento",
-                evento.getCaracteristicasVa().startsWith(
+                "Descripción VA del evento",
+                evento.getDescripcionVa().startsWith(
                         "<p>\r\n\t<strong>Adaptaci&oacute; i direcci&oacute;</strong>: Ricardo Iniesta"));
+        
+        assertEquals("Características VA del evento", "Basada en la Historia de la vida de la estafadora y aventurera Coraje de Grimmelshausen.", evento.getCaracteristicasVa());
         assertEquals("Duración VA del evento", "120", evento.getDuracionVa());
         assertEquals("Tipo del evento", "Teatre", evento.getParTiposEvento().getNombreVa());
 
@@ -104,14 +106,14 @@ public class EventosSyncServiceTest extends SyncBaseTest
 
         assertEquals("Título VA del evento", "Madre Coraje", evento.getTituloVa());
         assertTrue(
-                "Características VA del evento",
-                evento.getCaracteristicasVa().startsWith(
+                "Descripción VA del evento",
+                evento.getDescripcionVa().startsWith(
                         "<p>\r\n\t<strong>Adaptaci&oacute; i direcci&oacute;</strong>: Ricardo Iniesta"));
+        
+        assertEquals("Características VA del evento", "Basada en la Historia de la vida de la estafadora y aventurera Coraje de Grimmelshausen.", evento.getCaracteristicasVa());
+        
         assertEquals("Duración VA del evento", "120", evento.getDuracionVa());
         assertEquals("Tipo del evento", "Teatre", evento.getParTiposEvento().getNombreVa());
-        assertEquals("Descripción del evento",
-                "Basada en la Historia de la vida de la estafadora y aventurera Coraje de Grimmelshausen.",
-                evento.getDescripcionVa());
     }
 
     @Test
@@ -124,14 +126,14 @@ public class EventosSyncServiceTest extends SyncBaseTest
 
         assertEquals("Título ES del evento", "Madre Coraje (ES)", evento.getTituloEs());
         assertTrue(
-                "Características ES del evento",
-                evento.getCaracteristicasEs().startsWith(
+                "Descripción ES del evento",
+                evento.getDescripcionEs().startsWith(
                         "(ES)<p>\r\n\t<strong>Adaptaci&oacute; i direcci&oacute;</strong>: Ricardo Iniesta"));
         assertEquals("Duración ES del evento", "120 (ES)", evento.getDuracionEs());
         assertEquals("Tipo del evento", "Teatro", evento.getParTiposEvento().getNombreEs());
-        assertEquals("Descripción del evento",
+        assertEquals("Características del evento",
                 "Basada en la Historia de la vida de la estafadora y aventurera Coraje de Grimmelshausen. (ES)",
-                evento.getDescripcionEs());
+                evento.getCaracteristicasEs());
     }
 
     @Test

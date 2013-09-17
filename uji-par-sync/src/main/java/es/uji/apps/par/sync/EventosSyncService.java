@@ -72,9 +72,9 @@ public class EventosSyncService
         if (item.getIdioma().equals("ca"))
         {
             evento.setTituloVa(item.getTitle());
-            evento.setCaracteristicasVa(item.getContenido());
+            evento.setCaracteristicasVa(item.getResumen());
             evento.setDuracionVa(item.getDuracio());
-            evento.setDescripcionVa(item.getResumen());
+            evento.setDescripcionVa(item.getContenido());
 
             if (item.getTipo() != null)
             {
@@ -87,9 +87,9 @@ public class EventosSyncService
         else if (item.getIdioma().equals("es"))
         {
             evento.setTituloEs(item.getTitle());
-            evento.setCaracteristicasEs(item.getContenido());
+            evento.setCaracteristicasEs(item.getResumen());
             evento.setDuracionEs(item.getDuracio());
-            evento.setDescripcionEs(item.getResumen());
+            evento.setDescripcionEs(item.getContenido());
 
             if (item.getTipo() != null)
             {
