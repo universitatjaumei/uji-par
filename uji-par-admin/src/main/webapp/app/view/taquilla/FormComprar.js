@@ -80,7 +80,7 @@ Ext.define('Paranimf.view.taquilla.FormComprar', {
 										    displayField: 'name',
 										    valueField : 'value',
 										    queryMode: 'local',
-										    value: 'tarjeta',
+										    value: 'metalico',
 										    typeAhead: false,
 										    editable: false,
 										    allowBlank: false,
