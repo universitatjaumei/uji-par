@@ -41,7 +41,7 @@ Ext.define('Paranimf.controller.Taquilla', {
       },
       {
         ref: 'verEntrada',
-        selector: 'formComprar panel[name=verEntrada]'
+        selector: 'formComprar button[name=verEntrada]'
       },      
       {
       	ref: 'botonPagar',
@@ -135,6 +135,9 @@ Ext.define('Paranimf.controller.Taquilla', {
          'formComprar #reservar': {
         	 click: this.registraReserva
          },        
+         'formComprar button[name=verEntrada]': {
+        	click: this.verEntrada 
+         },
          'panelSeleccionarNoNumeradas': {
              afterrender: this.panelSeleccionarNoNumeradasCreado
          },
@@ -181,6 +184,11 @@ Ext.define('Paranimf.controller.Taquilla', {
 	   this.butacasSeleccionadas = [];  
 	  
 	   this.cambiarEstadoBotonesComprar();
+	   
+	   if (this.windowEntrada != null)
+	   {
+		   this.windowEntrada.close();
+	   }
    },
    
    	muestraDisponibles: function() {
@@ -594,10 +602,20 @@ Ext.define('Paranimf.controller.Taquilla', {
    muestraEnlacePdf: function() {
 	   //console.log(this.getVerEntrada());
 	   
+	   //var href = urlPrefix + 'compra/' + this.uuidCompra + '/pdftaquilla';
+	   //this.getVerEntrada().update('<a href="' + href + '" target="_blank">' + UI.i18n.button.verEntrada + '</a>');
+	   
+	   //this.getVerEntrada().update('<a href="javascript:w=window.open(\'' + href + '\', \'Imprimir entrades\'); w.print();" target="_blank">' + UI.i18n.button.verEntrada + '</a>');
+	   
+	   this.getVerEntrada().show();
+   },
+   
+   verEntrada: function() {
 	   var href = urlPrefix + 'compra/' + this.uuidCompra + '/pdftaquilla';
 	   
-	   this.getVerEntrada().update('<a href="' + href + '" target="_blank">' + UI.i18n.button.verEntrada + '</a>');
-	   this.getVerEntrada().show();
+	   this.windowEntrada = window.open(href, 'Imprimir entrada');
+	   this.windowEntrada.print();
+	   //w.close();
    },
    
    cargaPrecios: function(sesionId, callback) {

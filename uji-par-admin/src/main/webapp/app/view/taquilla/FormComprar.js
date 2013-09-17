@@ -125,12 +125,12 @@ Ext.define('Paranimf.view.taquilla.FormComprar', {
 										 },
 										 {
 										     items: [{
-												    	 xtype: 'panel',
-														 name: 'verEntrada',
-														 frame: false,
-														 border: 0,
+												    	 xtype: 'button',
+												    	 name: 'verEntrada',
+														 scale: 'large',
+														 text: UI.i18n.button.verEntrada,
 														 hidden: true
-										             }	 
+												     }
 										     ]
 										 }	       	        		
 								 ]
@@ -232,12 +232,12 @@ Ext.define('Paranimf.view.taquilla.FormComprar', {
 		   					 frame: false,
 		   					 border: 0,		       	        	
 						     items: [{
-								    	 xtype: 'panel',
-										 name: 'verEntrada',
-										 frame: false,
-										 border: 0,
+								    	 xtype: 'button',
+								    	 name: 'verEntrada',
+										 scale: 'large',
+										 text: UI.i18n.button.verEntrada,
 										 hidden: true
-						             }	 
+								     }	 
 						     ]
 						 }			       	        
 				]
