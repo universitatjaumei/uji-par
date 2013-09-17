@@ -93,7 +93,10 @@ public class EventosSyncServiceTest extends SyncBaseTest
         assertEquals("Asientos numerados del evento", BigDecimal.ONE.intValue(), evento.getAsientosNumerados()
                 .intValue());
         assertNotNull("Tipo del evento no nulo", evento.getParTiposEvento());
-        assertEquals("Imagen del evento", 18946, evento.getImagen().length);
+        
+        assertEquals("URL imagen del evento", "https://www.google.es/images/srpr/logo4w.png", evento.getImagenSrc());
+        assertEquals("Contenido imagen del evento", 18946, evento.getImagen().length);
+        assertEquals("Content-type imagen del evento", "image/jpeg", evento.getImagenContentType());
     }
 
     @Test

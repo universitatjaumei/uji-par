@@ -67,7 +67,11 @@ public class EventosSyncService
             evento.setAsientosNumerados(item.getSeientsNumerats().equals("si") ? BigDecimal.ONE : BigDecimal.ZERO);
         }
 
-        evento.setImagen(getImageFromUrl(item.getEnclosures().get(0).getUrl()));
+        String urlImagen = item.getEnclosures().get(0).getUrl();
+        evento.setImagen(getImageFromUrl(urlImagen));
+        evento.setImagenSrc(urlImagen);
+        
+        evento.setImagenContentType(item.getEnclosures().get(0).getType());
 
         if (item.getIdioma().equals("ca"))
         {
@@ -120,3 +124,4 @@ public class EventosSyncService
         return IOUtils.toByteArray(urlInputStream);
     }
 }
+
