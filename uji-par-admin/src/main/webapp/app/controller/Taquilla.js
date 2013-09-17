@@ -316,7 +316,7 @@ Ext.define('Paranimf.controller.Taquilla', {
 	    		  console.log(response);
 
 	    		  var importe = Ext.JSON.decode(response.responseText, true);
-	    		  me.rellenaDatosPasoPagar(importe);
+	    		  me.rellenaDatosPasoPagar(importe.toFixed(2));
 	    		   
 	    	  }, failure: function (response) {
 
