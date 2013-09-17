@@ -16,7 +16,22 @@ Ext.define('Paranimf.view.taquilla.PanelSeleccionarNoNumeradas', {
 	    	defaults: [{
 	    		xtype: 'fieldset'
 	    	}],
-			items:[
+			items:[{
+		       		columnWidth: 1/2,
+		       		title: UI.i18n.legends.entradesPlatea1,
+		       		items: [{
+		    	   		name: 'platea1',
+		    	   		xtype: 'panelNumeroEntradas'
+		       		}]
+		       	},{
+		       		columnWidth: 1/2,
+		       		title: UI.i18n.legends.entradesPlatea2,
+		       		items: [{
+		    	   		name: 'platea2',
+		    	   		xtype: 'panelNumeroEntradas'
+		       		}]
+		       	},
+
 				{
 					columnWidth: 1/2,
 					title: UI.i18n.legends.entradesAmfiteatre,
@@ -25,22 +40,7 @@ Ext.define('Paranimf.view.taquilla.PanelSeleccionarNoNumeradas', {
 		    	   		xtype: 'panelNumeroEntradas'
 		       		}]
 		       	},
-		       	{
-		       		columnWidth: 1/2,
-		       		title: UI.i18n.legends.entradesPlatea1,
-		       		items: [{
-		    	   		name: 'platea1',
-		    	   		xtype: 'panelNumeroEntradas'
-		       		}]
-		       	},
-		       {
-		       		columnWidth: 1/2,
-		       		title: UI.i18n.legends.entradesPlatea2,
-		       		items: [{
-		    	   		name: 'platea2',
-		    	   		xtype: 'panelNumeroEntradas'
-		       		}]
-		       	},
+
 		       	{
 		       		columnWidth: 1/2,
 		       		title: UI.i18n.legends.entradesDiscapacitados1,
