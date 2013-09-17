@@ -93,7 +93,6 @@ Ext.define('Paranimf.view.EditBaseGrid', {
          var form = modalWindow.down('form').getForm();
          
          this.clearFilter(form, arrayComboClearFilter);
-         
          modalWindow.down('form').loadRecord(selectedRows[0]);
          modalWindow.show();
       }

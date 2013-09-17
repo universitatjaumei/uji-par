@@ -25,10 +25,6 @@ Ext.define('Paranimf.view.evento.FormEventos', {
     handler: function() {
       this.up('window').close();
     }
-  }, {
-    xtype: 'button',
-    text: UI.i18n.button.eliminarImagen,
-    action: 'deleteImage'
   }],
 
    items: [{
@@ -41,6 +37,7 @@ Ext.define('Paranimf.view.evento.FormEventos', {
     title: UI.i18n.field.tituloMulti,
      defaults: {
          xtype: 'textfield',
+         readOnly: true,
          anchor: '100%'
      },
     items: [{
@@ -58,6 +55,7 @@ Ext.define('Paranimf.view.evento.FormEventos', {
      title: UI.i18n.field.descripcionMulti,
      defaults: {
          xtype: 'textarea',
+         readOnly: true,
          anchor: '100%'
      },
      items: [{
@@ -78,6 +76,7 @@ Ext.define('Paranimf.view.evento.FormEventos', {
      title: UI.i18n.field.companyMulti,
      defaults: {
          xtype: 'textfield',
+         readOnly: true,
          anchor: '100%'
      },
      items: [{
@@ -91,33 +90,13 @@ Ext.define('Paranimf.view.evento.FormEventos', {
       }]
    },
    
-   
-   {
-     xtype: 'fieldset',
-     flex: 1,
-     title: UI.i18n.field.staffMulti,
-     defaults: {
-         xtype: 'textfield',
-         anchor: '100%'
-     },
-     items: [{
-       fieldLabel: UI.i18n.field.staff,
-       name: 'interpretesEs',
-         allowBlank: true
-      }, {
-       fieldLabel: UI.i18n.field.staff_va,
-       name: 'interpretesVa',
-         allowBlank: true
-      }]
-   },
-   
-   
    {
      xtype: 'fieldset',
      flex: 1,
      title: UI.i18n.field.duracionMulti,
      defaults: {
          xtype: 'textfield',
+         readOnly: true,
          anchor: '100%'
      },
      items: [{
@@ -138,6 +117,7 @@ Ext.define('Paranimf.view.evento.FormEventos', {
      title: UI.i18n.field.awardsMulti,
      defaults: {
          xtype: 'textfield',
+         readOnly: true,
          anchor: '100%'
      },
      items: [{
@@ -158,6 +138,7 @@ Ext.define('Paranimf.view.evento.FormEventos', {
      title: UI.i18n.field.characteristicsMulti,
      defaults: {
          xtype: 'textfield',
+         readOnly: true,
          anchor: '100%'
      },
      items: [{
@@ -178,6 +159,7 @@ Ext.define('Paranimf.view.evento.FormEventos', {
      title: UI.i18n.field.commentsMulti,
      defaults: {
          xtype: 'textfield',
+         readOnly: true,
          anchor: '100%'
      },
      items: [{
@@ -225,10 +207,12 @@ Ext.define('Paranimf.view.evento.FormEventos', {
     valueField: 'id',
     store: 'TiposEventosSinPaginar',
     queryMode: 'local',
+    readOnly: true,
     typeAhead: true
   }, {
     fieldLabel: UI.i18n.field.asientosNumerados,
     name: 'asientosNumerados',
+    readOnly: true,
     xtype: 'combobox',
     displayField: 'name',
     valueField : 'value',
@@ -243,21 +227,7 @@ Ext.define('Paranimf.view.evento.FormEventos', {
         ]
     })
   }, {
-    xtype: 'fieldset',
-    title: UI.i18n.field.imagen,
-    items: [{
-        name: 'dataBinary',
-        anchor: '100%',
-        allowBlank: true,
-        fieldLabel: UI.i18n.field.uploadImagen,
-        labelWidth: 90,
-        msgTarget: 'side',
-        xtype: 'filefield',
-        buttonText: '...'
-      }, {
-          xtype: 'label',
-          id: 'imagenInsertada'
-      }
-    ]
+    xtype: 'label',
+    id: 'imagenInsertada'
   }]
 });

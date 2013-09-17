@@ -91,7 +91,6 @@ public class EventosResource extends BaseResource
             duracion = evento.getDuracionVa();
             caracteristicas = evento.getCaracteristicasVa();
             premios = evento.getPremiosVa();
-            interpretes = evento.getInterpretesVa();
             descripcion = evento.getDescripcionVa();
         }
         else
@@ -102,7 +101,6 @@ public class EventosResource extends BaseResource
             duracion = evento.getDuracionEs();
             caracteristicas = evento.getCaracteristicasEs();
             premios = evento.getPremiosEs();
-            interpretes = evento.getInterpretesEs();
             descripcion = evento.getDescripcionEs();
         }
 
@@ -118,7 +116,6 @@ public class EventosResource extends BaseResource
         template.put("duracion", duracion);
         template.put("caracteristicas", caracteristicas);
         template.put("premios", premios);
-        template.put("interpretes", interpretes);
         template.put("descripcion", descripcion);
 
         template.put("evento", evento);

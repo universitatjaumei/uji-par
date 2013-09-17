@@ -21,9 +21,6 @@ Ext.define('Paranimf.controller.Eventos', {
 	   ref: 'formSesiones',
 	   selector: 'formSesiones'
    }, {
-      ref: 'botonDeleteImagen',
-      selector: 'formEventos button[action=deleteImage]'
-   }, {
       ref: 'gridPreciosSesion',
       selector: 'gridPreciosSesion'
    }, {
@@ -34,16 +31,8 @@ Ext.define('Paranimf.controller.Eventos', {
    init: function() {
       this.control({
 
-         'gridEventos button[action=add]': {
-            click: this.addEvento
-         },
-
          'gridEventos button[action=edit]': {
             click: this.editEvento
-         },
-
-         'gridEventos button[action=del]': {
-            click: this.removeEvento
          },
 
          'panelEventos': {
@@ -54,10 +43,6 @@ Ext.define('Paranimf.controller.Eventos', {
             click: this.saveEventoFormData
          },
 
-         'formEventos button[action=deleteImage]': {
-            click: this.deleteImage
-         },
-         
          'formEventos': {
         	   beforerender: this.showImagenIfExists
          },
@@ -246,30 +231,6 @@ Ext.define('Paranimf.controller.Eventos', {
          var imagen = comp.down("#imagenInsertada");
          var idEvento = record.data["id"]; 
 		   imagen.html = '<a href="' + urlPrefix + 'evento/' + idEvento + '/imagen" target="blank">' + UI.i18n.field.imagenInsertada + '</a>';
-         this.getBotonDeleteImagen().show();
-      } else {
-         this.getBotonDeleteImagen().hide();
-      }
-   },
-
-   deleteImage: function(button, event, opts) {
-      if (confirm(UI.i18n.message.sureDeleteImage)) {
-         var record = button.up('form').getRecord();
-         var idEvento = record.data["id"];
-         var grid = this.getGridEventos();
-         
-         Ext.Ajax.request({
-           url : urlPrefix + 'evento/' + idEvento + '/imagen',
-           method: 'DELETE',
-           success: function (response) {
-               alert(UI.i18n.message.deletedImage);
-
-               button.up('window').close();
-               grid.store.load();
-           }, failure: function (response) {
-              alert(UI.i18n.error.deletedImage);
-           }
-         });
       }
    },
 
@@ -278,26 +239,14 @@ Ext.define('Paranimf.controller.Eventos', {
       this.getGridEventos().recargaStore();
    },
 
-   addEvento: function(button, event, opts) {
-      this.getGridEventos().showAddEventoWindow();
-   },
-
    editEvento: function(button, event, opts) {
       this.getGridEventos().edit('formEventos', undefined, undefined, 0.8);
-   },
-
-   removeEvento: function(button, event, opts) {
-      var gridSesiones = this.getGridSesiones();
-      this.getGridEventos().remove(function (borradoCorrectamente) {
-         if (borradoCorrectamente)
-            gridSesiones.getStore().removeAll();
-      });
    },
 
    saveEventoFormData: function(button, event, opts) {
       var grid = this.getGridEventos();
       var form = this.getFormEventos();
-      form.saveFormData(grid, urlPrefix + 'evento', undefined, 'multipart/form-data');
+      form.saveFormData(grid, urlPrefix + 'evento', undefined, 'application/x-www-form-urlencoded');
    },
    
    loadSesiones: function(selectionModel, record) {

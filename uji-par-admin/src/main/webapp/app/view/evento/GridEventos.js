@@ -70,6 +70,18 @@ Ext.define('Paranimf.view.evento.GridEventos', {
             return '<a href="' + urlPrefix + 'evento/' + p.data.id + '/imagen" target="blank">' + UI.i18n.field.imagenInsertada + '</a>'
           }
         }
+      }, {
+        dataIndex: 'porcentajeIVA',
+        text: UI.i18n.field.porcentajeIVA,
+        hidden: true
+      },{
+        dataIndex: 'retencionSGAE',
+        text: UI.i18n.field.retencionSGAE,
+        hidden: true
+      },{
+        dataIndex: 'ivaSGAE',
+        text: UI.i18n.field.ivaSGAE,
+        hidden: true
       }];
 
       this.callParent(arguments);

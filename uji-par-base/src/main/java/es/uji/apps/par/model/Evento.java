@@ -19,8 +19,6 @@ public class Evento
     private String descripcionVa;
     private String companyiaEs;
     private String companyiaVa;
-    private String interpretesEs;
-    private String interpretesVa;
     private String duracionEs;
     private String duracionVa;
     private byte[] imagen;
@@ -58,9 +56,6 @@ public class Evento
 
     	evento.setCompanyiaEs(eventoDTO.getCompanyiaEs());
     	evento.setCompanyiaVa(eventoDTO.getCompanyiaVa());
-
-    	evento.setInterpretesEs(eventoDTO.getInterpretesEs());
-    	evento.setInterpretesVa(eventoDTO.getInterpretesVa());
 
     	evento.setDuracionEs(eventoDTO.getDuracionEs());
     	evento.setDuracionVa(eventoDTO.getDuracionVa());
@@ -102,9 +97,6 @@ public class Evento
     	eventoDTO.setCompanyiaEs(evento.getCompanyiaEs());
     	eventoDTO.setCompanyiaVa(evento.getCompanyiaVa());
 
-    	eventoDTO.setInterpretesEs(evento.getInterpretesEs());
-    	eventoDTO.setInterpretesVa(evento.getInterpretesVa());
-
     	eventoDTO.setDuracionEs(evento.getDuracionEs());
     	eventoDTO.setDuracionVa(evento.getDuracionVa());
 
@@ -145,9 +137,6 @@ public class Evento
 
         this.companyiaEs = eventoDTO.getCompanyiaEs();
         this.companyiaVa = eventoDTO.getCompanyiaVa();
-
-        this.interpretesEs = eventoDTO.getInterpretesEs();
-        this.interpretesVa = eventoDTO.getInterpretesVa();
 
         this.duracionEs = eventoDTO.getDuracionEs();
         this.duracionVa = eventoDTO.getDuracionVa();
@@ -192,18 +181,17 @@ public class Evento
         this.tituloEs = tituloEs;
     }
 
-    public Evento(String tituloEs, String descripcionEs, String companyiaEs, String interpretesEs,
-            String duracionEs, String premiosEs, String caracteristicasEs, String comentariosEs,
-            String tituloVa, String descripcionVa, String companyiaVa, String interpretesVa,
+    public Evento(String tituloEs, String descripcionEs, String companyiaEs, String duracionEs, 
+    		String premiosEs, String caracteristicasEs, String comentariosEs,
+            String tituloVa, String descripcionVa, String companyiaVa, 
             String duracionVa, String premiosVa, String caracteristicasVa, String comentariosVa,
-            byte[] dataBinary, String nombreArchivo, String mediaType, Integer tipoEventoId,
-            BigDecimal porcentajeIVA, BigDecimal retencionSGAE, BigDecimal ivaSGAE, BigDecimal asientosNumerados)
+            Integer tipoEventoId, BigDecimal porcentajeIVA, BigDecimal retencionSGAE, 
+            BigDecimal ivaSGAE, BigDecimal asientosNumerados)
     {
         this.sesiones = new ArrayList<Sesion>();
         this.tituloEs = tituloEs;
         this.descripcionEs = descripcionEs;
         this.companyiaEs = companyiaEs;
-        this.interpretesEs = interpretesEs;
         this.duracionEs = duracionEs;
         this.premiosEs = premiosEs;
         this.caracteristicasEs = caracteristicasEs;
@@ -212,15 +200,10 @@ public class Evento
         this.tituloVa = tituloVa;
         this.descripcionVa = descripcionVa;
         this.companyiaVa = companyiaVa;
-        this.interpretesVa = interpretesVa;
         this.duracionVa = duracionVa;
         this.premiosVa = premiosVa;
         this.caracteristicasVa = caracteristicasVa;
         this.comentariosVa = comentariosVa;
-
-        this.imagen = dataBinary;
-        this.imagenSrc = nombreArchivo;
-        this.imagenContentType = mediaType;
 
         if (tipoEventoId != null)
         {
@@ -348,26 +331,6 @@ public class Evento
     public void setCompanyiaVa(String companyiaVa)
     {
         this.companyiaVa = companyiaVa;
-    }
-
-    public String getInterpretesEs()
-    {
-        return interpretesEs;
-    }
-
-    public void setInterpretesEs(String interpretesEs)
-    {
-        this.interpretesEs = interpretesEs;
-    }
-
-    public String getInterpretesVa()
-    {
-        return interpretesVa;
-    }
-
-    public void setInterpretesVa(String interpretesVa)
-    {
-        this.interpretesVa = interpretesVa;
     }
 
     public String getDuracionEs()

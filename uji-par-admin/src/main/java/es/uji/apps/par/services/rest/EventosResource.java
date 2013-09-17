@@ -8,6 +8,7 @@ import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -19,9 +20,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.sun.jersey.api.core.InjectParam;
-import com.sun.jersey.core.header.FormDataContentDisposition;
-import com.sun.jersey.multipart.FormDataBodyPart;
-import com.sun.jersey.multipart.FormDataParam;
 
 import es.uji.apps.par.EventoNoEncontradoException;
 import es.uji.apps.par.GeneralPARException;
@@ -110,48 +108,6 @@ public class EventosResource
     }
 
     @POST
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response addEvento(@FormDataParam("tituloEs") String tituloEs,
-            @FormDataParam("descripcionEs") String descripcionEs,
-            @FormDataParam("companyiaEs") String companyiaEs,
-            @FormDataParam("interpretesEs") String interpretesEs,
-            @FormDataParam("duracionEs") String duracionEs,
-            @FormDataParam("dataBinary") byte[] dataBinary,
-            @FormDataParam("dataBinary") FormDataContentDisposition dataBinaryDetail,
-            @FormDataParam("dataBinary") FormDataBodyPart imagenBodyPart,
-            @FormDataParam("premiosEs") String premiosEs,
-            @FormDataParam("caracteristicasEs") String caracteristicasEs,
-            @FormDataParam("comentariosEs") String comentariosEs,
-            @FormDataParam("tipoEvento") Integer tipoEventoId,
-            @FormDataParam("tituloVa") String tituloVa,
-            @FormDataParam("descripcionVa") String descripcionVa,
-            @FormDataParam("companyiaVa") String companyiaVa,
-            @FormDataParam("interpretesVa") String interpretesVa,
-            @FormDataParam("duracionVa") String duracionVa,
-            @FormDataParam("premiosVa") String premiosVa,
-            @FormDataParam("caracteristicasVa") String caracteristicasVa,
-            @FormDataParam("comentariosVa") String comentariosVa,
-            @FormDataParam("porcentajeIVA") BigDecimal porcentajeIVA,
-            @FormDataParam("retencionSGAE") BigDecimal retencionSGAE,
-            @FormDataParam("ivaSGAE") BigDecimal ivaSGAE,
-            @FormDataParam("asientosNumerados") BigDecimal asientosNumerados) throws GeneralPARException
-    {
-        String nombreArchivo = (dataBinaryDetail != null) ? dataBinaryDetail.getFileName() : "";
-        String mediaType = (imagenBodyPart != null) ? imagenBodyPart.getMediaType().toString() : "";
-
-        Evento evento = new Evento(tituloEs, descripcionEs, companyiaEs, interpretesEs, duracionEs,
-                premiosEs, caracteristicasEs, comentariosEs, tituloVa, descripcionVa, companyiaVa,
-                interpretesVa, duracionVa, premiosVa, caracteristicasVa, comentariosVa, dataBinary,
-                nombreArchivo, mediaType, tipoEventoId, porcentajeIVA, retencionSGAE, ivaSGAE, asientosNumerados);
-        Evento newEvento = eventosService.addEvento(evento);
-
-        // TODO -> crear URL
-        return Response.created(URI.create(""))
-                .entity(new RestResponse(true, Arrays.asList(newEvento), 1)).build();
-    }
-
-    @POST
     @Path("{id}/sesiones")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -163,49 +119,22 @@ public class EventosResource
                 .build();
     }
 
-    @POST
+    @PUT
     @Path("{id}")
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response update(@PathParam("id") Integer id, @FormDataParam("tituloEs") String tituloEs,
-            @FormDataParam("descripcionEs") String descripcionEs,
-            @FormDataParam("companyiaEs") String companyiaEs,
-            @FormDataParam("interpretesEs") String interpretesEs,
-            @FormDataParam("duracionEs") String duracionEs,
-            @FormDataParam("dataBinary") byte[] dataBinary,
-            @FormDataParam("dataBinary") FormDataContentDisposition dataBinaryDetail,
-            @FormDataParam("dataBinary") FormDataBodyPart imagenBodyPart,
-            @FormDataParam("premiosEs") String premiosEs,
-            @FormDataParam("caracteristicasEs") String caracteristicasEs,
-            @FormDataParam("comentariosEs") String comentariosEs,
-            @FormDataParam("tipoEvento") Integer tipoEventoId,
-            @FormDataParam("tituloVa") String tituloVa,
-            @FormDataParam("descripcionVa") String descripcionVa,
-            @FormDataParam("companyiaVa") String companyiaVa,
-            @FormDataParam("interpretesVa") String interpretesVa,
-            @FormDataParam("duracionVa") String duracionVa,
-            @FormDataParam("premiosVa") String premiosVa,
-            @FormDataParam("caracteristicasVa") String caracteristicasVa,
-            @FormDataParam("comentariosVa") String comentariosVa,
-            @FormDataParam("porcentajeIVA") BigDecimal porcentajeIVA,
-            @FormDataParam("retencionSGAE") BigDecimal retencionSGAE,
-            @FormDataParam("ivaSGAE") BigDecimal ivaSGAE,
-            @FormDataParam("asientosNumerados") BigDecimal asientosNumerados) throws GeneralPARException
+    public Response update(@PathParam("id") Integer id, @FormParam("porcentajeIVA") BigDecimal porcentajeIVA,
+            @FormParam("retencionSGAE") BigDecimal retencionSGAE,
+            @FormParam("ivaSGAE") BigDecimal ivaSGAE) throws GeneralPARException
     {
-        String nombreArchivo = (dataBinaryDetail != null) ? dataBinaryDetail.getFileName() : "";
-        String mediaType = (imagenBodyPart != null) ? imagenBodyPart.getMediaType().toString() : "";
-
-        Evento evento = new Evento(tituloEs, descripcionEs, companyiaEs, interpretesEs, duracionEs,
-                premiosEs, caracteristicasEs, comentariosEs, tituloVa, descripcionVa, companyiaVa,
-                interpretesVa, duracionVa, premiosVa, caracteristicasVa, comentariosVa, dataBinary,
-                nombreArchivo, mediaType, tipoEventoId, porcentajeIVA, retencionSGAE, ivaSGAE, asientosNumerados);
-
+        Evento evento = new Evento();
+        evento.setRetencionSGAE(retencionSGAE);
+        evento.setIvaSGAE(ivaSGAE);
+        evento.setPorcentajeIVA(porcentajeIVA);
         evento.setId(id);
         eventosService.updateEvento(evento);
 
-        // no devolvemos el evento porque al enviar la imagen colgaba el navegador durante un tiempo
-        return Response.ok()
-                .entity(new RestResponse(true/* , Collections.singletonList(evento) */)).build();
+        return Response.ok().entity(new RestResponse(true, Arrays.asList(evento), 1)).build();
     }
 
     @PUT
@@ -219,15 +148,6 @@ public class EventosResource
         sesionesService.updateSesion(eventoId, sesion);
         return Response.ok().entity(new RestResponse(true, Arrays.asList(sesion), 1))
                 .build();
-    }
-    
-    @DELETE
-    @Path("{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response remove(@PathParam("id") Integer id)
-    {
-        eventosService.removeEvento(id);
-        return Response.ok().entity(new RestResponse(true)).build();
     }
 
     @DELETE

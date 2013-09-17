@@ -49,6 +49,7 @@ Ext.define('Paranimf.view.EditBaseForm', {
   	        params: Ext.JSON.encode(me.getValues()),
   	        success: function(form, action) {
   	          me.up('window').close();
+              grid.deseleccionar();
   	          grid.store.load();
   	        },failure: function(form, action) {
   	            if (callback)
@@ -66,7 +67,8 @@ Ext.define('Paranimf.view.EditBaseForm', {
 	    	  jsonData: me.getForm().getValues(),
 	    	  success: function (response) {
 	    		  me.up('window').close();
-	              grid.store.load();
+            grid.deseleccionar();
+	          grid.store.load();
 	    	  }, failure: function (response) {
 	    		  if (callback)
 	    			  callback(form, action);

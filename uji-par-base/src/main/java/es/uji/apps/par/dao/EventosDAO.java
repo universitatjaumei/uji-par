@@ -193,9 +193,6 @@ public class EventosDAO extends BaseDAO
         evento.setDuracionEs(tupla.get(qEventoDTO.duracionEs));
         evento.setDuracionVa(tupla.get(qEventoDTO.duracionVa));
 
-        evento.setInterpretesEs(tupla.get(qEventoDTO.interpretesEs));
-        evento.setInterpretesVa(tupla.get(qEventoDTO.interpretesVa));
-
         if (tupla.get(qEventoDTO.parTiposEvento) != null) {
             evento.setTipoEvento(tupla.get(qEventoDTO.parTiposEvento).getId());
             evento.setParTipoEvento(TipoEvento.tipoEventoDTOToTipoEvento(tupla.get(qEventoDTO.parTiposEvento)));
@@ -276,9 +273,6 @@ public class EventosDAO extends BaseDAO
             eventoDTO.setImagenContentType(evento.getImagenContentType());
         }
 
-        eventoDTO.setInterpretesEs(evento.getInterpretesEs());
-        eventoDTO.setInterpretesVa(evento.getInterpretesVa());
-
         if (evento.getParTiposEvento() != null)
         {
             TipoEventoDTO parTipoEventoDTO = new TipoEventoDTO();
@@ -305,26 +299,14 @@ public class EventosDAO extends BaseDAO
     @Transactional
     public Evento updateEvento(Evento evento)
     {
-        /*
-         * JPAUpdateClause update = new JPAUpdateClause(entityManager, qEventoDTO);
-         * update.set(qEventoDTO.caracteristicas, evento.getCaracteristicas())
-         * .set(qEventoDTO.comentarios, evento.getComentarios()) .set(qEventoDTO.companyia,
-         * evento.getCompanyia()) .set(qEventoDTO.descripcion, evento.getDescripcion())
-         * .set(qEventoDTO.duracion, evento.getDuracion()) .set(qEventoDTO.imagen,
-         * evento.getImagen()) .set(qEventoDTO.imagenSrc, evento.getImagenSrc())
-         * .set(qEventoDTO.imagenContentType, evento.getImagenContentType())
-         * .set(qEventoDTO.interpretes, evento.getInterpretes()) .set(qEventoDTO.parTiposEvento.id,
-         * evento.getTipoEvento().getId()) .set(qEventoDTO.premios, evento.getPremios())
-         * .set(qEventoDTO.titulo, evento.getTitulo())
-         * .where(qEventoDTO.id.eq(evento.getId())).execute();
-         */
-
         List<EventoDTO> listaEventos = getEventoDTO(evento.getId());
 
         if (listaEventos.size() > 0)
         {
             EventoDTO eventoDTO = listaEventos.get(0);
-            eventoDTO = rellenarParEventoDTOConParEvento(evento, eventoDTO);
+            eventoDTO.setRetencionSgae(evento.getRetencionSGAE());
+            eventoDTO.setIvaSgae(evento.getIvaSGAE());
+            eventoDTO.setPorcentajeIva(evento.getPorcentajeIVA());
 
             entityManager.persist(eventoDTO);
         }

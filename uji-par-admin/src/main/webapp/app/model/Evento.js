@@ -9,8 +9,6 @@ Ext.define('Paranimf.model.Evento', {
       'descripcionVa',
       'companyiaEs',
       'companyiaVa',
-      'interpretesEs',
-      'interpretesVa',
       'duracionEs',
       'duracionVa',
       'premiosEs',
