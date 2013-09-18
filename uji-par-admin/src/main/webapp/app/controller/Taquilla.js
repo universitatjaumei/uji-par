@@ -147,15 +147,6 @@ Ext.define('Paranimf.controller.Taquilla', {
       });
       
 	  this.intervalEstadoPago = {};
-	  
-	  var me = this;
-	  pm.bind('respuestaButacas', function(butacas){
-		   console.log('Respuesta:', butacas);
-		   
-		   me.butacasSeleccionadas = butacas;
-		   
-		   me.avanzarAPasoDePago(butacas);
-	  });      
    },
 
    	actualizaPrecio: function() {
@@ -727,12 +718,21 @@ Ext.define('Paranimf.controller.Taquilla', {
    
    comprarSiguienteNumeradas: function() {
 	   console.log('Siguiente numeradas');
-
-	   // Llamamos al iframe para que nos pase las butacas seleccionadas
+	   
+	   var me = this;
+	   
+	   // Llamamos al iframe de butacas para que nos pase las butacas seleccionadas
 	   pm({
-		   target: window.frames['iframeButacas'],
-		   type:'butacas', 
-		   data:{}
+		   target: window.frames[1],
+		   type: 'butacas',
+		   data: {},
+		   success: function(butacas){
+			   console.log('Respuesta:', butacas);
+			   
+			   me.butacasSeleccionadas = butacas;
+			   
+			   me.avanzarAPasoDePago(butacas);
+		  }
 	   });
    },   
    

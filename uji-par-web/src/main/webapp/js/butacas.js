@@ -340,11 +340,7 @@ Butacas = (function() {
 	
 	// Desde fuera del iframe nos han pedido que le pasemos las butacas seleccionadas 
 	pm.bind("butacas", function(data){
-		 pm({
-			   target: parent,
-			   type:"respuestaButacas", 
-			   data:butacasSeleccionadas
-		 });
+		 return butacasSeleccionadas;
 	});
 	
 	return {
