@@ -173,13 +173,11 @@ Ext.define('Paranimf.controller.Taquilla', {
 	   this.idCompra = null;
 	   this.idPagoTarjeta = null;
 	   this.butacasSeleccionadas = [];  
+	   
+	   var layout = this.getFormComprarCards().getLayout();
+	   layout.setActiveItem(0);
 	  
 	   this.cambiarEstadoBotonesComprar();
-	   
-	   if (this.windowEntrada != null)
-	   {
-		   this.windowEntrada.close();
-	   }
    },
    
    	muestraDisponibles: function() {
@@ -603,10 +601,18 @@ Ext.define('Paranimf.controller.Taquilla', {
    
    verEntrada: function() {
 	   var href = urlPrefix + 'compra/' + this.uuidCompra + '/pdftaquilla';
+
+	   this.getFormComprar().up('window').close();
+	   this.comprar();
+
+	   if (this.windowEntrada != null)
+	   {
+		   // Cerramos para evitar imprimir las entradas anteriores
+		   this.windowEntrada.close();
+	   }
 	   
 	   this.windowEntrada = window.open(href, 'Imprimir entrada');
 	   this.windowEntrada.print();
-	   //w.close();
    },
    
    cargaPrecios: function(sesionId, callback) {
