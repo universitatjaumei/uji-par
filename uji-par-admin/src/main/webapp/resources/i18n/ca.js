@@ -260,7 +260,9 @@ UI =
             "numeroSeient": "Número del seient",
             "mostrarAnuladas": "Mostrar anul·lades",
             "tipusEntrada": "Tipus d'entrada",
-            "printAtHome": "Marcar per a que l'entrada s'imprimisca amb format Print-At-Home"
+            "printAtHome": "Marcar per a que l'entrada s'imprimisca amb format Print-At-Home",
+            "importePagado": "Import pagat",
+            "importeADevolver": "Quantitat a retornar: "
         },
 
         "legends": {

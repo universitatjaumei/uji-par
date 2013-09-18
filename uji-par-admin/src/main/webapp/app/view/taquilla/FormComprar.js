@@ -55,76 +55,81 @@ Ext.define('Paranimf.view.taquilla.FormComprar', {
 	       {
 		       	id: 'pasoPagar',
 		       	xtype: 'panel',
+		       	layout: {
+		       		type: 'vbox',
+		       		align: 'center',
+		       		pack: 'start'
+		       	},
 		       	border: 0,
 		       	frame: false,
 		       	items: [
 		       	        {
 		       	        	name: 'panelComprar',
 		       	        	xtype: 'panel',
+		       	        	region: 'center',
 		   					frame: false,
+		   					align: 'middle',
 		   					border: 0,
-		    		       	defaults: {
-			   					 layout: {
-			   					        align: 'middle',
-			   					        pack: 'center',
-			   					        type: 'hbox'
-			   					 },
-			   					 frame: false,
-			   					 border: 0
-		    		       	},		       	        	
-		       	        	items: [
-				       	        		{
-										    fieldLabel: UI.i18n.field.tipoPago,
-										    id: 'tipoPago',
-										    xtype: 'combobox',
-										    displayField: 'name',
-										    valueField : 'value',
-										    queryMode: 'local',
-										    value: 'metalico',
-										    typeAhead: false,
-										    editable: false,
-										    allowBlank: false,
-										    forceSelection:true,
-										    store: new Ext.data.SimpleStore({
-										      fields: ['value', 'name'],
-										        data: [
-										          ['metalico', UI.i18n.field.metalico],
-										          ['tarjeta', UI.i18n.field.tarjeta]
-										        ]
-										    })
-										 },
-										 {
-										     items: [{
-													xtype: 'label',
-												    id: 'total',
-												    style: {
-												    	fontSize: '30px',
-												    	margin: '30px'
-												    }
-											 }]
-										 },
-										 {
-										     items: [{
-										    	 xtype: 'button',
-												 id: 'pagar',
-												 scale: 'large',
-												 text: UI.i18n.button.pagar
-										     }]
-										 },
-										 {
-										     items: [{
-										    	 xtype: 'label',
-												 name: 'estadoPagoTarjeta',
-											     style: {
-											    	fontSize: '20px',
-											    	margin: '30px',
-											    	textAlign: 'center',
-											    	display: 'block'
-											     }
-										     }]
-										 },
-										 {
-										     items: [{
+	   					 	layout: {
+			   				    align: 'center',
+			   					pack: 'start',
+			   					type: 'vbox'
+			   				},
+			   				defaults: {
+			   				 	frame: false,
+			   				 	border: 0,
+			   				 	margin: '10px',
+			   				 	style: {
+			   				 		fontSize: '20px'
+			   				 	},
+			   				 	fieldStyle: {
+			   				 		fontSize: '20px'
+			   				 	}
+			   				},
+		       	        	items: [{
+								fieldLabel: UI.i18n.field.tipoPago,
+							    id: 'tipoPago',
+							    xtype: 'combobox',
+							    displayField: 'name',
+							    valueField : 'value',
+							    queryMode: 'local',
+							    value: 'metalico',
+							    typeAhead: false,
+							    editable: false,
+							    allowBlank: false,
+							    forceSelection:true,
+							    store: new Ext.data.SimpleStore({
+							      fields: ['value', 'name'],
+							        data: [
+							          ['metalico', UI.i18n.field.metalico],
+							          ['tarjeta', UI.i18n.field.tarjeta]
+							        ]
+							    })
+							 }, {
+								xtype: 'label',
+							    id: 'total'
+							}, {
+								xtype: 'hiddenfield',
+								name: 'hiddenTotalPrecio'
+							}, {
+							 	xtype: 'numberfield',
+							 	name: 'importePagado',
+							 	decimalSeparator: '.',
+							 	fieldLabel: UI.i18n.field.importePagado
+							}, {
+								name: 'dineroADevolver',
+								xtype: 'label',
+								text: UI.i18n.field.importeADevolver
+							}, {
+								xtype: 'button',
+								id: 'pagar',
+								scale: 'large',
+								text: UI.i18n.button.pagar
+							}, {
+							    xtype: 'label',
+								name: 'estadoPagoTarjeta'
+							}, {
+							
 												    	 xtype: 'button',
 												    	 name: 'verEntrada',
 														 scale: 'large',
@@ -132,8 +137,6 @@ Ext.define('Paranimf.view.taquilla.FormComprar', {
 														 hidden: true
 												     }
 										     ]
-										 }	       	        		
-								 ]
 		       	        },
 		       	        {
 		       	        	name: 'panelReservar',

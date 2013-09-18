@@ -98,6 +98,15 @@ Ext.define('Paranimf.controller.Taquilla', {
       {
       	ref: 'totalPrecioCompra',
       	selector: 'panelSeleccionarNoNumeradas label[name=totalPrecios]'
+      }, {
+        ref: 'importePagado',
+        selector: 'formComprar #pasoPagar numberfield[name=importePagado]'
+      }, {
+        ref: 'importeADevolver',
+        selector: 'formComprar #pasoPagar label[name=dineroADevolver]'
+      }, {
+        ref: 'hiddenTotalPrecio',
+        selector: 'formComprar #pasoPagar hiddenfield[name=hiddenTotalPrecio]'
       }
    ],
 
@@ -143,11 +152,30 @@ Ext.define('Paranimf.controller.Taquilla', {
          },
          'panelNumeroEntradas numberfield': {
          	change: this.actualizaPrecio
+         },
+         'formComprar #tipoPago': {
+            change: this.muestraOcultaDevolucionImporte
+         },
+
+         'formComprar #pasoPagar numberfield[name=importePagado]': {
+          change: this.actualizaCambioADevolver
          }
       });
       
 	  this.intervalEstadoPago = {};
    },
+
+    actualizaCambioADevolver: function() {
+      var importeADevolver = this.getImportePagado().value - this.getHiddenTotalPrecio().value;
+      this.getImporteADevolver().setText(UI.i18n.field.importeADevolver + importeADevolver.toFixed(2) + " €");
+    },
+
+    muestraOcultaDevolucionImporte: function(combo, newvalue, oldvalue) {
+      if (newvalue == 'metalico')
+        this.getImportePagado().show();
+      else
+        this.getImportePagado().hide();
+    },
 
    	actualizaPrecio: function() {
    		var precio = 0;
@@ -225,14 +253,11 @@ Ext.define('Paranimf.controller.Taquilla', {
 
    	activaCamposCompra: function() {
    		for (var key in this.disponibles) {
-   			//console.log(key);
-   			//console.log(this.disponibles[key]);
    			var hayDisponibles = (this.disponibles[key]==0)?false:true;
    			var hayPrecioNormal = false, hayPrecioDescuento = false, hayPrecioInvitacion = false;
    			var panel;
    			
    			if (this.precios[key] != undefined && this.precios[key] != '' && this.precios[key] != 0) {
-   				//console.log(this.precios[key]['normal']);
    				hayPrecioNormal = (this.precios[key]['normal'] == undefined)?false:true;
    				hayPrecioDescuento = (this.precios[key]['descuento'] == undefined)?false:true;
    				hayPrecioInvitacion = (this.precios[key]['invitacion'] == undefined)?false:true;
@@ -290,21 +315,19 @@ Ext.define('Paranimf.controller.Taquilla', {
    },
    
    consultaImportes: function(butacas) {
-
 	   var me = this;
 	   var idSesion = this.getGridSesionesTaquilla().getSelectedRecord().data['id'];
 	   
 	   me.rellenaDatosPasoPagar("-");
+     this.getHiddenTotalPrecio().setValue("0");
 	   
 	   Ext.Ajax.request({
 	    	  url : urlPrefix + 'compra/' + idSesion + '/importe',
 	    	  method: 'POST',
 	    	  jsonData: butacas,
 	    	  success: function (response) {
-	    		  
-	    		  console.log(response);
-
 	    		  var importe = Ext.JSON.decode(response.responseText, true);
+            me.getHiddenTotalPrecio().setValue(importe);
 	    		  me.rellenaDatosPasoPagar(importe.toFixed(2));
 	    		   
 	    	  }, failure: function (response) {
@@ -676,7 +699,7 @@ Ext.define('Paranimf.controller.Taquilla', {
    },   
    
    rellenaDatosPasoPagar: function(importe) {
-	 Ext.getCmp('total').setText(UI.i18n.field.total + ": " + importe + " €");  
+	   Ext.getCmp('total').setText(UI.i18n.field.total + ": " + importe + " €");  
    },
    
    cerrarComprar: function() {
@@ -724,6 +747,7 @@ Ext.define('Paranimf.controller.Taquilla', {
    
    comprarSiguienteNumeradas: function() {
 	   console.log('Siguiente numeradas');
+
 	   
 	   var me = this;
 	   
