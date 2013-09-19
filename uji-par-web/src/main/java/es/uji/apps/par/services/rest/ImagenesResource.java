@@ -7,6 +7,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
@@ -26,10 +27,10 @@ public class ImagenesResource extends BaseResource
     @GET
     @Path("butacas/{sesion}/{seccion}")
     @Produces("image/jpeg")
-    public Response datosEntrada(@PathParam("sesion") Long sesion, @PathParam("seccion") String seccion)
-            throws Exception
+    public Response datosEntrada(@PathParam("sesion") Long sesion, @PathParam("seccion") String seccion,
+            @QueryParam("muestraReservadas") String muestraReservadas) throws Exception
     {
-        ByteArrayOutputStream os = mapaDrawer.generaImagen(sesion, seccion);
+        ByteArrayOutputStream os = mapaDrawer.generaImagen(sesion, seccion, muestraReservadas!=null && muestraReservadas.equals("true"));
 
         Response response = Response.ok(os.toByteArray())
                 .header("Cache-Control", "no-cache, no-store, must-revalidate").header("Pragma", "no-cache")

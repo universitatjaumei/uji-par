@@ -509,6 +509,7 @@ public class EntradasResource extends BaseResource
         template.put("ocultaComprar", "true");
         template.put("gastosGestion", 0.0);
         template.put("modoReserva", reserva!=null && reserva.equals("true"));
+        template.put("muestraReservadas", true);
 
         if (getLocale().getLanguage().equals("ca"))
         {

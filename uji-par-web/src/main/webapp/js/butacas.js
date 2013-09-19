@@ -107,10 +107,14 @@ Butacas = (function() {
 	function refrescaImagen(localizacion)
 	{
 		var imagen = $("#imagen_" + idDivLocalizacion(localizacion));
+		var url = imagen.attr("src");
 		
-		var url = imagen.attr("src").replace(/\?.*/, "");
+		if (url.indexOf("?") == -1)
+			url += "?";
 		
-		imagen.attr("src", url + "?" + (new Date()).getTime());
+		url = url.replace(/\&rnd=.*/, "");
+		
+		imagen.attr("src", url + "&rnd=" + (new Date()).getTime());
 	}
 	
 	function muestraDetallesSeleccionadas() {

@@ -33,10 +33,13 @@ public class MapaDrawer
     ButacasService butacasService;
 
     private BufferedImage butacaOcupada;
+    private BufferedImage butacaReservada;
     private BufferedImage butacaOcupadaDiscapacitado;
 
     // Para cuando necesitamos saber el (x, y) que ocupa la butaca en la imagen
     private Map<String, DatosButaca> datosButacas;
+    
+    // Imágenes de distintas localizaciones
     private Map<String, BufferedImage> imagenes;
 
     public MapaDrawer() throws IOException
@@ -55,10 +58,9 @@ public class MapaDrawer
             return new String[] { "platea2", "discapacitados2" };
     }
 
-    public ByteArrayOutputStream generaImagen(long idSesion, String codigoLocalizacion) throws IOException
+    public ByteArrayOutputStream generaImagen(long idSesion, String codigoLocalizacion, boolean mostrarReservadas) throws IOException
     {
-
-        BufferedImage img = dibujaButacas(idSesion, codigoLocalizacion);
+        BufferedImage img = dibujaButacas(idSesion, codigoLocalizacion, mostrarReservadas);
 
         return imagenToOutputStream(img);
     }
@@ -110,7 +112,7 @@ public class MapaDrawer
         return bos;
     }
 
-    private BufferedImage dibujaButacas(long idSesion, String localizacionDeImagen)
+    private BufferedImage dibujaButacas(long idSesion, String localizacionDeImagen, boolean mostrarReservadas)
     {
         BufferedImage imgButacas = imagenes.get(localizacionDeImagen);
         BufferedImage imgResult = new BufferedImage(imgButacas.getWidth(), imgButacas.getHeight(), imgButacas.getType());
@@ -131,19 +133,32 @@ public class MapaDrawer
 
                     BufferedImage imagenOcupada;
 
-                    if (!esDiscapacitadoAnfiteatro(butaca)) {
-	                    if (esDiscapacitado(butaca))
-	                        imagenOcupada = butacaOcupadaDiscapacitado;
-	                    else
-	                        imagenOcupada = butacaOcupada;
-	
-	                    graphics.drawImage(imagenOcupada, butaca.getxIni(), butaca.getyIni(), null);
+                    if (esDiscapacitadoAnfiteatro(butaca))
+                        continue;
+                        
+                    if (esDiscapacitado(butaca))
+                    {
+                        imagenOcupada = butacaOcupadaDiscapacitado;
                     }
+                    else
+                    {
+                        if (mostrarReservadas && esReserva(butacaDTO))
+                            imagenOcupada = butacaReservada;
+                        else
+                            imagenOcupada = butacaOcupada;
+                    }
+
+                    graphics.drawImage(imagenOcupada, butaca.getxIni(), butaca.getyIni(), null);
                 }
             }
         }
 
         return imgResult;
+    }
+
+    private Boolean esReserva(ButacaDTO butacaDTO)
+    {
+        return butacaDTO.getParCompra().getReserva();
     }
 
 	private boolean esDiscapacitadoAnfiteatro(DatosButaca butaca) {
@@ -175,6 +190,11 @@ public class MapaDrawer
         if (butacaOcupadaDiscapacitado == null)
         {
             butacaOcupadaDiscapacitado = ImageIO.read(new File(IMAGES_PATH + "/ocupadaDiscapacitado.png"));
+        }
+        
+        if (butacaReservada == null)
+        {
+            butacaReservada = ImageIO.read(new File(IMAGES_PATH + "/reservada.png"));
         }
     }
 
