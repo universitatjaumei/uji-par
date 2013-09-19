@@ -4,7 +4,7 @@ Ext.define('Paranimf.view.taquilla.GridSesionesTaquilla', {
    alias: 'widget.gridSesionesTaquilla',
    store: 'SesionesTaquilla',
 
-   title: UI.i18n.gridTitle.comprar,
+   title: UI.i18n.gridTitle.sesionesCompras,
 
    dockedItems: [{
      xtype: 'pagingtoolbar',

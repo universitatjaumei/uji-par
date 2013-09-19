@@ -794,6 +794,8 @@ Ext.define('Paranimf.controller.Taquilla', {
       if (record[0]) {
          var storeSesiones = this.getGridSesionesTaquilla().getStore();
          var eventoId = record[0].get('id');
+         
+         this.getGridSesionesTaquilla().setTitle(UI.i18n.gridTitle.sesionesCompras + ': ' + record[0].get('tituloVa'));
 
          storeSesiones.getProxy().url = urlPrefix + 'evento/' + eventoId + '/sesiones?activos=true';
          storeSesiones.load();
