@@ -73,7 +73,7 @@ Ext.define('Paranimf.view.taquilla.GridSesionesTaquilla', {
 
   showComprarWindow: function(idSesion, asientosNumerados, title, modoReserva) {
   	//console.log("showComprarWindow: ", idSesion);  
-  	var window = this.createPercentageModalWindow('formComprar', undefined, 0.8, title).show();
+  	var window = this.createPercentageModalWindow('formComprar', 0.95, 0.95, title).show();
   	var cardLayout = Ext.getCmp('pasoSeleccionar').getLayout();
   	
   	if (asientosNumerados)

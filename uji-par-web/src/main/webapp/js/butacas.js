@@ -6,20 +6,29 @@ Butacas = (function() {
 	var uuidCompra;
 	var gastosGestion;
 	var reserva;
+	var modoAdmin;
 	
 	var butacasSeleccionadas = [];
 	
-	function init(url, sesId, butacas, uuid, gastosGest, modoReserva, invitacion) {
+	function init(url, sesId, butacas, uuid, gastosGest, modoReserva, admin) {
 		baseUrl = url;
 		sesionId = sesId;
 		butacasSeleccionadas = butacas;
 		uuidCompra = uuid;
 		gastosGestion = gastosGest;
 		reserva = modoReserva;
-		muestraInvitacion = invitacion;
+		modoAdmin = admin;
 		
 		refrescaEstadoButacas();
 		compruebaEstadoButacas();
+		
+		if (modoAdmin)
+		{
+			$("#imagen_platea1,#imagen_platea2,#imagen_anfiteatro").load(function() {
+				//console.log('Imágenes cargadas', document.body.scrollHeight);
+				window.scrollTo(0, document.body.scrollHeight);
+			});
+		}	
 	}
 	
 	function cargaPrecios(callback) {
@@ -159,7 +168,7 @@ Butacas = (function() {
 		
 		st += '<option ' + selecNormal + ' value="normal">' + UI.i18n.butacas.tipoNormal + '</option><option ' + selecDescuento + ' value="descuento">' + UI.i18n.butacas.tipoDescuento + '</option>';
 		
-		if (muestraInvitacion)
+		if (modoAdmin)
 		{
 			st += '<option ' + selecInvitacion + ' value="invitacion">' + UI.i18n.butacas.tipoInvitacion + '</option>';
 		}

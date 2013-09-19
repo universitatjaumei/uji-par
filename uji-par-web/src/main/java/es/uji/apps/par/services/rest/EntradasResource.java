@@ -516,7 +516,7 @@ public class EntradasResource extends BaseResource
         template.put("gastosGestion", 0.0);
         template.put("modoReserva", reserva!=null && reserva.equals("true"));
         template.put("muestraReservadas", true);
-        template.put("muestraInvitacion", true);
+        template.put("modoAdmin", true);
 
         if (getLocale().getLanguage().equals("ca"))
         {
