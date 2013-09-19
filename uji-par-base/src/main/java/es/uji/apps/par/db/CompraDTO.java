@@ -101,6 +101,9 @@ public class CompraDTO implements Serializable {
     @Column(name = "ANULADA")
     private Boolean anulada;
     
+    @Column(name = "RECIBO_PINPAD")
+    private String reciboPinpad;
+    
 	public CompraDTO()
     {
     }
@@ -309,4 +312,11 @@ public class CompraDTO implements Serializable {
 		this.anulada = anulada;
 	}
 
+    public String getReciboPinpad() {
+        return reciboPinpad;
+    }
+
+    public void setReciboPinpad(String reciboPinpad) {
+        this.reciboPinpad = reciboPinpad;
+    }
 }

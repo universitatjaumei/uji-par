@@ -15,9 +15,11 @@ import es.uji.apps.fopreports.fop.DisplayAlignType;
 import es.uji.apps.fopreports.fop.ExternalGraphic;
 import es.uji.apps.fopreports.fop.FontStyleType;
 import es.uji.apps.fopreports.fop.Leader;
+import es.uji.apps.fopreports.fop.LinefeedTreatmentType;
 import es.uji.apps.fopreports.fop.PageBreakAfterType;
 import es.uji.apps.fopreports.fop.TableCell;
 import es.uji.apps.fopreports.fop.TextAlignType;
+import es.uji.apps.fopreports.fop.WhiteSpaceTreatmentType;
 import es.uji.apps.fopreports.fop.WrapOptionType;
 import es.uji.apps.fopreports.serialization.FopPDFSerializer;
 import es.uji.apps.fopreports.serialization.ReportSerializationException;
@@ -76,6 +78,19 @@ public class EntradaTaquillaReport extends Report
 
         creaSeccionEntrada();
 
+        Block pageBreak = withNewBlock();
+        pageBreak.setPageBreakAfter(PageBreakAfterType.ALWAYS);
+    }
+    
+    public void generaPaginasPinpad(String reciboPinpad)
+    {
+        Block block = withNewBlock();
+        //block.setReferenceOrientation("90");
+        block.setLinefeedTreatment(LinefeedTreatmentType.PRESERVE);
+        block.setFontSize("9pt");
+        
+        block.getContent().add(reciboPinpad);
+        
         Block pageBreak = withNewBlock();
         pageBreak.setPageBreakAfter(PageBreakAfterType.ALWAYS);
     }

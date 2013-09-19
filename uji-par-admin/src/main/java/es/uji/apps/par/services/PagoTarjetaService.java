@@ -65,7 +65,7 @@ public class PagoTarjetaService
                         if (pagoCorrecto(estado))
                         {
                             log.info("marcarPagada: idCompra:" + idCompra);
-                            compras.marcarPagada(idCompra);
+                            compras.marcarPagadaConRecibo(idCompra, estado.getRecibo());
                         }
                         else
                         {

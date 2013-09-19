@@ -59,6 +59,14 @@ public class EntradasService
         {
             entrada.generaPaginaButaca(compra, butaca);
         }
+        
+        if (compra.getReciboPinpad() != null)
+        {
+            for (int i=0; i<2; i++)
+            {
+                entrada.generaPaginasPinpad(compra.getReciboPinpad());
+            }
+        }
 	}
 
 	private void rellenaEntrada(String uuidCompra, EntradaReport entrada)

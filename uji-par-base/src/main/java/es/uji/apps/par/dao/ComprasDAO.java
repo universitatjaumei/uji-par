@@ -126,6 +126,17 @@ public class ComprasDAO extends BaseDAO
     }
     
     @Transactional
+    public void marcarPagadaConRecibo(Long idCompra, String reciboPinpad)
+    {
+        CompraDTO compra = getCompraById(idCompra);
+        
+        compra.setPagada(true);
+        compra.setReciboPinpad(reciboPinpad);
+        
+        entityManager.persist(compra);        
+    }
+    
+    @Transactional
     public void marcarPagadaPasarela(Long idCompra, String codigoPago)
     {
         CompraDTO compra = getCompraById(idCompra);
