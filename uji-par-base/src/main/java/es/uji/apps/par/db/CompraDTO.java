@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -71,7 +72,7 @@ public class CompraDTO implements Serializable {
     private SesionDTO parSesion;
 
 	// bi-directional many-to-one association to ButacaDTO
-	@OneToMany(mappedBy = "parCompra")
+	@OneToMany(mappedBy = "parCompra", fetch=FetchType.LAZY)
 	private List<ButacaDTO> parButacas;
 	
     @Column(name = "CODIGO_PAGO_TARJETA")

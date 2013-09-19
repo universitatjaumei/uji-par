@@ -1,5 +1,6 @@
 package es.uji.apps.par.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.exception.ConstraintViolationException;
@@ -41,13 +42,18 @@ public class ButacasDAO extends BaseDAO
     {
         QLocalizacionDTO qLocalizacionDTO = QLocalizacionDTO.localizacionDTO;
         QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
+        QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
+        
         JPAQuery query = new JPAQuery(entityManager);
 
         List<ButacaDTO> list = query
-                .from(qButacaDTO, qSesionDTO, qLocalizacionDTO)
-                .where(qButacaDTO.parSesion.id.eq(qSesionDTO.id).and(qSesionDTO.id.eq(idSesion))
-                        .and(qLocalizacionDTO.codigo.eq(codigoLocalizacion))
-                        .and(qButacaDTO.parLocalizacion.id.eq(qLocalizacionDTO.id))).list(qButacaDTO);
+                .from(qButacaDTO)
+                .join(qButacaDTO.parSesion, qSesionDTO)
+                .join(qButacaDTO.parLocalizacion, qLocalizacionDTO)
+                .join(qButacaDTO.parCompra, qCompraDTO).fetch()
+                .where(qSesionDTO.id.eq(idSesion)
+                        .and(qLocalizacionDTO.codigo.eq(codigoLocalizacion)))
+                        .list(qButacaDTO);
 
         return list;
     }
@@ -202,7 +208,11 @@ public class ButacasDAO extends BaseDAO
     @Transactional
     private JPAQuery getQueryButacasCompra(Long idCompra) {
     	JPAQuery query = new JPAQuery(entityManager);
-    	return query.from(qButacaDTO).where(qButacaDTO.parCompra.id.eq(idCompra));
+    	QCompraDTO qCompraDTO= QCompraDTO.compraDTO;
+    	
+    	return query.from(qButacaDTO)
+    	        .join(qButacaDTO.parCompra, qCompraDTO).fetch()
+    	        .where(qCompraDTO.id.eq(idCompra));
     }
 
     @Transactional
