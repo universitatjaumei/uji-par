@@ -6,6 +6,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response.Status;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.request.RequestContextListener;
@@ -202,6 +203,7 @@ public class SesionesResourceTest extends BaseResourceTest
     }
     
     @Test 
+    @Ignore
     public void addSesion() {
     	TipoEvento parTipoEvento = addTipoEvento();
     	String eventoId = addEvento(parTipoEvento);
