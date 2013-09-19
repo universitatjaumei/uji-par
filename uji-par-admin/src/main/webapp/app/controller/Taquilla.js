@@ -612,13 +612,6 @@ Ext.define('Paranimf.controller.Taquilla', {
    },
    
    muestraEnlacePdf: function() {
-	   //console.log(this.getVerEntrada());
-	   
-	   //var href = urlPrefix + 'compra/' + this.uuidCompra + '/pdftaquilla';
-	   //this.getVerEntrada().update('<a href="' + href + '" target="_blank">' + UI.i18n.button.verEntrada + '</a>');
-	   
-	   //this.getVerEntrada().update('<a href="javascript:w=window.open(\'' + href + '\', \'Imprimir entrades\'); w.print();" target="_blank">' + UI.i18n.button.verEntrada + '</a>');
-	   
 	   this.getVerEntrada().show();
    },
    
