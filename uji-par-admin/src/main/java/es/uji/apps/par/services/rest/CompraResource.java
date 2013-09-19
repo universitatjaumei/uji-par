@@ -69,7 +69,7 @@ public class CompraResource extends BaseResource
     @Produces(MediaType.APPLICATION_JSON)
     public Response anularCompraOReserva(@PathParam("idSesion") Long sesionId, @PathParam("idCompraReserva") Long idCompraReserva)
     {
-    	comprasService.anularCompraReserva(sesionId, idCompraReserva);
+    	comprasService.anularCompraReserva(idCompraReserva);
         return Response.ok().build();
     }
     

@@ -226,9 +226,19 @@ public class ComprasService
 		return comprasDAO.getTotalComprasBySesion(sesionId, showAnuladas);
 	}
 
-	public void anularCompraReserva(Long sesionId, Long idCompraReserva) {
-		comprasDAO.anularCompraReserva(sesionId, idCompraReserva);
+	public void anularCompraReserva(Long idCompraReserva) {
+		comprasDAO.anularCompraReserva(idCompraReserva);
 	}
+	
+    public void anulaReservasCaducadas()
+    {
+        List<CompraDTO> aCaducar = comprasDAO.getReservasACaducar(new Date());
+        
+        for (CompraDTO compraDTO:aCaducar)
+        {
+            anularCompraReserva(compraDTO.getId());
+        }
+    }
 }
 
 

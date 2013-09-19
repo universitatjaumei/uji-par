@@ -21,6 +21,7 @@ import es.uji.apps.par.db.QButacaDTO;
 import es.uji.apps.par.db.QCompraDTO;
 import es.uji.apps.par.db.SesionDTO;
 import es.uji.apps.par.utils.DateUtils;
+import es.uji.apps.par.utils.Utils;
 
 @Repository
 public class ComprasDAO extends BaseDAO
@@ -247,15 +248,32 @@ public class ComprasDAO extends BaseDAO
 	}
 
     @Transactional
-	public void anularCompraReserva(Long sesionId, Long idCompraReserva) {
+	public void anularCompraReserva(Long idCompraReserva) {
     	QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
     	QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
 		JPAUpdateClause updateCompra = new JPAUpdateClause(entityManager, qCompraDTO);
 		updateCompra.set(qCompraDTO.anulada, true).
-			where(qCompraDTO.id.eq(idCompraReserva).and(qCompraDTO.parSesion.id.eq(sesionId))).execute();
+			where(qCompraDTO.id.eq(idCompraReserva)).execute();
 		
 		JPAUpdateClause updateButacas = new JPAUpdateClause(entityManager, qButacaDTO);
 		updateButacas.set(qButacaDTO.anulada, true).
 			where(qButacaDTO.parCompra.id.eq(idCompraReserva)).execute();
 	}
+
+    public List<CompraDTO> getReservasACaducar(Date date)
+    {
+        QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
+        
+        JPAQuery query = new JPAQuery(entityManager);
+
+         List<CompraDTO> compras = query
+                .from(qCompraDTO)
+                .where(qCompraDTO.reserva.eq(true)
+                        .and(qCompraDTO.anulada.eq(false))
+                        .and(qCompraDTO.hasta.lt(DateUtils.dateToTimestampSafe(date))))
+                .distinct()
+                .list(qCompraDTO);
+         
+        return compras;
+    }
 }

@@ -31,17 +31,30 @@
 	<property name="repeatInterval" value="60000" />
 	<property name="startDelay" value="1000" />
   </bean>
+  
+  <bean id="anulaReservasCaducadasJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	<property name="targetObject" ref="anulaReservasCaducadas" />
+	<property name="targetMethod" value="ejecuta" />
+  </bean>
+  
+  <bean id="anulaReservasCaducadasTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+	<property name="jobDetail" ref="anulaReservasCaducadasJob" />
+	<property name="repeatInterval" value="60000" />
+	<property name="startDelay" value="1000" />
+  </bean>  
 
   <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 	<property name="jobDetails">
 	   <list>
 	      <ref bean="limpiaComprasPendientesJob" />
+	      <ref bean="anulaReservasCaducadasJob" />
 	   </list>
 	</property>
  
 	<property name="triggers">
 	    <list>
 		  <ref bean="limpiaComprasPendientesTrigger" />
+		  <ref bean="anulaReservasCaducadasTrigger" />
 	    </list>
 	</property>
   </bean>
