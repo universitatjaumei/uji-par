@@ -70,7 +70,8 @@ Ext.define('Paranimf.view.evento.FormSesiones', {
          fieldLabel: UI.i18n.field.horaInicioVentaOnline,
          minValue: '0:00 AM',
          maxValue: '23:00 PM',
-         format: 'H:i'
+         format: 'H:i',
+         increment: 30
       }, {
          fieldLabel: UI.i18n.field.endOnlineSelling,
          name: 'fechaFinVentaOnline',
@@ -84,7 +85,7 @@ Ext.define('Paranimf.view.evento.FormSesiones', {
          minValue: '0:00 AM',
          maxValue: '23:00 PM',
          format: 'H:i',
-         increment: 60
+         increment: 30
       }]
    }, {
       fieldLabel: UI.i18n.field.plantillaprecios,
