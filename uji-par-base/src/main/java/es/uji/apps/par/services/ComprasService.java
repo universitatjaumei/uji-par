@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import es.uji.apps.par.ButacaOcupadaException;
+import es.uji.apps.par.CompraInvitacionPorInternetException;
 import es.uji.apps.par.CompraSinButacasException;
 import es.uji.apps.par.FueraDePlazoVentaInternetException;
 import es.uji.apps.par.NoHayButacasLibresException;
@@ -50,12 +51,18 @@ public class ComprasService
 
     @Transactional
     public ResultadoCompra realizaCompraInternet(Long sesionId, List<Butaca> butacasSeleccionadas, String uuidCompraActual) throws FueraDePlazoVentaInternetException,
-            NoHayButacasLibresException, ButacaOcupadaException, CompraSinButacasException
+            NoHayButacasLibresException, ButacaOcupadaException, CompraSinButacasException, CompraInvitacionPorInternetException
     {
         Sesion sesion = sesionesService.getSesion(sesionId);
 
         if (!sesion.getEnPlazoVentaInternet())
             throw new FueraDePlazoVentaInternetException(sesionId);
+        
+        for (Butaca butaca : butacasSeleccionadas)
+        {
+            if (butaca.getTipo().equals("invitacion"))
+                throw new CompraInvitacionPorInternetException();
+        }
         
         // Si teníamos una compra en marcha la eliminamos (puede pasar cuando intentamos pagar con tarjeta y volvemos atrás)        
         if (uuidCompraActual != null && !uuidCompraActual.equals(""))
@@ -66,7 +73,7 @@ public class ComprasService
     
 
     public ResultadoCompra realizaCompraInternet(Long sesionId, int platea1Normal, int platea1Descuento,
-            int platea2Normal, int platea2Descuento, String uuidCompra) throws FueraDePlazoVentaInternetException, NoHayButacasLibresException, ButacaOcupadaException, CompraSinButacasException
+            int platea2Normal, int platea2Descuento, String uuidCompra) throws FueraDePlazoVentaInternetException, NoHayButacasLibresException, ButacaOcupadaException, CompraSinButacasException, CompraInvitacionPorInternetException
     {
         List<Butaca> butacasSeleccionadas = new ArrayList<Butaca>();
         

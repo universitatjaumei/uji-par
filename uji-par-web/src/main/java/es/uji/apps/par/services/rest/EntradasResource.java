@@ -23,6 +23,7 @@ import org.apache.log4j.Logger;
 import com.sun.jersey.api.core.InjectParam;
 
 import es.uji.apps.par.ButacaOcupadaException;
+import es.uji.apps.par.CompraInvitacionPorInternetException;
 import es.uji.apps.par.CompraSinButacasException;
 import es.uji.apps.par.Constantes;
 import es.uji.apps.par.FueraDePlazoVentaInternetException;
@@ -280,6 +281,11 @@ public class EntradasResource extends BaseResource
             String error = ResourceProperties.getProperty(getLocale(), "error.seleccionEntradas.noSeleccionadas");
             return paginaSeleccionEntradasNumeradas(sesionId, butacasSeleccionadas, null, error);
         }
+        catch (CompraInvitacionPorInternetException e)
+        {
+            String error = ResourceProperties.getProperty(getLocale(), "error.seleccionEntradas.invitacionPorInternet");
+            return paginaSeleccionEntradasNumeradas(sesionId, butacasSeleccionadas, null, error);
+        }
 
         if (resultadoCompra.getCorrecta())
         {
@@ -510,6 +516,7 @@ public class EntradasResource extends BaseResource
         template.put("gastosGestion", 0.0);
         template.put("modoReserva", reserva!=null && reserva.equals("true"));
         template.put("muestraReservadas", true);
+        template.put("muestraInvitacion", true);
 
         if (getLocale().getLanguage().equals("ca"))
         {

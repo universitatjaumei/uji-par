@@ -9,13 +9,14 @@ Butacas = (function() {
 	
 	var butacasSeleccionadas = [];
 	
-	function init(url, sesId, butacas, uuid, gastosGest, modoReserva) {
+	function init(url, sesId, butacas, uuid, gastosGest, modoReserva, invitacion) {
 		baseUrl = url;
 		sesionId = sesId;
 		butacasSeleccionadas = butacas;
 		uuidCompra = uuid;
 		gastosGestion = gastosGest;
 		reserva = modoReserva;
+		muestraInvitacion = invitacion;
 		
 		refrescaEstadoButacas();
 		compruebaEstadoButacas();
@@ -140,15 +141,30 @@ Butacas = (function() {
 		var st = '<select onchange="Butacas.cambiaTipoButaca(' + posicion + ', this.value)">';
 		
 		var selecNormal = 'selected',
-			selecDescuento = '';
+			selecDescuento = '',
+			selecInvitacion = '';
 		
 		if (butacasSeleccionadas[posicion]['tipo'] == 'descuento')
 		{
 			selecNormal = '';
 			selecDescuento = 'selected';
+			selecInvitacion = '';
+		}
+		else if (butacasSeleccionadas[posicion]['tipo'] == 'invitacion')
+		{
+			selecNormal = '';
+			selecDescuento = '';
+			selecInvitacion = 'selected';
 		}
 		
-		st += '<option ' + selecNormal + ' value="normal">' + UI.i18n.butacas.tipoNormal + '</option><option ' + selecDescuento + ' value="descuento">' + UI.i18n.butacas.tipoDescuento + '</option></select>';
+		st += '<option ' + selecNormal + ' value="normal">' + UI.i18n.butacas.tipoNormal + '</option><option ' + selecDescuento + ' value="descuento">' + UI.i18n.butacas.tipoDescuento + '</option>';
+		
+		if (muestraInvitacion)
+		{
+			st += '<option ' + selecInvitacion + ' value="invitacion">' + UI.i18n.butacas.tipoInvitacion + '</option>';
+		}
+		
+		st += '</select>';
 		
 		return st;
 	}

@@ -11,6 +11,7 @@ UI =
             "tipo": "Tipus",
             "tipoNormal": "Normal",
             "tipoDescuento": "Descuento",
+            "tipoInvitacion": "Invitación",
             "totalEntradas": "Total compra (IVA incl.): "
         }
     }
