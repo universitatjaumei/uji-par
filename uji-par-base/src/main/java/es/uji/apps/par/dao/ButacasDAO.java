@@ -50,7 +50,7 @@ public class ButacasDAO extends BaseDAO
                 .from(qButacaDTO)
                 .join(qButacaDTO.parSesion, qSesionDTO)
                 .join(qButacaDTO.parLocalizacion, qLocalizacionDTO)
-                .join(qButacaDTO.parCompra, qCompraDTO).fetch()
+                .leftJoin(qButacaDTO.parCompra, qCompraDTO).fetch()
                 .where(qSesionDTO.id.eq(idSesion)
                         .and(qLocalizacionDTO.codigo.eq(codigoLocalizacion)))
                         .list(qButacaDTO);
