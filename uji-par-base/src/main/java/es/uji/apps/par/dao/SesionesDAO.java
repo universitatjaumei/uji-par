@@ -87,10 +87,8 @@ public class SesionesDAO extends BaseDAO
     {
         JPAUpdateClause update = new JPAUpdateClause(entityManager, qSesionDTO);
         update.
-        	/*set(qSesionDTO.canalInternet, sesion.getCanalInternet())
-            .set(qSesionDTO.canalTaquilla, sesion.getCanalTaquilla())*/
-        	set(qSesionDTO.canalInternet, new BigDecimal(1))
-        	.set(qSesionDTO.canalTaquilla, new BigDecimal(1))
+        	set(qSesionDTO.canalInternet, sesion.getCanalInternet())
+            .set(qSesionDTO.canalTaquilla, sesion.getCanalTaquilla())
             .set(qSesionDTO.fechaCelebracion,
                  DateUtils.dateToTimestampSafe(sesion.getFechaCelebracion()))
             .set(qSesionDTO.fechaFinVentaOnline,

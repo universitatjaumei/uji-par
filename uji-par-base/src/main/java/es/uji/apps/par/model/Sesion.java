@@ -106,8 +106,7 @@ public class Sesion
 
     public void setCanalInternet(String canalInternet)
     {
-        this.canalInternet = (canalInternet != null && canalInternet.equals("on")) ? new BigDecimal(
-                1) : new BigDecimal(0);
+        this.canalInternet = (canalInternet != null && canalInternet.equals("1")) ? BigDecimal.ONE : BigDecimal.ZERO;
     }
 
     public BigDecimal getCanalTaquilla()
@@ -117,8 +116,7 @@ public class Sesion
 
     public void setCanalTaquilla(String canalTaquilla)
     {
-        this.canalTaquilla = (canalTaquilla != null && canalTaquilla.equals("on")) ? new BigDecimal(
-                1) : new BigDecimal(0);
+        this.canalTaquilla = (canalTaquilla != null && canalTaquilla.equals("1")) ?  BigDecimal.ONE : BigDecimal.ZERO;
     }
 
     // TODO

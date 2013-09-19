@@ -215,6 +215,7 @@ UI =
 			"eventDate": "Data de celebració",
 			"opening": "Obertura de portes",
 			"startOnlineSelling": "Inici venda online",
+			"canalInternet": "Disponible per a venda online",
 			"endOnlineSelling": "Fi venda online",
 			"taquilla": "Taquilla",
 			"online": "Online",

@@ -58,7 +58,16 @@ Ext.define('Paranimf.view.evento.FormSesiones', {
          labelWidth: 190,
          allowBlank: false
       },
-      items: [{
+      items: [ {
+    	 fieldLabel: UI.i18n.field.canalInternet,
+    	 name: 'canalInternet',
+    	 xtype: 'checkboxfield',
+    	 inputValue: 1,
+    	 uncheckedValue: 0,
+    	 checked: true,
+    	 allowBlank: true
+      },
+      {
          fieldLabel: UI.i18n.field.startOnlineSelling,
          name: 'fechaInicioVentaOnline',
          xtype: 'datefield',

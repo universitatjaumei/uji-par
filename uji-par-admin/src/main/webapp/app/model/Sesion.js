@@ -7,6 +7,7 @@ Ext.define('Paranimf.model.Sesion', {
       {name: 'fechaInicioVentaOnline', type: 'date', dateFormat: 'U'},
       {name: 'fechaFinVentaOnline', type: 'date', dateFormat: 'U'},
       'evento',
+      'canalInternet',
       'horaApertura',
       'horaCelebracion',
       'horaInicioVentaOnline',
