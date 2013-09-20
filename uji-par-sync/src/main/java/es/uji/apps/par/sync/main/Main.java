@@ -26,10 +26,10 @@ public class Main
 
     private void sync() throws MalformedURLException, JAXBException, IOException
     {
-        URL rssCaUrl = new URL("http://ujiapps.uji.es/cultura/paranimf/programacio/setembre/&idioma=ca&formato=rss");
+        URL rssCaUrl = new URL("http://ujiapps.uji.es/cultura/paranimf/programacio/&idioma=ca&formato=rss");
         syncService.sync(rssCaUrl.openStream());
 
-        URL rssEsUrl = new URL("http://ujiapps.uji.es/cultura/paranimf/programacio/setembre/&idioma=es&formato=rss");
+        URL rssEsUrl = new URL("http://ujiapps.uji.es/cultura/paranimf/programacio/&idioma=es&formato=rss");
         syncService.sync(rssEsUrl.openStream());
     }
 
