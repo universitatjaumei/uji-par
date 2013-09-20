@@ -1,6 +1,8 @@
 package es.uji.apps.par.services.rest;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -76,7 +78,33 @@ public class EventosResource extends BaseResource
     @Produces(MediaType.TEXT_HTML)
     public Template getEvento(@PathParam("contenidoId") Long contenidoId) throws Exception
     {
-        Evento evento = eventosService.getEventoByRssId(contenidoId);
+        try
+        {
+            Evento evento = eventosService.getEventoByRssId(contenidoId);
+
+            return getTemplateEvento(evento);
+        }
+        catch (EventoNoEncontradoException e)
+        {
+            return getTemplateEventoNoEncontrado();
+        }
+    }
+
+    private Template getTemplateEventoNoEncontrado() throws MalformedURLException, ParseException
+    {
+        HTMLTemplate template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "eventoNoEncontrado", getLocale(), APP);
+        
+        String urlBase = getUrlBase(request);
+        String url = request.getRequestURL().toString();
+
+        template.put("pagina", buildPublicPageInfo(urlBase, url, getLocale().getLanguage().toString()));
+        template.put("baseUrl", getBaseUrl());
+        
+        return template;
+    }
+
+    private Template getTemplateEvento(Evento evento) throws MalformedURLException, ParseException
+    {
         List<Sesion> sesiones = sesionesService.getSesiones(evento.getId());
 
         Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "eventoDetalle", getLocale(), APP);
