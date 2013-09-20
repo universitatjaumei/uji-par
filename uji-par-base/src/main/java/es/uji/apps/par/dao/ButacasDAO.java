@@ -221,8 +221,12 @@ public class ButacasDAO extends BaseDAO
 
     public List<ButacaDTO> getButacasNoAnuladas(Long idSesion)
     {
+        QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
+        
         JPAQuery query = new JPAQuery(entityManager);
-        return query.from(qButacaDTO).where(qButacaDTO.parSesion.id.eq(idSesion).and(qButacaDTO.anulada.eq(false))).distinct().list(qButacaDTO);
+        return query.from(qButacaDTO).join(qButacaDTO.parCompra, qCompraDTO).fetch()
+                .where(qButacaDTO.parSesion.id.eq(idSesion).and(qButacaDTO.anulada.eq(false)))
+                .distinct().list(qButacaDTO);
     }
 
     @Transactional
