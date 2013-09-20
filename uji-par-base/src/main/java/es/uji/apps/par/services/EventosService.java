@@ -50,7 +50,7 @@ public class EventosService
         eventosDAO.updateEvento(evento);
     }
 
-    public Evento getEvento(Integer eventoId) throws EventoNoEncontradoException
+    public Evento getEvento(Long eventoId) throws EventoNoEncontradoException
     {
         List<EventoDTO> listaEventosDTO = eventosDAO.getEventoDTO(eventoId.longValue());
 

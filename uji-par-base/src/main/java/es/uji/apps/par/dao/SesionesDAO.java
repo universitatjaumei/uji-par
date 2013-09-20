@@ -139,12 +139,12 @@ public class SesionesDAO extends BaseDAO
     }
 
 	@Transactional
-	public int getTotalSesionesActivas(Integer eventoId) {
+	public int getTotalSesionesActivas(Long eventoId) {
 		return (int) getQuerySesionesActivas(eventoId).count();
 	}
 
 	@Transactional
-	public int getTotalSesiones(Integer eventoId) {
+	public int getTotalSesiones(Long eventoId) {
 		return (int) getQuerySesiones(eventoId).count();
 	}
 

@@ -74,7 +74,7 @@ public class EventosResource extends BaseResource
     @GET
     @Path("{id}")
     @Produces(MediaType.TEXT_HTML)
-    public Template getEvento(@PathParam("id") Integer id) throws Exception
+    public Template getEvento(@PathParam("id") Long id) throws Exception
     {
         Evento evento = eventosService.getEvento(id);
         List<Sesion> sesiones = sesionesService.getSesiones(id);
@@ -182,7 +182,7 @@ public class EventosResource extends BaseResource
 
     @GET
     @Path("{id}/imagen")
-    public Response getImagenEvento(@PathParam("id") Integer eventoId)
+    public Response getImagenEvento(@PathParam("id") Long eventoId)
     {
         try
         {
@@ -198,7 +198,7 @@ public class EventosResource extends BaseResource
 
     @GET
     @Path("{id}/imagenEntrada")
-    public Response getImagenEntrada(@PathParam("id") Integer eventoId) throws IOException
+    public Response getImagenEntrada(@PathParam("id") Long eventoId) throws IOException
     {
         try
         {

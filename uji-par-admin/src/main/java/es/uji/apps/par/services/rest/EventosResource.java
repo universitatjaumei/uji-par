@@ -59,7 +59,7 @@ public class EventosResource
 
     @GET
     @Path("{id}/imagen")
-    public Response getImagenEvento(@PathParam("id") Integer eventoId)
+    public Response getImagenEvento(@PathParam("id") Long eventoId)
     {
         try
         {
@@ -76,7 +76,7 @@ public class EventosResource
     @GET
     @Path("{id}/sesiones")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getSesiones(@PathParam("id") Integer eventoId, @QueryParam("activos") boolean activos,
+    public Response getSesiones(@PathParam("id") Long eventoId, @QueryParam("activos") boolean activos,
     		@QueryParam("sort") String sort, @QueryParam("start") int start, @QueryParam("limit") @DefaultValue("1000") int limit)
     {
         List<Sesion> sesiones;

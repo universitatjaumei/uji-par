@@ -4,7 +4,7 @@ package es.uji.apps.par;
 public class EventoNoEncontradoException extends GeneralPARException
 {
 
-    public EventoNoEncontradoException(Integer eventoId)
+    public EventoNoEncontradoException(Long eventoId)
     {
         super("Evento no encontrado: id=" + eventoId);
     }

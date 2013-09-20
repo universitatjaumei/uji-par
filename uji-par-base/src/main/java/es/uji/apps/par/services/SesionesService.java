@@ -39,21 +39,21 @@ public class SesionesService
     @Autowired
     private PreciosPlantillaService preciosPlantillaService;
     
-    public List<Sesion> getSesiones(Integer eventoId, String sortParameter, int start, int limit)
+    public List<Sesion> getSesiones(Long eventoId, String sortParameter, int start, int limit)
     {
     	return getSesiones(eventoId, false, sortParameter, start, limit);
     }
     
-    public List<Sesion> getSesiones(Integer eventoId) {
+    public List<Sesion> getSesiones(Long eventoId) {
 		return getSesiones(eventoId, false, "", 0, 100);
 	}
     
-    public List<Sesion> getSesionesActivas(Integer eventoId, String sortParameter, int start, int limit)
+    public List<Sesion> getSesionesActivas(Long eventoId, String sortParameter, int start, int limit)
     {
         return getSesiones(eventoId, true, sortParameter, start, limit);
     }
     
-    private List<Sesion> getSesiones(Integer eventoId, boolean activos, String sortParameter, int start, int limit)
+    private List<Sesion> getSesiones(Long eventoId, boolean activos, String sortParameter, int start, int limit)
     {
         List<Sesion> listaSesiones = new ArrayList<Sesion>();
         
@@ -71,18 +71,18 @@ public class SesionesService
     }
     
     // Para el Ext que espera recibir segundos en vez de milisegundos
-    public List<Sesion> getSesionesDateEnSegundos(Integer eventoId, String sortParameter, int start, int limit)
+    public List<Sesion> getSesionesDateEnSegundos(Long eventoId, String sortParameter, int start, int limit)
     {
       return getSesionesDateEnSegundos(eventoId, false, sortParameter, start, limit);
     }
     
     // Para el Ext que espera recibir segundos en vez de milisegundos
-    public List<Sesion> getSesionesActivasDateEnSegundos(Integer eventoId, String sortParameter, int start, int limit)
+    public List<Sesion> getSesionesActivasDateEnSegundos(Long eventoId, String sortParameter, int start, int limit)
     {
     	return getSesionesDateEnSegundos(eventoId, true, sortParameter, start, limit);
     }    
     
-    public List<Sesion> getSesionesDateEnSegundos(Integer eventoId, boolean activos, String sortParameter, int start, int limit)
+    public List<Sesion> getSesionesDateEnSegundos(Long eventoId, boolean activos, String sortParameter, int start, int limit)
     {
         List<Sesion> sesiones;
         
@@ -234,11 +234,11 @@ public class SesionesService
 	    return new Sesion(sesionDAO.getSesion(id));
 	}
 
-	public int getTotalSesionesActivas(Integer eventoId) {
+	public int getTotalSesionesActivas(Long eventoId) {
 		return sesionDAO.getTotalSesionesActivas(eventoId);
 	}
 
-	public int getTotalSesiones(Integer eventoId) {
+	public int getTotalSesiones(Long eventoId) {
 		return sesionDAO.getTotalSesiones(eventoId);
 	}
 
