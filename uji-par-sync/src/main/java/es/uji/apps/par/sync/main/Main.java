@@ -17,7 +17,7 @@ import es.uji.apps.par.sync.EventosSyncService;
 @Service
 public class Main
 {
-    private static final int SYNC_SLEEP = 60000;
+    private static final int SYNC_SLEEP = 10 * 60 * 1000;
 
     public static Logger log = Logger.getLogger(Main.class);
 
