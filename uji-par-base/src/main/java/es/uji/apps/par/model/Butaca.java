@@ -26,6 +26,7 @@ public class Butaca
     private Date presentada;
     private String uuid;
     private String texto;
+    private boolean anulada;
 
     public static ButacaDTO butacaToButacaDTO(Butaca butaca)
     {
@@ -70,6 +71,9 @@ public class Butaca
         localizacion = butacaDTO.getParLocalizacion().getCodigo();
         tipo = butacaDTO.getTipo();
         presentada = butacaDTO.getPresentada();
+        
+        if (butacaDTO.getAnulada() != null)
+        	anulada = butacaDTO.getAnulada();
         
         if (butacaDTO.getParCompra() != null)
             uuid = butacaDTO.getParCompra().getUuid() + "-" + butacaDTO.getId();
@@ -216,6 +220,14 @@ public class Butaca
 
 	public void setTexto(String texto) {
 		this.texto = texto;
+	}
+
+	public boolean isAnulada() {
+		return anulada;
+	}
+
+	public void setAnulada(boolean anulada) {
+		this.anulada = anulada;
 	}
     
 }

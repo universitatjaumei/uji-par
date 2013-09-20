@@ -5,7 +5,14 @@ Ext.define('Paranimf.view.compra.GridDetalleCompras', {
   title: UI.i18n.gridTitle.detalleCompras,
   store: 'ButacasCompra',
 
-  tbar:{},
+  tbar:[{
+    action: 'anular',
+    text: UI.i18n.button.anularEntrada
+  }/*, {
+    xtype: 'checkbox',
+    fieldLabel: UI.i18n.field.mostrarAnuladas,
+    labelWidth: 120
+  }*/],
    
   dockedItems: [{
     xtype: 'pagingtoolbar',
@@ -13,6 +20,13 @@ Ext.define('Paranimf.view.compra.GridDetalleCompras', {
     dock: 'bottom',
     displayInfo: true
   }],
+
+  viewConfig: {
+    getRowClass: function(record) {
+      if (record && record.data.anulada)
+        return 'gridAnulada'
+    }
+  },
 
 
   initComponent: function() {

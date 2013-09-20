@@ -74,7 +74,11 @@ Ext.define('Paranimf.controller.ComprasReservas', {
 
       'gridCompras pagingtoolbar': {
         beforechange: this.doRefresh
-      }
+      },
+
+      'gridDetalleCompras button[action=anular]': {
+        click: this.anularButaca
+      },
     });     
   },
 
@@ -109,6 +113,34 @@ Ext.define('Paranimf.controller.ComprasReservas', {
           }, failure: function (response) {
             me.getGridCompras().setLoading(false);
             alert(UI.i18n.error.anularCompraReserva);
+          }
+        });
+      }
+    }
+  },
+
+  anularButaca: function() {
+    if (!this.getGridDetalleCompras().hasRowSelected())
+      alert(UI.i18n.message.selectRow);
+    else {
+      if (confirm(UI.i18n.message.sureAnular)) {
+        var idSesion = this.getGridSesionesComprasReservas().getSelectedColumnId();
+        var idCompra = this.getGridCompras().getSelectedColumnId();
+        var idButaca = this.getGridDetalleCompras().getSelectedColumnId();
+        var me = this;
+        this.getGridDetalleCompras().setLoading(UI.i18n.message.loading);
+
+        Ext.Ajax.request({
+          url : urlPrefix + 'compra/' + idSesion + '/' + idCompra + '/' + idButaca,
+          method: 'PUT',
+          success: function (response) {
+            //me.setStoreCompras();
+            me.getGridDetalleCompras().setLoading(false);
+            me.getGridDetalleCompras().deseleccionar();
+            me.getGridDetalleCompras().getStore().load();
+          }, failure: function (response) {
+            me.getGridDetalleCompras().setLoading(false);
+            alert(UI.i18n.error.anularEntrada);
           }
         });
       }

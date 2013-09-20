@@ -239,6 +239,10 @@ public class ComprasService
             anularCompraReserva(compraDTO.getId());
         }
     }
+
+	public void anularButaca(Long idButaca) {
+		comprasDAO.anularButaca(idButaca);
+	}
 }
 
 

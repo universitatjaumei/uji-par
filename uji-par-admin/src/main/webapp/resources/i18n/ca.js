@@ -102,7 +102,8 @@ UI =
             	"39":"Resposta del servidor incorrecta",
             	"40":"Sense dades EMV des del servidor"
             },
-            "anularCompraReserva": "S'ha produït un error anul·lant la compra/reserva"
+            "anularCompraReserva": "S'ha produït un error anul·lant la compra/reserva",
+            "anularEntrada": "S'ha produït un error anul·lant l'entrada'"
         },
         "button": {
             "closeSession": "Tancar sessió",
@@ -127,7 +128,8 @@ UI =
             "verEntrada": "Imprimir entrada",
             "reservar": "Reservar",
             "verCompras": "Veure compres/reserves",
-            "anular": "Anul·lar compra o reserva"
+            "anular": "Anul·lar compra o reserva",
+            "anularEntrada": "Anul·lar entrada individual"
         },
         "calendar": {
             "calendar": "Calendari de reserves",

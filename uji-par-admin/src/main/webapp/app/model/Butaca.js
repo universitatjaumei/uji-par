@@ -7,6 +7,7 @@ Ext.define('Paranimf.model.Butaca', {
       'fila',
       'numero',
       'tipo',
-      'precio'
+      'precio',
+      'anulada'
    ]
 });

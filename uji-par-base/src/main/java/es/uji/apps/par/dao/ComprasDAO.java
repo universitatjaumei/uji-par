@@ -21,7 +21,6 @@ import es.uji.apps.par.db.QButacaDTO;
 import es.uji.apps.par.db.QCompraDTO;
 import es.uji.apps.par.db.SesionDTO;
 import es.uji.apps.par.utils.DateUtils;
-import es.uji.apps.par.utils.Utils;
 
 @Repository
 public class ComprasDAO extends BaseDAO
@@ -276,4 +275,13 @@ public class ComprasDAO extends BaseDAO
          
         return compras;
     }
+
+    @Transactional
+	public void anularButaca(Long idButaca) {
+    	QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
+		
+		JPAUpdateClause updateButacas = new JPAUpdateClause(entityManager, qButacaDTO);
+		updateButacas.set(qButacaDTO.anulada, true).
+			where(qButacaDTO.id.eq(idButaca)).execute();
+	}
 }
