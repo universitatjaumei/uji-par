@@ -68,16 +68,23 @@ public class EntradaReport extends Report
         this.setBarcode(compra.getUuid() + "-" + butaca.getId());
 
         creaSeccionEntrada();
-        add(createHorizontalLine());
+        add(creaHorizontalLine());
 
         creaSeccionCondiciones();
         creaSeccionPublicidad();
+        
+        if (butaca.getTipo().equals("descuento"))
+        	creaWaterMark();
 
         Block pageBreak = withNewBlock();
         pageBreak.setPageBreakAfter(PageBreakAfterType.ALWAYS);
     }
 
-    private void creaSeccionPublicidad()
+    private void creaWaterMark() {
+		getSimplePageMaster().getRegionBody().setBackgroundImage("/etc/uji/par/imagenes/entrada_descuento.png");
+	}
+
+	private void creaSeccionPublicidad()
     {
         Block publicidadBlock = withNewBlock();
         
@@ -418,7 +425,7 @@ public class EntradaReport extends Report
         return table;
     }
 
-    public Block createHorizontalLine()
+    public Block creaHorizontalLine()
     {
         Leader line = new Leader();
         line.setColor(GRIS_OSCURO);
