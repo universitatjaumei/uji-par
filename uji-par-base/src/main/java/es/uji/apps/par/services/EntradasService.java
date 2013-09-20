@@ -64,7 +64,7 @@ public class EntradasService
         {
             for (int i=0; i<2; i++)
             {
-                entrada.generaPaginasPinpad(compra.getReciboPinpad());
+                entrada.generaPaginasReciboPinpad(compra.getReciboPinpad());
             }
         }
 	}
