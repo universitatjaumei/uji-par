@@ -19,7 +19,6 @@ import es.uji.apps.fopreports.fop.LinefeedTreatmentType;
 import es.uji.apps.fopreports.fop.PageBreakAfterType;
 import es.uji.apps.fopreports.fop.TableCell;
 import es.uji.apps.fopreports.fop.TextAlignType;
-import es.uji.apps.fopreports.fop.WhiteSpaceTreatmentType;
 import es.uji.apps.fopreports.fop.WrapOptionType;
 import es.uji.apps.fopreports.serialization.FopPDFSerializer;
 import es.uji.apps.fopreports.serialization.ReportSerializationException;
@@ -124,7 +123,6 @@ public class EntradaTaquillaReport extends Report
 
         block.getContent().add(createEntradaIzquierdaArriba());
         block.getContent().add(createEntradaIzquierdaCentro());
-        block.getContent().add(createEntradaIzquierdaAbajo());
 
         return block;
     }
@@ -186,14 +184,19 @@ public class EntradaTaquillaReport extends Report
     	Block text = new Block();
         text.getContent().add(property);
         text.setFontSize(size);
+        
         if (italic)
         	text.setFontStyle(FontStyleType.ITALIC);
+        
+        if (bold)
+            text.setFontWeight("bold");
+        
         return text;
 	}
 
 	private BaseTable createEntradaIzquierdaCentro()
     {
-        BaseTable table = new BaseTable(new EntradaReportStyle(), 2, "5.2cm", "5.2cm");
+        BaseTable table = new BaseTable(new EntradaReportStyle(), 2, "7.0cm", "3.2cm");
 
         table.setMarginTop("0");
 
@@ -212,31 +215,44 @@ public class EntradaTaquillaReport extends Report
         //this.fila = "10";this.numero = "10";
         
         if (this.fila != null && this.numero != null)
-        	table.withNewCell(createFilaButaca());
+        {
+        	table.withNewCell(createFilaButacaYUuid());
+        }
         else
         	table.withNewCell("");
         TableCell cellBarCode = table.withNewCell(createBarcode());
         cellBarCode.setTextAlign(TextAlignType.RIGHT);
         cellBarCode.setPaddingLeft("0.2cm");
         
-        table.withNewRow();
-        
-        TableCell celdaTipoEntrada = table.withNewCell(createTipoEntradaPrecio(), "1");
-        celdaTipoEntrada.setTextAlign(TextAlignType.RIGHT);
-        
-        TableCell celdaCodigoBarrasTxt = table.withNewCell(getBlockWithText(this.barcode, "6pt"), "1");
-        celdaCodigoBarrasTxt.setTextAlign(TextAlignType.RIGHT);
 
         return table;
     }
 	
 	private Block createTipoEntradaPrecio() {
-		String txtTipoEntradaPrecio = ResourceProperties.getProperty(locale, "entrada.precio").toUpperCase() + this.tipoEntrada + " " + this.total + "€";
-		return getBlockWithText(txtTipoEntradaPrecio, "7pt");
+		String txtTipoEntradaPrecio = ResourceProperties.getProperty(locale, "entrada.precio").toUpperCase() + this.tipoEntrada + " " + this.total + " €";
+		Block block = getBlockWithText(txtTipoEntradaPrecio, "10pt");
+		
+		block.setMarginRight("0.3cm");
+		
+		return block;
 	}
 
-	private Block createFilaButaca() {
-		Block b = new Block();
+	private Block createFilaButacaYUuid() {
+		Block b = createFilaYButaca();
+        
+        Block blockUuid = getBlockWithText(this.barcode, "8pt", false, true);
+        blockUuid.setMarginTop("0.1cm");
+        blockUuid.setMarginBottom("0.05cm");
+        b.getContent().add(blockUuid);
+        
+        b.getContent().add(createCondicionesYWeb());
+		
+		return b;
+	}
+
+    private Block createFilaYButaca()
+    {
+        Block b = new Block();
 		BlockContainer bc = new BlockContainer();
 		Block filaButaca = new Block();
 		
@@ -260,9 +276,8 @@ public class EntradaTaquillaReport extends Report
        	bc.setWidth(width + "px");
        	bc.setWrapOption(WrapOptionType.NO_WRAP);
 		b.getContent().add(bc);
-		
-		return b;
-	}
+        return b;
+    }
 
 	private Block createZona() {
 		String txtZona = this.zona.toUpperCase();
@@ -339,7 +354,12 @@ public class EntradaTaquillaReport extends Report
         String dia = ResourceProperties.getProperty(locale, "entrada.dia") + this.fecha;
         String hora =  this.hora + " " + ResourceProperties.getProperty(locale, "entrada.horas");
         String horaApertura = ResourceProperties.getProperty(locale, "entrada.apertura") + 
-        		": " + this.horaApertura + " " + ResourceProperties.getProperty(locale, "entrada.horas");
+        		": ";
+        
+        if (this.horaApertura != null)
+        {
+            horaApertura += this.horaApertura + " " + ResourceProperties.getProperty(locale, "entrada.horas"); 
+        }
         
         TableCell cell = table.withNewCell(getBlockWithText(dia, "12pt"));
         cell.setBorderRight("1px solid");
@@ -347,21 +367,24 @@ public class EntradaTaquillaReport extends Report
         cellHora.setPaddingLeft("0.4cm");
         
         table.withNewRow();
-        TableCell celdaApertura = table.withNewCell(getBlockWithText(horaApertura , "7pt"), "2");
+        TableCell celdaApertura = table.withNewCell(getBlockWithText(horaApertura , "7pt"));
         celdaApertura.setPaddingTop("0.1cm");
+        
+        TableCell celdaTipoEntrada = table.withNewCell(createTipoEntradaPrecio(), "1");
+        celdaTipoEntrada.setTextAlign(TextAlignType.RIGHT);
 
         block.getContent().add(table);
         return block;
     }
 
-    private BaseTable createEntradaIzquierdaAbajo()
+    private BaseTable createCondicionesYWeb()
     {
-        BaseTable table = new BaseTable(new EntradaReportStyle(), 1, "10.2cm");
+        BaseTable table = new BaseTable(new EntradaReportStyle(), 1, "7.2cm");
         table.withNewRow();
-        table.withNewCell(getBlockWithText(ResourceProperties.getProperty(locale, "entrada.entradaValida"), "5pt"));
+        table.withNewCell(getBlockWithText(ResourceProperties.getProperty(locale, "entrada.entradaValida"), "8pt"));
 
         table.withNewRow();
-        table.withNewCell(getBlockWithText(ResourceProperties.getProperty(locale, "entrada.condicionesWeb"), "5pt"));
+        table.withNewCell(getBlockWithText(ResourceProperties.getProperty(locale, "entrada.condicionesWeb"), "8pt"));
         return table;
     }
 
