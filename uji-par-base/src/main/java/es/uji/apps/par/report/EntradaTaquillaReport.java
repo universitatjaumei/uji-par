@@ -13,10 +13,14 @@ import es.uji.apps.fopreports.fop.BlockContainer;
 import es.uji.apps.fopreports.fop.BorderStyleType;
 import es.uji.apps.fopreports.fop.DisplayAlignType;
 import es.uji.apps.fopreports.fop.ExternalGraphic;
+import es.uji.apps.fopreports.fop.Flow;
 import es.uji.apps.fopreports.fop.FontStyleType;
 import es.uji.apps.fopreports.fop.Leader;
 import es.uji.apps.fopreports.fop.LinefeedTreatmentType;
 import es.uji.apps.fopreports.fop.PageBreakAfterType;
+import es.uji.apps.fopreports.fop.PageSequence;
+import es.uji.apps.fopreports.fop.RegionBody;
+import es.uji.apps.fopreports.fop.SimplePageMaster;
 import es.uji.apps.fopreports.fop.TableCell;
 import es.uji.apps.fopreports.fop.TextAlignType;
 import es.uji.apps.fopreports.fop.WrapOptionType;
@@ -64,6 +68,14 @@ public class EntradaTaquillaReport extends Report
         super(serializer, style);
 
         this.locale = locale;
+        
+        SimplePageMaster reciboPageMaster = withSimplePageMaster();
+        reciboPageMaster.setMasterName("reciboPinpad");
+        reciboPageMaster.setPageWidth("5cm");
+        reciboPageMaster.setPageHeight("8cm");
+        
+        RegionBody regionBody = new RegionBody();
+        reciboPageMaster.setRegionBody(regionBody);
     }
 
     public void generaPaginaButaca(CompraDTO compra, ButacaDTO butaca)
@@ -81,17 +93,27 @@ public class EntradaTaquillaReport extends Report
         pageBreak.setPageBreakAfter(PageBreakAfterType.ALWAYS);
     }
     
-    public void generaPaginasPinpad(String reciboPinpad)
+    public void generaPaginasReciboPinpad(String reciboPinpad)
     {
-        Block block = withNewBlock();
+        PageSequence pageSequence = withNewPageSequence();
+        pageSequence.setMasterReference("reciboPinpad");
+        
+        Block block = new Block();
         //block.setReferenceOrientation("90");
         block.setLinefeedTreatment(LinefeedTreatmentType.PRESERVE);
         block.setFontSize("9pt");
         
         block.getContent().add(reciboPinpad);
         
-        Block pageBreak = withNewBlock();
+        Block pageBreak = new Block();
         pageBreak.setPageBreakAfter(PageBreakAfterType.ALWAYS);
+        
+        Flow flow = new Flow();
+        flow.setFlowName("xsl-region-body");
+        pageSequence.setFlow(flow);
+        
+        flow.getMarkerOrBlockOrBlockContainer().add(block);
+        flow.getMarkerOrBlockOrBlockContainer().add(pageBreak);
     }
 
     private void creaSeccionEntrada()
