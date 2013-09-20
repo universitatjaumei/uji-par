@@ -56,6 +56,12 @@ public class EventosSyncServiceTest extends SyncBaseTest
         tipo.setNombreEs("Teatro");
 
         tiposEventosDAO.addTipoEvento(tipo);
+        
+        tipo = new TipoEvento();
+        tipo.setNombreVa("Cinema");
+        tipo.setNombreEs("Cine");
+        
+        tiposEventosDAO.addTipoEvento(tipo);
     }
 
     @Test
