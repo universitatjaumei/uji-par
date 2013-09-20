@@ -13,6 +13,7 @@
     <string name="no_sincronizada">NO SINCRONITZADA</string>
     <string name="ultima_sinc">"SINCRONITZADA: "</string>
     <string name="entrada_ok">ENTRADA CORRECTA</string>
+    <string name="entrada_descuento">ENTRADA CON DESCUENTO</string>
     <string name="ya_presentada">"JA PRESENTADA\n"</string>
     <string name="sincronizado">Sincronització correcta</string>
     <string name="entrada_no_sesion">NO TROBADA EN AQUESTA SESSIÓ (PROVI A SINCRONITZAR)</string>

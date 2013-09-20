@@ -102,7 +102,7 @@ public class ButacaDao
         return builder.where().eq("sesion_id", sesionId).and().eq("modificada", true).countOf();
     }
 
-    public Date getFechaPresentada(int sesionId, String uuid) throws SQLException, ButacaNoEncontradaException,
+    public Butaca getButacaPorUuid(int sesionId, String uuid) throws SQLException, ButacaNoEncontradaException,
             ButacaDeOtraSesionException
     {
         List<Butaca> butacas = dao.queryForEq("uuid", uuid);
@@ -121,7 +121,7 @@ public class ButacaDao
             }
             else
             {
-                return butacas.get(0).getFechaPresentada();
+                return butacas.get(0);
             }
         }
     }

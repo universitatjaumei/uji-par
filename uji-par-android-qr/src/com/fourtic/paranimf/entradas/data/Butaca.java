@@ -33,6 +33,9 @@ public class Butaca
     @DatabaseField(columnName = "modificada")
     private transient boolean modificada;
 
+    @DatabaseField(columnName = "tipo")
+    private String tipo;
+    
     @DatabaseField(foreign = true)
     private transient Sesion sesion;
 
@@ -121,5 +124,15 @@ public class Butaca
         String[] vec = uuid.split("-");
 
         return vec[vec.length - 1];
+    }
+
+    public String getTipo()
+    {
+        return tipo;
+    }
+
+    public void setTipo(String tipo)
+    {
+        this.tipo = tipo;
     }
 }

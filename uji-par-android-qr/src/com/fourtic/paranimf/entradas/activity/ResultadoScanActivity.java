@@ -12,6 +12,7 @@ import com.actionbarsherlock.view.Window;
 import com.fourtic.paranimf.entradas.R;
 import com.fourtic.paranimf.entradas.activity.base.BaseNormalActivity;
 import com.fourtic.paranimf.entradas.constants.Constants;
+import com.fourtic.paranimf.entradas.scan.ResultadoScan;
 
 public class ResultadoScanActivity extends BaseNormalActivity
 {
@@ -27,8 +28,8 @@ public class ResultadoScanActivity extends BaseNormalActivity
     @InjectExtra(value = Constants.DIALOG_MESSAGE)
     private String message;
 
-    @InjectExtra(value = Constants.DIALOG_ERROR)
-    private boolean error;
+    @InjectExtra(value = Constants.SCAN_RESULT)
+    private int resultadoScan;
 
     private Handler handler;
 
@@ -59,18 +60,32 @@ public class ResultadoScanActivity extends BaseNormalActivity
             {
                 finish();
             }
-        }, error ? RETARDO_ERROR : RETARDO_OK);
+        }, getRetardoPorResultado());
+    }
+
+    private long getRetardoPorResultado()
+    {
+        if (resultadoScan == ResultadoScan.ERROR.ordinal())
+        {
+            return RETARDO_ERROR;
+        }
+        else
+        {
+            return RETARDO_OK;
+        }
     }
 
     private void cambiaColorFondo()
     {
-        if (error)
-        {
-            rootLayout.setBackgroundColor(getResources().getColor(R.color.dialog_scan_error));
-        }
+        int colorFondo;
+
+        if (resultadoScan == ResultadoScan.OK.ordinal())
+            colorFondo = R.color.dialog_scan_ok;
+        else if (resultadoScan == ResultadoScan.DESCUENTO.ordinal())
+            colorFondo = R.color.dialog_scan_descuento;
         else
-        {
-            rootLayout.setBackgroundColor(getResources().getColor(R.color.dialog_scan_ok));
-        }
+            colorFondo = R.color.dialog_scan_error;
+
+        rootLayout.setBackgroundColor(getResources().getColor(colorFondo));
     }
 }

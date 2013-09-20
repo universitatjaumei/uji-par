@@ -13,4 +13,5 @@ public class Constants
     public static final String SESION_HORA = "SESION_HORA";
     public static final String DIALOG_MESSAGE = "DIALOG_MESSAGE";
     public static final String DIALOG_ERROR = "DIALOG_ERROR";
+    public static final String SCAN_RESULT = "scanResult";  
 }

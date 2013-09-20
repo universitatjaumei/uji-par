@@ -18,11 +18,13 @@ import com.actionbarsherlock.view.MenuItem;
 import com.fourtic.paranimf.entradas.R;
 import com.fourtic.paranimf.entradas.activity.base.BaseNormalActivity;
 import com.fourtic.paranimf.entradas.constants.Constants;
+import com.fourtic.paranimf.entradas.data.Butaca;
 import com.fourtic.paranimf.entradas.db.ButacaDao;
 import com.fourtic.paranimf.entradas.db.SesionDao;
 import com.fourtic.paranimf.entradas.exception.ButacaDeOtraSesionException;
 import com.fourtic.paranimf.entradas.exception.ButacaNoEncontradaException;
 import com.fourtic.paranimf.entradas.network.EstadoRed;
+import com.fourtic.paranimf.entradas.scan.ResultadoScan;
 import com.fourtic.paranimf.entradas.sync.SincronizadorButacas;
 import com.fourtic.paranimf.entradas.sync.SincronizadorButacas.SyncCallback;
 import com.fourtic.paranimf.utils.Utils;
@@ -227,34 +229,39 @@ public class SesionInfoActivity extends BaseNormalActivity
 
         try
         {
-            Date fechaPresentada = butacaDao.getFechaPresentada(sesionId, uuid);
+            Butaca butaca = butacaDao.getButacaPorUuid(sesionId, uuid);
 
-            if (fechaPresentada == null)
+            if (butaca.getFechaPresentada() == null)
             {
                 butacaDao.actualizaFechaPresentada(uuid, new Date());
-                muestraDialogoResultadoScan(getString(R.string.entrada_ok), false);
+
+                if (butaca.getTipo().equals("descuento"))
+                    muestraDialogoResultadoScan(getString(R.string.entrada_descuento), ResultadoScan.DESCUENTO);
+                else
+                    muestraDialogoResultadoScan(getString(R.string.entrada_ok), ResultadoScan.OK);
             }
             else
             {
-                muestraDialogoResultadoScan(getString(R.string.ya_presentada) + Utils.formatDateWithTime(fechaPresentada),
-                        true);
+                muestraDialogoResultadoScan(
+                        getString(R.string.ya_presentada) + Utils.formatDateWithTime(butaca.getFechaPresentada()),
+                        ResultadoScan.ERROR);
             }
         }
         catch (ButacaNoEncontradaException e)
         {
-            muestraDialogoResultadoScan(getString(R.string.entrada_no_sesion), true);
+            muestraDialogoResultadoScan(getString(R.string.entrada_no_sesion), ResultadoScan.ERROR);
         }
         catch (ButacaDeOtraSesionException e)
         {
-            muestraDialogoResultadoScan(getString(R.string.entrada_otra_sesion), true);
+            muestraDialogoResultadoScan(getString(R.string.entrada_otra_sesion), ResultadoScan.ERROR);
         }
     }
 
-    private void muestraDialogoResultadoScan(String message, boolean error)
+    private void muestraDialogoResultadoScan(String message, ResultadoScan resultado)
     {
         Intent intent = new Intent(this, ResultadoScanActivity.class);
         intent.putExtra(Constants.DIALOG_MESSAGE, message);
-        intent.putExtra(Constants.DIALOG_ERROR, error);
+        intent.putExtra(Constants.SCAN_RESULT, resultado.ordinal());
 
         startActivity(intent);
     }
