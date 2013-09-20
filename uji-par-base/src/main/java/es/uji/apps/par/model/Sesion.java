@@ -164,8 +164,13 @@ public class Sesion
 
 	public static Sesion SesionDTOToSesion(SesionDTO sesionDTO) {
 		Sesion sesion = new Sesion();
-		sesion.setCanalInternet(sesionDTO.getCanalInternet().toString());
-		sesion.setCanalTaquilla(sesionDTO.getCanalTaquilla().toString());
+		
+		if (sesionDTO.getCanalInternet() != null)
+		    sesion.setCanalInternet(sesionDTO.getCanalInternet().toString());
+		
+		if (sesionDTO.getCanalTaquilla() != null) 
+		    sesion.setCanalTaquilla(sesionDTO.getCanalTaquilla().toString());
+		
 		sesion.setEvento(Evento.eventoDTOtoEvento(sesionDTO.getParEvento()));
 		sesion.setFechaCelebracionWithDate(sesionDTO.getFechaCelebracion());
 		sesion.setFechaFinVentaOnline(DateUtils.dateToSpanishString(sesionDTO.getFechaFinVentaOnline()));
