@@ -1,6 +1,5 @@
 package es.uji.apps.par.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.exception.ConstraintViolationException;

@@ -222,15 +222,15 @@ public class ComprasDAO extends BaseDAO
     }
     
     @Transactional
-    public List<CompraDTO> getComprasBySesion(long sesionId, int showAnuladas, String sortParameter, int start, int limit)
+    public List<CompraDTO> getComprasBySesion(long sesionId, int showAnuladas, String sortParameter, int start, int limit, int showOnline)
     {
     	QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
-    	return getQueryComprasBySesion(sesionId, showAnuladas).orderBy(getSort(qCompraDTO, sortParameter)).
+    	return getQueryComprasBySesion(sesionId, showAnuladas, showOnline).orderBy(getSort(qCompraDTO, sortParameter)).
     			offset(start).limit(limit).list(qCompraDTO);
     }
 
     @Transactional
-	private JPAQuery getQueryComprasBySesion(long sesionId, int showAnuladas) {
+	private JPAQuery getQueryComprasBySesion(long sesionId, int showAnuladas, int showOnline) {
 		JPAQuery query = new JPAQuery(entityManager);
 		QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
 		BooleanBuilder builder = new BooleanBuilder();
@@ -238,12 +238,16 @@ public class ComprasDAO extends BaseDAO
 		
 		if (showAnuladas == 0)
 			builder.and(qCompraDTO.anulada.isNull().or(qCompraDTO.anulada.eq(false)));
+		
+		if (showOnline == 0)
+			builder.and(qCompraDTO.taquilla.eq(true));
+		
 		return query.from(qCompraDTO).where(builder);
 	}
 
     @Transactional
-	public int getTotalComprasBySesion(Long sesionId, int showAnuladas) {
-		return (int) getQueryComprasBySesion(sesionId, showAnuladas).count();
+	public int getTotalComprasBySesion(Long sesionId, int showAnuladas, int showOnline) {
+		return (int) getQueryComprasBySesion(sesionId, showAnuladas, showOnline).count();
 	}
 
     @Transactional

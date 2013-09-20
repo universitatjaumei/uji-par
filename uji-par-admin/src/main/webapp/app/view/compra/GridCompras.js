@@ -10,8 +10,14 @@ Ext.define('Paranimf.view.compra.GridCompras', {
     text: UI.i18n.button.anular
   }, {
     xtype: 'checkbox',
+    action: 'showAnuladas',
     fieldLabel: UI.i18n.field.mostrarAnuladas,
-    labelWidth: 120
+    labelWidth: 110
+  }, '-', {
+    xtype: 'checkbox',
+    action: 'showOnline',
+    fieldLabel: UI.i18n.field.mostrarOnline,
+    labelWidth: 90
   }],
    
    dockedItems: [{

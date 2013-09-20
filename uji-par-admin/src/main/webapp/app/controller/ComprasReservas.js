@@ -31,7 +31,10 @@ Ext.define('Paranimf.controller.ComprasReservas', {
       selector: 'gridSesionesComprasReservas'
     }, {
       ref: 'checkboxAnuladas',
-      selector: 'gridCompras checkbox'
+      selector: 'gridCompras checkbox[action=showAnuladas]'
+    }, {
+      ref: 'checkboxOnline',
+      selector: 'gridCompras checkbox[action=showOnline]'
     }, {
       ref: 'pagingToolbar',
       selector: 'gridCompras pagingtoolbar'
@@ -68,8 +71,12 @@ Ext.define('Paranimf.controller.ComprasReservas', {
         selectionchange: this.loadButacas
       },
 
-      'gridCompras checkbox': {
+      'gridCompras checkbox[action=showAnuladas]': {
         change: this.showAnuladas
+      },
+
+      'gridCompras checkbox[action=showOnline]': {
+        change: this.showOnline
       },
 
       'gridCompras pagingtoolbar': {
@@ -89,6 +96,12 @@ Ext.define('Paranimf.controller.ComprasReservas', {
   showAnuladas: function(checkbox, newValue, oldValue) {
     this.setStoreCompras();
     console.log("showAnuladas");
+    this.getPagingToolbar().moveFirst();
+  },
+
+  showOnline: function(checkbox, newValue, oldValue) {
+    this.setStoreCompras();
+    console.log("showOnline");
     this.getPagingToolbar().moveFirst();
   },
 
@@ -134,7 +147,6 @@ Ext.define('Paranimf.controller.ComprasReservas', {
           url : urlPrefix + 'compra/' + idSesion + '/' + idCompra + '/' + idButaca,
           method: 'PUT',
           success: function (response) {
-            //me.setStoreCompras();
             me.getGridDetalleCompras().setLoading(false);
             me.getGridDetalleCompras().deseleccionar();
             me.getGridDetalleCompras().getStore().load();
@@ -178,6 +190,7 @@ Ext.define('Paranimf.controller.ComprasReservas', {
     var me = this;
     storeCompras.getProxy().url = urlPrefix + 'compra/' + this.getGridSesionesComprasReservas().getSelectedColumnId();
     storeCompras.getProxy().setExtraParam("showAnuladas", (this.getCheckboxAnuladas().value)?1:0);
+    storeCompras.getProxy().setExtraParam("showOnline", (this.getCheckboxOnline().value)?1:0);
   },
 
   loadCompras: function() {
