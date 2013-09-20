@@ -72,16 +72,16 @@ public class EventosResource extends BaseResource
     }
 
     @GET
-    @Path("{id}")
+    @Path("{contenidoId}")
     @Produces(MediaType.TEXT_HTML)
-    public Template getEvento(@PathParam("id") Long id) throws Exception
+    public Template getEvento(@PathParam("contenidoId") Long contenidoId) throws Exception
     {
-        Evento evento = eventosService.getEvento(id);
-        List<Sesion> sesiones = sesionesService.getSesiones(id);
+        Evento evento = eventosService.getEventoByRssId(contenidoId);
+        List<Sesion> sesiones = sesionesService.getSesiones(evento.getId());
 
         Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "eventoDetalle", getLocale(), APP);
 
-        String tipoEvento, titulo, companyia, duracion, caracteristicas, premios, interpretes, descripcion;
+        String tipoEvento, titulo, companyia, duracion, caracteristicas, premios, descripcion;
 
         if (getLocale().getLanguage().equals("ca"))
         {

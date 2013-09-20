@@ -59,6 +59,16 @@ public class EventosService
         else
             throw new EventoNoEncontradoException(eventoId);
     }
+    
+    public Evento getEventoByRssId(Long contenidoId) throws EventoNoEncontradoException
+    {
+        EventoDTO eventoDTO = eventosDAO.getEventoByRssId(contenidoId.toString());
+
+        if (eventoDTO == null)
+            throw new EventoNoEncontradoException(contenidoId);
+        else
+            return new Evento(eventoDTO, true);
+    }
 
     public void removeImagen(Integer eventoId)
     {
