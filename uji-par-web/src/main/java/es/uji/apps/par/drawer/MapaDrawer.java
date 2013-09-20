@@ -35,6 +35,7 @@ public class MapaDrawer
     private BufferedImage butacaOcupada;
     private BufferedImage butacaReservada;
     private BufferedImage butacaOcupadaDiscapacitado;
+    private BufferedImage butacaReservadaDiscapacitado;
 
     // Para cuando necesitamos saber el (x, y) que ocupa la butaca en la imagen
     private Map<String, DatosButaca> datosButacas;
@@ -138,7 +139,10 @@ public class MapaDrawer
                         
                     if (esDiscapacitado(butaca))
                     {
-                        imagenOcupada = butacaOcupadaDiscapacitado;
+                        if (mostrarReservadas && esReserva(butacaDTO))
+                            imagenOcupada = butacaReservadaDiscapacitado;
+                        else
+                            imagenOcupada = butacaOcupadaDiscapacitado;
                     }
                     else
                     {
@@ -195,6 +199,11 @@ public class MapaDrawer
         if (butacaReservada == null)
         {
             butacaReservada = ImageIO.read(new File(IMAGES_PATH + "/reservada.png"));
+        }
+        
+        if (butacaReservadaDiscapacitado == null)
+        {
+            butacaReservadaDiscapacitado = ImageIO.read(new File(IMAGES_PATH + "/reservadaDiscapacitado.png"));
         }
     }
 
