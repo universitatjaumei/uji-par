@@ -217,6 +217,11 @@ public class ComprasService
         for (Compra compra : compras)
         {
             compra.setFecha(new Date(compra.getFecha().getTime()/1000));
+            if (compra.getDesde() != null)
+            	compra.setDesde(new Date(compra.getDesde().getTime()/1000));
+            
+            if (compra.getHasta() != null)
+            	compra.setHasta(new Date(compra.getHasta().getTime()/1000));
         }
         
         return compras;

@@ -13,6 +13,9 @@ Ext.define('Paranimf.model.Compra', {
       'telefono',
       'importe',
       'anulada',
-      'uuid'
+      'uuid',
+      {name: 'desde', type: 'date', dateFormat: 'U'},
+      {name: 'hasta', type: 'date', dateFormat: 'U'},
+      'observacionesReserva'
    ]
 });

@@ -22,7 +22,10 @@ public class Compra
     private Date fecha;
     private Float importe;
     private boolean anulada;
+    private Date desde;
+    private Date hasta;
     private String uuid;
+    private String observacionesReserva;
 
     public Compra(CompraDTO compraDTO)
     {
@@ -39,6 +42,10 @@ public class Compra
         this.setUuid(compraDTO.getUuid());
         if (compraDTO.getAnulada() != null)
         	this.setAnulada(compraDTO.getAnulada());
+        
+        this.setDesde(compraDTO.getDesde());
+        this.setHasta(compraDTO.getHasta());
+        this.setObservacionesReserva(compraDTO.getObservacionesReserva());
     }
 
     public static Compra compraDTOtoCompra(CompraDTO compraDTO)
@@ -168,6 +175,30 @@ public class Compra
 
 	public void setUuid(String uuid) {
 		this.uuid = uuid;
+	}
+
+	public Date getDesde() {
+		return desde;
+	}
+
+	public void setDesde(Date desde) {
+		this.desde = desde;
+	}
+
+	public Date getHasta() {
+		return hasta;
+	}
+
+	public void setHasta(Date hasta) {
+		this.hasta = hasta;
+	}
+
+	public String getObservacionesReserva() {
+		return observacionesReserva;
+	}
+
+	public void setObservacionesReserva(String observacionesReserva) {
+		this.observacionesReserva = observacionesReserva;
 	}
     
 }

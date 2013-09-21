@@ -57,21 +57,39 @@ Ext.define('Paranimf.view.compra.GridCompras', {
       xtype: 'datecolumn',          
       flex: 5
     }, {
+      hidden: true,
+      dataIndex: 'desde',
+      text: UI.i18n.field.inicioReserva,
+      xtype: 'datecolumn',
+      format: 'd/m/Y H:i',
+      flex: 3
+    }, {
+      hidden: true,
+      dataIndex: 'hasta',
+      text: UI.i18n.field.finReserva,
+      xtype: 'datecolumn',
+      format: 'd/m/Y H:i',
+      flex: 3
+    }, {
       dataIndex: 'nombre',
       text: UI.i18n.field.nameMulti,
-      flex: 5
+      flex: 5,
+      hidden: true
     }, {
       dataIndex: 'apellidos',
       text: UI.i18n.field.surnameMulti,
-      flex: 5
+      flex: 5,
+      hidden: true
     }, {
       dataIndex: 'email',
       flex: 5,
       text: UI.i18n.field.email,
+      hidden: true
     }, {
       dataIndex: 'telefono',
       flex: 2,
       text: UI.i18n.field.phone,
+      hidden: true
     }, {
       align: 'center',
       dataIndex: 'importe',
@@ -112,13 +130,20 @@ Ext.define('Paranimf.view.compra.GridCompras', {
           return (val)?'<img src="../resources/images/tick.png" alt="Sí" title="Sí" />':'<img src="../resources/images/cross.png" alt="Sí" title="Sí" />';
       }
     }, {
+      dataIndex: 'observacionesReserva',
+      text: UI.i18n.field.observacionesReserva,
+      hidden: true,
+      flex: 2
+    }, {
       flex: 2,
+      align: 'center',
       text: UI.i18n.message.printTaquilla,
       renderer: function(val, p, rec) {
         return '<a target="blank" href="' + urlPrefix + 'compra/' + rec.data.uuid + '/pdftaquilla">' + UI.i18n.message.print + '</a>';
       }
     }, {
       flex: 2,
+      align: 'center',
       text: UI.i18n.message.printAtHome,
       renderer: function(val, p, rec) {
         return '<a target="blank" href="' + urlPrefix + 'compra/' + rec.data.uuid + '/pdf">' + UI.i18n.message.print + '</a>';

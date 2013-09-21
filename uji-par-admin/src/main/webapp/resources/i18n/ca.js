@@ -129,7 +129,8 @@ UI =
             "reservar": "Reservar",
             "verCompras": "Veure compres/reserves",
             "anular": "Anul·lar compra o reserva",
-            "anularEntrada": "Anul·lar entrada individual"
+            "anularEntrada": "Anul·lar entrada individual",
+            "buscar": "Cercar"
         },
         "calendar": {
             "calendar": "Calendari de reserves",
@@ -257,7 +258,7 @@ UI =
             "plantillaPreusInterna": "Identificador intern de la plantilla de preus",
             "precioPorEntrada": "Preu per entrada: ",
             "totalCompra": "Total de les entrades comprades: ",
-            "fechaPrimeraSesion": "Data de la primera sessió",
+            "fechaPrimeraSesion": "Data primera sessió",
             "importe": "Import",
             "fila": "Fila del seient",
             "numeroSeient": "Número del seient",
@@ -266,7 +267,10 @@ UI =
             "tipusEntrada": "Tipus d'entrada",
             "printAtHome": "Marcar per a que l'entrada s'imprimisca amb format Print-At-Home",
             "importePagado": "Import pagat",
-            "importeADevolver": "Quantitat a retornar: "
+            "importeADevolver": "Quantitat a retornar: ",
+            "inicioReserva": "Inici reserva",
+            "finReserva": "Fi reserva",
+            "buscarCompras": "Cerca per identificador, preu i observacions de reserva"
         },
 
         "legends": {
