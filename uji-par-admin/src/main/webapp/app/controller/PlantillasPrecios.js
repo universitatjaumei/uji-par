@@ -46,7 +46,12 @@ Ext.define('Paranimf.controller.PlantillasPrecios', {
          },
 
          'gridPlantillas': {
-             selectionchange: this.loadPrecios
+             selectionchange: this.loadPrecios,
+             itemdblclick: this.editPlantilla
+         },
+         
+         'gridPrecios': {
+        	 itemdblclick: this.editPrecio
          },
          
          'gridPrecios button[action=add]': {

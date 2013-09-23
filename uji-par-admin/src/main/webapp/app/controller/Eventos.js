@@ -48,7 +48,12 @@ Ext.define('Paranimf.controller.Eventos', {
          },
          
          'gridEventos': {
-             selectionchange: this.loadSesiones
+             selectionchange: this.loadSesiones,
+             itemdblclick: this.editEvento
+         },
+         
+         'gridSesiones': {
+             itemdblclick: this.editSesion
          },
          
          'gridSesiones button[action=add]': {

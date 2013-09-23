@@ -15,7 +15,7 @@ Ext.define('Paranimf.controller.TiposEventos', {
 
    init: function() {
       this.control({
-
+         
          'gridTiposEventos button[action=add]': {
             click: this.addTipo
          },
@@ -29,7 +29,8 @@ Ext.define('Paranimf.controller.TiposEventos', {
          },
 
          'gridTiposEventos': {
-			beforeactivate: this.recargaStore
+			beforeactivate: this.recargaStore,
+			 itemdblclick: this.editTipo
          },
 
          'formTiposEventos button[action=save]': {

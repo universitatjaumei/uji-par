@@ -54,6 +54,10 @@ Ext.define('Paranimf.controller.ComprasReservas', {
         selectionchange: this.loadSesiones
       },
       
+      'gridSesionesComprasReservas': {
+          itemdblclick: this.verCompras
+      },      
+      
       'gridSesionesComprasReservas button[action=verCompras]': {
         click: this.verCompras
       },

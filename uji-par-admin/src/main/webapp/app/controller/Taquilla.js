@@ -132,9 +132,12 @@ Ext.define('Paranimf.controller.Taquilla', {
          'gridEventosTaquilla': {
              selectionchange: this.loadSesiones
          },
-        'gridSesionesTaquilla button[action=comprar]': {
-             click: this.comprar
+         'gridSesionesTaquilla': {
+             itemdblclick: this.comprar
          },
+         'gridSesionesTaquilla button[action=comprar]': {
+             click: this.comprar
+         },         
          'gridSesionesTaquilla button[action=reservar]': {
              click: this.reservar
          },         
