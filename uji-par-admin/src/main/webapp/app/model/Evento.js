@@ -34,6 +34,8 @@ Ext.define('Paranimf.model.Evento', {
       //{name: 'fechaPrimeraSesion', type: 'date', dateFormat: 'U'},
 
       {name: 'fechaInicio', type: 'date'},
-      {name: 'fechaFin', type: 'date'}
+      {name: 'fechaFin', type: 'date'},
+      
+      'rssId'
    ]
 });

@@ -40,6 +40,10 @@ Ext.define('Paranimf.view.taquilla.GridEventosTaquilla', {
         dataIndex: 'tituloVa',
         text: UI.i18n.field.title_va,
         flex: 5
+      },{
+          dataIndex: 'rssId',
+          text: UI.i18n.field.rssId,
+          hidden: true
       }];
 
       this.callParent(arguments);

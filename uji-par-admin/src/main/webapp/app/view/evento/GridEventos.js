@@ -82,6 +82,10 @@ Ext.define('Paranimf.view.evento.GridEventos', {
         dataIndex: 'ivaSGAE',
         text: UI.i18n.field.ivaSGAE,
         hidden: true
+      },{
+          dataIndex: 'rssId',
+          text: UI.i18n.field.rssId,
+          hidden: true
       }];
 
       this.callParent(arguments);

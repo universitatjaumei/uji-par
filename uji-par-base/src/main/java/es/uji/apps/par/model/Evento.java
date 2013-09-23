@@ -38,6 +38,7 @@ public class Evento
     private BigDecimal retencionSGAE;
     private Date fechaPrimeraSesion;
     private List<Sesion> sesiones;
+    private String rssId;
 
     public Evento()
     {
@@ -80,6 +81,8 @@ public class Evento
         evento.setIvaSGAE(eventoDTO.getIvaSgae());
         evento.setRetencionSGAE(eventoDTO.getRetencionSgae());
         evento.setPorcentajeIVA(eventoDTO.getPorcentajeIva());
+        
+        evento.setRssId(eventoDTO.getRssId());
     	
     	return evento;
     }
@@ -171,6 +174,7 @@ public class Evento
         this.ivaSGAE = eventoDTO.getIvaSgae();
         this.retencionSGAE = eventoDTO.getRetencionSgae();
         this.porcentajeIVA = eventoDTO.getPorcentajeIva();
+        this.rssId = eventoDTO.getRssId();
     }
 
     public Evento(String tituloEs, TipoEvento tipoEvento)
@@ -465,5 +469,12 @@ public class Evento
     public void setSesiones(List<Sesion> sesiones) {
         this.sesiones = sesiones;
     }
-	
+
+    public String getRssId() {
+        return rssId;
+    }
+
+    public void setRssId(String rssId) {
+        this.rssId = rssId;
+    }
 }

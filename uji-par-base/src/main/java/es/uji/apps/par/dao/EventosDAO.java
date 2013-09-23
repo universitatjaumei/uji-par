@@ -131,7 +131,7 @@ public class EventosDAO extends BaseDAO
                 qEventoDTO.parTiposEvento, qEventoDTO.interpretesEs,
                 qEventoDTO.interpretesVa, qEventoDTO.premiosEs, qEventoDTO.premiosVa,
                 qEventoDTO.tituloEs, qEventoDTO.tituloVa, qEventoDTO.imagenSrc,
-                qEventoDTO.imagenContentType, qEventoDTO.asientosNumerados, qEventoDTO.retencionSgae, qEventoDTO.ivaSgae, qEventoDTO.porcentajeIva);
+                qEventoDTO.imagenContentType, qEventoDTO.asientosNumerados, qEventoDTO.retencionSgae, qEventoDTO.ivaSgae, qEventoDTO.porcentajeIva, qEventoDTO.rssId);
     	
    		sort = getSort(qEventoDTO, sortParameter, qSesion);
         query  = (activos)?getQueryEventosActivos():getQueryEventos();
@@ -213,6 +213,8 @@ public class EventosDAO extends BaseDAO
         evento.setIvaSGAE(tupla.get(qEventoDTO.ivaSgae));
         evento.setRetencionSGAE(tupla.get(qEventoDTO.retencionSgae));
         evento.setPorcentajeIVA(tupla.get(qEventoDTO.porcentajeIva));
+        
+        evento.setRssId(tupla.get(qEventoDTO.rssId));
 
         return evento;
 	}
