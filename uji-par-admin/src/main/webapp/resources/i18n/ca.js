@@ -271,7 +271,7 @@ UI =
             "importeADevolver": "Quantitat a retornar: ",
             "inicioReserva": "Inici reserva",
             "finReserva": "Fi reserva",
-            "buscarCompras": "Cerca per identificador, preu i observacions de reserva"
+            "buscarCompras": "Cerca per identificador i observacions de reserva"
         },
 
         "legends": {

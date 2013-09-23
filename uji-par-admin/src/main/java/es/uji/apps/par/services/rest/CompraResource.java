@@ -56,12 +56,13 @@ public class CompraResource extends BaseResource
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getCompras(@PathParam("id") Long sesionId, @QueryParam("showAnuladas") int showAnuladas, @QueryParam("showOnline") int showOnline,
-    		@QueryParam("sort") String sort, @QueryParam("start") int start, @QueryParam("limit") @DefaultValue("1000") int limit)
+    public Response getCompras(@PathParam("id") Long sesionId, @QueryParam("showAnuladas") int showAnuladas, 
+    		@QueryParam("showOnline") int showOnline, @QueryParam("sort") String sort, @QueryParam("start") int start, 
+    		@QueryParam("limit") @DefaultValue("1000") int limit, @QueryParam("search") @DefaultValue("") String search)
     {
         return Response.ok().entity(new RestResponse(true, 
-        		comprasService.getComprasBySesionFechaSegundos(sesionId, showAnuladas, sort, start, limit, showOnline), 
-        		comprasService.getTotalComprasBySesion(sesionId, showAnuladas, showOnline))).build();
+        		comprasService.getComprasBySesionFechaSegundos(sesionId, showAnuladas, sort, start, limit, showOnline, search), 
+        		comprasService.getTotalComprasBySesion(sesionId, showAnuladas, showOnline, search))).build();
     }
     
     @PUT

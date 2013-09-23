@@ -16,17 +16,34 @@ Ext.define('Paranimf.view.compra.PanelCompras', {
 
   items: [{
     region: 'north',
-      xtype: 'gridCompras',
-      collapsible: true,
-      minHeight: 100,
-      split: true,
-      header: true,
-      flex: 2
+    xtype: 'panel',
+    layout: 'hbox',
+    items: [{
+      xtype: 'textfield',
+      name: 'buscadorCompras',
+      fieldLabel: UI.i18n.field.buscarCompras,
+      labelWidth: 340,
+      margin: '10px 10px 10px 10px'
     }, {
-      region: 'center',
-      xtype: 'gridDetalleCompras',
-      minHeight: 100,
-      split: true,
-      flex: 1
+      xtype: 'button',
+      action: 'search',
+      text: UI.i18n.button.buscar,
+      margin: '10px 0px 10px 0px'
     }]
+  },{
+    region: 'center',
+    xtype: 'gridCompras',
+    collapsible: true,
+    minHeight: 100,
+    split: true,
+    header: true,
+    flex: 2
+  }, {
+    region: 'south',
+    xtype: 'gridDetalleCompras',
+    minHeight: 100,
+    collapsible: true,
+    split: true,
+    flex: 1
+  }]
 });

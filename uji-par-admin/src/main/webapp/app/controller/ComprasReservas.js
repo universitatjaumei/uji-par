@@ -38,6 +38,9 @@ Ext.define('Paranimf.controller.ComprasReservas', {
     }, {
       ref: 'pagingToolbar',
       selector: 'gridCompras pagingtoolbar'
+    }, {
+      ref: 'buscadorCompras',
+      selector: 'panelCompras textfield[name=buscadorCompras]'
     }
   ],
 
@@ -86,7 +89,19 @@ Ext.define('Paranimf.controller.ComprasReservas', {
       'gridDetalleCompras button[action=anular]': {
         click: this.anularButaca
       },
+
+      'panelCompras button[action=search]': {
+        click: this.buscarCompra
+      }
     });     
+  },
+
+  buscarCompra: function() {
+    var idSesion = this.getGridSesionesComprasReservas().getSelectedColumnId();
+    this.getGridCompras().store.getProxy().url = urlPrefix + 'compra/' + idSesion + '?search=' + this.getBuscadorCompras().value,
+    this.getGridCompras().store.load(function(records, operation, success) {
+
+    })
   },
 
   doRefresh: function() {

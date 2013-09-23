@@ -222,15 +222,15 @@ public class ComprasDAO extends BaseDAO
     }
     
     @Transactional
-    public List<CompraDTO> getComprasBySesion(long sesionId, int showAnuladas, String sortParameter, int start, int limit, int showOnline)
+    public List<CompraDTO> getComprasBySesion(long sesionId, int showAnuladas, String sortParameter, int start, int limit, int showOnline, String search)
     {
     	QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
-    	return getQueryComprasBySesion(sesionId, showAnuladas, showOnline).orderBy(getSort(qCompraDTO, sortParameter)).
+    	return getQueryComprasBySesion(sesionId, showAnuladas, showOnline, search).orderBy(getSort(qCompraDTO, sortParameter)).
     			offset(start).limit(limit).list(qCompraDTO);
     }
 
     @Transactional
-	private JPAQuery getQueryComprasBySesion(long sesionId, int showAnuladas, int showOnline) {
+	private JPAQuery getQueryComprasBySesion(long sesionId, int showAnuladas, int showOnline, String search) {
 		JPAQuery query = new JPAQuery(entityManager);
 		QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
 		BooleanBuilder builder = new BooleanBuilder();
@@ -242,12 +242,23 @@ public class ComprasDAO extends BaseDAO
 		if (showOnline == 0)
 			builder.and(qCompraDTO.taquilla.eq(true));
 		
+		if (!"".equals(search)) {
+			String isNumeric = "^[\\d]+$";
+			if (search.matches(isNumeric)) {
+				long numericSearch = Integer.parseInt(search);
+				builder.and(qCompraDTO.uuid.like('%' + search + '%').or(qCompraDTO.observacionesReserva.like('%' + search + '%').
+						or(qCompraDTO.id.eq(numericSearch))));
+			}
+			else
+				builder.and(qCompraDTO.uuid.like('%' + search + '%').or(qCompraDTO.observacionesReserva.like('%' + search + '%')));
+		}
+		
 		return query.from(qCompraDTO).where(builder);
 	}
 
     @Transactional
-	public int getTotalComprasBySesion(Long sesionId, int showAnuladas, int showOnline) {
-		return (int) getQueryComprasBySesion(sesionId, showAnuladas, showOnline).count();
+	public int getTotalComprasBySesion(Long sesionId, int showAnuladas, int showOnline, String search) {
+		return (int) getQueryComprasBySesion(sesionId, showAnuladas, showOnline, search).count();
 	}
 
     @Transactional
