@@ -56,6 +56,11 @@ public class EventosResource extends BaseResource
     @Produces(MediaType.APPLICATION_JSON)
     public Response getEventos()
     {
+        if (!correctApiKey(request))
+        {
+            return apiAccessDenied();
+        }
+        
         List<Evento> eventos;
         
         eventos = eventosService.getEventosConSesiones();

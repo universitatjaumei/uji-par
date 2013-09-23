@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
+import com.sun.jersey.api.client.ClientResponse.Status;
+
 import es.uji.apps.par.ResponseMessage;
 import es.uji.apps.par.i18n.ResourceProperties;
 import es.uji.commons.web.template.model.GrupoMenu;
@@ -21,6 +23,7 @@ public class BaseResource
 {
     private static final String IDIOMA = "idioma";
     protected static final String APP = "par";
+    private static final String API_KEY = "kajshdka234hsdoiuqhiu918092";
 
     @Context
     HttpServletRequest currentRequest;
@@ -102,5 +105,17 @@ public class BaseResource
         pagina.setMenu(menu);
 
         return pagina;
+    }
+    
+    protected boolean correctApiKey(HttpServletRequest request)
+    {
+        String key = request.getParameter("key");
+        
+        return API_KEY.equals(key);
+    }
+    
+    protected Response apiAccessDenied()
+    {
+        return Response.status(Status.UNAUTHORIZED).build();    
     }
 }
