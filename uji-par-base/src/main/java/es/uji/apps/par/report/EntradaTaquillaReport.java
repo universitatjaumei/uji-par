@@ -236,12 +236,8 @@ public class EntradaTaquillaReport extends Report
         table.withNewRow();
         //this.fila = "10";this.numero = "10";
         
-        if (this.fila != null && this.numero != null)
-        {
-        	table.withNewCell(createFilaButacaYUuid());
-        }
-        else
-        	table.withNewCell("");
+        table.withNewCell(createFilaButacaYUuid());
+        	
         TableCell cellBarCode = table.withNewCell(createBarcode());
         cellBarCode.setTextAlign(TextAlignType.RIGHT);
         cellBarCode.setPaddingLeft("0.2cm");
@@ -260,7 +256,16 @@ public class EntradaTaquillaReport extends Report
 	}
 
 	private Block createFilaButacaYUuid() {
-		Block b = createFilaYButaca();
+	    
+	    Block b;
+        if (this.fila != null && this.numero != null)
+        {
+            b = createFilaYButaca();
+        }
+        else
+        {
+            b = new Block();
+        }
         
         Block blockUuid = getBlockWithText(this.barcode, "8pt", false, true);
         blockUuid.setMarginTop("0.1cm");
