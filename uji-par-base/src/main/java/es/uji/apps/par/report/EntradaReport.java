@@ -5,12 +5,14 @@ import java.io.OutputStream;
 import java.util.Locale;
 
 import es.uji.apps.fopreports.Report;
+import es.uji.apps.fopreports.fop.BackgroundRepeatType;
 import es.uji.apps.fopreports.fop.Block;
 import es.uji.apps.fopreports.fop.BorderStyleType;
 import es.uji.apps.fopreports.fop.DisplayAlignType;
 import es.uji.apps.fopreports.fop.ExternalGraphic;
 import es.uji.apps.fopreports.fop.FontStyleType;
 import es.uji.apps.fopreports.fop.Leader;
+import es.uji.apps.fopreports.fop.LinefeedTreatmentType;
 import es.uji.apps.fopreports.fop.PageBreakAfterType;
 import es.uji.apps.fopreports.fop.Table;
 import es.uji.apps.fopreports.fop.TableCell;
@@ -70,19 +72,12 @@ public class EntradaReport extends Report
         creaSeccionEntrada();
         add(creaHorizontalLine());
 
-        creaSeccionCondiciones();
+        creaSeccionCondiciones(butaca.getTipo());
         creaSeccionPublicidad();
-        
-        if (butaca.getTipo().equals("descuento"))
-        	creaWaterMark();
 
         Block pageBreak = withNewBlock();
         pageBreak.setPageBreakAfter(PageBreakAfterType.ALWAYS);
     }
-
-    private void creaWaterMark() {
-		getSimplePageMaster().getRegionBody().setBackgroundImage("/etc/uji/par/imagenes/entrada_descuento.png");
-	}
 
 	private void creaSeccionPublicidad()
     {
@@ -96,13 +91,13 @@ public class EntradaReport extends Report
         publicidadBlock.getContent().add(externalGraphic);
     }
 
-    private void creaSeccionCondiciones()
+    private void creaSeccionCondiciones(String tipoEntrada)
     {
+    	String puntos = "";
+    	Block block = new Block();
         Block condicionesBlock = withNewBlock();
-
         condicionesBlock.setMarginTop("0.3cm");
 
-        Block block = new Block();
         block.setFontSize("8pt");
         block.setColor(GRIS_OSCURO);
         block.setFontWeight("bold");
@@ -110,15 +105,23 @@ public class EntradaReport extends Report
         block.getContent().add(ResourceProperties.getProperty(locale, "entrada.condiciones"));
         condicionesBlock.getContent().add(block);
 
-        for (int i = 1; i <= 10; i++)
-        {
-            block = new Block();
-            block.setFontSize("8pt");
-            block.setColor(GRIS_OSCURO);
-            block.setMarginBottom("0.2em");
-            block.getContent().add(ResourceProperties.getProperty(locale, String.format("entrada.condicion%d", i)));
-            condicionesBlock.getContent().add(block);
+        block = new Block();
+        block.setLinefeedTreatment(LinefeedTreatmentType.PRESERVE);
+        block.setFontSize("8pt");
+        block.setColor(GRIS_OSCURO);
+        block.setMarginBottom("0.2em");
+        
+        if (tipoEntrada.equals("descuento")) {
+        	block.setBackgroundImage("/etc/uji/par/imagenes/entrada_descuento.png");
+        	block.setBackgroundRepeat(BackgroundRepeatType.NO_REPEAT);
+        	block.setBackgroundPositionVertical("35%");
         }
+        
+        for (int i = 1; i <= 10; i++)
+            puntos += ResourceProperties.getProperty(locale, String.format("entrada.condicion%d", i));
+        
+        block.getContent().add(puntos);
+        condicionesBlock.getContent().add(block);
     }
 
     private void creaSeccionEntrada()
