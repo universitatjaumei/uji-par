@@ -3,8 +3,8 @@ Ext.define('Paranimf.controller.Taquilla', {
 
    views: ['EditModalWindow', 'EditBaseForm', 'EditBaseGrid', 'taquilla.PanelTaquilla', 'taquilla.GridEventosTaquilla', 'taquilla.GridSesionesTaquilla', 
            'taquilla.FormComprar', 'taquilla.PanelSeleccionarNoNumeradas', 'taquilla.PanelNumeroEntradas'],
-   stores: ['EventosTaquilla', 'SesionesTaquilla'/*, 'Compras'*/],
-   models: ['Evento', 'Compra'],
+   stores: ['EventosTaquilla', 'SesionesTaquilla', 'Horas', 'Minutos'],
+   models: ['Evento', 'Compra', 'HoraMinuto'],
 
    refs: [
       {
@@ -107,6 +107,18 @@ Ext.define('Paranimf.controller.Taquilla', {
       }, {
         ref: 'hiddenTotalPrecio',
         selector: 'formComprar #pasoPagar hiddenfield[name=hiddenTotalPrecio]'
+      }, {
+        ref: 'horaInicio',
+        selector: 'formComprar combobox[name=horaInicio]'
+      }, {
+        ref: 'horaFin',
+        selector: 'formComprar combobox[name=horaFin]'
+      }, {
+        ref: 'minutoInicio',
+        selector: 'formComprar combobox[name=minutoInicio]'
+      }, {
+        ref: 'minutoFin',
+        selector: 'formComprar combobox[name=minutoFin]'
       }
    ],
 
@@ -159,11 +171,25 @@ Ext.define('Paranimf.controller.Taquilla', {
 
          'formComprar #pasoPagar numberfield[name=importePagado]': {
           change: this.actualizaCambioADevolver
+         },
+
+         'formComprar panel[name=panelReservar]': {
+            beforerender: this.setFechaHoraFinalReserva
          }
       });
       
 	  this.intervalEstadoPago = {};
    },
+
+    setFechaHoraFinalReserva: function(panel) {
+      //console.log("setFechaHoraFinalReserva");
+      var seccionSeleccionada = this.getGridSesionesTaquilla().getSelectedRecord();
+      this.getReservarHasta().setValue(seccionSeleccionada.data.fechaFinVentaOnline);
+      var fecha = new Date();
+      fecha = seccionSeleccionada.data.fechaFinVentaOnline;
+      panel.down('combobox[name=horaFin]').setValue(fecha.getHours());
+      panel.down('combobox[name=minutoFin]').setValue(fecha.getMinutes());
+    },
 
     actualizaCambioADevolver: function() {
       var importeADevolver = this.getImportePagado().value - this.getHiddenTotalPrecio().value;
@@ -294,7 +320,6 @@ Ext.define('Paranimf.controller.Taquilla', {
    	panelSeleccionarNoNumeradasCreado: function() {
 	   var me = this;
 	   var idSesion = this.getGridSesionesTaquilla().getSelectedRecord().data['id'];
-	   
 	   this.cargaPrecios(idSesion, function() {
 		   me.cargaDisponibles(idSesion, function() {
 			   me.muestraDisponibles();
@@ -317,7 +342,7 @@ Ext.define('Paranimf.controller.Taquilla', {
    consultaImportes: function(butacas) {
 	   var me = this;
 	   var idSesion = this.getGridSesionesTaquilla().getSelectedRecord().data['id'];
-	   
+	   me.getFormComprar().setLoading(UI.i18n.message.loading);
 	   me.rellenaDatosPasoPagar("-");
      this.getHiddenTotalPrecio().setValue("0");
 	   
@@ -326,12 +351,13 @@ Ext.define('Paranimf.controller.Taquilla', {
 	    	  method: 'POST',
 	    	  jsonData: butacas,
 	    	  success: function (response) {
+            me.getFormComprar().setLoading(false);
 	    		  var importe = Ext.JSON.decode(response.responseText, true);
             me.getHiddenTotalPrecio().setValue(importe);
 	    		  me.rellenaDatosPasoPagar(importe.toFixed(2));
 	    		   
 	    	  }, failure: function (response) {
-
+            me.getFormComprar().setLoading(false);
 	    		  var respuesta = Ext.JSON.decode(response.responseText, true);
 	    		  console.log(respuesta);
 	    		  
@@ -414,13 +440,14 @@ Ext.define('Paranimf.controller.Taquilla', {
 	   var idSesion = this.getGridSesionesTaquilla().getSelectedRecord().data['id'];
 
 	   var me = this;
+     me.getFormComprar().setLoading(UI.i18n.message.loading);
 	   
 	   Ext.Ajax.request({
 	    	  url : urlPrefix + 'compra/' + idSesion,
 	    	  method: 'POST',
 	    	  jsonData: this.butacasSeleccionadas,
 	    	  success: function (response) {
-	    		  
+	    		  me.getFormComprar().setLoading(false);
 	    		   var respuesta = Ext.JSON.decode(response.responseText, true);
 
 	    		   me.idCompra = respuesta['id'];
@@ -436,7 +463,7 @@ Ext.define('Paranimf.controller.Taquilla', {
 	    		   }   
 	    		   
 	    	  }, failure: function (response) {
-	    		  
+	    		  me.getFormComprar().setLoading(false);
 	    		  console.log(respuesta);
 	    		  
 	    		  me.habilitaBotonPagar();
@@ -460,20 +487,21 @@ Ext.define('Paranimf.controller.Taquilla', {
 	   var idSesion = this.getGridSesionesTaquilla().getSelectedRecord().data['id'];
 
 	   var me = this;
-	   
+	   me.getFormComprar().setLoading(UI.i18n.message.loading);
 	   Ext.Ajax.request({
 	    	  url : urlPrefix + 'reserva/' + idSesion,
 	    	  method: 'POST',
 	    	  jsonData: {butacasSeleccionadas:this.butacasSeleccionadas, desde:this.getReservarDesde().getValue(), hasta:this.getReservarHasta().getValue()
-	    		  		 , observaciones: this.getObservacionesReserva().getValue()},
+	    		  		 , observaciones: this.getObservacionesReserva().getValue(), horaInicial: this.getHoraInicio().value, horaFinal: this.getHoraFin().value,
+                 minutoInicial: this.getMinutoInicio().value, minutoFinal: this.getMinutoFin().value},
 	    	  success: function (response) {
-	    		  
-	    		   me.habilitaBotonReservar();
-	    		   me.cerrarComprar();
+            me.getFormComprar().setLoading(false);
+            me.habilitaBotonReservar();
+            me.cerrarComprar();
 	    		  
 	    	  }, failure: function (response) {
-	    		  
-	    		  console.log(respuesta);
+            me.getFormComprar().setLoading(false); 
+            console.log(respuesta);
 	    		  
 	    		  me.habilitaBotonReservar();
 	    		  
@@ -490,7 +518,7 @@ Ext.define('Paranimf.controller.Taquilla', {
    pagarConTarjeta: function(id, concepto) {
 	   
 	   var me = this;
-	   
+	   me.getFormComprar().setLoading(UI.i18n.message.loading);
 	   me.muestraMensajePagoTarjeta(UI.i18n.message.pagoTarjetaEnviando);
 	   
 	   Ext.Ajax.request({
@@ -498,7 +526,7 @@ Ext.define('Paranimf.controller.Taquilla', {
 	    	  method: 'POST',
 	    	  jsonData: {concepto:concepto},
 	    	  success: function (response) {
-	   
+	           me.getFormComprar().setLoading(false);
 	    		  console.log('Pago con tarjeta aceptado:', response);
 	    		  
     			  var respuesta = Ext.JSON.decode(response.responseText, true);
@@ -523,7 +551,7 @@ Ext.define('Paranimf.controller.Taquilla', {
 	    		  }
     			  
 	    	  }, failure: function (response) {
-	    		  
+	    		 me.getFormComprar().setLoading(false);
 	    		  me.habilitaBotonPagar();
 	    		  me.muestraMensajePagoTarjeta(UI.i18n.error.errorRealizaPago);
 
@@ -551,12 +579,12 @@ Ext.define('Paranimf.controller.Taquilla', {
    compruebaEstadoPago: function(idPago) {
 	   
 	   var me = this;
-	   
+	   me.getFormComprar().setLoading(UI.i18n.message.loading);
 	   Ext.Ajax.request({
 	    	  url : urlPrefix + 'pago/' + idPago,
 	    	  method: 'GET',
 	    	  success: function (response) {
-	   
+	         me.getFormComprar().setLoading(false);
 	    		  //habilitaBotonPagar();
 	    		  
 	    		  console.log('Estado del pago con tarjeta:', response);
@@ -597,7 +625,7 @@ Ext.define('Paranimf.controller.Taquilla', {
 	    		  }
  			  
 	    	  }, failure: function (response) {
-	    		  
+	    		  me.getFormComprar().setLoading(false);
 	    		  me.habilitaBotonPagar();
 	    		  me.muestraMensajePagoTarjeta(UI.i18n.error.errorRealizaPago);
 
@@ -634,12 +662,12 @@ Ext.define('Paranimf.controller.Taquilla', {
    cargaPrecios: function(sesionId, callback) {
 	   
 	   var me = this;
-	   
+	   this.getFormComprar().setLoading(UI.i18n.message.loading);
 	   Ext.Ajax.request({
 	    	  url : urlPrefix + 'compra/' + sesionId + '/precios',
 	    	  method: 'GET',
 	    	  success: function (response) {
-	    		  
+	    		   me.getFormComprar().setLoading(false);
 	    		  var jsonData = Ext.decode(response.responseText);
 	    		  //console.log(jsonData);
 	    		  
@@ -656,6 +684,7 @@ Ext.define('Paranimf.controller.Taquilla', {
 	    		  callback();
 	    		  
 	    	  }, failure: function (response) {
+            me.getFormComprar().setLoading(false);
 	    		  alert(UI.i18n.error.loadingPreciosNoNumeradas);
 	    	  }
 	   	  });
@@ -664,12 +693,13 @@ Ext.define('Paranimf.controller.Taquilla', {
    cargaDisponibles: function(sesionId, callback) {
 	   
 	   var me = this;
+     me.getFormComprar().setLoading(UI.i18n.message.loading);
 	   
 	   Ext.Ajax.request({
 	    	  url : urlPrefix + 'compra/' + sesionId + '/disponibles',
 	    	  method: 'GET',
 	    	  success: function (response) {
-	    		  
+	    		  me.getFormComprar().setLoading(false);
 	    		  var jsonData = Ext.decode(response.responseText);
 	    		  //console.log(jsonData);
 	    		  
@@ -686,6 +716,7 @@ Ext.define('Paranimf.controller.Taquilla', {
 	    		  callback();
 	    		  
 	    	  }, failure: function (response) {
+            me.getFormComprar().setLoading(false);
 	    		  alert(UI.i18n.error.loadingDisponiblesNoNumeradas);
 	    	  }
 	   	  });

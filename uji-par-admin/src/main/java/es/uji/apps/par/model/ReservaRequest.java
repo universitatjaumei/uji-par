@@ -13,6 +13,10 @@ public class ReservaRequest
     private Date hasta;
     private List<Butaca> butacasSeleccionadas;
     private String observaciones;
+    private int horaInicial;
+    private int horaFinal;
+    private int minutoInicial;
+    private int minutoFinal;
 
     public ReservaRequest()
     {
@@ -58,4 +62,36 @@ public class ReservaRequest
     {
         this.observaciones = observaciones;
     }
+
+	public int getHoraInicial() {
+		return horaInicial;
+	}
+
+	public void setHoraInicial(int horaInicial) {
+		this.horaInicial = horaInicial;
+	}
+
+	public int getHoraFinal() {
+		return horaFinal;
+	}
+
+	public void setHoraFinal(int horaFinal) {
+		this.horaFinal = horaFinal;
+	}
+
+	public int getMinutoInicial() {
+		return minutoInicial;
+	}
+
+	public void setMinutoInicial(int minutoInicial) {
+		this.minutoInicial = minutoInicial;
+	}
+
+	public int getMinutoFinal() {
+		return minutoFinal;
+	}
+
+	public void setMinutoFinal(int minutoFinal) {
+		this.minutoFinal = minutoFinal;
+	}
 }

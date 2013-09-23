@@ -129,102 +129,154 @@ Ext.define('Paranimf.view.taquilla.FormComprar', {
 							    xtype: 'label',
 								name: 'estadoPagoTarjeta'
 							}, {
-							
-												    	 xtype: 'button',
-												    	 name: 'verEntrada',
-														 scale: 'large',
-														 text: UI.i18n.button.verEntrada,
-														 hidden: true
-												     }
-										     ]
-		       	        },
+					    	 	xtype: 'button',
+						    	name: 'verEntrada',
+								scale: 'large',
+								text: UI.i18n.button.verEntrada,
+								hidden: true
+						    }
+				     	]},
 		       	        {
 		       	        	name: 'panelReservar',
 		       	        	xtype: 'panel',
 		   					frame: false,
 		   					border: 0,
 		    		       	defaults: {
-			   					 layout: {
+	   					 		frame: false,
+			   					border: 0
+		    		       	},		       	        	
+		       	        	items: [{
+		       	        		layout: {
 			   					        align: 'middle',
 			   					        pack: 'center',
-			   					        type: 'hbox'
-			   					 },
-			   					 frame: false,
-			   					 border: 0
-		    		       	},		       	        	
-		       	        	items: [
-		       	        	        	{
-		       	        	        		xtype: 'panel',
-		       	        	        		items: [
-		       	        	        		        {
-														 xtype: 'panel',
-														 layout: 'hbox',
-									 					 frame: false,
-									 					 border: 0,																 
-														 items: [
-														         {
-														        	 xtype: 'panel',
-														        	 layout: 'vbox',
-												 					 frame: false,
-												 					 border: 0,		       	        	        		        	 
-														        	 items: [
-													        	        	 		{
-													        	        	 			xtype: 'label',
-													        	        	 			text: UI.i18n.field.desde
-													        	        	 		},
-													        	        	 		{
-													        	        	 			xtype: 'datepicker',
-													        	        	 			name: 'desde'
-													        	        	 		}		       	     		       	        	        	 		
-														        	 ]
-														         },
-														         {
-														        	 xtype: 'panel',
-														        	 layout: 'vbox',
-												 					 frame: false,
-												 					 border: 0,		 
-																	 style: {
-																	   	marginLeft: '30px'
-																	 },												 					 
-														        	 items: [
-													        	        	 		{
-													        	        	 			xtype: 'label',
-													        	        	 			text: UI.i18n.field.hasta
-													        	        	 		},
-													        	        	 		{
-													        	        	 			xtype: 'datepicker',
-													        	        	 			name: 'hasta'
-													        	        	 		}		       	     		       	        	        	 		
-														        	 ]
-														         }		       	        	        		         
-														 ]
-													 }
-		       	        	        		]
-		       	        	        	},
-		       	        	        	{
+			   					        type: 'vbox'
+			   					},
+		       	        	    xtype: 'panel',
+		       	        	    items: [
+		       	        	        {
+										xtype: 'panel',
+										layout: 'hbox',
+									 	frame: false,
+									 	border: 0,																 
+										items: [
+											{
+												xtype: 'panel',
+									        	layout: 'vbox',
+							 					frame: false,
+							 					border: 0,		       	        	        		        	 
+									        	items: [
+								        	    	{
+								        	    		xtype: 'label',
+								        	        	text: UI.i18n.field.desde
+								        	        },
+								        	        {
+								        	        	xtype: 'datepicker',
+								        	        	name: 'desde'
+								        	        }		       	     		       	        	        	 		
+									        	]
+									        },
+								         	{
+								        		xtype: 'panel',
+								        	 	layout: 'vbox',
+						 					 	frame: false,
+						 					 	border: 0,		 
+											 	style: {
+												   	marginLeft: '30px'
+											 	},
+								        	 	items: [
+							        	        	{
+							        	        	 	xtype: 'label',
+							        	        	 	text: UI.i18n.field.hasta
+							        	        	},
+							        	        	{
+							        	        		xtype: 'datepicker',
+							        	        		name: 'hasta'
+							        	        	}		       	     		       	        	        	 		
+								        	 	]
+								         	}		       	        	        		         
+										]
+									},
+
+									{
+		       	        	        	layout: 'hbox',
+		       	        	        	margin: '30 0 0 0',
+		       	        	        	border: 0,
+		       	        	        	items: [{
+		       	        	        		width: 170,
+					       	        		xtype: 'combobox',
+					       	        		queryMode: 'local',
+					       	        		name: 'horaInicio',
+					       	        	    store: 'Horas',
+					       	        	    displayField: 'label',
+					       	        	    valueField: 'id',
+					       	        	    fieldLabel: 'Hora inicial',
+					       	        	    allowBlank: false,
+					       	        	    style: {
+					       	        	    	marginRight: '20px'
+					       	        	    }
+					       	        	},{
+					       	        		width: 170,
+		       	        	        		xtype: 'combobox',
+		       	        	        		queryMode: 'local',
+		       	        	        		name: 'minutoInicio',
+		       	        	        		allowBlank: false,
+		       	        	        		store: 'Minutos',
+		       	        	        		displayField: 'label',
+		       	        	        		valueField: 'id',
+		       	        	        		fieldLabel: 'Minutos'
+		       	        	        	}]
+		       	        	        },
+
+		       	        	        {
+		       	        	        	layout: 'hbox',
+		       	        	        	margin: '30 0 0 0',
+       	        	        			border: 0,
+       	        	        			items: [{
+       	        	        				width: 170,
+		       	        	        		xtype: 'combobox',
+		       	        	        		name: 'horaFin',
+		       	        	        		allowBlank: false,
+		       	        	        		store: 'Horas',
+		       	        	        		displayField: 'label',
+		       	        	        		queryMode: 'local',
+		       	        	        		valueField: 'id',
+		       	        	        		fieldLabel: 'Hora final',
 		       	        	        		style: {
-		       	        	        			marginTop: '30px'
-		       	        	        		},
-		       	        	        		items:[{
-					       	        	        		xtype: 'textareafield',
-					       	        	        		grow: true,
-					       	        	        		name: 'observacionesReserva',
-					       	        	        		fieldLabel: UI.i18n.field.observacionesReserva,
-					       	        	        		width: 400
-		       	        	        				}]
-		       	        	        	},
-										{
-										    items: [{
-										   	 xtype: 'button',
-												 id: 'reservar',
-												 scale: 'large',
-												 text: UI.i18n.button.reservar,
-												 style: {
-												   	margin: '30px'
-											     }
-										    }]
-										}		       	        	        	
-								 ]
+					       	        	    	marginRight: '20px'
+					       	        	    }
+			       	        	        }, {
+			       	        	        	width: 170,
+		       	        	        		xtype: 'combobox',
+		       	        	        		name: 'minutoFin',
+		       	        	        		queryMode: 'local',
+		       	        	        		allowBlank: false,
+		       	        	        		store: 'Minutos',
+		       	        	        		displayField: 'label',
+		       	        	        		valueField: 'id',
+		       	        	        		fieldLabel: 'Minutos'
+		       	        	        	}]
+		       	        	        }, 
+
+		       	        	        {
+		       	        	        	margin: '30 0 0 0',
+		       	        	        	xtype: 'textareafield',
+		       	        	        	grow: true,
+		       	        	        	name: 'observacionesReserva',
+		       	        	        	fieldLabel: UI.i18n.field.observacionesReserva,
+		       	        	        	width: 400
+   	        	        			}, 
+
+   	        	        			{
+										xtype: 'button',
+										id: 'reservar',
+										scale: 'large',
+										text: UI.i18n.button.reservar,
+										style: {
+										  	marginLeft: '175px'
+										}
+									}
+		       	        	    ]
+		       	           	}]
 		       	        },
 						{
 		   					 layout: {

@@ -1,0 +1,32 @@
+Ext.define('Paranimf.store.Horas',
+ {
+   extend: 'Ext.data.Store',
+   model: 'Paranimf.model.HoraMinuto',
+   autoLoad: true,
+   data : [
+   	{'label': '00', 'id': 0},
+   	{'label': '01', 'id': 1},
+   	{'label': '02', 'id': 2},
+   	{'label': '03', 'id': 3},
+   	{'label': '04', 'id': 4},
+   	{'label': '05', 'id': 5},
+   	{'label': '06', 'id': 6},
+   	{'label': '07', 'id': 7},
+   	{'label': '08', 'id': 8},
+   	{'label': '09', 'id': 9},
+   	{'label': '10', 'id': 10},
+   	{'label': '11', 'id': 11},
+   	{'label': '12', 'id': 12},
+   	{'label': '13', 'id': 13},
+   	{'label': '14', 'id': 14},
+   	{'label': '15', 'id': 15},
+   	{'label': '16', 'id': 16},
+   	{'label': '17', 'id': 17},
+   	{'label': '18', 'id': 18},
+   	{'label': '19', 'id': 19},
+   	{'label': '20', 'id': 20},
+   	{'label': '21', 'id': 21},
+   	{'label': '22', 'id': 22},
+   	{'label': '23', 'id': 23}
+   ]
+});

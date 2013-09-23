@@ -2,6 +2,7 @@ package es.uji.apps.par.services;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -176,15 +177,28 @@ public class ComprasService
     {
         comprasDAO.rellenaDatosComprador(uuidCompra, nombre, apellidos, direccion, poblacion, cp, provincia, telefono, email, infoPeriodica);
     }
+    
+    private Date addHoraMinutoToFecha(Date fecha, int hora, int minuto) {
+    	Calendar cal = Calendar.getInstance();
+        cal.setTime(fecha);
+        cal.set(Calendar.HOUR_OF_DAY, hora);
+        cal.set(Calendar.MINUTE, minuto);
+        return cal.getTime();
+    }
 
     @Transactional
-    public ResultadoCompra reservaButacas(Long sesionId, Date desde, Date hasta, List<Butaca> butacasSeleccionadas, String observaciones) 
+    public ResultadoCompra reservaButacas(Long sesionId, Date desde, Date hasta, List<Butaca> butacasSeleccionadas, String observaciones, 
+    		int horaInicial, int horaFinal, int minutoInicial, int minutoFinal) 
             throws NoHayButacasLibresException, ButacaOcupadaException, CompraSinButacasException
     {
         if (butacasSeleccionadas.size() == 0)
             throw new CompraSinButacasException();
 
         ResultadoCompra resultadoCompra = new ResultadoCompra();
+        
+        
+        desde = addHoraMinutoToFecha(desde, horaInicial, minutoInicial);
+        hasta = addHoraMinutoToFecha(hasta, horaFinal, minutoFinal);
 
         CompraDTO compraDTO = comprasDAO.reserva(sesionId, new Date(), desde, hasta, observaciones);
 

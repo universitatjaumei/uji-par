@@ -34,11 +34,13 @@ public class ReservaResource extends BaseResource
     @POST
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response reservaEntrada(@PathParam("id") Long sesionId, ReservaRequest data) throws NoHayButacasLibresException, ButacaOcupadaException
+    public Response reservaEntrada(@PathParam("id") Long sesionId, ReservaRequest datosReserva) throws NoHayButacasLibresException, ButacaOcupadaException
     {
         try
         {
-            ResultadoCompra resultadoCompra =  comprasService.reservaButacas(sesionId, data.getDesde(), data.getHasta(), data.getButacasSeleccionadas(), data.getObservaciones());
+            ResultadoCompra resultadoCompra =  comprasService.reservaButacas(sesionId, datosReserva.getDesde(), datosReserva.getHasta(), 
+            		datosReserva.getButacasSeleccionadas(), datosReserva.getObservaciones(), datosReserva.getHoraInicial(), datosReserva.getHoraFinal(),
+            		datosReserva.getMinutoInicial(), datosReserva.getMinutoFinal());
             return Response.ok(resultadoCompra).build();
         }
         catch (NoHayButacasLibresException e)
