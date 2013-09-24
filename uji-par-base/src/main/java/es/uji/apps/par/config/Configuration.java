@@ -18,6 +18,7 @@ public class Configuration
     private static final String GASTOS_GESTION = "uji.par.gastosGestion";
     private static final String ENVIAR_MAILS_ERROR = "uji.par.enviarMailsError";
     private static final String URL_PIE_ENTRADA = "uji.par.urlPieEntrada";
+    private static final String ENTORNO = "uji.par.entorno";
 
     public static Logger log = Logger.getLogger(Configuration.class);
 
@@ -107,4 +108,9 @@ public class Configuration
     {
         return getProperty(URL_PIE_ENTRADA);
     }
+    
+    public static String getEntorno()
+    {
+        return getProperty(ENTORNO);
+    }    
 }
