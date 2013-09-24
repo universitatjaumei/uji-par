@@ -13,6 +13,7 @@ import javax.ws.rs.core.Response;
 import com.sun.jersey.api.client.ClientResponse.Status;
 
 import es.uji.apps.par.ResponseMessage;
+import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.i18n.ResourceProperties;
 import es.uji.commons.web.template.model.GrupoMenu;
 import es.uji.commons.web.template.model.ItemMenu;
@@ -61,6 +62,11 @@ public class BaseResource
     protected String getBaseUrl()
     {
         return currentRequest.getScheme() + "://" + currentRequest.getServerName() + ":" + currentRequest.getServerPort() + currentRequest.getContextPath();
+    }  
+    
+    protected String getBaseUrlPublic()
+    {
+        return Configuration.getUrlPublic();
     }  
     
     public Response errorResponse(String messageProperty, Object ... values)
