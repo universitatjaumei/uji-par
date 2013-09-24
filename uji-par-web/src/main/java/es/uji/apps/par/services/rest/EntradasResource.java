@@ -292,7 +292,7 @@ public class EntradasResource extends BaseResource
             currentRequest.getSession().setAttribute(BUTACAS_COMPRA, butacasSeleccionadasJSON);
             currentRequest.getSession().setAttribute(UUID_COMPRA, resultadoCompra.getUuid());
 
-            currentResponse.sendRedirect(resultadoCompra.getUuid() + "/datosComprador");
+            currentResponse.sendRedirect(getBaseUrlPublic() + "/rest/entrada/" + resultadoCompra.getUuid() + "/datosComprador");
             return null;
         }
         else
@@ -345,7 +345,7 @@ public class EntradasResource extends BaseResource
         {
             currentRequest.getSession().setAttribute(UUID_COMPRA, resultadoCompra.getUuid());
 
-            currentResponse.sendRedirect(resultadoCompra.getUuid() + "/datosComprador");
+            currentResponse.sendRedirect(getBaseUrlPublic() + "/rest/entrada/" + resultadoCompra.getUuid() + "/datosComprador");
             return null;
         }
         else
