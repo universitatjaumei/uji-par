@@ -1,8 +1,5 @@
 package es.uji.apps.par.services.rest;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.text.MessageFormat;
 import java.text.ParseException;
 import java.util.Locale;
 
@@ -59,11 +56,6 @@ public class BaseResource
         return idioma.equals("es") || idioma.equals("ca");
     }
 
-    protected String getBaseUrl()
-    {
-        return currentRequest.getScheme() + "://" + currentRequest.getServerName() + ":" + currentRequest.getServerPort() + currentRequest.getContextPath();
-    }  
-    
     protected String getBaseUrlPublic()
     {
         return Configuration.getUrlPublic();
@@ -80,22 +72,6 @@ public class BaseResource
         return ResourceProperties.getProperty(getLocale(), messageProperty, values);
     }
     
-    protected String getUrlBase(HttpServletRequest clientRequest) throws MalformedURLException
-    {
-        String urlReference = clientRequest.getRequestURL().toString();
-
-        URL result = new URL(urlReference);
-        int port = result.getPort();
-
-        if (port <= 0)
-        {
-            port = 80;
-        }
-
-        return MessageFormat.format("{0}://{1}:{2,number,#}", result.getProtocol(),
-                result.getHost(), port);
-    }
-
     protected Pagina buildPublicPageInfo(String urlBase, String url, String idioma) throws ParseException
     {
         Menu menu = new Menu();

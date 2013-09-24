@@ -84,15 +84,14 @@ public class TpvResource extends BaseResource
     private Template paginaExito(CompraDTO compra, String recibo) throws Exception
     {
         Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "compraValida", getLocale(), APP);
-        String urlBase = getUrlBase(request);
         String url = request.getRequestURL().toString();
 
-        template.put("pagina", buildPublicPageInfo(urlBase, url, getLocale().getLanguage().toString()));
-        template.put("baseUrl", getBaseUrl());
+        template.put("pagina", buildPublicPageInfo(Configuration.getUrlPublic(), url, getLocale().getLanguage().toString()));
+        template.put("baseUrl", getBaseUrlPublic());
 
         template.put("referencia", recibo);
         template.put("email", compra.getEmail());
-        template.put("url", Configuration.getUrlPublic() + "/rest/compra/" + compra.getUuid() + "/pdf");
+        template.put("url", getBaseUrlPublic() + "/rest/compra/" + compra.getUuid() + "/pdf");
         template.put("urlComoLlegar", Configuration.getUrlComoLlegar());
 
         return template;
@@ -101,20 +100,19 @@ public class TpvResource extends BaseResource
     private HTMLTemplate paginaError(CompraDTO compra) throws Exception
     {
         HTMLTemplate template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "compraIncorrecta", getLocale(), APP);
-        String urlBase = getUrlBase(request);
         String url = request.getRequestURL().toString();
 
-        template.put("pagina", buildPublicPageInfo(urlBase, url, getLocale().getLanguage().toString()));
-        template.put("baseUrl", getBaseUrl());
+        template.put("pagina", buildPublicPageInfo(getBaseUrlPublic(), url, getLocale().getLanguage().toString()));
+        template.put("baseUrl", getBaseUrlPublic());
 
-        template.put("urlReintentar", getBaseUrl() + "/rest/entrada/" + compra.getParSesion().getId());
+        template.put("urlReintentar", getBaseUrlPublic() + "/rest/entrada/" + compra.getParSesion().getId());
         
         return template;
     }
 
     private void enviaMail(String email, String uuid)
     {
-        String urlEntradas = String.format("%s/rest/compra/%s/pdf", getBaseUrl(), uuid);
+        String urlEntradas = String.format("%s/rest/compra/%s/pdf", getBaseUrlPublic(), uuid);
 
         String titulo = ResourceProperties.getProperty(new Locale("ca"), "mail.entradas.titulo");
         String texto = ResourceProperties.getProperty(new Locale("ca"), "mail.entradas.texto", urlEntradas);

@@ -91,7 +91,7 @@ public class EntradasResource extends BaseResource
             List<Butaca> butacasOcupadas, String error) throws Exception
     {
         Sesion sesion = sesionesService.getSesion(sesionId);
-        String urlBase = getUrlBase(request);
+        String urlBase = getBaseUrlPublic();
         String url = request.getRequestURL().toString();
 
         if (!sesion.getEnPlazoVentaInternet())
@@ -103,7 +103,7 @@ public class EntradasResource extends BaseResource
         template.put("evento", evento);
         template.put("sesion", sesion);
         template.put("idioma", getLocale().getLanguage());
-        template.put("baseUrl", getBaseUrl());
+        template.put("baseUrl", getBaseUrlPublic());
         template.put("fecha", DateUtils.dateToSpanishString(sesion.getFechaCelebracion()));
         template.put("hora", sesion.getHoraCelebracion());
         template.put("pagina", buildPublicPageInfo(urlBase, url, getLocale().getLanguage().toString()));
@@ -162,7 +162,6 @@ public class EntradasResource extends BaseResource
             String platea2Normal, String platea2Descuento, String error) throws Exception
     {
         Sesion sesion = sesionesService.getSesion(sesionId);
-        String urlBase = getUrlBase(request);
         String url = request.getRequestURL().toString();
 
         if (!sesion.getEnPlazoVentaInternet())
@@ -174,10 +173,10 @@ public class EntradasResource extends BaseResource
         template.put("evento", evento);
         template.put("sesion", sesion);
         template.put("idioma", getLocale().getLanguage());
-        template.put("baseUrl", getBaseUrl());
+        template.put("baseUrl", getBaseUrlPublic());
         template.put("fecha", DateUtils.dateToSpanishString(sesion.getFechaCelebracion()));
         template.put("hora", sesion.getHoraCelebracion());
-        template.put("pagina", buildPublicPageInfo(urlBase, url, getLocale().getLanguage().toString()));
+        template.put("pagina", buildPublicPageInfo(getBaseUrlPublic(), url, getLocale().getLanguage().toString()));
 
         if (platea1Normal == null || platea1Normal.equals(""))
             template.put("platea1Normal", "0");
@@ -362,10 +361,10 @@ public class EntradasResource extends BaseResource
             String infoPeriodica, String condicionesPrivacidad, String error) throws Exception
     {
         Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "datosComprador", getLocale(), APP);
-        String urlBase = getUrlBase(request);
+        String urlBase = getBaseUrlPublic();
         String url = request.getRequestURL().toString();
         template.put("pagina", buildPublicPageInfo(urlBase, url, getLocale().getLanguage().toString()));
-        template.put("baseUrl", getBaseUrl());
+        template.put("baseUrl", getBaseUrlPublic());
         
         template.put("idioma", getLocale().getLanguage());
 
@@ -452,10 +451,10 @@ public class EntradasResource extends BaseResource
 
         Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "tpv", getLocale(), APP);
         template.put("idioma", getLocale().getLanguage());
-        template.put("baseUrl", getBaseUrl());
+        template.put("baseUrl", getBaseUrlPublic());
 
         String importe = Utils.monedaToCents(compra.getImporte());
-        String url = Configuration.getUrlPublic() + "/rest/tpv/resultado";
+        String url = getBaseUrlPublic() + "/rest/tpv/resultado";
 
         template.put("identificador", compra.getId());
         template.put("concepto", "Entradas Paranimf");
@@ -470,10 +469,10 @@ public class EntradasResource extends BaseResource
     private Response paginaFueraDePlazo() throws Exception
     {
     	Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "compraFinalizada", getLocale(), APP);
-    	String urlBase = getUrlBase(request);
+    	String urlBase = getBaseUrlPublic();
         String url = request.getRequestURL().toString();
         template.put("pagina", buildPublicPageInfo(urlBase, url, getLocale().getLanguage().toString()));
-        template.put("baseUrl", getBaseUrl());
+        template.put("baseUrl", getBaseUrlPublic());
         
         template.put("idioma", getLocale().getLanguage());
     	
@@ -507,7 +506,7 @@ public class EntradasResource extends BaseResource
 
         Sesion sesion = sesionesService.getSesion(sesionId);
 
-        template.put("baseUrl", getBaseUrl());
+        template.put("baseUrl", getBaseUrlPublic());
         template.put("idioma", getLocale().getLanguage());
         template.put("sesion", sesion);
         template.put("fecha", DateUtils.dateToSpanishString(sesion.getFechaCelebracion()));

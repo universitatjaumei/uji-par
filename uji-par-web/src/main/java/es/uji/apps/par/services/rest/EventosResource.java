@@ -26,6 +26,7 @@ import com.sun.jersey.api.core.InjectParam;
 
 import es.uji.apps.par.Constantes;
 import es.uji.apps.par.EventoNoEncontradoException;
+import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.i18n.ResourceProperties;
 import es.uji.apps.par.model.Evento;
 import es.uji.apps.par.model.PreciosSesion;
@@ -99,11 +100,10 @@ public class EventosResource extends BaseResource
     {
         HTMLTemplate template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "eventoNoEncontrado", getLocale(), APP);
         
-        String urlBase = getUrlBase(request);
         String url = request.getRequestURL().toString();
 
-        template.put("pagina", buildPublicPageInfo(urlBase, url, getLocale().getLanguage().toString()));
-        template.put("baseUrl", getBaseUrl());
+        template.put("pagina", buildPublicPageInfo(getBaseUrlPublic(), url, getLocale().getLanguage().toString()));
+        template.put("baseUrl", getBaseUrlPublic());
         
         return template;
     }
@@ -137,11 +137,10 @@ public class EventosResource extends BaseResource
             descripcion = evento.getDescripcionEs();
         }
 
-        String urlBase = getUrlBase(request);
         String url = request.getRequestURL().toString();
 
-        template.put("pagina", buildPublicPageInfo(urlBase, url, getLocale().getLanguage().toString()));
-        template.put("baseUrl", getBaseUrl());
+        template.put("pagina", buildPublicPageInfo(getBaseUrlPublic(), url, getLocale().getLanguage().toString()));
+        template.put("baseUrl", getBaseUrlPublic());
         
         template.put("tipoEvento", tipoEvento);
         template.put("titulo", titulo);
