@@ -136,7 +136,7 @@ public class EventosDAO extends BaseDAO
    		sort = getSort(qEventoDTO, sortParameter, qSesion);
         query  = (activos)?getQueryEventosActivos():getQueryEventos();
         
-		listadoTuplasConFecha = query.offset(start).limit(limit)./*orderBy(sort).*/
+		listadoTuplasConFecha = query.offset(start).limit(limit).orderBy(sort).
         	listDistinct(fields, subquery.where(qEventoDTO.id.eq(qSesion.parEvento.id)).unique(qSesion.fechaCelebracion.min()));
 		return listadoTuplasConFechaAListadoEventos(listadoTuplasConFecha);
     }
