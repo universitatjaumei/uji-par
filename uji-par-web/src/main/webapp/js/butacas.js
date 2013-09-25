@@ -166,7 +166,12 @@ Butacas = (function() {
 			selecInvitacion = 'selected';
 		}
 		
-		st += '<option ' + selecNormal + ' value="normal">' + UI.i18n.butacas.tipoNormal + '</option><option ' + selecDescuento + ' value="descuento">' + UI.i18n.butacas.tipoDescuento + '</option>';
+		st += '<option ' + selecNormal + ' value="normal">' + UI.i18n.butacas.tipoNormal;
+		
+		if (precios[butacasSeleccionadas[posicion]['localizacion']]['descuento'] > 0)
+		{
+			st += '</option><option ' + selecDescuento + ' value="descuento">' + UI.i18n.butacas.tipoDescuento + '</option>';	
+		}
 		
 		if (modoAdmin)
 		{
