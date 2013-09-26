@@ -3,6 +3,7 @@ package es.uji.apps.par.services.rest;
 import java.text.ParseException;
 import java.util.Locale;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
@@ -19,7 +20,6 @@ import es.uji.commons.web.template.model.Pagina;
 
 public class BaseResource
 {
-    private static final String IDIOMA = "idioma";
     protected static final String APP = "par";
     private static final String API_KEY = "kajshdka234hsdoiuqhiu918092";
 
@@ -28,27 +28,33 @@ public class BaseResource
 
     protected Locale getLocale()
     {
-        String idiomaParametro = currentRequest.getParameter(IDIOMA);
-        String idiomaSesion = (String) currentRequest.getSession().getAttribute(IDIOMA);
-        String idioma = "es";
+        String idiomaFinal = "ca";
+
+        for (Cookie cookie : currentRequest.getCookies())
+        {
+            if (cookie != null && "uji-lang".equals(cookie.getName()))
+            {
+                String idiomaCookie = cookie.getValue();
+
+                if (esIdiomaValido(idiomaCookie))
+                {
+                    idiomaFinal = idiomaCookie;
+                    break;
+                }
+            }
+        }
+
+        String idiomaParametro = currentRequest.getParameter("idioma");
 
         if (idiomaParametro != null)
         {
             if (esIdiomaValido(idiomaParametro))
             {
-                idioma = idiomaParametro;
-                currentRequest.getSession().setAttribute(IDIOMA, idiomaParametro);
-            }
-        }
-        else if (idiomaSesion != null)
-        {
-            if (esIdiomaValido(idiomaSesion))
-            {
-                idioma = idiomaSesion;
+                idiomaFinal = idiomaParametro;
             }
         }
 
-        return new Locale(idioma);
+        return new Locale(idiomaFinal);
     }
 
     private boolean esIdiomaValido(String idioma)

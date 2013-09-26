@@ -2,18 +2,10 @@ package es.uji.apps.par.services.rest;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -90,7 +82,7 @@ public class EntradasResource extends BaseResource
     }
 
     private Response paginaSeleccionEntradasNumeradas(long sesionId, List<Butaca> butacasSeleccionadas,
-            List<Butaca> butacasOcupadas, String error) throws Exception
+                                                      List<Butaca> butacasOcupadas, String error) throws Exception
     {
         Sesion sesion = sesionesService.getSesion(sesionId);
         String urlBase = getBaseUrlPublic();
@@ -161,10 +153,10 @@ public class EntradasResource extends BaseResource
     }
 
     private Response paginaSeleccionEntradasNoNumeradas(long sesionId, String platea1Normal, String platea1Descuento,
-            String platea2Normal, String platea2Descuento, String error) throws Exception
+                                                        String platea2Normal, String platea2Descuento, String error) throws Exception
     {
         Sesion sesion = sesionesService.getSesion(sesionId);
-        String urlBase = getBaseUrl();
+        String urlBase = getBaseUrlPublic();
 
         if (!sesion.getEnPlazoVentaInternet())
             return paginaFueraDePlazo();
@@ -178,7 +170,7 @@ public class EntradasResource extends BaseResource
         template.put("baseUrl", getBaseUrlPublic());
         template.put("fecha", DateUtils.dateToSpanishString(sesion.getFechaCelebracion()));
         template.put("hora", sesion.getHoraCelebracion());
-        template.put("pagina", buildPublicPageInfo(getBaseUrlPublic(), url, getLocale().getLanguage().toString()));
+        template.put("pagina", buildPublicPageInfo(urlBase, urlBase, getLocale().getLanguage().toString()));
 
         if (platea1Normal == null || platea1Normal.equals(""))
             template.put("platea1Normal", "0");
