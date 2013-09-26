@@ -30,27 +30,33 @@ public class BaseResource
     {
         String idiomaFinal = "ca";
 
-        for (Cookie cookie : currentRequest.getCookies())
+        if (currentRequest != null)
         {
-            if (cookie != null && "uji-lang".equals(cookie.getName()))
+            if (currentRequest.getCookies() != null)
             {
-                String idiomaCookie = cookie.getValue();
-
-                if (esIdiomaValido(idiomaCookie))
+                for (Cookie cookie : currentRequest.getCookies())
                 {
-                    idiomaFinal = idiomaCookie;
-                    break;
+                    if (cookie != null && "uji-lang".equals(cookie.getName()))
+                    {
+                        String idiomaCookie = cookie.getValue();
+
+                        if (esIdiomaValido(idiomaCookie))
+                        {
+                            idiomaFinal = idiomaCookie;
+                            break;
+                        }
+                    }
                 }
             }
-        }
 
-        String idiomaParametro = currentRequest.getParameter("idioma");
+            String idiomaParametro = currentRequest.getParameter("idioma");
 
-        if (idiomaParametro != null)
-        {
-            if (esIdiomaValido(idiomaParametro))
+            if (idiomaParametro != null)
             {
-                idiomaFinal = idiomaParametro;
+                if (esIdiomaValido(idiomaParametro))
+                {
+                    idiomaFinal = idiomaParametro;
+                }
             }
         }
 
@@ -67,13 +73,13 @@ public class BaseResource
         return Configuration.getUrlPublic();
     }
 
-    public Response errorResponse(String messageProperty, Object ... values)
+    public Response errorResponse(String messageProperty, Object... values)
     {
         String errorMessage = getProperty(messageProperty, values);
         return Response.serverError().entity(new ResponseMessage(false, errorMessage)).build();
     }
 
-    public String getProperty(String messageProperty, Object ... values)
+    public String getProperty(String messageProperty, Object... values)
     {
         return ResourceProperties.getProperty(getLocale(), messageProperty, values);
     }
@@ -98,12 +104,12 @@ public class BaseResource
     protected boolean correctApiKey(HttpServletRequest request)
     {
         String key = request.getParameter("key");
-        
+
         return API_KEY.equals(key);
     }
-    
+
     protected Response apiAccessDenied()
     {
-        return Response.status(Status.UNAUTHORIZED).build();    
+        return Response.status(Status.UNAUTHORIZED).build();
     }
 }
