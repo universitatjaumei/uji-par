@@ -56,7 +56,8 @@ Ext.define('Paranimf.view.evento.GridEventos', {
       }, {
         dataIndex: 'tituloEs',
         text: UI.i18n.field.title,
-        flex: 5
+        flex: 5,
+        hidden: true
       }, {
         dataIndex: 'tituloVa',
         text: UI.i18n.field.title_va,
