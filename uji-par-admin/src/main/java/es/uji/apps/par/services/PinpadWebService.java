@@ -2,8 +2,13 @@ package es.uji.apps.par.services;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.net.URL;
 import java.net.URLEncoder;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 
+import com.sun.jersey.api.client.config.DefaultClientConfig;
+import com.sun.jersey.client.urlconnection.HTTPSProperties;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +18,8 @@ import com.sun.jersey.api.client.WebResource;
 
 import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.utils.Utils;
+
+import javax.net.ssl.*;
 
 @Service
 public class PinpadWebService implements PinpadDataService
@@ -29,7 +36,7 @@ public class PinpadWebService implements PinpadDataService
 
         String sha1String = Utils.sha1(id + Configuration.getSecret());
 
-        String url = String.format("https://e-ujier.uji.es/pls/www/!pinpad.estado?tpv_identificador=%s&tpv_hash=%s",
+        String url = String.format("http://e-ujier.uji.es/pls/www/!pinpad.estado?tpv_identificador=%s&tpv_hash=%s",
                 id, sha1String);
 
         log.info("antes consultaEstado: " + url);
@@ -71,7 +78,7 @@ public class PinpadWebService implements PinpadDataService
         }
 
         String url = String
-                .format("https://e-ujier.uji.es/pls/www/!pinpad.cobrar?tpv_identificador=%s&tpv_concepto=%s&tpv_importe=%s&tpv_hash=%s",
+                .format("http://e-ujier.uji.es/pls/www/!pinpad.cobrar?tpv_identificador=%s&tpv_concepto=%s&tpv_importe=%s&tpv_hash=%s",
                         id, conceptoEncoded, importeEnviar, sha1String);
 
         log.info("antes realizaPago: " + url);
@@ -103,5 +110,4 @@ public class PinpadWebService implements PinpadDataService
 
         return client;
     }
-
 }
