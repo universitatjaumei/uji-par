@@ -199,10 +199,24 @@ public class ComprasDAO extends BaseDAO
         
         Timestamp limite = new Timestamp(calendar.getTimeInMillis());
         
-        JPAUpdateClause updateCompra = new JPAUpdateClause(entityManager, qCompraDTO);
+        JPAQuery query = new JPAQuery(entityManager);
         
-        updateCompra.set(qCompraDTO.anulada, true).set(qCompraDTO.caducada, true)
-            .where(qCompraDTO.pagada.eq(false).and(qCompraDTO.reserva.eq(false)).and(qCompraDTO.fecha.lt(limite))).execute(); 
+        List<CompraDTO> comprasACaducar = query
+                .from(qCompraDTO)
+                .where(  qCompraDTO.pagada.eq(false)
+                        .and(qCompraDTO.anulada.eq(false))
+                        .and(qCompraDTO.reserva.eq(false))
+                        .and(qCompraDTO.fecha.lt(limite)))
+                .distinct()
+                .list(qCompraDTO);
+        
+        for (CompraDTO compra: comprasACaducar)
+        {
+            compra.setCaducada(true);
+            entityManager.persist(compra);
+            
+            anularCompraReserva(compra.getId());
+        }
     }
 
     @Transactional
