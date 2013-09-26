@@ -130,6 +130,14 @@ Ext.define('Paranimf.view.compra.GridCompras', {
           return (val)?'<img src="../resources/images/tick.png" alt="Sí" title="Sí" />':'<img src="../resources/images/cross.png" alt="Sí" title="Sí" />';
       }
     }, {
+        align: 'center',
+        dataIndex: 'caducada',
+        flex: 2,
+        text: UI.i18n.field.caducada,
+        renderer: function (val, p) {
+        	return (val)?'<img src="../resources/images/tick.png" alt="Sí" title="Sí" />':'';
+        }
+    }, {
       dataIndex: 'observacionesReserva',
       text: UI.i18n.field.observacionesReserva,
       hidden: true,

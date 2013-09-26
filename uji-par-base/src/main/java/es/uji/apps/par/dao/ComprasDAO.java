@@ -12,7 +12,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mysema.query.BooleanBuilder;
-import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.jpa.impl.JPAUpdateClause;
 
@@ -193,14 +192,17 @@ public class ComprasDAO extends BaseDAO
     @Transactional
     public void eliminaComprasPendientes()
     {
-        QCompraDTO qComprasDTO = QCompraDTO.compraDTO;
+        QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
         
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MINUTE, -ELIMINA_PENDIENTES_MINUTOS);
         
         Timestamp limite = new Timestamp(calendar.getTimeInMillis());
         
-        new JPADeleteClause(entityManager, qComprasDTO).where(qComprasDTO.pagada.eq(false).and(qComprasDTO.reserva.eq(false)).and(qComprasDTO.fecha.lt(limite))).execute();          
+        JPAUpdateClause updateCompra = new JPAUpdateClause(entityManager, qCompraDTO);
+        
+        updateCompra.set(qCompraDTO.anulada, true).set(qCompraDTO.caducada, true)
+            .where(qCompraDTO.pagada.eq(false).and(qCompraDTO.reserva.eq(false)).and(qCompraDTO.fecha.lt(limite))).execute(); 
     }
 
     @Transactional

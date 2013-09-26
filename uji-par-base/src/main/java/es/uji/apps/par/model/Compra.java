@@ -26,6 +26,7 @@ public class Compra
     private Date hasta;
     private String uuid;
     private String observacionesReserva;
+    private boolean caducada;
 
     public Compra(CompraDTO compraDTO)
     {
@@ -46,6 +47,9 @@ public class Compra
         this.setDesde(compraDTO.getDesde());
         this.setHasta(compraDTO.getHasta());
         this.setObservacionesReserva(compraDTO.getObservacionesReserva());
+        
+        if (compraDTO.getCaducada() != null)
+            this.setCaducada(compraDTO.getCaducada());
     }
 
     public static Compra compraDTOtoCompra(CompraDTO compraDTO)
@@ -200,5 +204,12 @@ public class Compra
 	public void setObservacionesReserva(String observacionesReserva) {
 		this.observacionesReserva = observacionesReserva;
 	}
-    
+
+    public boolean isCaducada() {
+        return caducada;
+    }
+
+    public void setCaducada(boolean caducada) {
+        this.caducada = caducada;
+    }
 }

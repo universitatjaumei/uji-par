@@ -470,8 +470,16 @@ public class EntradasResource extends BaseResource
                 telefono, email, infoPeriodica);
 
         CompraDTO compra = comprasService.getCompraByUuid(uuidCompra);
+        
+        if (compra.getCaducada())
+        {
+            return rellenaDatosComprador(uuidCompra, nombre, apellidos, direccion, poblacion, cp, provincia, telefono,
+                    email, infoPeriodica, condicionesPrivacidad,
+                    ResourceProperties.getProperty(getLocale(), "error.datosComprador.compraCaducada"));
+        }
 
         Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "tpv", getLocale(), APP);
+        
         template.put("idioma", getLocale().getLanguage());
         template.put("baseUrl", getBaseUrlPublic());
 

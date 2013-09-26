@@ -253,6 +253,7 @@ UI =
             "hasta": "Fins a",
             "observacionesReserva": "Observaciones",
             "pagada": "Pagada",
+            "caducada": "Caducada",
             "reserva": "Reserva",
             "idLocalitzacio": "Identificador intern de la localització",
             "plantillaPreusInterna": "Identificador intern de la plantilla de preus",

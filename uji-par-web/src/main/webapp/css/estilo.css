@@ -141,6 +141,15 @@ body {
 	margin-top: 20px;
 }
 
+#compraErronea a {
+	margin-top: 30px;
+	padding: 0px;
+}
+
+#compraErronea #observaciones {
+	margin-top: 20px;
+}
+
 #totalNoNumeradas {
 	background: #EEE;
 	padding: 10px;

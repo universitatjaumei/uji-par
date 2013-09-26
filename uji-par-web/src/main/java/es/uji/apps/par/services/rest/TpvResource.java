@@ -63,13 +63,20 @@ public class TpvResource extends BaseResource
 
         CompraDTO compra = compras.getCompraById(Long.parseLong(identificador));
         
-        if (estado != null && estado.equals("OK"))
+        if (compra.getCaducada())
+        {
+            template = paginaError(compra);
+            
+            template.put("descripcionError", ResourceProperties.getProperty(getLocale(), "error.datosComprador.compraCaducadaTrasPagar"));
+            
+            eliminaCompraDeSesion();
+        }
+        else if (estado != null && estado.equals("OK"))
         {
             compras.marcaPagadaPasarela(compra.getId(), recibo);
             enviaMail(compra.getEmail(), compra.getUuid());
 
-            currentRequest.getSession().removeAttribute(EntradasResource.BUTACAS_COMPRA);
-            currentRequest.getSession().removeAttribute(EntradasResource.UUID_COMPRA);
+            eliminaCompraDeSesion();
 
             template = paginaExito(compra, recibo);
         }
@@ -79,6 +86,12 @@ public class TpvResource extends BaseResource
         }
 
         return Response.ok(template).build();
+    }
+
+    private void eliminaCompraDeSesion()
+    {
+        currentRequest.getSession().removeAttribute(EntradasResource.BUTACAS_COMPRA);
+        currentRequest.getSession().removeAttribute(EntradasResource.UUID_COMPRA);
     }
 
     private Template paginaExito(CompraDTO compra, String recibo) throws Exception

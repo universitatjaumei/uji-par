@@ -105,6 +105,9 @@ public class CompraDTO implements Serializable {
     @Column(name = "RECIBO_PINPAD")
     private String reciboPinpad;
     
+    @Column(name = "CADUCADA")
+    private Boolean caducada;
+    
 	public CompraDTO()
     {
     }
@@ -119,6 +122,7 @@ public class CompraDTO implements Serializable {
         this.infoPeriodica = false;
         this.reserva = false;
         this.anulada = false;
+        this.caducada = false;
 	}
 
 	public long getId() {
@@ -319,5 +323,13 @@ public class CompraDTO implements Serializable {
 
     public void setReciboPinpad(String reciboPinpad) {
         this.reciboPinpad = reciboPinpad;
+    }
+
+    public Boolean getCaducada() {
+        return caducada;
+    }
+
+    public void setCaducada(Boolean caducada) {
+        this.caducada = caducada;
     }
 }
