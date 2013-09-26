@@ -39,7 +39,8 @@ public class EventosResource
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAll(@QueryParam("activos") boolean activos, @QueryParam("sort") String sort, 
+    public Response getAll(@QueryParam("activos") boolean activos, 
+    		@QueryParam("sort") @DefaultValue("[{\"property\":\"tituloVa\",\"direction\":\"ASC\"}]") String sort, 
     		@QueryParam("start") int start, @QueryParam("limit") @DefaultValue("1000") int limit)
     {
         List<Evento> eventos;
