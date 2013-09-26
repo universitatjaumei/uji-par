@@ -37,7 +37,7 @@ import com.loopj.android.http.RequestParams;
 public class RestService
 {
     // private static String BASE_SECURE_URL = "http://192.168.3.102:8081/par-public/rest";
-    private static String BASE_SECURE_URL = "http://devel.uji.es/par-public/rest";
+    private static String BASE_SECURE_URL = "http://ujiapps.uji.es/par-public/rest";
     
     private static final String API_KEY = "kajshdka234hsdoiuqhiu918092";
 
