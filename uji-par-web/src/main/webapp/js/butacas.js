@@ -19,9 +19,6 @@ Butacas = (function() {
 		reserva = modoReserva;
 		modoAdmin = admin;
 		
-		refrescaEstadoButacas();
-		compruebaEstadoButacas();
-		
 		if (modoAdmin)
 		{
 			$("#imagen_platea1,#imagen_platea2,#imagen_anfiteatro").load(function() {
@@ -39,6 +36,9 @@ Butacas = (function() {
 				var sesion = respuesta.data[i];
 				precios[sesion.localizacion.codigo] = {normal:sesion.precio, descuento:sesion.descuento, invitacion:sesion.invitacion};
 			}
+			
+			refrescaEstadoButacas();
+			compruebaEstadoButacas();
 			
 			callback(precios);
 		});
