@@ -19,7 +19,7 @@ import es.uji.apps.par.model.TipoEvento;
 @ContextConfiguration(locations = { "/applicationContext-db-test.xml" })
 public class EventosDAOTest
 {
-	private static final String SORT = "";
+	private static final String SORT = "[{\"property\":\"tituloVa\", \"direction\":\"ASC\"}]";
 	private static final int START = 0;
 	private static final int LIMIT = 100;
 
