@@ -38,6 +38,8 @@ public class RestService
 {
     // private static String BASE_SECURE_URL = "http://192.168.3.102:8081/par-public/rest";
     private static String BASE_SECURE_URL = "http://devel.uji.es/par-public/rest";
+    
+    private static final String API_KEY = "kajshdka234hsdoiuqhiu918092";
 
     private AsyncHttpClient client;
     private Gson gson;
@@ -65,6 +67,11 @@ public class RestService
     {
         PersistentCookieStore myCookieStore = new PersistentCookieStore(context);
         client.setCookieStore(myCookieStore);
+    }
+    
+    private String getApiKey()
+    {
+        return "?key=" + API_KEY;
     }
 
     private SSLSocketFactory newSslSocketFactory()
@@ -180,7 +187,7 @@ public class RestService
 
     public void getEventos(final ResultCallback<List<Evento>> responseHandler)
     {
-        get(BASE_SECURE_URL + "/evento", new AsyncHttpResponseHandler()
+        get(BASE_SECURE_URL + "/evento" + getApiKey(), new AsyncHttpResponseHandler()
         {
             @Override
             public void onSuccess(String result)
@@ -199,7 +206,7 @@ public class RestService
 
     public void getButacas(int idSesion, final ResultCallback<List<Butaca>> responseHandler)
     {
-        get(BASE_SECURE_URL + "/sesion/" + idSesion + "/butacas", new AsyncHttpResponseHandler()
+        get(BASE_SECURE_URL + "/sesion/" + idSesion + "/butacas" + getApiKey(), new AsyncHttpResponseHandler()
         {
             @Override
             public void onSuccess(String result)
@@ -217,7 +224,7 @@ public class RestService
 
     public void updatePresentadas(int idSesion, List<Butaca> butacas, final ResultCallback<Void> responseHandler)
     {
-        String url = BASE_SECURE_URL + "/sesion/" + idSesion;
+        String url = BASE_SECURE_URL + "/sesion/" + idSesion + getApiKey();
 
         HttpEntity entity = null;
         try
