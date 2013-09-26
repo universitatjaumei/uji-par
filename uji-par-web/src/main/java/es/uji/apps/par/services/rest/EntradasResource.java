@@ -164,7 +164,7 @@ public class EntradasResource extends BaseResource
             String platea2Normal, String platea2Descuento, String error) throws Exception
     {
         Sesion sesion = sesionesService.getSesion(sesionId);
-        String url = request.getRequestURL().toString();
+        String urlBase = getBaseUrl();
 
         if (!sesion.getEnPlazoVentaInternet())
             return paginaFueraDePlazo();

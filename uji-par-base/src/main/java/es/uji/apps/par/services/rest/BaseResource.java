@@ -59,19 +59,19 @@ public class BaseResource
     protected String getBaseUrlPublic()
     {
         return Configuration.getUrlPublic();
-    }  
-    
+    }
+
     public Response errorResponse(String messageProperty, Object ... values)
     {
         String errorMessage = getProperty(messageProperty, values);
         return Response.serverError().entity(new ResponseMessage(false, errorMessage)).build();
     }
-    
+
     public String getProperty(String messageProperty, Object ... values)
     {
         return ResourceProperties.getProperty(getLocale(), messageProperty, values);
     }
-    
+
     protected Pagina buildPublicPageInfo(String urlBase, String url, String idioma) throws ParseException
     {
         Menu menu = new Menu();
@@ -88,7 +88,7 @@ public class BaseResource
 
         return pagina;
     }
-    
+
     protected boolean correctApiKey(HttpServletRequest request)
     {
         String key = request.getParameter("key");
