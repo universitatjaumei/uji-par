@@ -14,10 +14,12 @@ Ext.define('Paranimf.view.informes.PanelInformes', {
     items: [{
       xtype: 'datefield',
       name: 'fechaInicio',
+      startDay: 1,
       fieldLabel: UI.i18n.field.startDate
     }, {
       xtype: 'datefield',
       name: 'fechaFin',
+      startDay: 1,
       fieldLabel: UI.i18n.field.endDate
     }, {
       xtype: 'button',
