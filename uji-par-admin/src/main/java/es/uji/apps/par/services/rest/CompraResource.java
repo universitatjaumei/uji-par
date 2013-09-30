@@ -75,6 +75,15 @@ public class CompraResource extends BaseResource
     }
     
     @PUT
+    @Path("{idSesion}/desanuladas/{idCompraReserva}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response desanularCompraOReserva(@PathParam("idSesion") Long sesionId, @PathParam("idCompraReserva") Long idCompraReserva)
+    {
+        comprasService.desanularCompraReserva(idCompraReserva);
+        return Response.ok().build();
+    }    
+    
+    @PUT
     @Path("{idSesion}/{idCompraReserva}/{idButaca}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response anularButaca(@PathParam("idSesion") Long sesionId, @PathParam("idCompraReserva") Long idCompraReserva,

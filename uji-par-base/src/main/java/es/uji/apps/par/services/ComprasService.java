@@ -261,6 +261,10 @@ public class ComprasService
 		comprasDAO.anularCompraReserva(idCompraReserva);
 	}
 	
+    public void desanularCompraReserva(Long idCompraReserva) {
+        comprasDAO.desanularCompraReserva(idCompraReserva);
+    }	
+	
     public void anulaReservasCaducadas()
     {
         List<CompraDTO> aCaducar = comprasDAO.getReservasACaducar(new Date());

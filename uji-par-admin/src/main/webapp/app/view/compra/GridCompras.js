@@ -8,6 +8,9 @@ Ext.define('Paranimf.view.compra.GridCompras', {
   tbar:[{
     action: 'anular',
     text: UI.i18n.button.anular
+  },{
+    action: 'desanular',
+    text: UI.i18n.button.desanular
   }, {
     xtype: 'checkbox',
     action: 'showAnuladas',

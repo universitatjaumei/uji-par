@@ -279,16 +279,31 @@ public class ComprasDAO extends BaseDAO
 
     @Transactional
 	public void anularCompraReserva(Long idCompraReserva) {
-    	QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
-    	QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
-		JPAUpdateClause updateCompra = new JPAUpdateClause(entityManager, qCompraDTO);
-		updateCompra.set(qCompraDTO.anulada, true).
-			where(qCompraDTO.id.eq(idCompraReserva)).execute();
-		
-		JPAUpdateClause updateButacas = new JPAUpdateClause(entityManager, qButacaDTO);
-		updateButacas.set(qButacaDTO.anulada, true).
-			where(qButacaDTO.parCompra.id.eq(idCompraReserva)).execute();
+        QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
+        QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
+        JPAUpdateClause updateCompra = new JPAUpdateClause(entityManager, qCompraDTO);
+        updateCompra.set(qCompraDTO.anulada, true).
+            where(qCompraDTO.id.eq(idCompraReserva)).execute();
+        
+        JPAUpdateClause updateButacas = new JPAUpdateClause(entityManager, qButacaDTO);
+        updateButacas.set(qButacaDTO.anulada, true).
+            where(qButacaDTO.parCompra.id.eq(idCompraReserva)).execute();
 	}
+    
+    @Transactional
+    public void desanularCompraReserva(Long idCompraReserva) {
+
+        QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
+        QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
+        JPAUpdateClause updateCompra = new JPAUpdateClause(entityManager, qCompraDTO);
+        updateCompra.set(qCompraDTO.anulada, false).
+                     set(qCompraDTO.pagada, true).
+            where(qCompraDTO.id.eq(idCompraReserva)).execute();
+        
+        JPAUpdateClause updateButacas = new JPAUpdateClause(entityManager, qButacaDTO);
+        updateButacas.set(qButacaDTO.anulada, false).
+            where(qButacaDTO.parCompra.id.eq(idCompraReserva)).execute();
+    } 
 
     public List<CompraDTO> getReservasACaducar(Date date)
     {

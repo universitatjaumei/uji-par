@@ -37,7 +37,8 @@ UI =
             "pagoTarjetaEnviadoLector": "El pagament ha sigut enviat correctament al lector de tarjetes... Introduïu la tarjeta",
             "pagoTarjetaCorrecto": "Pagament amb tarjeta correcte",
             "noNumerada": "Sessió no numerada",
-            "sureAnular": "Està segur d'anul·lar la compra/reserva seleccionada? Aquesta operació no es pot cancel·lar",
+            "sureAnular": "Està segur d'anul·lar la compra/reserva seleccionada?",
+            "sureDesanular": "Està segur d'activar la compra/reserva seleccionada?",
             "printTaquilla": "Taquilla",
             "printAtHome": "Print-At-Home",
             "print": "Imprimir"
@@ -103,6 +104,7 @@ UI =
             	"40":"Sense dades EMV des del servidor"
             },
             "anularCompraReserva": "S'ha produït un error anul·lant la compra/reserva",
+            "desanularCompraReserva": "S'ha produït un error activant la compra/reserva",
             "anularEntrada": "S'ha produït un error anul·lant l'entrada'"
         },
         "button": {
@@ -129,6 +131,7 @@ UI =
             "reservar": "Reservar",
             "verCompras": "Veure compres/reserves",
             "anular": "Anul·lar compra o reserva",
+            "desanular": "Activar compra o reserva anul·lada",
             "anularEntrada": "Anul·lar entrada individual",
             "buscar": "Cercar"
         },

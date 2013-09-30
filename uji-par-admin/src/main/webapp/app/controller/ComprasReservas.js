@@ -73,6 +73,10 @@ Ext.define('Paranimf.controller.ComprasReservas', {
       'gridCompras button[action=anular]': {
         click: this.anularCompraReserva
       },
+      
+      'gridCompras button[action=desanular]': {
+        click: this.desanularCompraReserva
+      },      
 
       'gridCompras': {
         selectionchange: this.loadButacas
@@ -150,6 +154,33 @@ Ext.define('Paranimf.controller.ComprasReservas', {
       }
     }
   },
+  
+  desanularCompraReserva: function() {
+    if (!this.getGridCompras().hasRowSelected())
+      alert(UI.i18n.message.selectRow);
+    else {
+      if (confirm(UI.i18n.message.sureDesanular)) {
+        var idSesion = this.getGridSesionesComprasReservas().getSelectedColumnId();
+        var idCompra = this.getGridCompras().getSelectedColumnId();
+        var me = this;
+        this.getGridCompras().setLoading(UI.i18n.message.loading);
+
+        Ext.Ajax.request({
+          url : urlPrefix + 'compra/' + idSesion + '/desanuladas/' + idCompra,
+          method: 'PUT',
+          success: function (response) {
+            me.setStoreCompras();
+            me.getGridCompras().setLoading(false);
+            me.getGridCompras().deseleccionar();
+            me.getGridCompras().getStore().load();
+          }, failure: function (response) {
+            me.getGridCompras().setLoading(false);
+            alert(UI.i18n.error.desanularCompraReserva);
+          }
+        });
+      }
+    }
+  },  
 
   anularButaca: function() {
     if (!this.getGridDetalleCompras().hasRowSelected())
