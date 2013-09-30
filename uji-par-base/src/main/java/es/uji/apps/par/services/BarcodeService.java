@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.krysalis.barcode4j.impl.datamatrix.DataMatrixBean;
 import org.krysalis.barcode4j.output.bitmap.BitmapCanvasProvider;
@@ -14,10 +16,17 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
+
 @Service
 public class BarcodeService
 {
-    public void generaBarcode(String text, OutputStream output) throws IOException
+    public void generaBarcodeDatamatrix(String text, OutputStream output) throws IOException
     {
         DataMatrixBean bean = new DataMatrixBean();
 
@@ -25,8 +34,8 @@ public class BarcodeService
 
         //makes the narrow bar width exactly one pixel
         bean.setModuleWidth(UnitConv.in2mm(3.2f / dpi));
-        bean.setMaxSize(new Dimension(50,25));
-        bean.setMinSize(new Dimension(20,20));
+        bean.setMaxSize(new Dimension(50, 25));
+        bean.setMinSize(new Dimension(20, 20));
         bean.doQuietZone(false);
 
         try
@@ -47,12 +56,24 @@ public class BarcodeService
         }
     }
 
+    public void generaBarcodeQr(String text, OutputStream output) throws WriterException, IOException
+    {
+        QRCodeWriter writer = new QRCodeWriter();
+        Map<EncodeHintType,Object> hints = new HashMap<EncodeHintType, Object>();
+        //hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+        hints.put(EncodeHintType.MARGIN, 2);
+        
+        BitMatrix matrix = writer.encode(text, BarcodeFormat.QR_CODE, 70, 70, hints);
+
+        MatrixToImageWriter.writeToStream(matrix, "PNG", output);
+    }
+
     public static void main(String[] args) throws FileNotFoundException, IOException
     {
         ApplicationContext ctx = new ClassPathXmlApplicationContext("/applicationContext-db.xml");
 
         BarcodeService service = ctx.getBean(BarcodeService.class);
 
-        service.generaBarcode("d26e40ab-0c9f-4868-8797-6ce8c8381e6c-123456", new FileOutputStream("/tmp/codigo.png"));
+        service.generaBarcodeDatamatrix("d26e40ab-0c9f-4868-8797-6ce8c8381e6c-123456", new FileOutputStream("/tmp/codigo.png"));
     }
 }

@@ -36,7 +36,7 @@ public class BarcodeResource extends BaseResource
     {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
-        barcodeService.generaBarcode(text, bos);
+        barcodeService.generaBarcodeQr(text, bos);
 
         ResponseBuilder builder = Response.ok(bos.toByteArray());
         
