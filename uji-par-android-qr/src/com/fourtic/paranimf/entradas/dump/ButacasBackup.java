@@ -36,6 +36,13 @@ public class ButacasBackup
     public void guardaEntradas(int sesionId) throws SQLException, UnsupportedEncodingException, IOException
     {
         File appDir = context.getExternalFilesDir(null);
+        
+        // El almacenamiento externo no está montado
+        if (appDir == null)
+        {
+            return;
+        }
+        
         File fich = new File(appDir, getNombreTimestamp());
         FileOutputStream fos = new FileOutputStream(fich);
 
