@@ -7,11 +7,14 @@ import roboguice.inject.InjectExtra;
 import roboguice.inject.InjectView;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -32,6 +35,8 @@ import com.google.inject.Inject;
 
 public class SesionInfoActivity extends BaseNormalActivity
 {
+    private static final String BARCODE_SCANNER_PACKAGE = "com.google.zxing.client.android";
+
     private static final int REQUEST_CODE = 1;
 
     @Inject
@@ -193,8 +198,30 @@ public class SesionInfoActivity extends BaseNormalActivity
 
     protected void abreActividadEscanear()
     {
-        Intent intent = new Intent("com.google.zxing.client.android.SCAN");
-        startActivityForResult(intent, REQUEST_CODE);
+        if (aplicacionInstalada(BARCODE_SCANNER_PACKAGE))
+        {
+            Intent intent = new Intent(BARCODE_SCANNER_PACKAGE + ".SCAN");
+            startActivityForResult(intent, REQUEST_CODE);
+        }
+        else
+        {
+            Toast.makeText(this, R.string.instalar_barcode_scanner, Toast.LENGTH_LONG)
+                    .show();
+            abrirGooglePlay(BARCODE_SCANNER_PACKAGE);
+        }
+    }
+
+    private void abrirGooglePlay(String appPackage)
+    {
+        try
+        {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackage)));
+        }
+        catch (android.content.ActivityNotFoundException anfe)
+        {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id="
+                    + appPackage)));
+        }
     }
 
     protected void abreActividadManual()
@@ -294,5 +321,21 @@ public class SesionInfoActivity extends BaseNormalActivity
         {
             gestionaError(getString(R.string.error_recuperando_datos_sesion), e);
         }
+    }
+
+    private boolean aplicacionInstalada(String uri)
+    {
+        PackageManager pm = getPackageManager();
+        boolean app_installed = false;
+        try
+        {
+            pm.getPackageInfo(uri, PackageManager.GET_ACTIVITIES);
+            app_installed = true;
+        }
+        catch (PackageManager.NameNotFoundException e)
+        {
+            app_installed = false;
+        }
+        return app_installed;
     }
 }
