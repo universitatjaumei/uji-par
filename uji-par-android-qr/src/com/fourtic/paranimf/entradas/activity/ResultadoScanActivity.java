@@ -4,6 +4,8 @@ import roboguice.inject.InjectExtra;
 import roboguice.inject.InjectView;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -16,8 +18,8 @@ import com.fourtic.paranimf.entradas.scan.ResultadoScan;
 
 public class ResultadoScanActivity extends BaseNormalActivity
 {
-    private static final long RETARDO_OK = 2000;
-    private static final long RETARDO_ERROR = 4000;
+    private static final long RETARDO_OK = 1000;
+    private static final long RETARDO_ERROR = 2000;
 
     @InjectView(R.id.dialogRoot)
     private RelativeLayout rootLayout;
@@ -48,7 +50,20 @@ public class ResultadoScanActivity extends BaseNormalActivity
         textView.setText(message);
         cambiaColorFondo();
 
+        cerrarAlTocar();
         programaCierreActivity();
+    }
+
+    private void cerrarAlTocar()
+    {
+        rootLayout.setOnClickListener(new OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                finish();
+            }
+        });
     }
 
     private void programaCierreActivity()
@@ -58,7 +73,13 @@ public class ResultadoScanActivity extends BaseNormalActivity
             @Override
             public void run()
             {
-                finish();
+                try
+                {
+                    finish();
+                }
+                catch (Exception e)
+                {
+                }
             }
         }, getRetardoPorResultado());
     }
