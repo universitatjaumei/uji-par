@@ -4,7 +4,7 @@ Ext.define('Paranimf.store.SesionesTaquillaAll', {
 
    sorters: [{
         property: 'fechaCelebracion',
-        direction: 'DESC'
+        direction: 'ASC'
    }],
    
    autoLoad: false,

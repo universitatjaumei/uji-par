@@ -4,7 +4,7 @@ Ext.define('Paranimf.store.Sesiones', {
 
    sorters: [{
         property: 'fechaCelebracion',
-        direction: 'DESC'
+        direction: 'ASC'
    }],
    autoLoad: false,
    autoSync: true,
