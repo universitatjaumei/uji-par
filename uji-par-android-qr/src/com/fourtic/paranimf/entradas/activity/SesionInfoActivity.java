@@ -194,7 +194,6 @@ public class SesionInfoActivity extends BaseNormalActivity
     protected void abreActividadEscanear()
     {
         Intent intent = new Intent("com.google.zxing.client.android.SCAN");
-        intent.putExtra("SCAN_MODE", "DATA_MATRIX_MODE");
         startActivityForResult(intent, REQUEST_CODE);
     }
 
