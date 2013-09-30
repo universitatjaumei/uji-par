@@ -192,8 +192,15 @@ public class RestService
             @Override
             public void onSuccess(String result)
             {
-                ResponseEventos response = parseEventos(result);
-                responseHandler.onSuccess(response.getEventos());
+                try
+                {
+                    ResponseEventos response = parseEventos(result);
+                    responseHandler.onSuccess(response.getEventos());
+                }
+                catch (Exception e)
+                {
+                    responseHandler.onError(e, "Error recuperando eventos");    
+                }
             }
 
             @Override
