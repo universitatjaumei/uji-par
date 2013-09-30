@@ -330,4 +330,17 @@ public class ComprasDAO extends BaseDAO
 		updateButacas.set(qButacaDTO.anulada, true).
 			where(qButacaDTO.id.eq(idButaca)).execute();
 	}
+
+    @SuppressWarnings("unchecked")
+	@Transactional
+	public List<Object[]> getComprasInFechas(String fechaInicio, String fechaFin) {
+    	String sql = "select e.titulo_va, s.fecha_celebracion, b.tipo, count(b.id) as cantidad, sum(b.precio) as total, c.sesion_id " +
+    			"from par_butacas b, par_compras c, par_sesiones s, par_eventos e " +
+    			"where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id " +
+    			"and c.fecha >= TO_DATE('" + fechaInicio + "','YY-MM-DD') and c.fecha <= TO_DATE('" + fechaFin + " 23:59','YY-MM-DD HH24:MI') " +
+    			"and c.pagada = 1 and c.reserva = 0 and b.tipo <> 'invitacion' and c.taquilla = 1 " +
+    			"group by c.sesion_id, e.titulo_va, b.tipo, s.fecha_celebracion " +
+    			"order by e.titulo_va";
+    	return entityManager.createNativeQuery(sql).getResultList();
+	}
 }

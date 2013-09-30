@@ -99,6 +99,8 @@ Ext.application({
                      xtype: 'panelTaquilla'
                   }, {
                      xtype: 'panelComprasReservas'
+                  }, {
+                     xtype: 'panelInformes'
                   }],
                listeners: {
                   afterlayout: function(container, layout, opts) {

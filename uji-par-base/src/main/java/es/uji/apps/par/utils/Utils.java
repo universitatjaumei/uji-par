@@ -3,6 +3,7 @@ package es.uji.apps.par.utils;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.security.MessageDigest;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -96,5 +97,37 @@ public class Utils
 	public static String toUppercaseFirst(String text)
 	{
 	    return Character.toUpperCase(text.charAt(0)) + text.substring(1); 
+	}
+	
+	public static String safeObjectToString(Object object) {
+		if (object != null)
+			return object.toString();
+		else
+			return "";
+	}
+
+	public static int safeObjectToInt(Object object) {
+		if (object == null)
+			return 0;
+		else
+			return (Integer) object;
+	}
+	
+	public static int safeObjectBigDecimalToInt(Object object) {
+		if (object == null)
+			return 0;
+		else
+			return ((BigDecimal) object).intValue();
+	}
+	
+	public static float safeObjectToFloat(Object object) {
+		if (object == null)
+			return 0;
+		else
+			return ((BigDecimal) object).floatValue();
+	}
+
+	public static Date objectToDate(Object object) {
+		return (Date) object;
 	}
 }

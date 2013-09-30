@@ -41,7 +41,8 @@ UI =
             "sureDesanular": "Està segur d'activar la compra/reserva seleccionada?",
             "printTaquilla": "Taquilla",
             "printAtHome": "Print-At-Home",
-            "print": "Imprimir"
+            "print": "Imprimir",
+            "butacaSelect": "És obligatori seleccionar alguna de les entrades a comprar"
         },
         "storeWeekDay": {
             "wed": "Dimecres",
@@ -104,6 +105,7 @@ UI =
             	"40":"Sense dades EMV des del servidor"
             },
             "anularCompraReserva": "S'ha produït un error anul·lant la compra/reserva",
+            "fechasObligatorias": "Les dates són obligatòries",
             "desanularCompraReserva": "S'ha produït un error activant la compra/reserva",
             "anularEntrada": "S'ha produït un error anul·lant l'entrada'"
         },
@@ -133,7 +135,9 @@ UI =
             "anular": "Anul·lar compra o reserva",
             "desanular": "Activar compra o reserva anul·lada",
             "anularEntrada": "Anul·lar entrada individual",
-            "buscar": "Cercar"
+            "buscar": "Cercar",
+            "comprarButacaReservada": "Comprar butaques reservades seleccionades",
+            "generateExcelTaquilla": "Generar excel de taquilla per a aquestes dates"
         },
         "calendar": {
             "calendar": "Calendari de reserves",
