@@ -21,4 +21,9 @@ public class BaseResourceTest extends JerseyTest
     {
         Configuration.desactivaLogGmail();
     }
+    
+    @Override
+    protected int getPort(int defaultPort) {
+        return 19998;
+    }
 }
