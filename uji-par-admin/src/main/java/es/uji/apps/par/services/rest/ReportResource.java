@@ -38,6 +38,6 @@ public class ReportResource extends BaseResource
 	@Produces("application/vnd.ms-excel")
 	public Response generateExcelEventos(@PathParam("fechaInicio") String fechaInicio, @PathParam("fechaFin") String fechaFin) throws TranscoderException, IOException {
 		ByteArrayOutputStream ostream = reportService.getExcelEventos(fechaInicio, fechaFin);
-		return Response.ok(ostream.toByteArray(), MediaType.APPLICATION_OCTET_STREAM).header("content-disposition","attachment; filename = informeTaquilla " + fechaInicio + "-" + fechaFin + ".xls").build();
+		return Response.ok(ostream.toByteArray(), MediaType.APPLICATION_OCTET_STREAM).header("content-disposition","attachment; filename = informeEvents " + fechaInicio + "-" + fechaFin + ".xls").build();
 	}
 }
