@@ -1,4 +1,4 @@
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 768px) {
 	#butacasRoot {
 		max-width: 850px;
 		width: 850px;
@@ -6,10 +6,30 @@
 	#divSeleccionadas {
 		width: 230px !important;
 	}
+	.evento-sesiones {
+		padding-top: 0px !important;
+		padding-left: 0px !important;
+	}
 }
 
 body {
 	
+}
+
+#divButacas {
+	min-width: 666px;
+}
+
+#localizacion_anfiteatro {
+	min-width: 378px;
+}
+
+#localizacion_platea1 {
+	min-width: 551px;
+}
+
+#localizacion_platea1 {
+	min-width: 608px;
 }
 
 #divSeleccionadas {
@@ -43,10 +63,6 @@ body {
 .evento-descripcion {
 	margin-top: 10px;
 	margin-bottom: 60px;
-}
-
-.evento-sesiones {
-	/*clear: both;*/
 }
 
 .evento-sesiones {
