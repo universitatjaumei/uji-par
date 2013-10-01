@@ -44,9 +44,36 @@ public class ReportService {
 		Informe informe = new Informe();
 		informe.setEvento(Utils.safeObjectToString(fila[0]));
 		informe.setSesion(DateUtils.dateToSpanishStringWithHour(Utils.objectToDate(fila[1])).toString());
-		informe.setTipoEntrada(Utils.safeObjectToString(fila[2]));
+		String tipoEntrada = Utils.safeObjectToString(fila[2]);
+		tipoEntrada = tipoEntradaBBDDToText(tipoEntrada);
+		informe.setTipoEntrada(tipoEntrada);
 		informe.setNumeroEntradas(Utils.safeObjectBigDecimalToInt(fila[3]));
 		informe.setTotal(Utils.safeObjectToFloat(fila[4]));
+		
+		return informe;
+	}
+
+	private String tipoEntradaBBDDToText(String tipoEntrada) {
+		if (tipoEntrada.equals("normal"))
+			tipoEntrada = "Normal";
+		else if (tipoEntrada.equals("descuento"))
+			tipoEntrada = "Descompte";
+		else if (tipoEntrada.equals("invitacion"))
+			tipoEntrada = "Invitació";
+		return tipoEntrada;
+	}
+	
+	private Informe objectToInformeEvento(Object[] fila) {
+		Informe informe = new Informe();
+		informe.setEvento(Utils.safeObjectToString(fila[1]));
+		String tipoEntrada = Utils.safeObjectToString(fila[2]);
+		tipoEntrada = tipoEntradaBBDDToText(tipoEntrada);
+		informe.setTipoEntrada(tipoEntrada);
+		informe.setNumeroEntradas(Utils.safeObjectBigDecimalToInt(fila[3]));
+		informe.setTotal(Utils.safeObjectToFloat(fila[4]));
+		
+		int taquilla = Utils.safeObjectBigDecimalToInt(fila[5]);
+		informe.setTipoCompra((taquilla == 0)?"ONLINE":"TAQUILLA");
 		
 		return informe;
 	}
@@ -58,15 +85,31 @@ public class ReportService {
 		excelService.addCell(2, fila.getTipoEntrada(), null, row);
 		excelService.addCell(3, fila.getNumeroEntradas(), null, row);
 		excelService.addCell(4, fila.getTotal(), row);
+	}
+	
+	private void addDadesEvento(int i, Informe fila, ExcelService excelService) {
+		Row row = excelService.getNewRow(i);
+		excelService.addCell(0, fila.getEvento(), null, row);
+		excelService.addCell(1, fila.getTipoEntrada(), null, row);
+		excelService.addCell(2, fila.getTipoCompra(), null, row);
+		excelService.addCell(3, fila.getNumeroEntradas(), null, row);
+		excelService.addCell(4, fila.getTotal(), row);
+	}
+
+	public ByteArrayOutputStream getExcelEventos(String fechaInicio, String fechaFin) throws IOException {
+		List<Object[]> files = comprasDAO.getComprasPorEventoInFechas(fechaInicio, fechaFin);
+		ExcelService excelService = new ExcelService();
+		int rownum = 0;
 		
-		/*List<Float> valors = new ArrayList<Float>();
-		valors.add((float)itemGraella.getQuantitatLliures());
-		valors.add((float)itemGraella.getQuantitatReservades());
-		valors.add((float)itemGraella.getQuantitatOcupades());
-		valors.add(itemGraella.getMetresLinealsLliures());
-		valors.add(itemGraella.getMetresLinealsReservades());
-		valors.add(itemGraella.getMetresLinealsOcupades());
-		
-		return valors;*/
+		if (files != null && files.size() > 0) {
+			excelService.addFulla("Informe taquilla " + fechaInicio + " - " + fechaFin);
+			excelService.generaCeldes(excelService.getEstilNegreta(), 0, "Event", "Tipus d'entrada", "Online o taquilla", "Nombre d'entrades", "Total");
+			
+			for (Object[] fila: files) {
+				rownum++;
+				addDadesEvento(rownum, objectToInformeEvento(fila), excelService);
+			}
+		}
+		return excelService.getExcel();
 	}
 }

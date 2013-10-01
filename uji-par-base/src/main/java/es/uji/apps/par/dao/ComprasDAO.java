@@ -338,8 +338,23 @@ public class ComprasDAO extends BaseDAO
     			"from par_butacas b, par_compras c, par_sesiones s, par_eventos e " +
     			"where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id " +
     			"and c.fecha >= TO_DATE('" + fechaInicio + "','YY-MM-DD') and c.fecha <= TO_DATE('" + fechaFin + " 23:59','YY-MM-DD HH24:MI') " +
-    			"and c.pagada = 1 and c.reserva = 0 and b.tipo <> 'invitacion' and c.taquilla = 1 " +
+    			"and c.pagada = 1 and c.reserva = 0 and c.taquilla = 1 " +
+    			"and b.anulada = 0 " +
     			"group by c.sesion_id, e.titulo_va, b.tipo, s.fecha_celebracion " +
+    			"order by e.titulo_va";
+    	return entityManager.createNativeQuery(sql).getResultList();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public List<Object[]> getComprasPorEventoInFechas(String fechaInicio, String fechaFin) {
+		String sql = "select e.id, e.titulo_va, b.tipo, count(b.id) as cantidad, sum(b.precio) as total, c.taquilla " +
+    			"from par_butacas b, par_compras c, par_sesiones s, par_eventos e " +
+    			"where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id " +
+    			"and c.fecha >= TO_DATE('" + fechaInicio + "','YY-MM-DD') and c.fecha <= TO_DATE('" + fechaFin + " 23:59','YY-MM-DD HH24:MI') " +
+    			"and c.pagada = 1 and c.reserva = 0" +
+    			"and b.anulada = 0 " +
+    			"group by e.id, e.titulo_va, b.tipo, c.taquilla " +
     			"order by e.titulo_va";
     	return entityManager.createNativeQuery(sql).getResultList();
 	}

@@ -18,32 +18,60 @@ Ext.define('Paranimf.controller.Informes', {
 
          'panelInformes button[action=generateExcelTaquilla]': {
             click: this.generateExcelTaquilla
+         },
+
+         'panelInformes button[action=generateExcelEvento]': {
+            click: this.generateExcelEvento
          }
       });
    },
 
    generateExcelTaquilla: function(button, event, opts) {
       console.log(this.getFechaInicio(), this.getFechaFin());
-      if (!this.getFechaInicio().value || this.getFechaInicio().value == '' || !this.getFechaFin().value || this.getFechaFin().value == '') {
-         alert(UI.i18n.error.fechasObligatorias);
+      
+      if (!this.sonFechasValidas(this.getFechaInicio().value, this.getFechaFin().value))
          return;
-      }
 
-      var dtInicio = this.getFechaInicio().value;
-      var mesInicio = dtInicio.getMonth() + 1;
-      mesInicio = (mesInicio>9)?mesInicio:'0' + mesInicio;
-      var diaInicio = (dtInicio.getDate() > 9)?dtInicio.getDate():'0' + dtInicio.getDate();
-      var strFechaInicio = dtInicio.getFullYear() + '-' + mesInicio + '-' + diaInicio;
-
-      var dtFin = this.getFechaFin().value;
-      var mesFin = dtFin.getMonth() + 1;
-      mesFin = (mesFin>9)?mesFin:'0' + mesFin;
-      var diaFin = (dtFin.getDate() > 9)?dtFin.getDate():'0' + dtFin.getDate();
-      var strFechaFin = dtFin.getFullYear() + '-' + mesFin + '-' + diaFin;
+      var strFechaInicio = this.getStrFecha(this.getFechaInicio().value);
+      var strFechaFin = this.getStrFecha(this.getFechaFin().value);
 
       var form = document.createElement("form");
       form.setAttribute("method", "post");
       form.setAttribute("action", urlPrefix + 'report/taquilla/' + strFechaInicio + '/' + strFechaFin);
+      form.setAttribute("target", "_blank");
+
+      document.body.appendChild(form);
+      form.submit();
+   }, 
+
+   sonFechasValidas: function(fechaInicio, fechaFin) {
+      if (!fechaInicio || fechaInicio == '' || !fechaFin || fechaFin == '') {
+         alert(UI.i18n.error.fechasObligatorias);
+         return false;
+      }
+      return true;
+   },
+
+   getStrFecha: function(fecha) {
+      var dt = fecha;
+      var mes = dt.getMonth() + 1;
+      mes = (mes>9)?mes:'0' + mes;
+      var dia = (dt.getDate() > 9)?dt.getDate():'0' + dt.getDate();
+      return dt.getFullYear() + '-' + mes + '-' + dia;
+   },
+
+   generateExcelEvento: function(button, event, opts) {
+      console.log(this.getFechaInicio(), this.getFechaFin());
+      
+      if (!this.sonFechasValidas(this.getFechaInicio().value, this.getFechaFin().value))
+         return;
+
+      var strFechaInicio = this.getStrFecha(this.getFechaInicio().value);
+      var strFechaFin = this.getStrFecha(this.getFechaFin().value);
+
+      var form = document.createElement("form");
+      form.setAttribute("method", "post");
+      form.setAttribute("action", urlPrefix + 'report/eventos/' + strFechaInicio + '/' + strFechaFin);
       form.setAttribute("target", "_blank");
 
       document.body.appendChild(form);

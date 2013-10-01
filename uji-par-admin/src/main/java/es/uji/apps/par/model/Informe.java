@@ -10,6 +10,7 @@ public class Informe
     private String tipoEntrada;
     private int numeroEntradas;
     private float total;
+    private String tipoCompra;
 
     public Informe()
     {
@@ -54,5 +55,13 @@ public class Informe
 
 	public void setTotal(float total) {
 		this.total = total;
+	}
+
+	public String getTipoCompra() {
+		return tipoCompra;
+	}
+
+	public void setTipoCompra(String tipoCompra) {
+		this.tipoCompra = tipoCompra;
 	}
 }

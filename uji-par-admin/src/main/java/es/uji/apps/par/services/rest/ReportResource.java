@@ -28,8 +28,16 @@ public class ReportResource extends BaseResource
     @POST
 	@Path("taquilla/{fechaInicio}/{fechaFin}")
 	@Produces("application/vnd.ms-excel")
-	public Response gridToExcel(@PathParam("fechaInicio") String fechaInicio, @PathParam("fechaFin") String fechaFin) throws TranscoderException, IOException {
+	public Response generateExcelTaquilla(@PathParam("fechaInicio") String fechaInicio, @PathParam("fechaFin") String fechaFin) throws TranscoderException, IOException {
 		ByteArrayOutputStream ostream = reportService.getExcelTaquilla(fechaInicio, fechaFin);
+		return Response.ok(ostream.toByteArray(), MediaType.APPLICATION_OCTET_STREAM).header("content-disposition","attachment; filename = informeTaquilla " + fechaInicio + "-" + fechaFin + ".xls").build();
+	}
+    
+    @POST
+	@Path("eventos/{fechaInicio}/{fechaFin}")
+	@Produces("application/vnd.ms-excel")
+	public Response generateExcelEventos(@PathParam("fechaInicio") String fechaInicio, @PathParam("fechaFin") String fechaFin) throws TranscoderException, IOException {
+		ByteArrayOutputStream ostream = reportService.getExcelEventos(fechaInicio, fechaFin);
 		return Response.ok(ostream.toByteArray(), MediaType.APPLICATION_OCTET_STREAM).header("content-disposition","attachment; filename = informeTaquilla " + fechaInicio + "-" + fechaFin + ".xls").build();
 	}
 }
