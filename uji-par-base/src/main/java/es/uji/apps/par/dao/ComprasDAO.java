@@ -340,6 +340,7 @@ public class ComprasDAO extends BaseDAO
     			"and c.fecha >= TO_DATE('" + fechaInicio + "','YY-MM-DD') and c.fecha <= TO_DATE('" + fechaFin + " 23:59','YY-MM-DD HH24:MI') " +
     			"and c.pagada = 1 and c.reserva = 0 and c.taquilla = 1 " +
     			"and b.anulada = 0 " +
+    			"and c.codigo_pago_tarjeta is null " +
     			"group by c.sesion_id, e.titulo_va, b.tipo, s.fecha_celebracion " +
     			"order by e.titulo_va";
     	return entityManager.createNativeQuery(sql).getResultList();
