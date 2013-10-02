@@ -14,14 +14,17 @@ import javax.imageio.ImageWriter;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.stream.ImageOutputStream;
 
+import org.apache.sanselan.ImageReadException;
 import org.w3c.dom.Element;
+
+import es.uji.apps.par.jpeg.JpegReader;
 
 public class ImageUtils
 {
 
-    public static void changeDpi(byte[] imagen, OutputStream output, float anchoCm) throws IOException
+    public static void changeDpi(byte[] imagen, OutputStream output, float anchoCm) throws IOException, ImageReadException
     {
-        BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(imagen));
+        BufferedImage bufferedImage = new JpegReader().readImage(imagen);
 
         final String formatName = "jpg";
 

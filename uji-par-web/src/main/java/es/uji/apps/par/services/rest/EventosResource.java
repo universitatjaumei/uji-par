@@ -21,6 +21,7 @@ import javax.ws.rs.core.Response;
 
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.log4j.Logger;
+import org.apache.sanselan.ImageReadException;
 
 import com.sun.jersey.api.core.InjectParam;
 
@@ -230,7 +231,7 @@ public class EventosResource extends BaseResource
 
     @GET
     @Path("{id}/imagenEntrada")
-    public Response getImagenEntrada(@PathParam("id") Long eventoId) throws IOException
+    public Response getImagenEntrada(@PathParam("id") Long eventoId) throws IOException, ImageReadException
     {
         try
         {
