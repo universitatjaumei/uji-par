@@ -49,16 +49,11 @@ public class EventosDAO extends BaseDAO
     
     @SuppressWarnings({ "rawtypes" })
 	protected OrderSpecifier<String> getSort(EntityPath entity, String sortParameter, EntityPath entityOpcional) {
-    	
-        if (hasSort(sortParameter) && !sortParameter.contains("fechaPrimeraSesion"))
-        {
+    	if (hasSort(sortParameter) && !sortParameter.contains("fechaPrimeraSesion"))
     		return super.getSort(entity, sortParameter);
-        }
-        else
-        {
-            StringPath strPath = new StringPath(entityOpcional, "fechaCelebracion");
-            return sortParameter.contains("DESC")? strPath.desc():strPath.asc();
-        }
+
+		StringPath strPath = new StringPath(entityOpcional, "fechaCelebracion");
+		return strPath.desc();
     }
     
     @Transactional
@@ -136,8 +131,7 @@ public class EventosDAO extends BaseDAO
                 qEventoDTO.parTiposEvento, qEventoDTO.interpretesEs,
                 qEventoDTO.interpretesVa, qEventoDTO.premiosEs, qEventoDTO.premiosVa,
                 qEventoDTO.tituloEs, qEventoDTO.tituloVa, qEventoDTO.imagenSrc,
-                qEventoDTO.imagenContentType, qEventoDTO.asientosNumerados, qEventoDTO.retencionSgae, qEventoDTO.ivaSgae, qEventoDTO.porcentajeIva, qEventoDTO.rssId, 
-                qSesion.fechaCelebracion);
+                qEventoDTO.imagenContentType, qEventoDTO.asientosNumerados, qEventoDTO.retencionSgae, qEventoDTO.ivaSgae, qEventoDTO.porcentajeIva, qEventoDTO.rssId);
     	
    		sort = getSort(qEventoDTO, sortParameter, qSesion);
         query  = (activos)?getQueryEventosActivos():getQueryEventos();
