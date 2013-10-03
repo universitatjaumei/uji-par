@@ -14,6 +14,7 @@ Ext.define('Paranimf.model.Sesion', {
       'horaFinVentaOnline',
       {name: 'plantillaPrecios', mapping: 'plantillaPrecios.id'},
       {name: 'plantillaPrecios_nombre', mapping: 'plantillaPrecios.nombre'},
-      'preciosSesion'
+      'preciosSesion',
+      'butacasVendidas'
    ]
 });

@@ -30,6 +30,7 @@ public class Sesion
     private String horaFinVentaOnline;
     private Plantilla plantillaPrecios;
     private List<PreciosSesion> preciosSesion;
+    private long butacasVendidas;
 
     public Sesion()
     {
@@ -264,5 +265,15 @@ public class Sesion
         Date ahora = new Date();
 
         return ahora.before(getFechaFinVentaOnline()) && ahora.after(fechaInicioVentaOnline);
+    }
+
+    public long getButacasVendidas()
+    {
+        return butacasVendidas;
+    }
+
+    public void setButacasVendidas(long butacasVendidas)
+    {
+        this.butacasVendidas = butacasVendidas;
     }
 }

@@ -44,6 +44,26 @@ public class SesionesService
     	return getSesiones(eventoId, false, sortParameter, start, limit);
     }
     
+    private List<Sesion> getSesionesConVendidas(Long eventoId, String sortParameter, int start, int limit)
+    {
+        List<Sesion> listaSesiones = new ArrayList<Sesion>();
+        
+        List<Object[]> sesiones = sesionDAO.getSesionesConButacasVendidas(eventoId, sortParameter, start, limit);
+        
+        for (Object[] fila: sesiones) {
+            
+            SesionDTO sesionDTO = (SesionDTO) fila[0];
+            Long butacasVendidas = (Long)fila[1];
+            
+            Sesion sesion = new Sesion(sesionDTO);
+            sesion.setButacasVendidas(butacasVendidas);
+            
+            listaSesiones.add(sesion);
+        }
+        
+        return listaSesiones;
+    }
+    
     public List<Sesion> getSesiones(Long eventoId) {
 		return getSesiones(eventoId, false, "", 0, 100);
 	}
@@ -100,6 +120,20 @@ public class SesionesService
         
         return sesiones;
     }    
+    
+    public List<Sesion> getSesionesConVendidasDateEnSegundos(Long eventoId, String sortParameter, int start, int limit)
+    {
+        List<Sesion> sesiones = getSesionesConVendidas(eventoId, sortParameter, start, limit);
+        
+        for (Sesion sesion : sesiones)
+        {
+            sesion.setFechaCelebracionWithDate(new Date(sesion.getFechaCelebracion().getTime()/1000));
+            sesion.setFechaInicioVentaOnlineWithDate(new Date(sesion.getFechaInicioVentaOnline().getTime()/1000));
+            sesion.setFechaFinVentaOnlineWithDate(new Date(sesion.getFechaFinVentaOnline().getTime()/1000));
+        }
+        
+        return sesiones;
+    }   
 
     public void removeSesion(Integer id)
     {

@@ -225,6 +225,7 @@ UI =
 			"hours":"Horaris",
 			"eventDate": "Data de celebració",
 			"opening": "Obertura de portes",
+			"butacasVendidas": "Butaques venudes",
 			"startOnlineSelling": "Inici venda online",
 			"canalInternet": "Disponible per a venda online",
 			"endOnlineSelling": "Fi venda online",

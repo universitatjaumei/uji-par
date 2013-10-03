@@ -11,9 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
+import com.mysema.query.jpa.impl.JPASubQuery;
 import com.mysema.query.jpa.impl.JPAUpdateClause;
 
 import es.uji.apps.par.db.PreciosSesionDTO;
+import es.uji.apps.par.db.QButacaDTO;
+import es.uji.apps.par.db.QEventoDTO;
 import es.uji.apps.par.db.QPreciosSesionDTO;
 import es.uji.apps.par.db.QSesionDTO;
 import es.uji.apps.par.db.SesionDTO;
@@ -51,6 +54,26 @@ public class SesionesDAO extends BaseDAO
             sesion = getQuerySesiones(eventoId).orderBy(getSort(qSesionDTO, sortParameter)).offset(start).limit(limit).list(qSesionDTO);
 
         return sesion;
+    }
+    
+    @Transactional
+    public List<Object[]> getSesionesConButacasVendidas(long eventoId, String sortParameter, int start, int limit)
+    {
+        QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
+        QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
+        
+        JPAQuery query = new JPAQuery(entityManager);
+        query.from(qSesionDTO).where(qSesionDTO.parEvento.id.eq(eventoId));
+        
+        JPASubQuery queryVendidas = new JPASubQuery();
+        queryVendidas.from(qButacaDTO);
+        queryVendidas.where(qSesionDTO.id.eq(qButacaDTO.parSesion.id)
+                            .and(qButacaDTO.anulada.eq(false))
+                            .and(qButacaDTO.tipo.in("normal", "descuento")));
+        
+        List<Object[]> sesiones = query.orderBy(getSort(qSesionDTO, sortParameter)).offset(start).limit(limit).list(qSesionDTO, queryVendidas.count());
+
+        return sesiones;
     }
     
     @Transactional
