@@ -68,8 +68,7 @@ public class SesionesDAO extends BaseDAO
         JPASubQuery queryVendidas = new JPASubQuery();
         queryVendidas.from(qButacaDTO);
         queryVendidas.where(qSesionDTO.id.eq(qButacaDTO.parSesion.id)
-                            .and(qButacaDTO.anulada.eq(false))
-                            .and(qButacaDTO.tipo.in("normal", "descuento")));
+                            .and(qButacaDTO.anulada.eq(false)));
         
         List<Object[]> sesiones = query.orderBy(getSort(qSesionDTO, sortParameter)).offset(start).limit(limit).list(qSesionDTO, queryVendidas.count());
 
