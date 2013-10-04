@@ -16,7 +16,6 @@ import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.jpa.impl.JPAUpdateClause;
 
 import es.uji.apps.par.ButacaOcupadaAlActivarException;
-import es.uji.apps.par.ButacaOcupadaException;
 import es.uji.apps.par.db.ButacaDTO;
 import es.uji.apps.par.db.CompraDTO;
 import es.uji.apps.par.db.QButacaDTO;
@@ -27,7 +26,7 @@ import es.uji.apps.par.utils.DateUtils;
 @Repository
 public class ComprasDAO extends BaseDAO
 {
-    private static final int ELIMINA_PENDIENTES_MINUTOS = 10;
+    private static final int ELIMINA_PENDIENTES_MINUTOS = 20;
     
     @Autowired
     private SesionesDAO sesionDAO;
