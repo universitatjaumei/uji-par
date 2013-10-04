@@ -10,7 +10,7 @@ UI =
             "filaEntero": "Fila: ",
             "tipo": "Tipus",
             "tipoNormal": "Normal",
-            "tipoDescuento": "Descompte llibret",
+            "tipoDescuento": "Descompte",
             "tipoInvitacion": "Invitació",
             "totalEntradas": "Total compra (IVA incl.): "
         }
