@@ -15,6 +15,9 @@ import com.mysema.query.BooleanBuilder;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.jpa.impl.JPAUpdateClause;
 
+import es.uji.apps.par.ButacaOcupadaAlActivarException;
+import es.uji.apps.par.ButacaOcupadaException;
+import es.uji.apps.par.db.ButacaDTO;
 import es.uji.apps.par.db.CompraDTO;
 import es.uji.apps.par.db.QButacaDTO;
 import es.uji.apps.par.db.QCompraDTO;
@@ -291,19 +294,53 @@ public class ComprasDAO extends BaseDAO
 	}
     
     @Transactional
-    public void desanularCompraReserva(Long idCompraReserva) {
-
-        QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
-        QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
-        JPAUpdateClause updateCompra = new JPAUpdateClause(entityManager, qCompraDTO);
-        updateCompra.set(qCompraDTO.anulada, false).
-                     set(qCompraDTO.pagada, true).
-            where(qCompraDTO.id.eq(idCompraReserva)).execute();
+    public void desanularCompraReserva(Long idCompraReserva) throws ButacaOcupadaAlActivarException {
         
-        JPAUpdateClause updateButacas = new JPAUpdateClause(entityManager, qButacaDTO);
-        updateButacas.set(qButacaDTO.anulada, false).
-            where(qButacaDTO.parCompra.id.eq(idCompraReserva)).execute();
+        try
+        {
+            QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
+            QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
+            JPAUpdateClause updateCompra = new JPAUpdateClause(entityManager, qCompraDTO);
+            updateCompra.set(qCompraDTO.anulada, false).
+                         set(qCompraDTO.pagada, true).
+                where(qCompraDTO.id.eq(idCompraReserva)).execute();
+            
+            JPAUpdateClause updateButacas = new JPAUpdateClause(entityManager, qButacaDTO);
+            updateButacas.set(qButacaDTO.anulada, false).
+                where(qButacaDTO.parCompra.id.eq(idCompraReserva)).execute();
+        } 
+        catch (Exception e)
+        {
+            for (ButacaDTO butaca:getCompraById(idCompraReserva).getParButacas())
+            {
+                if (butacaOcupada(butaca))
+                {
+                    String comprador = "";
+                    
+                    if (butaca.getParCompra().getNombre()!=null || butaca.getParCompra().getApellidos()!=null)
+                        comprador = butaca.getParCompra().getNombre() + " " + butaca.getParCompra().getApellidos();
+                        
+                    throw new ButacaOcupadaAlActivarException(butaca.getParSesion().getId(), butaca.getParLocalizacion().getCodigo(), 
+                            butaca.getFila(), butaca.getNumero(), comprador, butaca.getParCompra().getTaquilla());
+                }
+            }
+        }
     } 
+
+    private boolean butacaOcupada(ButacaDTO butaca)
+    {
+        QButacaDTO b = QButacaDTO.butacaDTO;
+        
+        JPAQuery query = new JPAQuery(entityManager);
+        query.from(b)
+            .where(b.parSesion.id.eq(butaca.getParSesion().getId())
+                    .and(b.anulada.eq(false))
+                    .and(b.parLocalizacion.codigo.eq(butaca.getParLocalizacion().getCodigo()))
+                    .and(b.fila.eq(butaca.getFila()))
+                    .and(b.numero.eq(butaca.getNumero())));
+        
+        return query.count() > 0;
+    }
 
     public List<CompraDTO> getReservasACaducar(Date date)
     {

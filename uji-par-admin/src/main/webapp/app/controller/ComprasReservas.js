@@ -174,8 +174,15 @@ Ext.define('Paranimf.controller.ComprasReservas', {
             me.getGridCompras().deseleccionar();
             me.getGridCompras().getStore().load();
           }, failure: function (response) {
+        	  
             me.getGridCompras().setLoading(false);
-            alert(UI.i18n.error.desanularCompraReserva);
+            
+            var resp = Ext.JSON.decode(response.responseText, true);
+            
+            if (resp['message'])
+            	alert(resp['message']);
+            else	
+            	alert(UI.i18n.error.desanularCompraReserva);
           }
         });
       }

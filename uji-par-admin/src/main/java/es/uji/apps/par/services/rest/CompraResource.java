@@ -22,6 +22,7 @@ import org.apache.log4j.Logger;
 
 import com.sun.jersey.api.core.InjectParam;
 
+import es.uji.apps.par.ButacaOcupadaAlActivarException;
 import es.uji.apps.par.ButacaOcupadaException;
 import es.uji.apps.par.CompraSinButacasException;
 import es.uji.apps.par.NoHayButacasLibresException;
@@ -79,8 +80,16 @@ public class CompraResource extends BaseResource
     @Produces(MediaType.APPLICATION_JSON)
     public Response desanularCompraOReserva(@PathParam("idSesion") Long sesionId, @PathParam("idCompraReserva") Long idCompraReserva)
     {
-        comprasService.desanularCompraReserva(idCompraReserva);
-        return Response.ok().build();
+        try
+        {
+            comprasService.desanularCompraReserva(idCompraReserva);
+            return Response.ok().build();
+        }
+        catch (ButacaOcupadaAlActivarException e)
+        {
+            return errorResponse("error.butacaOcupadaAlActivar", e.getTaquilla()?"taquilla":"online", e.getComprador(), 
+                getProperty("localizacion." + e.getLocalizacion()), e.getFila(), e.getNumero());
+        }
     }    
     
     @PUT

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import es.uji.apps.par.ButacaOcupadaAlActivarException;
 import es.uji.apps.par.ButacaOcupadaException;
 import es.uji.apps.par.CompraButacaDescuentoCero;
 import es.uji.apps.par.CompraInvitacionPorInternetException;
@@ -261,7 +262,7 @@ public class ComprasService
 		comprasDAO.anularCompraReserva(idCompraReserva);
 	}
 	
-    public void desanularCompraReserva(Long idCompraReserva) {
+    public void desanularCompraReserva(Long idCompraReserva) throws ButacaOcupadaAlActivarException {
         comprasDAO.desanularCompraReserva(idCompraReserva);
     }	
 	
