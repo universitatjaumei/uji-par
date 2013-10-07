@@ -1,9 +1,9 @@
 package es.uji.apps.par;
 
 @SuppressWarnings("serial")
-public class CompraButacaDescuentoCero extends GeneralPARException
+public class CompraButacaDescuentoNoDisponible extends GeneralPARException
 {
-    public CompraButacaDescuentoCero()
+    public CompraButacaDescuentoNoDisponible()
     {
         super("Se ha intentado comprar una butaca con descuento cero");
     }

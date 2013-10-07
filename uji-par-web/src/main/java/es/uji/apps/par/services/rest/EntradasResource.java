@@ -16,7 +16,7 @@ import org.apache.log4j.Logger;
 import com.sun.jersey.api.core.InjectParam;
 
 import es.uji.apps.par.ButacaOcupadaException;
-import es.uji.apps.par.CompraButacaDescuentoCero;
+import es.uji.apps.par.CompraButacaDescuentoNoDisponible;
 import es.uji.apps.par.CompraInvitacionPorInternetException;
 import es.uji.apps.par.CompraSinButacasException;
 import es.uji.apps.par.Constantes;
@@ -101,6 +101,7 @@ public class EntradasResource extends BaseResource
         template.put("fecha", DateUtils.dateToSpanishString(sesion.getFechaCelebracion()));
         template.put("hora", sesion.getHoraCelebracion());
         template.put("pagina", buildPublicPageInfo(urlBase, url, getLocale().getLanguage().toString()));
+        template.put("tipoEventoEs", sesion.getEvento().getParTiposEvento().getNombreEs());
 
         if (error != null && !error.equals(""))
         {
@@ -221,8 +222,8 @@ public class EntradasResource extends BaseResource
             template.put("precioNormal_" + codigoLocalizacion, precio.getPrecio());
             template.put("precioDescuento_" + codigoLocalizacion, precio.getDescuento());
             
-            // Si el descuento es 0 no permitimos comprar entradas de ese tipo
-            template.put("descuentoCero_" + codigoLocalizacion, precio.getDescuento().equals(BigDecimal.ZERO));
+            // Hay algunos casos en los que no se permite descuento
+            template.put("descuentoNoDisponible_" + codigoLocalizacion, comprasService.esButacaDescuentoNoDisponible("descuento", evento, precio));
         }
 
         template.put("gastosGestion", Float.parseFloat(Configuration.getGastosGestion()));
@@ -284,9 +285,9 @@ public class EntradasResource extends BaseResource
             String error = ResourceProperties.getProperty(getLocale(), "error.seleccionEntradas.invitacionPorInternet");
             return paginaSeleccionEntradasNumeradas(sesionId, butacasSeleccionadas, null, error);
         }
-        catch (CompraButacaDescuentoCero e)
+        catch (CompraButacaDescuentoNoDisponible e)
         {
-            String error = ResourceProperties.getProperty(getLocale(), "error.seleccionEntradas.compraDescuentoCero");
+            String error = ResourceProperties.getProperty(getLocale(), "error.seleccionEntradas.compraDescuentoNoDisponible");
             return paginaSeleccionEntradasNumeradas(sesionId, butacasSeleccionadas, null, error);
         }        
 
@@ -348,9 +349,9 @@ public class EntradasResource extends BaseResource
             String error = ResourceProperties.getProperty(getLocale(), "error.seleccionEntradas.noSeleccionadas");
             return paginaSeleccionEntradasNoNumeradas(sesionId, platea1NormalSt, platea1DescuentoSt, platea2NormalSt, platea2DescuentoSt, error);
         }
-        catch (CompraButacaDescuentoCero e)
+        catch (CompraButacaDescuentoNoDisponible e)
         {
-            String error = ResourceProperties.getProperty(getLocale(), "error.seleccionEntradas.compraDescuentoCero");
+            String error = ResourceProperties.getProperty(getLocale(), "error.seleccionEntradas.compraDescuentoNoDisponible");
             return paginaSeleccionEntradasNoNumeradas(sesionId, platea1NormalSt, platea1DescuentoSt, platea2NormalSt, platea2DescuentoSt, error);
         }          
 
@@ -538,6 +539,7 @@ public class EntradasResource extends BaseResource
         template.put("modoReserva", reserva!=null && reserva.equals("true"));
         template.put("muestraReservadas", true);
         template.put("modoAdmin", true);
+        template.put("tipoEventoEs", sesion.getEvento().getParTiposEvento().getNombreEs());
 
         if (getLocale().getLanguage().equals("ca"))
         {

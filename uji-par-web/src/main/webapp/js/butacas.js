@@ -7,10 +7,11 @@ Butacas = (function() {
 	var gastosGestion;
 	var reserva;
 	var modoAdmin;
+	var tipoEvento;
 	
 	var butacasSeleccionadas = [];
 	
-	function init(url, sesId, butacas, uuid, gastosGest, modoReserva, admin) {
+	function init(url, sesId, butacas, uuid, gastosGest, modoReserva, admin, tipoEv) {
 		baseUrl = url;
 		sesionId = sesId;
 		butacasSeleccionadas = butacas;
@@ -18,6 +19,7 @@ Butacas = (function() {
 		gastosGestion = gastosGest;
 		reserva = modoReserva;
 		modoAdmin = admin;
+		tipoEvento = tipoEv;
 		
 		if (modoAdmin)
 		{
@@ -168,7 +170,10 @@ Butacas = (function() {
 		
 		st += '<option ' + selecNormal + ' value="normal">' + UI.i18n.butacas.tipoNormal;
 		
-		if (precios[butacasSeleccionadas[posicion]['localizacion']]['descuento'] > 0)
+		var butaca = butacasSeleccionadas[posicion];
+		var precioDescuento = precios[butaca['localizacion']]['descuento'];
+		
+		if (!descuentoNoDisponible(precioDescuento))
 		{
 			st += '</option><option ' + selecDescuento + ' value="descuento">' + UI.i18n.butacas.tipoDescuento + '</option>';	
 		}
@@ -181,6 +186,12 @@ Butacas = (function() {
 		st += '</select>';
 		
 		return st;
+	}
+	
+	function descuentoNoDisponible(precioDescuento)
+	{
+		return precioDescuento == 0.0 || 
+			   ((tipoEvento.toLowerCase()=='cine' || tipoEvento.toLowerCase()=='teatro') && precioDescuento < 8.0);
 	}
 	
 	function actualizaTotal()

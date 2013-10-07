@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import es.uji.apps.par.ButacaOcupadaAlActivarException;
 import es.uji.apps.par.ButacaOcupadaException;
-import es.uji.apps.par.CompraButacaDescuentoCero;
+import es.uji.apps.par.CompraButacaDescuentoNoDisponible;
 import es.uji.apps.par.CompraInvitacionPorInternetException;
 import es.uji.apps.par.CompraSinButacasException;
 import es.uji.apps.par.FueraDePlazoVentaInternetException;
@@ -24,6 +24,7 @@ import es.uji.apps.par.dao.ComprasDAO;
 import es.uji.apps.par.db.CompraDTO;
 import es.uji.apps.par.model.Butaca;
 import es.uji.apps.par.model.Compra;
+import es.uji.apps.par.model.Evento;
 import es.uji.apps.par.model.PreciosSesion;
 import es.uji.apps.par.model.ResultadoCompra;
 import es.uji.apps.par.model.Sesion;
@@ -54,9 +55,10 @@ public class ComprasService
 
     @Transactional
     public ResultadoCompra realizaCompraInternet(Long sesionId, List<Butaca> butacasSeleccionadas, String uuidCompraActual) throws FueraDePlazoVentaInternetException,
-            NoHayButacasLibresException, ButacaOcupadaException, CompraSinButacasException, CompraInvitacionPorInternetException, CompraButacaDescuentoCero
+            NoHayButacasLibresException, ButacaOcupadaException, CompraSinButacasException, CompraInvitacionPorInternetException, CompraButacaDescuentoNoDisponible
     {
         Sesion sesion = sesionesService.getSesion(sesionId);
+        Evento evento = sesion.getEvento();
         Map<String, PreciosSesion> precios = sesionesService.getPreciosSesionPorLocalizacion(sesionId);
 
         if (!sesion.getEnPlazoVentaInternet())
@@ -67,8 +69,8 @@ public class ComprasService
             if (butaca.getTipo().equals("invitacion"))
                 throw new CompraInvitacionPorInternetException();
             
-            if (esButacaDescuentoCero(butaca, precios))
-                throw new CompraButacaDescuentoCero();
+            if (esButacaDescuentoNoDisponible(butaca.getTipo(), evento, precios.get(butaca.getLocalizacion())))
+                throw new CompraButacaDescuentoNoDisponible();
         }
         
         // Si teníamos una compra en marcha la eliminamos (puede pasar cuando intentamos pagar con tarjeta y volvemos atrás)        
@@ -79,15 +81,27 @@ public class ComprasService
     }
     
 
-    // Intentamos comprar una butaca de tipo descuento que tiene precio 0
-    private boolean esButacaDescuentoCero(Butaca butaca, Map<String, PreciosSesion> precios)
+    // Intentamos comprar una butaca de tipo descuento pero el descuento no está disponible (casos: descuento 0 ó cine/teatro con precio < 8 €)
+    public boolean esButacaDescuentoNoDisponible(String tipoButaca, Evento evento, PreciosSesion precioLocalizacion)
     {
-        return butaca.getTipo().equals("descuento") && precios.get(butaca.getLocalizacion()).getDescuento().equals(BigDecimal.ZERO);
+        return tipoButaca.equals("descuento") && (descuentoCero(precioLocalizacion) || cineTeatroMenorDe(evento, precioLocalizacion, new BigDecimal(8)));
+    }
+
+    private boolean descuentoCero(PreciosSesion precioSesion)
+    {
+        return precioSesion.getDescuento().equals(BigDecimal.ZERO);
+    }
+    
+    private boolean cineTeatroMenorDe(Evento evento, PreciosSesion precioSesion, BigDecimal descuentoLimite)
+    {
+        String tipoEvento = evento.getParTiposEvento().getNombreEs().toLowerCase();
+        
+        return (tipoEvento.equals("cine") || tipoEvento.equals("teatro")) && precioSesion.getDescuento().compareTo(descuentoLimite) < 0;
     }
 
     public ResultadoCompra realizaCompraInternet(Long sesionId, int platea1Normal, int platea1Descuento,
             int platea2Normal, int platea2Descuento, String uuidCompra) throws FueraDePlazoVentaInternetException, 
-            NoHayButacasLibresException, ButacaOcupadaException, CompraSinButacasException, CompraInvitacionPorInternetException, CompraButacaDescuentoCero
+            NoHayButacasLibresException, ButacaOcupadaException, CompraSinButacasException, CompraInvitacionPorInternetException, CompraButacaDescuentoNoDisponible
     {
         List<Butaca> butacasSeleccionadas = new ArrayList<Butaca>();
         
