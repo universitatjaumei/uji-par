@@ -230,6 +230,15 @@ Butacas = (function() {
 		refrescaEstadoButacas();
 	}
 	
+	function cambiaTipoTodasButacas(tipo)
+	{
+		if (tipo)
+		{
+			for (var i=0; i<butacasSeleccionadas.length; i++)
+				cambiaTipoButaca(i, tipo);
+		}
+	}
+	
 	function selecciona(localizacion, texto, fila, numero, x, y) {
 
 		var tipoEntrada = 'normal';
@@ -392,7 +401,8 @@ Butacas = (function() {
 		selecciona:selecciona,
 		init:init,
 		cargaPrecios:cargaPrecios,
-		cambiaTipoButaca: cambiaTipoButaca
+		cambiaTipoButaca: cambiaTipoButaca,
+		cambiaTipoTodasButacas: cambiaTipoTodasButacas
 	};
 	
 }());
