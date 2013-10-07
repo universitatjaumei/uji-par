@@ -66,6 +66,10 @@ Ext.define('Paranimf.view.taquilla.GridSesionesTaquilla', {
       format:'d/m/Y',
       xtype: 'datecolumn',
       flex: 1
+    }, {
+      dataIndex: 'butacasVendidas',
+      text: UI.i18n.field.butacasVendidas,
+      flex: 1
     }];
 
     this.callParent(arguments);

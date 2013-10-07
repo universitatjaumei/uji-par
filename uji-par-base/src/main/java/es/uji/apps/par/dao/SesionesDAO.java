@@ -1,6 +1,5 @@
 package es.uji.apps.par.dao;
 
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,7 +15,6 @@ import com.mysema.query.jpa.impl.JPAUpdateClause;
 
 import es.uji.apps.par.db.PreciosSesionDTO;
 import es.uji.apps.par.db.QButacaDTO;
-import es.uji.apps.par.db.QEventoDTO;
 import es.uji.apps.par.db.QPreciosSesionDTO;
 import es.uji.apps.par.db.QSesionDTO;
 import es.uji.apps.par.db.SesionDTO;
@@ -57,13 +55,17 @@ public class SesionesDAO extends BaseDAO
     }
     
     @Transactional
-    public List<Object[]> getSesionesConButacasVendidas(long eventoId, String sortParameter, int start, int limit)
+    public List<Object[]> getSesionesConButacasVendidas(long eventoId, boolean activas, String sortParameter, int start, int limit)
     {
         QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
         QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
         
-        JPAQuery query = new JPAQuery(entityManager);
-        query.from(qSesionDTO).where(qSesionDTO.parEvento.id.eq(eventoId));
+        JPAQuery query; 
+        
+        if (activas)
+            query = getQuerySesionesActivas(eventoId);
+        else
+            query = getQuerySesiones(eventoId);
         
         JPASubQuery queryVendidas = new JPASubQuery();
         queryVendidas.from(qButacaDTO);

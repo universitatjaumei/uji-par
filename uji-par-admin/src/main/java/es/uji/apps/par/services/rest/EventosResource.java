@@ -84,7 +84,7 @@ public class EventosResource
         int total;
         
         if (activos) {
-            sesiones = sesionesService.getSesionesActivasDateEnSegundos(eventoId, sort, start, limit);
+            sesiones = sesionesService.getSesionesActivasConVendidasDateEnSegundos(eventoId, sort, start, limit);
             total = sesionesService.getTotalSesionesActivas(eventoId);
         }
         else {
