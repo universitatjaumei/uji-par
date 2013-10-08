@@ -145,6 +145,19 @@ Ext.define('Paranimf.view.EditBaseGrid', {
       else
          return undefined;
    },
+   
+   getSelectedColumnIds: function()
+   {
+      var records = this.getSelectionModel().getSelection();
+      var ids = [];
+      
+      for (var i=0; i<records.length; i++)
+      {
+    	  ids.push(records[i].get("id"));
+      }
+
+      return ids;
+   },   
 
    hasRowSelected: function() {
       var records = this.getSelectionModel().getSelection();

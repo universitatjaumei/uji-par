@@ -95,7 +95,7 @@ Ext.define('Paranimf.controller.ComprasReservas', {
       },
 
       'gridDetalleCompras button[action=anular]': {
-        click: this.anularButaca
+        click: this.anularButacas
       },
 
       'panelCompras button[action=search]': {
@@ -189,19 +189,20 @@ Ext.define('Paranimf.controller.ComprasReservas', {
     }
   },  
 
-  anularButaca: function() {
+  anularButacas: function() {
     if (!this.getGridDetalleCompras().hasRowSelected())
       alert(UI.i18n.message.selectRow);
     else {
       if (confirm(UI.i18n.message.sureAnular)) {
         var idSesion = this.getGridSesionesComprasReservas().getSelectedColumnId();
-        var idCompra = this.getGridCompras().getSelectedColumnId();
-        var idButaca = this.getGridDetalleCompras().getSelectedColumnId();
+        var idsButacas = this.getGridDetalleCompras().getSelectedColumnIds();
+        
         var me = this;
         this.getGridDetalleCompras().setLoading(UI.i18n.message.loading);
 
         Ext.Ajax.request({
-          url : urlPrefix + 'compra/' + idSesion + '/' + idCompra + '/' + idButaca,
+          url : urlPrefix + 'compra/' + idSesion + '/butacas/anuladas',
+          jsonData: idsButacas,
           method: 'PUT',
           success: function (response) {
             me.getGridDetalleCompras().setLoading(false);

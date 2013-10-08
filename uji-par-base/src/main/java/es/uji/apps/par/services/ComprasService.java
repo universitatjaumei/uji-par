@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.Transient;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -292,6 +294,15 @@ public class ComprasService
 
 	public void anularButaca(Long idButaca) {
 		comprasDAO.anularButaca(idButaca);
+	}
+	
+	@Transactional
+    public void anularButacas(List<Long> idsButacas) {
+	    
+	    for (Long idButaca: idsButacas)
+	    {
+	        comprasDAO.anularButaca(idButaca);
+	    }
 	}
 }
 

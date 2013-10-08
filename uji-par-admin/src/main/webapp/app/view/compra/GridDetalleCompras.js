@@ -4,6 +4,9 @@ Ext.define('Paranimf.view.compra.GridDetalleCompras', {
   alias: 'widget.gridDetalleCompras',
   title: UI.i18n.gridTitle.detalleCompras,
   store: 'ButacasCompra',
+  selModel: {
+      mode: 'MULTI'
+  },
 
   tbar:[{
     action: 'anular',
