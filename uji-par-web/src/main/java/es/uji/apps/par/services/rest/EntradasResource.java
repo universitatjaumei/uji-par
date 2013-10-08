@@ -480,7 +480,7 @@ public class EntradasResource extends BaseResource
         String url = getBaseUrlPublic() + "/rest/tpv/resultado";
 
         template.put("identificador", compra.getId());
-        template.put("concepto", "Entradas Paranimf");
+        template.put("concepto", compra.getParSesion().getParEvento().getTituloVa());
         template.put("importe", importe);
         template.put("correo", email);
         template.put("url", url);

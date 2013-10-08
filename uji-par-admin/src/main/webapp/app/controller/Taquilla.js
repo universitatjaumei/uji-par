@@ -485,7 +485,8 @@ Ext.define('Paranimf.controller.Taquilla', {
 	    		   }   
 	    		   else
 	    		   {
-	    			   me.pagarConTarjeta(respuesta['id'], 'Entradas Paranimf UJI');
+	    			   var tituloEvento = me.getGridEventosTaquilla().getSelectedRecord().data['tituloVa'];
+	    			   me.pagarConTarjeta(respuesta['id'], tituloEvento);
 	    		   }   
 	    		   
 	    	  }, failure: function (response) {
@@ -550,7 +551,7 @@ Ext.define('Paranimf.controller.Taquilla', {
 	   Ext.Ajax.request({
 	    	  url : urlPrefix + 'pago/' + id,
 	    	  method: 'POST',
-	    	  jsonData: {concepto:concepto},
+	    	  jsonData: concepto,
 	    	  success: function (response) {
 	           me.getFormComprar().setLoading(false);
 	    		  console.log('Pago con tarjeta aceptado:', response);
