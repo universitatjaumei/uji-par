@@ -173,7 +173,7 @@ Butacas = (function() {
 		var butaca = butacasSeleccionadas[posicion];
 		var precioDescuento = precios[butaca['localizacion']]['descuento'];
 		
-		if (!descuentoNoDisponible(precioDescuento))
+		if (!descuentoNoDisponible(tipoEvento, precioDescuento))
 		{
 			st += '</option><option ' + selecDescuento + ' value="descuento">' + UI.i18n.butacas.tipoDescuento + '</option>';	
 		}
@@ -186,12 +186,6 @@ Butacas = (function() {
 		st += '</select>';
 		
 		return st;
-	}
-	
-	function descuentoNoDisponible(precioDescuento)
-	{
-		return precioDescuento == 0.0 || 
-			   (!modoAdmin && (tipoEvento.toLowerCase()=='cine' || tipoEvento.toLowerCase()=='teatro') && precioDescuento < 8.0);
 	}
 	
 	function actualizaTotal()

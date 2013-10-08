@@ -247,6 +247,28 @@ Ext.define('Paranimf.controller.Taquilla', {
    		}
    	},
 
+   	ocultaDescuentosNoDisponiblesNoNumeradas: function() {
+
+   		var tipoEvento = this.getGridEventosTaquilla().getSelectedRecord().data['parTiposEvento']['nombreEs'].toLowerCase();
+   		
+   		for (var localizacion in this.precios) {
+
+   			var precioDescuento = this.precios[localizacion]['descuento'];
+   			var panel = Ext.ComponentQuery.query('panelSeleccionarNoNumeradas panelNumeroEntradas[name=' + localizacion + ']');
+
+   			if (descuentoNoDisponible(tipoEvento, precioDescuento))
+   			{
+   				panel[0].down('numberfield[name=descuento]').hide();
+   				panel[0].down('panel[name=preuDescuento]').hide();
+   			}
+   			else
+   			{
+   				panel[0].down('numberfield[name=descuento]').show();
+   				panel[0].down('panel[name=preuDescuento]').show();
+   			}
+   		}
+   	},   	
+
    	muestraPrecios: function() {
    		var PRECIOS = UI.i18n.field.precioPorEntrada;
    		var EURO = '&euro;';
@@ -328,6 +350,7 @@ Ext.define('Paranimf.controller.Taquilla', {
 			   me.muestraDisponibles();
 			   me.muestraPrecios();
 			   me.activaCamposCompra();
+			   me.ocultaDescuentosNoDisponiblesNoNumeradas();
 		   });
 	   });
    	},
