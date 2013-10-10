@@ -1,6 +1,7 @@
 package es.uji.apps.par.utils;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -8,6 +9,7 @@ import java.util.Date;
 public class DateUtils
 {
     private static final SimpleDateFormat FORMAT_DAY = new SimpleDateFormat("dd/MM/yyyy");
+    private static final SimpleDateFormat DATABASE_DAY = new SimpleDateFormat("yyyy-MM-dd");
     private static final SimpleDateFormat FORMAT_HOUR = new SimpleDateFormat("HH:mm");
     private static final SimpleDateFormat FORMAT_DAY_HOUR = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
@@ -88,5 +90,9 @@ public class DateUtils
     		throw new NullPointerException();
     	
     	return FORMAT_DAY_HOUR.format(fecha);
+	}
+	
+	public static Date databaseStringToDate(String databaseDate) throws ParseException {
+	    return DATABASE_DAY.parse(databaseDate);
 	}
 }

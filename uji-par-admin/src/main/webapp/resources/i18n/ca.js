@@ -137,8 +137,9 @@ UI =
             "anularEntrada": "Anul·lar entrada individual",
             "buscar": "Cercar",
             "comprarButacaReservada": "Comprar butaques reservades seleccionades",
-            "generateExcelTaquilla": "Generar excel de taquilla per a aquestes dates",
-            "generateExcelEvento": "Generar excel dels events per a aquestes dates"
+            "generateExcelTaquilla": "Excel de taquilla",
+            "generateExcelEvento": "Excel dels events",
+            "generatePdfTaquilla": "PDF de taquilla"
         },
         "calendar": {
             "calendar": "Calendari de reserves",

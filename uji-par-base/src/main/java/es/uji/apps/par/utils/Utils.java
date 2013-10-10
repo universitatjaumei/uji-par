@@ -18,7 +18,7 @@ public class Utils
 {
     public static String formatEuros(BigDecimal importe)
     {
-        return importe.setScale(2).toString();
+        return importe.setScale(2).toString().replace('.', ',');
     }
 
     public static String sha1(String string)

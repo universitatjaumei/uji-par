@@ -1,5 +1,7 @@
 package es.uji.apps.par.model;
 
+import java.math.BigDecimal;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
@@ -9,7 +11,7 @@ public class Informe
     private String sesion;
     private String tipoEntrada;
     private int numeroEntradas;
-    private float total;
+    private BigDecimal total;
     private String tipoCompra;
 
     public Informe()
@@ -49,15 +51,15 @@ public class Informe
 		this.numeroEntradas = numeroEntradas;
 	}
 
-	public float getTotal() {
-		return total;
-	}
+	public BigDecimal getTotal() {
+        return total;
+    }
 
-	public void setTotal(float total) {
-		this.total = total;
-	}
+    public void setTotal(BigDecimal total) {
+        this.total = total;
+    }
 
-	public String getTipoCompra() {
+    public String getTipoCompra() {
 		return tipoCompra;
 	}
 

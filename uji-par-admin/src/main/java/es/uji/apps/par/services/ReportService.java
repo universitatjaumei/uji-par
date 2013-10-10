@@ -1,15 +1,26 @@
 package es.uji.apps.par.services;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
 
+import es.uji.apps.fopreports.serialization.ReportSerializationException;
 import es.uji.apps.par.dao.ComprasDAO;
 import es.uji.apps.par.model.Informe;
+import es.uji.apps.par.report.InformeTaquillaReport;
 import es.uji.apps.par.utils.DateUtils;
 import es.uji.apps.par.utils.Utils;
 
@@ -32,10 +43,6 @@ public class ReportService {
 				rownum++;
 				addDadesTaquilla(rownum, objectToInforme(fila), excelService);
 			}
-			/*rownum++;
-			addFilaResum(rownum, iniciSeccio, excelService);
-			rownum++;
-			addFilaTotal(rownum, llistatDades, excelService);*/
 		}
 		return excelService.getExcel();
 	}
@@ -48,7 +55,7 @@ public class ReportService {
 		tipoEntrada = tipoEntradaBBDDToText(tipoEntrada);
 		informe.setTipoEntrada(tipoEntrada);
 		informe.setNumeroEntradas(Utils.safeObjectBigDecimalToInt(fila[3]));
-		informe.setTotal(Utils.safeObjectToFloat(fila[4]));
+		informe.setTotal((BigDecimal)fila[4]);
 		
 		return informe;
 	}
@@ -70,7 +77,7 @@ public class ReportService {
 		tipoEntrada = tipoEntradaBBDDToText(tipoEntrada);
 		informe.setTipoEntrada(tipoEntrada);
 		informe.setNumeroEntradas(Utils.safeObjectBigDecimalToInt(fila[3]));
-		informe.setTotal(Utils.safeObjectToFloat(fila[4]));
+		informe.setTotal((BigDecimal)fila[4]);
 		
 		int taquilla = Utils.safeObjectBigDecimalToInt(fila[5]);
 		informe.setTipoCompra((taquilla == 0)?"ONLINE":"TAQUILLA");
@@ -84,7 +91,7 @@ public class ReportService {
 		excelService.addCell(1, fila.getSesion(), null, row);
 		excelService.addCell(2, fila.getTipoEntrada(), null, row);
 		excelService.addCell(3, fila.getNumeroEntradas(), null, row);
-		excelService.addCell(4, fila.getTotal(), row);
+		excelService.addCell(4, fila.getTotal().floatValue(), row);
 	}
 	
 	private void addDadesEvento(int i, Informe fila, ExcelService excelService) {
@@ -93,7 +100,7 @@ public class ReportService {
 		excelService.addCell(1, fila.getTipoEntrada(), null, row);
 		excelService.addCell(2, fila.getTipoCompra(), null, row);
 		excelService.addCell(3, fila.getNumeroEntradas(), null, row);
-		excelService.addCell(4, fila.getTotal(), row);
+		excelService.addCell(4, fila.getTotal().floatValue(), row);
 	}
 
 	public ByteArrayOutputStream getExcelEventos(String fechaInicio, String fechaFin) throws IOException {
@@ -112,4 +119,42 @@ public class ReportService {
 		}
 		return excelService.getExcel();
 	}
+
+    public void getPdfTaquilla(String fechaInicio, String fechaFin, OutputStream bos)
+            throws ReportSerializationException, ParseException
+    {
+        InformeTaquillaReport informe = InformeTaquillaReport.create(new Locale("ca"));
+
+        List<Informe> compras = objectsToInformes(comprasDAO.getComprasPorEventoInFechas(fechaInicio, fechaFin));
+        
+        BigDecimal totalTaquillaTpv = comprasDAO.getTotalTaquillaTpv(fechaInicio, fechaFin);
+        BigDecimal totalTaquillaEfectivo = comprasDAO.getTotalTaquillaEfectivo(fechaInicio, fechaFin);
+        BigDecimal totalOnline = comprasDAO.getTotalOnline(fechaInicio, fechaFin);
+        
+        informe.genera(DateUtils.databaseStringToDate(fechaInicio), DateUtils.databaseStringToDate(fechaFin), 
+                compras, totalTaquillaTpv, totalTaquillaEfectivo, totalOnline);
+
+        informe.serialize(bos);
+    }
+
+    private List<Informe> objectsToInformes(List<Object[]> compras)
+    {
+        List<Informe> result = new ArrayList<Informe>();
+        
+        for (Object[] compra:compras)
+        {
+            result.add(objectToInformeEvento(compra));
+        }
+        
+        return result ;
+    }
+
+    public static void main(String[] args) throws FileNotFoundException, ReportSerializationException, ParseException
+    {
+        ApplicationContext ctx = new ClassPathXmlApplicationContext("/applicationContext-db.xml");
+
+        ReportService service = ctx.getBean(ReportService.class);
+
+        service.getPdfTaquilla("2013-01-01", "2013-12-06", new FileOutputStream("/tmp/entrada.pdf"));
+    }
 }

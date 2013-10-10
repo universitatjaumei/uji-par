@@ -16,9 +16,9 @@ public class BaseTable extends Table
     private int columns;
     protected TableBody body;
 
-    private final EntradaReportStyle style;
+    private final ParanimfBaseReportStyle style;
 
-    public BaseTable(EntradaReportStyle style, int columns, String... columnsWidths)
+    public BaseTable(ParanimfBaseReportStyle style, int columns, String... columnsWidths)
     {
         super();
 
@@ -95,14 +95,14 @@ public class BaseTable extends Table
         return withNewCell(block, style, colspan);
     }
     
-    public TableCell withNewCell(String text, EntradaReportStyle reportStyle, String colspan) {
+    public TableCell withNewCell(String text, ParanimfBaseReportStyle reportStyle, String colspan) {
     	Block block = addToBlock(text);
         block.setFontWeight("normal");
 
         return getNewTableCell(block, reportStyle, colspan);
     }
     
-    public TableCell withNewCell(Block block, EntradaReportStyle reportStyle, String colspan) {
+    public TableCell withNewCell(Block block, ParanimfBaseReportStyle reportStyle, String colspan) {
         return getNewTableCell(block, reportStyle, colspan);
     }
     
@@ -148,7 +148,7 @@ public class BaseTable extends Table
 		return getNewTableCell(block, estilo, SIN_COLSPAN);
 	}
 	
-	public TableCell getNewTableCell(Block block, EntradaReportStyle estilo, String colspan) {
+	public TableCell getNewTableCell(Block block, ParanimfBaseReportStyle estilo, String colspan) {
 		TableCell tableCell = createNewTableCell(estilo);
 		tableCell.getMarkerOrBlockOrBlockContainer().add(block);
 		
@@ -174,7 +174,7 @@ public class BaseTable extends Table
 		return getNewTableCell(b, estilo, SIN_COLSPAN);
 	}
 
-	private TableCell createNewTableCell(EntradaReportStyle estilo) {
+	private TableCell createNewTableCell(ParanimfBaseReportStyle estilo) {
 		TableCell tableCell = new TableCell();
         tableCell.setBorder(estilo.getTableCellBorder());
         tableCell.setDisplayAlign(estilo.getTableCellDisplayAlign());

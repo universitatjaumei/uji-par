@@ -28,6 +28,11 @@ Ext.define('Paranimf.view.informes.PanelInformes', {
     }, {
       style: 'margin-left: 10px',
       xtype: 'button',
+      action: 'generatePdfTaquilla',
+      text: UI.i18n.button.generatePdfTaquilla
+    }, {
+   	  style: 'margin-left: 10px',
+      xtype: 'button',
       action: 'generateExcelEvento',
       text: UI.i18n.button.generateExcelEvento
     }]

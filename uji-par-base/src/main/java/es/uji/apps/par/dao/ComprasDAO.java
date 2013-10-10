@@ -379,9 +379,10 @@ public class ComprasDAO extends BaseDAO
     			"and c.codigo_pago_tarjeta is null " +
     			"group by c.sesion_id, e.titulo_va, b.tipo, s.fecha_celebracion " +
     			"order by e.titulo_va";
+    	
     	return entityManager.createNativeQuery(sql).getResultList();
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	@Transactional
 	public List<Object[]> getComprasPorEventoInFechas(String fechaInicio, String fechaFin) {
@@ -393,6 +394,63 @@ public class ComprasDAO extends BaseDAO
     			"and b.anulada = 0 " +
     			"group by e.id, e.titulo_va, b.tipo, c.taquilla " +
     			"order by e.titulo_va";
+		
     	return entityManager.createNativeQuery(sql).getResultList();
 	}
+
+    public BigDecimal getTotalTaquillaTpv(String fechaInicio, String fechaFin)
+    {
+        String sql = "select sum(b.precio) " +
+                "from par_butacas b, par_compras c, par_sesiones s, par_eventos e " +
+                "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id " +
+                "and c.fecha >= TO_DATE('" + fechaInicio + "','YY-MM-DD') and c.fecha <= TO_DATE('" + fechaFin + " 23:59','YY-MM-DD HH24:MI') " +
+                "and c.pagada = 1 and c.reserva = 0 " +
+                "and b.anulada = 0 " +
+                "and c.taquilla = 1 " +
+                "and c.codigo_pago_tarjeta is not null";
+        
+         Object result = entityManager.createNativeQuery(sql).getSingleResult();
+         
+         if (result == null)
+             return BigDecimal.ZERO;
+         else
+             return (BigDecimal) result;
+    }
+
+    public BigDecimal getTotalTaquillaEfectivo(String fechaInicio, String fechaFin)
+    {
+        String sql = "select sum(b.precio) " +
+                "from par_butacas b, par_compras c, par_sesiones s, par_eventos e " +
+                "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id " +
+                "and c.fecha >= TO_DATE('" + fechaInicio + "','YY-MM-DD') and c.fecha <= TO_DATE('" + fechaFin + " 23:59','YY-MM-DD HH24:MI') " +
+                "and c.pagada = 1 and c.reserva = 0 " +
+                "and b.anulada = 0 " +
+                "and c.taquilla = 1 " +
+                "and c.codigo_pago_tarjeta is null";
+        
+         Object result = entityManager.createNativeQuery(sql).getSingleResult();
+
+         if (result == null)
+             return BigDecimal.ZERO;
+         else
+             return (BigDecimal) result;
+    }
+
+    public BigDecimal getTotalOnline(String fechaInicio, String fechaFin)
+    {
+        String sql = "select sum(b.precio) " +
+                "from par_butacas b, par_compras c, par_sesiones s, par_eventos e " +
+                "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id " +
+                "and c.fecha >= TO_DATE('" + fechaInicio + "','YY-MM-DD') and c.fecha <= TO_DATE('" + fechaFin + " 23:59','YY-MM-DD HH24:MI') " +
+                "and c.pagada = 1 and c.reserva = 0 " +
+                "and b.anulada = 0 " +
+                "and c.taquilla = 0 ";
+        
+         Object result = entityManager.createNativeQuery(sql).getSingleResult();
+         
+         if (result == null)
+             return BigDecimal.ZERO;
+         else
+             return (BigDecimal) result;
+    }
 }

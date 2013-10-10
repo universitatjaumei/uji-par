@@ -20,6 +20,10 @@ Ext.define('Paranimf.controller.Informes', {
             click: this.generateExcelTaquilla
          },
 
+         'panelInformes button[action=generatePdfTaquilla]': {
+             click: this.generatePdfTaquilla
+          },         
+
          'panelInformes button[action=generateExcelEvento]': {
             click: this.generateExcelEvento
          }
@@ -43,6 +47,24 @@ Ext.define('Paranimf.controller.Informes', {
       document.body.appendChild(form);
       form.submit();
    }, 
+   
+   generatePdfTaquilla: function(button, event, opts) {
+      console.log(this.getFechaInicio(), this.getFechaFin());
+      
+      if (!this.sonFechasValidas(this.getFechaInicio().value, this.getFechaFin().value))
+         return;
+
+      var strFechaInicio = this.getStrFecha(this.getFechaInicio().value);
+      var strFechaFin = this.getStrFecha(this.getFechaFin().value);
+
+      var form = document.createElement("form");
+      form.setAttribute("method", "post");
+      form.setAttribute("action", urlPrefix + 'report/taquilla/' + strFechaInicio + '/' + strFechaFin + '/pdf');
+      form.setAttribute("target", "_blank");
+
+      document.body.appendChild(form);
+      form.submit();
+   },    
 
    sonFechasValidas: function(fechaInicio, fechaFin) {
       if (!fechaInicio || fechaInicio == '' || !fechaFin || fechaFin == '') {

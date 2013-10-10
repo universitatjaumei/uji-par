@@ -2,6 +2,7 @@ package es.uji.apps.par.services.rest;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.ParseException;
 
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -15,6 +16,7 @@ import org.apache.log4j.Logger;
 
 import com.sun.jersey.api.core.InjectParam;
 
+import es.uji.apps.fopreports.serialization.ReportSerializationException;
 import es.uji.apps.par.services.ReportService;
 
 @Path("report")
@@ -40,4 +42,15 @@ public class ReportResource extends BaseResource
 		ByteArrayOutputStream ostream = reportService.getExcelEventos(fechaInicio, fechaFin);
 		return Response.ok(ostream.toByteArray(), MediaType.APPLICATION_OCTET_STREAM).header("content-disposition","attachment; filename = informeEvents " + fechaInicio + "-" + fechaFin + ".xls").build();
 	}
+    
+    @POST
+    @Path("taquilla/{fechaInicio}/{fechaFin}/pdf")
+    @Produces("application/pdf")
+    public Response generatePdfTaquilla(@PathParam("fechaInicio") String fechaInicio, @PathParam("fechaFin") String fechaFin) throws TranscoderException, IOException, ReportSerializationException, ParseException {
+        ByteArrayOutputStream ostream = new ByteArrayOutputStream();
+        
+        reportService.getPdfTaquilla(fechaInicio, fechaFin, ostream);
+        
+        return Response.ok(ostream.toByteArray(), MediaType.APPLICATION_OCTET_STREAM).header("content-disposition","attachment; filename = informeTaquilla " + fechaInicio + "-" + fechaFin + ".pdf").build();
+    }    
 }
