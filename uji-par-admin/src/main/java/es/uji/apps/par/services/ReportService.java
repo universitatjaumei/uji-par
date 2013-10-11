@@ -172,7 +172,7 @@ public class ReportService
     {
         InformeEfectivoReport informe = InformeEfectivoReport.create(new Locale("ca"));
 
-        List<Informe> compras = objectsSesionesToInformesIva(comprasDAO.getComprasInFechas(fechaInicio, fechaFin));
+        List<Informe> compras = objectsSesionesToInformesIva(comprasDAO.getComprasEfectivo(fechaInicio, fechaFin));
 
         informe.genera(DateUtils.databaseStringToDate(fechaInicio), DateUtils.databaseStringToDate(fechaFin), compras);
 
