@@ -13,10 +13,10 @@ public class Informe
     private int numeroEntradas;
     private BigDecimal total;
     private String tipoCompra;
+    private BigDecimal iva;
 
     public Informe()
     {
-    	
     }
 
 	public String getEvento() {
@@ -66,4 +66,12 @@ public class Informe
 	public void setTipoCompra(String tipoCompra) {
 		this.tipoCompra = tipoCompra;
 	}
+
+    public BigDecimal getIva() {
+        return iva;
+    }
+
+    public void setIva(BigDecimal iva) {
+        this.iva = iva;
+    }
 }

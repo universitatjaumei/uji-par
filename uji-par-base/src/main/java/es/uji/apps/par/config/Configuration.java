@@ -3,6 +3,7 @@ package es.uji.apps.par.config;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
@@ -19,6 +20,8 @@ public class Configuration
     private static final String ENVIAR_MAILS_ERROR = "uji.par.enviarMailsError";
     private static final String URL_PIE_ENTRADA = "uji.par.urlPieEntrada";
     private static final String ENTORNO = "uji.par.entorno";
+    private static final String INFORME_EFECTIVO_CARGO = "uji.par.informeEfectivo.cargo";
+    private static final String INFORME_EFECTIVO_FIRMANTE = "uji.par.informeEfectivo.firmante";
 
     public static Logger log = Logger.getLogger(Configuration.class);
 
@@ -56,7 +59,17 @@ public class Configuration
 
     private static String getProperty(String propertyName)
     {
-        return (String) instance.properties.getProperty(propertyName).trim();
+        String value = (String) instance.properties.getProperty(propertyName);
+        try
+        {
+            value = new String(value.getBytes("ISO-8859-1"), "UTF-8");
+        }
+        catch (UnsupportedEncodingException e)
+        {
+            throw new RuntimeException(e);
+        }
+        
+        return value.trim();
     }
 
     public static String getUrlPublic()
@@ -112,5 +125,15 @@ public class Configuration
     public static String getEntorno()
     {
         return getProperty(ENTORNO);
-    }    
+    }  
+    
+    public static String getCargoInformeEfectivo()
+    {
+        return getProperty(INFORME_EFECTIVO_CARGO);
+    }
+    
+    public static String getFirmanteInformeEfectivo()
+    {
+        return getProperty(INFORME_EFECTIVO_FIRMANTE);
+    } 
 }
