@@ -139,7 +139,8 @@ UI =
             "comprarButacaReservada": "Comprar butaques reservades seleccionades",
             "generateExcelTaquilla": "Excel de taquilla",
             "generateExcelEvento": "Excel dels events",
-            "generatePdfTaquilla": "PDF de taquilla"
+            "generatePdfTaquilla": "PDF de taquilla",
+            "generatePdfEfectivo": "PDF d'efectiu"
         },
         "calendar": {
             "calendar": "Calendari de reserves",

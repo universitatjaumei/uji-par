@@ -53,4 +53,15 @@ public class ReportResource extends BaseResource
         
         return Response.ok(ostream.toByteArray(), MediaType.APPLICATION_OCTET_STREAM).header("content-disposition","attachment; filename = informeTaquilla " + fechaInicio + "-" + fechaFin + ".pdf").build();
     }    
+    
+    @POST
+    @Path("taquilla/{fechaInicio}/{fechaFin}/efectivo/pdf")
+    @Produces("application/pdf")
+    public Response generatePdfEfectivo(@PathParam("fechaInicio") String fechaInicio, @PathParam("fechaFin") String fechaFin) throws TranscoderException, IOException, ReportSerializationException, ParseException {
+        ByteArrayOutputStream ostream = new ByteArrayOutputStream();
+        
+        reportService.getPdfEfectivo(fechaInicio, fechaFin, ostream);
+        
+        return Response.ok(ostream.toByteArray(), MediaType.APPLICATION_OCTET_STREAM).header("content-disposition","attachment; filename = informeTaquilla " + fechaInicio + "-" + fechaFin + ".pdf").build();
+    }  
 }
