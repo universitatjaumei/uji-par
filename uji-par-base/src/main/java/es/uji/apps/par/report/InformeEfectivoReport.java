@@ -20,6 +20,7 @@ import es.uji.apps.fopreports.serialization.FopPDFSerializer;
 import es.uji.apps.fopreports.serialization.ReportSerializationException;
 import es.uji.apps.fopreports.serialization.ReportSerializer;
 import es.uji.apps.fopreports.serialization.ReportSerializerInitException;
+import es.uji.apps.par.SinIvaException;
 import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.i18n.ResourceProperties;
 import es.uji.apps.par.model.Informe;
@@ -48,7 +49,7 @@ public class InformeEfectivoReport extends Report
         this.locale = locale;
     }
 
-    public void genera(Date inicio, Date fin, List<Informe> compras)
+    public void genera(Date inicio, Date fin, List<Informe> compras) throws SinIvaException
     {
         creaLogo();
         creaCabecera(inicio, fin);
@@ -119,7 +120,7 @@ public class InformeEfectivoReport extends Report
         return block;
     }
 
-    private void creaTabla(List<Informe> compras)
+    private void creaTabla(List<Informe> compras) throws SinIvaException
     {
         BaseTable table = new BaseTable(style, 7, "3.6cm", "3.6cm", "2.7cm", "3cm", "1.5cm", "1.5cm", "1.5cm");
 
@@ -151,6 +152,9 @@ public class InformeEfectivoReport extends Report
 
         for (Informe dato : compras)
         {
+            if (dato.getIva() == null)
+                throw new SinIvaException(dato.getEvento());
+            
             table.withNewRow();
             table.withNewCell(dato.getEvento());
             table.withNewCell(dato.getSesion());

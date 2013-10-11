@@ -17,6 +17,7 @@ import org.apache.log4j.Logger;
 import com.sun.jersey.api.core.InjectParam;
 
 import es.uji.apps.fopreports.serialization.ReportSerializationException;
+import es.uji.apps.par.SinIvaException;
 import es.uji.apps.par.services.ReportService;
 
 @Path("report")
@@ -60,7 +61,17 @@ public class ReportResource extends BaseResource
     public Response generatePdfEfectivo(@PathParam("fechaInicio") String fechaInicio, @PathParam("fechaFin") String fechaFin) throws TranscoderException, IOException, ReportSerializationException, ParseException {
         ByteArrayOutputStream ostream = new ByteArrayOutputStream();
         
-        reportService.getPdfEfectivo(fechaInicio, fechaFin, ostream);
+        try
+        {
+            reportService.getPdfEfectivo(fechaInicio, fechaFin, ostream);
+        }
+        catch (SinIvaException e)
+        {
+            log.error("Error", e);
+            
+            String errorMsj = String.format("ERROR: Cal introduir l'IVA de l'event \"%s\"", e.getEvento());
+            return Response.serverError().type(MediaType.TEXT_PLAIN).entity(errorMsj).build();
+        }
         
         return Response.ok(ostream.toByteArray(), MediaType.APPLICATION_OCTET_STREAM).header("content-disposition","attachment; filename = informeTaquilla " + fechaInicio + "-" + fechaFin + ".pdf").build();
     }  

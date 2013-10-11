@@ -1,7 +1,6 @@
 package es.uji.apps.par.services;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -18,6 +17,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
 
 import es.uji.apps.fopreports.serialization.ReportSerializationException;
+import es.uji.apps.par.SinIvaException;
 import es.uji.apps.par.dao.ComprasDAO;
 import es.uji.apps.par.model.Informe;
 import es.uji.apps.par.report.InformeEfectivoReport;
@@ -168,7 +168,7 @@ public class ReportService
     }
 
     public void getPdfEfectivo(String fechaInicio, String fechaFin, OutputStream bos)
-            throws ReportSerializationException, ParseException
+            throws ReportSerializationException, ParseException, SinIvaException
     {
         InformeEfectivoReport informe = InformeEfectivoReport.create(new Locale("ca"));
 
@@ -203,7 +203,7 @@ public class ReportService
         return result;
     }    
 
-    public static void main(String[] args) throws FileNotFoundException, ReportSerializationException, ParseException
+    public static void main(String[] args) throws Exception
     {
         ApplicationContext ctx = new ClassPathXmlApplicationContext("/applicationContext-db.xml");
 
