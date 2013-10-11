@@ -281,7 +281,7 @@ public class EntradaReport extends Report
 
     private BaseTable createEntradaIzquierdaAbajo()
     {
-        BaseTable table = new BaseTable(new EntradaReportStyle(), 2, "9.2cm", "1cm");
+        BaseTable table = new BaseTable(new EntradaReportStyle(), 2, "8.5cm", "2.5cm");
 
         table.setMarginTop("0.2cm");
 
@@ -415,7 +415,7 @@ public class EntradaReport extends Report
 
     private Table createEntradaDerechaAbajo()
     {
-        BaseTable table = new BaseTable(new EntradaReportStyle(), 2, "4.5cm", "1cm");
+        BaseTable table = new BaseTable(new EntradaReportStyle(), 2, "3cm", "2.5cm");
 
         table.withNewRow();
         table.withNewCell("");
