@@ -30,9 +30,6 @@ public class InformeTaquillaReport extends Report
     private static final String FONT_SIZE = "10pt";
 
     private static final String NEGRO = "#000000";
-    private static final String GRIS_OSCURO = "#666666";
-    private static final String FONDO_GRIS = "#EEEEEE";
-    private static final String FONDO_BLANCO = "#FFFFFF";
 
     private static FopPDFSerializer reportSerializer;
 
