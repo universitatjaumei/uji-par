@@ -75,7 +75,9 @@ public class ButacasDAO extends BaseDAO
                 .from(qButacaDTO, qSesionDTO, qLocalizacionDTO)
                 .where(qButacaDTO.parSesion.id.eq(qSesionDTO.id).and(qSesionDTO.id.eq(idSesion))
                         .and(qLocalizacionDTO.codigo.eq(codigoLocalizacion))
-                        .and(qButacaDTO.parLocalizacion.id.eq(qLocalizacionDTO.id)).and(qButacaDTO.fila.eq(fila))
+                        .and(qButacaDTO.parLocalizacion.id.eq(qLocalizacionDTO.id))
+                        .and(qButacaDTO.anulada.eq(false))
+                        .and(qButacaDTO.fila.eq(fila))
                         .and(qButacaDTO.numero.eq(numero))).list(qButacaDTO);
 
         return list.size() > 0;
@@ -192,6 +194,7 @@ public class ButacasDAO extends BaseDAO
                 .innerJoin(qButacaDTO.parSesion, qSesionDTO)
                 .innerJoin(qButacaDTO.parLocalizacion, qLocalizacionDTO)
                 .where(qSesionDTO.id.eq(sesionId)
+                        .and(qButacaDTO.anulada.eq(false))
                         .and(qLocalizacionDTO.codigo.eq(codigoLocalizacion))).listDistinct(qButacaDTO);
         
         long ocupadas = list.size();
