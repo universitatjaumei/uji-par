@@ -332,13 +332,26 @@ Ext.define('Paranimf.controller.Taquilla', {
 
    	muestraPrecios: function() {
    		var PRECIOS = UI.i18n.field.precioPorEntrada;
-   		var EURO = '&euro;';
+   		var EURO = ' &euro;';
    		for (var key in this.precios) {
    			var panel = Ext.ComponentQuery.query('panelSeleccionarNoNumeradas panelNumeroEntradas[name=' + key + ']');
    			if (panel != undefined && panel.length >= 1) {
-   				panel[0].down('panel[name=preuNormal]').update(PRECIOS + this.precios[key]['normal'] + EURO);
-   				panel[0].down('panel[name=preuDescuento]').update(PRECIOS + this.precios[key]['descuento'] + EURO);
-   				panel[0].down('panel[name=preuInvitacion]').update(PRECIOS + this.precios[key]['invitacion'] + EURO);
+   				
+   				var normal = this.precios[key]['normal'];
+   				if (normal != null)
+   					normal = normal.toFixed(2);
+   				
+   				var descuento = this.precios[key]['descuento'];
+   				if (descuento != null)
+   					descuento = descuento.toFixed(2);
+   				
+   				var invitacion = this.precios[key]['invitacion'];
+   				if (invitacion != null)
+   					invitacion = invitacion.toFixed(2);
+   				
+   				panel[0].down('panel[name=preuNormal]').update(PRECIOS + normal + EURO);
+   				panel[0].down('panel[name=preuDescuento]').update(PRECIOS + descuento + EURO);
+   				panel[0].down('panel[name=preuInvitacion]').update(PRECIOS + invitacion + EURO);
    			}
    		}
    		/*this.getPanelAnfiteatro().down('panel[name=preuNormal]').update(PRECIOS + this.precios['anfiteatro']['normal'] + EURO);
