@@ -7,7 +7,8 @@ UI =
             "warn": "Incidència",
             "pagar": "Realitzar pagament",
             "comprar": "Realitzar compra",
-            "reservar": "Realitzar reserva"
+            "reservar": "Realitzar reserva",
+            "anularPrevia": "Anul·lar compra prèvia"
         },
         "message": {
         	"event": "És obligatori seleccionar un event",
@@ -42,7 +43,9 @@ UI =
             "printTaquilla": "Taquilla",
             "printAtHome": "Print-At-Home",
             "print": "Imprimir",
-            "butacaSelect": "És obligatori seleccionar alguna de les entrades a comprar"
+            "butacaSelect": "És obligatori seleccionar alguna de les entrades a comprar",
+            "anularPreviaIntro": "Anul·lar compra prèvia?",
+            "anularPreviaSesion": "Sessió: "
         },
         "storeWeekDay": {
             "wed": "Dimecres",
@@ -129,6 +132,7 @@ UI =
             "pagar": "Pagar",
             "anterior": "&laquo; Anterior",
             "siguiente": "Següent &raquo;",
+            "anularPrevia": "Anul·lar compra prèvia",
             "verEntrada": "Imprimir entrada",
             "reservar": "Reservar",
             "verCompras": "Veure compres/reserves",

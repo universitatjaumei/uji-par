@@ -13,14 +13,18 @@ Ext.define('Paranimf.view.taquilla.FormComprar', {
    
    buttons: undefined,
    
-   bbar: ['->', {
+   bbar: [{
+	   id: 'anularPrevia',
+	   text: UI.i18n.button.anularPrevia
+   }, 
+   '->',
+   {
 	   id: 'comprarAnterior',
 	   text: UI.i18n.button.anterior
    },{
 	   id: 'comprarSiguiente',
 	   text: UI.i18n.button.siguiente
-   },
-   {
+   },{
 	   id: 'comprarCancelar',
 	   text: UI.i18n.button.close
    }],
