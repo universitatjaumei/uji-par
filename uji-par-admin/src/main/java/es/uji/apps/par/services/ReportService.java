@@ -41,7 +41,7 @@ public class ReportService
         if (files != null && files.size() > 0)
         {
             excelService.addFulla("Informe taquilla " + fechaInicio + " - " + fechaFin);
-            excelService.generaCeldes(excelService.getEstilNegreta(), 0, "Event", "Sessió", "Tipus d'entrada",
+            excelService.generaCeldes(excelService.getEstilNegreta(), 0, "Event", "Sessió", "Tipus d'entrada", "Localització",
                     "Nombre d'entrades", "Total");
 
             for (Object[] fila : files)
@@ -61,8 +61,9 @@ public class ReportService
         String tipoEntrada = Utils.safeObjectToString(fila[2]);
         tipoEntrada = tipoEntradaBBDDToText(tipoEntrada);
         informe.setTipoEntrada(tipoEntrada);
-        informe.setNumeroEntradas(Utils.safeObjectBigDecimalToInt(fila[3]));
-        informe.setTotal((BigDecimal) fila[4]);
+        informe.setLocalizacion(localizacionBBDDToText(Utils.safeObjectToString(fila[3])));
+        informe.setNumeroEntradas(Utils.safeObjectBigDecimalToInt(fila[4]));
+        informe.setTotal((BigDecimal) fila[5]);
 
         return informe;
     }
@@ -92,6 +93,26 @@ public class ReportService
             tipoEntrada = "Invitació";
         return tipoEntrada;
     }
+    
+    private String localizacionBBDDToText(String localizacion)
+    {
+        String result = "";
+        
+        if (localizacion.equals("platea1"))
+            result = "Platea 1";
+        else if (localizacion.equals("platea2"))
+            result = "Platea 2";
+        else if (localizacion.equals("anfiteatro"))
+            result = "Amfiteatre";
+        else if (localizacion.equals("discapacitados1"))
+            result = "Discapacitats Platea 1";        
+        else if (localizacion.equals("discapacitados2"))
+            result = "Discapacitats Platea 2";
+        else if (localizacion.equals("discapacitados3"))
+            result = "Discapacitats Amfiteatre";
+        
+        return result;
+    }    
 
     private Informe objectToInformeEvento(Object[] fila)
     {
@@ -115,8 +136,9 @@ public class ReportService
         excelService.addCell(0, fila.getEvento(), null, row);
         excelService.addCell(1, fila.getSesion(), null, row);
         excelService.addCell(2, fila.getTipoEntrada(), null, row);
-        excelService.addCell(3, fila.getNumeroEntradas(), null, row);
-        excelService.addCell(4, fila.getTotal().floatValue(), row);
+        excelService.addCell(3, fila.getLocalizacion(), null, row);
+        excelService.addCell(4, fila.getNumeroEntradas(), null, row);
+        excelService.addCell(5, fila.getTotal().floatValue(), row);
     }
 
     private void addDadesEvento(int i, Informe fila, ExcelService excelService)

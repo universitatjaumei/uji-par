@@ -14,6 +14,7 @@ public class Informe
     private BigDecimal total;
     private String tipoCompra;
     private BigDecimal iva;
+    private String localizacion;
 
     public Informe()
     {
@@ -73,5 +74,13 @@ public class Informe
 
     public void setIva(BigDecimal iva) {
         this.iva = iva;
+    }
+
+    public String getLocalizacion() {
+        return localizacion;
+    }
+
+    public void setLocalizacion(String localizacion) {
+        this.localizacion = localizacion;
     }
 }
