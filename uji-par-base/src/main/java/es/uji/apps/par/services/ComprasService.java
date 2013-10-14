@@ -98,7 +98,7 @@ public class ComprasService
     {
         String tipoEvento = evento.getParTiposEvento().getNombreEs().toLowerCase();
         
-        return (tipoEvento.equals("cine") || tipoEvento.equals("teatro")) && precioSesion.getDescuento().compareTo(descuentoLimite) < 0;
+        return (tipoEvento.equals("cine") || tipoEvento.equals("teatro")) && precioSesion.getPrecio().compareTo(descuentoLimite) < 0;
     }
 
     public ResultadoCompra realizaCompraInternet(Long sesionId, int platea1Normal, int platea1Descuento,

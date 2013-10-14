@@ -253,10 +253,11 @@ Ext.define('Paranimf.controller.Taquilla', {
    		
    		for (var localizacion in this.precios) {
 
+   			var precioNormal = this.precios[localizacion]['normal'];
    			var precioDescuento = this.precios[localizacion]['descuento'];
    			var panel = Ext.ComponentQuery.query('panelSeleccionarNoNumeradas panelNumeroEntradas[name=' + localizacion + ']');
 
-   			if (descuentoNoDisponible(tipoEvento, precioDescuento))
+   			if (descuentoNoDisponible(tipoEvento, precioNormal, precioDescuento))
    			{
    				panel[0].down('numberfield[name=descuento]').hide();
    				panel[0].down('panel[name=preuDescuento]').hide();

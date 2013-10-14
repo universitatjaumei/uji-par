@@ -171,9 +171,10 @@ Butacas = (function() {
 		st += '<option ' + selecNormal + ' value="normal">' + UI.i18n.butacas.tipoNormal;
 		
 		var butaca = butacasSeleccionadas[posicion];
+		var precioNormal = precios[butaca['localizacion']]['normal'];
 		var precioDescuento = precios[butaca['localizacion']]['descuento'];
 		
-		if (!descuentoNoDisponible(tipoEvento, precioDescuento))
+		if (!descuentoNoDisponible(tipoEvento, precioNormal, precioDescuento))
 		{
 			st += '</option><option ' + selecDescuento + ' value="descuento">' + UI.i18n.butacas.tipoDescuento + '</option>';	
 		}
