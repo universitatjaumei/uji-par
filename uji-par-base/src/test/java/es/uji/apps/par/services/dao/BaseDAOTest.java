@@ -68,6 +68,7 @@ public class BaseDAOTest
     {
         ButacaDTO butacaDTO = new ButacaDTO();
 
+        butacaDTO.setAnulada(false);
         butacaDTO.setFila(fila);
         butacaDTO.setNumero(numero);
         butacaDTO.setPrecio(precio);

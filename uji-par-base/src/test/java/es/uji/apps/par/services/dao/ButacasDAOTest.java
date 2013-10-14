@@ -161,4 +161,25 @@ public class ButacasDAOTest extends BaseDAOTest
         
         butacasDao.reservaButacas(sesion.getId(), insertaCompra(), Arrays.asList(butaca));
     }
+    
+    @Test
+    public void cuentaButacasOcupadasNinguna()
+    {
+        Assert.assertEquals(0, butacasDao.getOcupadas(sesion.getId(), localizacion.getCodigo()));
+    }
+    
+    @Test
+    public void cuentaButacasOcupadasNoContarAnuladas()
+    {
+        ButacaDTO butaca = preparaButaca(sesion, Localizacion.localizacionToLocalizacionDTO(localizacion), "1", "2",
+                BigDecimal.ONE);
+    
+        butacasDao.addButaca(butaca);
+    
+        Assert.assertEquals(1, butacasDao.getOcupadas(sesion.getId(), localizacion.getCodigo()));
+        
+        comprasDao.anularButaca(butaca.getId());
+        
+        Assert.assertEquals(0, butacasDao.getOcupadas(sesion.getId(), localizacion.getCodigo()));
+    }    
 }
