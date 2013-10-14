@@ -28,6 +28,11 @@ Ext.define('Paranimf.view.informes.PanelInformes', {
     }, {
       style: 'margin-left: 10px',
       xtype: 'button',
+      action: 'generateExcelEvento',
+      text: UI.i18n.button.generateExcelEvento
+    }, {
+      style: 'margin-left: 10px',
+      xtype: 'button',
       action: 'generatePdfTaquilla',
       text: UI.i18n.button.generatePdfTaquilla
     }, {
@@ -35,11 +40,6 @@ Ext.define('Paranimf.view.informes.PanelInformes', {
       xtype: 'button',
       action: 'generatePdfEfectivo',
       text: UI.i18n.button.generatePdfEfectivo
-    }, {
-   	  style: 'margin-left: 10px',
-      xtype: 'button',
-      action: 'generateExcelEvento',
-      text: UI.i18n.button.generateExcelEvento
     }]
   }]
 });
