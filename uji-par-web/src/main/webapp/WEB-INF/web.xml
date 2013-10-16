@@ -29,6 +29,10 @@
 		<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
 	</listener>
 
+	<listener>
+		<listener-class>es.uji.commons.rest.listeners.CleanUpOracleMBeansListener</listener-class>
+	</listener>	
+
 	<servlet>
 		<servlet-name>rest-api</servlet-name>
 		<servlet-class>com.sun.jersey.spi.spring.container.servlet.SpringServlet</servlet-class>
