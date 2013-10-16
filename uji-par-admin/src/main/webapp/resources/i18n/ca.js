@@ -144,7 +144,8 @@ UI =
             "generateExcelTaquilla": "Excel de taquilla",
             "generateExcelEvento": "Excel dels events",
             "generatePdfTaquilla": "PDF de taquilla",
-            "generatePdfEfectivo": "PDF d'efectiu"
+            "generatePdfEfectivo": "PDF d'efectiu",
+            "generatePdfTpv": "PDF de TPV"
         },
         "calendar": {
             "calendar": "Calendari de reserves",

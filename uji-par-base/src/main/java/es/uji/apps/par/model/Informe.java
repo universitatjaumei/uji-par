@@ -9,6 +9,7 @@ public class Informe
 {
     private String evento;
     private String sesion;
+    private String fechaCompra;
     private String tipoEntrada;
     private int numeroEntradas;
     private BigDecimal total;
@@ -82,5 +83,13 @@ public class Informe
 
     public void setLocalizacion(String localizacion) {
         this.localizacion = localizacion;
+    }
+
+    public String getFechaCompra() {
+        return fechaCompra;
+    }
+
+    public void setFechaCompra(String fechaCompra) {
+        this.fechaCompra = fechaCompra;
     }
 }

@@ -74,5 +74,26 @@ public class ReportResource extends BaseResource
         }
         
         return Response.ok(ostream.toByteArray(), MediaType.APPLICATION_OCTET_STREAM).header("content-disposition","attachment; filename = informeTaquilla " + fechaInicio + "-" + fechaFin + ".pdf").build();
-    }  
+    } 
+    
+    @POST
+    @Path("taquilla/{fechaInicio}/{fechaFin}/tpv/pdf")
+    @Produces("application/pdf")
+    public Response generatePdfTpv(@PathParam("fechaInicio") String fechaInicio, @PathParam("fechaFin") String fechaFin) throws TranscoderException, IOException, ReportSerializationException, ParseException {
+        ByteArrayOutputStream ostream = new ByteArrayOutputStream();
+        
+        try
+        {
+            reportService.getPdfTpvSubtotales(fechaInicio, fechaFin, ostream);
+        }
+        catch (SinIvaException e)
+        {
+            log.error("Error", e);
+            
+            String errorMsj = String.format("ERROR: Cal introduir l'IVA de l'event \"%s\"", e.getEvento());
+            return Response.serverError().type(MediaType.TEXT_PLAIN).entity(errorMsj).build();
+        }
+        
+        return Response.ok(ostream.toByteArray(), MediaType.APPLICATION_OCTET_STREAM).header("content-disposition","attachment; filename = informeTaquilla " + fechaInicio + "-" + fechaFin + ".pdf").build();
+    } 
 }

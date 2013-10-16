@@ -22,6 +22,7 @@ import es.uji.apps.par.dao.ComprasDAO;
 import es.uji.apps.par.model.Informe;
 import es.uji.apps.par.report.InformeEfectivoReport;
 import es.uji.apps.par.report.InformeTaquillaReport;
+import es.uji.apps.par.report.InformeTaquillaTpvSubtotalesReport;
 import es.uji.apps.par.utils.DateUtils;
 import es.uji.apps.par.utils.Utils;
 
@@ -41,8 +42,8 @@ public class ReportService
         if (files != null && files.size() > 0)
         {
             excelService.addFulla("Informe taquilla " + fechaInicio + " - " + fechaFin);
-            excelService.generaCeldes(excelService.getEstilNegreta(), 0, "Event", "Sessió", "Tipus d'entrada", "Localització",
-                    "Nombre d'entrades", "Total");
+            excelService.generaCeldes(excelService.getEstilNegreta(), 0, "Event", "Sessió", "Tipus d'entrada",
+                    "Localització", "Nombre d'entrades", "Total");
 
             for (Object[] fila : files)
             {
@@ -67,7 +68,7 @@ public class ReportService
 
         return informe;
     }
-    
+
     private Informe objectToInformeIva(Object[] fila)
     {
         Informe informe = new Informe();
@@ -81,7 +82,23 @@ public class ReportService
         informe.setIva((BigDecimal) fila[6]);
 
         return informe;
-    }    
+    }
+
+    private Informe objectToInformeTpv(Object[] fila)
+    {
+        Informe informe = new Informe();
+        informe.setEvento(Utils.safeObjectToString(fila[0]));
+        informe.setSesion(DateUtils.dateToSpanishStringWithHour(Utils.objectToDate(fila[1])).toString());
+        String tipoEntrada = Utils.safeObjectToString(fila[2]);
+        tipoEntrada = tipoEntradaBBDDToText(tipoEntrada);
+        informe.setTipoEntrada(tipoEntrada);
+        informe.setNumeroEntradas(Utils.safeObjectBigDecimalToInt(fila[3]));
+        informe.setTotal((BigDecimal) fila[4]);
+        informe.setIva((BigDecimal) fila[6]);
+        informe.setFechaCompra(DateUtils.dateToSpanishString(Utils.objectToDate(fila[8])));
+
+        return informe;
+    }
 
     private String tipoEntradaBBDDToText(String tipoEntrada)
     {
@@ -93,11 +110,11 @@ public class ReportService
             tipoEntrada = "Invitació";
         return tipoEntrada;
     }
-    
+
     private String localizacionBBDDToText(String localizacion)
     {
         String result = "";
-        
+
         if (localizacion.equals("platea1"))
             result = "Platea 1";
         else if (localizacion.equals("platea2"))
@@ -105,14 +122,14 @@ public class ReportService
         else if (localizacion.equals("anfiteatro"))
             result = "Amfiteatre";
         else if (localizacion.equals("discapacitados1"))
-            result = "Discapacitats Platea 1";        
+            result = "Discapacitats Platea 1";
         else if (localizacion.equals("discapacitados2"))
             result = "Discapacitats Platea 2";
         else if (localizacion.equals("discapacitados3"))
             result = "Discapacitats Amfiteatre";
-        
+
         return result;
-    }    
+    }
 
     private Informe objectToInformeEvento(Object[] fila)
     {
@@ -201,6 +218,18 @@ public class ReportService
         informe.serialize(bos);
     }
 
+    public void getPdfTpvSubtotales(String fechaInicio, String fechaFin, OutputStream bos)
+            throws ReportSerializationException, ParseException, SinIvaException
+    {
+        InformeTaquillaTpvSubtotalesReport informe = InformeTaquillaTpvSubtotalesReport.create(new Locale("ca"));
+
+        List<Informe> compras = objectsSesionesToInformesTpv(comprasDAO.getComprasTpv(fechaInicio, fechaFin));
+
+        informe.genera(DateUtils.databaseStringToDate(fechaInicio), DateUtils.databaseStringToDate(fechaFin), compras);
+
+        informe.serialize(bos);
+    }
+
     private List<Informe> objectsToInformes(List<Object[]> compras)
     {
         List<Informe> result = new ArrayList<Informe>();
@@ -212,7 +241,7 @@ public class ReportService
 
         return result;
     }
-    
+
     private List<Informe> objectsSesionesToInformesIva(List<Object[]> compras)
     {
         List<Informe> result = new ArrayList<Informe>();
@@ -223,7 +252,19 @@ public class ReportService
         }
 
         return result;
-    }    
+    }
+    
+    private List<Informe> objectsSesionesToInformesTpv(List<Object[]> compras)
+    {
+        List<Informe> result = new ArrayList<Informe>();
+
+        for (Object[] compra : compras)
+        {
+            result.add(objectToInformeTpv(compra));
+        }
+
+        return result;
+    }
 
     public static void main(String[] args) throws Exception
     {
@@ -231,6 +272,6 @@ public class ReportService
 
         ReportService service = ctx.getBean(ReportService.class);
 
-        service.getPdfEfectivo("2013-01-01", "2013-12-06", new FileOutputStream("/tmp/entrada.pdf"));
+        service.getPdfTpvSubtotales("2013-10-01", "2013-10-31", new FileOutputStream("/tmp/informe.pdf"));
     }
 }
