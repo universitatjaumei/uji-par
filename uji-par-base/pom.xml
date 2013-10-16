@@ -33,6 +33,22 @@
       <artifactId>uji-commons-web-template-model</artifactId>
       <version>0.0.1</version>
     </dependency>
+    
+    <dependency>
+      <groupId>es.uji.commons</groupId>
+      <artifactId>uji-commons-rest</artifactId>
+      <version>0.1.15</version>
+      <exclusions>
+      	<exclusion>
+      	  <groupId>hsqldb</groupId>
+      	  <artifactId>hsqldb</artifactId>
+      	</exclusion>
+      	<exclusion>
+      	  <groupId>com.sun.jersey</groupId>
+      	  <artifactId>jersey-core</artifactId>
+      	</exclusion>      	
+      </exclusions>
+    </dependency>    
 
       <!-- Spring -->
 
