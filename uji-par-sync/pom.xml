@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>es.uji.apps.par</groupId>
   <artifactId>uji-par-sync</artifactId>
-  <version>0.0.9-SNAPSHOT</version>
+  <version>0.0.10-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>uji-par-sync</name>
 
@@ -14,7 +14,7 @@
   <parent>
       <groupId>es.uji.apps.par</groupId>
       <artifactId>uji-par</artifactId>
-      <version>0.0.9-SNAPSHOT</version>
+      <version>0.0.10-SNAPSHOT</version>
   </parent>
 
 
@@ -23,7 +23,7 @@
     <dependency>
       <groupId>es.uji.apps.par</groupId>
       <artifactId>uji-par-base</artifactId>
-      <version>0.0.9-SNAPSHOT</version>
+      <version>0.0.10-SNAPSHOT</version>
     </dependency>
 
     <!-- jUnit -->
