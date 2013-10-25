@@ -120,6 +120,13 @@ public class Utils
 			return ((BigDecimal) object).intValue();
 	}
 	
+    public static long safeObjectBigDecimalToLong(Object object) {
+        if (object == null)
+            return 0;
+        else
+            return ((BigDecimal) object).longValue();
+    }	
+	
 	public static float safeObjectToFloat(Object object) {
 		if (object == null)
 			return 0;

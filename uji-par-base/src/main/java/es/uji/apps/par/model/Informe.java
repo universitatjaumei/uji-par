@@ -16,6 +16,8 @@ public class Informe
     private String tipoCompra;
     private BigDecimal iva;
     private String localizacion;
+    private long eventoId;
+    private long sesionId;
 
     public Informe()
     {
@@ -91,5 +93,21 @@ public class Informe
 
     public void setFechaCompra(String fechaCompra) {
         this.fechaCompra = fechaCompra;
+    }
+
+    public long getEventoId() {
+        return eventoId;
+    }
+
+    public void setEventoId(long eventoId) {
+        this.eventoId = eventoId;
+    }
+
+    public long getSesionId() {
+        return sesionId;
+    }
+
+    public void setSesionId(long sesionId) {
+        this.sesionId = sesionId;
     }
 }

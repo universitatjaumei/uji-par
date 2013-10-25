@@ -21,6 +21,7 @@ import es.uji.apps.par.SinIvaException;
 import es.uji.apps.par.dao.ComprasDAO;
 import es.uji.apps.par.model.Informe;
 import es.uji.apps.par.report.InformeEfectivoReport;
+import es.uji.apps.par.report.InformeEventosReport;
 import es.uji.apps.par.report.InformeTaquillaReport;
 import es.uji.apps.par.report.InformeTaquillaTpvSubtotalesReport;
 import es.uji.apps.par.utils.DateUtils;
@@ -96,6 +97,23 @@ public class ReportService
         informe.setTotal((BigDecimal) fila[4]);
         informe.setIva((BigDecimal) fila[6]);
         informe.setFechaCompra(DateUtils.dateToSpanishString(Utils.objectToDate(fila[8])));
+
+        return informe;
+    }
+    
+    private Informe objectToEvento(Object[] fila)
+    {
+        Informe informe = new Informe();
+        informe.setEvento(Utils.safeObjectToString(fila[0]));
+        informe.setSesion(DateUtils.dateToSpanishStringWithHour(Utils.objectToDate(fila[1])).toString());
+        String tipoEntrada = Utils.safeObjectToString(fila[2]);
+        tipoEntrada = tipoEntradaBBDDToText(tipoEntrada);
+        informe.setTipoEntrada(tipoEntrada);
+        informe.setNumeroEntradas(Utils.safeObjectBigDecimalToInt(fila[3]));
+        informe.setTotal((BigDecimal) fila[4]);
+        informe.setIva((BigDecimal) fila[5]);
+        informe.setEventoId(Utils.safeObjectBigDecimalToLong(fila[7]));
+        informe.setSesionId(Utils.safeObjectBigDecimalToLong(fila[8]));
 
         return informe;
     }
@@ -229,6 +247,18 @@ public class ReportService
 
         informe.serialize(bos);
     }
+    
+    public void getPdfEventos(String fechaInicio, String fechaFin, OutputStream bos)
+            throws ReportSerializationException, ParseException, SinIvaException
+    {
+        InformeEventosReport informe = InformeEventosReport.create(new Locale("ca"));
+
+        List<Informe> compras = objectsSesionesToInformesEventos(comprasDAO.getComprasEventos(fechaInicio, fechaFin));
+
+        informe.genera(DateUtils.databaseStringToDate(fechaInicio), DateUtils.databaseStringToDate(fechaFin), compras);
+
+        informe.serialize(bos);
+    }
 
     private List<Informe> objectsToInformes(List<Object[]> compras)
     {
@@ -265,6 +295,18 @@ public class ReportService
 
         return result;
     }
+    
+    private List<Informe> objectsSesionesToInformesEventos(List<Object[]> compras)
+    {
+        List<Informe> result = new ArrayList<Informe>();
+
+        for (Object[] compra : compras)
+        {
+            result.add(objectToEvento(compra));
+        }
+
+        return result;
+    }
 
     public static void main(String[] args) throws Exception
     {
@@ -272,6 +314,6 @@ public class ReportService
 
         ReportService service = ctx.getBean(ReportService.class);
 
-        service.getPdfTpvSubtotales("2013-10-01", "2013-10-31", new FileOutputStream("/tmp/informe.pdf"));
+        service.getPdfEventos("2013-10-01", "2013-10-30", new FileOutputStream("/tmp/informe.pdf"));
     }
 }
