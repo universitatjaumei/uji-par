@@ -45,7 +45,8 @@ UI =
             "print": "Imprimir",
             "butacaSelect": "És obligatori seleccionar alguna de les entrades a comprar",
             "anularPreviaIntro": "Anul·lar compra prèvia?",
-            "anularPreviaSesion": "Sessió: "
+            "anularPreviaSesion": "Sessió: ",
+            "ctrlCCopiar": "Ctrl+C per a copiar el codi"
         },
         "storeWeekDay": {
             "wed": "Dimecres",
@@ -269,6 +270,7 @@ UI =
             "desde": "Des de",
             "hasta": "Fins a",
             "observacionesReserva": "Observaciones",
+            "idDevolucion": "Cod. TPV",
             "pagada": "Pagada",
             "caducada": "Caducada",
             "reserva": "Reserva",

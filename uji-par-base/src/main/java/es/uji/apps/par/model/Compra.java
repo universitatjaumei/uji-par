@@ -27,6 +27,7 @@ public class Compra
     private String uuid;
     private String observacionesReserva;
     private boolean caducada;
+    private String idDevolucion;
 
     public Compra(CompraDTO compraDTO)
     {
@@ -50,6 +51,11 @@ public class Compra
         
         if (compraDTO.getCaducada() != null)
             this.setCaducada(compraDTO.getCaducada());
+        
+        if (compraDTO.getCodigoPagoPasarela()!=null)
+            this.setIdDevolucion(compraDTO.getCodigoPagoPasarela());
+        else if (compraDTO.getCodigoPagoTarjeta()!=null)
+            this.setIdDevolucion(compraDTO.getCodigoPagoTarjeta());
     }
 
     public static Compra compraDTOtoCompra(CompraDTO compraDTO)
@@ -211,5 +217,13 @@ public class Compra
 
     public void setCaducada(boolean caducada) {
         this.caducada = caducada;
+    }
+
+    public String getIdDevolucion() {
+        return idDevolucion;
+    }
+
+    public void setIdDevolucion(String idDevolucion) {
+        this.idDevolucion = idDevolucion;
     }
 }

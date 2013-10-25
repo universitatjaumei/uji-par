@@ -159,6 +159,17 @@ Ext.define('Paranimf.view.compra.GridCompras', {
       renderer: function(val, p, rec) {
         return '<a target="blank" href="' + urlPrefix + 'compra/' + rec.data.uuid + '/pdf">' + UI.i18n.message.print + '</a>';
       }
+    }, {
+       dataIndex: 'idDevolucion',
+       text: UI.i18n.field.idDevolucion,
+       renderer: function (val, p) {
+    	   if (val)
+    		   return '<a target="blank" href="javascript:window.prompt(\'' +  UI.i18n.message.ctrlCCopiar + ':\', \'' + val + '\'); return false;">' + val + '</a>';
+    	   else
+    		   return '';
+       },
+       hidden: false,
+       flex: 2
     }];
 
     this.callParent(arguments);
