@@ -45,6 +45,11 @@ Ext.define('Paranimf.view.informes.PanelInformes', {
       xtype: 'button',
       action: 'generatePdfTpv',
       text: UI.i18n.button.generatePdfTpv
+    }, {
+      style: 'margin-left: 10px',
+      xtype: 'button',
+      action: 'generatePdfEventos',
+      text: UI.i18n.button.generatePdfEventos
     }]
   }]
 });
