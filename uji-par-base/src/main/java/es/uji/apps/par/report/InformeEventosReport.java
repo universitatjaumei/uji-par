@@ -53,6 +53,20 @@ public class InformeEventosReport extends Report
 
     public void genera(Date inicio, Date fin, List<Informe> compras) throws SinIvaException
     {
+        if (compras.size() == 0)
+            generaPdfSinCompras();
+        else
+            generaPdfCompras(inicio, fin, compras);
+    }
+
+    private void generaPdfSinCompras()
+    {
+        Block block = withNewBlock();
+        block.getContent().add(ResourceProperties.getProperty(locale, "informeEventos.sinCompras"));
+    }
+
+    private void generaPdfCompras(Date inicio, Date fin, List<Informe> compras) throws SinIvaException
+    {
         List<List<Informe>> separadosPorSesion = separaPorSesion(compras);
         
         for (List<Informe> datosSesion:separadosPorSesion)
