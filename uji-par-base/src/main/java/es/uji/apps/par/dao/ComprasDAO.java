@@ -443,7 +443,7 @@ public class ComprasDAO extends BaseDAO
                 "and c.reserva = 0 " +
                 "and (c.codigo_pago_tarjeta is not null or c.codigo_pago_pasarela is not null) " +
                 "group by e.id, s.id, e.titulo_va, b.tipo, s.fecha_celebracion, e.porcentaje_iva " +
-                "order by e.id, s.fecha_celebracion, tipoOrden";
+                "order by s.fecha_celebracion, tipoOrden";
         
         return entityManager.createNativeQuery(sql).getResultList();
     }
