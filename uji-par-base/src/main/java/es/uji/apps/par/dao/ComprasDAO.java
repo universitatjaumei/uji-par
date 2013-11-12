@@ -503,4 +503,13 @@ public class ComprasDAO extends BaseDAO
          else
              return (BigDecimal) result;
     }
+
+    @Transactional
+    public void rellenaCodigoPagoPasarela(long idCompra, String codigoPago)
+    {
+        CompraDTO compra = getCompraById(idCompra);
+        compra.setCodigoPagoPasarela(codigoPago);
+        
+        entityManager.persist(compra);
+    }
 }

@@ -65,6 +65,9 @@ public class TpvResource extends BaseResource
         
         if (compra.getCaducada())
         {
+            // Guardamos código pago de pasarela para luego saber que pago anular
+            compras.rellenaCodigoPagoPasarela(compra.getId(), recibo);
+            
             template = paginaError(compra);
             
             template.put("descripcionError", ResourceProperties.getProperty(getLocale(), "error.datosComprador.compraCaducadaTrasPagar"));

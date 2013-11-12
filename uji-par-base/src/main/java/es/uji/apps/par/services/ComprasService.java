@@ -304,6 +304,11 @@ public class ComprasService
 	        comprasDAO.anularButaca(idButaca);
 	    }
 	}
+
+    public void rellenaCodigoPagoPasarela(long idCompra, String recibo)
+    {
+        comprasDAO.rellenaCodigoPagoPasarela(idCompra, recibo);
+    }
 }
 
 
