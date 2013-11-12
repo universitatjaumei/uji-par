@@ -441,7 +441,6 @@ public class ComprasDAO extends BaseDAO
                 "and c.pagada = 1 " +
                 "and b.anulada = 0 " +
                 "and c.reserva = 0 " +
-                "and (c.codigo_pago_tarjeta is not null or c.codigo_pago_pasarela is not null) " +
                 "group by e.id, s.id, e.titulo_va, b.tipo, s.fecha_celebracion, e.porcentaje_iva " +
                 "order by s.fecha_celebracion, tipoOrden";
         
