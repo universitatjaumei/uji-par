@@ -159,9 +159,9 @@ public class EventosDAO extends BaseDAO
 
     private String getWhereActivos()
     {
-        return " where s.FECHA_CELEBRACION >= TO_DATE('" + DateUtils.dateToSpanishStringWithHour(new Date()) + "','DD/MM/YYYY HH24:MI') ";
+        return " where s.FECHA_CELEBRACION >= TO_DATE('" + DateUtils.dateToSpanishStringWithHour(DateUtils.dateConMargenTrasVenta()) + "','DD/MM/YYYY HH24:MI') ";
     }
-
+    
     @Transactional
     private Evento objectArrayToEvento(Object [] array) {
         Evento evento = new Evento();
@@ -228,7 +228,9 @@ public class EventosDAO extends BaseDAO
 		QTipoEventoDTO qTipoEventoDTO = QTipoEventoDTO.tipoEventoDTO;
         QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
 		JPAQuery query = new JPAQuery(entityManager);
-		Timestamp now = new Timestamp(new Date().getTime());
+		
+		Timestamp now = new Timestamp(DateUtils.dateConMargenTrasVenta().getTime());
+		
 		return query
 		    .from(qEventoDTO, qTipoEventoDTO)
 		    .innerJoin(qEventoDTO.parSesiones, qSesionDTO)

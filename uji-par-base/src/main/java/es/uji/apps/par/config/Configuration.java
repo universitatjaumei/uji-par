@@ -22,6 +22,7 @@ public class Configuration
     private static final String ENTORNO = "uji.par.entorno";
     private static final String INFORME_EFECTIVO_CARGO = "uji.par.informeEfectivo.cargo";
     private static final String INFORME_EFECTIVO_FIRMANTE = "uji.par.informeEfectivo.firmante";
+    private static final String MARGEN_VENTA_TAQUILLA_MINUTOS = "uji.par.margenVentaTaquillaMinutos";
 
     public static Logger log = Logger.getLogger(Configuration.class);
 
@@ -135,5 +136,17 @@ public class Configuration
     public static String getFirmanteInformeEfectivo()
     {
         return getProperty(INFORME_EFECTIVO_FIRMANTE);
+    } 
+    
+    public static int getMargenVentaTaquillaMinutos()
+    {
+        try
+        {
+            return Integer.parseInt(getProperty(MARGEN_VENTA_TAQUILLA_MINUTOS));
+        }
+        catch (NumberFormatException e)
+        {
+            return 0;
+        }
     } 
 }

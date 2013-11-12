@@ -6,6 +6,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import es.uji.apps.par.config.Configuration;
+
 public class DateUtils
 {
     private static final SimpleDateFormat FORMAT_DAY = new SimpleDateFormat("dd/MM/yyyy");
@@ -127,5 +129,16 @@ public class DateUtils
         default:
             return "de desembre";
         }
+    }
+    
+    /**
+     * Se usa para mostrar eventos y sesiones como activos pasados X minutos de la hora del espectáculo
+     */
+    public static Date dateConMargenTrasVenta()
+    {
+        Calendar limite = Calendar.getInstance();
+        limite.add(Calendar.MINUTE, -Configuration.getMargenVentaTaquillaMinutos());
+        
+        return limite.getTime();
     }
 }

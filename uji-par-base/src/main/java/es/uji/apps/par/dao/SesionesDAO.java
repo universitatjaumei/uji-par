@@ -2,7 +2,6 @@ package es.uji.apps.par.dao;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
@@ -80,7 +79,9 @@ public class SesionesDAO extends BaseDAO
     @Transactional
     private JPAQuery getQuerySesionesActivas(long eventoId) {
     	JPAQuery query = new JPAQuery(entityManager);
-    	Timestamp now = new Timestamp(new Date().getTime());
+    	
+    	Timestamp now = new Timestamp(DateUtils.dateConMargenTrasVenta().getTime());
+    	
     	return query.from(qSesionDTO)
         .where(qSesionDTO.parEvento.id.eq(eventoId).and(qSesionDTO.fechaCelebracion.after(now)));
     }
