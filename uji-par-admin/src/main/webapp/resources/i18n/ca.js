@@ -252,6 +252,7 @@ UI =
             "precio": "Preu",
             "descuento": "Descompte",
             "invitacion": "Invitació",
+            "aulaTeatro": "Aula de teatre",
             "localizacion": "Localització",
             "plantillaprecios": "Plantilla de preus",
             "horaInicioVentaOnline": "Hora d'inici de la venda online",
@@ -264,6 +265,7 @@ UI =
             "total": "Total",
             "normal": "Normal",
             "descuento": "Descompte",
+            "aulaTeatro": "Aula de teatre",
             "invitacion": "Invitació",
             "disponibles":"Disponibles",
             "entradesDisponibles": "Entrades disponibles: ",
@@ -315,6 +317,7 @@ UI =
         "tipoEntrada": {
             "normal": "Entrada normal",
             "invitacion": "Invitació",
+            "aulaTeatro": "Aula de teatre",
             "descuento": "Entrada amb descompte"
         }
     }

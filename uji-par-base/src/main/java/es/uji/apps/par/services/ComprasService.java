@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import es.uji.apps.par.ButacaOcupadaAlActivarException;
 import es.uji.apps.par.ButacaOcupadaException;
+import es.uji.apps.par.CompraAulaTeatroPorInternetException;
 import es.uji.apps.par.CompraButacaDescuentoNoDisponible;
 import es.uji.apps.par.CompraInvitacionPorInternetException;
 import es.uji.apps.par.CompraSinButacasException;
@@ -57,7 +58,8 @@ public class ComprasService
 
     @Transactional
     public ResultadoCompra realizaCompraInternet(Long sesionId, List<Butaca> butacasSeleccionadas, String uuidCompraActual) throws FueraDePlazoVentaInternetException,
-            NoHayButacasLibresException, ButacaOcupadaException, CompraSinButacasException, CompraInvitacionPorInternetException, CompraButacaDescuentoNoDisponible
+            NoHayButacasLibresException, ButacaOcupadaException, CompraSinButacasException, CompraInvitacionPorInternetException, CompraButacaDescuentoNoDisponible, 
+            CompraAulaTeatroPorInternetException
     {
         Sesion sesion = sesionesService.getSesion(sesionId);
         Evento evento = sesion.getEvento();
@@ -70,6 +72,9 @@ public class ComprasService
         {
             if (butaca.getTipo().equals("invitacion"))
                 throw new CompraInvitacionPorInternetException();
+            
+            if (butaca.getTipo().equals("aulaTeatro"))
+                throw new CompraAulaTeatroPorInternetException();            
             
             if (esButacaDescuentoNoDisponible(butaca.getTipo(), evento, precios.get(butaca.getLocalizacion())))
                 throw new CompraButacaDescuentoNoDisponible();
@@ -103,7 +108,8 @@ public class ComprasService
 
     public ResultadoCompra realizaCompraInternet(Long sesionId, int platea1Normal, int platea1Descuento,
             int platea2Normal, int platea2Descuento, String uuidCompra) throws FueraDePlazoVentaInternetException, 
-            NoHayButacasLibresException, ButacaOcupadaException, CompraSinButacasException, CompraInvitacionPorInternetException, CompraButacaDescuentoNoDisponible
+            NoHayButacasLibresException, ButacaOcupadaException, CompraSinButacasException, CompraInvitacionPorInternetException, CompraButacaDescuentoNoDisponible, 
+            CompraAulaTeatroPorInternetException
     {
         List<Butaca> butacasSeleccionadas = new ArrayList<Butaca>();
         
@@ -162,6 +168,8 @@ public class ComprasService
                 importe = importe.add(precioLocalizacion.getDescuento());
             else if (butaca.getTipo().equals("invitacion"))
                 importe = importe.add(precioLocalizacion.getInvitacion());
+            else if (butaca.getTipo().equals("aulaTeatro"))
+                importe = importe.add(precioLocalizacion.getAulaTeatro());            
             else
                 throw new RuntimeException("Butaca con tipo de precio no reconocido: " + butaca);
         }

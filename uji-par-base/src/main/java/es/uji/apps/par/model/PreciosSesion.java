@@ -18,6 +18,7 @@ public class PreciosSesion {
 	private BigDecimal descuento;
 	private BigDecimal invitacion;
 	private BigDecimal precio;
+	private BigDecimal aulaTeatro;
 	
 	public PreciosSesion() {
 		
@@ -29,6 +30,7 @@ public class PreciosSesion {
         this.descuento = preciosPlantilla.getDescuento();
         this.invitacion = preciosPlantilla.getInvitacion();
         this.precio = preciosPlantilla.getPrecio();
+        this.aulaTeatro = preciosPlantilla.getAulaTeatro();
     }
 	
 	public PreciosSesion(PreciosSesionDTO preciosSesion) {
@@ -38,6 +40,7 @@ public class PreciosSesion {
 		this.descuento = preciosSesion.getDescuento();
 		this.invitacion = preciosSesion.getInvitacion();
 		this.precio = preciosSesion.getPrecio();
+		this.aulaTeatro = preciosSesion.getAulaTeatro();
 	}
 
 	public long getId() {
@@ -80,7 +83,15 @@ public class PreciosSesion {
 		this.precio = precio;
 	}
 
-	public Sesion getSesion() {
+	public BigDecimal getAulaTeatro() {
+        return aulaTeatro;
+    }
+
+    public void setAulaTeatro(BigDecimal aulaTeatro) {
+        this.aulaTeatro = aulaTeatro;
+    }
+
+    public Sesion getSesion() {
 		return sesion;
 	}
 
@@ -103,6 +114,7 @@ public class PreciosSesion {
 		preciosSesionDTO.setDescuento(preciosSesion.getDescuento());
 		preciosSesionDTO.setPrecio(preciosSesion.getPrecio());
 		preciosSesionDTO.setInvitacion(preciosSesion.getInvitacion());
+		preciosSesionDTO.setAulaTeatro(preciosSesion.getAulaTeatro());
 		
 		/*LocalizacionDTO localizacionDTO = new LocalizacionDTO();
 		localizacionDTO.setId(preciosSesion.getLocalizacion().getId());

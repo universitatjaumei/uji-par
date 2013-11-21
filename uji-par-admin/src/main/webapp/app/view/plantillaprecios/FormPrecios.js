@@ -61,5 +61,14 @@ Ext.define('Paranimf.view.plantillaprecios.FormPrecios', {
     xtype: 'numericfield',
     decimalPrecision: 2,
     alwaysDisplayDecimals: true
+   },{
+    fieldLabel: UI.i18n.field.aulaTeatro,
+    name: 'aulaTeatro',
+    spinUpEnabled: false,
+    spinDownEnabled: false,
+    minValue: 0,
+    xtype: 'numericfield',
+    decimalPrecision: 2,
+    alwaysDisplayDecimals: true
    }]
 });

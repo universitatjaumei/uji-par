@@ -190,6 +190,7 @@ Ext.define('Paranimf.controller.Eventos', {
             precio : button.up('form').getForm().findField('precio').value,
             descuento : button.up('form').getForm().findField('descuento').value,
             invitacion : button.up('form').getForm().findField('invitacion').value,
+            aulaTeatro : button.up('form').getForm().findField('aulaTeatro').value,
             localizacion: localizacionSeleccionada,
             localizacion_nombre: button.up('form').getForm().findField('localizacion').rawValue
          });
@@ -201,6 +202,7 @@ Ext.define('Paranimf.controller.Eventos', {
             recordSeleccionado.set('precio', precioSesion.data.precio);
             recordSeleccionado.set('descuento', precioSesion.data.descuento);
             recordSeleccionado.set('invitacion', precioSesion.data.invitacion);
+            recordSeleccionado.set('aulaTeatro', precioSesion.data.aulaTeatro);
             recordSeleccionado.set('localizacion', precioSesion.data.localizacion);
             recordSeleccionado.set('localizacion_nombre', precioSesion.data.localizacion_nombre);
             recordSeleccionado.commit(true);

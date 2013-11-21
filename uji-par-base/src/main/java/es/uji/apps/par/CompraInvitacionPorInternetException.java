@@ -5,6 +5,6 @@ public class CompraInvitacionPorInternetException extends GeneralPARException
 {
     public CompraInvitacionPorInternetException()
     {
-        super("Compra sin butacas seleccionadas");
+        super("Compra de entrada tipo invitación por internet");
     }
 }

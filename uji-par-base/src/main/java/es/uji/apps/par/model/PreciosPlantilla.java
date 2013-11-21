@@ -15,6 +15,7 @@ public class PreciosPlantilla {
 	private BigDecimal descuento;
 	private BigDecimal invitacion;
 	private BigDecimal precio;
+	private BigDecimal aulaTeatro;
 	
 	public PreciosPlantilla() {
 		
@@ -32,6 +33,7 @@ public class PreciosPlantilla {
 		this.descuento = preciosPlantilla.getDescuento();
 		this.invitacion = preciosPlantilla.getInvitacion();
 		this.precio = preciosPlantilla.getPrecio();
+		this.aulaTeatro = preciosPlantilla.getAulaTeatro();
 	}
 
 	public long getId() {
@@ -81,4 +83,12 @@ public class PreciosPlantilla {
 	public void setPrecio(BigDecimal precio) {
 		this.precio = precio;
 	}
+
+    public BigDecimal getAulaTeatro() {
+        return aulaTeatro;
+    }
+
+    public void setAulaTeatro(BigDecimal aulaTeatro) {
+        this.aulaTeatro = aulaTeatro;
+    }
 }

@@ -12,6 +12,7 @@ UI =
             "tipoNormal": "Normal",
             "tipoDescuento": "Descompte",
             "tipoInvitacion": "Invitació",
+            "tipoAulaTeatro": "Aula de teatre",
             "totalEntradas": "Total compra (IVA incl.): "
         }
     }

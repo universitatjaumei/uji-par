@@ -157,6 +157,8 @@ public class ButacasDAO extends BaseDAO
                             butacaDTO.setPrecio(precioSesion.getPrecio());
                         else if (butaca.getTipo().equals("descuento"))
                             butacaDTO.setPrecio(precioSesion.getDescuento());
+                        else if (butaca.getTipo().equals("aulaTeatro"))
+                            butacaDTO.setPrecio(precioSesion.getAulaTeatro());                        
                         else if (butaca.getTipo().equals("invitacion"))
                             butacaDTO.setPrecio(precioSesion.getInvitacion());                        
                     }

@@ -222,11 +222,13 @@ Ext.define('Paranimf.controller.Taquilla', {
    				var numeroEntradasNormal = (panel[0].down('numberfield[name=normal]').getValue() == '')?0:panel[0].down('numberfield[name=normal]').getValue();
    				var numeroEntradasDescuento = (panel[0].down('numberfield[name=descuento]').getValue() == '')?0:panel[0].down('numberfield[name=descuento]').getValue();
    				var numeroEntradasInvitacion = (panel[0].down('numberfield[name=invitacion]').getValue() == '')?0:panel[0].down('numberfield[name=invitacion]').getValue();
+   				var numeroEntradasAulaTeatro = (panel[0].down('numberfield[name=aulaTeatro]').getValue() == '')?0:panel[0].down('numberfield[name=aulaTeatro]').getValue();
    				var precioNormal = (this.precios[key] != undefined)?this.precios[key]['normal']:0;
    				var precioDescuento = (this.precios[key] != undefined)?this.precios[key]['descuento']:0;
    				var precioInvitacion = (this.precios[key] != undefined)?this.precios[key]['invitacion']:0;
+   				var precioAulaTeatro = (this.precios[key] != undefined)?this.precios[key]['aulaTeatro']:0;
 
-   				precio += numeroEntradasNormal*precioNormal + numeroEntradasDescuento*precioDescuento + numeroEntradasInvitacion*precioInvitacion;
+   				precio += numeroEntradasNormal*precioNormal + numeroEntradasDescuento*precioDescuento + numeroEntradasAulaTeatro*precioAulaTeatro + numeroEntradasInvitacion*precioInvitacion;
    			}
    		}
    		this.getTotalPrecioCompra().setText(UI.i18n.field.totalCompra + precio.toFixed(2) + EURO);
@@ -349,9 +351,14 @@ Ext.define('Paranimf.controller.Taquilla', {
    				if (invitacion != null)
    					invitacion = invitacion.toFixed(2);
    				
+   				var aulaTeatro = this.precios[key]['aulaTeatro'];
+   				if (aulaTeatro != null)
+   					aulaTeatro = aulaTeatro.toFixed(2);   				
+   				
    				panel[0].down('panel[name=preuNormal]').update(PRECIOS + normal + EURO);
    				panel[0].down('panel[name=preuDescuento]').update(PRECIOS + descuento + EURO);
    				panel[0].down('panel[name=preuInvitacion]').update(PRECIOS + invitacion + EURO);
+   				panel[0].down('panel[name=preuAulaTeatro]').update(PRECIOS + aulaTeatro + EURO);
    			}
    		}
    		/*this.getPanelAnfiteatro().down('panel[name=preuNormal]').update(PRECIOS + this.precios['anfiteatro']['normal'] + EURO);
@@ -386,6 +393,7 @@ Ext.define('Paranimf.controller.Taquilla', {
    				hayPrecioNormal = (this.precios[key]['normal'] == undefined)?false:true;
    				hayPrecioDescuento = (this.precios[key]['descuento'] == undefined)?false:true;
    				hayPrecioInvitacion = (this.precios[key]['invitacion'] == undefined)?false:true;
+   				hayPrecioAulaTeatro = (this.precios[key]['aulaTeatro'] == undefined)?false:true;
    			}
 
    			if (hayDisponibles) {
@@ -412,6 +420,7 @@ Ext.define('Paranimf.controller.Taquilla', {
 				panel.down('numberfield[name=normal]').setDisabled(!hayPrecioNormal);
 				panel.down('numberfield[name=descuento]').setDisabled(!hayPrecioDescuento);
 				panel.down('numberfield[name=invitacion]').setDisabled(!hayPrecioInvitacion);
+				panel.down('numberfield[name=aulaTeatro]').setDisabled(!hayPrecioAulaTeatro);
    			}
    		}
    	},
@@ -473,7 +482,7 @@ Ext.define('Paranimf.controller.Taquilla', {
    	getButacasNoNumeradas: function() {
 	   	var me = this;
 	   	var butacas = [];
-	   	var tipos = {};tipos['normal'] = '';tipos['descuento'] = '';tipos['invitacion'] = '';
+	   	var tipos = {};tipos['normal'] = '';tipos['descuento'] = '';tipos['invitacion'] = ''; tipos['aulaTeatro'] = '';
 	   	for (var key in this.precios) {
 	   		var panel = Ext.ComponentQuery.query('panelSeleccionarNoNumeradas panelNumeroEntradas[name=' + key + ']');
    			if (panel != undefined && panel.length >= 1) {
@@ -785,7 +794,7 @@ Ext.define('Paranimf.controller.Taquilla', {
 	    		  for (var i=0; i<jsonData.data.length; i++)
 	    		  {
 					var sesion = jsonData.data[i];
-					me.precios[sesion.localizacion.codigo] = {normal:sesion.precio, descuento:sesion.descuento, invitacion:sesion.invitacion};
+					me.precios[sesion.localizacion.codigo] = {normal:sesion.precio, descuento:sesion.descuento, invitacion:sesion.invitacion, aulaTeatro:sesion.aulaTeatro};
 	    		  }
 
 	    		  //console.log(me.precios);

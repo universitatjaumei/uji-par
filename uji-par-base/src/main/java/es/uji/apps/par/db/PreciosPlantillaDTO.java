@@ -2,6 +2,7 @@ package es.uji.apps.par.db;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
 import java.math.BigDecimal;
 
 
@@ -24,6 +25,9 @@ public class PreciosPlantillaDTO implements Serializable {
 	private BigDecimal invitacion;
 
 	private BigDecimal precio;
+	
+	@Column(name="AULA_TEATRO")
+	private BigDecimal aulaTeatro;
 
 	//bi-directional many-to-one association to LocalizacionDTO
 	@ManyToOne
@@ -69,8 +73,16 @@ public class PreciosPlantillaDTO implements Serializable {
 	public void setPrecio(BigDecimal precio) {
 		this.precio = precio;
 	}
+	
+	public BigDecimal getAulaTeatro() {
+        return aulaTeatro;
+    }
 
-	public LocalizacionDTO getParLocalizacione() {
+    public void setAulaTeatro(BigDecimal aulaTeatro) {
+        this.aulaTeatro = aulaTeatro;
+    }
+
+    public LocalizacionDTO getParLocalizacione() {
 		return this.parLocalizacione;
 	}
 

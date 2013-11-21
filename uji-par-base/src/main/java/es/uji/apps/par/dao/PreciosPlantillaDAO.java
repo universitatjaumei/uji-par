@@ -59,6 +59,7 @@ public class PreciosPlantillaDAO extends BaseDAO {
 		//precioDTO.setParLocalizacione(precio.getLocalizacion());
 		preciosPlantillaDTO.setParPlantilla(Plantilla.plantillaPreciosToPlantillaPreciosDTO(precio.getPlantillaPrecios()));
 		preciosPlantillaDTO.setPrecio(precio.getPrecio());
+		preciosPlantillaDTO.setAulaTeatro(precio.getAulaTeatro());
 		
 		entityManager.persist(preciosPlantillaDTO);
 		precio.setId(preciosPlantillaDTO.getId());
@@ -72,6 +73,7 @@ public class PreciosPlantillaDAO extends BaseDAO {
         update.set(qPreciosPlantillaDTO.descuento, precio.getDescuento())
         		.set(qPreciosPlantillaDTO.invitacion, precio.getInvitacion())
         		.set(qPreciosPlantillaDTO.precio, precio.getPrecio())
+        		.set(qPreciosPlantillaDTO.aulaTeatro, precio.getAulaTeatro())
         		//.set(qPrecioDTO.parLocalizacione, Localizacion.localizacionToLocalizacionDTO(precio.getLocalizacion()))
         		.set(qPreciosPlantillaDTO.parLocalizacione, Localizacion.localizacionToLocalizacionDTO(precio.getLocalizacion()))
         		.set(qPreciosPlantillaDTO.parPlantilla, Plantilla.plantillaPreciosToPlantillaPreciosDTO(precio.getPlantillaPrecios()))

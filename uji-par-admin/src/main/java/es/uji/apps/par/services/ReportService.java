@@ -126,6 +126,8 @@ public class ReportService
             tipoEntrada = "Descompte";
         else if (tipoEntrada.equals("invitacion"))
             tipoEntrada = "Invitació";
+        else if (tipoEntrada.equals("aulaTeatro"))
+            tipoEntrada = "Teatre";        
         return tipoEntrada;
     }
 

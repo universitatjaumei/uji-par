@@ -41,6 +41,12 @@ Ext.define('Paranimf.view.evento.GridPreciosSesion', {
         flex: 1,
         sortable: false,
         renderer: Ext.util.Format.numberRenderer("0.00")
+      },{
+        dataIndex: 'aulaTeatro',
+        text: UI.i18n.field.aulaTeatro,
+        flex: 1,
+        sortable: false,
+        renderer: Ext.util.Format.numberRenderer("0.00")
       }];
 
       this.callParent(arguments);
@@ -62,8 +68,9 @@ Ext.define('Paranimf.view.evento.GridPreciosSesion', {
           jsonFilas += '"descuento":' + this.store.getRange()[i].data.descuento + ',';
           jsonFilas += '"precio":' + this.store.getRange()[i].data.precio + ',';
           jsonFilas += '"invitacion":' + this.store.getRange()[i].data.invitacion + ',';
+          jsonFilas += '"aulaTeatro":' + this.store.getRange()[i].data.aulaTeatro + ',';
           jsonFilas += '"localizacion":{"id": ' + this.store.getRange()[i].data.localizacion + '}';
-          jsonFilas += '}'
+          jsonFilas += '}';
       }
       jsonFilas = "[" + jsonFilas + "]";
       return jsonFilas;

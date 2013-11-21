@@ -36,7 +36,7 @@ Butacas = (function() {
 			for (var i=0; i<respuesta.data.length; i++)
 			{
 				var sesion = respuesta.data[i];
-				precios[sesion.localizacion.codigo] = {normal:sesion.precio, descuento:sesion.descuento, invitacion:sesion.invitacion};
+				precios[sesion.localizacion.codigo] = {normal:sesion.precio, descuento:sesion.descuento, invitacion:sesion.invitacion, aulaTeatro:sesion.aulaTeatro};
 			}
 			
 			refrescaEstadoButacas();
@@ -153,20 +153,30 @@ Butacas = (function() {
 		
 		var selecNormal = 'selected',
 			selecDescuento = '',
-			selecInvitacion = '';
+			selecInvitacion = '',
+			selecAulaTeatro = '';
 		
 		if (butacasSeleccionadas[posicion]['tipo'] == 'descuento')
 		{
 			selecNormal = '';
 			selecDescuento = 'selected';
 			selecInvitacion = '';
+			selecAulaTeatro = '';
 		}
 		else if (butacasSeleccionadas[posicion]['tipo'] == 'invitacion')
 		{
 			selecNormal = '';
 			selecDescuento = '';
 			selecInvitacion = 'selected';
+			selecAulaTeatro = '';
 		}
+		else if (butacasSeleccionadas[posicion]['tipo'] == 'aulaTeatro')
+		{
+			selecNormal = '';
+			selecDescuento = '';
+			selecInvitacion = '';
+			selecAulaTeatro = 'selected';
+		}		
 		
 		st += '<option ' + selecNormal + ' value="normal">' + UI.i18n.butacas.tipoNormal;
 		
@@ -182,6 +192,7 @@ Butacas = (function() {
 		if (modoAdmin)
 		{
 			st += '<option ' + selecInvitacion + ' value="invitacion">' + UI.i18n.butacas.tipoInvitacion + '</option>';
+			st += '<option ' + selecAulaTeatro + ' value="aulaTeatro">' + UI.i18n.butacas.tipoAulaTeatro + '</option>';
 		}
 		
 		st += '</select>';

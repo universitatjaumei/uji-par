@@ -9,6 +9,7 @@ Ext.define('Paranimf.model.Precio', {
 	  	'localizacion',
 	  	'precio',
 	  	'descuento',
-	  	'invitacion'
+	  	'invitacion',
+	  	'aulaTeatro'
 	]
 });

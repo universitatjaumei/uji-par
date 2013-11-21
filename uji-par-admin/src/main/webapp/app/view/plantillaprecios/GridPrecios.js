@@ -47,6 +47,11 @@ Ext.define('Paranimf.view.plantillaprecios.GridPrecios', {
         text: UI.i18n.field.invitacion,
         flex: 1,
         renderer: Ext.util.Format.numberRenderer("0.00")
+      },{
+    	dataIndex: 'aulaTeatro',
+        text: UI.i18n.field.aulaTeatro,
+        flex: 1,
+        renderer: Ext.util.Format.numberRenderer("0.00")
       }];
 
       this.callParent(arguments);
