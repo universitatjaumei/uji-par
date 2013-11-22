@@ -192,7 +192,10 @@ Butacas = (function() {
 		if (modoAdmin)
 		{
 			st += '<option ' + selecInvitacion + ' value="invitacion">' + UI.i18n.butacas.tipoInvitacion + '</option>';
-			st += '<option ' + selecAulaTeatro + ' value="aulaTeatro">' + UI.i18n.butacas.tipoAulaTeatro + '</option>';
+			
+			var precioAulaTeatro = precios[butaca['localizacion']]['aulaTeatro'];
+			if (precioAulaTeatro > 0)
+				st += '<option ' + selecAulaTeatro + ' value="aulaTeatro">' + UI.i18n.butacas.tipoAulaTeatro + '</option>';
 		}
 		
 		st += '</select>';
