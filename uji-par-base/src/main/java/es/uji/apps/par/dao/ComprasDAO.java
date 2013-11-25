@@ -417,7 +417,7 @@ public class ComprasDAO extends BaseDAO
     @SuppressWarnings("unchecked")
     @Transactional
     public List<Object[]> getComprasTpv(String fechaInicio, String fechaFin) {
-        String sql = "select e.titulo_va, s.fecha_celebracion, b.tipo, count(b.id) as cantidad, sum(b.precio) as total, c.sesion_id, e.porcentaje_iva, decode(b.tipo, 'normal', 1, 'descuento', 2, 'aulaTeatro', 3 'invitacion', 4) as tipoOrden, TRUNC(c.fecha, 'DD') " +
+        String sql = "select e.titulo_va, s.fecha_celebracion, b.tipo, count(b.id) as cantidad, sum(b.precio) as total, c.sesion_id, e.porcentaje_iva, decode(b.tipo, 'normal', 1, 'descuento', 2, 'aulaTeatro', 3, 'invitacion', 4) as tipoOrden, TRUNC(c.fecha, 'DD') " +
                 "from par_butacas b, par_compras c, par_sesiones s, par_eventos e " +
                 "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id " +
                 "and c.fecha >= TO_DATE('" + fechaInicio + "','YY-MM-DD') and c.fecha <= TO_DATE('" + fechaFin + " 23:59','YY-MM-DD HH24:MI') " +
@@ -434,7 +434,7 @@ public class ComprasDAO extends BaseDAO
     @SuppressWarnings("unchecked")
     @Transactional
     public List<Object[]> getComprasEventos(String fechaInicio, String fechaFin) {
-        String sql = "select e.titulo_va, s.fecha_celebracion, b.tipo, count(b.id) as cantidad, sum(b.precio) as total, e.porcentaje_iva, decode(b.tipo, 'normal', 1, 'descuento', 2, 'aulaTeatro', 3 'invitacion', 4) as tipoOrden, e.id as eventoId, s.id as sesionId " +
+        String sql = "select e.titulo_va, s.fecha_celebracion, b.tipo, count(b.id) as cantidad, sum(b.precio) as total, e.porcentaje_iva, decode(b.tipo, 'normal', 1, 'descuento', 2, 'aulaTeatro', 3, 'invitacion', 4) as tipoOrden, e.id as eventoId, s.id as sesionId " +
                 "from par_butacas b, par_compras c, par_sesiones s, par_eventos e " +
                 "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id " +
                 "and s.fecha_celebracion >= TO_DATE('" + fechaInicio + "','YY-MM-DD') and s.fecha_celebracion <= TO_DATE('" + fechaFin + " 23:59','YY-MM-DD HH24:MI') " +
