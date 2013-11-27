@@ -421,8 +421,6 @@ public class ComprasDAO extends BaseDAO
                 "from par_butacas b, par_compras c, par_sesiones s, par_eventos e " +
                 "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id " +
                 "and c.fecha >= TO_DATE('" + fechaInicio + "','YY-MM-DD') and c.fecha <= TO_DATE('" + fechaFin + " 23:59','YY-MM-DD HH24:MI') " +
-                "and c.pagada = 1 " +
-                "and b.anulada = 0 " +
                 "and c.reserva = 0 " +
                 "and (c.codigo_pago_tarjeta is not null or c.codigo_pago_pasarela is not null) " +
                 "group by c.sesion_id, e.titulo_va, b.tipo, s.fecha_celebracion, e.porcentaje_iva, TRUNC(c.fecha, 'DD') " +
