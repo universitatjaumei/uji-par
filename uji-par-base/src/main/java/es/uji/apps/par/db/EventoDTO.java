@@ -100,7 +100,25 @@ public class EventoDTO implements Serializable {
 	//bi-directional many-to-one association to SesionDTO
 	@OneToMany(mappedBy="parEvento")
 	private List<SesionDTO> parSesiones;
+	
+    @Column(name="EXPEDIENTE")
+    private String expediente;
 
+    @Column(name="COD_DISTRI")
+    private String codigoDistribuidora;
+
+    @Column(name="NOM_DISTRI")
+    private String nombreDistribuidora;
+    
+    @Column(name="NACIONALIDAD")
+    private String nacionalidad;
+    
+    @Column(name="VO")
+    private String vo;
+    
+    @Column(name="METRAJE")
+    private String metraje;   
+    
 	public EventoDTO() {
 	}
 
@@ -318,5 +336,65 @@ public class EventoDTO implements Serializable {
 
     public void setRssId(String rssId) {
         this.rssId = rssId;
+    }
+
+    public String getExpediente()
+    {
+        return expediente;
+    }
+
+    public void setExpediente(String expediente)
+    {
+        this.expediente = expediente;
+    }
+
+    public String getCodigoDistribuidora()
+    {
+        return codigoDistribuidora;
+    }
+
+    public void setCodigoDistribuidora(String codigoDistribuidora)
+    {
+        this.codigoDistribuidora = codigoDistribuidora;
+    }
+
+    public String getNombreDistribuidora()
+    {
+        return nombreDistribuidora;
+    }
+
+    public void setNombreDistribuidora(String nombreDistribuidora)
+    {
+        this.nombreDistribuidora = nombreDistribuidora;
+    }
+
+    public String getNacionalidad()
+    {
+        return nacionalidad;
+    }
+
+    public void setNacionalidad(String nacionalidad)
+    {
+        this.nacionalidad = nacionalidad;
+    }
+
+    public String getVo()
+    {
+        return vo;
+    }
+
+    public void setVo(String vo)
+    {
+        this.vo = vo;
+    }
+
+    public String getMetraje()
+    {
+        return metraje;
+    }
+
+    public void setMetraje(String metraje)
+    {
+        this.metraje = metraje;
     }
 }

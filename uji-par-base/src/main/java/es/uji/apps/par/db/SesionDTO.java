@@ -50,6 +50,12 @@ public class SesionDTO implements Serializable {
 
 	@Column(name="HORA_APERTURA")
 	private String horaApertura;
+	
+    @Column(name="NOMBRE")
+    private String nombre;
+    
+    @Column(name="FORMATO")
+    private String formato;
 
 	//bi-directional many-to-one association to PreciosSesionDTO
 	@OneToMany(mappedBy="parSesione", cascade=CascadeType.PERSIST)
@@ -64,6 +70,10 @@ public class SesionDTO implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="PLANTILLA_ID")
 	private PlantillaDTO parPlantilla;
+	
+	@ManyToOne
+	@JoinColumn(name="SALA_ID")
+	private SalaDTO parSala;
 	
     //bi-directional many-to-one association to SesionDTO
     @OneToMany(mappedBy="parSesion")
@@ -167,5 +177,34 @@ public class SesionDTO implements Serializable {
     public void setParButacas(List<ButacaDTO> parButacas) {
         this.parButacas = parButacas;
     }
-	
+
+    public String getNombre()
+    {
+        return nombre;
+    }
+
+    public void setNombre(String nombre)
+    {
+        this.nombre = nombre;
+    }
+
+    public String getFormato()
+    {
+        return formato;
+    }
+
+    public void setFormato(String formato)
+    {
+        this.formato = formato;
+    }
+
+    public SalaDTO getParSala()
+    {
+        return parSala;
+    }
+
+    public void setParSala(SalaDTO parSala)
+    {
+        this.parSala = parSala;
+    }
 }
