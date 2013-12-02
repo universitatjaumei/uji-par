@@ -15,16 +15,16 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
- * The persistent class for the PAR_CINE database table.
+ * The persistent class for the PAR_CINES database table.
  */
 @Entity
-@Table(name = "PAR_CINE")
+@Table(name = "PAR_CINES")
 public class CineDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name = "PAR_CINE_ID_GENERATOR", sequenceName = "HIBERNATE_SEQUENCE")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PAR_CINE_ID_GENERATOR")
+	@SequenceGenerator(name = "PAR_CINES_ID_GENERATOR", sequenceName = "HIBERNATE_SEQUENCE")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PAR_CINES_ID_GENERATOR")
 	private long id;
 
 	@Column(name = "CODIGO")
