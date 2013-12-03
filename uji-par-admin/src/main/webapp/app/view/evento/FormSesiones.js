@@ -97,6 +97,44 @@ Ext.define('Paranimf.view.evento.FormSesiones', {
          increment: 30
       }]
    }, {
+	      xtype: 'fieldset',
+	      title: UI.i18n.field.sesionCine,
+	      defaults: {
+	         anchor: '100%',
+	         labelWidth: 190
+	      },
+	      items: [{
+	          fieldLabel: UI.i18n.field.name,
+	          name: 'nombre',
+	          xtype: 'textfield'
+	         },{
+	          fieldLabel: UI.i18n.field.formato,
+	          name: 'formato',
+	          xtype: 'combobox',
+	          displayField: 'name',
+	          valueField : 'value',
+	          queryMode: 'local',
+	          forceSelection:true,
+	          store: new Ext.data.SimpleStore({
+	            fields: ['value', 'name'],
+	              data: [
+	                ['35mm', UI.i18n.message['35mm']],
+	                ['digital', UI.i18n.message['digital']],
+	                ['3d', UI.i18n.message['3d']]
+	              ]
+	          })      
+	         },{
+        	    fieldLabel: UI.i18n.field.sala,
+        	    name: 'sala',
+        	    xtype: 'combobox',
+        	    displayField: 'nombre',
+        	    valueField: 'id',
+        	    store: 'Salas',
+        	    queryMode: 'local',
+        	    typeAhead: true
+        	 }
+	      ]
+   }, {
       fieldLabel: UI.i18n.field.plantillaprecios,
       name: 'plantillaPrecios',
       xtype: 'combobox',

@@ -45,8 +45,23 @@ public class EventosService
         eventosDAO.removeEvento(id);
     }
 
+    public Evento addEvento(Evento evento) throws CampoRequeridoException
+    {
+        checkRequiredFields(evento);
+        return eventosDAO.addEvento(evento);
+    }
+
+    private void checkRequiredFields(Evento evento) throws CampoRequeridoException
+    {
+        if (evento.getTituloEs() == null || evento.getTituloEs().isEmpty())
+            throw new CampoRequeridoException("Título");
+        if (evento.getParTiposEvento() == null)
+            throw new CampoRequeridoException("Tipo de evento");
+    }
+
     public void updateEvento(Evento evento) throws CampoRequeridoException
     {
+        checkRequiredFields(evento);
         eventosDAO.updateEvento(evento);
     }
 

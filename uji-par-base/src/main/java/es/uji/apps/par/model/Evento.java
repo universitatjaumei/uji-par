@@ -19,6 +19,8 @@ public class Evento
     private String descripcionVa;
     private String companyiaEs;
     private String companyiaVa;
+    private String interpretesEs;
+    private String interpretesVa;
     private String duracionEs;
     private String duracionVa;
     private byte[] imagen;
@@ -40,6 +42,13 @@ public class Evento
     private List<Sesion> sesiones;
     private String rssId;
 
+    private String expediente;
+    private String codigoDistribuidora;
+    private String nombreDistribuidora;
+    private String nacionalidad;
+    private String vo;
+    private String metraje;  
+
     public Evento()
     {
         sesiones = new ArrayList<Sesion>();
@@ -57,6 +66,9 @@ public class Evento
 
     	evento.setCompanyiaEs(eventoDTO.getCompanyiaEs());
     	evento.setCompanyiaVa(eventoDTO.getCompanyiaVa());
+
+    	evento.setInterpretesEs(eventoDTO.getInterpretesEs());
+    	evento.setInterpretesVa(eventoDTO.getInterpretesVa());
 
     	evento.setDuracionEs(eventoDTO.getDuracionEs());
     	evento.setDuracionVa(eventoDTO.getDuracionVa());
@@ -83,6 +95,13 @@ public class Evento
         evento.setPorcentajeIVA(eventoDTO.getPorcentajeIva());
         
         evento.setRssId(eventoDTO.getRssId());
+        
+        evento.setExpediente(eventoDTO.getExpediente());
+        evento.setCodigoDistribuidora(eventoDTO.getCodigoDistribuidora());
+        evento.setNombreDistribuidora(eventoDTO.getNombreDistribuidora());
+        evento.setNacionalidad(eventoDTO.getNacionalidad());
+        evento.setVo(eventoDTO.getVo());
+        evento.setMetraje(eventoDTO.getMetraje());
     	
     	return evento;
     }
@@ -99,6 +118,9 @@ public class Evento
 
     	eventoDTO.setCompanyiaEs(evento.getCompanyiaEs());
     	eventoDTO.setCompanyiaVa(evento.getCompanyiaVa());
+
+    	eventoDTO.setInterpretesEs(evento.getInterpretesEs());
+    	eventoDTO.setInterpretesVa(evento.getInterpretesVa());
 
     	eventoDTO.setDuracionEs(evento.getDuracionEs());
     	eventoDTO.setDuracionVa(evento.getDuracionVa());
@@ -123,6 +145,13 @@ public class Evento
         eventoDTO.setIvaSgae(evento.getIvaSGAE());
         eventoDTO.setRetencionSgae(evento.getRetencionSGAE());
         eventoDTO.setPorcentajeIva(evento.getPorcentajeIVA());
+        
+        eventoDTO.setExpediente(evento.getExpediente());
+        eventoDTO.setCodigoDistribuidora(evento.getCodigoDistribuidora());
+        eventoDTO.setNombreDistribuidora(evento.getNombreDistribuidora());
+        eventoDTO.setNacionalidad(evento.getNacionalidad());
+        eventoDTO.setVo(evento.getVo());
+        eventoDTO.setMetraje(evento.getMetraje());
     	
     	return eventoDTO;
 	}
@@ -140,6 +169,9 @@ public class Evento
 
         this.companyiaEs = eventoDTO.getCompanyiaEs();
         this.companyiaVa = eventoDTO.getCompanyiaVa();
+
+        this.interpretesEs = eventoDTO.getInterpretesEs();
+        this.interpretesVa = eventoDTO.getInterpretesVa();
 
         this.duracionEs = eventoDTO.getDuracionEs();
         this.duracionVa = eventoDTO.getDuracionVa();
@@ -185,17 +217,18 @@ public class Evento
         this.tituloEs = tituloEs;
     }
 
-    public Evento(String tituloEs, String descripcionEs, String companyiaEs, String duracionEs, 
-    		String premiosEs, String caracteristicasEs, String comentariosEs,
-            String tituloVa, String descripcionVa, String companyiaVa, 
+    public Evento(String tituloEs, String descripcionEs, String companyiaEs, String interpretesEs,
+            String duracionEs, String premiosEs, String caracteristicasEs, String comentariosEs,
+            String tituloVa, String descripcionVa, String companyiaVa, String interpretesVa,
             String duracionVa, String premiosVa, String caracteristicasVa, String comentariosVa,
-            Integer tipoEventoId, BigDecimal porcentajeIVA, BigDecimal retencionSGAE, 
-            BigDecimal ivaSGAE, BigDecimal asientosNumerados)
+            byte[] dataBinary, String nombreArchivo, String mediaType, Integer tipoEventoId,
+            BigDecimal porcentajeIVA, BigDecimal retencionSGAE, BigDecimal ivaSGAE, BigDecimal asientosNumerados)
     {
         this.sesiones = new ArrayList<Sesion>();
         this.tituloEs = tituloEs;
         this.descripcionEs = descripcionEs;
         this.companyiaEs = companyiaEs;
+        this.interpretesEs = interpretesEs;
         this.duracionEs = duracionEs;
         this.premiosEs = premiosEs;
         this.caracteristicasEs = caracteristicasEs;
@@ -204,10 +237,15 @@ public class Evento
         this.tituloVa = tituloVa;
         this.descripcionVa = descripcionVa;
         this.companyiaVa = companyiaVa;
+        this.interpretesVa = interpretesVa;
         this.duracionVa = duracionVa;
         this.premiosVa = premiosVa;
         this.caracteristicasVa = caracteristicasVa;
         this.comentariosVa = comentariosVa;
+
+        this.imagen = dataBinary;
+        this.imagenSrc = nombreArchivo;
+        this.imagenContentType = mediaType;
 
         if (tipoEventoId != null)
         {
@@ -335,6 +373,26 @@ public class Evento
     public void setCompanyiaVa(String companyiaVa)
     {
         this.companyiaVa = companyiaVa;
+    }
+
+    public String getInterpretesEs()
+    {
+        return interpretesEs;
+    }
+
+    public void setInterpretesEs(String interpretesEs)
+    {
+        this.interpretesEs = interpretesEs;
+    }
+
+    public String getInterpretesVa()
+    {
+        return interpretesVa;
+    }
+
+    public void setInterpretesVa(String interpretesVa)
+    {
+        this.interpretesVa = interpretesVa;
     }
 
     public String getDuracionEs()
@@ -477,4 +535,70 @@ public class Evento
     public void setRssId(String rssId) {
         this.rssId = rssId;
     }
+
+    public String getExpediente()
+    {
+        return expediente;
+    }
+
+    public void setExpediente(String expediente)
+    {
+        this.expediente = expediente;
+    }
+
+    public String getCodigoDistribuidora()
+    {
+        return codigoDistribuidora;
+    }
+
+    public void setCodigoDistribuidora(String codigoDistribuidora)
+    {
+        this.codigoDistribuidora = codigoDistribuidora;
+    }
+
+    public String getNombreDistribuidora()
+    {
+        return nombreDistribuidora;
+    }
+
+    public void setNombreDistribuidora(String nombreDistribuidora)
+    {
+        this.nombreDistribuidora = nombreDistribuidora;
+    }
+
+    public String getNacionalidad()
+    {
+        return nacionalidad;
+    }
+
+    public void setNacionalidad(String nacionalidad)
+    {
+        this.nacionalidad = nacionalidad;
+    }
+
+    public String getVo()
+    {
+        return vo;
+    }
+
+    public void setVo(String vo)
+    {
+        this.vo = vo;
+    }
+
+    public String getMetraje()
+    {
+        return metraje;
+    }
+
+    public void setMetraje(String metraje)
+    {
+        this.metraje = metraje;
+    }
+
+    public void setParTiposEvento(TipoEvento parTiposEvento)
+    {
+        this.parTiposEvento = parTiposEvento;
+    }
+    
 }

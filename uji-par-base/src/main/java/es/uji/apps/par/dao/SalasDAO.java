@@ -20,7 +20,8 @@ public class SalasDAO extends BaseDAO
     {
         JPAQuery query = new JPAQuery(entityManager);
 
-        return query.from(qSalaDTO).list(qSalaDTO);
+        return query.from(qSalaDTO).join(qSalaDTO.parCine).fetch()
+                .list(qSalaDTO);
     }
 
     @Transactional

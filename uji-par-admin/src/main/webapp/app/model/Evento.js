@@ -9,6 +9,8 @@ Ext.define('Paranimf.model.Evento', {
       'descripcionVa',
       'companyiaEs',
       'companyiaVa',
+      'interpretesEs',
+      'interpretesVa',
       'duracionEs',
       'duracionVa',
       'premiosEs',
@@ -36,6 +38,13 @@ Ext.define('Paranimf.model.Evento', {
       {name: 'fechaInicio', type: 'date'},
       {name: 'fechaFin', type: 'date'},
       
-      'rssId'
+      'rssId',
+      
+      'expediente',
+      'codigoDistribuidora',
+      'nombreDistribuidora',
+      'nacionalidad',
+      'vo',
+      'metraje'
    ]
 });

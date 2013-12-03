@@ -15,10 +15,12 @@ import com.mysema.query.jpa.impl.JPAUpdateClause;
 import es.uji.apps.par.db.PreciosSesionDTO;
 import es.uji.apps.par.db.QButacaDTO;
 import es.uji.apps.par.db.QPreciosSesionDTO;
+import es.uji.apps.par.db.QSalaDTO;
 import es.uji.apps.par.db.QSesionDTO;
 import es.uji.apps.par.db.SesionDTO;
 import es.uji.apps.par.model.Evento;
 import es.uji.apps.par.model.Plantilla;
+import es.uji.apps.par.model.Sala;
 import es.uji.apps.par.model.Sesion;
 import es.uji.apps.par.utils.DateUtils;
 
@@ -78,11 +80,13 @@ public class SesionesDAO extends BaseDAO
     
     @Transactional
     private JPAQuery getQuerySesionesActivas(long eventoId) {
+        QSalaDTO qSalaDTO = QSalaDTO.salaDTO;
+        
     	JPAQuery query = new JPAQuery(entityManager);
     	
     	Timestamp now = new Timestamp(DateUtils.dateConMargenTrasVenta().getTime());
     	
-    	return query.from(qSesionDTO)
+    	return query.from(qSesionDTO).leftJoin(qSesionDTO.parSala, qSalaDTO).fetch()
         .where(qSesionDTO.parEvento.id.eq(eventoId).and(qSesionDTO.fechaCelebracion.after(now)));
     }
     
@@ -123,7 +127,13 @@ public class SesionesDAO extends BaseDAO
             .set(qSesionDTO.horaApertura, sesion.getHoraApertura())
             .set(qSesionDTO.parEvento, Evento.eventoToEventoDTO(sesion.getEvento()))
             .set(qSesionDTO.parPlantilla, Plantilla.plantillaPreciosToPlantillaPreciosDTO(sesion.getPlantillaPrecios()))
-            .where(qSesionDTO.id.eq(sesion.getId())).execute();
+            .set(qSesionDTO.nombre, sesion.getNombre())
+            .set(qSesionDTO.formato, sesion.getFormato());
+        
+         if (sesion.getSala() != null && sesion.getSala().getId()!=0)
+             update.set(qSesionDTO.parSala, Sala.salaToSalaDTO(sesion.getSala()));
+        
+         update.where(qSesionDTO.id.eq(sesion.getId())).execute();
     }
 
     @Transactional

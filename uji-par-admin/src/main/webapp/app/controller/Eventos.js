@@ -2,8 +2,8 @@ Ext.define('Paranimf.controller.Eventos', {
    extend: 'Ext.app.Controller',
 
    views: ['EditModalWindow', 'EditBaseForm', 'EditBaseGrid', 'evento.GridEventos', 'evento.FormEventos', 'evento.PanelEventos', 'evento.GridSesiones', 'evento.FormSesiones', 'evento.GridPreciosSesion', 'evento.FormPreciosSesion'],
-   stores: ['Eventos', 'TiposEventosSinPaginar', 'Sesiones', 'PlantillasPrecios', 'PreciosSesion'],
-   models: ['Evento', 'Sesion', 'PrecioSesion'],
+   stores: ['Eventos', 'TiposEventosSinPaginar', 'Sesiones', 'PlantillasPrecios', 'PreciosSesion', 'Salas'],
+   models: ['Evento', 'Sesion', 'PrecioSesion', 'Sala'],
 
    refs: [{
       ref: 'gridEventos',
@@ -21,6 +21,9 @@ Ext.define('Paranimf.controller.Eventos', {
 	   ref: 'formSesiones',
 	   selector: 'formSesiones'
    }, {
+      ref: 'botonDeleteImagen',
+      selector: 'formEventos button[action=deleteImage]'
+   }, {
       ref: 'gridPreciosSesion',
       selector: 'gridPreciosSesion'
    }, {
@@ -31,8 +34,16 @@ Ext.define('Paranimf.controller.Eventos', {
    init: function() {
       this.control({
 
+         'gridEventos button[action=add]': {
+            click: this.addEvento
+         },
+
          'gridEventos button[action=edit]': {
             click: this.editEvento
+         },
+
+         'gridEventos button[action=del]': {
+            click: this.removeEvento
          },
 
          'panelEventos': {
@@ -43,6 +54,10 @@ Ext.define('Paranimf.controller.Eventos', {
             click: this.saveEventoFormData
          },
 
+         'formEventos button[action=deleteImage]': {
+            click: this.deleteImage
+         },
+         
          'formEventos': {
         	   beforerender: this.showImagenIfExists
          },
@@ -68,7 +83,7 @@ Ext.define('Paranimf.controller.Eventos', {
          },
 
          'formSesiones': {
-            afterrender: this.preparaStorePlantillaPrecios
+            afterrender: this.preparaStoresSesiones
          },
          
          'formSesiones button[action=save]': {
@@ -216,19 +231,29 @@ Ext.define('Paranimf.controller.Eventos', {
          alert(UI.i18n.message.registroConMismaLocalizacionExiste)
       }
    },
+   
+   preparaStoresSesiones: function(comp, opts) {
+	   this.preparaStorePlantillaPrecios();
+	   this.preparaStoreSalas();
+   },
 
-   preparaStorePlantillaPrecios: function(comp, opts) {
+   preparaStorePlantillaPrecios: function() {
       var idASeleccionar = -1;
       if (this.getGridSesiones().getSelectedColumnId() != undefined) {
          var selectedRecord = this.getGridSesiones().getSelectedRecord();
          idASeleccionar = selectedRecord.data.plantillaPrecios;
       }
       this.getFormSesiones().cargaComboStore('plantillaPrecios', idASeleccionar);
-      
-      //TODO cargar con un Ajax.request el store del grid
-      //this.getGridPreciosSesion().getStore().getProxy().url = urlPrefix + 'evento/' + this.getGridEventos().getSelectedColumnId() + '/sesiones/' + this.getGridSesiones().getSelectedColumnId() + '/precios';
-      //this.getGridPreciosSesion().recargaStore();
    },   
+   
+   preparaStoreSalas: function() {
+      var idASeleccionar = -1;
+      if (this.getGridSesiones().getSelectedColumnId() != undefined) {
+         var selectedRecord = this.getGridSesiones().getSelectedRecord();
+         idASeleccionar = selectedRecord.data.sala;
+      }
+      this.getFormSesiones().cargaComboStore('sala', idASeleccionar);
+   },     
    
    showImagenIfExists: function(comp, opts) {
       var record = comp.getRecord();
@@ -237,6 +262,30 @@ Ext.define('Paranimf.controller.Eventos', {
          var imagen = comp.down("#imagenInsertada");
          var idEvento = record.data["id"]; 
 		   imagen.html = '<a href="' + urlPrefix + 'evento/' + idEvento + '/imagen" target="blank">' + UI.i18n.field.imagenInsertada + '</a>';
+         this.getBotonDeleteImagen().show();
+      } else {
+         this.getBotonDeleteImagen().hide();
+      }
+   },
+
+   deleteImage: function(button, event, opts) {
+      if (confirm(UI.i18n.message.sureDeleteImage)) {
+         var record = button.up('form').getRecord();
+         var idEvento = record.data["id"];
+         var grid = this.getGridEventos();
+         
+         Ext.Ajax.request({
+           url : urlPrefix + 'evento/' + idEvento + '/imagen',
+           method: 'DELETE',
+           success: function (response) {
+               alert(UI.i18n.message.deletedImage);
+
+               button.up('window').close();
+               grid.store.load();
+           }, failure: function (response) {
+              alert(UI.i18n.error.deletedImage);
+           }
+         });
       }
    },
 
@@ -245,14 +294,26 @@ Ext.define('Paranimf.controller.Eventos', {
       this.getGridEventos().recargaStore();
    },
 
+   addEvento: function(button, event, opts) {
+      this.getGridEventos().showAddEventoWindow();
+   },
+
    editEvento: function(button, event, opts) {
       this.getGridEventos().edit('formEventos', undefined, undefined, 0.8);
+   },
+
+   removeEvento: function(button, event, opts) {
+      var gridSesiones = this.getGridSesiones();
+      this.getGridEventos().remove(function (borradoCorrectamente) {
+         if (borradoCorrectamente)
+            gridSesiones.getStore().removeAll();
+      });
    },
 
    saveEventoFormData: function(button, event, opts) {
       var grid = this.getGridEventos();
       var form = this.getFormEventos();
-      form.saveFormData(grid, urlPrefix + 'evento', undefined, 'application/x-www-form-urlencoded');
+      form.saveFormData(grid, urlPrefix + 'evento', undefined, 'multipart/form-data');
    },
    
    loadSesiones: function(selectionModel, record) {
@@ -281,7 +342,13 @@ Ext.define('Paranimf.controller.Eventos', {
 	   var form = this.getFormSesiones();
 
       this.getFormSesiones().getForm().findField('preciosSesion').setValue(this.getGridPreciosSesion().toJSON());
-	   form.saveFormData(grid, urlPrefix + 'evento/' + eventoId + '/sesiones');
+      
+      var sala = this.getFormSesiones().getForm().findField('sala');
+      
+      if (sala.getValue() == '')
+    	  sala.setValue(null);
+      
+	  form.saveFormData(grid, urlPrefix + 'evento/' + eventoId + '/sesiones');
    },
    
    removeSesion: function(button, event, opts) {

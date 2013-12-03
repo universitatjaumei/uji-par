@@ -125,7 +125,8 @@ public class EventosDAO extends BaseDAO
         		" e.DESCRIPCION_ES, e.DESCRIPCION_VA, e.DURACION_ES, e.DURACION_VA, t.ID as tipoId, t.NOMBRE_ES as parTiposEvento, t.NOMBRE_VA , e.PREMIOS_ES, " +
         		" e.PREMIOS_VA, e.TITULO_ES as tituloes, e.TITULO_VA as titulova, e.IMAGEN_SRC as imagensrc, e.IMAGEN_CONTENT_TYPE, e.ID, e.ASIENTOS_NUMERADOS as asientosnumerados, " +
         		" e.RETENCION_SGAE as retencionsgae, e.IVA_SGAE as ivasgae, e.PORCENTAJE_IVA as porcentajeiva, " +
-        		" e.RSS_ID as rssid, (select min(s.FECHA_CELEBRACION) from PAR_SESIONES s where e.id=s.EVENTO_ID) as fechaPrimeraSesion " +
+        		" e.RSS_ID as rssid, (select min(s.FECHA_CELEBRACION) from PAR_SESIONES s where e.id=s.EVENTO_ID) as fechaPrimeraSesion, " +
+        		" e.EXPEDIENTE, e.COD_DISTRI, e.NOM_DISTRI, e.NACIONALIDAD, e.VO, e.METRAJE " +
         		" from PAR_EVENTOS e left outer join PAR_SESIONES s on e.id=s.EVENTO_ID inner join PAR_TIPOS_EVENTO t on e.TIPO_EVENTO_ID=t.id " +
         		(activos?getWhereActivos():getWhereTodos()) +
         		" order by ";
@@ -212,6 +213,13 @@ public class EventosDAO extends BaseDAO
         Timestamp ts = (Timestamp) array[25];
         if (ts != null)
             evento.setFechaPrimeraSesion(new Date(ts.getTime()));
+        
+        evento.setExpediente((String) array[26]);
+        evento.setCodigoDistribuidora((String) array[27]);
+        evento.setNombreDistribuidora((String) array[28]);
+        evento.setNacionalidad((String) array[29]);
+        evento.setVo((String) array[30]);
+        evento.setMetraje((String) array[31]);
 
         return evento;
     }    
@@ -247,7 +255,7 @@ public class EventosDAO extends BaseDAO
 		}
 		return listadoEventos;
 	}
-	
+    
     @Transactional
     public List<EventoDTO> getEventoDTO(Long id)
     {
@@ -304,6 +312,9 @@ public class EventosDAO extends BaseDAO
             eventoDTO.setImagenContentType(evento.getImagenContentType());
         }
 
+        eventoDTO.setInterpretesEs(evento.getInterpretesEs());
+        eventoDTO.setInterpretesVa(evento.getInterpretesVa());
+
         if (evento.getParTiposEvento() != null)
         {
             TipoEventoDTO parTipoEventoDTO = new TipoEventoDTO();
@@ -338,6 +349,13 @@ public class EventosDAO extends BaseDAO
             eventoDTO.setRetencionSgae(evento.getRetencionSGAE());
             eventoDTO.setIvaSgae(evento.getIvaSGAE());
             eventoDTO.setPorcentajeIva(evento.getPorcentajeIVA());
+            
+            eventoDTO.setExpediente(evento.getExpediente());
+            eventoDTO.setCodigoDistribuidora(evento.getCodigoDistribuidora());
+            eventoDTO.setNombreDistribuidora(evento.getNombreDistribuidora());
+            eventoDTO.setNacionalidad(evento.getNacionalidad());
+            eventoDTO.setVo(evento.getVo());
+            eventoDTO.setMetraje(evento.getMetraje());
 
             entityManager.persist(eventoDTO);
         }

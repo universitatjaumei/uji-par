@@ -31,6 +31,9 @@ public class Sesion
     private Plantilla plantillaPrecios;
     private List<PreciosSesion> preciosSesion;
     private long butacasVendidas;
+    private String nombre;
+    private String formato;
+    private Sala sala;
 
     public Sesion()
     {
@@ -53,6 +56,12 @@ public class Sesion
         this.horaCelebracion = DateUtils.getHourAndMinutesWithLeadingZeros(sesionDTO.getFechaCelebracion());
         this.horaInicioVentaOnline = DateUtils.getHourAndMinutesWithLeadingZeros(sesionDTO.getFechaInicioVentaOnline());
         this.horaFinVentaOnline = DateUtils.getHourAndMinutesWithLeadingZeros(sesionDTO.getFechaFinVentaOnline());
+        
+        this.nombre = sesionDTO.getNombre();
+        this.formato = sesionDTO.getFormato();
+        
+        if (sesionDTO.getParSala() != null)
+            this.sala = new Sala(sesionDTO.getParSala());
     }
 
     public long getId()
@@ -185,6 +194,11 @@ public class Sesion
 		sesion.setId(sesionDTO.getId());
 		sesion.setPlantillaPrecios(Plantilla.plantillaPreciosDTOtoPlantillaPrecios(sesionDTO.getParPlantilla()));
 		
+		sesion.setNombre(sesionDTO.getNombre());
+		sesion.setFormato(sesionDTO.getFormato());
+		
+		sesion.setSala(new Sala(sesionDTO.getParSala()));
+		
 		return sesion;
 	}
 	
@@ -215,6 +229,9 @@ public class Sesion
 				sesionDTO.addParPreciosSesion(PreciosSesion.precioSesionToPrecioSesionDTO(preciosSesion));
 			}
 		}
+		
+		if (sesion.getSala() != null && sesion.getSala().getId()!=0)
+		    sesionDTO.setParSala(Sala.salaToSalaDTO(sesion.getSala()));
 		
 		return sesionDTO;
 	}
@@ -275,5 +292,35 @@ public class Sesion
     public void setButacasVendidas(long butacasVendidas)
     {
         this.butacasVendidas = butacasVendidas;
+    }
+
+    public String getNombre()
+    {
+        return nombre;
+    }
+
+    public void setNombre(String nombre)
+    {
+        this.nombre = nombre;
+    }
+
+    public String getFormato()
+    {
+        return formato;
+    }
+
+    public void setFormato(String formato)
+    {
+        this.formato = formato;
+    }
+
+    public Sala getSala()
+    {
+        return sala;
+    }
+
+    public void setSala(Sala sala)
+    {
+        this.sala = sala;
     }
 }
