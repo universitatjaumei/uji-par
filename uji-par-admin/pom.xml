@@ -55,6 +55,14 @@
       <artifactId>jersey-test-framework-grizzly</artifactId>
       <version>${jersey.version}</version>
     </dependency>
+    
+    <!-- Cifrar passwords -->
+    <dependency>
+      <groupId>org.jasypt</groupId>
+      <artifactId>jasypt</artifactId>
+      <version>1.9.1</version>
+      <scope>compile</scope>
+    </dependency>    
 
   </dependencies>
 

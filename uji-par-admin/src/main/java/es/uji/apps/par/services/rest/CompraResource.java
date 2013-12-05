@@ -26,6 +26,7 @@ import es.uji.apps.par.ButacaOcupadaAlActivarException;
 import es.uji.apps.par.ButacaOcupadaException;
 import es.uji.apps.par.CompraSinButacasException;
 import es.uji.apps.par.NoHayButacasLibresException;
+import es.uji.apps.par.auth.AuthChecker;
 import es.uji.apps.par.model.Butaca;
 import es.uji.apps.par.model.DisponiblesLocalizacion;
 import es.uji.apps.par.model.ResultadoCompra;
@@ -71,6 +72,8 @@ public class CompraResource extends BaseResource
     @Produces(MediaType.APPLICATION_JSON)
     public Response anularCompraOReserva(@PathParam("idSesion") Long sesionId, @PathParam("idCompraReserva") Long idCompraReserva)
     {
+        AuthChecker.canWrite(currentRequest);
+        
     	comprasService.anularCompraReserva(idCompraReserva);
         return Response.ok().build();
     }
@@ -80,6 +83,8 @@ public class CompraResource extends BaseResource
     @Produces(MediaType.APPLICATION_JSON)
     public Response desanularCompraOReserva(@PathParam("idSesion") Long sesionId, @PathParam("idCompraReserva") Long idCompraReserva)
     {
+        AuthChecker.canWrite(currentRequest);
+        
         try
         {
             comprasService.desanularCompraReserva(idCompraReserva);
@@ -98,6 +103,8 @@ public class CompraResource extends BaseResource
     public Response anularButaca(@PathParam("idSesion") Long sesionId, @PathParam("idCompraReserva") Long idCompraReserva,
     		@PathParam("idButaca") Long idButaca)
     {
+        AuthChecker.canWrite(currentRequest);
+        
     	comprasService.anularButaca(idButaca);
         return Response.ok().build();
     }
@@ -107,6 +114,8 @@ public class CompraResource extends BaseResource
     @Produces(MediaType.APPLICATION_JSON)
     public Response anularButacas(@PathParam("idSesion") Long sesionId, List<Long> idsButacas)
     {
+        AuthChecker.canWrite(currentRequest);
+        
         comprasService.anularButacas(idsButacas);
         return Response.ok().build();
     }
@@ -116,6 +125,8 @@ public class CompraResource extends BaseResource
     @Produces(MediaType.APPLICATION_JSON)
     public Response compraEntrada(@PathParam("id") Long sesionId, List<Butaca> butacasSeleccionadas) throws NoHayButacasLibresException, ButacaOcupadaException
     {
+        AuthChecker.canWrite(currentRequest);
+        
         try
         {
             ResultadoCompra resultadoCompra =  comprasService.registraCompraTaquilla(sesionId, butacasSeleccionadas);
@@ -164,6 +175,8 @@ public class CompraResource extends BaseResource
     @Produces(MediaType.APPLICATION_JSON)
     public Response getImportesButacas(@PathParam("id") Long sesionId, List<Butaca> butacasSeleccionadas)
     {
+        AuthChecker.canWrite(currentRequest);
+        
         BigDecimal importe = comprasService.calculaImporteButacas(sesionId, butacasSeleccionadas, true);
         
         return Response.ok().entity(importe.setScale(2).toString()).build();

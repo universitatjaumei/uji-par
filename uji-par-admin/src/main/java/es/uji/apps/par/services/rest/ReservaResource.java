@@ -16,6 +16,7 @@ import com.sun.jersey.api.core.InjectParam;
 import es.uji.apps.par.ButacaOcupadaException;
 import es.uji.apps.par.CompraSinButacasException;
 import es.uji.apps.par.NoHayButacasLibresException;
+import es.uji.apps.par.auth.AuthChecker;
 import es.uji.apps.par.model.ReservaRequest;
 import es.uji.apps.par.model.ResultadoCompra;
 import es.uji.apps.par.services.ComprasService;
@@ -36,6 +37,8 @@ public class ReservaResource extends BaseResource
     @Produces(MediaType.APPLICATION_JSON)
     public Response reservaEntrada(@PathParam("id") Long sesionId, ReservaRequest datosReserva) throws NoHayButacasLibresException, ButacaOcupadaException
     {
+        AuthChecker.canWrite(currentRequest);
+        
         try
         {
             ResultadoCompra resultadoCompra =  comprasService.reservaButacas(sesionId, datosReserva.getDesde(), datosReserva.getHasta(), 

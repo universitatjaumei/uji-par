@@ -19,11 +19,12 @@ import javax.ws.rs.core.Response;
 import com.sun.jersey.api.core.InjectParam;
 
 import es.uji.apps.par.GeneralPARException;
+import es.uji.apps.par.auth.AuthChecker;
 import es.uji.apps.par.model.Usuario;
 import es.uji.apps.par.services.UsersService;
 
 @Path("usuario")
-public class UsersResource
+public class UsersResource extends BaseResource
 {
     @InjectParam
     private UsersService usersService;
@@ -41,6 +42,8 @@ public class UsersResource
     @Produces(MediaType.APPLICATION_JSON)
     public Response remove(@PathParam("id") String id)
     {
+        AuthChecker.canWrite(currentRequest);
+        
         usersService.removeUser(Integer.parseInt(id));
         return Response.ok().entity(new RestResponse(true)).build();
     }
@@ -50,6 +53,8 @@ public class UsersResource
     @Produces(MediaType.APPLICATION_JSON)
     public Response add(Usuario user) throws GeneralPARException
     {
+        AuthChecker.canWrite(currentRequest);
+        
         Usuario newUser = usersService.addUser(user);
         // TODO -> generar URL
         return Response.created(URI.create(""))
@@ -62,6 +67,8 @@ public class UsersResource
     @Produces(MediaType.APPLICATION_JSON)
     public Response update(Usuario user) throws GeneralPARException
     {
+        AuthChecker.canWrite(currentRequest);
+        
         usersService.updateUser(user);
         return Response.ok().entity(new RestResponse(true, Arrays.asList(user), 1))
                 .build();

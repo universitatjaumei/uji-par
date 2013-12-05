@@ -23,6 +23,12 @@ public class Configuration
     private static final String INFORME_EFECTIVO_CARGO = "uji.par.informeEfectivo.cargo";
     private static final String INFORME_EFECTIVO_FIRMANTE = "uji.par.informeEfectivo.firmante";
     private static final String MARGEN_VENTA_TAQUILLA_MINUTOS = "uji.par.margenVentaTaquillaMinutos";
+    private static final String AUTH_CLASS = "uji.par.authClass";
+    private static final String ADMIN_LOGIN = "uji.par.auth.admin.login";
+    private static final String ADMIN_PASSWORD = "uji.par.auth.admin.password";
+    private static final String USER_READONLY_LOGIN = "uji.par.auth.readonly.login";
+    private static final String USER_READONLY_PASSWORD = "uji.par.auth.readonly.password";    
+    
 
     public static Logger log = Logger.getLogger(Configuration.class);
 
@@ -148,5 +154,30 @@ public class Configuration
         {
             return 0;
         }
-    } 
+    }
+    
+    public static String getAuthClass()
+    {
+        return getProperty(AUTH_CLASS);
+    }
+    
+    public static String getAdminLogin()
+    {
+        return getProperty(ADMIN_LOGIN);
+    }
+    
+    public static String getAdminPassword()
+    {
+        return getProperty(ADMIN_PASSWORD);
+    }
+
+    public static String getUserReadonlyLogin()
+    {
+        return getProperty(USER_READONLY_LOGIN);
+    }
+    
+    public static String getUserReadonlyPassword()
+    {
+        return getProperty(USER_READONLY_PASSWORD);
+    }
 }

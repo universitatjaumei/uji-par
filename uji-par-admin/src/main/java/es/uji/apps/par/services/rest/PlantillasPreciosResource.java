@@ -19,13 +19,14 @@ import javax.ws.rs.core.Response;
 import com.sun.jersey.api.core.InjectParam;
 
 import es.uji.apps.par.GeneralPARException;
+import es.uji.apps.par.auth.AuthChecker;
 import es.uji.apps.par.model.Plantilla;
 import es.uji.apps.par.model.PreciosPlantilla;
 import es.uji.apps.par.services.PlantillasService;
 import es.uji.apps.par.services.PreciosPlantillaService;
 
 @Path("plantillaprecios")
-public class PlantillasPreciosResource {
+public class PlantillasPreciosResource extends BaseResource{
 
 	@InjectParam
     private PlantillasService plantillaPreciosService;
@@ -46,6 +47,8 @@ public class PlantillasPreciosResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response remove(@PathParam("id") String id)
     {
+        AuthChecker.canWrite(currentRequest);
+        
     	plantillaPreciosService.remove(Integer.parseInt(id));
         return Response.ok().entity(new RestResponse(true)).build();
     }
@@ -55,6 +58,8 @@ public class PlantillasPreciosResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response add(Plantilla plantillaPrecios) throws GeneralPARException
     {
+        AuthChecker.canWrite(currentRequest);
+        
         Plantilla newPlantillaPrecios = plantillaPreciosService.add(plantillaPrecios);
         // TODO crear URI
         return Response.created(URI.create(""))
@@ -67,6 +72,8 @@ public class PlantillasPreciosResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response update(@PathParam("id") String id, Plantilla plantillaPrecios) throws GeneralPARException
     {
+        AuthChecker.canWrite(currentRequest);
+        
     	plantillaPrecios.setId(Long.valueOf(id));
     	plantillaPreciosService.update(plantillaPrecios);
         return Response.ok()
@@ -99,6 +106,8 @@ public class PlantillasPreciosResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response removePrecio(@PathParam("plantillaId") String plantillaId, @PathParam("precioId") String precioId)
     {
+        AuthChecker.canWrite(currentRequest);
+        
     	preciosService.remove(Integer.parseInt(plantillaId), Integer.parseInt(precioId));
         return Response.ok().entity(new RestResponse(true)).build();
     }
@@ -109,6 +118,8 @@ public class PlantillasPreciosResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response addPrecio(@PathParam("plantillaId") String plantillaId, PreciosPlantilla precio) throws GeneralPARException
     {
+        AuthChecker.canWrite(currentRequest);
+        
         PreciosPlantilla newPrecio = preciosService.add(precio);
         // TODO crear URI
         return Response.created(URI.create(""))
@@ -122,6 +133,8 @@ public class PlantillasPreciosResource {
     public Response updatePrecio(@PathParam("plantillaId") String plantillaId, 
     		@PathParam("precioId") String precioId, PreciosPlantilla precio) throws GeneralPARException
     {
+        AuthChecker.canWrite(currentRequest);
+        
     	precio.setId(Long.valueOf(precioId));
     	preciosService.update(precio);
         return Response.ok()

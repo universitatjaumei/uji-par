@@ -3,25 +3,26 @@ package es.uji.apps.par.services.rest;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import es.uji.apps.par.Constantes;
-import es.uji.apps.par.auth.Authenticator;
 import es.uji.apps.par.config.Configuration;
 import es.uji.commons.web.template.HTMLTemplate;
 import es.uji.commons.web.template.Template;
 
-@Path("index")
-public class IndexResource extends BaseResource
+@Path("login")
+public class LoginResource extends BaseResource
 {
     @GET
     @Produces(MediaType.TEXT_HTML)
-    public Template index() throws Exception
+    public Template index(@QueryParam("error") boolean error) throws Exception
     {
-        Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "admin", getLocale(), APP);
+        Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "login", getLocale(), APP);
 
-        template.put("user", currentRequest.getSession().getAttribute(Authenticator.USER_ATTRIBUTE));
+        
         template.put("urlPublic", Configuration.getUrlPublic());
+        template.put("error", error);
 
         return template;
     }

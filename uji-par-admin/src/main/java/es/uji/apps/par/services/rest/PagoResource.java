@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
 
 import com.sun.jersey.api.core.InjectParam;
 
+import es.uji.apps.par.auth.AuthChecker;
 import es.uji.apps.par.pinpad.EstadoPinpad;
 import es.uji.apps.par.pinpad.ResultadoPagoPinpad;
 import es.uji.apps.par.services.ComprasService;
@@ -40,6 +41,8 @@ public class PagoResource extends BaseResource
     @Produces(MediaType.APPLICATION_JSON)
     public ResultadoPagoPinpad realizaPago(@PathParam("idCompra") Integer idCompra, String concepto)
     {
+        AuthChecker.canWrite(currentRequest);
+        
         return pagoTarjeta.realizaPago(idCompra, concepto);
     }
 
@@ -55,6 +58,8 @@ public class PagoResource extends BaseResource
     @Path("{idCompra}/pendiente")
     public void borrarCompraPendiente(@PathParam("idCompra") Long idCompra)
     {
+        AuthChecker.canWrite(currentRequest);
+        
         pagoTarjeta.borraCompraPendiente(idCompra);
     }
 
@@ -63,6 +68,8 @@ public class PagoResource extends BaseResource
     @Consumes(MediaType.APPLICATION_JSON)
     public void marcaPagada(@PathParam("idCompra") Long idCompra)
     {
+        AuthChecker.canWrite(currentRequest);
+        
         compras.marcaPagada(idCompra);
     }
 }

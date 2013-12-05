@@ -7,7 +7,7 @@ Ext.define('Paranimf.controller.Dashboard', {
         this.control({
             'viewport > panel[region=center] > panel[region=north] button[action=logout]': {
                 click: function(button, opts) {
-                    window.location = urlPrefix + 'usuarios/logout';
+                    window.location = urlPrefix + 'logout';
                 }
             }
         });

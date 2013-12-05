@@ -5,6 +5,7 @@ import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
@@ -15,6 +16,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -25,6 +27,7 @@ import com.sun.jersey.multipart.FormDataParam;
 
 import es.uji.apps.par.EventoNoEncontradoException;
 import es.uji.apps.par.GeneralPARException;
+import es.uji.apps.par.auth.AuthChecker;
 import es.uji.apps.par.model.Evento;
 import es.uji.apps.par.model.Sesion;
 import es.uji.apps.par.services.EventosService;
@@ -38,6 +41,9 @@ public class EventosResource
 
     @InjectParam
     private SesionesService sesionesService;
+    
+    @Context
+    HttpServletRequest currentRequest;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -200,6 +206,8 @@ public class EventosResource
             @FormDataParam("vo") String vo,
             @FormDataParam("metraje") String metraje) throws GeneralPARException
     {
+        AuthChecker.canWrite(currentRequest);
+        
         String nombreArchivo = (dataBinaryDetail != null) ? dataBinaryDetail.getFileName() : "";
         String mediaType = (imagenBodyPart != null) ? imagenBodyPart.getMediaType().toString() : "";
 
@@ -230,6 +238,8 @@ public class EventosResource
     public Response update(@PathParam("id") Integer eventoId,
             @PathParam("sesionId") Integer sesionId, Sesion sesion) throws GeneralPARException
     {
+        AuthChecker.canWrite(currentRequest);
+        
         sesion.setId(sesionId);
         sesionesService.updateSesion(eventoId, sesion);
         return Response.ok().entity(new RestResponse(true, Arrays.asList(sesion), 1))
@@ -241,6 +251,8 @@ public class EventosResource
     @Produces(MediaType.APPLICATION_JSON)
     public Response remove(@PathParam("id") Integer id)
     {
+        AuthChecker.canWrite(currentRequest);
+        
         eventosService.removeEvento(id);
         return Response.ok().entity(new RestResponse(true)).build();
     }
@@ -251,6 +263,8 @@ public class EventosResource
     public Response remove(@PathParam("id") Integer eventoId,
             @PathParam("sesionId") Integer sesionId)
     {
+        AuthChecker.canWrite(currentRequest);
+        
         sesionesService.removeSesion(sesionId);
         return Response.ok().entity(new RestResponse(true)).build();
     }
@@ -260,6 +274,8 @@ public class EventosResource
     @Produces(MediaType.APPLICATION_JSON)
     public Response removeImagen(@PathParam("id") Integer eventoId)
     {
+        AuthChecker.canWrite(currentRequest);
+        
         eventosService.removeImagen(eventoId);
         return Response.ok().entity(new RestResponse(true)).build();
     }

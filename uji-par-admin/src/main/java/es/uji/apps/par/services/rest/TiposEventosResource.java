@@ -19,11 +19,12 @@ import javax.ws.rs.core.Response;
 import com.sun.jersey.api.core.InjectParam;
 
 import es.uji.apps.par.GeneralPARException;
+import es.uji.apps.par.auth.AuthChecker;
 import es.uji.apps.par.model.TipoEvento;
 import es.uji.apps.par.services.TiposEventosService;
 
 @Path("tipoevento")
-public class TiposEventosResource
+public class TiposEventosResource extends BaseResource
 {
     @InjectParam
     private TiposEventosService tiposEventosService;
@@ -41,6 +42,8 @@ public class TiposEventosResource
     @Produces(MediaType.APPLICATION_JSON)
     public Response remove(@PathParam("id") String id)
     {
+        AuthChecker.canWrite(currentRequest);
+        
         tiposEventosService.removeTipoEvento(Integer.parseInt(id));
         return Response.ok().entity(new RestResponse(true)).build();
     }
@@ -50,6 +53,8 @@ public class TiposEventosResource
     @Produces(MediaType.APPLICATION_JSON)
     public Response add(TipoEvento tipoEvento) throws GeneralPARException
     {
+        AuthChecker.canWrite(currentRequest);
+        
         TipoEvento newTipoEvento = tiposEventosService.addTipoEvento(tipoEvento);
         // TODO crear URI
         return Response.created(URI.create(""))
@@ -62,6 +67,8 @@ public class TiposEventosResource
     @Produces(MediaType.APPLICATION_JSON)
     public Response update(TipoEvento tipoEvento) throws GeneralPARException
     {
+        AuthChecker.canWrite(currentRequest);
+        
         tiposEventosService.updateTipoEvento(tipoEvento);
         return Response.ok().entity(new RestResponse(true,Arrays.asList(tipoEvento), 1))
                 .build();
