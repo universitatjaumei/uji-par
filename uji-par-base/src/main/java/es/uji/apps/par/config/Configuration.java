@@ -28,6 +28,7 @@ public class Configuration
     private static final String ADMIN_PASSWORD = "uji.par.auth.admin.password";
     private static final String USER_READONLY_LOGIN = "uji.par.auth.readonly.login";
     private static final String USER_READONLY_PASSWORD = "uji.par.auth.readonly.password";    
+    private static final String JDBC_URL = "uji.db.jdbcUrl";
     
 
     public static Logger log = Logger.getLogger(Configuration.class);
@@ -179,5 +180,10 @@ public class Configuration
     public static String getUserReadonlyPassword()
     {
         return getProperty(USER_READONLY_PASSWORD);
+    }
+    
+    public static String getJdbUrl()
+    {
+        return getProperty(JDBC_URL);
     }
 }

@@ -142,7 +142,7 @@ public class EventosResource
             @FormDataParam("porcentajeIVA") BigDecimal porcentajeIVA,
             @FormDataParam("retencionSGAE") BigDecimal retencionSGAE,
             @FormDataParam("ivaSGAE") BigDecimal ivaSGAE,
-            @FormDataParam("asientosNumerados") BigDecimal asientosNumerados) throws GeneralPARException
+            @FormDataParam("asientosNumerados") Boolean asientosNumerados) throws GeneralPARException
     {
         String nombreArchivo = (dataBinaryDetail != null) ? dataBinaryDetail.getFileName() : "";
         String mediaType = (imagenBodyPart != null) ? imagenBodyPart.getMediaType().toString() : "";
@@ -197,7 +197,7 @@ public class EventosResource
             @FormDataParam("porcentajeIVA") BigDecimal porcentajeIVA,
             @FormDataParam("retencionSGAE") BigDecimal retencionSGAE,
             @FormDataParam("ivaSGAE") BigDecimal ivaSGAE,
-            @FormDataParam("asientosNumerados") BigDecimal asientosNumerados,
+            @FormDataParam("asientosNumerados") Boolean asientosNumerados,
             
             @FormDataParam("expediente") String expediente,
             @FormDataParam("codigoDistribuidora") String codigoDistribuidora,

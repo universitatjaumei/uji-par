@@ -1,7 +1,6 @@
 package es.uji.apps.par.dao;
 
 import java.lang.reflect.Type;
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,6 +23,8 @@ import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.path.StringPath;
 
+import es.uji.apps.par.database.DatabaseHelper;
+import es.uji.apps.par.database.DatabaseHelperFactory;
 import es.uji.apps.par.db.EventoDTO;
 import es.uji.apps.par.db.QEventoDTO;
 import es.uji.apps.par.db.QSesionDTO;
@@ -39,6 +40,13 @@ import es.uji.apps.par.utils.DateUtils;
 public class EventosDAO extends BaseDAO
 {
     private QEventoDTO qEventoDTO = QEventoDTO.eventoDTO;
+    
+    private DatabaseHelper databaseHelper;
+
+    public EventosDAO()
+    {
+        databaseHelper = DatabaseHelperFactory.newInstance();
+    }
 
     @Transactional
     public List<Evento> getEventos(String sortParameter, int start, int limit)
@@ -147,10 +155,7 @@ public class EventosDAO extends BaseDAO
 
     private String paginaConsulta(int start, int limit, String sql)
     {
-        return " select * from " +
-               "    (select a.*, rownum as rn from (" + sql + ") a " +
-               "    where rownum <= " + (start+limit) + ") " +
-               " where rn>=" + (start+1);
+        return databaseHelper.paginate(start, limit, sql);
     }
     
     private String getWhereTodos()
@@ -185,7 +190,7 @@ public class EventosDAO extends BaseDAO
         if (array[10] != null) {
 
             TipoEvento tipoEvento = new TipoEvento();
-            tipoEvento.setId(((BigDecimal)array[10]).longValue());
+            tipoEvento.setId(databaseHelper.castId(array[10]));
             tipoEvento.setNombreEs((String) array[11]);
             tipoEvento.setNombreVa((String) array[12]);
             
@@ -201,12 +206,12 @@ public class EventosDAO extends BaseDAO
         evento.setImagenSrc((String) array[17]);
         evento.setImagenContentType((String) array[18]);
 
-        evento.setId(((BigDecimal)array[19]).longValue());
+        evento.setId(databaseHelper.castId(array[19]));
         
-        evento.setAsientosNumerados((BigDecimal) array[20]);
-        evento.setRetencionSGAE((BigDecimal) array[21]);
-        evento.setIvaSGAE((BigDecimal) array[22]);
-        evento.setPorcentajeIVA((BigDecimal) array[23]);
+        evento.setAsientosNumerados(databaseHelper.castBoolean(array[20]));
+        evento.setRetencionSGAE(databaseHelper.castBigDecimal(array[21]));
+        evento.setIvaSGAE(databaseHelper.castBigDecimal(array[22]));
+        evento.setPorcentajeIVA(databaseHelper.castBigDecimal(array[23]));
         
         evento.setRssId((String) array[24]);
         
@@ -356,6 +361,12 @@ public class EventosDAO extends BaseDAO
             eventoDTO.setNacionalidad(evento.getNacionalidad());
             eventoDTO.setVo(evento.getVo());
             eventoDTO.setMetraje(evento.getMetraje());
+            eventoDTO.setAsientosNumerados(evento.getAsientosNumerados());
+            
+            eventoDTO.setParTiposEvento(TipoEvento.tipoEventoToTipoEventoDTO(evento.getParTiposEvento()));
+            eventoDTO.setImagen(evento.getImagen());
+            eventoDTO.setImagenSrc(evento.getImagenSrc());
+            eventoDTO.setImagenContentType(evento.getImagenContentType());
 
             entityManager.persist(eventoDTO);
         }

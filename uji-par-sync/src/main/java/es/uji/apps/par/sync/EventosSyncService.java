@@ -80,7 +80,7 @@ public class EventosSyncService
     {
         if (item.getSeientsNumerats() != null)
         {
-            evento.setAsientosNumerados(item.getSeientsNumerats().equals("si") ? BigDecimal.ONE : BigDecimal.ZERO);
+            evento.setAsientosNumerados(item.getSeientsNumerats().equals("si") ? true : false);
         }
 
         String urlImagen = item.getEnclosures().get(0).getUrl();

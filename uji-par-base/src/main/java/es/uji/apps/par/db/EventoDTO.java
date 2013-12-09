@@ -21,7 +21,7 @@ public class EventoDTO implements Serializable {
 	private long id;
 
 	@Column(name="ASIENTOS_NUMERADOS")
-	private BigDecimal asientosNumerados;
+	private Boolean asientosNumerados;
 
 	@Column(name="CARACTERISTICAS_ES", length=1700)
 	private String caracteristicasEs;
@@ -130,15 +130,17 @@ public class EventoDTO implements Serializable {
 		this.id = id;
 	}
 
-	public BigDecimal getAsientosNumerados() {
-		return this.asientosNumerados;
-	}
+	public Boolean getAsientosNumerados()
+    {
+        return asientosNumerados;
+    }
 
-	public void setAsientosNumerados(BigDecimal asientosNumerados) {
-		this.asientosNumerados = asientosNumerados;
-	}
+    public void setAsientosNumerados(Boolean asientosNumerados)
+    {
+        this.asientosNumerados = asientosNumerados;
+    }
 
-	public String getCaracteristicasEs() {
+    public String getCaracteristicasEs() {
 		return this.caracteristicasEs;
 	}
 

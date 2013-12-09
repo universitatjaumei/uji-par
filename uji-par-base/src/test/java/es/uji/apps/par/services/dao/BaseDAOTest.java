@@ -30,7 +30,7 @@ public class BaseDAOTest
     protected SesionDTO preparaSesion(LocalizacionDTO localizacion)
     {
         Evento evento = new Evento();
-        evento.setAsientosNumerados(BigDecimal.ONE);
+        evento.setAsientosNumerados(true);
         evento = eventosDao.addEvento(evento);
         
         SesionDTO sesionDTO = new SesionDTO();
@@ -58,7 +58,7 @@ public class BaseDAOTest
     protected void setSesionNoNumerada(SesionDTO sesion)
     {
         EventoDTO evento = sesion.getParEvento();
-        evento.setAsientosNumerados(BigDecimal.ZERO);
+        evento.setAsientosNumerados(false);
         
         eventosDao.updateEvento(Evento.eventoDTOtoEvento(evento));        
     }

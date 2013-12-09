@@ -34,7 +34,7 @@ public class Evento
     private String comentariosVa;
     private TipoEvento parTiposEvento;
     private long tipoEvento;
-    private BigDecimal asientosNumerados;
+    private Boolean asientosNumerados;
     private BigDecimal porcentajeIVA;
     private BigDecimal ivaSGAE;
     private BigDecimal retencionSGAE;
@@ -222,7 +222,7 @@ public class Evento
             String tituloVa, String descripcionVa, String companyiaVa, String interpretesVa,
             String duracionVa, String premiosVa, String caracteristicasVa, String comentariosVa,
             byte[] dataBinary, String nombreArchivo, String mediaType, Integer tipoEventoId,
-            BigDecimal porcentajeIVA, BigDecimal retencionSGAE, BigDecimal ivaSGAE, BigDecimal asientosNumerados)
+            BigDecimal porcentajeIVA, BigDecimal retencionSGAE, BigDecimal ivaSGAE, Boolean asientosNumerados)
     {
         this.sesiones = new ArrayList<Sesion>();
         this.tituloEs = tituloEs;
@@ -307,7 +307,10 @@ public class Evento
 
     public long getTipoEvento()
     {
-        return tipoEvento;
+        if (parTiposEvento != null)
+            return parTiposEvento.getId();
+        else
+            return 0;
     }
 
     public void setTipoEvento(long tipoEvento)
@@ -480,15 +483,17 @@ public class Evento
         return imagenSrc;
     }
 
-	public BigDecimal getAsientosNumerados() {
-		return asientosNumerados;
-	}
+	public Boolean getAsientosNumerados()
+    {
+        return asientosNumerados;
+    }
 
-	public void setAsientosNumerados(BigDecimal asientosNumerados) {
-		this.asientosNumerados = asientosNumerados;
-	}
+    public void setAsientosNumerados(Boolean asientosNumerados)
+    {
+        this.asientosNumerados = asientosNumerados;
+    }
 
-	public BigDecimal getPorcentajeIVA() {
+    public BigDecimal getPorcentajeIVA() {
 		return porcentajeIVA;
 	}
 

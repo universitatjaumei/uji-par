@@ -34,10 +34,10 @@ public class SesionDTO implements Serializable {
 	private long id;
 
 	@Column(name="CANAL_INTERNET")
-	private BigDecimal canalInternet;
+	private Boolean canalInternet;
 
 	@Column(name="CANAL_TAQUILLA")
-	private BigDecimal canalTaquilla;
+	private Boolean canalTaquilla;
 
 	@Column(name="FECHA_CELEBRACION")
 	private Timestamp fechaCelebracion;
@@ -90,23 +90,27 @@ public class SesionDTO implements Serializable {
 		this.id = id;
 	}
 
-	public BigDecimal getCanalInternet() {
-		return this.canalInternet;
-	}
+	public Boolean getCanalInternet()
+    {
+        return canalInternet;
+    }
 
-	public void setCanalInternet(BigDecimal canalInternet) {
-		this.canalInternet = canalInternet;
-	}
+    public void setCanalInternet(Boolean canalInternet)
+    {
+        this.canalInternet = canalInternet;
+    }
 
-	public BigDecimal getCanalTaquilla() {
-		return this.canalTaquilla;
-	}
+    public Boolean getCanalTaquilla()
+    {
+        return canalTaquilla;
+    }
 
-	public void setCanalTaquilla(BigDecimal canalTaquilla) {
-		this.canalTaquilla = canalTaquilla;
-	}
+    public void setCanalTaquilla(Boolean canalTaquilla)
+    {
+        this.canalTaquilla = canalTaquilla;
+    }
 
-	public Timestamp getFechaCelebracion() {
+    public Timestamp getFechaCelebracion() {
 		return this.fechaCelebracion;
 	}
 

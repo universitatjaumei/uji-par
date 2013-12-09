@@ -237,8 +237,8 @@ Ext.define('Paranimf.view.evento.FormEventos', {
     store: new Ext.data.SimpleStore({
       fields: ['value', 'name'],
         data: [
-          [1, UI.i18n.message.si],
-          [0, UI.i18n.message.no]
+          [true, UI.i18n.message.si],
+          [false, UI.i18n.message.no]
         ]
     })
   },

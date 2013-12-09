@@ -64,9 +64,11 @@
     <property name="jpaVendorAdapter">
       <bean
         class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+        <!-- 
         <property name="database">
           <value>${uji.db.databaseId}</value>
         </property>
+        -->
         <property name="showSql" value="true" />
         <property name="databasePlatform">
           <value>${uji.db.dialect}</value>

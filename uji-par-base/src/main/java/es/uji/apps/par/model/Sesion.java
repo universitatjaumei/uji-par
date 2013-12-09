@@ -23,8 +23,8 @@ public class Sesion
     private Date fechaInicioVentaOnline;
     private Date fechaFinVentaOnline;
     private String horaApertura;
-    private BigDecimal canalInternet;
-    private BigDecimal canalTaquilla;
+    private Boolean canalInternet;
+    private Boolean canalTaquilla;
     private String horaCelebracion;
     private String horaInicioVentaOnline;
     private String horaFinVentaOnline;
@@ -109,24 +109,24 @@ public class Sesion
         this.horaApertura = horaApertura;
     }
 
-    public BigDecimal getCanalInternet()
+    public Boolean getCanalInternet()
     {
         return canalInternet;
     }
 
     public void setCanalInternet(String canalInternet)
     {
-        this.canalInternet = (canalInternet != null && canalInternet.equals("1")) ? BigDecimal.ONE : BigDecimal.ZERO;
+        this.canalInternet = (canalInternet != null && canalInternet.equals("1"));
     }
 
-    public BigDecimal getCanalTaquilla()
+    public Boolean getCanalTaquilla()
     {
         return canalTaquilla;
     }
 
     public void setCanalTaquilla(String canalTaquilla)
     {
-        this.canalTaquilla = (canalTaquilla != null && canalTaquilla.equals("1")) ?  BigDecimal.ONE : BigDecimal.ZERO;
+        this.canalTaquilla = (canalTaquilla != null && canalTaquilla.equals("1"));
     }
 
     // TODO
@@ -211,8 +211,8 @@ public class Sesion
 	
 	public static SesionDTO SesionToSesionDTO(Sesion sesion) {
 		SesionDTO sesionDTO = new SesionDTO();
-		sesionDTO.setCanalInternet(new BigDecimal(1));
-        sesionDTO.setCanalTaquilla(new BigDecimal(1));
+		sesionDTO.setCanalInternet(true);
+        sesionDTO.setCanalTaquilla(true);
 		/*sesionDTO.setCanalInternet(sesion.getCanalInternet());
 		sesionDTO.setCanalTaquilla(sesion.getCanalTaquilla());*/
 		sesionDTO.setParEvento(Evento.eventoToEventoDTO(sesion.getEvento()));

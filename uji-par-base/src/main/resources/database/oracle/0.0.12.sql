@@ -92,8 +92,3 @@ ALTER TABLE "PAR_SESIONES" ADD ("FORMATO" VARCHAR(400));
 
 ALTER TABLE "PAR_SESIONES" ADD CONSTRAINT "PAR_SESIONES_PAR_SALAS_FK1" FOREIGN KEY ("SALA_ID")
       REFERENCES "PAR_SALAS" ("ID") ENABLE;
-
--- drop table par_plantas_sala cascade constraints;      
--- drop table par_salas cascade constraints;
--- drop table par_cine cascade constraints;      
-
