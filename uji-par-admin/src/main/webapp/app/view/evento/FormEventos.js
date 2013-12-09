@@ -45,10 +45,12 @@ Ext.define('Paranimf.view.evento.FormEventos', {
      },
     items: [{
       fieldLabel: UI.i18n.field.title,
-      name: 'tituloEs'
+      name: 'tituloEs',
+      allowBlank: false
       }, {
         fieldLabel: UI.i18n.field.title_va,
         name: 'tituloVa',
+        allowBlank: false
       }]
    }, 
    
