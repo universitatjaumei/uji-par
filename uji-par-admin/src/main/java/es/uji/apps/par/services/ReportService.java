@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 import es.uji.apps.fopreports.serialization.ReportSerializationException;
 import es.uji.apps.par.SinIvaException;
 import es.uji.apps.par.dao.ComprasDAO;
+import es.uji.apps.par.database.DatabaseHelper;
+import es.uji.apps.par.database.DatabaseHelperFactory;
 import es.uji.apps.par.model.Informe;
 import es.uji.apps.par.report.InformeEfectivoReport;
 import es.uji.apps.par.report.InformeEventosReport;
@@ -33,6 +35,13 @@ public class ReportService
 
     @Autowired
     ComprasDAO comprasDAO;
+    
+    private DatabaseHelper dbHelper;
+    
+    public ReportService()
+    {
+        dbHelper = DatabaseHelperFactory.newInstance();
+    }
 
     public ByteArrayOutputStream getExcelTaquilla(String fechaInicio, String fechaFin) throws IOException
     {
@@ -78,9 +87,9 @@ public class ReportService
         String tipoEntrada = Utils.safeObjectToString(fila[2]);
         tipoEntrada = tipoEntradaBBDDToText(tipoEntrada);
         informe.setTipoEntrada(tipoEntrada);
-        informe.setNumeroEntradas(Utils.safeObjectBigDecimalToInt(fila[3]));
-        informe.setTotal((BigDecimal) fila[4]);
-        informe.setIva((BigDecimal) fila[6]);
+        informe.setNumeroEntradas(Utils.safeObjectBigDecimalToInt(dbHelper.castBigDecimal(fila[3])));
+        informe.setTotal(dbHelper.castBigDecimal(fila[4]));
+        informe.setIva(dbHelper.castBigDecimal(fila[6]));
 
         return informe;
     }
