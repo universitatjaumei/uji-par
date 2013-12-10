@@ -1,4 +1,4 @@
-package es.uji.apps.par.services.ficheros;
+package es.uji.apps.par.ficheros.registros;
 
 import java.util.Date;
 
@@ -6,7 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import es.uji.apps.par.RegistroSerializaException;
-import es.uji.apps.par.ficheros.RegistroSesionPelicula;
+import es.uji.apps.par.ficheros.registros.RegistroSesionPelicula;
 
 public class RegistroSesionPeliculaTest
 {

@@ -1,4 +1,4 @@
-package es.uji.apps.par.services.ficheros;
+package es.uji.apps.par.ficheros.registros;
 
 import java.util.Date;
 
@@ -6,7 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import es.uji.apps.par.RegistroSerializaException;
-import es.uji.apps.par.ficheros.RegistroSesionProgramada;
+import es.uji.apps.par.ficheros.registros.RegistroSesionProgramada;
 
 public class RegistroSesionProgramadaTest
 {

@@ -1,4 +1,4 @@
-package es.uji.apps.par.ficheros;
+package es.uji.apps.par.ficheros.registros;
 
 public enum TipoIncidencia
 {

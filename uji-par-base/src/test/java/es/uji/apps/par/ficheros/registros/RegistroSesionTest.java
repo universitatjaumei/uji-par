@@ -1,4 +1,4 @@
-package es.uji.apps.par.services.ficheros;
+package es.uji.apps.par.ficheros.registros;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -7,8 +7,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import es.uji.apps.par.RegistroSerializaException;
-import es.uji.apps.par.ficheros.RegistroSesion;
-import es.uji.apps.par.ficheros.TipoIncidencia;
+import es.uji.apps.par.ficheros.registros.RegistroSesion;
+import es.uji.apps.par.ficheros.registros.TipoIncidencia;
 
 public class RegistroSesionTest
 {

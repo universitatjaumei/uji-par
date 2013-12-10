@@ -1,10 +1,10 @@
-package es.uji.apps.par.services.ficheros;
+package es.uji.apps.par.ficheros.registros;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 import es.uji.apps.par.RegistroSerializaException;
-import es.uji.apps.par.ficheros.RegistroSala;
+import es.uji.apps.par.ficheros.registros.RegistroSala;
 
 public class RegistroSalaTest
 {

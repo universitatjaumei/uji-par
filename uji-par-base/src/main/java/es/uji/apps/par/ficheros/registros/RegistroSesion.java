@@ -1,4 +1,4 @@
-package es.uji.apps.par.ficheros;
+package es.uji.apps.par.ficheros.registros;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
