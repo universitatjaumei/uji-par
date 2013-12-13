@@ -1,6 +1,7 @@
 package es.uji.apps.par.services.rest;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -24,5 +25,12 @@ public class IndexResource extends BaseResource
         template.put("urlPublic", Configuration.getUrlPublic());
 
         return template;
+    }
+
+    @POST
+    @Produces(MediaType.TEXT_HTML)
+    public Template indexPost() throws Exception
+    {
+        return index();
     }
 }

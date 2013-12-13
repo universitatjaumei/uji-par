@@ -12,6 +12,7 @@ public class Configuration
 {
     private static final String SECRET = "uji.par.secret";
     private static final String URL_PUBLIC = "uji.par.urlPublic";
+    private static final String URL_ADMIN = "uji.par.urlAdmin";
     private static final String MAIL_HOST = "uji.par.mail.host";
     private static final String MAIL_FROM = "uji.par.mail.from";
     private static final String COMO_LLEGAR = "uji.par.urlComoLlegar";
@@ -83,6 +84,11 @@ public class Configuration
     public static String getUrlPublic()
     {
         return getProperty(URL_PUBLIC);
+    }
+    
+    public static String getUrlAdmin()
+    {
+        return getProperty(URL_ADMIN);
     }
 
     public static String getSecret()
