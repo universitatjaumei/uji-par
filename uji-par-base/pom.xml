@@ -30,10 +30,16 @@
 
     <dependency>
       <groupId>es.uji.commons</groupId>
+      <artifactId>uji-commons-sso</artifactId>
+      <version>0.1.2</version>
+    </dependency>
+
+    <dependency>
+      <groupId>es.uji.commons</groupId>
       <artifactId>uji-commons-web-template-model</artifactId>
       <version>0.0.3</version>
     </dependency>
-    
+
     <dependency>
       <groupId>es.uji.commons</groupId>
       <artifactId>uji-commons-rest</artifactId>
@@ -46,7 +52,11 @@
       	<exclusion>
       	  <groupId>com.sun.jersey</groupId>
       	  <artifactId>jersey-core</artifactId>
-      	</exclusion>      	
+      	</exclusion>
+        <exclusion>
+          <groupId>es.uji.commons</groupId>
+          <artifactId>uji-commons-sso</artifactId>
+        </exclusion>
       </exclusions>
     </dependency>    
 
