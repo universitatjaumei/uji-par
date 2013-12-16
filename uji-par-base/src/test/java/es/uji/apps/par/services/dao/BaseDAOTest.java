@@ -1,6 +1,7 @@
 package es.uji.apps.par.services.dao;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,9 @@ public class BaseDAOTest
         
         SesionDTO sesionDTO = new SesionDTO();
         sesionDTO.setParEvento(Evento.eventoToEventoDTO(evento));
+        sesionDTO.setFechaCelebracion(new Timestamp(100));
+        sesionDTO.setFechaInicioVentaOnline(new Timestamp(0));
+        sesionDTO.setFechaFinVentaOnline(new Timestamp(1));
         
         SesionDTO sesion = sesionesDao.persistSesion(sesionDTO);
 

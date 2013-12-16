@@ -2,6 +2,7 @@ package es.uji.apps.par.dao;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -22,7 +23,9 @@ import es.uji.apps.par.db.ButacaDTO;
 import es.uji.apps.par.db.CompraDTO;
 import es.uji.apps.par.db.QButacaDTO;
 import es.uji.apps.par.db.QCompraDTO;
+import es.uji.apps.par.db.QSesionDTO;
 import es.uji.apps.par.db.SesionDTO;
+import es.uji.apps.par.model.Sesion;
 import es.uji.apps.par.utils.DateUtils;
 
 @Repository
@@ -517,5 +520,39 @@ public class ComprasDAO extends BaseDAO
         compra.setCodigoPagoPasarela(codigoPago);
         
         entityManager.persist(compra);
+    }
+
+    public BigDecimal getRecaudacionSesiones(List<Sesion> sesiones)
+    {
+        QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
+        QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
+        
+        List<Long> idsSesiones = getIdsSesiones(sesiones);
+        
+        JPAQuery query = new JPAQuery(entityManager);
+
+        BigDecimal total = query
+                .from(qCompraDTO)
+                .join(qCompraDTO.parSesion, qSesionDTO)
+                .where(qSesionDTO.id.in(idsSesiones)
+                        .and(qCompraDTO.reserva.eq(false))
+                        .and(qCompraDTO.anulada.eq(false)))
+                .distinct()        
+                .uniqueResult(qCompraDTO.importe.sum());
+        
+        if (total == null)
+            return BigDecimal.ZERO;
+        else
+            return total;
+    }
+
+    private List<Long> getIdsSesiones(List<Sesion> sesiones)
+    {
+        List<Long> ids = new ArrayList<Long>();
+        
+        for (Sesion sesion : sesiones)
+            ids.add(sesion.getId());
+        
+        return ids ;
     }
 }

@@ -1,6 +1,7 @@
 package es.uji.apps.par.model;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -234,6 +235,18 @@ public class Sesion
 		    sesionDTO.setParSala(Sala.salaToSalaDTO(sesion.getSala()));
 		
 		return sesionDTO;
+	}
+	
+	public static List<SesionDTO> sesionsToSesionsDTO(List<Sesion> sesiones)
+	{
+	    List<SesionDTO> sesionesDTO = new ArrayList<SesionDTO>();
+	    
+	    for (Sesion sesion: sesiones)
+        {
+            sesionesDTO.add(Sesion.SesionToSesionDTO(sesion));
+        }
+	    
+        return sesionesDTO;
 	}
 	
 	public Plantilla getPlantillaPrecios() {

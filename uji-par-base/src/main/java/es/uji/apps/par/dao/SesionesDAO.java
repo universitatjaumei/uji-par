@@ -110,6 +110,16 @@ public class SesionesDAO extends BaseDAO
         return sesionDTO;
 	}
     
+    @Transactional
+    public Sesion addSesion(Sesion sesion)
+    {
+        SesionDTO sesionDTO = Sesion.SesionToSesionDTO(sesion);
+        
+        persistSesion(sesionDTO);
+
+        sesion.setId(sesionDTO.getId());
+        return sesion;
+    }
     
     @Transactional
     public void updateSesion(Sesion sesion)

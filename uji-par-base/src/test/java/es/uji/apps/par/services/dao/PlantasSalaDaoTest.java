@@ -1,7 +1,6 @@
 package es.uji.apps.par.services.dao;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.List;
 
 import junit.framework.Assert;
@@ -17,9 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import es.uji.apps.par.dao.CinesDAO;
 import es.uji.apps.par.dao.SalasDAO;
-import es.uji.apps.par.db.CineDTO;
-import es.uji.apps.par.db.PlantaSalaDTO;
-import es.uji.apps.par.db.SalaDTO;
+import es.uji.apps.par.model.Cine;
+import es.uji.apps.par.model.PlantaSala;
+import es.uji.apps.par.model.Sala;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @TransactionConfiguration(transactionManager = "transactionManager")
@@ -32,32 +31,31 @@ public class PlantasSalaDaoTest extends BaseDAOTest
     @Autowired
     CinesDAO cinesDao;
 
-    private CineDTO cineDTO;
+    private Cine cine;
 
-    private SalaDTO salaDTO;
+    private Sala sala;
 
     @Before
     public void before()
     {
-        cineDTO = new CineDTO("a", "cine 1", "12345678F", "Real nº 1", "1", "2", "12000", "AB SL", "123",
-                "964123456", new BigDecimal(21));
-        salaDTO = new SalaDTO(cineDTO, "b", "sala 1", 4, 3, 2, "asd", "qwe", "subtitulado");
+        cine = new Cine("a", "cine 1", "12345678F", "Real nº 1", "1", "2", "12000", "AB SL", "123", "964123456",
+                new BigDecimal(21));
+
+        sala = new Sala("b", "sala 1", 4, 3, 2, "asd", "qwe", "subtitulado", cine);
     }
 
     @Test
     @Transactional
     public void insertaUna()
     {
-        List<PlantaSalaDTO> parPlantas = Arrays.asList(new PlantaSalaDTO(salaDTO, "planta 1"));
-        salaDTO.setParPlantas(parPlantas);
-        
-        cinesDao.addCine(cineDTO);
-        salasDao.addSala(salaDTO);
+        cinesDao.addCine(cine);
+        salasDao.addSala(sala);
+        salasDao.addPlanta(new PlantaSala("planta 1", sala));
 
-        SalaDTO sala = salasDao.getSalas().get(0);
+        List<PlantaSala> plantas = salasDao.getPlantas(sala.getId());
 
-        Assert.assertEquals(1, sala.getParPlantas().size());
-        Assert.assertEquals("planta 1", sala.getParPlantas().get(0).getNombre());
+        Assert.assertEquals(1, plantas.size());
+        Assert.assertEquals("planta 1", plantas.get(0).getNombre());
     }
 
 }

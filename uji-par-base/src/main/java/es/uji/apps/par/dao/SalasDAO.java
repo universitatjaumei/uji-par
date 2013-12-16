@@ -7,8 +7,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mysema.query.jpa.impl.JPAQuery;
 
+import es.uji.apps.par.db.PlantaSalaDTO;
+import es.uji.apps.par.db.QPlantaSalaDTO;
 import es.uji.apps.par.db.QSalaDTO;
+import es.uji.apps.par.db.QSesionDTO;
 import es.uji.apps.par.db.SalaDTO;
+import es.uji.apps.par.model.PlantaSala;
+import es.uji.apps.par.model.Sala;
+import es.uji.apps.par.model.Sesion;
 
 @Repository
 public class SalasDAO extends BaseDAO
@@ -16,17 +22,58 @@ public class SalasDAO extends BaseDAO
     private QSalaDTO qSalaDTO = QSalaDTO.salaDTO;
 
     @Transactional
-    public List<SalaDTO> getSalas()
+    public List<Sala> getSalas()
     {
         JPAQuery query = new JPAQuery(entityManager);
 
-        return query.from(qSalaDTO).join(qSalaDTO.parCine).fetch()
-                .list(qSalaDTO);
+        List<SalaDTO> list = query.from(qSalaDTO).join(qSalaDTO.parCine).fetch().list(qSalaDTO);
+
+        return Sala.salasDTOtoSalas(list);
     }
 
     @Transactional
-    public void addSala(SalaDTO salaDTO)
+    public Sala addSala(Sala sala)
     {
+        SalaDTO salaDTO = Sala.salaToSalaDTO(sala);
+
         entityManager.persist(salaDTO);
+
+        sala.setId(salaDTO.getId());
+        return sala;
+    }
+
+    public List<PlantaSala> getPlantas(long idSala)
+    {
+        QPlantaSalaDTO qPlantaSalaDTO = QPlantaSalaDTO.plantaSalaDTO;
+
+        JPAQuery query = new JPAQuery(entityManager);
+
+        List<PlantaSalaDTO> list = query.from(qPlantaSalaDTO).where(qPlantaSalaDTO.parSala.id.eq(idSala)).list(qPlantaSalaDTO);
+
+        return PlantaSala.plantasSalasDTOToPlantasSalas(list);
+    }
+
+    @Transactional
+    public PlantaSala addPlanta(PlantaSala plantaSala)
+    {
+        PlantaSalaDTO plantaDTO = PlantaSala.plantaSalaToPlantaSalaDTO(plantaSala);
+
+        entityManager.persist(plantaDTO);
+
+        plantaSala.setId(plantaDTO.getId());
+        
+        return plantaSala;
+    }
+
+    @Transactional
+    public List<Sala> getSalas(List<Sesion> sesiones)
+    {
+        QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
+        
+        JPAQuery query = new JPAQuery(entityManager);
+
+        List<SalaDTO> salasDTO = query.from(qSalaDTO).join(qSalaDTO.parSesiones, qSesionDTO).where(qSesionDTO.in(Sesion.sesionsToSesionsDTO(sesiones))).distinct().list(qSalaDTO);
+        
+        return Sala.salasDTOtoSalas(salasDTO);
     }
 }

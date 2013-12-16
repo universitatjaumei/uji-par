@@ -29,7 +29,7 @@ public class MailService
 
     public MailService()
     {
-        client = new MessagingClient();
+        //client = new MessagingClient();
     }
 
     public void anyadeEnvio(String to, String titulo, String texto)
@@ -52,6 +52,7 @@ public class MailService
 
     public synchronized void enviaPendientes() throws MessageNotSentException
     {
+        /*
         log.info("Enviando mails pendientes...");
 
         List<MailDTO> mails = mailDao.getMailsPendientes();
@@ -61,6 +62,7 @@ public class MailService
             enviaMail(mail.getDe(), mail.getPara(), mail.getTitulo(), mail.getTexto());
             mailDao.marcaEnviado(mail.getId());
         }
+        */
     }
 
     public static void main(String[] args) throws MessageNotSentException

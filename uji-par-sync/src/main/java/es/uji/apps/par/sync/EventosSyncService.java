@@ -2,7 +2,6 @@ package es.uji.apps.par.sync;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -18,7 +17,6 @@ import es.uji.apps.par.dao.EventosDAO;
 import es.uji.apps.par.dao.TiposEventosDAO;
 import es.uji.apps.par.db.EventoDTO;
 import es.uji.apps.par.db.TipoEventoDTO;
-import es.uji.apps.par.sync.main.Main;
 import es.uji.apps.par.sync.parse.RssParser;
 import es.uji.apps.par.sync.rss.jaxb.Item;
 import es.uji.apps.par.sync.rss.jaxb.Rss;
@@ -28,7 +26,7 @@ import es.uji.apps.par.utils.Utils;
 public class EventosSyncService
 {
     public static Logger log = Logger.getLogger(EventosSyncService.class);
-    
+
     @Autowired
     EventosDAO eventosDAO;
 
@@ -59,17 +57,18 @@ public class EventosSyncService
         if (evento == null)
         {
             log.info(String.format("RSS insertando nuevo evento: %s - \"%s\"", item.getContenidoId(), item.getTitle()));
-            
+
             evento = new EventoDTO();
             evento.setRssId(item.getContenidoId());
         }
         else
         {
-            log.info(String.format("RSS actualizando evento existente: %s - \"%s\"", evento.getRssId(), evento.getTituloVa()));
+            log.info(String.format("RSS actualizando evento existente: %s - \"%s\"", evento.getRssId(),
+                    evento.getTituloVa()));
         }
 
         updateDatosEvento(item, evento);
-        
+
         if (evento.getParTiposEvento() != null)
         {
             eventosDAO.updateEventoDTO(evento);
@@ -86,7 +85,7 @@ public class EventosSyncService
         String urlImagen = item.getEnclosures().get(0).getUrl();
         evento.setImagen(getImageFromUrl(urlImagen));
         evento.setImagenSrc(urlImagen);
-        
+
         evento.setImagenContentType(item.getEnclosures().get(0).getType());
 
         if (item.getIdioma().equals("ca"))
@@ -100,7 +99,7 @@ public class EventosSyncService
             {
                 String tipo = Utils.toUppercaseFirst(item.getTipo().trim());
                 TipoEventoDTO tipoEvento = tipoEventosDAO.getTipoEventoByNombreVa(tipo);
-                
+
                 if (tipoEvento == null)
                     logeaTipoNoEncontrado(evento, tipo, item.getIdioma());
                 else
@@ -118,7 +117,7 @@ public class EventosSyncService
             {
                 String tipo = Utils.toUppercaseFirst(item.getTipo().trim());
                 TipoEventoDTO tipoEvento = tipoEventosDAO.getTipoEventoByNombreEs(tipo);
-                
+
                 if (tipoEvento == null)
                     logeaTipoNoEncontrado(evento, tipo, item.getIdioma());
                 else
@@ -129,7 +128,7 @@ public class EventosSyncService
         {
             log.error(String.format("Idioma desconocido: \"%s\" - Título: %s", item.getIdioma(), item.getTitle()));
         }
-        
+
         // Para que no de error en BD
         if (evento.getTituloEs() == null)
         {
@@ -145,7 +144,8 @@ public class EventosSyncService
 
     private void logeaTipoNoEncontrado(EventoDTO evento, String tipo, String idioma)
     {
-        log.error(String.format("No se ha encontrado el tipo \"%s\" para evento: %d - %s - idioma: %s", tipo, evento.getId(), evento.getTituloVa(), idioma));
+        log.error(String.format("No se ha encontrado el tipo \"%s\" para evento: %d - %s - idioma: %s", tipo,
+                evento.getId(), evento.getTituloVa(), idioma));
     }
 
     private byte[] getImageFromUrl(String url) throws MalformedURLException, IOException
@@ -155,4 +155,3 @@ public class EventosSyncService
         return IOUtils.toByteArray(urlInputStream);
     }
 }
-

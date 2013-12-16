@@ -9,6 +9,7 @@ import com.mysema.query.jpa.impl.JPAQuery;
 
 import es.uji.apps.par.db.CineDTO;
 import es.uji.apps.par.db.QCineDTO;
+import es.uji.apps.par.model.Cine;
 
 @Repository
 public class CinesDAO extends BaseDAO
@@ -24,8 +25,14 @@ public class CinesDAO extends BaseDAO
     }
 
     @Transactional
-    public void addCine(CineDTO cineDTO)
+    public Cine addCine(Cine cine)
     {
+        CineDTO cineDTO = Cine.cineToCineDTO(cine);
+
         entityManager.persist(cineDTO);
+        
+        cine.setId(cineDTO.getId());
+        
+        return cine;
     }
 }

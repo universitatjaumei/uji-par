@@ -15,21 +15,40 @@ public class Sala
     private String nombre;
     private int asientos;
     private int asientosDiscapacitados;
-    private int asientosNoReservados;    
+    private int asientosNoReservados;
     private String tipo;
     private String formato;
     private String subtitulo;
+    private Cine cine;
+
+    public Sala()
+    {
+    }
+
+    public Sala(String codigo, String nombre, int asientos, int asientosDiscapacitados, int asientosNoReservados,
+            String tipo, String formato, String subtitulo, Cine cine)
+    {
+        this.codigo = codigo;
+        this.nombre = nombre;
+        this.asientos = asientos;
+        this.asientosDiscapacitados = asientosDiscapacitados;
+        this.asientosNoReservados = asientosNoReservados;
+        this.tipo = tipo;
+        this.formato = formato;
+        this.subtitulo = subtitulo;
+        this.cine = cine;
+    }
 
     public Sala(long id)
     {
         this.id = id;
     }
-    
+
     public Sala(String nombre)
     {
         this.nombre = nombre;
     }
-    
+
     public Sala(SalaDTO salaDTO)
     {
         this.setId(salaDTO.getId());
@@ -41,17 +60,20 @@ public class Sala
         this.setTipo(salaDTO.getTipo());
         this.setFormato(salaDTO.getFormato());
         this.setSubtitulo(salaDTO.getSubtitulo());
+
+        if (salaDTO.getParCine() != null)
+            this.setCine(Cine.cineDTOToCine(salaDTO.getParCine()));
     }
 
     public static Sala salaDTOtoSala(SalaDTO salaDTO)
     {
         return new Sala(salaDTO);
     }
-    
+
     public static SalaDTO salaToSalaDTO(Sala sala)
     {
         SalaDTO salaDTO = new SalaDTO();
-        
+
         salaDTO.setId(sala.getId());
         salaDTO.setCodigo(sala.getCodigo());
         salaDTO.setNombre(sala.getNombre());
@@ -61,18 +83,31 @@ public class Sala
         salaDTO.setTipo(sala.getTipo());
         salaDTO.setFormato(sala.getFormato());
         salaDTO.setSubtitulo(sala.getSubtitulo());
-        
+
+        if (sala.getCine() != null)
+            salaDTO.setParCine(Cine.cineToCineDTO(sala.getCine()));
+
         return salaDTO;
     }
 
     public static List<Sala> salasDTOtoSalas(List<SalaDTO> salasDTO)
     {
         ArrayList<Sala> salas = new ArrayList<Sala>();
-        
-        for (SalaDTO salaDTO:salasDTO)
+
+        for (SalaDTO salaDTO : salasDTO)
             salas.add(Sala.salaDTOtoSala(salaDTO));
-        
+
         return salas;
+    }
+
+    public static List<SalaDTO> salasToSalasDTO(List<Sala> salas)
+    {
+        ArrayList<SalaDTO> salasDTO = new ArrayList<SalaDTO>();
+
+        for (Sala sala : salas)
+            salasDTO.add(Sala.salaToSalaDTO(sala));
+
+        return salasDTO;
     }
 
     public long getId()
@@ -163,5 +198,15 @@ public class Sala
     public void setSubtitulo(String subtitulo)
     {
         this.subtitulo = subtitulo;
+    }
+
+    public Cine getCine()
+    {
+        return cine;
+    }
+
+    public void setCine(Cine cine)
+    {
+        this.cine = cine;
     }
 }

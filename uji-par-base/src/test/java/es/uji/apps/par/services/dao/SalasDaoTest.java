@@ -1,6 +1,7 @@
 package es.uji.apps.par.services.dao;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
 
 import junit.framework.Assert;
@@ -16,8 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import es.uji.apps.par.dao.CinesDAO;
 import es.uji.apps.par.dao.SalasDAO;
-import es.uji.apps.par.db.CineDTO;
-import es.uji.apps.par.db.SalaDTO;
+import es.uji.apps.par.model.Cine;
+import es.uji.apps.par.model.Sala;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @TransactionConfiguration(transactionManager = "transactionManager")
@@ -39,7 +40,7 @@ public class SalasDaoTest extends BaseDAOTest
     @Transactional
     public void getSalas()
     {
-        List<SalaDTO> salas = salasDao.getSalas();
+        List<Sala> salas = salasDao.getSalas();
 
         Assert.assertEquals(0, salas.size());
     }
@@ -48,14 +49,14 @@ public class SalasDaoTest extends BaseDAOTest
     @Transactional
     public void insertaUna()
     {
-        CineDTO cineDTO = new CineDTO("a", "cine 1", "12345678F", "Real nº 1", "1", "2", "12000", "AB SL", "123",
-                "964123456", new BigDecimal(21));
-        SalaDTO salaDTO = new SalaDTO(cineDTO, "b", "sala 1", 4, 3, 2, "asd", "qwe", "subtitulado");
+        Cine cine = new Cine("a", "cine 1", "12345678F", "Real nº 1", "1", "2", "12000", "AB SL", "123", "964123456",
+                new BigDecimal(21));
+        Sala sala = new Sala("b", "sala 1", 4, 3, 2, "asd", "qwe", "subtitulado", cine);
 
-        cinesDao.addCine(cineDTO);
-        salasDao.addSala(salaDTO);
+        cinesDao.addCine(cine);
+        salasDao.addSala(sala);
 
-        List<SalaDTO> salas = salasDao.getSalas();
+        List<Sala> salas = salasDao.getSalas();
 
         Assert.assertEquals(1, salas.size());
         Assert.assertTrue(salas.get(0).getId() != 0);

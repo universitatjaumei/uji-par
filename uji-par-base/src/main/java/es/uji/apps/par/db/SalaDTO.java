@@ -16,57 +16,61 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-
 /**
  * The persistent class for the PAR_SALAS database table.
  * 
  */
 @Entity
-@Table(name="PAR_SALAS")
-public class SalaDTO implements Serializable{
-	private static final long serialVersionUID = 1L;
+@Table(name = "PAR_SALAS")
+public class SalaDTO implements Serializable
+{
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@SequenceGenerator(name="PAR_SALAS_ID_GENERATOR", sequenceName="HIBERNATE_SEQUENCE")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PAR_SALAS_ID_GENERATOR")
-	private long id;
+    @Id
+    @SequenceGenerator(name = "PAR_SALAS_ID_GENERATOR", sequenceName = "HIBERNATE_SEQUENCE")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PAR_SALAS_ID_GENERATOR")
+    private long id;
 
-	@Column(name="CODIGO")
-	private String codigo;
+    @Column(name = "CODIGO")
+    private String codigo;
 
-	@Column(name="NOMBRE")
-	private String nombre;
-	   
-	@Column(name="ASIENTOS")
-	private int asientos;
-	
-    @Column(name="ASIENTO_DISC")
+    @Column(name = "NOMBRE")
+    private String nombre;
+
+    @Column(name = "ASIENTOS")
+    private int asientos;
+
+    @Column(name = "ASIENTO_DISC")
     private int asientosDiscapacitados;
 
-    @Column(name="ASIENTO_NORES")
-    private int asientosNoReservados;    
-    
-    @Column(name="TIPO")
+    @Column(name = "ASIENTO_NORES")
+    private int asientosNoReservados;
+
+    @Column(name = "TIPO")
     private String tipo;
 
-    @Column(name="FORMATO")
+    @Column(name = "FORMATO")
     private String formato;
 
-    @Column(name="SUBTITULO")
+    @Column(name = "SUBTITULO")
     private String subtitulo;
-    
+
     @ManyToOne
-    @JoinColumn(name="CINE_ID")
+    @JoinColumn(name = "CINE_ID")
     private CineDTO parCine;
-    
-    @OneToMany(mappedBy = "parSala", fetch=FetchType.LAZY)
+
+    @OneToMany(mappedBy = "parSala", fetch = FetchType.LAZY)
     private List<PlantaSalaDTO> parPlantas;
-    
-	public SalaDTO() {
-	}
-	
-	public SalaDTO(CineDTO cineDTO, String codigo, String nombre, int asientos, int asientosDiscapacitados,
-	        int asientosNoReservados, String tipo, String formato, String subtitulo)
+
+    @OneToMany(mappedBy = "parSala", fetch = FetchType.LAZY)
+    private List<SesionDTO> parSesiones;
+
+    public SalaDTO()
+    {
+    }
+
+    public SalaDTO(CineDTO cineDTO, String codigo, String nombre, int asientos, int asientosDiscapacitados,
+            int asientosNoReservados, String tipo, String formato, String subtitulo)
     {
         this.codigo = codigo;
         this.nombre = nombre;
@@ -80,13 +84,15 @@ public class SalaDTO implements Serializable{
         this.parPlantas = new ArrayList<PlantaSalaDTO>();
     }
 
-    public long getId() {
-		return this.id;
-	}
+    public long getId()
+    {
+        return this.id;
+    }
 
-	public void setId(long id) {
-		this.id = id;
-	}
+    public void setId(long id)
+    {
+        this.id = id;
+    }
 
     public String getCodigo()
     {
@@ -186,5 +192,15 @@ public class SalaDTO implements Serializable{
     public void setParPlantas(List<PlantaSalaDTO> parPlantas)
     {
         this.parPlantas = parPlantas;
+    }
+
+    public List<SesionDTO> getParSesiones()
+    {
+        return parSesiones;
+    }
+
+    public void setParSesiones(List<SesionDTO> parSesiones)
+    {
+        this.parSesiones = parSesiones;
     }
 }
