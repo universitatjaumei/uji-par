@@ -94,6 +94,10 @@ public class DateUtils
     	return FORMAT_DAY_HOUR.format(fecha);
 	}
 	
+	   public static Date spanishStringWithHourstoDate(String spanishDate) throws ParseException {
+	        return FORMAT_DAY_HOUR.parse(spanishDate);
+	    }
+	
 	public static Date databaseStringToDate(String databaseDate) throws ParseException {
 	    return DATABASE_DAY.parse(databaseDate);
 	}

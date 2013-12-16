@@ -64,6 +64,16 @@ public class Sesion
         if (sesionDTO.getParSala() != null)
             this.sala = new Sala(sesionDTO.getParSala());
     }
+    
+    public static List<Long> getIdsSesiones(List<Sesion> sesiones)
+    {
+        List<Long> ids = new ArrayList<Long>();
+        
+        for (Sesion sesion : sesiones)
+            ids.add(sesion.getId());
+        
+        return ids ;
+    }
 
     public long getId()
     {

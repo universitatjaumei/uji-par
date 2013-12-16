@@ -527,7 +527,7 @@ public class ComprasDAO extends BaseDAO
         QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
         QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
         
-        List<Long> idsSesiones = getIdsSesiones(sesiones);
+        List<Long> idsSesiones = Sesion.getIdsSesiones(sesiones);
         
         JPAQuery query = new JPAQuery(entityManager);
 
@@ -546,13 +546,28 @@ public class ComprasDAO extends BaseDAO
             return total;
     }
 
-    private List<Long> getIdsSesiones(List<Sesion> sesiones)
+    public int getEspectadores(List<Sesion> sesiones)
     {
-        List<Long> ids = new ArrayList<Long>();
+        QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
+        QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
+        QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
         
-        for (Sesion sesion : sesiones)
-            ids.add(sesion.getId());
+        List<Long> idsSesiones = Sesion.getIdsSesiones(sesiones);
         
-        return ids ;
+        JPAQuery query = new JPAQuery(entityManager);
+
+        Long butacas = query
+                .from(qCompraDTO)
+                .join(qCompraDTO.parSesion, qSesionDTO)
+                .join(qCompraDTO.parButacas, qButacaDTO)
+                .where(qSesionDTO.id.in(idsSesiones)
+                        .and(qCompraDTO.reserva.eq(false))
+                        .and(qCompraDTO.anulada.eq(false)))
+                .uniqueResult(qButacaDTO.count());
+        
+        if (butacas == null)
+            return 0;
+        else
+            return butacas.intValue();
     }
 }

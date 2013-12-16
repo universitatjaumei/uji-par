@@ -1,7 +1,6 @@
 package es.uji.apps.par.db;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -78,6 +77,9 @@ public class SesionDTO implements Serializable {
     //bi-directional many-to-one association to SesionDTO
     @OneToMany(mappedBy="parSesion")
     private List<ButacaDTO> parButacas;	
+    
+    @OneToMany(mappedBy="parSesion")
+    private List<CompraDTO> parCompras;
 
 	public SesionDTO() {
 	}
@@ -210,5 +212,15 @@ public class SesionDTO implements Serializable {
     public void setParSala(SalaDTO parSala)
     {
         this.parSala = parSala;
+    }
+
+    public List<CompraDTO> getParCompras()
+    {
+        return parCompras;
+    }
+
+    public void setParCompras(List<CompraDTO> parCompras)
+    {
+        this.parCompras = parCompras;
     }
 }
