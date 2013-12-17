@@ -293,6 +293,20 @@ Ext.define('Paranimf.view.evento.FormEventos', {
      }, {
       fieldLabel: UI.i18n.field.metraje,
       name: 'metraje'
+     }, {
+         fieldLabel: UI.i18n.field.subtitulos,
+         name: 'subtitulos',
+         xtype: 'combobox',
+         displayField: 'name',
+         valueField : 'value',
+         queryMode: 'local',
+         forceSelection:true,
+         store: new Ext.data.SimpleStore({
+           fields: ['value', 'name'],
+             data: [
+               ['falta', UI.i18n.message.falta]
+             ]
+         })      
      }]
   },
   {

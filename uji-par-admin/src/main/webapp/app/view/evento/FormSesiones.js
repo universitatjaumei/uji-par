@@ -132,7 +132,21 @@ Ext.define('Paranimf.view.evento.FormSesiones', {
         	    store: 'Salas',
         	    queryMode: 'local',
         	    typeAhead: true
-        	 }
+        	 },{
+	          fieldLabel: UI.i18n.field.versionLinguistica,
+	          name: 'versionLinguistica',
+	          xtype: 'combobox',
+	          displayField: 'name',
+	          valueField : 'value',
+	          queryMode: 'local',
+	          forceSelection:true,
+	          store: new Ext.data.SimpleStore({
+	            fields: ['value', 'name'],
+	              data: [
+	                ['falta', UI.i18n.message.falta]
+	              ]
+	          })      
+	         }
 	      ]
    }, {
       fieldLabel: UI.i18n.field.plantillaprecios,

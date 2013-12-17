@@ -143,7 +143,9 @@ public class SesionesDAO extends BaseDAO
                 .set(qSesionDTO.parEvento, Evento.eventoToEventoDTO(sesion.getEvento()))
                 .set(qSesionDTO.parPlantilla,
                         Plantilla.plantillaPreciosToPlantillaPreciosDTO(sesion.getPlantillaPrecios()))
-                .set(qSesionDTO.nombre, sesion.getNombre()).set(qSesionDTO.formato, sesion.getFormato());
+                .set(qSesionDTO.nombre, sesion.getNombre())
+                .set(qSesionDTO.formato, sesion.getFormato())
+                .set(qSesionDTO.versionLinguistica, sesion.getVersionLinguistica());
 
         if (sesion.getSala() != null && sesion.getSala().getId() != 0)
             update.set(qSesionDTO.parSala, Sala.salaToSalaDTO(sesion.getSala()));

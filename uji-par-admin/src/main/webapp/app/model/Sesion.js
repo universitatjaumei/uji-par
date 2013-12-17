@@ -18,6 +18,7 @@ Ext.define('Paranimf.model.Sesion', {
       'butacasVendidas',
       'nombre',
       'formato',
+      'versionLinguistica',
       {name: 'sala', mapping: 'sala.id'},
    ]
 });

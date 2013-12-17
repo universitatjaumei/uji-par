@@ -119,6 +119,9 @@ public class EventoDTO implements Serializable {
     @Column(name="METRAJE")
     private String metraje;   
     
+    @Column(name="SUBTITULOS")
+    private String subtitulos;   
+    
 	public EventoDTO() {
 	}
 
@@ -398,5 +401,15 @@ public class EventoDTO implements Serializable {
     public void setMetraje(String metraje)
     {
         this.metraje = metraje;
+    }
+
+    public String getSubtitulos()
+    {
+        return subtitulos;
+    }
+
+    public void setSubtitulos(String subtitulos)
+    {
+        this.subtitulos = subtitulos;
     }
 }

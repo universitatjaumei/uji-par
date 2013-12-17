@@ -1,6 +1,5 @@
 package es.uji.apps.par.model;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -35,10 +34,10 @@ public class Sesion
     private String nombre;
     private String formato;
     private Sala sala;
+    private String versionLinguistica;
 
     public Sesion()
     {
-
     }
 
     public Sesion(SesionDTO sesionDTO)
@@ -60,6 +59,7 @@ public class Sesion
         
         this.nombre = sesionDTO.getNombre();
         this.formato = sesionDTO.getFormato();
+        this.versionLinguistica = sesionDTO.getVersionLinguistica();
         
         if (sesionDTO.getParSala() != null)
             this.sala = new Sala(sesionDTO.getParSala());
@@ -207,6 +207,7 @@ public class Sesion
 		
 		sesion.setNombre(sesionDTO.getNombre());
 		sesion.setFormato(sesionDTO.getFormato());
+		sesion.setVersionLinguistica(sesionDTO.getVersionLinguistica());
 		
 		sesion.setSala(new Sala(sesionDTO.getParSala()));
 		
@@ -244,6 +245,10 @@ public class Sesion
 		if (sesion.getSala() != null && sesion.getSala().getId()!=0)
 		    sesionDTO.setParSala(Sala.salaToSalaDTO(sesion.getSala()));
 		
+		sesionDTO.setNombre(sesion.getNombre());
+		sesionDTO.setFormato(sesion.getFormato());
+		sesionDTO.setVersionLinguistica(sesion.getVersionLinguistica());
+		
 		return sesionDTO;
 	}
 	
@@ -258,6 +263,18 @@ public class Sesion
 	    
         return sesionesDTO;
 	}
+	
+    public static List<Sesion> sesionsDTOToSesions(List<SesionDTO> sesionesDTO)
+    {
+        List<Sesion> sesiones = new ArrayList<Sesion>();
+        
+        for (SesionDTO sesionDTO: sesionesDTO)
+        {
+            sesiones.add(Sesion.SesionDTOToSesion(sesionDTO));
+        }
+        
+        return sesiones;
+    }
 	
 	public Plantilla getPlantillaPrecios() {
 		return plantillaPrecios;
@@ -346,4 +363,14 @@ public class Sesion
     {
         this.sala = sala;
     }
-}
+
+    public String getVersionLinguistica()
+    {
+        return versionLinguistica;
+    }
+
+    public void setVersionLinguistica(String versionLinguistica)
+    {
+        this.versionLinguistica = versionLinguistica;
+    }
+ }

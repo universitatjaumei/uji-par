@@ -142,7 +142,15 @@ public class EventosResource
             @FormDataParam("porcentajeIVA") BigDecimal porcentajeIVA,
             @FormDataParam("retencionSGAE") BigDecimal retencionSGAE,
             @FormDataParam("ivaSGAE") BigDecimal ivaSGAE,
-            @FormDataParam("asientosNumerados") Boolean asientosNumerados) throws GeneralPARException
+            @FormDataParam("asientosNumerados") Boolean asientosNumerados,
+            
+            @FormDataParam("expediente") String expediente,
+            @FormDataParam("codigoDistribuidora") String codigoDistribuidora,
+            @FormDataParam("nombreDistribuidora") String nombreDistribuidora,
+            @FormDataParam("nacionalidad") String nacionalidad,
+            @FormDataParam("vo") String vo,
+            @FormDataParam("metraje") String metraje,
+            @FormDataParam("subtitulos") String subtitulos) throws GeneralPARException
     {
         String nombreArchivo = (dataBinaryDetail != null) ? dataBinaryDetail.getFileName() : "";
         String mediaType = (imagenBodyPart != null) ? imagenBodyPart.getMediaType().toString() : "";
@@ -150,7 +158,8 @@ public class EventosResource
         Evento evento = new Evento(tituloEs, descripcionEs, companyiaEs, interpretesEs, duracionEs,
                 premiosEs, caracteristicasEs, comentariosEs, tituloVa, descripcionVa, companyiaVa,
                 interpretesVa, duracionVa, premiosVa, caracteristicasVa, comentariosVa, dataBinary,
-                nombreArchivo, mediaType, tipoEventoId, porcentajeIVA, retencionSGAE, ivaSGAE, asientosNumerados);
+                nombreArchivo, mediaType, tipoEventoId, porcentajeIVA, retencionSGAE, ivaSGAE, asientosNumerados, 
+                expediente, codigoDistribuidora, nombreDistribuidora, nacionalidad, vo, metraje, subtitulos);
         Evento newEvento = eventosService.addEvento(evento);
 
         // TODO -> crear URL
@@ -204,7 +213,8 @@ public class EventosResource
             @FormDataParam("nombreDistribuidora") String nombreDistribuidora,
             @FormDataParam("nacionalidad") String nacionalidad,
             @FormDataParam("vo") String vo,
-            @FormDataParam("metraje") String metraje) throws GeneralPARException
+            @FormDataParam("metraje") String metraje,
+            @FormDataParam("subtitulos") String subtitulos) throws GeneralPARException
     {
         AuthChecker.canWrite(currentRequest);
         
@@ -214,15 +224,9 @@ public class EventosResource
         Evento evento = new Evento(tituloEs, descripcionEs, companyiaEs, interpretesEs, duracionEs,
                 premiosEs, caracteristicasEs, comentariosEs, tituloVa, descripcionVa, companyiaVa,
                 interpretesVa, duracionVa, premiosVa, caracteristicasVa, comentariosVa, dataBinary,
-                nombreArchivo, mediaType, tipoEventoId, porcentajeIVA, retencionSGAE, ivaSGAE, asientosNumerados);
+                nombreArchivo, mediaType, tipoEventoId, porcentajeIVA, retencionSGAE, ivaSGAE, asientosNumerados, 
+                expediente, codigoDistribuidora, nombreDistribuidora, nacionalidad, vo, metraje, subtitulos);
         
-        evento.setExpediente(expediente);
-        evento.setCodigoDistribuidora(codigoDistribuidora);
-        evento.setNombreDistribuidora(nombreDistribuidora);
-        evento.setNacionalidad(nacionalidad);
-        evento.setVo(vo);
-        evento.setMetraje(metraje);
-
         evento.setId(id);
         eventosService.updateEvento(evento);
 

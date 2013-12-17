@@ -48,6 +48,7 @@ public class Evento
     private String nacionalidad;
     private String vo;
     private String metraje;  
+    private String subtitulos;
 
     public Evento()
     {
@@ -102,6 +103,7 @@ public class Evento
         evento.setNacionalidad(eventoDTO.getNacionalidad());
         evento.setVo(eventoDTO.getVo());
         evento.setMetraje(eventoDTO.getMetraje());
+        evento.setSubtitulos(eventoDTO.getSubtitulos());
     	
     	return evento;
     }
@@ -152,6 +154,7 @@ public class Evento
         eventoDTO.setNacionalidad(evento.getNacionalidad());
         eventoDTO.setVo(evento.getVo());
         eventoDTO.setMetraje(evento.getMetraje());
+        eventoDTO.setSubtitulos(evento.getSubtitulos());
     	
     	return eventoDTO;
 	}
@@ -222,7 +225,8 @@ public class Evento
             String tituloVa, String descripcionVa, String companyiaVa, String interpretesVa,
             String duracionVa, String premiosVa, String caracteristicasVa, String comentariosVa,
             byte[] dataBinary, String nombreArchivo, String mediaType, Integer tipoEventoId,
-            BigDecimal porcentajeIVA, BigDecimal retencionSGAE, BigDecimal ivaSGAE, Boolean asientosNumerados)
+            BigDecimal porcentajeIVA, BigDecimal retencionSGAE, BigDecimal ivaSGAE, Boolean asientosNumerados, 
+            String expediente, String codigoDistribuidora, String nombreDistribuidora, String nacionalidad, String vo, String metraje, String subtitulos)
     {
         this.sesiones = new ArrayList<Sesion>();
         this.tituloEs = tituloEs;
@@ -258,6 +262,14 @@ public class Evento
         this.retencionSGAE = retencionSGAE;
         this.ivaSGAE = ivaSGAE;
         this.asientosNumerados = asientosNumerados;
+        
+        this.expediente = expediente;
+        this.codigoDistribuidora = codigoDistribuidora;
+        this.nombreDistribuidora = nombreDistribuidora;
+        this.nacionalidad = nacionalidad;
+        this.vo = vo;
+        this.metraje = metraje;
+        this.subtitulos = subtitulos;
     }
 
     public long getId()
@@ -605,5 +617,14 @@ public class Evento
     {
         this.parTiposEvento = parTiposEvento;
     }
-    
+
+    public String getSubtitulos()
+    {
+        return subtitulos;
+    }
+
+    public void setSubtitulos(String subtitulos)
+    {
+        this.subtitulos = subtitulos;
+    }
 }

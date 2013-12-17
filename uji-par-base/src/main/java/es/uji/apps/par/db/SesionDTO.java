@@ -56,6 +56,9 @@ public class SesionDTO implements Serializable {
     @Column(name="FORMATO")
     private String formato;
 
+    @Column(name="VER_LING")
+    private String versionLinguistica;
+    
 	//bi-directional many-to-one association to PreciosSesionDTO
 	@OneToMany(mappedBy="parSesione", cascade=CascadeType.PERSIST)
 	private List<PreciosSesionDTO> parPreciosSesions;
@@ -222,5 +225,15 @@ public class SesionDTO implements Serializable {
     public void setParCompras(List<CompraDTO> parCompras)
     {
         this.parCompras = parCompras;
+    }
+
+    public String getVersionLinguistica()
+    {
+        return versionLinguistica;
+    }
+
+    public void setVersionLinguistica(String versionLinguistica)
+    {
+        this.versionLinguistica = versionLinguistica;
     }
 }
