@@ -365,14 +365,14 @@ public class EventosDAO extends BaseDAO
             eventoDTO.setTituloVa(evento.getTituloVa());
             eventoDTO.setDescripcionEs(evento.getDescripcionEs());
             eventoDTO.setDescripcionVa(evento.getDescripcionVa());
+            eventoDTO.setComentariosEs(evento.getComentariosEs());
+            eventoDTO.setComentariosVa(evento.getComentariosVa());
             eventoDTO.setInterpretesEs(evento.getInterpretesEs());
             eventoDTO.setInterpretesVa(evento.getInterpretesVa());
             eventoDTO.setDuracionEs(evento.getDuracionEs());
             eventoDTO.setDuracionVa(evento.getDuracionVa());
             eventoDTO.setPremiosEs(evento.getPremiosEs());
-            eventoDTO.setDuracionVa(evento.getDuracionVa());
-            eventoDTO.setPremiosEs(evento.getPremiosEs());
-            eventoDTO.setDuracionVa(evento.getDuracionVa());
+            eventoDTO.setPremiosVa(evento.getPremiosVa());
             eventoDTO.setCaracteristicasEs(evento.getCaracteristicasEs());
             eventoDTO.setCaracteristicasVa(evento.getCaracteristicasVa());
             eventoDTO.setComentariosEs(evento.getComentariosEs());
