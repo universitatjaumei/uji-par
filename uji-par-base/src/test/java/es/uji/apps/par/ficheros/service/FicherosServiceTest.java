@@ -1,7 +1,5 @@
 package es.uji.apps.par.ficheros.service;
 
-import java.math.BigDecimal;
-import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -15,17 +13,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import es.uji.apps.par.ButacaOcupadaException;
-import es.uji.apps.par.CompraSinButacasException;
-import es.uji.apps.par.NoHayButacasLibresException;
-import es.uji.apps.par.dao.CinesDAO;
-import es.uji.apps.par.dao.EventosDAO;
-import es.uji.apps.par.dao.LocalizacionesDAO;
-import es.uji.apps.par.dao.PlantillasDAO;
-import es.uji.apps.par.dao.PreciosPlantillaDAO;
-import es.uji.apps.par.dao.SalasDAO;
-import es.uji.apps.par.dao.SesionesDAO;
-import es.uji.apps.par.dao.TiposEventosDAO;
 import es.uji.apps.par.ficheros.registros.RegistroBuzon;
 import es.uji.apps.par.ficheros.registros.RegistroPelicula;
 import es.uji.apps.par.ficheros.registros.RegistroSala;
@@ -33,72 +20,22 @@ import es.uji.apps.par.ficheros.registros.RegistroSesion;
 import es.uji.apps.par.ficheros.registros.RegistroSesionPelicula;
 import es.uji.apps.par.ficheros.registros.RegistroSesionProgramada;
 import es.uji.apps.par.model.Butaca;
-import es.uji.apps.par.model.Cine;
 import es.uji.apps.par.model.Evento;
-import es.uji.apps.par.model.Localizacion;
-import es.uji.apps.par.model.Plantilla;
-import es.uji.apps.par.model.PreciosPlantilla;
-import es.uji.apps.par.model.PreciosSesion;
-import es.uji.apps.par.model.ResultadoCompra;
 import es.uji.apps.par.model.Sala;
 import es.uji.apps.par.model.Sesion;
-import es.uji.apps.par.model.TipoEvento;
-import es.uji.apps.par.services.ComprasService;
 import es.uji.apps.par.utils.DateUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/applicationContext-db-test.xml" })
-public class FicherosServiceTest
+public class FicherosServiceTest extends FicherosServiceBaseTest
 {
     @Autowired
     private FicherosService service;
 
-    @Autowired
-    private CinesDAO cinesDao;
-
-    @Autowired
-    private SalasDAO salasDao;
-
-    @Autowired
-    private EventosDAO eventosDAO;
-
-    @Autowired
-    private TiposEventosDAO tiposEventoDAO;
-
-    @Autowired
-    private SesionesDAO sesionesDAO;
-
-    @Autowired
-    private PlantillasDAO plantillasDAO;
-
-    @Autowired
-    private LocalizacionesDAO localizacionesDAO;
-
-    @Autowired
-    private PreciosPlantillaDAO preciosPlantillaDAO;
-
-    @Autowired
-    private ComprasService comprasService;
-
-    private TipoEvento tipoEvento;
-    private Sala sala;
-    private Plantilla plantilla;
-    private Evento evento;
-    private Localizacion localizacion;
-    private PreciosPlantilla precioPlantilla;
-    private PreciosSesion precioSesion;
-
     @Before
     public void setup()
     {
-        creaCine();
-        localizacion = creaLocalizacion("Platea");
-        sala = creaSala("567", "Sala 1");
-        tipoEvento = creaTipoEvento();
-        plantilla = creaPlantilla();
-        precioPlantilla = creaPrecioPlantilla(1.10, 0.5, 0.0);
-        precioSesion = creaPrecioSesion(precioPlantilla);
-        evento = creaEvento(tipoEvento);
+        super.setUp();
     }
 
     @Test
@@ -111,7 +48,7 @@ public class FicherosServiceTest
 
         RegistroBuzon registro = service.generaRegistroBuzon(fechaEnvio, "FL", Arrays.asList(sesion));
 
-        Assert.assertEquals("123", registro.getCodigo());
+        Assert.assertEquals(cine.getCodigo(), registro.getCodigo());
         Assert.assertEquals(fechaEnvio, registro.getFechaEnvio());
         Assert.assertEquals("FL", registro.getTipo());
         Assert.assertEquals(null, registro.getFechaEnvioHabitualAnterior());
@@ -178,8 +115,8 @@ public class FicherosServiceTest
         List<RegistroSala> registros = service.generaRegistrosSala(Arrays.asList(sesion));
 
         Assert.assertEquals(1, registros.size());
-        Assert.assertEquals("567", registros.get(0).getCodigo());
-        Assert.assertEquals("Sala 1", registros.get(0).getNombre());
+        Assert.assertEquals(sala.getCodigo(), registros.get(0).getCodigo());
+        Assert.assertEquals(sala.getNombre(), registros.get(0).getNombre());
     }
 
     @Test
@@ -193,10 +130,10 @@ public class FicherosServiceTest
         List<RegistroSala> registros = service.generaRegistrosSala(Arrays.asList(sesion1, sesion2));
 
         Assert.assertEquals(2, registros.size());
-        Assert.assertEquals("567", registros.get(0).getCodigo());
-        Assert.assertEquals("Sala 1", registros.get(0).getNombre());
-        Assert.assertEquals("678", registros.get(1).getCodigo());
-        Assert.assertEquals("Sala 2", registros.get(1).getNombre());
+        Assert.assertEquals(sala.getCodigo(), registros.get(0).getCodigo());
+        Assert.assertEquals(sala.getNombre(), registros.get(0).getNombre());
+        Assert.assertEquals(sala2.getCodigo(), registros.get(1).getCodigo());
+        Assert.assertEquals(sala2.getNombre(), registros.get(1).getNombre());
     }
 
     @Test
@@ -235,13 +172,13 @@ public class FicherosServiceTest
 
         Assert.assertEquals(2, registros.size());
 
-        Assert.assertEquals("567", registros.get(0).getCodigoSala());
+        Assert.assertEquals(sala.getCodigo(), registros.get(0).getCodigoSala());
         Assert.assertEquals(1, registros.get(0).getPeliculas());
         Assert.assertEquals(DateUtils.spanishStringWithHourstoDate("1/2/2013 16:00"), registros.get(0).getFecha());
         Assert.assertEquals(2, registros.get(0).getEspectadores());
         Assert.assertEquals(2.20, registros.get(0).getRecaudacion().floatValue(), 0.000001);
 
-        Assert.assertEquals("567", registros.get(1).getCodigoSala());
+        Assert.assertEquals(sala.getCodigo(), registros.get(1).getCodigoSala());
         Assert.assertEquals(DateUtils.spanishStringWithHourstoDate("3/4/2013 20:30"), registros.get(1).getFecha());
         Assert.assertEquals(1, registros.get(1).getPeliculas());
         Assert.assertEquals(3, registros.get(1).getEspectadores());
@@ -259,7 +196,7 @@ public class FicherosServiceTest
         List<RegistroSesionPelicula> registros = service.generaRegistrosSesionPelicula(Arrays.asList(sesion1));
 
         Assert.assertEquals(1, registros.size());
-        Assert.assertEquals("567", registros.get(0).getCodigoSala());
+        Assert.assertEquals(sala.getCodigo(), registros.get(0).getCodigoSala());
         Assert.assertEquals(DateUtils.spanishStringWithHourstoDate("2/3/2013 11:05"), registros.get(0).getFecha());
         Assert.assertEquals(evento.getId(), registros.get(0).getCodigoPelicula());
     }
@@ -279,15 +216,15 @@ public class FicherosServiceTest
 
         Assert.assertEquals(3, registros.size());
 
-        Assert.assertEquals("567", registros.get(0).getCodigoSala());
+        Assert.assertEquals(sala.getCodigo(), registros.get(0).getCodigoSala());
         Assert.assertEquals(DateUtils.spanishStringWithHourstoDate("1/2/2013 16:00"), registros.get(0).getFecha());
         Assert.assertEquals(evento.getId(), registros.get(0).getCodigoPelicula());
 
-        Assert.assertEquals("567", registros.get(1).getCodigoSala());
+        Assert.assertEquals(sala.getCodigo(), registros.get(1).getCodigoSala());
         Assert.assertEquals(DateUtils.spanishStringWithHourstoDate("3/4/2013 20:30"), registros.get(1).getFecha());
         Assert.assertEquals(evento2.getId(), registros.get(1).getCodigoPelicula());
 
-        Assert.assertEquals("567", registros.get(2).getCodigoSala());
+        Assert.assertEquals(sala.getCodigo(), registros.get(2).getCodigoSala());
         Assert.assertEquals(DateUtils.spanishStringWithHourstoDate("3/4/2013 22:30"), registros.get(2).getFecha());
         Assert.assertEquals(evento2.getId(), registros.get(2).getCodigoPelicula());
     }
@@ -301,7 +238,7 @@ public class FicherosServiceTest
         List<RegistroPelicula> registros = service.generaRegistrosPelicula(Arrays.asList(sesion1));
 
         Assert.assertEquals(1, registros.size());
-        Assert.assertEquals("567", registros.get(0).getCodigoSala());
+        Assert.assertEquals(sala.getCodigo(), registros.get(0).getCodigoSala());
         Assert.assertEquals(evento.getId(), registros.get(0).getCodigoPelicula());
         Assert.assertEquals(evento.getExpediente(), registros.get(0).getCodigoExpediente());
         Assert.assertEquals(evento.getTituloEs(), registros.get(0).getTitulo());
@@ -327,7 +264,7 @@ public class FicherosServiceTest
         Assert.assertEquals(2, registros.size());
 
         RegistroPelicula registro0 = registros.get(0);
-        Assert.assertEquals("567", registro0.getCodigoSala());
+        Assert.assertEquals(sala.getCodigo(), registro0.getCodigoSala());
         Assert.assertEquals(evento.getId(), registro0.getCodigoPelicula());
         Assert.assertEquals(evento.getExpediente(), registro0.getCodigoExpediente());
         Assert.assertEquals(evento.getTituloEs(), registro0.getTitulo());
@@ -339,7 +276,7 @@ public class FicherosServiceTest
         Assert.assertEquals(sesion1.getFormato(), registro0.getFormatoProyeccion());
 
         RegistroPelicula registro1 = registros.get(1);
-        Assert.assertEquals("567", registro1.getCodigoSala());
+        Assert.assertEquals(sala.getCodigo(), registro1.getCodigoSala());
         Assert.assertEquals(evento2.getId(), registro1.getCodigoPelicula());
         Assert.assertEquals(evento2.getExpediente(), registro1.getCodigoExpediente());
         Assert.assertEquals(evento2.getTituloEs(), registro1.getTitulo());
@@ -445,133 +382,5 @@ public class FicherosServiceTest
         Assert.assertEquals(sala2.getCodigo(), registro4.getCodigoSala());
         Assert.assertEquals("050313", registro4.getFechaSesion());
         Assert.assertEquals(2, registro4.getNumeroSesiones());
-    }
-
-    private void registraCompra(Sesion sesion1, Butaca... butacas) throws NoHayButacasLibresException,
-            ButacaOcupadaException, CompraSinButacasException
-    {
-        ResultadoCompra resultado1 = comprasService.registraCompraTaquilla(sesion1.getId(), Arrays.asList(butacas));
-        comprasService.marcaPagada(resultado1.getId());
-    }
-
-    private Sesion creaSesion(Sala sala, Evento evento, String fecha, String hora) throws ParseException
-    {
-        Sesion sesion = new Sesion();
-        sesion.setFechaCelebracionWithDate(DateUtils.spanishStringWithHourstoDate(fecha + " " + hora));
-        sesion.setFechaInicioVentaOnline("1/12/2011");
-        sesion.setFechaFinVentaOnline("11/12/2012");
-        sesion.setEvento(evento);
-        sesion.setSala(sala);
-        sesion.setPlantillaPrecios(plantilla);
-        sesion.setPreciosSesion(Arrays.asList(precioSesion));
-        sesion.setVersionLinguistica("1");
-        sesion.setFormato("3");
-
-        sesionesDAO.addSesion(sesion);
-        return sesion;
-    }
-
-    private Sesion creaSesion(Sala sala, Evento evento) throws ParseException
-    {
-        return creaSesion(sala, evento, "11/12/2013", "22:00");
-    }
-
-    private PreciosSesion creaPrecioSesion(PreciosPlantilla precioPlantilla)
-    {
-        PreciosSesion precioSesion = new PreciosSesion(precioPlantilla);
-
-        sesionesDAO.addPrecioSesion(PreciosSesion.precioSesionToPrecioSesionDTO(precioSesion));
-
-        return precioSesion;
-    }
-
-    private Plantilla creaPlantilla()
-    {
-        Plantilla plantilla = new Plantilla("test");
-        plantillasDAO.add(plantilla);
-
-        return plantilla;
-    }
-
-    private Evento creaEvento(TipoEvento tipoEvento)
-    {
-        return creaEvento(tipoEvento, "1a", "2a", "3a", "4a", "5a", "6a");
-    }
-
-    private Evento creaEvento(TipoEvento tipoEvento, String expediente, String titulo, String codigoDistribuidora,
-            String nombreDistribuidora, String vo, String subtitulos)
-    {
-        Evento evento = new Evento();
-        evento.setTipoEvento(tipoEvento.getId());
-        evento.setExpediente(expediente);
-        evento.setTituloEs(titulo);
-        evento.setCodigoDistribuidora(codigoDistribuidora);
-        evento.setNombreDistribuidora(nombreDistribuidora);
-        evento.setVo(vo);
-        evento.setSubtitulos(subtitulos);
-
-        eventosDAO.addEvento(evento);
-
-        return evento;
-    }
-
-    private TipoEvento creaTipoEvento()
-    {
-        TipoEvento tipoEvento = new TipoEvento();
-        tipoEvento.setNombreEs("Cine");
-        tipoEvento.setNombreVa("Cinema");
-        tiposEventoDAO.addTipoEvento(tipoEvento);
-        return tipoEvento;
-    }
-
-    private void creaCine()
-    {
-        Cine cine = new Cine();
-        cine.setCodigo("123");
-        cinesDao.addCine(cine);
-    }
-
-    private Sala creaSala(String codigo, String nombre)
-    {
-        Sala sala = new Sala();
-        sala.setCodigo(codigo);
-        sala.setNombre(nombre);
-        salasDao.addSala(sala);
-        return sala;
-    }
-
-    private Localizacion creaLocalizacion(String nombre)
-    {
-        Localizacion localizacion = new Localizacion(nombre);
-        localizacion.setCodigo(nombre);
-
-        localizacionesDAO.add(localizacion);
-
-        return localizacion;
-    }
-
-    private Butaca creaButaca(String fila, String numero, String tipo)
-    {
-        Butaca butaca = new Butaca();
-
-        butaca.setLocalizacion("Platea");
-        butaca.setFila(fila);
-        butaca.setNumero(numero);
-        butaca.setTipo(tipo);
-
-        return butaca;
-    }
-
-    private PreciosPlantilla creaPrecioPlantilla(double normal, double descuento, double invitacion)
-    {
-        PreciosPlantilla preciosPlantilla = new PreciosPlantilla(localizacion, plantilla);
-
-        preciosPlantilla.setPrecio(new BigDecimal(normal));
-        preciosPlantilla.setDescuento(new BigDecimal(descuento));
-        preciosPlantilla.setInvitacion(new BigDecimal(invitacion));
-
-        preciosPlantillaDAO.add(preciosPlantilla);
-
-        return preciosPlantilla;
     }
 }
