@@ -46,7 +46,8 @@ public class FicherosServiceTest extends FicherosServiceBaseTest
 
         Date fechaEnvio = new Date();
 
-        RegistroBuzon registro = service.generaRegistroBuzon(fechaEnvio, "FL", Arrays.asList(sesion));
+        RegistroBuzon registro = service.generaFicheroRegistros(fechaEnvio, "FL", Arrays.asList(sesion))
+                .getRegistroBuzon();
 
         Assert.assertEquals(cine.getCodigo(), registro.getCodigo());
         Assert.assertEquals(fechaEnvio, registro.getFechaEnvio());
@@ -72,7 +73,8 @@ public class FicherosServiceTest extends FicherosServiceBaseTest
 
         registraCompra(sesion, butaca1, butaca2);
 
-        RegistroBuzon registro = service.generaRegistroBuzon(new Date(), "FL", Arrays.asList(sesion));
+        RegistroBuzon registro = service.generaFicheroRegistros(new Date(), "FL", Arrays.asList(sesion))
+                .getRegistroBuzon();
 
         Assert.assertEquals(1, registro.getSesiones());
         Assert.assertEquals(2, registro.getEspectadores());
@@ -97,7 +99,8 @@ public class FicherosServiceTest extends FicherosServiceBaseTest
 
         registraCompra(sesion2, butaca3);
 
-        RegistroBuzon registro = service.generaRegistroBuzon(new Date(), "FL", Arrays.asList(sesion1, sesion2));
+        RegistroBuzon registro = service.generaFicheroRegistros(new Date(), "FL", Arrays.asList(sesion1, sesion2))
+                .getRegistroBuzon();
 
         Assert.assertEquals(2, registro.getSesiones());
         Assert.assertEquals(3, registro.getEspectadores());
@@ -112,7 +115,8 @@ public class FicherosServiceTest extends FicherosServiceBaseTest
     {
         Sesion sesion = creaSesion(sala, evento);
 
-        List<RegistroSala> registros = service.generaRegistrosSala(Arrays.asList(sesion));
+        List<RegistroSala> registros = service.generaFicheroRegistros(new Date(), "", Arrays.asList(sesion))
+                .getRegistrosSalas();
 
         Assert.assertEquals(1, registros.size());
         Assert.assertEquals(sala.getCodigo(), registros.get(0).getCodigo());
@@ -127,7 +131,8 @@ public class FicherosServiceTest extends FicherosServiceBaseTest
         Sesion sesion1 = creaSesion(sala, evento);
         Sesion sesion2 = creaSesion(sala2, evento);
 
-        List<RegistroSala> registros = service.generaRegistrosSala(Arrays.asList(sesion1, sesion2));
+        List<RegistroSala> registros = service.generaFicheroRegistros(new Date(), "", Arrays.asList(sesion1, sesion2))
+                .getRegistrosSalas();
 
         Assert.assertEquals(2, registros.size());
         Assert.assertEquals(sala.getCodigo(), registros.get(0).getCodigo());
@@ -142,7 +147,8 @@ public class FicherosServiceTest extends FicherosServiceBaseTest
     {
         Sesion sesion1 = creaSesion(sala, evento);
 
-        List<RegistroSesion> registros = service.generaRegistrosSesion(Arrays.asList(sesion1));
+        List<RegistroSesion> registros = service.generaFicheroRegistros(new Date(), "", Arrays.asList(sesion1))
+                .getRegistrosSesiones();
 
         Assert.assertEquals(1, registros.size());
         Assert.assertEquals(1, registros.get(0).getPeliculas());
@@ -168,7 +174,8 @@ public class FicherosServiceTest extends FicherosServiceBaseTest
 
         registraCompra(sesion2, butaca3, butaca4, butaca5);
 
-        List<RegistroSesion> registros = service.generaRegistrosSesion(Arrays.asList(sesion1, sesion2));
+        List<RegistroSesion> registros = service
+                .generaFicheroRegistros(new Date(), "", Arrays.asList(sesion1, sesion2)).getRegistrosSesiones();
 
         Assert.assertEquals(2, registros.size());
 
@@ -193,7 +200,8 @@ public class FicherosServiceTest extends FicherosServiceBaseTest
     {
         Sesion sesion1 = creaSesion(sala, evento, "2/3/2013", "11:05");
 
-        List<RegistroSesionPelicula> registros = service.generaRegistrosSesionPelicula(Arrays.asList(sesion1));
+        List<RegistroSesionPelicula> registros = service.generaFicheroRegistros(new Date(), "", Arrays.asList(sesion1))
+                .getRegistrosSesionesPeliculas();
 
         Assert.assertEquals(1, registros.size());
         Assert.assertEquals(sala.getCodigo(), registros.get(0).getCodigoSala());
@@ -211,8 +219,8 @@ public class FicherosServiceTest extends FicherosServiceBaseTest
         Sesion sesion2 = creaSesion(sala, evento2, "3/4/2013", "20:30");
         Sesion sesion3 = creaSesion(sala, evento2, "3/4/2013", "22:30");
 
-        List<RegistroSesionPelicula> registros = service.generaRegistrosSesionPelicula(Arrays.asList(sesion1, sesion2,
-                sesion3));
+        List<RegistroSesionPelicula> registros = service.generaFicheroRegistros(new Date(), "",
+                Arrays.asList(sesion1, sesion2, sesion3)).getRegistrosSesionesPeliculas();
 
         Assert.assertEquals(3, registros.size());
 
@@ -235,7 +243,8 @@ public class FicherosServiceTest extends FicherosServiceBaseTest
     {
         Sesion sesion1 = creaSesion(sala, evento, "2/3/2013", "11:05");
 
-        List<RegistroPelicula> registros = service.generaRegistrosPelicula(Arrays.asList(sesion1));
+        List<RegistroPelicula> registros = service.generaFicheroRegistros(new Date(), "", Arrays.asList(sesion1))
+                .getRegistrosPeliculas();
 
         Assert.assertEquals(1, registros.size());
         Assert.assertEquals(sala.getCodigo(), registros.get(0).getCodigoSala());
@@ -259,7 +268,8 @@ public class FicherosServiceTest extends FicherosServiceBaseTest
         Evento evento2 = creaEvento(tipoEvento, "a", "s", "d", "f", "g", "h");
         Sesion sesion2 = creaSesion(sala, evento2);
 
-        List<RegistroPelicula> registros = service.generaRegistrosPelicula(Arrays.asList(sesion1, sesion2));
+        List<RegistroPelicula> registros = service.generaFicheroRegistros(new Date(), "",
+                Arrays.asList(sesion1, sesion2)).getRegistrosPeliculas();
 
         Assert.assertEquals(2, registros.size());
 
@@ -294,7 +304,8 @@ public class FicherosServiceTest extends FicherosServiceBaseTest
     {
         Sesion sesion1 = creaSesion(sala, evento, "2/3/2013", "11:05");
 
-        List<RegistroSesionProgramada> registros = service.generaRegistrosSesionesProgramadas(Arrays.asList(sesion1));
+        List<RegistroSesionProgramada> registros = service.generaFicheroRegistros(new Date(), "",
+                Arrays.asList(sesion1)).getRegistrosSesionesProgramadas();
 
         Assert.assertEquals(1, registros.size());
         Assert.assertEquals(sesion1.getSala().getCodigo(), registros.get(0).getCodigoSala());
@@ -309,8 +320,8 @@ public class FicherosServiceTest extends FicherosServiceBaseTest
         Sesion sesion1 = creaSesion(sala, evento, "2/3/2013", "11:05");
         Sesion sesion2 = creaSesion(sala, evento, "2/3/2013", "12:05");
 
-        List<RegistroSesionProgramada> registros = service.generaRegistrosSesionesProgramadas(Arrays.asList(sesion1,
-                sesion2));
+        List<RegistroSesionProgramada> registros = service.generaFicheroRegistros(new Date(), "",
+                Arrays.asList(sesion1, sesion2)).getRegistrosSesionesProgramadas();
 
         Assert.assertEquals(1, registros.size());
         Assert.assertEquals(sesion1.getSala().getCodigo(), registros.get(0).getCodigoSala());
@@ -326,8 +337,8 @@ public class FicherosServiceTest extends FicherosServiceBaseTest
         Sesion sesion2 = creaSesion(sala, evento, "2/3/2013", "12:05");
         Sesion sesion3 = creaSesion(sala, evento, "4/3/2013", "22:00");
 
-        List<RegistroSesionProgramada> registros = service.generaRegistrosSesionesProgramadas(Arrays.asList(sesion1,
-                sesion2, sesion3));
+        List<RegistroSesionProgramada> registros = service.generaFicheroRegistros(new Date(), "",
+                Arrays.asList(sesion1, sesion2, sesion3)).getRegistrosSesionesProgramadas();
 
         Assert.assertEquals(2, registros.size());
 
@@ -358,8 +369,8 @@ public class FicherosServiceTest extends FicherosServiceBaseTest
         Sesion sesion5 = creaSesion(sala2, evento, "5/3/2013", "23:00");
         Sesion sesion6 = creaSesion(sala2, evento, "5/3/2013", "22:00");
 
-        List<RegistroSesionProgramada> registros = service.generaRegistrosSesionesProgramadas(Arrays.asList(sesion1,
-                sesion2, sesion3, sesion4, sesion5, sesion6));
+        List<RegistroSesionProgramada> registros = service.generaFicheroRegistros(new Date(), "",
+                Arrays.asList(sesion1, sesion2, sesion3, sesion4, sesion5, sesion6)).getRegistrosSesionesProgramadas();
 
         Assert.assertEquals(4, registros.size());
 

@@ -13,6 +13,7 @@ import es.uji.apps.par.dao.SalasDAO;
 import es.uji.apps.par.dao.SesionesDAO;
 import es.uji.apps.par.db.CineDTO;
 import es.uji.apps.par.db.SesionDTO;
+import es.uji.apps.par.ficheros.registros.FicheroRegistros;
 import es.uji.apps.par.ficheros.registros.RegistroBuzon;
 import es.uji.apps.par.ficheros.registros.RegistroPelicula;
 import es.uji.apps.par.ficheros.registros.RegistroSala;
@@ -38,7 +39,21 @@ public class FicherosService
     @Autowired
     private SesionesDAO sesionesDAO;
 
-    public RegistroBuzon generaRegistroBuzon(Date fechaEnvio, String tipo, List<Sesion> sesiones)
+    public FicheroRegistros generaFicheroRegistros(Date fechaEnvio, String tipo, List<Sesion> sesiones)
+    {
+        FicheroRegistros ficheroRegistros = new FicheroRegistros();
+
+        ficheroRegistros.setRegistroBuzon(generaRegistroBuzon(fechaEnvio, tipo, sesiones));
+        ficheroRegistros.setRegistrosSalas(generaRegistrosSala(sesiones));
+        ficheroRegistros.setRegistrosSesiones(generaRegistrosSesion(sesiones));
+        ficheroRegistros.setRegistrosSesionesPeliculas(generaRegistrosSesionPelicula(sesiones));
+        ficheroRegistros.setRegistrosPeliculas(generaRegistrosPelicula(sesiones));
+        ficheroRegistros.setRegistrosSesionesProgramadas(generaRegistrosSesionesProgramadas(sesiones));
+
+        return ficheroRegistros;
+    }
+
+    private RegistroBuzon generaRegistroBuzon(Date fechaEnvio, String tipo, List<Sesion> sesiones)
     {
         List<CineDTO> cines = cinesDao.getCines();
         CineDTO cine = cines.get(0);
@@ -57,7 +72,7 @@ public class FicherosService
         return registroBuzon;
     }
 
-    public List<RegistroSala> generaRegistrosSala(List<Sesion> sesiones)
+    private List<RegistroSala> generaRegistrosSala(List<Sesion> sesiones)
     {
         List<RegistroSala> registrosSala = new ArrayList<RegistroSala>();
 
@@ -76,22 +91,22 @@ public class FicherosService
         return registrosSala;
     }
 
-    public List<RegistroSesion> generaRegistrosSesion(List<Sesion> sesiones)
+    private List<RegistroSesion> generaRegistrosSesion(List<Sesion> sesiones)
     {
         return sesionesDAO.getRegistrosSesiones(sesiones);
     }
 
-    public List<RegistroSesionPelicula> generaRegistrosSesionPelicula(List<Sesion> sesiones)
+    private List<RegistroSesionPelicula> generaRegistrosSesionPelicula(List<Sesion> sesiones)
     {
         return sesionesDAO.getRegistrosSesionesPeliculas(sesiones);
     }
 
-    public List<RegistroPelicula> generaRegistrosPelicula(List<Sesion> sesiones)
+    private List<RegistroPelicula> generaRegistrosPelicula(List<Sesion> sesiones)
     {
         return sesionesDAO.getRegistrosPeliculas(sesiones);
     }
 
-    public List<RegistroSesionProgramada> generaRegistrosSesionesProgramadas(List<Sesion> sesiones)
+    private List<RegistroSesionProgramada> generaRegistrosSesionesProgramadas(List<Sesion> sesiones)
     {
         List<RegistroSesionProgramada> registros = new ArrayList<RegistroSesionProgramada>();
 
@@ -103,7 +118,8 @@ public class FicherosService
 
         for (SesionDTO sesionDTO : sesionesDTO)
         {
-            if (!codigoSala.equals(sesionDTO.getParSala().getCodigo()) || !DateUtils.formatDdmmyy(sesionDTO.getFechaCelebracion()).equals(ddmmaa))
+            if (!codigoSala.equals(sesionDTO.getParSala().getCodigo())
+                    || !DateUtils.formatDdmmyy(sesionDTO.getFechaCelebracion()).equals(ddmmaa))
             {
                 if (registro != null)
                     registros.add(registro);
