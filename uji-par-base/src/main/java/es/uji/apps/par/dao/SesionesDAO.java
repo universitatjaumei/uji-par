@@ -16,11 +16,14 @@ import com.mysema.query.jpa.impl.JPAUpdateClause;
 import es.uji.apps.par.db.PreciosSesionDTO;
 import es.uji.apps.par.db.QButacaDTO;
 import es.uji.apps.par.db.QCompraDTO;
+import es.uji.apps.par.db.QEventoDTO;
 import es.uji.apps.par.db.QPreciosSesionDTO;
 import es.uji.apps.par.db.QSalaDTO;
 import es.uji.apps.par.db.QSesionDTO;
 import es.uji.apps.par.db.SesionDTO;
+import es.uji.apps.par.ficheros.registros.RegistroPelicula;
 import es.uji.apps.par.ficheros.registros.RegistroSesion;
+import es.uji.apps.par.ficheros.registros.RegistroSesionPelicula;
 import es.uji.apps.par.model.Evento;
 import es.uji.apps.par.model.Plantilla;
 import es.uji.apps.par.model.Sala;
@@ -213,33 +216,6 @@ public class SesionesDAO extends BaseDAO
         return (int) getQueryPreciosSesion(sesionId).count();
     }
 
-    /*
-    public List<RegistroSesion> getRegistrosSesiones(List<Sesion> sesiones)
-    {
-        QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
-        QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
-        QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
-        QSalaDTO qSalaDTO = QSalaDTO.salaDTO;
-        
-        List<Long> idsSesiones = Sesion.getIdsSesiones(sesiones);
-        
-        JPAQuery query = new JPAQuery(entityManager);
-
-        BigDecimal total = query
-                .from(qCompraDTO)
-                .join(qCompraDTO.parSesion, qSesionDTO)
-                .join(qCompraDTO.parButacas, qButacaDTO)
-                .join(qSesionDTO.parSala, qSalaDTO).fetch()
-                .where(qSesionDTO.id.in(idsSesiones)
-                        .and(qCompraDTO.reserva.eq(false))
-                        .and(qCompraDTO.anulada.eq(false)))
-                .distinct()        
-                .list();
-        
-        return null;
-    }
-    */
-
     @Transactional
     public List<RegistroSesion> getRegistrosSesiones(List<Sesion> sesiones)
     {
@@ -289,6 +265,83 @@ public class SesionesDAO extends BaseDAO
             registros.add(registro);
         }
 
+        return registros;
+    }
+
+    public List<RegistroSesionPelicula> getRegistrosSesionesPeliculas(List<Sesion> sesiones)
+    {
+        QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
+        QEventoDTO qEventoDTO = QEventoDTO.eventoDTO;
+        
+        List<Long> idsSesiones = Sesion.getIdsSesiones(sesiones);
+        
+        JPAQuery query = new JPAQuery(entityManager);
+
+        List<Object[]> resultado = query
+                .from(qSesionDTO)
+                .join(qSesionDTO.parEvento, qEventoDTO)
+                .join(qSesionDTO.parSala).fetch()
+                .where(qSesionDTO.id.in(idsSesiones))
+                .distinct()
+                .list(qSesionDTO, qEventoDTO.id);
+        
+        List<RegistroSesionPelicula> registros = new ArrayList<RegistroSesionPelicula>();
+        
+        for (Object[] row:resultado)
+        {
+            SesionDTO sesion = (SesionDTO) row[0];
+            Long idEvento = (Long) row[1];
+            
+            RegistroSesionPelicula registro = new RegistroSesionPelicula();
+            registro.setCodigoSala(sesion.getParSala().getCodigo());
+            registro.setCodigoPelicula(idEvento.intValue());
+            registro.setFecha(sesion.getFechaCelebracion());
+            
+            registros.add(registro);
+        }
+        
+        return registros;
+    }
+
+    public List<RegistroPelicula> getRegistrosPeliculas(List<Sesion> sesiones)
+    {
+        QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
+        QEventoDTO qEventoDTO = QEventoDTO.eventoDTO;
+        
+        List<Long> idsSesiones = Sesion.getIdsSesiones(sesiones);
+        
+        JPAQuery query = new JPAQuery(entityManager);
+
+        List<Object[]> resultado = query
+                .from(qSesionDTO)
+                .join(qSesionDTO.parEvento, qEventoDTO)
+                .join(qSesionDTO.parSala).fetch()
+                .where(qSesionDTO.id.in(idsSesiones))
+                .distinct()
+                .list(qSesionDTO, qEventoDTO.id);
+        
+        List<RegistroPelicula> registros = new ArrayList<RegistroPelicula>();
+        
+        for (Object[] row:resultado)
+        {
+            SesionDTO sesion = (SesionDTO) row[0];
+            Long idEvento = (Long) row[1];
+            
+            RegistroPelicula registro = new RegistroPelicula();
+            registro.setCodigoSala(sesion.getParSala().getCodigo());
+            registro.setCodigoPelicula(idEvento.intValue());
+            registro.setCodigoExpediente(sesion.getParEvento().getExpediente());
+            registro.setTitulo(sesion.getParEvento().getTituloEs());
+            registro.setCodigoDistribuidora(sesion.getParEvento().getCodigoDistribuidora());
+            registro.setNombreDistribuidora(sesion.getParEvento().getNombreDistribuidora());
+            registro.setVersionOriginal(sesion.getParEvento().getVo());
+            registro.setVersionLinguistica(sesion.getVersionLinguistica());
+            registro.setIdiomaSubtitulos(sesion.getParEvento().getSubtitulos());
+            registro.setFormatoProyeccion(sesion.getFormato());
+            
+            registros.add(registro);
+        }
+        
         return registros;
     }
 

@@ -14,8 +14,10 @@ import es.uji.apps.par.dao.SalasDAO;
 import es.uji.apps.par.dao.SesionesDAO;
 import es.uji.apps.par.db.CineDTO;
 import es.uji.apps.par.ficheros.registros.RegistroBuzon;
+import es.uji.apps.par.ficheros.registros.RegistroPelicula;
 import es.uji.apps.par.ficheros.registros.RegistroSala;
 import es.uji.apps.par.ficheros.registros.RegistroSesion;
+import es.uji.apps.par.ficheros.registros.RegistroSesionPelicula;
 import es.uji.apps.par.model.Sala;
 import es.uji.apps.par.model.Sesion;
 
@@ -75,5 +77,15 @@ public class FicherosService
     public List<RegistroSesion> generaRegistrosSesion(List<Sesion> sesiones)
     {
         return sesionesDAO.getRegistrosSesiones(sesiones);
+    }
+
+    public List<RegistroSesionPelicula> generaRegistrosSesionPelicula(List<Sesion> sesiones)
+    {
+        return sesionesDAO.getRegistrosSesionesPeliculas(sesiones);
+    }
+
+    public List<RegistroPelicula> generaRegistrosPelicula(List<Sesion> sesiones)
+    {
+        return sesionesDAO.getRegistrosPeliculas(sesiones);
     }
 }
