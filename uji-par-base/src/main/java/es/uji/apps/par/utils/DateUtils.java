@@ -19,6 +19,9 @@ public class DateUtils
     {
     	Calendar cal = Calendar.getInstance();
     	
+    	// Si no los millis son los del momento actual
+    	cal.setTimeInMillis(0);
+    	
         if (spanishDate == null || spanishDate.isEmpty())
             return null;
         
