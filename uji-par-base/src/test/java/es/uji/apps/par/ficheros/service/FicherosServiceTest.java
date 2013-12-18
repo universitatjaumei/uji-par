@@ -364,7 +364,7 @@ public class FicherosServiceTest
         Assert.assertEquals("020313", registros.get(0).getFechaSesion());
         Assert.assertEquals(1, registros.get(0).getNumeroSesiones());
     }
-    
+
     @Test
     @Transactional
     public void testGeneraRegistroSesionProgramadaVariasSesionesMismoDia() throws Exception
@@ -372,14 +372,15 @@ public class FicherosServiceTest
         Sesion sesion1 = creaSesion(sala, evento, "2/3/2013", "11:05");
         Sesion sesion2 = creaSesion(sala, evento, "2/3/2013", "12:05");
 
-        List<RegistroSesionProgramada> registros = service.generaRegistrosSesionesProgramadas(Arrays.asList(sesion1, sesion2));
+        List<RegistroSesionProgramada> registros = service.generaRegistrosSesionesProgramadas(Arrays.asList(sesion1,
+                sesion2));
 
         Assert.assertEquals(1, registros.size());
         Assert.assertEquals(sesion1.getSala().getCodigo(), registros.get(0).getCodigoSala());
         Assert.assertEquals("020313", registros.get(0).getFechaSesion());
         Assert.assertEquals(2, registros.get(0).getNumeroSesiones());
     }
-    
+
     @Test
     @Transactional
     public void testGeneraRegistroSesionProgramadaVariasSesionesVariosDias() throws Exception
@@ -388,10 +389,11 @@ public class FicherosServiceTest
         Sesion sesion2 = creaSesion(sala, evento, "2/3/2013", "12:05");
         Sesion sesion3 = creaSesion(sala, evento, "4/3/2013", "22:00");
 
-        List<RegistroSesionProgramada> registros = service.generaRegistrosSesionesProgramadas(Arrays.asList(sesion1, sesion2, sesion3));
+        List<RegistroSesionProgramada> registros = service.generaRegistrosSesionesProgramadas(Arrays.asList(sesion1,
+                sesion2, sesion3));
 
         Assert.assertEquals(2, registros.size());
-        
+
         RegistroSesionProgramada registro1 = registros.get(0);
         Assert.assertEquals(sesion1.getSala().getCodigo(), registro1.getCodigoSala());
         Assert.assertEquals("020313", registro1.getFechaSesion());
@@ -402,43 +404,43 @@ public class FicherosServiceTest
         Assert.assertEquals("040313", registro2.getFechaSesion());
         Assert.assertEquals(1, registro2.getNumeroSesiones());
     }
-    
-    
+
     @Test
     @Transactional
     public void testGeneraRegistroSesionProgramadaVariasSesionesVariosDiasVariasSalas() throws Exception
     {
         Sala sala2 = creaSala("sala2", "Sala 2");
-        
+
         Sesion sesion1 = creaSesion(sala, evento, "2/3/2013", "11:05");
         Sesion sesion2 = creaSesion(sala, evento, "2/3/2013", "12:05");
-        
+
         Sesion sesion3 = creaSesion(sala, evento, "4/3/2013", "22:00");
-        
+
         Sesion sesion4 = creaSesion(sala2, evento, "4/3/2013", "22:00");
-        
+
         Sesion sesion5 = creaSesion(sala2, evento, "5/3/2013", "23:00");
         Sesion sesion6 = creaSesion(sala2, evento, "5/3/2013", "22:00");
 
-        List<RegistroSesionProgramada> registros = service.generaRegistrosSesionesProgramadas(Arrays.asList(sesion1, sesion2, sesion3, sesion4, sesion5, sesion6));
+        List<RegistroSesionProgramada> registros = service.generaRegistrosSesionesProgramadas(Arrays.asList(sesion1,
+                sesion2, sesion3, sesion4, sesion5, sesion6));
 
         Assert.assertEquals(4, registros.size());
-        
+
         RegistroSesionProgramada registro1 = registros.get(0);
         Assert.assertEquals(sala.getCodigo(), registro1.getCodigoSala());
         Assert.assertEquals("020313", registro1.getFechaSesion());
         Assert.assertEquals(2, registro1.getNumeroSesiones());
-        
+
         RegistroSesionProgramada registro2 = registros.get(1);
         Assert.assertEquals(sala.getCodigo(), registro2.getCodigoSala());
         Assert.assertEquals("040313", registro2.getFechaSesion());
         Assert.assertEquals(1, registro2.getNumeroSesiones());
-        
+
         RegistroSesionProgramada registro3 = registros.get(2);
         Assert.assertEquals(sala2.getCodigo(), registro3.getCodigoSala());
         Assert.assertEquals("040313", registro3.getFechaSesion());
         Assert.assertEquals(1, registro3.getNumeroSesiones());
-        
+
         RegistroSesionProgramada registro4 = registros.get(3);
         Assert.assertEquals(sala2.getCodigo(), registro4.getCodigoSala());
         Assert.assertEquals("050313", registro4.getFechaSesion());
