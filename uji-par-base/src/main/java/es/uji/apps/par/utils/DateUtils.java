@@ -14,6 +14,7 @@ public class DateUtils
     private static final SimpleDateFormat DATABASE_DAY = new SimpleDateFormat("yyyy-MM-dd");
     private static final SimpleDateFormat FORMAT_HOUR = new SimpleDateFormat("HH:mm");
     private static final SimpleDateFormat FORMAT_DAY_HOUR = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+    private static final SimpleDateFormat FORMAT_DDMMYY = new SimpleDateFormat("ddMMyy");
 
     public static Date spanishStringToDate(String spanishDate)
     {
@@ -147,5 +148,10 @@ public class DateUtils
         limite.add(Calendar.MINUTE, -Configuration.getMargenVentaTaquillaMinutos());
         
         return limite.getTime();
+    }
+    
+    public static String formatDdmmyy(Date fecha)
+    {
+        return FORMAT_DDMMYY.format(fecha);
     }
 }

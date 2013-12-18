@@ -345,4 +345,23 @@ public class SesionesDAO extends BaseDAO
         return registros;
     }
 
+    
+    public List<SesionDTO> getSesionesOrdenadas(List<Sesion> sesiones)
+    {
+        QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
+        QSalaDTO qSalaDTO = QSalaDTO.salaDTO;
+        
+        List<Long> idsSesiones = Sesion.getIdsSesiones(sesiones);
+        
+        JPAQuery query = new JPAQuery(entityManager);
+        
+        List<SesionDTO> resultado = query
+                .from(qSesionDTO)
+                .join(qSesionDTO.parSala, qSalaDTO).fetch()
+                .where(qSesionDTO.id.in(idsSesiones))
+                .orderBy(qSalaDTO.id.asc(), qSesionDTO.fechaCelebracion.asc())
+                .list(qSesionDTO);
+        
+        return resultado;
+    }
 }

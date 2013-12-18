@@ -1,7 +1,6 @@
 package es.uji.apps.par.ficheros.registros;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 
 import es.uji.apps.par.RegistroSerializaException;
@@ -12,7 +11,7 @@ public class RegistroSesionProgramada
     private static SimpleDateFormat DAY_FORMAT = new SimpleDateFormat("ddMMyy");
 
     private String codigoSala;
-    private Date fechaSesion;
+    private String fechaSesion;
     private int numeroSesiones;
 
     public String getCodigoSala()
@@ -25,12 +24,12 @@ public class RegistroSesionProgramada
         this.codigoSala = codigoSala;
     }
 
-    public Date getFechaSesion()
+    public String getFechaSesion()
     {
         return fechaSesion;
     }
 
-    public void setFechaSesion(Date fechaSesion)
+    public void setFechaSesion(String fechaSesion)
     {
         this.fechaSesion = fechaSesion;
     }
@@ -55,7 +54,7 @@ public class RegistroSesionProgramada
 
         FicherosUtils.compruebaCodigoSala(codigoSala);
 
-        String result = String.format(Locale.ENGLISH, "5%-12s%s%02d", codigoSala, DAY_FORMAT.format(fechaSesion),
+        String result = String.format(Locale.ENGLISH, "5%-12s%s%02d", codigoSala, fechaSesion,
                 numeroSesiones);
 
         return result;

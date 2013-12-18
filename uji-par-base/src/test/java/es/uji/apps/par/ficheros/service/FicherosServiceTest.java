@@ -31,6 +31,7 @@ import es.uji.apps.par.ficheros.registros.RegistroPelicula;
 import es.uji.apps.par.ficheros.registros.RegistroSala;
 import es.uji.apps.par.ficheros.registros.RegistroSesion;
 import es.uji.apps.par.ficheros.registros.RegistroSesionPelicula;
+import es.uji.apps.par.ficheros.registros.RegistroSesionProgramada;
 import es.uji.apps.par.model.Butaca;
 import es.uji.apps.par.model.Cine;
 import es.uji.apps.par.model.Evento;
@@ -311,20 +312,20 @@ public class FicherosServiceTest
         Assert.assertEquals(evento.getSubtitulos(), registros.get(0).getIdiomaSubtitulos());
         Assert.assertEquals(sesion1.getFormato(), registros.get(0).getFormatoProyeccion());
     }
-    
+
     @Test
     @Transactional
     public void testGeneraRegistroPeliculaVariasSesionesYEventos() throws Exception
     {
         Sesion sesion1 = creaSesion(sala, evento);
-        
+
         Evento evento2 = creaEvento(tipoEvento, "a", "s", "d", "f", "g", "h");
         Sesion sesion2 = creaSesion(sala, evento2);
 
         List<RegistroPelicula> registros = service.generaRegistrosPelicula(Arrays.asList(sesion1, sesion2));
 
         Assert.assertEquals(2, registros.size());
-        
+
         RegistroPelicula registro0 = registros.get(0);
         Assert.assertEquals("567", registro0.getCodigoSala());
         Assert.assertEquals(evento.getId(), registro0.getCodigoPelicula());
@@ -336,7 +337,7 @@ public class FicherosServiceTest
         Assert.assertEquals(evento.getSubtitulos(), registro0.getIdiomaSubtitulos());
         Assert.assertEquals(sesion1.getVersionLinguistica(), registro0.getVersionLinguistica());
         Assert.assertEquals(sesion1.getFormato(), registro0.getFormatoProyeccion());
-        
+
         RegistroPelicula registro1 = registros.get(1);
         Assert.assertEquals("567", registro1.getCodigoSala());
         Assert.assertEquals(evento2.getId(), registro1.getCodigoPelicula());
@@ -348,6 +349,100 @@ public class FicherosServiceTest
         Assert.assertEquals(evento2.getSubtitulos(), registro1.getIdiomaSubtitulos());
         Assert.assertEquals(sesion2.getVersionLinguistica(), registro1.getVersionLinguistica());
         Assert.assertEquals(sesion2.getFormato(), registro1.getFormatoProyeccion());
+    }
+
+    @Test
+    @Transactional
+    public void testGeneraRegistroSesionProgramada() throws Exception
+    {
+        Sesion sesion1 = creaSesion(sala, evento, "2/3/2013", "11:05");
+
+        List<RegistroSesionProgramada> registros = service.generaRegistrosSesionesProgramadas(Arrays.asList(sesion1));
+
+        Assert.assertEquals(1, registros.size());
+        Assert.assertEquals(sesion1.getSala().getCodigo(), registros.get(0).getCodigoSala());
+        Assert.assertEquals("020313", registros.get(0).getFechaSesion());
+        Assert.assertEquals(1, registros.get(0).getNumeroSesiones());
+    }
+    
+    @Test
+    @Transactional
+    public void testGeneraRegistroSesionProgramadaVariasSesionesMismoDia() throws Exception
+    {
+        Sesion sesion1 = creaSesion(sala, evento, "2/3/2013", "11:05");
+        Sesion sesion2 = creaSesion(sala, evento, "2/3/2013", "12:05");
+
+        List<RegistroSesionProgramada> registros = service.generaRegistrosSesionesProgramadas(Arrays.asList(sesion1, sesion2));
+
+        Assert.assertEquals(1, registros.size());
+        Assert.assertEquals(sesion1.getSala().getCodigo(), registros.get(0).getCodigoSala());
+        Assert.assertEquals("020313", registros.get(0).getFechaSesion());
+        Assert.assertEquals(2, registros.get(0).getNumeroSesiones());
+    }
+    
+    @Test
+    @Transactional
+    public void testGeneraRegistroSesionProgramadaVariasSesionesVariosDias() throws Exception
+    {
+        Sesion sesion1 = creaSesion(sala, evento, "2/3/2013", "11:05");
+        Sesion sesion2 = creaSesion(sala, evento, "2/3/2013", "12:05");
+        Sesion sesion3 = creaSesion(sala, evento, "4/3/2013", "22:00");
+
+        List<RegistroSesionProgramada> registros = service.generaRegistrosSesionesProgramadas(Arrays.asList(sesion1, sesion2, sesion3));
+
+        Assert.assertEquals(2, registros.size());
+        
+        RegistroSesionProgramada registro1 = registros.get(0);
+        Assert.assertEquals(sesion1.getSala().getCodigo(), registro1.getCodigoSala());
+        Assert.assertEquals("020313", registro1.getFechaSesion());
+        Assert.assertEquals(2, registro1.getNumeroSesiones());
+
+        RegistroSesionProgramada registro2 = registros.get(1);
+        Assert.assertEquals(sesion3.getSala().getCodigo(), registro2.getCodigoSala());
+        Assert.assertEquals("040313", registro2.getFechaSesion());
+        Assert.assertEquals(1, registro2.getNumeroSesiones());
+    }
+    
+    
+    @Test
+    @Transactional
+    public void testGeneraRegistroSesionProgramadaVariasSesionesVariosDiasVariasSalas() throws Exception
+    {
+        Sala sala2 = creaSala("sala2", "Sala 2");
+        
+        Sesion sesion1 = creaSesion(sala, evento, "2/3/2013", "11:05");
+        Sesion sesion2 = creaSesion(sala, evento, "2/3/2013", "12:05");
+        
+        Sesion sesion3 = creaSesion(sala, evento, "4/3/2013", "22:00");
+        
+        Sesion sesion4 = creaSesion(sala2, evento, "4/3/2013", "22:00");
+        
+        Sesion sesion5 = creaSesion(sala2, evento, "5/3/2013", "23:00");
+        Sesion sesion6 = creaSesion(sala2, evento, "5/3/2013", "22:00");
+
+        List<RegistroSesionProgramada> registros = service.generaRegistrosSesionesProgramadas(Arrays.asList(sesion1, sesion2, sesion3, sesion4, sesion5, sesion6));
+
+        Assert.assertEquals(4, registros.size());
+        
+        RegistroSesionProgramada registro1 = registros.get(0);
+        Assert.assertEquals(sala.getCodigo(), registro1.getCodigoSala());
+        Assert.assertEquals("020313", registro1.getFechaSesion());
+        Assert.assertEquals(2, registro1.getNumeroSesiones());
+        
+        RegistroSesionProgramada registro2 = registros.get(1);
+        Assert.assertEquals(sala.getCodigo(), registro2.getCodigoSala());
+        Assert.assertEquals("040313", registro2.getFechaSesion());
+        Assert.assertEquals(1, registro2.getNumeroSesiones());
+        
+        RegistroSesionProgramada registro3 = registros.get(2);
+        Assert.assertEquals(sala2.getCodigo(), registro3.getCodigoSala());
+        Assert.assertEquals("040313", registro3.getFechaSesion());
+        Assert.assertEquals(1, registro3.getNumeroSesiones());
+        
+        RegistroSesionProgramada registro4 = registros.get(3);
+        Assert.assertEquals(sala2.getCodigo(), registro4.getCodigoSala());
+        Assert.assertEquals("050313", registro4.getFechaSesion());
+        Assert.assertEquals(2, registro4.getNumeroSesiones());
     }
 
     private void registraCompra(Sesion sesion1, Butaca... butacas) throws NoHayButacasLibresException,
@@ -400,9 +495,9 @@ public class FicherosServiceTest
     {
         return creaEvento(tipoEvento, "1a", "2a", "3a", "4a", "5a", "6a");
     }
-    
-    private Evento creaEvento(TipoEvento tipoEvento, String expediente, String titulo, String codigoDistribuidora, String nombreDistribuidora, 
-            String vo, String subtitulos)
+
+    private Evento creaEvento(TipoEvento tipoEvento, String expediente, String titulo, String codigoDistribuidora,
+            String nombreDistribuidora, String vo, String subtitulos)
     {
         Evento evento = new Evento();
         evento.setTipoEvento(tipoEvento.getId());
@@ -412,9 +507,9 @@ public class FicherosServiceTest
         evento.setNombreDistribuidora(nombreDistribuidora);
         evento.setVo(vo);
         evento.setSubtitulos(subtitulos);
-        
+
         eventosDAO.addEvento(evento);
-        
+
         return evento;
     }
 

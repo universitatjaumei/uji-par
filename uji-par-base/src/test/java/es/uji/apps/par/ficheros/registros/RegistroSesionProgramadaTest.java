@@ -148,13 +148,12 @@ public class RegistroSesionProgramadaTest
     }
     */
 
-    @SuppressWarnings("deprecation")
     private RegistroSesionProgramada creaRegistroEjemplo()
     {
         RegistroSesionProgramada registro = new RegistroSesionProgramada();
 
         registro.setCodigoSala("123");
-        registro.setFechaSesion(new Date(113, 8, 5));
+        registro.setFechaSesion("050913");
         registro.setNumeroSesiones(2);
         return registro;
     }

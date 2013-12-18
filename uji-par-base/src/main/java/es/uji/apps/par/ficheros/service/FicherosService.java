@@ -1,6 +1,5 @@
 package es.uji.apps.par.ficheros.service;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,13 +12,16 @@ import es.uji.apps.par.dao.ComprasDAO;
 import es.uji.apps.par.dao.SalasDAO;
 import es.uji.apps.par.dao.SesionesDAO;
 import es.uji.apps.par.db.CineDTO;
+import es.uji.apps.par.db.SesionDTO;
 import es.uji.apps.par.ficheros.registros.RegistroBuzon;
 import es.uji.apps.par.ficheros.registros.RegistroPelicula;
 import es.uji.apps.par.ficheros.registros.RegistroSala;
 import es.uji.apps.par.ficheros.registros.RegistroSesion;
 import es.uji.apps.par.ficheros.registros.RegistroSesionPelicula;
+import es.uji.apps.par.ficheros.registros.RegistroSesionProgramada;
 import es.uji.apps.par.model.Sala;
 import es.uji.apps.par.model.Sesion;
+import es.uji.apps.par.utils.DateUtils;
 
 @Service
 public class FicherosService
@@ -87,5 +89,39 @@ public class FicherosService
     public List<RegistroPelicula> generaRegistrosPelicula(List<Sesion> sesiones)
     {
         return sesionesDAO.getRegistrosPeliculas(sesiones);
+    }
+
+    public List<RegistroSesionProgramada> generaRegistrosSesionesProgramadas(List<Sesion> sesiones)
+    {
+        List<RegistroSesionProgramada> registros = new ArrayList<RegistroSesionProgramada>();
+
+        List<SesionDTO> sesionesDTO = sesionesDAO.getSesionesOrdenadas(sesiones);
+
+        String codigoSala = "";
+        String ddmmaa = "";
+        RegistroSesionProgramada registro = null;
+
+        for (SesionDTO sesionDTO : sesionesDTO)
+        {
+            if (!codigoSala.equals(sesionDTO.getParSala().getCodigo()) || !DateUtils.formatDdmmyy(sesionDTO.getFechaCelebracion()).equals(ddmmaa))
+            {
+                if (registro != null)
+                    registros.add(registro);
+
+                registro = new RegistroSesionProgramada();
+                registro.setCodigoSala(sesionDTO.getParSala().getCodigo());
+                registro.setFechaSesion(DateUtils.formatDdmmyy(sesionDTO.getFechaCelebracion()));
+                registro.setNumeroSesiones(0);
+
+                codigoSala = sesionDTO.getParSala().getCodigo();
+                ddmmaa = DateUtils.formatDdmmyy(sesionDTO.getFechaCelebracion());
+            }
+
+            registro.setNumeroSesiones(registro.getNumeroSesiones() + 1);
+        }
+
+        registros.add(registro);
+
+        return registros;
     }
 }
