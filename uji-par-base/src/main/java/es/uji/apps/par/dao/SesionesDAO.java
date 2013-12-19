@@ -2,6 +2,7 @@ package es.uji.apps.par.dao;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,7 @@ import es.uji.apps.par.db.SesionDTO;
 import es.uji.apps.par.ficheros.registros.RegistroPelicula;
 import es.uji.apps.par.ficheros.registros.RegistroSesion;
 import es.uji.apps.par.ficheros.registros.RegistroSesionPelicula;
+import es.uji.apps.par.ficheros.registros.TipoIncidencia;
 import es.uji.apps.par.model.Evento;
 import es.uji.apps.par.model.Plantilla;
 import es.uji.apps.par.model.Sala;
@@ -33,6 +35,8 @@ import es.uji.apps.par.utils.DateUtils;
 @Repository
 public class SesionesDAO extends BaseDAO
 {
+    private static SimpleDateFormat HOUR_FORMAT = new SimpleDateFormat("HHmm");
+    
     private QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
     private QPreciosSesionDTO qPreciosSesionDTO = QPreciosSesionDTO.preciosSesionDTO;
 
@@ -256,6 +260,8 @@ public class SesionesDAO extends BaseDAO
             registro.setEspectadores(espectadores.intValue());
             registro.setPeliculas(1);
             registro.setFecha(sesion.getFechaCelebracion());
+            registro.setHora(HOUR_FORMAT.format(sesion.getFechaCelebracion()));
+            registro.setIncidencia(TipoIncidencia.SIN_INCIDENCIAS);
 
             if (recaudacion == null)
                 registro.setRecaudacion(BigDecimal.ZERO);
@@ -296,6 +302,7 @@ public class SesionesDAO extends BaseDAO
             registro.setCodigoSala(sesion.getParSala().getCodigo());
             registro.setCodigoPelicula(idEvento.intValue());
             registro.setFecha(sesion.getFechaCelebracion());
+            registro.setHora(HOUR_FORMAT.format(sesion.getFechaCelebracion()));
             
             registros.add(registro);
         }
