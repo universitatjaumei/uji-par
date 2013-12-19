@@ -27,7 +27,7 @@ import es.uji.apps.par.utils.DateUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/applicationContext-db-test.xml" })
-public class FicherosServiceTest extends FicherosServiceBaseTest
+public class FicherosServiceRegistrosTest extends FicherosServiceBaseTest
 {
     @Autowired
     private FicherosService service;
@@ -35,7 +35,7 @@ public class FicherosServiceTest extends FicherosServiceBaseTest
     @Before
     public void setup()
     {
-        super.setUp();
+        super.setup();
     }
 
     @Test
@@ -153,6 +153,7 @@ public class FicherosServiceTest extends FicherosServiceBaseTest
         Assert.assertEquals(1, registros.size());
         Assert.assertEquals(1, registros.get(0).getPeliculas());
         Assert.assertEquals(DateUtils.spanishStringWithHourstoDate("11/12/2013 22:00"), registros.get(0).getFecha());
+        Assert.assertEquals("2200", registros.get(0).getHora());
         Assert.assertEquals(0, registros.get(0).getEspectadores());
         Assert.assertEquals(0.0, registros.get(0).getRecaudacion().floatValue(), 0.000001);
     }
@@ -224,17 +225,23 @@ public class FicherosServiceTest extends FicherosServiceBaseTest
 
         Assert.assertEquals(3, registros.size());
 
-        Assert.assertEquals(sala.getCodigo(), registros.get(0).getCodigoSala());
-        Assert.assertEquals(DateUtils.spanishStringWithHourstoDate("1/2/2013 16:00"), registros.get(0).getFecha());
-        Assert.assertEquals(evento.getId(), registros.get(0).getCodigoPelicula());
+        RegistroSesionPelicula registro1 = registros.get(0);
+        Assert.assertEquals(sala.getCodigo(), registro1.getCodigoSala());
+        Assert.assertEquals(DateUtils.spanishStringWithHourstoDate("1/2/2013 16:00"), registro1.getFecha());
+        Assert.assertEquals("1600", registro1.getHora());
+        Assert.assertEquals(evento.getId(), registro1.getCodigoPelicula());
 
-        Assert.assertEquals(sala.getCodigo(), registros.get(1).getCodigoSala());
-        Assert.assertEquals(DateUtils.spanishStringWithHourstoDate("3/4/2013 20:30"), registros.get(1).getFecha());
-        Assert.assertEquals(evento2.getId(), registros.get(1).getCodigoPelicula());
+        RegistroSesionPelicula registro2 = registros.get(1);
+        Assert.assertEquals(sala.getCodigo(), registro2.getCodigoSala());
+        Assert.assertEquals(DateUtils.spanishStringWithHourstoDate("3/4/2013 20:30"), registro2.getFecha());
+        Assert.assertEquals("2030", registro2.getHora());
+        Assert.assertEquals(evento2.getId(), registro2.getCodigoPelicula());
 
-        Assert.assertEquals(sala.getCodigo(), registros.get(2).getCodigoSala());
-        Assert.assertEquals(DateUtils.spanishStringWithHourstoDate("3/4/2013 22:30"), registros.get(2).getFecha());
-        Assert.assertEquals(evento2.getId(), registros.get(2).getCodigoPelicula());
+        RegistroSesionPelicula registro3 = registros.get(2);
+        Assert.assertEquals(sala.getCodigo(), registro3.getCodigoSala());
+        Assert.assertEquals(DateUtils.spanishStringWithHourstoDate("3/4/2013 22:30"), registro3.getFecha());
+        Assert.assertEquals("2230", registro3.getHora());
+        Assert.assertEquals(evento2.getId(), registro3.getCodigoPelicula());
     }
 
     @Test

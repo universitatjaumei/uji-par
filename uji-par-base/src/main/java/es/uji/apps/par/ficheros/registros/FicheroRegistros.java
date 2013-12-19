@@ -2,6 +2,8 @@ package es.uji.apps.par.ficheros.registros;
 
 import java.util.List;
 
+import es.uji.apps.par.RegistroSerializaException;
+
 public class FicheroRegistros
 {
     private RegistroBuzon registroBuzon;
@@ -71,4 +73,43 @@ public class FicheroRegistros
         this.registrosSesionesProgramadas = registrosSesionesProgramadas;
     }
 
+    public String serializa() throws RegistroSerializaException
+    {
+        StringBuffer buff = new StringBuffer();
+
+        buff.append(registroBuzon.serializa());
+        buff.append("\n");
+
+        for (RegistroSala registroSala : registrosSalas)
+        {
+            buff.append(registroSala.serializa());
+            buff.append("\n");
+        }
+
+        for (RegistroSesion registroSesion : registrosSesiones)
+        {
+            buff.append(registroSesion.serializa());
+            buff.append("\n");
+        }
+
+        for (RegistroSesionPelicula registroSesionPelicula : registrosSesionesPeliculas)
+        {
+            buff.append(registroSesionPelicula.serializa());
+            buff.append("\n");
+        }
+
+        for (RegistroPelicula registroPelicula : registrosPeliculas)
+        {
+            buff.append(registroPelicula.serializa());
+            buff.append("\n");
+        }
+
+        for (RegistroSesionProgramada registroSesionProgramada : registrosSesionesProgramadas)
+        {
+            buff.append(registroSesionProgramada.serializa());
+            buff.append("\n");
+        }
+
+        return buff.toString();
+    }
 }

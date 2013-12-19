@@ -50,6 +50,12 @@ public class FicherosService
         ficheroRegistros.setRegistrosPeliculas(generaRegistrosPelicula(sesiones));
         ficheroRegistros.setRegistrosSesionesProgramadas(generaRegistrosSesionesProgramadas(sesiones));
 
+        ficheroRegistros.getRegistroBuzon().setLineas(
+                1 + ficheroRegistros.getRegistrosSalas().size() + ficheroRegistros.getRegistrosSesiones().size()
+                        + ficheroRegistros.getRegistrosSesionesPeliculas().size()
+                        + ficheroRegistros.getRegistrosPeliculas().size()
+                        + ficheroRegistros.getRegistrosSesionesProgramadas().size());
+
         return ficheroRegistros;
     }
 

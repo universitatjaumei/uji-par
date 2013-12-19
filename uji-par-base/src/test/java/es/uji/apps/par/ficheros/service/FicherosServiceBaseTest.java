@@ -69,7 +69,7 @@ public class FicherosServiceBaseTest
     protected Evento evento;
 
 
-    protected void setUp()
+    protected void setup()
     {
         cine = creaCine();
         localizacion = creaLocalizacion("Platea");
@@ -129,7 +129,7 @@ public class FicherosServiceBaseTest
 
     protected Evento creaEvento(TipoEvento tipoEvento)
     {
-        return creaEvento(tipoEvento, "1a", "2a", "3a", "4a", "5a", "6a");
+        return creaEvento(tipoEvento, "1a", "2a", "3a", "4a", "5", "6");
     }
 
     protected Evento creaEvento(TipoEvento tipoEvento, String expediente, String titulo, String codigoDistribuidora,
