@@ -115,7 +115,11 @@ public class RegistroBuzon
                     + tipo);
 
         Calendar calDiaAnterior = Calendar.getInstance();
-        calDiaAnterior.setTime(fechaEnvioHabitualAnterior);
+        
+        if (fechaEnvioHabitualAnterior == null)
+            calDiaAnterior.setTime(fechaEnvio);
+        else
+            calDiaAnterior.setTime(fechaEnvioHabitualAnterior);
 
         Calendar calDia = Calendar.getInstance();
         calDia.setTime(fechaEnvio);
