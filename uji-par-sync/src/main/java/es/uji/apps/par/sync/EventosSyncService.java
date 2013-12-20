@@ -82,11 +82,13 @@ public class EventosSyncService
             evento.setAsientosNumerados(item.getSeientsNumerats().equals("si") ? true : false);
         }
 
-        String urlImagen = item.getEnclosures().get(0).getUrl();
-        evento.setImagen(getImageFromUrl(urlImagen));
-        evento.setImagenSrc(urlImagen);
-
-        evento.setImagenContentType(item.getEnclosures().get(0).getType());
+        if (item.getEnclosures() != null && item.getEnclosures().size() > 0)
+        {
+            String urlImagen = item.getEnclosures().get(0).getUrl();
+            evento.setImagen(getImageFromUrl(urlImagen));
+            evento.setImagenSrc(urlImagen);
+            evento.setImagenContentType(item.getEnclosures().get(0).getType());
+        }
 
         if (item.getIdioma().equals("ca"))
         {
