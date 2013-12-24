@@ -19,6 +19,7 @@ public class Item
     private String contenidoId;
     private String idioma;
     private String esquema;
+    private Sesiones sesiones;
 
     public String getTitle()
     {
@@ -39,6 +40,16 @@ public class Item
     public void setEnclosures(List<Enclosure> enclosures)
     {
         this.enclosures = enclosures;
+    }
+    
+    public Sesiones getSesiones()
+    {
+        return sesiones;
+    }
+
+    public void setSesiones(Sesiones sesiones)
+    {
+        this.sesiones = sesiones;
     }
 
     public String getContenido()
