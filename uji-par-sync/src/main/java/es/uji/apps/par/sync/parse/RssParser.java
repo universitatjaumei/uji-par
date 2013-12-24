@@ -15,10 +15,17 @@ public class RssParser
 {
     private Unmarshaller unmarshaller;
 
-    public RssParser() throws JAXBException
+    public RssParser()
     {
-        JAXBContext jaxbContext = JAXBContext.newInstance(Rss.class);
-        unmarshaller = jaxbContext.createUnmarshaller();
+        try
+        {
+            JAXBContext jaxbContext = JAXBContext.newInstance(Rss.class);
+            unmarshaller = jaxbContext.createUnmarshaller();
+        }
+        catch (JAXBException e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 
     public Rss parse(InputStream inputStream) throws JAXBException

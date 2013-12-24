@@ -30,6 +30,8 @@ public class Configuration
     private static final String USER_READONLY_LOGIN = "uji.par.auth.readonly.login";
     private static final String USER_READONLY_PASSWORD = "uji.par.auth.readonly.password";    
     private static final String JDBC_URL = "uji.db.jdbcUrl";
+    private static final String SYNC_TIPO = "uji.sync.lugar";
+    private static final String SYNC_URL_TIPO = "uji.sync.rss";
     
 
     public static Logger log = Logger.getLogger(Configuration.class);
@@ -191,5 +193,15 @@ public class Configuration
     public static String getJdbUrl()
     {
         return getProperty(JDBC_URL);
+    }
+
+    public static String getSyncTipo()
+    {
+        return getProperty(SYNC_TIPO);
+    }
+    
+    public static String[] getSyncUrlsRss()
+    {
+        return getProperty(SYNC_URL_TIPO).split(",");
     }
 }

@@ -26,7 +26,7 @@ public class RssParserTest extends SyncBaseTest
     @Test
     public void testParse() throws JAXBException
     {
-        Rss rss = parser.parse(loadFromClasspath("rss-ca.xml"));
+        Rss rss = parser.parse(loadFromClasspath("uji/rss-ca.xml"));
 
         assertNotNull("Rss parseado no es nulo", rss);
         assertNotNull("Channel parseado no es nulo", rss.getChannel());

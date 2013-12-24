@@ -371,4 +371,11 @@ public class SesionesDAO extends BaseDAO
         
         return resultado;
     }
+
+    @Transactional
+    public void deleteSesionesEvento(long idEvento)
+    {
+        JPADeleteClause delete = new JPADeleteClause(entityManager, qSesionDTO);
+        delete.where(qSesionDTO.parEvento.id.eq(idEvento)).execute();        
+    }
 }

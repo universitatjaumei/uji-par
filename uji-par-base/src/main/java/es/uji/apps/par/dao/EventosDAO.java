@@ -405,7 +405,7 @@ public class EventosDAO extends BaseDAO
     @Transactional
     public void updateEventoDTO(EventoDTO eventoDTO)
     {
-        entityManager.persist(eventoDTO);
+        entityManager.merge(eventoDTO);
     }
     
     @Transactional
@@ -431,8 +431,7 @@ public class EventosDAO extends BaseDAO
 
          List<EventoDTO> eventos = query
                 .from(qEventoDTO)
-                .leftJoin(qEventoDTO.parTiposEvento, qTipoEvento)
-                .fetch()
+                .leftJoin(qEventoDTO.parTiposEvento, qTipoEvento).fetch()
                 .where(qEventoDTO.rssId.eq(rssId))
                 .list(qEventoDTO);
          

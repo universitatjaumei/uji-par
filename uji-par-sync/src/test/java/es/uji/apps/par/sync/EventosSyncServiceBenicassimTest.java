@@ -5,7 +5,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.util.List;
 
@@ -21,18 +20,22 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import es.uji.apps.par.dao.EventosDAO;
+import es.uji.apps.par.dao.PlantillasDAO;
+import es.uji.apps.par.dao.SesionesDAO;
 import es.uji.apps.par.dao.TiposEventosDAO;
 import es.uji.apps.par.db.EventoDTO;
+import es.uji.apps.par.db.SesionDTO;
 import es.uji.apps.par.model.Evento;
+import es.uji.apps.par.model.Plantilla;
 import es.uji.apps.par.model.TipoEvento;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @TransactionConfiguration(transactionManager = "transactionManager")
 @ContextConfiguration(locations = { "/applicationContext-db-test.xml" })
-public class EventosSyncServiceTest extends SyncBaseTest
+public class EventosSyncServiceBenicassimTest extends SyncBaseTest
 {
-    private static final String RSS_CA = "rss-ca.xml";
-    private static final String RSS_ES = "rss-es.xml";
+    private static final String RSS_CA = "benicassim/rss-ca.xml";
+    private static final String RSS_ES = "benicassim/rss-es.xml";
 
     @Autowired
     EventosSyncService syncService;
@@ -41,26 +44,45 @@ public class EventosSyncServiceTest extends SyncBaseTest
     EventosDAO eventosDAO;
 
     @Autowired
+    SesionesDAO sesionesDao;
+
+    @Autowired
     TiposEventosDAO tiposEventosDAO;
+
+    @Autowired
+    PlantillasDAO plantillasDao;
 
     @Before
     public void setup()
     {
+        syncService.setTipo("benicassim");
+        insertaPlantillaPrecios();
         insertaTiposEventos();
+    }
+
+    private void insertaPlantillaPrecios()
+    {
+        Plantilla plantilla = new Plantilla("test");
+        plantillasDao.add(plantilla);
     }
 
     private void insertaTiposEventos()
     {
-        TipoEvento tipo = new TipoEvento();
-        tipo.setNombreVa("Teatre");
-        tipo.setNombreEs("Teatro");
+        insertaTipo("Teatro", "Teatre");
+        insertaTipo("Cine", "Cinema");
+        insertaTipo("Libro y lectura", "Llibre i lectura");
+        insertaTipo("Música", "Música");
 
-        tiposEventosDAO.addTipoEvento(tipo);
-        
-        tipo = new TipoEvento();
-        tipo.setNombreVa("Cinema");
-        tipo.setNombreEs("Cine");
-        
+        insertaTipo("Actividades infantiles", "Activitats infantils");
+        insertaTipo("Exposiciones", "Exposicions");
+        insertaTipo("Teatro infantil", "Teatre infantil");
+    }
+
+    private void insertaTipo(String nombreEs, String nombreVa)
+    {
+        TipoEvento tipo = new TipoEvento();
+        tipo.setNombreEs(nombreEs);
+        tipo.setNombreVa(nombreVa);
         tiposEventosDAO.addTipoEvento(tipo);
     }
 
@@ -72,7 +94,7 @@ public class EventosSyncServiceTest extends SyncBaseTest
 
         List<Evento> eventos = eventosDAO.getEventosConSesiones();
 
-        assertEquals("Número de eventos nuevos", 2, eventos.size());
+        assertEquals("Número de eventos nuevos", 16, eventos.size());
     }
 
     @Test
@@ -81,27 +103,37 @@ public class EventosSyncServiceTest extends SyncBaseTest
     {
         syncService.sync(loadFromClasspath(RSS_CA));
 
-        EventoDTO evento = eventosDAO.getEventoByRssId("1");
+        EventoDTO evento = eventosDAO.getEventoByRssId("839");
 
         assertNotNull("Evento nuevo insertado", evento);
 
-        assertEquals("rssId del evento", "1", evento.getRssId());
-        assertEquals("Título VA del evento", "Madre Coraje", evento.getTituloVa());
-        assertTrue(
-                "Descripción VA del evento",
-                evento.getDescripcionVa().startsWith(
-                        "<p>\r\n\t<strong>Adaptaci&oacute; i direcci&oacute;</strong>: Ricardo Iniesta"));
-        
-        assertEquals("Características VA del evento", "Basada en la Historia de la vida de la estafadora y aventurera Coraje de Grimmelshausen.", evento.getCaracteristicasVa());
-        assertEquals("Duración VA del evento", "120", evento.getDuracionVa());
-        assertEquals("Tipo del evento", "Teatre", evento.getParTiposEvento().getNombreVa());
+        assertEquals("rssId del evento", "839", evento.getRssId());
+        assertEquals("Título VA del evento", "Nova reunió del club de lectura", evento.getTituloVa());
+        assertTrue("Descripción VA del evento",
+                evento.getDescripcionVa().startsWith("<p>\"Nada\" de Carmen Laforet a debat en el club de lectura"));
 
-        assertEquals("Asientos numerados del evento", true, evento.getAsientosNumerados());
         assertNotNull("Tipo del evento no nulo", evento.getParTiposEvento());
-        
-        assertEquals("URL imagen del evento", "https://www.google.es/images/srpr/logo4w.png", evento.getImagenSrc());
-        assertEquals("Contenido imagen del evento", 18946, evento.getImagen().length);
-        assertEquals("Content-type imagen del evento", "image/jpeg", evento.getImagenContentType());
+        assertEquals("Tipo del evento", "Llibre i lectura", evento.getParTiposEvento().getNombreVa());
+
+        //assertEquals("Asientos numerados del evento", true, evento.getAsientosNumerados());
+
+        assertEquals("URL imagen del evento",
+                "http://www.benicassimcultura.es/ficheros_sw/adjuntos/52a5e39eb363b_laforet.jpg", evento.getImagenSrc());
+        assertEquals("Contenido imagen del evento", 81057, evento.getImagen().length);
+        assertEquals("Content-type imagen del evento", "image/jpg", evento.getImagenContentType());
+    }
+
+    @Test
+    @Transactional
+    public void testSyncSesiones() throws JAXBException, MalformedURLException, IOException
+    {
+        syncService.sync(loadFromClasspath(RSS_CA));
+
+        EventoDTO evento = eventosDAO.getEventoByRssId("789");
+
+        List<SesionDTO> sesiones = sesionesDao.getSesiones(evento.getId(), "", 0, 100);
+
+        assertEquals("Número sesiones", 3, sesiones.size());
     }
 
     @Test
@@ -110,18 +142,13 @@ public class EventosSyncServiceTest extends SyncBaseTest
     {
         syncService.sync(loadFromClasspath(RSS_CA));
 
-        EventoDTO evento = eventosDAO.getEventoByRssId("1");
+        EventoDTO evento = eventosDAO.getEventoByRssId("839");
 
-        assertEquals("Título VA del evento", "Madre Coraje", evento.getTituloVa());
-        assertTrue(
-                "Descripción VA del evento",
-                evento.getDescripcionVa().startsWith(
-                        "<p>\r\n\t<strong>Adaptaci&oacute; i direcci&oacute;</strong>: Ricardo Iniesta"));
-        
-        assertEquals("Características VA del evento", "Basada en la Historia de la vida de la estafadora y aventurera Coraje de Grimmelshausen.", evento.getCaracteristicasVa());
-        
-        assertEquals("Duración VA del evento", "120", evento.getDuracionVa());
-        assertEquals("Tipo del evento", "Teatre", evento.getParTiposEvento().getNombreVa());
+        assertEquals("Título VA del evento", "Nova reunió del club de lectura", evento.getTituloVa());
+        assertTrue("Descripción VA del evento",
+                evento.getDescripcionVa().startsWith("<p>\"Nada\" de Carmen Laforet a debat en el club de lectura"));
+
+        assertEquals("Tipo del evento", "Llibre i lectura", evento.getParTiposEvento().getNombreVa());
     }
 
     @Test
@@ -130,18 +157,13 @@ public class EventosSyncServiceTest extends SyncBaseTest
     {
         syncService.sync(loadFromClasspath(RSS_ES));
 
-        EventoDTO evento = eventosDAO.getEventoByRssId("1");
+        EventoDTO evento = eventosDAO.getEventoByRssId("839");
 
-        assertEquals("Título ES del evento", "Madre Coraje (ES)", evento.getTituloEs());
-        assertTrue(
-                "Descripción ES del evento",
-                evento.getDescripcionEs().startsWith(
-                        "(ES)<p>\r\n\t<strong>Adaptaci&oacute; i direcci&oacute;</strong>: Ricardo Iniesta"));
-        assertEquals("Duración ES del evento", "120 (ES)", evento.getDuracionEs());
-        assertEquals("Tipo del evento", "Teatro", evento.getParTiposEvento().getNombreEs());
-        assertEquals("Características del evento",
-                "Basada en la Historia de la vida de la estafadora y aventurera Coraje de Grimmelshausen. (ES)",
-                evento.getCaracteristicasEs());
+        assertEquals("Título ES del evento", "Nueva reunión del club de lectura", evento.getTituloEs());
+        assertTrue("Descripción ES del evento",
+                evento.getDescripcionEs().startsWith("<p>\"Nada\" de Carmen Laforet a debate en el club de lectura"));
+
+        assertEquals("Tipo del evento", "Libro y lectura", evento.getParTiposEvento().getNombreEs());
     }
 
     @Test
@@ -151,7 +173,7 @@ public class EventosSyncServiceTest extends SyncBaseTest
     {
         syncService.sync(loadFromClasspath(RSS_CA));
 
-        EventoDTO evento = eventosDAO.getEventoByRssId("1");
+        EventoDTO evento = eventosDAO.getEventoByRssId("839");
 
         assertNotNull("Título del otro idioma no nulo", evento.getTituloEs());
         assertTrue("Título del otro idioma distinto de \"\"", !evento.getTituloEs().equals(""));
@@ -162,23 +184,23 @@ public class EventosSyncServiceTest extends SyncBaseTest
     public void testSyncYaExistente() throws JAXBException, MalformedURLException, IOException
     {
         EventoDTO eventoDTO = new EventoDTO();
-        eventoDTO.setRssId("1");
+        eventoDTO.setRssId("839");
         eventosDAO.updateEventoDTO(eventoDTO);
 
         syncService.sync(loadFromClasspath(RSS_CA));
 
-        EventoDTO evento = eventosDAO.getEventoByRssId("1");
+        EventoDTO evento = eventosDAO.getEventoByRssId("839");
 
-        assertEquals("Título VA de item existente", "Madre Coraje", evento.getTituloVa());
-        assertEquals("Tipo del evento", "Teatre", evento.getParTiposEvento().getNombreVa());
+        assertEquals("Título VA de item existente", "Nova reunió del club de lectura", evento.getTituloVa());
+        assertEquals("Tipo del evento", "Llibre i lectura", evento.getParTiposEvento().getNombreVa());
     }
-    
+
     @Test
     @Transactional
     public void testSyncYaExistenteNoModificaOtroIdioma() throws JAXBException, MalformedURLException, IOException
     {
         EventoDTO eventoDTO = new EventoDTO();
-        eventoDTO.setRssId("1");
+        eventoDTO.setRssId("839");
         eventoDTO.setTituloEs("Título ES");
         eventoDTO.setCaracteristicasEs("Características ES");
         eventoDTO.setDescripcionEs("Descripción ES");
@@ -187,7 +209,7 @@ public class EventosSyncServiceTest extends SyncBaseTest
 
         syncService.sync(loadFromClasspath(RSS_CA));
 
-        EventoDTO evento = eventosDAO.getEventoByRssId("1");
+        EventoDTO evento = eventosDAO.getEventoByRssId("839");
 
         assertEquals("Título ES de item existente", "Título ES", evento.getTituloEs());
         assertEquals("Características ES de item existente", "Características ES", evento.getCaracteristicasEs());

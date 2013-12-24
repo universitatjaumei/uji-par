@@ -12,6 +12,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
 
+import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.sync.EventosSyncService;
 
 @Service
@@ -26,11 +27,10 @@ public class Main
 
     private void sync() throws MalformedURLException, JAXBException, IOException
     {
-        URL rssCaUrl = new URL("http://ujiapps.uji.es/cultura/paranimf/programacio/&idioma=ca&formato=rss");
-        syncService.sync(rssCaUrl.openStream());
-
-        URL rssEsUrl = new URL("http://ujiapps.uji.es/cultura/paranimf/programacio/&idioma=es&formato=rss");
-        syncService.sync(rssEsUrl.openStream());
+        for (String urlRss:Configuration.getSyncUrlsRss())
+        {
+            syncService.sync(new URL(urlRss).openStream());
+        }
     }
 
     public static void main(String[] args) throws MalformedURLException, JAXBException, IOException
@@ -52,7 +52,7 @@ public class Main
                     }
                     catch (Exception e)
                     {
-                        log.error(e);
+                        log.error("Error", e);
                     }
 
                     try
