@@ -403,9 +403,9 @@ public class EventosDAO extends BaseDAO
     }
     
     @Transactional
-    public void updateEventoDTO(EventoDTO eventoDTO)
+    public EventoDTO updateEventoDTO(EventoDTO eventoDTO)
     {
-        entityManager.merge(eventoDTO);
+       return entityManager.merge(eventoDTO);
     }
     
     @Transactional

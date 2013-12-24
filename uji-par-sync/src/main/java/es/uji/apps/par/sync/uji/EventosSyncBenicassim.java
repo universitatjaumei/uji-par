@@ -82,7 +82,7 @@ public class EventosSyncBenicassim implements EventosSync
         
         if (evento.getParTiposEvento() != null)
         {
-            eventosDAO.updateEventoDTO(evento);
+            evento = eventosDAO.updateEventoDTO(evento);
 
             insertaSesiones(item, evento);
         }
