@@ -32,6 +32,12 @@
       <groupId>es.uji.commons</groupId>
       <artifactId>uji-commons-sso</artifactId>
       <version>0.1.2</version>
+      <exclusions>
+      	<exclusion>
+      	  <groupId>hsqldb</groupId>
+      	  <artifactId>hsqldb</artifactId>
+      	</exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>
