@@ -32,17 +32,18 @@ public class FicherosServiceCompletoTest extends FicherosServiceBaseTest
 
     @Test
     @Transactional
+    @SuppressWarnings("deprecation")
     public void testGeneraRegistroBuzonSinEspectadores() throws Exception
     {
         Sesion sesion = creaSesion(sala, evento);
 
-        Date fechaEnvio = new Date();
+        Date fechaEnvio = new Date(22, 4, 2013);
 
         String fichero = service.generaFicheroRegistros(fechaEnvio, "FL", Arrays.asList(sesion)).serializa();
         
         String idInternoPelicula = String.format("%05d", evento.getId());
 
-        String expected = "0123FL35335300000000006000000000010000000000000000000.00\n" +
+        String expected = "0123FL30730700000000006000000000010000000000000000000.00\n" +
                           "1567         Sala 1                        \n" +
                           "2567         1112132200010000000000.00001\n" +
                           "3567         1112132200" + idInternoPelicula + "\n" +
@@ -62,13 +63,13 @@ public class FicherosServiceCompletoTest extends FicherosServiceBaseTest
 
         registraCompra(sesion, butaca1, butaca2);
         
-        Date fechaEnvio = new Date();
+        Date fechaEnvio = new Date(22, 4, 2013);
 
         String fichero = service.generaFicheroRegistros(fechaEnvio, "FL", Arrays.asList(sesion)).serializa();
         
         String idInternoPelicula = String.format("%05d", evento.getId());
 
-        String expected = "0123FL35335300000000006000000000010000000000200000002.20\n" +
+        String expected = "0123FL30730700000000006000000000010000000000200000002.20\n" +
                           "1567         Sala 1                        \n" +
                           "2567         0506131530010000200002.20001\n" +
                           "3567         0506131530" + idInternoPelicula + "\n" +
@@ -105,14 +106,14 @@ public class FicherosServiceCompletoTest extends FicherosServiceBaseTest
 
         registraCompra(sesion3, butaca5, butaca6);
         
-        Date fechaEnvio = new Date();
+        Date fechaEnvio = new Date(22, 4, 2013);
 
         String fichero = service.generaFicheroRegistros(fechaEnvio, "FL", Arrays.asList(sesion1, sesion2, sesion3)).serializa();
         
         String idInternoPelicula1 = String.format("%05d", evento.getId());
         String idInternoPelicula2 = String.format("%05d", evento2.getId());
 
-        String expected =   "0123FL35335300000000014000000000030000000000600000006.60\n" +
+        String expected =   "0123FL30730700000000014000000000030000000000600000006.60\n" +
                             "1567         Sala 1                        \n" +
                             "1789         Sala 2                        \n" +
                             "2567         0506131530010000200002.20001\n" +
