@@ -19,6 +19,7 @@ Ext.define('Paranimf.model.Sesion', {
       'nombre',
       'formato',
       'versionLinguistica',
+      'rssId',
       {name: 'sala', mapping: 'sala.id'},
    ]
 });

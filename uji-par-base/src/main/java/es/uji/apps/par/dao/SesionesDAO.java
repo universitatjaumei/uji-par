@@ -139,6 +139,7 @@ public class SesionesDAO extends BaseDAO
     @Transactional
     public void updateSesion(Sesion sesion)
     {
+        /*
         JPAUpdateClause update = new JPAUpdateClause(entityManager, qSesionDTO);
         update.set(qSesionDTO.canalInternet, sesion.getCanalInternet())
                 .set(qSesionDTO.canalTaquilla, sesion.getCanalTaquilla())
@@ -152,12 +153,16 @@ public class SesionesDAO extends BaseDAO
                         Plantilla.plantillaPreciosToPlantillaPreciosDTO(sesion.getPlantillaPrecios()))
                 .set(qSesionDTO.nombre, sesion.getNombre())
                 .set(qSesionDTO.formato, sesion.getFormato())
-                .set(qSesionDTO.versionLinguistica, sesion.getVersionLinguistica());
+                .set(qSesionDTO.versionLinguistica, sesion.getVersionLinguistica())
+                .set(qSesionDTO.rssId, sesion.getRssId());
 
         if (sesion.getSala() != null && sesion.getSala().getId() != 0)
             update.set(qSesionDTO.parSala, Sala.salaToSalaDTO(sesion.getSala()));
 
         update.where(qSesionDTO.id.eq(sesion.getId())).execute();
+        */
+        
+        entityManager.merge(Sesion.SesionToSesionDTO(sesion));
     }
 
     @Transactional
@@ -373,9 +378,15 @@ public class SesionesDAO extends BaseDAO
     }
 
     @Transactional
-    public void deleteSesionesEvento(long idEvento)
+    public Sesion getSesionByRssId(String rssId)
     {
-        JPADeleteClause delete = new JPADeleteClause(entityManager, qSesionDTO);
-        delete.where(qSesionDTO.parEvento.id.eq(idEvento)).execute();        
+        JPAQuery query = new JPAQuery(entityManager);
+        SesionDTO uniqueResult = query.from(QSesionDTO.sesionDTO)
+                .where(QSesionDTO.sesionDTO.rssId.eq(rssId)).uniqueResult(QSesionDTO.sesionDTO);
+        
+        if (uniqueResult == null)
+            return null;
+        else
+            return Sesion.SesionDTOToSesion(uniqueResult);    
     }
 }

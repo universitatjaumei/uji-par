@@ -66,7 +66,7 @@ public class EventosSyncServiceUjiTest extends SyncBaseTest
 
     @Test
     @Transactional
-    public void testSyncNuevosItems() throws JAXBException, MalformedURLException, IOException
+    public void testSyncNuevosItems() throws Exception
     {
         syncService.sync(loadFromClasspath(RSS_CA));
 
@@ -77,7 +77,7 @@ public class EventosSyncServiceUjiTest extends SyncBaseTest
 
     @Test
     @Transactional
-    public void testSyncNuevoItemDatos() throws JAXBException, MalformedURLException, IOException
+    public void testSyncNuevoItemDatos() throws Exception
     {
         syncService.sync(loadFromClasspath(RSS_CA));
 
@@ -108,7 +108,7 @@ public class EventosSyncServiceUjiTest extends SyncBaseTest
 
     @Test
     @Transactional
-    public void testSyncNuevoItemDatosIdiomaCa() throws JAXBException, MalformedURLException, IOException
+    public void testSyncNuevoItemDatosIdiomaCa() throws Exception
     {
         syncService.sync(loadFromClasspath(RSS_CA));
 
@@ -130,7 +130,7 @@ public class EventosSyncServiceUjiTest extends SyncBaseTest
 
     @Test
     @Transactional
-    public void testSyncNuevoItemDatosIdiomaEs() throws JAXBException, MalformedURLException, IOException
+    public void testSyncNuevoItemDatosIdiomaEs() throws Exception
     {
         syncService.sync(loadFromClasspath(RSS_ES));
 
@@ -151,7 +151,7 @@ public class EventosSyncServiceUjiTest extends SyncBaseTest
     @Test
     @Transactional
     // Comprobar que al ir a guardar el campo título del otro idioma no es null ni cadena vacía (petaría la constraint de Oracle)
-    public void testSyncNuevoItemOtroIdiomaOk() throws JAXBException, MalformedURLException, IOException
+    public void testSyncNuevoItemOtroIdiomaOk() throws Exception
     {
         syncService.sync(loadFromClasspath(RSS_CA));
 
@@ -163,7 +163,7 @@ public class EventosSyncServiceUjiTest extends SyncBaseTest
 
     @Test
     @Transactional
-    public void testSyncYaExistente() throws JAXBException, MalformedURLException, IOException
+    public void testSyncYaExistente() throws Exception
     {
         EventoDTO eventoDTO = new EventoDTO();
         eventoDTO.setRssId("1");
@@ -179,7 +179,7 @@ public class EventosSyncServiceUjiTest extends SyncBaseTest
 
     @Test
     @Transactional
-    public void testSyncYaExistenteNoModificaOtroIdioma() throws JAXBException, MalformedURLException, IOException
+    public void testSyncYaExistenteNoModificaOtroIdioma() throws Exception
     {
         EventoDTO eventoDTO = new EventoDTO();
         eventoDTO.setRssId("1");

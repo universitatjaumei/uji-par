@@ -3,6 +3,9 @@ package es.uji.apps.par.sync.uji;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.xml.bind.JAXBException;
@@ -14,11 +17,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import es.uji.apps.par.dao.EventosDAO;
 import es.uji.apps.par.dao.PlantillasDAO;
+import es.uji.apps.par.dao.SalasDAO;
 import es.uji.apps.par.dao.SesionesDAO;
 import es.uji.apps.par.dao.TiposEventosDAO;
 import es.uji.apps.par.db.EventoDTO;
 import es.uji.apps.par.db.PlantillaDTO;
-import es.uji.apps.par.db.SesionDTO;
 import es.uji.apps.par.db.TipoEventoDTO;
 import es.uji.apps.par.model.Evento;
 import es.uji.apps.par.model.Plantilla;
@@ -27,6 +30,7 @@ import es.uji.apps.par.sync.rss.jaxb.Item;
 import es.uji.apps.par.sync.rss.jaxb.Rss;
 import es.uji.apps.par.sync.rss.jaxb.Sesion;
 import es.uji.apps.par.sync.utils.SyncUtils;
+import es.uji.apps.par.utils.DateUtils;
 import es.uji.apps.par.utils.Utils;
 
 @Service("syncBenicassim")
@@ -45,12 +49,15 @@ public class EventosSyncBenicassim implements EventosSync
 
     @Autowired
     TiposEventosDAO tipoEventosDAO;
+    
+    @Autowired
+    SalasDAO salasDAO;
 
     @Autowired
     RssParser rssParser;
 
     @Override
-    public void sync(InputStream rssInputStream) throws JAXBException, MalformedURLException, IOException
+    public void sync(InputStream rssInputStream) throws JAXBException, MalformedURLException, IOException, ParseException
     {
         Rss rss = rssParser.parse(rssInputStream);
 
@@ -61,7 +68,7 @@ public class EventosSyncBenicassim implements EventosSync
     }
 
     @Transactional
-    private void syncEvento(Item item) throws MalformedURLException, IOException
+    private void syncEvento(Item item) throws MalformedURLException, IOException, ParseException
     {
         EventoDTO evento = eventosDAO.getEventoByRssId(item.getContenidoId());
 
@@ -88,23 +95,42 @@ public class EventosSyncBenicassim implements EventosSync
         }
     }
 
-    private void insertaSesiones(Item item, EventoDTO evento)
+    private void insertaSesiones(Item item, EventoDTO evento) throws ParseException
     {
-        sesionesDao.deleteSesionesEvento(evento.getId());
-        
         for (Sesion sesionRss : item.getSesiones().getSesiones())
         {
-            es.uji.apps.par.model.Sesion sesion = new es.uji.apps.par.model.Sesion();
-            sesion.setEvento(Evento.eventoDTOtoEvento(evento));
-            sesion.setPlantillaPrecios(getPlantillaParaItem(item));
-            sesion.setFechaCelebracion("05/01/2014");
-            sesion.setHoraApertura("22:00");
-            sesion.setFechaInicioVentaOnline("01/12/2013");
-            sesion.setHoraInicioVentaOnline("00:00");
-            sesion.setFechaFinVentaOnline("05/01/2014");
-            sesion.setHoraFinVentaOnline("22:00");
+            es.uji.apps.par.model.Sesion sesion = sesionesDao.getSesionByRssId(sesionRss.getId());
             
-            sesionesDao.addSesion(sesion);
+            if (sesion == null)
+            {
+                sesion = new es.uji.apps.par.model.Sesion();
+                sesion.setEvento(Evento.eventoDTOtoEvento(evento));
+                
+                sesion.setPlantillaPrecios(getPlantillaParaItem(item));
+                sesion.setRssId(sesionRss.getId());
+                
+                sesion.setSala(salasDAO.getSalas().get(0));
+            }
+            
+            Date fechaCelebracion = DateUtils.databaseWithSecondsToDate(sesionRss.getFecha());
+            sesion.setFechaCelebracionWithDate(fechaCelebracion);
+            
+            // Inicio venta online 1 mes antes
+            Calendar inicioVentaOnline = Calendar.getInstance();
+            inicioVentaOnline.setTime(fechaCelebracion);
+            inicioVentaOnline.add(Calendar.MONTH, -1);
+            sesion.setFechaInicioVentaOnlineWithDate(inicioVentaOnline.getTime());
+
+            // Fin venta online 1 hora antes
+            Calendar findVentaOnline = Calendar.getInstance();
+            findVentaOnline.setTime(fechaCelebracion);
+            findVentaOnline.add(Calendar.HOUR, -1);
+            sesion.setFechaFinVentaOnlineWithDate(findVentaOnline.getTime());
+            
+            if (sesion.getId() == 0)
+                sesionesDao.addSesion(sesion);
+            else
+                sesionesDao.updateSesion(sesion);
         }
     }
 

@@ -3,6 +3,7 @@ package es.uji.apps.par.sync.main;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.ParseException;
 
 import javax.xml.bind.JAXBException;
 
@@ -25,7 +26,7 @@ public class Main
     @Autowired
     EventosSyncService syncService;
 
-    private void sync() throws MalformedURLException, JAXBException, IOException
+    private void sync() throws MalformedURLException, JAXBException, IOException, ParseException
     {
         for (String urlRss:Configuration.getSyncUrlsRss())
         {

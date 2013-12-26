@@ -14,6 +14,7 @@ public class DateUtils
     private static final SimpleDateFormat DATABASE_DAY = new SimpleDateFormat("yyyy-MM-dd");
     private static final SimpleDateFormat FORMAT_HOUR = new SimpleDateFormat("HH:mm");
     private static final SimpleDateFormat FORMAT_DAY_HOUR = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+    private static final SimpleDateFormat DATABASE_WITH_SECONDS = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static final SimpleDateFormat FORMAT_DDMMYY = new SimpleDateFormat("ddMMyy");
 
     public static Date spanishStringToDate(String spanishDate)
@@ -98,9 +99,13 @@ public class DateUtils
     	return FORMAT_DAY_HOUR.format(fecha);
 	}
 	
-	   public static Date spanishStringWithHourstoDate(String spanishDate) throws ParseException {
-	        return FORMAT_DAY_HOUR.parse(spanishDate);
-	    }
+    public static Date spanishStringWithHourstoDate(String spanishDate) throws ParseException {
+        return FORMAT_DAY_HOUR.parse(spanishDate);
+    }
+   
+    public static Date databaseWithSecondsToDate(String dateString) throws ParseException {
+       return DATABASE_WITH_SECONDS.parse(dateString);
+    }
 	
 	public static Date databaseStringToDate(String databaseDate) throws ParseException {
 	    return DATABASE_DAY.parse(databaseDate);

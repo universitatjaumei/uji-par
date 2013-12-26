@@ -15,6 +15,10 @@ Ext.define('Paranimf.view.evento.FormSesiones', {
       hidden: true,
       allowBlank: true
    }, {
+      name: 'rssId',
+      hidden: true,
+      allowBlank: true
+   }, {
       name: 'preciosSesion',
       hidden: true,
       allowBlank: true

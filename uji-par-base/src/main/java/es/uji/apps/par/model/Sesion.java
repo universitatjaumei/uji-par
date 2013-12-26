@@ -35,6 +35,7 @@ public class Sesion
     private String formato;
     private Sala sala;
     private String versionLinguistica;
+    private String rssId;
 
     public Sesion()
     {
@@ -60,6 +61,7 @@ public class Sesion
         this.nombre = sesionDTO.getNombre();
         this.formato = sesionDTO.getFormato();
         this.versionLinguistica = sesionDTO.getVersionLinguistica();
+        this.rssId = sesionDTO.getRssId();
         
         if (sesionDTO.getParSala() != null)
             this.sala = new Sala(sesionDTO.getParSala());
@@ -208,6 +210,7 @@ public class Sesion
 		sesion.setNombre(sesionDTO.getNombre());
 		sesion.setFormato(sesionDTO.getFormato());
 		sesion.setVersionLinguistica(sesionDTO.getVersionLinguistica());
+		sesion.setRssId(sesionDTO.getRssId());
 		
 		sesion.setSala(new Sala(sesionDTO.getParSala()));
 		
@@ -248,6 +251,7 @@ public class Sesion
 		sesionDTO.setNombre(sesion.getNombre());
 		sesionDTO.setFormato(sesion.getFormato());
 		sesionDTO.setVersionLinguistica(sesion.getVersionLinguistica());
+		sesionDTO.setRssId(sesion.getRssId());
 		
 		return sesionDTO;
 	}
@@ -372,5 +376,15 @@ public class Sesion
     public void setVersionLinguistica(String versionLinguistica)
     {
         this.versionLinguistica = versionLinguistica;
+    }
+
+    public String getRssId()
+    {
+        return rssId;
+    }
+
+    public void setRssId(String rssId)
+    {
+        this.rssId = rssId;
     }
  }
