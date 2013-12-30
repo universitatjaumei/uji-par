@@ -110,6 +110,7 @@ public class EventosSyncBenicassim implements EventosSync
                 sesion.setPlantillaPrecios(getPlantillaParaItem(item));
                 sesion.setRssId(sesionRss.getId());
                 
+                // Por ahora los metemos en la primera sala que exista (CAMBIAR)
                 sesion.setSala(salasDAO.getSalas().get(0));
                 
                 // Inicio venta online sumando X horas (según config) a las 00:00 del día en el que se crea la sesión
@@ -125,13 +126,15 @@ public class EventosSyncBenicassim implements EventosSync
             }
             
             Date fechaCelebracion = DateUtils.databaseWithSecondsToDate(sesionRss.getFecha());
-            sesion.setFechaCelebracionWithDate(fechaCelebracion);
+            sesion.setFechaCelebracion(DateUtils.dateToSpanishString(fechaCelebracion));
+            sesion.setHoraCelebracion(sesionRss.getFecha().split(" ")[1]);
 
             // Fin venta online 1 hora antes
             Calendar finVentaOnline = Calendar.getInstance();
             finVentaOnline.setTime(fechaCelebracion);
             finVentaOnline.add(Calendar.HOUR, -1);
-            sesion.setFechaFinVentaOnlineWithDate(finVentaOnline.getTime());
+            sesion.setFechaFinVentaOnline(DateUtils.dateToSpanishString(finVentaOnline.getTime()));
+            sesion.setHoraFinVentaOnline(DateUtils.getHourAndMinutesWithLeadingZeros(finVentaOnline.getTime()));
             
             if (sesion.getId() == 0)
                 sesionesDao.addSesion(sesion);
