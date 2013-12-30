@@ -69,6 +69,11 @@ public class DateUtils
     
     public static Date addTimeToDate(Date startDate, String hour)
     {
+        if (startDate == null)
+        {
+            return null;
+        }
+        
         Calendar cal = Calendar.getInstance();
         cal.setTime(startDate);
         
