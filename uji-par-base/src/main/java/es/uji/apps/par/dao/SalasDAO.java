@@ -26,7 +26,7 @@ public class SalasDAO extends BaseDAO
     {
         JPAQuery query = new JPAQuery(entityManager);
 
-        List<SalaDTO> list = query.from(qSalaDTO).join(qSalaDTO.parCine).fetch().list(qSalaDTO);
+        List<SalaDTO> list = query.from(qSalaDTO).leftJoin(qSalaDTO.parCine).fetch().list(qSalaDTO);
 
         return Sala.salasDTOtoSalas(list);
     }
