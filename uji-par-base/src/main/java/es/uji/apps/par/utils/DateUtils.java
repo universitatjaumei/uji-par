@@ -71,14 +71,18 @@ public class DateUtils
     {
         Calendar cal = Calendar.getInstance();
         cal.setTime(startDate);
-        String[] arrHoraMinutos = hour.split(":");
-
-        int hora = Integer.parseInt(arrHoraMinutos[0]);
-        int minutos = Integer.parseInt(arrHoraMinutos[1]);
-
-        cal.set(Calendar.HOUR_OF_DAY, hora);
-        cal.set(Calendar.MINUTE, minutos);
-        cal.set(Calendar.SECOND, 0);
+        
+        if (hour != null && !hour.equals(""))
+        {
+            String[] arrHoraMinutos = hour.split(":");
+    
+            int hora = Integer.parseInt(arrHoraMinutos[0]);
+            int minutos = Integer.parseInt(arrHoraMinutos[1]);
+    
+            cal.set(Calendar.HOUR_OF_DAY, hora);
+            cal.set(Calendar.MINUTE, minutos);
+            cal.set(Calendar.SECOND, 0);
+        }
 
         return cal.getTime();
     }
