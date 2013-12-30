@@ -38,6 +38,8 @@
   </dependencies>
 
   <build>
+    <finalName>par-sync</finalName>
+
     <resources>
       <resource>
         <directory>${basedir}/src/main/resources</directory>
