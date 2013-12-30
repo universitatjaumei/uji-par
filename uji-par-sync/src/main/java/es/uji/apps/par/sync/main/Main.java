@@ -33,13 +33,26 @@ public class Main
             syncService.sync(new URL(urlRss).openStream());
         }
     }
+    
+    private static boolean tieneOpcion(String [] args, String opcion)
+    {
+        for (String arg:args)
+        {
+            if (arg.equals(opcion))
+                return true;
+        }
+        
+        return false;
+    }
 
     public static void main(String[] args) throws MalformedURLException, JAXBException, IOException
     {
+        final boolean modoCron = tieneOpcion(args, "--cron");
+        
         ApplicationContext ctx = new ClassPathXmlApplicationContext("/applicationContext-db.xml");
 
         final Main main = ctx.getBean(Main.class);
-
+        
         Runnable runnable = new Runnable()
         {
             @Override
@@ -50,6 +63,9 @@ public class Main
                     try
                     {
                         main.sync();
+                        
+                        if (modoCron)
+                            return;
                     }
                     catch (Exception e)
                     {
