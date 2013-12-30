@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.dao.EventosDAO;
 import es.uji.apps.par.dao.PlantillasDAO;
 import es.uji.apps.par.dao.SalasDAO;
@@ -110,22 +111,27 @@ public class EventosSyncBenicassim implements EventosSync
                 sesion.setRssId(sesionRss.getId());
                 
                 sesion.setSala(salasDAO.getSalas().get(0));
+                
+                // Inicio venta online sumando X horas (según config) a las 00:00 del día en el que se crea la sesión
+                Calendar inicioVentaOnline = Calendar.getInstance();
+                inicioVentaOnline.set(Calendar.HOUR_OF_DAY, 0);
+                inicioVentaOnline.set(Calendar.MINUTE, 0);
+                inicioVentaOnline.set(Calendar.SECOND, 0);
+                inicioVentaOnline.set(Calendar.MILLISECOND, 0);
+                
+                inicioVentaOnline.add(Calendar.HOUR_OF_DAY, Configuration.getSyncHorasInicioVentaOnline());
+                
+                sesion.setFechaInicioVentaOnlineWithDate(inicioVentaOnline.getTime());
             }
             
             Date fechaCelebracion = DateUtils.databaseWithSecondsToDate(sesionRss.getFecha());
             sesion.setFechaCelebracionWithDate(fechaCelebracion);
-            
-            // Inicio venta online 1 mes antes
-            Calendar inicioVentaOnline = Calendar.getInstance();
-            inicioVentaOnline.setTime(fechaCelebracion);
-            inicioVentaOnline.add(Calendar.MONTH, -1);
-            sesion.setFechaInicioVentaOnlineWithDate(inicioVentaOnline.getTime());
 
             // Fin venta online 1 hora antes
-            Calendar findVentaOnline = Calendar.getInstance();
-            findVentaOnline.setTime(fechaCelebracion);
-            findVentaOnline.add(Calendar.HOUR, -1);
-            sesion.setFechaFinVentaOnlineWithDate(findVentaOnline.getTime());
+            Calendar finVentaOnline = Calendar.getInstance();
+            finVentaOnline.setTime(fechaCelebracion);
+            finVentaOnline.add(Calendar.HOUR, -1);
+            sesion.setFechaFinVentaOnlineWithDate(finVentaOnline.getTime());
             
             if (sesion.getId() == 0)
                 sesionesDao.addSesion(sesion);

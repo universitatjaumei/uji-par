@@ -32,6 +32,7 @@ public class Configuration
     private static final String JDBC_URL = "uji.db.jdbcUrl";
     private static final String SYNC_TIPO = "uji.sync.lugar";
     private static final String SYNC_URL_TIPO = "uji.sync.rss";
+    private static final String SYNC_HORAS_INICIO_VENTA_ONLINE = "uji.sync.horasInicioVentaOnlineTrasCreacion";
     
 
     public static Logger log = Logger.getLogger(Configuration.class);
@@ -203,5 +204,17 @@ public class Configuration
     public static String[] getSyncUrlsRss()
     {
         return getProperty(SYNC_URL_TIPO).split(",");
+    }
+    
+    public static int getSyncHorasInicioVentaOnline()
+    {
+        try
+        {
+            return Integer.parseInt(getProperty(SYNC_HORAS_INICIO_VENTA_ONLINE));
+        }
+        catch (NumberFormatException e)
+        {
+            return 0;
+        }
     }
 }

@@ -231,9 +231,9 @@ public class Sesion
 		/*sesionDTO.setCanalInternet(sesion.getCanalInternet());
 		sesionDTO.setCanalTaquilla(sesion.getCanalTaquilla());*/
 		sesionDTO.setParEvento(Evento.eventoToEventoDTO(sesion.getEvento()));
-		sesionDTO.setFechaCelebracion(DateUtils.dateToTimestampSafe(sesion.getFechaCelebracion()));
-		sesionDTO.setFechaFinVentaOnline(DateUtils.dateToTimestampSafe(sesion.getFechaFinVentaOnline()));
-		sesionDTO.setFechaInicioVentaOnline(DateUtils.dateToTimestampSafe(sesion.getFechaInicioVentaOnline()));
+		sesionDTO.setFechaCelebracion(DateUtils.dateToTimestampSafe(DateUtils.addTimeToDate(sesion.getFechaCelebracion(), sesion.getHoraCelebracion())));
+		sesionDTO.setFechaFinVentaOnline(DateUtils.dateToTimestampSafe(DateUtils.addTimeToDate(sesion.getFechaFinVentaOnline(), sesion.getHoraFinVentaOnline())));
+		sesionDTO.setFechaInicioVentaOnline(DateUtils.dateToTimestampSafe(DateUtils.addTimeToDate(sesion.getFechaInicioVentaOnline(), sesion.getHoraInicioVentaOnline())));
 		
 		sesionDTO.setHoraApertura(sesion.getHoraApertura());
 		sesionDTO.setId(sesion.getId());
