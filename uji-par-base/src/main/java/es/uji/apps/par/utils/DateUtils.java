@@ -27,12 +27,21 @@ public class DateUtils
         if (spanishDate == null || spanishDate.isEmpty())
             return null;
         
-        if (!isTimestamp(spanishDate)) {
-	        String[] splitDate = spanishDate.split("\\/");
-	        cal.set(Integer.valueOf(splitDate[2]), Integer.valueOf(splitDate[1]) - 1,
-	                Integer.valueOf(splitDate[0]));
-        } else
-        	cal.setTimeInMillis(Long.valueOf(spanishDate));
+        if (isTimestamp(spanishDate)) 
+        {
+            cal.setTimeInMillis(Long.valueOf(spanishDate));
+        }
+        else
+        {
+	        try
+            {
+                cal.setTime(FORMAT_DAY.parse(spanishDate));
+            }
+            catch (ParseException e)
+            {
+                throw new RuntimeException(e);
+            }
+        } 
         
         return cal.getTime();
     }
