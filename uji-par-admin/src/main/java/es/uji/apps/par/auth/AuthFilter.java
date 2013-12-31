@@ -69,7 +69,7 @@ public class AuthFilter implements Filter
 
             if (authResult == Authenticator.AUTH_OK)
             {
-                sResponse.sendRedirect(Configuration.getUrlAdmin() + "/rest/index");
+                chain.doFilter(request, response);
             }
             else
             {
