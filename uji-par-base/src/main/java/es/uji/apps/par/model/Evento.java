@@ -6,6 +6,9 @@ import java.util.Date;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 import es.uji.apps.par.db.EventoDTO;
 
@@ -282,6 +285,7 @@ public class Evento
         this.id = id;
     }
 
+    @XmlTransient
     public byte[] getImagen()
     {
         return imagen;
