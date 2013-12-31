@@ -64,7 +64,7 @@ def genera_map(fichero):
     st = ''
 
     for butaca in json.load(open(fichero)):
-        st += '<area shape="rect" coords="%d,%d,%d,%d" href="javascript:Butacas.selecciona(\'%s\', %d, %d, %d, %d)" />\n' % (butaca['xIni'], butaca['yIni'], butaca['xFin'], butaca['yFin'], butaca['localizacion'], butaca['fila'], butaca['numero'], butaca['xIni'], butaca['yIni'])
+        st += '<area shape="rect" coords="%d,%d,%d,%d" th:href="\'javascript:Butacas.selecciona(\\\'%s\\\', \\\'\' + #{butacasFragment.%s} + \'\\\', %d, %d, %d, %d)\'" />\n' % (butaca['xIni'], butaca['yIni'], butaca['xFin'], butaca['yFin'], butaca['localizacion'], butaca['localizacion'], butaca['fila'], butaca['numero'], butaca['xIni'], butaca['yIni'])
 
 
     #st += '</map>\n'
