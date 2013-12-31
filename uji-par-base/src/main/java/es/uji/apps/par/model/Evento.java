@@ -8,8 +8,6 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-
 import es.uji.apps.par.db.EventoDTO;
 
 @XmlRootElement
