@@ -139,14 +139,13 @@ public class SesionesDAO extends BaseDAO
     @Transactional
     public void updateSesion(Sesion sesion)
     {
-        /*
         JPAUpdateClause update = new JPAUpdateClause(entityManager, qSesionDTO);
         update.set(qSesionDTO.canalInternet, sesion.getCanalInternet())
                 .set(qSesionDTO.canalTaquilla, sesion.getCanalTaquilla())
-                .set(qSesionDTO.fechaCelebracion, DateUtils.dateToTimestampSafe(sesion.getFechaCelebracion()))
-                .set(qSesionDTO.fechaFinVentaOnline, DateUtils.dateToTimestampSafe(sesion.getFechaFinVentaOnline()))
+                .set(qSesionDTO.fechaCelebracion, DateUtils.dateToTimestampSafe(DateUtils.addTimeToDate(sesion.getFechaCelebracion(), sesion.getHoraCelebracion())))
+                .set(qSesionDTO.fechaFinVentaOnline, DateUtils.dateToTimestampSafe(DateUtils.addTimeToDate(sesion.getFechaFinVentaOnline(), sesion.getHoraFinVentaOnline())))
                 .set(qSesionDTO.fechaInicioVentaOnline,
-                        DateUtils.dateToTimestampSafe(sesion.getFechaInicioVentaOnline()))
+                		DateUtils.dateToTimestampSafe(DateUtils.addTimeToDate(sesion.getFechaInicioVentaOnline(), sesion.getHoraInicioVentaOnline())))
                 .set(qSesionDTO.horaApertura, sesion.getHoraApertura())
                 .set(qSesionDTO.parEvento, Evento.eventoToEventoDTO(sesion.getEvento()))
                 .set(qSesionDTO.parPlantilla,
@@ -160,9 +159,8 @@ public class SesionesDAO extends BaseDAO
             update.set(qSesionDTO.parSala, Sala.salaToSalaDTO(sesion.getSala()));
 
         update.where(qSesionDTO.id.eq(sesion.getId())).execute();
-        */
         
-        entityManager.merge(Sesion.SesionToSesionDTO(sesion));
+        //entityManager.merge(Sesion.SesionToSesionDTO(sesion));
     }
 
     @Transactional
@@ -174,8 +172,8 @@ public class SesionesDAO extends BaseDAO
     @Transactional
     public void deleteExistingPreciosSesion(long sesionId)
     {
-        JPADeleteClause delete = new JPADeleteClause(entityManager, qPreciosSesionDTO);
-        delete.where(qPreciosSesionDTO.parSesione.id.eq(sesionId)).execute();
+   		JPADeleteClause delete = new JPADeleteClause(entityManager, qPreciosSesionDTO);
+   		delete.where(qPreciosSesionDTO.parSesione.id.eq(sesionId)).execute();
     }
 
     @Transactional

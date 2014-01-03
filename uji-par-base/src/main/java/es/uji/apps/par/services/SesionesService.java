@@ -206,8 +206,8 @@ public class SesionesService
 		checkSesionAndSetTimesToDates(sesion);
 		sesion.setEvento(createParEventoWithId(eventoId));
         
-        sesionDAO.updateSesion(sesion);
         sesionDAO.deleteExistingPreciosSesion(sesion.getId());
+        sesionDAO.updateSesion(sesion);
         addPreciosSesion(Sesion.SesionToSesionDTO(sesion));
     }
 
