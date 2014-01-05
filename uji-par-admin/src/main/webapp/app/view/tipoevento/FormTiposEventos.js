@@ -22,5 +22,14 @@ Ext.define('Paranimf.view.tipoevento.FormTiposEventos', {
    }, {
 	  fieldLabel: UI.i18n.field.name_va,
 	  name: 'nombreVa'
+   }, {
+      xtype: 'combobox',
+      queryMode: 'local',
+      name: 'exportarICAA',
+      labelWidth: 150,
+      valueField: 'id',
+      displayField: 'label',
+      fieldLabel: UI.i18n.field.exportarICAA,
+      store: 'SiNo'
    }]
 });

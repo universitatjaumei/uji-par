@@ -4,6 +4,7 @@ Ext.define('Paranimf.model.TipoEvento', {
    fields: [
       'id', 
       'nombreEs',
-      'nombreVa'
+      'nombreVa',
+      'exportarICAA'
    ]
 });

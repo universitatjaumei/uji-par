@@ -10,6 +10,7 @@ public class TipoEvento
     private long id;
     private String nombreEs;
     private String nombreVa;
+    private Boolean exportarICAA;
 
     public TipoEvento()
     {
@@ -25,6 +26,7 @@ public class TipoEvento
         this.id = tipoEventoDTO.getId();
         this.nombreEs = tipoEventoDTO.getNombreEs();
         this.nombreVa = tipoEventoDTO.getNombreVa();
+        this.exportarICAA = tipoEventoDTO.getExportarICAA();
     }
 
     public TipoEvento(String nombreEs)
@@ -78,6 +80,14 @@ public class TipoEvento
     	tipoEvento.setNombreVa(eventoDTO.getNombreVa());
     	
     	return tipoEvento;
+	}
+
+	public Boolean getExportarICAA() {
+		return exportarICAA;
+	}
+
+	public void setExportarICAA(Boolean exportarICAA) {
+		this.exportarICAA = exportarICAA;
 	}
 
 }

@@ -28,6 +28,9 @@ public class TipoEventoDTO implements Serializable {
 	//bi-directional many-to-one association to EventoDTO
 	@OneToMany(mappedBy="parTiposEvento")
 	private List<EventoDTO> parEventos;
+	
+	@Column(name="exportar_icaa")
+	private Boolean exportarICAA;
 
 	public TipoEventoDTO() {
 	}
@@ -62,6 +65,14 @@ public class TipoEventoDTO implements Serializable {
 
 	public void setParEventos(List<EventoDTO> parEventos) {
 		this.parEventos = parEventos;
+	}
+
+	public Boolean getExportarICAA() {
+		return exportarICAA;
+	}
+
+	public void setExportarICAA(Boolean exportarICAA) {
+		this.exportarICAA = exportarICAA;
 	}
 
 }

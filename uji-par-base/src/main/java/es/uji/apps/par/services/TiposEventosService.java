@@ -41,6 +41,9 @@ public class TiposEventosService
     {
         if (tipoEvento.getNombreEs() == null || tipoEvento.getNombreEs().isEmpty())
             throw new CampoRequeridoException("Nombre");
+        
+        if (tipoEvento.getExportarICAA() == null)
+        	tipoEvento.setExportarICAA(false);
     }
 
 	public int getTotalTipusEventos() {

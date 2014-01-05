@@ -249,7 +249,7 @@ UI =
 			"imagenInsertada": "Veure la imatge inserida",
 			"uploadImagen": "Inserir imatge",
             "retenciones": "Retencions",
-            "icaa": "Dades per a enviament ICAA",
+            "icaa": "Dades per a enviament ICAA (únicament per a cinema)",
             "porcentajeIVA": "Percentatge IVA",
             "expediente": "Num expedient calificació",
             "codigoDistribuidora": "Codi distribuidora",
@@ -309,7 +309,8 @@ UI =
             "importeADevolver": "Quantitat a retornar: ",
             "inicioReserva": "Inici reserva",
             "finReserva": "Fi reserva",
-            "buscarCompras": "Cerca per identificador i observacions de reserva"
+            "buscarCompras": "Cerca per identificador i observacions de reserva",
+            "exportarICAA": "Exportar events als fitxers per a l'ICAA"
         },
 
         "legends": {

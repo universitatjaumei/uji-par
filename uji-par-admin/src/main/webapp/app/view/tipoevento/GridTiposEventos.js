@@ -29,6 +29,15 @@ Ext.define('Paranimf.view.tipoevento.GridTiposEventos', {
           dataIndex: 'nombreVa',
           text: UI.i18n.field.name_va,
           flex: 5
+      }, {
+        dataIndex: 'exportarICAA',
+        text: UI.i18n.field.exportarICAA,
+        flex: 5,
+        renderer: function(value) {
+          if (value)
+            return "Sí";
+          return 'No';
+        }
       }];
 
       this.callParent(arguments);

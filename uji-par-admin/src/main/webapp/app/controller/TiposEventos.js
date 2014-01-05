@@ -2,8 +2,8 @@ Ext.define('Paranimf.controller.TiposEventos', {
    extend: 'Ext.app.Controller',
 
    views: ['EditModalWindow', 'EditBaseForm', 'EditBaseGrid', 'tipoevento.GridTiposEventos', 'tipoevento.FormTiposEventos'],
-   stores: ['TiposEventos'],
-   models: ['TipoEvento'],
+   stores: ['TiposEventos', 'SiNo'],
+   models: ['TipoEvento', 'HoraMinuto'],
 
    refs: [{
       ref: 'gridTiposEventos',
