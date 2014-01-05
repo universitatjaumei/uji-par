@@ -1,6 +1,7 @@
 package es.uji.apps.par.ficheros.service;
 
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.junit.Assert;
@@ -52,6 +53,12 @@ public class FicherosServiceCompletoTest extends FicherosServiceBaseTest
         Assert.assertEquals(expected, fichero);
     }
     
+    private Date generaFechaEnvio() {
+    	Calendar cal = Calendar.getInstance();
+    	cal.set(2013, 4, 22);
+    	return cal.getTime();
+    }
+    
     @Test
     @Transactional
     public void testGeneraRegistroBuzonConEspectadores() throws Exception
@@ -63,7 +70,7 @@ public class FicherosServiceCompletoTest extends FicherosServiceBaseTest
 
         registraCompra(sesion, butaca1, butaca2);
         
-        Date fechaEnvio = new Date(22, 4, 2013);
+        Date fechaEnvio = generaFechaEnvio();
 
         String fichero = service.generaFicheroRegistros(fechaEnvio, "FL", Arrays.asList(sesion)).serializa();
         
@@ -106,7 +113,7 @@ public class FicherosServiceCompletoTest extends FicherosServiceBaseTest
 
         registraCompra(sesion3, butaca5, butaca6);
         
-        Date fechaEnvio = new Date(22, 4, 2013);
+        Date fechaEnvio = generaFechaEnvio();
 
         String fichero = service.generaFicheroRegistros(fechaEnvio, "FL", Arrays.asList(sesion1, sesion2, sesion3)).serializa();
         

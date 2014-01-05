@@ -106,6 +106,16 @@ public class RegistroPeliculaTest
 
         registro.serializa();
     }
+    
+    @Test(expected = RegistroSerializaException.class)
+    public void testFormatProyeccionMas1Caracter() throws RegistroSerializaException
+    {
+        RegistroPelicula registro = creaRegistroEjemplo();
+
+        registro.setFormatoProyeccion("11");
+
+        registro.serializa();
+    }
 
     @Test(expected = RegistroSerializaException.class)
     public void testCodigoSalaMas6Caracteres() throws RegistroSerializaException
