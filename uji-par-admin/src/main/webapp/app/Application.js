@@ -101,6 +101,8 @@ Ext.application({
                      xtype: 'panelComprasReservas'
                   }, {
                      xtype: 'panelInformes'
+                  }, {
+                     xtype: 'panelSesionesFicheros'
                   }],
                listeners: {
                   afterlayout: function(container, layout, opts) {

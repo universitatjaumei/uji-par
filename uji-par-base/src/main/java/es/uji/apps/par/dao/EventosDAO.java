@@ -134,7 +134,7 @@ public class EventosDAO extends BaseDAO
         		" e.PREMIOS_VA, e.TITULO_ES as tituloes, e.TITULO_VA as titulova, e.IMAGEN_SRC as imagensrc, e.IMAGEN_CONTENT_TYPE, e.ID, e.ASIENTOS_NUMERADOS as asientosnumerados, " +
         		" e.RETENCION_SGAE as retencionsgae, e.IVA_SGAE as ivasgae, e.PORCENTAJE_IVA as porcentajeiva, " +
         		" e.RSS_ID as rssid, (select min(s.FECHA_CELEBRACION) from PAR_SESIONES s where e.id=s.EVENTO_ID) as fechaPrimeraSesion, " +
-        		" e.EXPEDIENTE, e.COD_DISTRI, e.NOM_DISTRI, e.NACIONALIDAD, e.VO, e.METRAJE, e.SUBTITULOS " +
+        		" e.EXPEDIENTE, e.COD_DISTRI, e.NOM_DISTRI, e.NACIONALIDAD, e.VO, e.METRAJE, e.SUBTITULOS, t.exportar_icaa " +
         		" from PAR_EVENTOS e left outer join PAR_SESIONES s on e.id=s.EVENTO_ID inner join PAR_TIPOS_EVENTO t on e.TIPO_EVENTO_ID=t.id " +
         		(activos?getWhereActivos():getWhereTodos()) +
         		" order by ";
@@ -193,7 +193,7 @@ public class EventosDAO extends BaseDAO
             tipoEvento.setId(databaseHelper.castId(array[10]));
             tipoEvento.setNombreEs((String) array[11]);
             tipoEvento.setNombreVa((String) array[12]);
-            
+            tipoEvento.setExportarICAA((Boolean) array[33]);
             evento.setParTipoEvento(tipoEvento);
         }
 

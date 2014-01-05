@@ -221,6 +221,7 @@ Ext.define('Paranimf.view.evento.FormEventos', {
   {
     fieldLabel: UI.i18n.field.type,
     name: 'tipoEvento',
+    labelWidth: 120,
     xtype: 'combobox',
     displayField: 'nombreEs',
     valueField: 'id',
@@ -229,6 +230,7 @@ Ext.define('Paranimf.view.evento.FormEventos', {
     typeAhead: true
   }, {
     fieldLabel: UI.i18n.field.asientosNumerados,
+    labelWidth: 120,
     name: 'asientosNumerados',
     xtype: 'combobox',
     displayField: 'name',
@@ -251,11 +253,13 @@ Ext.define('Paranimf.view.evento.FormEventos', {
     title: UI.i18n.field.icaa,
     defaults: {
         xtype: 'textfield',
-        anchor: '100%'
+        anchor: '100%',
+        labelWidth: 120
     },
     items: [{
       fieldLabel: UI.i18n.field.expediente,
-      name: 'expediente'
+      name: 'expediente',
+      labelWidth: 170
      }, {
       fieldLabel: UI.i18n.field.codigoDistribuidora,
       name: 'codigoDistribuidora'

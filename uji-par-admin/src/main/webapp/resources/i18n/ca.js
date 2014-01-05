@@ -8,7 +8,8 @@ UI =
             "pagar": "Realitzar pagament",
             "comprar": "Realitzar compra",
             "reservar": "Realitzar reserva",
-            "anularPrevia": "Anul·lar compra prèvia"
+            "anularPrevia": "Anul·lar compra prèvia",
+            "datosFichero": "Dades necessàries per a generar el fitxer per a l'ICAA"
         },
         "message": {
         	"event": "És obligatori seleccionar un event",
@@ -50,7 +51,8 @@ UI =
             "falta": "Falta tabla ICAA",
             "35mm": "35 mm",
             "digital": "Digital",
-            "3d": "3D"
+            "3d": "3D",
+            "noRowSelectedFileICAA": "És obligatori seleccionar almenys una sessió"
         },
         "storeWeekDay": {
             "wed": "Dimecres",
@@ -115,7 +117,8 @@ UI =
             "anularCompraReserva": "S'ha produït un error anul·lant la compra/reserva",
             "fechasObligatorias": "Les dates són obligatòries",
             "desanularCompraReserva": "S'ha produït un error activant la compra/reserva",
-            "anularEntrada": "S'ha produït un error anul·lant l'entrada'"
+            "anularEntrada": "S'ha produït un error anul·lant l'entrada",
+            "errorGenerandoFicheroICAA": "S'ha produït un error generant el fitxer per a l'ICAA"
         },
         "button": {
             "closeSession": "Tancar sessió",
@@ -151,7 +154,8 @@ UI =
             "generatePdfTaquilla": "PDF de taquilla",
             "generatePdfEfectivo": "PDF d'efectiu",
             "generatePdfTpv": "PDF de TPV",
-            "generatePdfEventos": "PDF SGAE"
+            "generatePdfEventos": "PDF SGAE",
+            "saveFileICAA": "Generar fitxer per a l'ICAA"
         },
         "calendar": {
             "calendar": "Calendari de reserves",
@@ -176,7 +180,8 @@ UI =
             "comprar": "Comprar entrades",
             "compras": "Gestió de compres i reserves",
             "detalleCompras": "Detall compra/reserva seleccionada",
-            "comprasReservasHechas": "Compres i reserves realitzades"
+            "comprasReservasHechas": "Compres i reserves realitzades",
+            "sesionesICAA": "Sessions realitzades entre les dates seleccionades"
         },
         
         "field": {
@@ -310,7 +315,13 @@ UI =
             "inicioReserva": "Inici reserva",
             "finReserva": "Fi reserva",
             "buscarCompras": "Cerca per identificador i observacions de reserva",
-            "exportarICAA": "Exportar events als fitxers per a l'ICAA"
+            "exportarICAA": "Exportar events als fitxers per a l'ICAA",
+            "ficheroICAAgenerado": "Fitxer ja generat",
+            "ficheroICAAenviado": "Enviat a l'ICAA",
+            "envioHabitual": "Enviament habitual",
+            "envioRetrasado": "Enviament retrasat",
+            "fechaUltimoEnvioHabitual": "Data de l'últim enviament habitual",
+            "tipoEnvio": "Tipus d'enviament"
         },
 
         "legends": {

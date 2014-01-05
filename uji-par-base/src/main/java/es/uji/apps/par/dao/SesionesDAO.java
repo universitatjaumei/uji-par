@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
@@ -13,6 +14,7 @@ import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.jpa.impl.JPASubQuery;
 import com.mysema.query.jpa.impl.JPAUpdateClause;
+import com.mysema.query.types.expr.BooleanExpression;
 
 import es.uji.apps.par.db.PreciosSesionDTO;
 import es.uji.apps.par.db.QButacaDTO;
@@ -264,6 +266,8 @@ public class SesionesDAO extends BaseDAO
             registro.setPeliculas(1);
             registro.setFecha(sesion.getFechaCelebracion());
             registro.setHora(HOUR_FORMAT.format(sesion.getFechaCelebracion()));
+            //TODO -> Hay que tener en la base de datos si se producen incidencias en la sesion
+            //Necesitamos saber los valores de la bbdd de incidencias del ICAA para ver de qué tipo son
             registro.setIncidencia(TipoIncidencia.SIN_INCIDENCIAS);
 
             if (recaudacion == null)
@@ -277,6 +281,7 @@ public class SesionesDAO extends BaseDAO
         return registros;
     }
 
+    @Transactional
     public List<RegistroSesionPelicula> getRegistrosSesionesPeliculas(List<Sesion> sesiones)
     {
         QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
@@ -313,6 +318,7 @@ public class SesionesDAO extends BaseDAO
         return registros;
     }
 
+    @Transactional
     public List<RegistroPelicula> getRegistrosPeliculas(List<Sesion> sesiones)
     {
         QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
@@ -355,7 +361,7 @@ public class SesionesDAO extends BaseDAO
         return registros;
     }
 
-    
+    @Transactional
     public List<SesionDTO> getSesionesOrdenadas(List<Sesion> sesiones)
     {
         QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
@@ -387,4 +393,24 @@ public class SesionesDAO extends BaseDAO
         else
             return Sesion.SesionDTOToSesion(uniqueResult);    
     }
+    
+    @Transactional
+	public List<SesionDTO> getSesionesCinePorFechas(Date dtInicio, Date dtFin, String sort) {
+		QSalaDTO qSalaDTO = QSalaDTO.salaDTO;
+		QEventoDTO qEventoDTO = QEventoDTO.eventoDTO;
+
+        JPAQuery query = new JPAQuery(entityManager);
+        query.from(qSesionDTO).join(qSesionDTO.parEvento, qEventoDTO).leftJoin(qSesionDTO.parSala, qSalaDTO).fetch();
+        BooleanExpression condicion = qEventoDTO.parTiposEvento.exportarICAA.eq(true);
+        
+        if (dtInicio != null) 
+        	condicion = condicion.and(qSesionDTO.fechaCelebracion.goe(new Timestamp(dtInicio.getTime())));
+        
+        if (dtFin != null)
+        	condicion = condicion.and(qSesionDTO.fechaCelebracion.loe(new Timestamp(dtFin.getTime())));
+       
+       	query.where(condicion);
+        
+        return query.orderBy(getSort(qSesionDTO, sort)).list(qSesionDTO);
+	}
 }

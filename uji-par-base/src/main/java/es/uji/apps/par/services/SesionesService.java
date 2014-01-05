@@ -289,4 +289,19 @@ public class SesionesService
 	public int getTotalPreciosSesion(Long sesionId) {
 		return sesionDAO.getTotalPreciosSesion(sesionId);
 	}
+
+	public List<Sesion> getSesionesCinePorFechas(String fechaInicio, String fechaFin, String sort) {
+		Date dtInicio = DateUtils.spanishStringToDate(fechaInicio);
+		Date dtFin = DateUtils.spanishStringToDate(fechaFin);
+		dtFin = DateUtils.addTimeToDate(dtFin, "23:59");
+		List<SesionDTO> sesionesDTO = sesionDAO.getSesionesCinePorFechas(dtInicio, dtFin, sort);
+		List<Sesion> listaSesiones = new ArrayList<Sesion>();
+		
+		for (SesionDTO sesionDTO: sesionesDTO) {
+			Sesion sesion = Sesion.SesionDTOToSesion(sesionDTO);
+			sesion.setFechaCelebracionWithDate(new Date(sesion.getFechaCelebracion().getTime()/1000));
+			listaSesiones.add(sesion);
+		}
+		return listaSesiones;
+	}
 }

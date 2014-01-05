@@ -1,5 +1,7 @@
 package es.uji.apps.par.ficheros.registros;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintWriter;
 import java.util.List;
 
 import es.uji.apps.par.RegistroSerializaException;
@@ -112,4 +114,13 @@ public class FicheroRegistros
 
         return buff.toString();
     }
+
+	public byte[] toByteArray() throws RegistroSerializaException {
+		String contenidor = this.serializa();
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		PrintWriter out = new PrintWriter(outputStream);
+		out.write(contenidor);
+		out.close();
+		return outputStream.toByteArray();
+	}
 }

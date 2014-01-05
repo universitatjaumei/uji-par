@@ -8,6 +8,6 @@ public class FicherosUtils
     {
         if (codigoSala.length() > 6)
             throw new RegistroSerializaException(
-                    "El codigoSala es un string de tamaño mayor de 6 carácteres: codigoSala=" + codigoSala);
+                    "El código de sala es un string de tamaño mayor de 6 carácteres: codigoSala=" + codigoSala);
     }
 }

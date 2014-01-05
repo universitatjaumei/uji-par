@@ -86,8 +86,16 @@ public class SesionDTO implements Serializable {
     
     @OneToMany(mappedBy="parSesion")
     private List<CompraDTO> parCompras;
+    
+    //bi-directional many-to-one association to EnviosSesionDTO
+  	@OneToMany(mappedBy="parSesion")
+  	private List<EnviosSesionDTO> parEnviosSesion;
 
 	public SesionDTO() {
+	}
+	
+	public SesionDTO(long id) {
+		this.id = id;
 	}
 
 	public long getId() {
@@ -249,4 +257,12 @@ public class SesionDTO implements Serializable {
     {
         this.rssId = rssId;
     }
+
+	public List<EnviosSesionDTO> getParEnviosSesion() {
+		return parEnviosSesion;
+	}
+
+	public void setParEnviosSesion(List<EnviosSesionDTO> parEnviosSesion) {
+		this.parEnviosSesion = parEnviosSesion;
+	}
 }

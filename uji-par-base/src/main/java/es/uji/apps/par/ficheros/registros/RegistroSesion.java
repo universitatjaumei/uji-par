@@ -93,19 +93,19 @@ public class RegistroSesion
     public String serializa() throws RegistroSerializaException
     {
         if (codigoSala == null)
-            throw new RegistroSerializaException("El codigoSala es null");
+            throw new RegistroSerializaException("La sesión tiene el código de sala nulo");
 
         if (fecha == null)
-            throw new RegistroSerializaException("La fecha es null");
+            throw new RegistroSerializaException("La fecha de sesión es nula");
 
         if (hora == null)
-            throw new RegistroSerializaException("La hora es null");
+            throw new RegistroSerializaException("La hora de sesión es nula");
 
         if (recaudacion == null)
-            throw new RegistroSerializaException("La recaudacion es null");
+            throw new RegistroSerializaException("La recaudacion de la sesión es nula");
 
         if (incidencia == null)
-            throw new RegistroSerializaException("La incidencia es null");
+            throw new RegistroSerializaException("La sesión tiene las incidencias nulas. Si no tiene incidencias debe tener el valor correspondiente a SIN_INCIDENCIAS");
 
         FicherosUtils.compruebaCodigoSala(codigoSala);
 

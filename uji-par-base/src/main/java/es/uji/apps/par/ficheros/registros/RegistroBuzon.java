@@ -101,17 +101,17 @@ public class RegistroBuzon
     public String serializa() throws RegistroSerializaException
     {
         if (codigo == null)
-            throw new RegistroSerializaException("El codigo es null");
+            throw new RegistroSerializaException("El código del cine es nulo");
 
         if (tipo == null)
-            throw new RegistroSerializaException("El tipo es null");
+            throw new RegistroSerializaException("El tipo de envío (FL, AT) es nulo");
 
         if (codigo.length() != 3)
-            throw new RegistroSerializaException("El codigo es un string de tamaño distinto de 3 carácteres: codigo="
+            throw new RegistroSerializaException("El código del cine es un string de tamaño distinto de 3 carácteres: codigo="
                     + codigo);
 
         if (tipo.length() != 2)
-            throw new RegistroSerializaException("El tipo es un string de tamaño distinto de 2 carácteres: tipo="
+            throw new RegistroSerializaException("El tipo de envío es un string de tamaño distinto de 2 carácteres: tipo="
                     + tipo);
 
         Calendar calDiaAnterior = Calendar.getInstance();

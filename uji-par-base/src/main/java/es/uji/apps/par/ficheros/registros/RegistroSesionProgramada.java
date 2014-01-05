@@ -47,10 +47,10 @@ public class RegistroSesionProgramada
     public String serializa() throws RegistroSerializaException
     {
         if (codigoSala == null)
-            throw new RegistroSerializaException("El codigoSala es null");
+            throw new RegistroSerializaException("El código de sala de la sesión programada es nulo");
 
         if (fechaSesion == null)
-            throw new RegistroSerializaException("La fechaSesion es null");
+            throw new RegistroSerializaException("La fecha de la sesión programada es nulo");
 
         FicherosUtils.compruebaCodigoSala(codigoSala);
 

@@ -103,6 +103,7 @@ Ext.define('Paranimf.view.evento.FormSesiones', {
    }, {
 	      xtype: 'fieldset',
 	      title: UI.i18n.field.sesionCine,
+        name: 'sesionCine',
 	      defaults: {
 	         anchor: '100%',
 	         labelWidth: 190

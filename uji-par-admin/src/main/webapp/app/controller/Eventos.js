@@ -29,6 +29,9 @@ Ext.define('Paranimf.controller.Eventos', {
    }, {
       ref: 'formPreciosSesion',
       selector: 'formPreciosSesion'
+   }, {
+      ref: 'sesionCine',
+      selector: 'formSesiones fieldset[name=sesionCine]'
    }],
 
    init: function() {
@@ -233,8 +236,12 @@ Ext.define('Paranimf.controller.Eventos', {
    },
    
    preparaStoresSesiones: function(comp, opts) {
+      console.log(this.getGridEventos().getSelectedRecord());
 	   this.preparaStorePlantillaPrecios();
 	   this.preparaStoreSalas();
+      
+      if (!this.getGridEventos().getSelectedRecord().data.parTiposEvento.exportarICAA)
+         this.getSesionCine().hide();
    },
 
    preparaStorePlantillaPrecios: function() {
@@ -247,7 +254,7 @@ Ext.define('Paranimf.controller.Eventos', {
    },   
    
    preparaStoreSalas: function() {
-      var idASeleccionar = -1;
+      var idASeleccionar = undefined;
       if (this.getGridSesiones().getSelectedColumnId() != undefined) {
          var selectedRecord = this.getGridSesiones().getSelectedRecord();
          idASeleccionar = selectedRecord.data.sala;

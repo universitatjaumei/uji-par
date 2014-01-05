@@ -1,6 +1,7 @@
 package es.uji.apps.par.ficheros.service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -39,11 +40,11 @@ public class FicherosService
     @Autowired
     private SesionesDAO sesionesDAO;
 
-    public FicheroRegistros generaFicheroRegistros(Date fechaEnvio, String tipo, List<Sesion> sesiones)
+    public FicheroRegistros generaFicheroRegistros(Date fechaEnvioAnterior, String tipo, List<Sesion> sesiones)
     {
         FicheroRegistros ficheroRegistros = new FicheroRegistros();
 
-        ficheroRegistros.setRegistroBuzon(generaRegistroBuzon(fechaEnvio, tipo, sesiones));
+        ficheroRegistros.setRegistroBuzon(generaRegistroBuzon(fechaEnvioAnterior, tipo, sesiones));
         ficheroRegistros.setRegistrosSalas(generaRegistrosSala(sesiones));
         ficheroRegistros.setRegistrosSesiones(generaRegistrosSesion(sesiones));
         ficheroRegistros.setRegistrosSesionesPeliculas(generaRegistrosSesionPelicula(sesiones));
@@ -59,7 +60,7 @@ public class FicherosService
         return ficheroRegistros;
     }
 
-    private RegistroBuzon generaRegistroBuzon(Date fechaEnvio, String tipo, List<Sesion> sesiones)
+    private RegistroBuzon generaRegistroBuzon(Date fechaEnvioAnterior, String tipo, List<Sesion> sesiones)
     {
         List<CineDTO> cines = cinesDao.getCines();
         CineDTO cine = cines.get(0);
@@ -67,7 +68,9 @@ public class FicherosService
         RegistroBuzon registroBuzon = new RegistroBuzon();
 
         registroBuzon.setCodigo(cine.getCodigo());
-        registroBuzon.setFechaEnvio(fechaEnvio);
+        registroBuzon.setFechaEnvioHabitualAnterior(fechaEnvioAnterior);
+        Calendar cal = Calendar.getInstance();
+        registroBuzon.setFechaEnvio(cal.getTime());
         registroBuzon.setTipo(tipo);
         registroBuzon.setSesiones(sesiones.size());
         registroBuzon.setRecaudacion(comprasDAO.getRecaudacionSesiones(sesiones));

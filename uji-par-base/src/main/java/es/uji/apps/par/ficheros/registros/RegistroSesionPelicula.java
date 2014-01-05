@@ -59,13 +59,13 @@ public class RegistroSesionPelicula
     public String serializa() throws RegistroSerializaException
     {
         if (codigoSala == null)
-            throw new RegistroSerializaException("El codigoSala es null");
+            throw new RegistroSerializaException("El código de sala de emisión de la película es nulo");
 
         if (fecha == null)
-            throw new RegistroSerializaException("La fecha es null");
+            throw new RegistroSerializaException("La fecha de la sesión de emisión de la película es nulo");
 
         if (hora == null)
-            throw new RegistroSerializaException("La hora es null");
+            throw new RegistroSerializaException("La hora de la sesión de emisión de la película es nulo");
 
         FicherosUtils.compruebaCodigoSala(codigoSala);
 

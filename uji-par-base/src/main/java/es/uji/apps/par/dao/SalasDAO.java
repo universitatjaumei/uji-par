@@ -42,6 +42,7 @@ public class SalasDAO extends BaseDAO
         return sala;
     }
 
+    @Transactional
     public List<PlantaSala> getPlantas(long idSala)
     {
         QPlantaSalaDTO qPlantaSalaDTO = QPlantaSalaDTO.plantaSalaDTO;
@@ -72,7 +73,8 @@ public class SalasDAO extends BaseDAO
         
         JPAQuery query = new JPAQuery(entityManager);
 
-        List<SalaDTO> salasDTO = query.from(qSalaDTO).join(qSalaDTO.parSesiones, qSesionDTO).where(qSesionDTO.in(Sesion.sesionsToSesionsDTO(sesiones))).distinct().list(qSalaDTO);
+        List<SalaDTO> salasDTO = query.from(qSalaDTO).join(qSalaDTO.parSesiones, qSesionDTO).
+        		where(qSesionDTO.id.in(Sesion.getIdsSesiones(sesiones))).distinct().list(qSalaDTO);
         
         return Sala.salasDTOtoSalas(salasDTO);
     }

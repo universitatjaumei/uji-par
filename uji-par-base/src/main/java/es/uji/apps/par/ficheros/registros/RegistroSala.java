@@ -33,10 +33,10 @@ public class RegistroSala
     public String serializa() throws RegistroSerializaException
     {
         if (codigo == null)
-            throw new RegistroSerializaException("El codigo es null");
+            throw new RegistroSerializaException("El código de sala es nulo");
 
         if (nombre == null)
-            throw new RegistroSerializaException("El nombre es null");
+            throw new RegistroSerializaException("El nombre de la sala es nulo");
 
         FicherosUtils.compruebaCodigoSala(codigo);
 
