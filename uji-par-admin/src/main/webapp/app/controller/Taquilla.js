@@ -387,6 +387,7 @@ Ext.define('Paranimf.controller.Taquilla', {
    		for (var key in this.disponibles) {
    			var hayDisponibles = (this.disponibles[key]==0)?false:true;
    			var hayPrecioNormal = false, hayPrecioDescuento = false, hayPrecioInvitacion = false;
+        var hayPrecioAulaTeatro = false;
    			var panel;
    			
    			if (this.precios[key] != undefined && this.precios[key] != '' && this.precios[key] != 0) {
