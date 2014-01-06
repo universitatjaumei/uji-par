@@ -11,6 +11,7 @@ Ext.define('Paranimf.view.EditBaseForm', {
    }, {
       xtype: 'button',
       text: UI.i18n.button.cancel,
+      action: 'cancel',
       handler: function() {
          this.up('window').close();
       }

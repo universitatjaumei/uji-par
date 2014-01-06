@@ -118,7 +118,8 @@ UI =
             "fechasObligatorias": "Les dates són obligatòries",
             "desanularCompraReserva": "S'ha produït un error activant la compra/reserva",
             "anularEntrada": "S'ha produït un error anul·lant l'entrada",
-            "errorGenerandoFicheroICAA": "S'ha produït un error generant el fitxer per a l'ICAA"
+            "errorGenerandoFicheroICAA": "S'ha produït un error generant el fitxer per a l'ICAA",
+            "markAsSent": "S'ha produït un error marcant les sessions com a enviades"
         },
         "button": {
             "closeSession": "Tancar sessió",
@@ -155,7 +156,8 @@ UI =
             "generatePdfEfectivo": "PDF d'efectiu",
             "generatePdfTpv": "PDF de TPV",
             "generatePdfEventos": "PDF SGAE",
-            "saveFileICAA": "Generar fitxer per a l'ICAA"
+            "saveFileICAA": "Generar fitxer per a l'ICAA",
+            "marcarComoEnviados": "Marcar com a enviades a l'ICAA"
         },
         "calendar": {
             "calendar": "Calendari de reserves",
@@ -321,7 +323,8 @@ UI =
             "envioHabitual": "Enviament habitual",
             "envioRetrasado": "Enviament retrasat",
             "fechaUltimoEnvioHabitual": "Data de l'últim enviament habitual",
-            "tipoEnvio": "Tipus d'enviament"
+            "tipoEnvio": "Tipus d'enviament",
+            "idEnvioFichero": "Identificador de l'enviament del fitxer"
         },
 
         "legends": {

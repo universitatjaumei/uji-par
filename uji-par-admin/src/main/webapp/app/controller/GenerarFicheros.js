@@ -37,12 +37,49 @@ Ext.define('Paranimf.controller.GenerarFicheros', {
 
          'formDatosFichero button[action=save]': {
             click: this.saveFileICAA
+         },
+
+         'gridSesionesCompleto button[action=markAsSent]': {
+            click: this.markAsSent
+         },
+
+         'formDatosFichero button[action=cancel]': {
+            click: this.reloadGrid
          }
       });
    },
 
+   markAsSent: function() {
+      var idsSelected = this.getGridSesionesCompleto().getSelectedColumnValues("idEnvioFichero");
+      console.log(idsSelected);
+      if (idsSelected && idsSelected.length > 0) {
+         this.getGridSesionesCompleto().setLoading(UI.i18n.message.loading);
+         var me = this;
+         Ext.Ajax.request({
+            url : urlPrefix + 'comunicacionesicaa',
+            method: 'PUT',
+            params: {
+               ids: idsSelected
+            },
+            success: function (response) {
+              me.getGridSesionesCompleto().setLoading(false);
+              me.reloadGrid();
+            }, failure: function (response) {
+              me.getGridSesionesCompleto().setLoading(false);
+              alert(UI.i18n.error.markAsSent);
+            }
+         });
+      } else
+         alert(UI.i18n.message.noRowSelectedFileICAA);
+   },
+
+   reloadGrid: function() {
+      this.getGridSesionesCompleto().recargaStore();
+   },
+
    showOpcionsFileICAA: function() {
       var idsSelected = this.getGridSesionesCompleto().getSelectedColumnIds();
+      console.log(idsSelected);
       if (idsSelected && idsSelected.length > 0) {
          this.getGridSesionesCompleto().showDatosFicheroForm();
       } else
@@ -56,9 +93,9 @@ Ext.define('Paranimf.controller.GenerarFicheros', {
          var fechaEnvioHabitualAnterior = this.getFechaUltimoEnvioHabitual().rawValue;
          var tipoEnvio = this.getTipoEnvio().value;
 
-         this.getFormDatosFichero().submit({target: '_blank'});
-         this.getFormDatosFichero().submit({
+         this.getFormDatosFichero().getForm().doAction('standardsubmit', {
             standardSubmit: true,
+            target: '_blank',
             url : urlPrefix + 'comunicacionesicaa',
             method: 'POST',
             timeout: 120000,

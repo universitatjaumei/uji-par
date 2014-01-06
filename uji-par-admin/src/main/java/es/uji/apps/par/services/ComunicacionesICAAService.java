@@ -1,6 +1,7 @@
 package es.uji.apps.par.services;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -59,6 +60,12 @@ public class ComunicacionesICAAService {
 	private void checkTipoEnvio(String tipoEnvio) throws TipoEnvioInvalidoException {
 		if (tipoEnvio == null || (!tipoEnvio.equals("FL") && !tipoEnvio.equals("AT")))
 			throw new TipoEnvioInvalidoException();
+	}
+
+	public void marcaEnviosComoEnviados(List<Long> ids) {
+		Calendar cal = Calendar.getInstance();
+		Date fechaEnvio = cal.getTime();
+		comunicacionesICAADAO.marcaEnviosComoEnviados(ids, fechaEnvio);
 	}
 
 }

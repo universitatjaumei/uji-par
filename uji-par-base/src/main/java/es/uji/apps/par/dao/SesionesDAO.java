@@ -19,6 +19,8 @@ import com.mysema.query.types.expr.BooleanExpression;
 import es.uji.apps.par.db.PreciosSesionDTO;
 import es.uji.apps.par.db.QButacaDTO;
 import es.uji.apps.par.db.QCompraDTO;
+import es.uji.apps.par.db.QEnvioDTO;
+import es.uji.apps.par.db.QEnviosSesionDTO;
 import es.uji.apps.par.db.QEventoDTO;
 import es.uji.apps.par.db.QPreciosSesionDTO;
 import es.uji.apps.par.db.QSalaDTO;
@@ -398,9 +400,12 @@ public class SesionesDAO extends BaseDAO
 	public List<SesionDTO> getSesionesCinePorFechas(Date dtInicio, Date dtFin, String sort) {
 		QSalaDTO qSalaDTO = QSalaDTO.salaDTO;
 		QEventoDTO qEventoDTO = QEventoDTO.eventoDTO;
+		QEnviosSesionDTO qEnviosSesion = QEnviosSesionDTO.enviosSesionDTO;
+		QEnvioDTO qEnvioDTO = QEnvioDTO.envioDTO;
 
         JPAQuery query = new JPAQuery(entityManager);
-        query.from(qSesionDTO).join(qSesionDTO.parEvento, qEventoDTO).leftJoin(qSesionDTO.parSala, qSalaDTO).fetch();
+        query.from(qSesionDTO).join(qSesionDTO.parEvento, qEventoDTO).leftJoin(qSesionDTO.parSala, qSalaDTO).fetch().
+        	leftJoin(qSesionDTO.parEnviosSesion, qEnviosSesion).fetch().leftJoin(qEnviosSesion.parEnvio, qEnvioDTO).fetch();
         BooleanExpression condicion = qEventoDTO.parTiposEvento.exportarICAA.eq(true);
         
         if (dtInicio != null) 

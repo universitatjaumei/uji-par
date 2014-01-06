@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -35,5 +36,16 @@ public class ComunicacionesICAAResource extends BaseResource
 		return Response.ok(arr, 
 				MediaType.TEXT_PLAIN).
 				header("content-disposition","attachment; filename = informeICAA.txt").build();
+    }
+    
+    @PUT
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response marcaEnviosComoEnviados(@FormParam("ids") List<Long> ids)
+    {
+        AuthChecker.canWrite(currentRequest);
+        comunicacionesICAAService.marcaEnviosComoEnviados(ids);
+        
+		return Response.ok().build();
     }
 }

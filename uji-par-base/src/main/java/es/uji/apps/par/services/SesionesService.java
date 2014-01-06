@@ -300,6 +300,19 @@ public class SesionesService
 		for (SesionDTO sesionDTO: sesionesDTO) {
 			Sesion sesion = Sesion.SesionDTOToSesion(sesionDTO);
 			sesion.setFechaCelebracionWithDate(new Date(sesion.getFechaCelebracion().getTime()/1000));
+			
+			if (sesionDTO.getParEnviosSesion().size() > 0) {
+				sesion.setFechaGeneracionFichero(new Date(
+					sesionDTO.getParEnviosSesion().get(0).getParEnvio().getFechaGeneracionFichero().getTime()/1000
+				));
+				
+				if (sesionDTO.getParEnviosSesion().get(0).getParEnvio().getFechaEnvioFichero() != null)
+					sesion.setFechaEnvioFichero(new Date(
+							sesionDTO.getParEnviosSesion().get(0).getParEnvio().getFechaEnvioFichero().getTime()/1000
+					));
+				sesion.setTipoEnvio(sesionDTO.getParEnviosSesion().get(0).getTipoEnvio());
+				sesion.setIdEnvioFichero(sesionDTO.getParEnviosSesion().get(0).getParEnvio().getId());
+			}
 			listaSesiones.add(sesion);
 		}
 		return listaSesiones;

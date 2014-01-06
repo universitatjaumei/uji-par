@@ -22,6 +22,8 @@ public class Sesion
     private Date fechaCelebracion;
     private Date fechaInicioVentaOnline;
     private Date fechaFinVentaOnline;
+    private Date fechaEnvioFichero;
+    private Date fechaGeneracionFichero;
     private String horaApertura;
     private Boolean canalInternet;
     private Boolean canalTaquilla;
@@ -36,6 +38,8 @@ public class Sesion
     private Sala sala;
     private String versionLinguistica;
     private String rssId;
+    private String tipoEnvio;
+    private Long idEnvioFichero;
 
     public Sesion()
     {
@@ -391,4 +395,36 @@ public class Sesion
     {
         this.rssId = rssId;
     }
+
+	public Date getFechaEnvioFichero() {
+		return fechaEnvioFichero;
+	}
+
+	public void setFechaEnvioFichero(Date fechaEnvioFichero) {
+		this.fechaEnvioFichero = fechaEnvioFichero;
+	}
+
+	public Date getFechaGeneracionFichero() {
+		return fechaGeneracionFichero;
+	}
+
+	public void setFechaGeneracionFichero(Date fechaGeneracionFichero) {
+		this.fechaGeneracionFichero = fechaGeneracionFichero;
+	}
+
+	public String getTipoEnvio() {
+		return tipoEnvio;
+	}
+
+	public void setTipoEnvio(String tipoEnvio) {
+		this.tipoEnvio = tipoEnvio;
+	}
+
+	public Long getIdEnvioFichero() {
+		return idEnvioFichero;
+	}
+
+	public void setIdEnvioFichero(Long idEnvioFichero) {
+		this.idEnvioFichero = idEnvioFichero;
+	}
  }

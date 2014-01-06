@@ -9,6 +9,10 @@ Ext.define('Paranimf.view.generarficheros.GridSesionesCompleto', {
       xtype: 'button',
       text: UI.i18n.button.saveFileICAA,
       action: 'saveFileICAA'
+   }, {
+    xtype: 'button',
+    text: UI.i18n.button.marcarComoEnviados,
+    action: 'markAsSent'
    }],
 
    dockedItems: [],
@@ -25,6 +29,10 @@ Ext.define('Paranimf.view.generarficheros.GridSesionesCompleto', {
       hidden: true,
       text: UI.i18n.field.idIntern
     }, {
+      dataIndex: 'idEnvioFichero',
+      hidden: true,
+      text: UI.i18n.field.idEnvioFichero
+    }, {
       dataIndex: 'tituloEs',
       flex: 3,
       text: UI.i18n.field.tituloMulti
@@ -39,13 +47,27 @@ Ext.define('Paranimf.view.generarficheros.GridSesionesCompleto', {
       text: UI.i18n.field.opening,
       flex: 1
     }, {
-      dataIndex: 'ficheroICAAgenerado',
+      dataIndex: 'fechaGeneracionFichero',
       text: UI.i18n.field.ficheroICAAgenerado,
+      format:'d/m/Y H:i',
+      xtype: 'datecolumn',
       flex: 1
     }, {
-      dataIndex: 'ficheroICAAenviado',
+      dataIndex: 'fechaEnvioFichero',
       text: UI.i18n.field.ficheroICAAenviado,
+      format:'d/m/Y H:i',
+      xtype: 'datecolumn',
       flex: 1
+    }, {
+      dataIndex: 'tipoEnvio',
+      text: UI.i18n.field.tipoEnvio,
+      flex: 1,
+      renderer: function(value) {
+        if (value == 'FL')
+          return UI.i18n.field.envioHabitual
+        else if (value == 'AT')
+          return UI.i18n.field.envioRetrasado
+      }
     }];
 
     this.callParent(arguments);

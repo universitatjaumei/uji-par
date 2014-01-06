@@ -2,6 +2,7 @@ package es.uji.apps.par.db;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,6 +26,9 @@ public class EnviosSesionDTO implements Serializable {
 	@SequenceGenerator(name="PAR_ENVIOS_SESIONES_ID_GENERATOR", sequenceName="HIBERNATE_SEQUENCE")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PAR_ENVIOS_SESIONES_ID_GENERATOR")
 	private long id;
+	
+	@Column(name="TIPO_ENVIO")
+	private String tipoEnvio;
 	
 	//bi-directional many-to-one association to SesionDTO
 	@ManyToOne
@@ -61,5 +65,13 @@ public class EnviosSesionDTO implements Serializable {
 
 	public void setParEnvio(EnvioDTO parEnvio) {
 		this.parEnvio = parEnvio;
+	}
+
+	public String getTipoEnvio() {
+		return tipoEnvio;
+	}
+
+	public void setTipoEnvio(String tipoEnvio) {
+		this.tipoEnvio = tipoEnvio;
 	}
 }

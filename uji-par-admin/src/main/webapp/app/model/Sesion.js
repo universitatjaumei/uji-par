@@ -23,5 +23,9 @@ Ext.define('Paranimf.model.Sesion', {
       'versionLinguistica',
       'rssId',
       {name: 'sala', mapping: 'sala.id'},
+      {name: 'fechaGeneracionFichero', type: 'date', dateFormat: 'U'},
+      {name: 'fechaEnvioFichero', type: 'date', dateFormat: 'U'},
+      'tipoEnvio',
+      'idEnvioFichero'
    ]
 });

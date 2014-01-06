@@ -33,9 +33,6 @@ public class EnvioDTO implements Serializable {
 
 	@Column(name="FECHA_ENVIO_FICHERO")
 	private Timestamp fechaEnvioFichero;
-	
-	@Column(name="TIPO_ENVIO")
-	private String tipoEnvio;
 
 	//bi-directional many-to-one association to EnviosSesionDTO
 	@OneToMany(mappedBy="parEnvio")
@@ -74,13 +71,5 @@ public class EnvioDTO implements Serializable {
 
 	public void setParEnviosSesion(List<EnviosSesionDTO> parEnviosSesion) {
 		this.parEnviosSesion = parEnviosSesion;
-	}
-
-	public String getTipoEnvio() {
-		return tipoEnvio;
-	}
-
-	public void setTipoEnvio(String tipoEnvio) {
-		this.tipoEnvio = tipoEnvio;
 	}
 }
