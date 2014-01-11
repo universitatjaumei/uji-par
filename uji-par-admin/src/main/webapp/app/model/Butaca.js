@@ -4,6 +4,7 @@ Ext.define('Paranimf.model.Butaca', {
    fields: [
       'id',
       'localizacion',
+      'localizacionNombre',
       'fila',
       'numero',
       'tipo',

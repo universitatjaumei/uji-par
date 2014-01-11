@@ -26,6 +26,7 @@ Ext.define('Paranimf.model.Sesion', {
       {name: 'fechaGeneracionFichero', type: 'date', dateFormat: 'U'},
       {name: 'fechaEnvioFichero', type: 'date', dateFormat: 'U'},
       'tipoEnvio',
-      'idEnvioFichero'
+      'idEnvioFichero',
+      {name: 'salaNombre', mapping: 'sala.nombre'}
    ]
 });

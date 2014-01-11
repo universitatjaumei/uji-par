@@ -32,6 +32,30 @@ Ext.define('Paranimf.controller.Eventos', {
    }, {
       ref: 'sesionCine',
       selector: 'formSesiones fieldset[name=sesionCine]'
+   }, {
+      ref: 'comboSala',
+      selector: 'formSesiones combobox[name=sala]'
+   }, {
+      ref: 'comboLocalizaciones',
+      selector: 'formPreciosSesion combobox[name=localizacion]'
+   }, {
+      ref: 'checkboxVentaOnline',
+      selector: 'formSesiones checkbox[name=canalInternet]'
+   }, {
+      ref: 'fechaInicioVentaOnline',
+      selector: 'formSesiones datefield[name=fechaInicioVentaOnline]'
+   }, {
+      ref: 'fechaFinVentaOnline',
+      selector: 'formSesiones datefield[name=fechaFinVentaOnline]'
+   }, {
+      ref: 'horaInicioVentaOnline',
+      selector: 'formSesiones timefield[name=horaInicioVentaOnline]'
+   }, {
+      ref: 'horaFinVentaOnline',
+      selector: 'formSesiones timefield[name=horaFinVentaOnline]'
+   }, {
+      ref: 'fieldsetReservesOnline',
+      selector: 'formSesiones fieldset[name=reservesOnline]'
    }],
 
    init: function() {
@@ -115,8 +139,29 @@ Ext.define('Paranimf.controller.Eventos', {
 
          'formPreciosSesion button[action=save]': {
             click: this.savePrecioSesion
+         }, 
+         'formSesiones checkbox[name=canalInternet]': {
+            change: this.enableDisableCanalInternet
          }
       });
+   },
+
+   enableDisableCanalInternet: function(obj, newValue, oldValue) {
+      this.getFechaInicioVentaOnline().allowBlank = !newValue;
+      this.getFechaFinVentaOnline().allowBlank = !newValue;
+      this.getHoraInicioVentaOnline().allowBlank = !newValue;
+      this.getHoraFinVentaOnline().allowBlank = !newValue;
+      if (newValue) {
+         this.getFechaInicioVentaOnline().show();
+         this.getFechaFinVentaOnline().show();
+         this.getHoraInicioVentaOnline().show();
+         this.getHoraFinVentaOnline().show();
+      } else {
+         this.getFechaInicioVentaOnline().hide();
+         this.getFechaFinVentaOnline().hide();
+         this.getHoraInicioVentaOnline().hide();
+         this.getHoraFinVentaOnline().hide();
+      }
    },
 
    deletePrecioSesion: function(button, event, opts) {
@@ -126,7 +171,10 @@ Ext.define('Paranimf.controller.Eventos', {
    },
 
    editPrecioSesion: function(button, event, opts) {
-      this.getGridPreciosSesion().edit('formPreciosSesion');
+      if (this.getComboSala().value != undefined && this.getComboSala().value != '' && this.getComboSala().value != 0)
+         this.getGridPreciosSesion().edit('formPreciosSesion');
+      else
+         alert(UI.i18n.error.salaObligatoria);
    },
 
    cambiaPlantilla: function(combo, newValue, oldValue, opts) {
@@ -180,12 +228,17 @@ Ext.define('Paranimf.controller.Eventos', {
    },   
 
    cargaLocalizaciones: function(comp, opts) {
+      this.getComboLocalizaciones().store.loadData([],false);
+      this.getComboLocalizaciones().store.proxy.url = urlPrefix + 'localizacion?sala=' + this.getComboSala().value;
       this.getFormPreciosSesion().cargaComboStore('localizacion');
    },
 
    addPrecioSesion: function(button, event, opts) {
-      this.getGridPreciosSesion().deseleccionar();
-      this.getGridPreciosSesion().showAddPrecioSesionWindow();
+      if (this.getComboSala().value != undefined && this.getComboSala().value != '' && this.getComboSala().value != 0) {
+         this.getGridPreciosSesion().deseleccionar();
+         this.getGridPreciosSesion().showAddPrecioSesionWindow();
+      } else
+         alert(UI.i18n.error.salaObligatoria);
    }, 
 
    existeRecordConLocalizacionElegida: function(indexFilaSeleccionada, localizacionSeleccionada) {
@@ -213,7 +266,7 @@ Ext.define('Paranimf.controller.Eventos', {
             localizacion_nombre: button.up('form').getForm().findField('localizacion').rawValue
          });
 
-         console.log(precioSesion);
+         //console.log(precioSesion);
 
          if (indiceFilaSeleccionada != -1) {
             var recordSeleccionado = this.getGridPreciosSesion().store.getAt(indiceFilaSeleccionada);
@@ -236,7 +289,7 @@ Ext.define('Paranimf.controller.Eventos', {
    },
    
    preparaStoresSesiones: function(comp, opts) {
-      console.log(this.getGridEventos().getSelectedRecord());
+      //console.log(this.getGridEventos().getSelectedRecord());
 	   this.preparaStorePlantillaPrecios();
 	   this.preparaStoreSalas();
       

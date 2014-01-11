@@ -16,11 +16,6 @@ import es.uji.apps.par.model.OrdreGrid;
 
 public class Utils
 {
-    public static String formatEuros(BigDecimal importe)
-    {
-        return importe.setScale(2).toString().replace('.', ',');
-    }
-
     public static String sha1(String string)
     {
         MessageDigest md = null;

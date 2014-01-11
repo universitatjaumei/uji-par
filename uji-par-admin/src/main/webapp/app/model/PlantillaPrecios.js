@@ -3,6 +3,8 @@ Ext.define('Paranimf.model.PlantillaPrecios', {
 
    fields: [
       'id', 
-      'nombre'
+      'nombre',
+      {name: 'nombreSala', mapping: 'sala.nombre'},
+      {name: 'idSala', mapping: 'sala.id'}
 	]
 });

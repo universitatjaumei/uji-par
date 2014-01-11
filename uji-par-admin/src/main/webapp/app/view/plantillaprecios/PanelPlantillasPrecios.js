@@ -8,9 +8,9 @@ Ext.define('Paranimf.view.plantillaprecios.PanelPlantillasPrecios', {
     flex: 1,
     region: 'north',
     autoScroll: true,
-    xtype: 'gridPlantillas'
+    xtype: 'gridPlantillas',
   }, {
-    flex: 1,
+    flex: 2,
     region: 'center',
     autoScroll: true,
     xtype: 'gridPrecios',

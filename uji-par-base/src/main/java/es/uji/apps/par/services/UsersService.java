@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.uji.apps.par.CampoRequeridoException;
-import es.uji.apps.par.GeneralPARException;
 import es.uji.apps.par.UsuarioYaExisteException;
 import es.uji.apps.par.dao.UsuariosDAO;
+import es.uji.apps.par.exceptions.GeneralPARException;
 import es.uji.apps.par.model.Usuario;
 
 @Service

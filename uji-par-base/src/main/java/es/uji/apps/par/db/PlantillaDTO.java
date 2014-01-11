@@ -2,6 +2,7 @@ package es.uji.apps.par.db;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
 import java.util.List;
 
 
@@ -28,6 +29,10 @@ public class PlantillaDTO implements Serializable {
 	//bi-directional many-to-one association to SesionDTO
 	@OneToMany(mappedBy="parPlantilla")
 	private List<SesionDTO> parSesiones;
+	
+	@ManyToOne
+	@JoinColumn(name="SALA_ID")
+	private SalaDTO sala;
 
 	public PlantillaDTO() {
 	}
@@ -62,6 +67,14 @@ public class PlantillaDTO implements Serializable {
 
 	public void setParSesiones(List<SesionDTO> parSesiones) {
 		this.parSesiones = parSesiones;
+	}
+
+	public SalaDTO getSala() {
+		return sala;
+	}
+
+	public void setSala(SalaDTO sala) {
+		this.sala = sala;
 	}
 
 }

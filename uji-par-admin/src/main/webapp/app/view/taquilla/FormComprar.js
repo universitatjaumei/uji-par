@@ -213,7 +213,7 @@ Ext.define('Paranimf.view.taquilla.FormComprar', {
 					       	        	    store: 'Horas',
 					       	        	    displayField: 'label',
 					       	        	    valueField: 'id',
-					       	        	    fieldLabel: 'Hora inicial',
+					       	        	    fieldLabel: UI.i18n.field.horaInicial,
 					       	        	    allowBlank: false,
 					       	        	    style: {
 					       	        	    	marginRight: '20px'
@@ -227,7 +227,7 @@ Ext.define('Paranimf.view.taquilla.FormComprar', {
 		       	        	        		store: 'Minutos',
 		       	        	        		displayField: 'label',
 		       	        	        		valueField: 'id',
-		       	        	        		fieldLabel: 'Minutos'
+		       	        	        		fieldLabel: UI.i18n.field.minutos
 		       	        	        	}]
 		       	        	        },
 
@@ -244,7 +244,7 @@ Ext.define('Paranimf.view.taquilla.FormComprar', {
 		       	        	        		displayField: 'label',
 		       	        	        		queryMode: 'local',
 		       	        	        		valueField: 'id',
-		       	        	        		fieldLabel: 'Hora final',
+		       	        	        		fieldLabel: UI.i18n.field.horaFinal,
 		       	        	        		style: {
 					       	        	    	marginRight: '20px'
 					       	        	    }
@@ -257,7 +257,7 @@ Ext.define('Paranimf.view.taquilla.FormComprar', {
 		       	        	        		store: 'Minutos',
 		       	        	        		displayField: 'label',
 		       	        	        		valueField: 'id',
-		       	        	        		fieldLabel: 'Minutos'
+		       	        	        		fieldLabel: UI.i18n.field.minutos
 		       	        	        	}]
 		       	        	        }, 
 

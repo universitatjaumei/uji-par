@@ -128,39 +128,6 @@ public class DateUtils
 	public static Date databaseStringToDate(String databaseDate) throws ParseException {
 	    return DATABASE_DAY.parse(databaseDate);
 	}
-
-    public static String getMesValenciaConDe(Calendar fecha)
-    {
-        int mes = fecha.get(Calendar.MONTH);
-        
-        switch (mes)
-        {
-        case 0:
-            return "de gener";
-        case 1:
-            return "de febrer";
-        case 2:
-            return "de març";
-        case 3:
-            return "d'abril";
-        case 4:
-            return "de maig";
-        case 5:
-            return "de juny";
-        case 6:
-            return "de juliol";
-        case 7:
-            return "d'agost";
-        case 8:
-            return "de setembre";
-        case 9:
-            return "d'octubre";
-        case 10:
-            return "de novembre";
-        default:
-            return "de desembre";
-        }
-    }
     
     /**
      * Se usa para mostrar eventos y sesiones como activos pasados X minutos de la hora del espectáculo

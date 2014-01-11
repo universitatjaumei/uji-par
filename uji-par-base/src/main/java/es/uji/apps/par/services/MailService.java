@@ -1,7 +1,5 @@
 package es.uji.apps.par.services;
 
-import java.util.List;
-
 import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
@@ -12,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.dao.MailDAO;
-import es.uji.apps.par.db.MailDTO;
 import es.uji.commons.messaging.client.MessageNotSentException;
 import es.uji.commons.messaging.client.MessagingClient;
 import es.uji.commons.messaging.client.model.MailMessage;

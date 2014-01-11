@@ -3,7 +3,6 @@ package es.uji.apps.par.report;
 import java.io.File;
 import java.io.OutputStream;
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -19,11 +18,10 @@ import es.uji.apps.fopreports.serialization.ReportSerializationException;
 import es.uji.apps.fopreports.serialization.ReportSerializer;
 import es.uji.apps.fopreports.serialization.ReportSerializerInitException;
 import es.uji.apps.par.i18n.ResourceProperties;
-import es.uji.apps.par.model.Informe;
+import es.uji.apps.par.model.InformeModelReport;
 import es.uji.apps.par.report.components.BaseTable;
 import es.uji.apps.par.report.components.InformeTaquillaReportStyle;
-import es.uji.apps.par.utils.DateUtils;
-import es.uji.apps.par.utils.Utils;
+import es.uji.apps.par.utils.ReportUtils;
 
 public class InformeTaquillaReport extends Report
 {
@@ -45,7 +43,7 @@ public class InformeTaquillaReport extends Report
         this.locale = locale;
     }
 
-    public void genera(Date inicio, Date fin, List<Informe> compras, BigDecimal totalTaquillaTPV,
+    public void genera(String inicio, String fin, List<InformeModelReport> compras, BigDecimal totalTaquillaTPV,
             BigDecimal totalTaquillaEfectivo, BigDecimal totalOnline)
     {
         creaLogo();
@@ -76,7 +74,7 @@ public class InformeTaquillaReport extends Report
         return block;
     }
 
-    private void creaCabecera(Date inicio, Date fin)
+    private void creaCabecera(String inicioTexto, String finTexto)
     {
         Block titulo = withNewBlock();
 
@@ -89,9 +87,6 @@ public class InformeTaquillaReport extends Report
         periodo.setMarginTop("0.5cm");
         periodo.setMarginLeft("6cm");
         periodo.setWhiteSpace(WhiteSpaceType.PRE);
-
-        String inicioTexto = DateUtils.dateToSpanishString(inicio);
-        String finTexto = DateUtils.dateToSpanishString(fin);
 
         periodo.getContent().add(
                 ResourceProperties.getProperty(locale, "informeTaquilla.periodo", inicioTexto, finTexto));
@@ -109,7 +104,7 @@ public class InformeTaquillaReport extends Report
         return block;
     }
 
-    private void creaTabla(List<Informe> compras)
+    private void creaTabla(List<InformeModelReport> compras)
     {
         BaseTable table = new BaseTable(style, 5, "6cm", "4cm", "3cm", "3cm", "2.5cm");
 
@@ -127,7 +122,7 @@ public class InformeTaquillaReport extends Report
         totalBlock.setTextAlign(TextAlignType.RIGHT);
         table.withNewCell(totalBlock);
 
-        for (Informe dato : compras)
+        for (InformeModelReport dato : compras)
         {
             table.withNewRow();
             table.withNewCell(dato.getEvento());
@@ -158,7 +153,7 @@ public class InformeTaquillaReport extends Report
         return blockEntradas;
     }
 
-    private void creaTotales(List<Informe> compras)
+    private void creaTotales(List<InformeModelReport> compras)
     {
         Block block = withNewBlock();
         block.setMarginTop("1cm");
@@ -180,7 +175,7 @@ public class InformeTaquillaReport extends Report
         cell = table.withNewCell(entradasBlock);
         setBorders(cell);
 
-        Block eurosBlock = createBoldBlock(Utils.formatEuros(sumaTotalEuros(compras)));
+        Block eurosBlock = createBoldBlock(ReportUtils.formatEuros(sumaTotalEuros(compras)));
         eurosBlock.setTextAlign(TextAlignType.RIGHT);
         cell = table.withNewCell(eurosBlock);
         setBorders(cell);
@@ -199,11 +194,11 @@ public class InformeTaquillaReport extends Report
         cell.setBorderBottomStyle(BorderStyleType.SOLID);
     }
 
-    private int sumaEntradas(List<Informe> compras)
+    private int sumaEntradas(List<InformeModelReport> compras)
     {
         int entradas = 0;
 
-        for (Informe compra : compras)
+        for (InformeModelReport compra : compras)
         {
             entradas += compra.getNumeroEntradas();
         }
@@ -211,11 +206,11 @@ public class InformeTaquillaReport extends Report
         return entradas;
     }
 
-    private BigDecimal sumaTotalEuros(List<Informe> compras)
+    private BigDecimal sumaTotalEuros(List<InformeModelReport> compras)
     {
         BigDecimal total = new BigDecimal(0);
 
-        for (Informe compra : compras)
+        for (InformeModelReport compra : compras)
         {
             total = total.add(compra.getTotal());
         }
@@ -234,7 +229,7 @@ public class InformeTaquillaReport extends Report
 
         table.withNewCell("");
         table.withNewCell(ResourceProperties.getProperty(locale, "informeTaquilla.subtotales.tpv"));
-        Block blockTaquillaTpv = createBoldBlock(Utils.formatEuros(totalTaquillaTPV));
+        Block blockTaquillaTpv = createBoldBlock(ReportUtils.formatEuros(totalTaquillaTPV));
         blockTaquillaTpv.setTextAlign(TextAlignType.RIGHT);
         table.withNewCell(blockTaquillaTpv);
 
@@ -242,7 +237,7 @@ public class InformeTaquillaReport extends Report
 
         table.withNewCell("");
         table.withNewCell(ResourceProperties.getProperty(locale, "informeTaquilla.subtotales.efectivo"));
-        Block blockTaquillaEfectivo = createBoldBlock(Utils.formatEuros(totalTaquillaEfectivo));
+        Block blockTaquillaEfectivo = createBoldBlock(ReportUtils.formatEuros(totalTaquillaEfectivo));
         blockTaquillaEfectivo.setTextAlign(TextAlignType.RIGHT);
         table.withNewCell(blockTaquillaEfectivo);
         
@@ -251,7 +246,7 @@ public class InformeTaquillaReport extends Report
 
         table.withNewCell("");
         table.withNewCell(ResourceProperties.getProperty(locale, "informeTaquilla.subtotales.online"));
-        Block blockOnline = createBoldBlock(Utils.formatEuros(totalOnline));
+        Block blockOnline = createBoldBlock(ReportUtils.formatEuros(totalOnline));
         blockOnline.setTextAlign(TextAlignType.RIGHT);
         table.withNewCell(blockOnline);
 

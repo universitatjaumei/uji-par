@@ -26,11 +26,12 @@ import com.sun.jersey.multipart.FormDataBodyPart;
 import com.sun.jersey.multipart.FormDataParam;
 
 import es.uji.apps.par.EventoNoEncontradoException;
-import es.uji.apps.par.GeneralPARException;
 import es.uji.apps.par.auth.AuthChecker;
+import es.uji.apps.par.exceptions.GeneralPARException;
 import es.uji.apps.par.model.Evento;
 import es.uji.apps.par.model.Sesion;
 import es.uji.apps.par.services.EventosService;
+import es.uji.apps.par.services.LocalizacionesService;
 import es.uji.apps.par.services.SesionesService;
 
 @Path("evento")
@@ -41,6 +42,9 @@ public class EventosResource
 
     @InjectParam
     private SesionesService sesionesService;
+    
+    @InjectParam
+    private LocalizacionesService localizacionesService;
     
     @Context
     HttpServletRequest currentRequest;
@@ -292,5 +296,15 @@ public class EventosResource
         
         eventosService.removeImagen(eventoId);
         return Response.ok().entity(new RestResponse(true)).build();
+    }
+    
+    @GET
+    @Path("sesion/{sesionId}/localizacion")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getLocalizacionesSesion(@PathParam("sesionId") Long sesionId)
+    {
+        return Response.ok().entity(
+        	localizacionesService.getLocalizacionesSesion(sesionId)
+        ).build();
     }
 }

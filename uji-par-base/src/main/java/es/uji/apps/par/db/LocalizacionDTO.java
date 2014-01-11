@@ -2,6 +2,7 @@ package es.uji.apps.par.db;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -39,6 +40,10 @@ public class LocalizacionDTO implements Serializable {
 	//bi-directional many-to-one association to PreciosSesionDTO
 	@OneToMany(mappedBy="parLocalizacione")
 	private List<PreciosSesionDTO> parPreciosSesions;
+	
+	@ManyToOne
+	@JoinColumn(name="SALA_ID")
+	private SalaDTO sala;
 
 	public LocalizacionDTO() {
 	}
@@ -102,6 +107,14 @@ public class LocalizacionDTO implements Serializable {
 
 	public void setParPreciosSesions(List<PreciosSesionDTO> parPreciosSesions) {
 		this.parPreciosSesions = parPreciosSesions;
+	}
+
+	public SalaDTO getSala() {
+		return sala;
+	}
+
+	public void setSala(SalaDTO sala) {
+		this.sala = sala;
 	}
 
 }

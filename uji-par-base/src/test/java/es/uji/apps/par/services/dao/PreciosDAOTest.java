@@ -52,7 +52,7 @@ public class PreciosDAOTest {
         Assert.assertNotNull(preciosDAO.getPreciosOfPlantilla(Long.valueOf("1"), PreciosDAOTest.SORT, PreciosDAOTest.START, PreciosDAOTest.LIMIT));
     }
 
-    @Test
+    /*@Test
     @Transactional
     public void addPrecio()
     {
@@ -92,5 +92,5 @@ public class PreciosDAOTest {
         PreciosPlantilla precioActualizado = preciosDAO.update(precio);
         Assert.assertEquals(precio.getId(), precioActualizado.getId());
         Assert.assertEquals(1, precioActualizado.getInvitacion().intValue());
-    }
+    }*/
 }

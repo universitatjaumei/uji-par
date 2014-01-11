@@ -64,6 +64,12 @@ public class SalaDTO implements Serializable
 
     @OneToMany(mappedBy = "parSala", fetch = FetchType.LAZY)
     private List<SesionDTO> parSesiones;
+    
+    @OneToMany(mappedBy = "sala", fetch = FetchType.LAZY)
+    private List<LocalizacionDTO> parLocalizaciones;
+    
+    @OneToMany(mappedBy = "sala", fetch = FetchType.LAZY)
+    private List<PlantillaDTO> parPlantillas;
 
     public SalaDTO()
     {
@@ -203,4 +209,20 @@ public class SalaDTO implements Serializable
     {
         this.parSesiones = parSesiones;
     }
+
+	public List<LocalizacionDTO> getParLocalizaciones() {
+		return parLocalizaciones;
+	}
+
+	public void setParLocalizaciones(List<LocalizacionDTO> parLocalizaciones) {
+		this.parLocalizaciones = parLocalizaciones;
+	}
+
+	public List<PlantillaDTO> getParPlantillas() {
+		return parPlantillas;
+	}
+
+	public void setParPlantillas(List<PlantillaDTO> parPlantillas) {
+		this.parPlantillas = parPlantillas;
+	}
 }

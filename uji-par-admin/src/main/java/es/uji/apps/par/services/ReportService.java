@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -17,11 +18,13 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
 
 import es.uji.apps.fopreports.serialization.ReportSerializationException;
-import es.uji.apps.par.SinIvaException;
+import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.dao.ComprasDAO;
 import es.uji.apps.par.database.DatabaseHelper;
 import es.uji.apps.par.database.DatabaseHelperFactory;
+import es.uji.apps.par.exceptions.SinIvaException;
 import es.uji.apps.par.model.Informe;
+import es.uji.apps.par.model.InformeModelReport;
 import es.uji.apps.par.report.InformeEfectivoReport;
 import es.uji.apps.par.report.InformeEventosReport;
 import es.uji.apps.par.report.InformeTaquillaReport;
@@ -73,15 +76,15 @@ public class ReportService
         tipoEntrada = tipoEntradaBBDDToText(tipoEntrada);
         informe.setTipoEntrada(tipoEntrada);
         informe.setLocalizacion(localizacionBBDDToText(Utils.safeObjectToString(fila[3])));
-        informe.setNumeroEntradas(Utils.safeObjectBigDecimalToInt(fila[4]));
-        informe.setTotal((BigDecimal) fila[5]);
+        informe.setNumeroEntradas(Utils.safeObjectBigDecimalToInt(dbHelper.castBigDecimal(fila[4])));
+        informe.setTotal(dbHelper.castBigDecimal(fila[5]));
 
         return informe;
     }
 
-    private Informe objectToInformeIva(Object[] fila)
+    private InformeModelReport objectToInformeIva(Object[] fila)
     {
-        Informe informe = new Informe();
+    	InformeModelReport informe = new InformeModelReport();
         informe.setEvento(Utils.safeObjectToString(fila[0]));
         informe.setSesion(DateUtils.dateToSpanishStringWithHour(Utils.objectToDate(fila[1])).toString());
         String tipoEntrada = Utils.safeObjectToString(fila[2]);
@@ -94,35 +97,35 @@ public class ReportService
         return informe;
     }
 
-    private Informe objectToInformeTpv(Object[] fila)
+    private InformeModelReport objectToInformeTpv(Object[] fila)
     {
-        Informe informe = new Informe();
+    	InformeModelReport informe = new InformeModelReport();
         informe.setEvento(Utils.safeObjectToString(fila[0]));
         informe.setSesion(DateUtils.dateToSpanishStringWithHour(Utils.objectToDate(fila[1])).toString());
         String tipoEntrada = Utils.safeObjectToString(fila[2]);
         tipoEntrada = tipoEntradaBBDDToText(tipoEntrada);
         informe.setTipoEntrada(tipoEntrada);
-        informe.setNumeroEntradas(Utils.safeObjectBigDecimalToInt(fila[3]));
-        informe.setTotal((BigDecimal) fila[4]);
-        informe.setIva((BigDecimal) fila[6]);
+        informe.setNumeroEntradas(Utils.safeObjectBigDecimalToInt(dbHelper.castBigDecimal(fila[3])));
+        informe.setTotal(dbHelper.castBigDecimal(fila[4]));
+        informe.setIva(dbHelper.castBigDecimal(fila[6]));
         informe.setFechaCompra(DateUtils.dateToSpanishString(Utils.objectToDate(fila[8])));
 
         return informe;
     }
     
-    private Informe objectToEvento(Object[] fila)
+    private InformeModelReport objectToEvento(Object[] fila)
     {
-        Informe informe = new Informe();
+    	InformeModelReport informe = new InformeModelReport();
         informe.setEvento(Utils.safeObjectToString(fila[0]));
         informe.setSesion(DateUtils.dateToSpanishStringWithHour(Utils.objectToDate(fila[1])).toString());
         String tipoEntrada = Utils.safeObjectToString(fila[2]);
         tipoEntrada = tipoEntradaBBDDToText(tipoEntrada);
         informe.setTipoEntrada(tipoEntrada);
-        informe.setNumeroEntradas(Utils.safeObjectBigDecimalToInt(fila[3]));
-        informe.setTotal((BigDecimal) fila[4]);
-        informe.setIva((BigDecimal) fila[5]);
-        informe.setEventoId(Utils.safeObjectBigDecimalToLong(fila[7]));
-        informe.setSesionId(Utils.safeObjectBigDecimalToLong(fila[8]));
+        informe.setNumeroEntradas(Utils.safeObjectBigDecimalToInt(dbHelper.castBigDecimal(fila[3])));
+        informe.setTotal(dbHelper.castBigDecimal(fila[4]));
+        informe.setIva(dbHelper.castBigDecimal(fila[5]));
+        informe.setEventoId(Utils.safeObjectBigDecimalToLong(dbHelper.castBigDecimal(fila[7])));
+        informe.setSesionId(Utils.safeObjectBigDecimalToLong(dbHelper.castBigDecimal(fila[8])));
 
         return informe;
     }
@@ -160,17 +163,17 @@ public class ReportService
         return result;
     }
 
-    private Informe objectToInformeEvento(Object[] fila)
+    private InformeModelReport objectToInformeEvento(Object[] fila)
     {
-        Informe informe = new Informe();
+    	InformeModelReport informe = new InformeModelReport();
         informe.setEvento(Utils.safeObjectToString(fila[1]));
         String tipoEntrada = Utils.safeObjectToString(fila[2]);
         tipoEntrada = tipoEntradaBBDDToText(tipoEntrada);
         informe.setTipoEntrada(tipoEntrada);
-        informe.setNumeroEntradas(Utils.safeObjectBigDecimalToInt(fila[3]));
-        informe.setTotal((BigDecimal) fila[4]);
+        informe.setNumeroEntradas(Utils.safeObjectBigDecimalToInt(dbHelper.castBigDecimal(fila[3])));
+        informe.setTotal(dbHelper.castBigDecimal(fila[4]));
 
-        int taquilla = Utils.safeObjectBigDecimalToInt(fila[5]);
+        int taquilla = Utils.safeObjectBigDecimalToInt(dbHelper.castBigDecimal(fila[5]));
         informe.setTipoCompra((taquilla == 0) ? "ONLINE" : "TAQUILLA");
 
         return informe;
@@ -187,7 +190,7 @@ public class ReportService
         excelService.addCell(5, fila.getTotal().floatValue(), row);
     }
 
-    private void addDadesEvento(int i, Informe fila, ExcelService excelService)
+    private void addDadesEvento(int i, InformeModelReport fila, ExcelService excelService)
     {
         Row row = excelService.getNewRow(i);
         excelService.addCell(0, fila.getEvento(), null, row);
@@ -223,16 +226,21 @@ public class ReportService
     {
         InformeTaquillaReport informe = InformeTaquillaReport.create(new Locale("ca"));
 
-        List<Informe> compras = objectsToInformes(comprasDAO.getComprasPorEventoInFechas(fechaInicio, fechaFin));
+        List<InformeModelReport> compras = objectsToInformes(comprasDAO.getComprasPorEventoInFechas(fechaInicio, fechaFin));
 
         BigDecimal totalTaquillaTpv = comprasDAO.getTotalTaquillaTpv(fechaInicio, fechaFin);
         BigDecimal totalTaquillaEfectivo = comprasDAO.getTotalTaquillaEfectivo(fechaInicio, fechaFin);
         BigDecimal totalOnline = comprasDAO.getTotalOnline(fechaInicio, fechaFin);
 
-        informe.genera(DateUtils.databaseStringToDate(fechaInicio), DateUtils.databaseStringToDate(fechaFin), compras,
+        informe.genera(getSpanishStringDateFromBBDDString(fechaInicio), getSpanishStringDateFromBBDDString(fechaFin), compras,
                 totalTaquillaTpv, totalTaquillaEfectivo, totalOnline);
 
         informe.serialize(bos);
+    }
+    
+    private String getSpanishStringDateFromBBDDString(String fecha) throws ParseException {
+    	Date dt = DateUtils.databaseStringToDate(fecha);
+        return DateUtils.dateToSpanishString(dt);
     }
 
     public void getPdfEfectivo(String fechaInicio, String fechaFin, OutputStream bos)
@@ -240,9 +248,11 @@ public class ReportService
     {
         InformeEfectivoReport informe = InformeEfectivoReport.create(new Locale("ca"));
 
-        List<Informe> compras = objectsSesionesToInformesIva(comprasDAO.getComprasEfectivo(fechaInicio, fechaFin));
-
-        informe.genera(DateUtils.databaseStringToDate(fechaInicio), DateUtils.databaseStringToDate(fechaFin), compras);
+        List<InformeModelReport> compras = objectsSesionesToInformesIva(comprasDAO.getComprasEfectivo(fechaInicio, fechaFin));
+        
+        informe.genera(getSpanishStringDateFromBBDDString(fechaInicio), 
+        		getSpanishStringDateFromBBDDString(fechaFin), compras, 
+        		Configuration.getCargoInformeEfectivo(), Configuration.getFirmanteInformeEfectivo());
 
         informe.serialize(bos);
     }
@@ -252,9 +262,10 @@ public class ReportService
     {
         InformeTaquillaTpvSubtotalesReport informe = InformeTaquillaTpvSubtotalesReport.create(new Locale("ca"));
 
-        List<Informe> compras = objectsSesionesToInformesTpv(comprasDAO.getComprasTpv(fechaInicio, fechaFin));
+        List<InformeModelReport> compras = objectsSesionesToInformesTpv(comprasDAO.getComprasTpv(fechaInicio, fechaFin));
 
-        informe.genera(DateUtils.databaseStringToDate(fechaInicio), DateUtils.databaseStringToDate(fechaFin), compras);
+        informe.genera(getSpanishStringDateFromBBDDString(fechaInicio), getSpanishStringDateFromBBDDString(fechaFin), compras,
+        		Configuration.getCargoInformeEfectivo(), Configuration.getFirmanteInformeEfectivo());
 
         informe.serialize(bos);
     }
@@ -264,16 +275,17 @@ public class ReportService
     {
         InformeEventosReport informe = InformeEventosReport.create(new Locale("ca"));
 
-        List<Informe> compras = objectsSesionesToInformesEventos(comprasDAO.getComprasEventos(fechaInicio, fechaFin));
+        List<InformeModelReport> compras = objectsSesionesToInformesEventos(comprasDAO.getComprasEventos(fechaInicio, fechaFin));
 
-        informe.genera(DateUtils.databaseStringToDate(fechaInicio), DateUtils.databaseStringToDate(fechaFin), compras);
+        informe.genera(getSpanishStringDateFromBBDDString(fechaInicio), 
+        		getSpanishStringDateFromBBDDString(fechaFin), compras);
 
         informe.serialize(bos);
     }
 
-    private List<Informe> objectsToInformes(List<Object[]> compras)
+    private List<InformeModelReport> objectsToInformes(List<Object[]> compras)
     {
-        List<Informe> result = new ArrayList<Informe>();
+        List<InformeModelReport> result = new ArrayList<InformeModelReport>();
 
         for (Object[] compra : compras)
         {
@@ -283,9 +295,9 @@ public class ReportService
         return result;
     }
 
-    private List<Informe> objectsSesionesToInformesIva(List<Object[]> compras)
+    private List<InformeModelReport> objectsSesionesToInformesIva(List<Object[]> compras)
     {
-        List<Informe> result = new ArrayList<Informe>();
+        List<InformeModelReport> result = new ArrayList<InformeModelReport>();
 
         for (Object[] compra : compras)
         {
@@ -295,9 +307,9 @@ public class ReportService
         return result;
     }
     
-    private List<Informe> objectsSesionesToInformesTpv(List<Object[]> compras)
+    private List<InformeModelReport> objectsSesionesToInformesTpv(List<Object[]> compras)
     {
-        List<Informe> result = new ArrayList<Informe>();
+        List<InformeModelReport> result = new ArrayList<InformeModelReport>();
 
         for (Object[] compra : compras)
         {
@@ -307,9 +319,9 @@ public class ReportService
         return result;
     }
     
-    private List<Informe> objectsSesionesToInformesEventos(List<Object[]> compras)
+    private List<InformeModelReport> objectsSesionesToInformesEventos(List<Object[]> compras)
     {
-        List<Informe> result = new ArrayList<Informe>();
+        List<InformeModelReport> result = new ArrayList<InformeModelReport>();
 
         for (Object[] compra : compras)
         {

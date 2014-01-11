@@ -53,9 +53,19 @@ Ext.define('Paranimf.view.evento.FormSesiones', {
          format: 'H:i',
          increment: 30,
          allowBlank: true
-      }]
+      }, {
+        fieldLabel: UI.i18n.field.sala,
+        name: 'sala',
+        xtype: 'combobox',
+        displayField: 'nombre',
+        valueField: 'id',
+        store: 'Salas',
+        queryMode: 'local',
+        typeAhead: true
+     }]
    }, {
       xtype: 'fieldset',
+      name: 'reservesOnline',
       title: UI.i18n.field.reservesOnline,
       defaults: {
          anchor: '100%',
@@ -129,15 +139,6 @@ Ext.define('Paranimf.view.evento.FormSesiones', {
 	              ]
 	          })      
 	         },{
-        	    fieldLabel: UI.i18n.field.sala,
-        	    name: 'sala',
-        	    xtype: 'combobox',
-        	    displayField: 'nombre',
-        	    valueField: 'id',
-        	    store: 'Salas',
-        	    queryMode: 'local',
-        	    typeAhead: true
-        	 },{
 	          fieldLabel: UI.i18n.field.versionLinguistica,
 	          name: 'versionLinguistica',
 	          xtype: 'combobox',

@@ -18,11 +18,11 @@ public class LocalizacionesService
     @Autowired
     private LocalizacionesDAO localizacionesDAO;
 
-    public List<Localizacion> get(String sortParameter, int start, int limit)
+    public List<Localizacion> get(String sortParameter, int start, int limit, Integer salaId)
     {
     	List<Localizacion> listaLocalizaciones = new ArrayList<Localizacion>();
     	
-    	for(LocalizacionDTO localizacionDB: localizacionesDAO.get(sortParameter, start, limit))
+    	for(LocalizacionDTO localizacionDB: localizacionesDAO.get(sortParameter, start, limit, salaId))
     		listaLocalizaciones.add(new Localizacion(localizacionDB));
         
     	return listaLocalizaciones;
@@ -51,7 +51,16 @@ public class LocalizacionesService
             throw new CampoRequeridoException("Nombre");
     }
 
-	public int getTotalLocalizaciones() {
-		return localizacionesDAO.getTotalLocalizaciones();
+	public int getTotalLocalizaciones(Integer salaId) {
+		return localizacionesDAO.getTotalLocalizaciones(salaId);
+	}
+
+	public List<Localizacion> getLocalizacionesSesion(Long sesionId) {
+		List<Localizacion> listaLocalizaciones = new ArrayList<Localizacion>();
+    	
+    	for(LocalizacionDTO localizacionDB: localizacionesDAO.getFromSesion(sesionId))
+    		listaLocalizaciones.add(new Localizacion(localizacionDB));
+        
+    	return listaLocalizaciones;
 	}
 }

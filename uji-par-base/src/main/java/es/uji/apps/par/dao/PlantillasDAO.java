@@ -12,6 +12,7 @@ import com.mysema.query.jpa.impl.JPAUpdateClause;
 
 import es.uji.apps.par.db.PlantillaDTO;
 import es.uji.apps.par.db.QPlantillaDTO;
+import es.uji.apps.par.db.QSalaDTO;
 import es.uji.apps.par.model.Plantilla;
 
 @Repository
@@ -41,14 +42,16 @@ public class PlantillasDAO extends BaseDAO {
 
 	@Transactional
 	private JPAQuery getQueryPlantillasEditables() {
+		QSalaDTO qSalaDTO = new QSalaDTO("qSalaDTO");
 		JPAQuery query = new JPAQuery(entityManager);
-		return query.from(qPlantillaDTO).where(qPlantillaDTO.id.ne(Long.valueOf("-1")));
+		return query.from(qPlantillaDTO).leftJoin(qPlantillaDTO.sala, qSalaDTO).fetch().where(qPlantillaDTO.id.ne(Long.valueOf("-1")));
 	}
 	
 	@Transactional
 	private JPAQuery getQueryPlantillas() {
+		QSalaDTO qSalaDTO = new QSalaDTO("qSalaDTO");
 		JPAQuery query = new JPAQuery(entityManager);
-		return query.from(qPlantillaDTO);
+		return query.from(qPlantillaDTO).leftJoin(qPlantillaDTO.sala, qSalaDTO).fetch();
 	}
 	
 	@Transactional

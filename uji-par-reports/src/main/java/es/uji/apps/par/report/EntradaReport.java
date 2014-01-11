@@ -23,13 +23,10 @@ import es.uji.apps.fopreports.serialization.ReportSerializationException;
 import es.uji.apps.fopreports.serialization.ReportSerializer;
 import es.uji.apps.fopreports.serialization.ReportSerializerInitException;
 import es.uji.apps.fopreports.style.ReportStyle;
-import es.uji.apps.par.config.Configuration;
-import es.uji.apps.par.db.ButacaDTO;
-import es.uji.apps.par.db.CompraDTO;
 import es.uji.apps.par.i18n.ResourceProperties;
+import es.uji.apps.par.model.EntradaModelReport;
 import es.uji.apps.par.report.components.BaseTable;
 import es.uji.apps.par.report.components.EntradaReportStyle;
-import es.uji.apps.par.utils.Utils;
 
 public class EntradaReport extends Report
 {
@@ -61,18 +58,18 @@ public class EntradaReport extends Report
         this.locale = locale;
     }
 
-    public void generaPaginaButaca(CompraDTO compra, ButacaDTO butaca)
+    public void generaPaginaButaca(EntradaModelReport entrada, String urlPublic)
     {
-        this.setFila(butaca.getFila());
-        this.setNumero(butaca.getNumero());
-        this.setZona(butaca.getParLocalizacion().getNombreVa());
-        this.setTotal(Utils.formatEuros(butaca.getPrecio()));
-        this.setBarcode(compra.getUuid() + "-" + butaca.getId());
+        this.setFila(entrada.getFila());
+        this.setNumero(entrada.getNumero());
+        this.setZona(entrada.getZona());
+        this.setTotal(entrada.getTotal());
+        this.setBarcode(entrada.getBarcode());
 
-        creaSeccionEntrada();
+        creaSeccionEntrada(urlPublic);
         add(creaHorizontalLine());
 
-        creaSeccionCondiciones(butaca.getTipo());
+        creaSeccionCondiciones(entrada.getTipo());
         creaSeccionPublicidad();
 
         Block pageBreak = withNewBlock();
@@ -124,7 +121,7 @@ public class EntradaReport extends Report
         condicionesBlock.getContent().add(block);
     }
 
-    private void creaSeccionEntrada()
+    private void creaSeccionEntrada(String urlPublic)
     {
         Block entradaBlock = withNewBlock();
 
@@ -133,7 +130,7 @@ public class EntradaReport extends Report
 
         entradaTable.withNewRow();
 
-        TableCell cellIzquierda = entradaTable.withNewCell(createEntradaIzquierda());
+        TableCell cellIzquierda = entradaTable.withNewCell(createEntradaIzquierda(urlPublic));
         cellIzquierda.setPadding("0.3cm");
         cellIzquierda.setPaddingTop("0.0cm");
         cellIzquierda.setBackgroundColor(FONDO_GRIS);
@@ -153,13 +150,13 @@ public class EntradaReport extends Report
         entradaBlock.getContent().add(entradaTable);
     }
 
-    private Block createEntradaIzquierda()
+    private Block createEntradaIzquierda(String urlPublic)
     {
         Block block = new Block();
 
         block.getContent().add(createEntradaIzquierdaArriba());
         block.getContent().add(createEntradaIzquierdaCentro());
-        block.getContent().add(createEntradaIzquierdaAbajo());
+        block.getContent().add(createEntradaIzquierdaAbajo(urlPublic));
 
         return block;
     }
@@ -279,7 +276,7 @@ public class EntradaReport extends Report
         return block;
     }
 
-    private BaseTable createEntradaIzquierdaAbajo()
+    private BaseTable createEntradaIzquierdaAbajo(String urlPublic)
     {
         BaseTable table = new BaseTable(new EntradaReportStyle(), 2, "8.5cm", "2.5cm");
 
@@ -294,15 +291,15 @@ public class EntradaReport extends Report
         table.withNewCell(ResourceProperties.getProperty(locale, "entrada.importe", this.total));
 
         table.withNewRow();
-        table.withNewCell(createBarcode(), "2");
+        table.withNewCell(createBarcode(urlPublic), "2");
 
         return table;
     }
 
-    private Block createBarcode()
+    private Block createBarcode(String urlPublic)
     {
         ExternalGraphic externalGraphic = new ExternalGraphic();
-        externalGraphic.setSrc(Configuration.getUrlPublic() + "/rest/barcode/" + this.barcode);
+        externalGraphic.setSrc(urlPublic + "/rest/barcode/" + this.barcode);
 
         Block blockCodebar = new Block();
         blockCodebar.getContent().add(externalGraphic);
@@ -468,29 +465,9 @@ public class EntradaReport extends Report
         super.serialize(output);
     }
 
-    public Locale getLocale()
-    {
-        return locale;
-    }
-
-    public void setLocale(Locale locale)
-    {
-        this.locale = locale;
-    }
-
-    public String getTitulo()
-    {
-        return titulo;
-    }
-
     public void setTitulo(String titulo)
     {
         this.titulo = titulo;
-    }
-
-    public String getFecha()
-    {
-        return fecha;
     }
 
     public void setFecha(String fecha)
@@ -498,19 +475,9 @@ public class EntradaReport extends Report
         this.fecha = fecha;
     }
 
-    public String getHora()
-    {
-        return hora;
-    }
-
     public void setHora(String hora)
     {
         this.hora = hora;
-    }
-
-    public String getHoraApertura()
-    {
-        return horaApertura;
     }
 
     public void setHoraApertura(String horaApertura)
@@ -518,19 +485,9 @@ public class EntradaReport extends Report
         this.horaApertura = horaApertura;
     }
 
-    public String getZona()
-    {
-        return zona;
-    }
-
     public void setZona(String zona)
     {
         this.zona = zona;
-    }
-
-    public String getFila()
-    {
-        return fila;
     }
 
     public void setFila(String fila)
@@ -538,19 +495,9 @@ public class EntradaReport extends Report
         this.fila = fila;
     }
 
-    public String getNumero()
-    {
-        return numero;
-    }
-
     public void setNumero(String numero)
     {
         this.numero = numero;
-    }
-
-    public String getTotal()
-    {
-        return total;
     }
 
     public void setTotal(String total)
@@ -558,29 +505,14 @@ public class EntradaReport extends Report
         this.total = total;
     }
 
-    public String getUrlPublicidad()
-    {
-        return urlPublicidad;
-    }
-
     public void setUrlPublicidad(String urlPublicidad)
     {
         this.urlPublicidad = urlPublicidad;
     }
 
-    public String getUrlPortada()
-    {
-        return urlPortada;
-    }
-
     public void setUrlPortada(String urlPortada)
     {
         this.urlPortada = urlPortada;
-    }
-
-    public String getBarcode()
-    {
-        return barcode;
     }
 
     public void setBarcode(String barcode)

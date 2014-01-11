@@ -50,6 +50,10 @@ Ext.define('Paranimf.view.evento.GridSesiones', {
       text: UI.i18n.field.plantillaprecios,
       sortable: false,
       flex: 1
+    }, {
+      dataIndex: 'salaNombre',
+      text: UI.i18n.field.sala,
+      flex: 1
     }];
 
     this.callParent(arguments);

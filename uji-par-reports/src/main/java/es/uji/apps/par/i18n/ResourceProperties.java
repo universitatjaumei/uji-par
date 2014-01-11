@@ -43,4 +43,9 @@ public class ResourceProperties
             }
         }
     }
+    
+    public static String getProperty(String messageProperty, Locale locale, Object... values)
+    {
+        return ResourceProperties.getProperty(locale, messageProperty, values);
+    }
 }

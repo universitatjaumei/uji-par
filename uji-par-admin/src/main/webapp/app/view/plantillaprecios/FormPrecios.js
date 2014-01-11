@@ -5,7 +5,7 @@ Ext.define('Paranimf.view.plantillaprecios.FormPrecios', {
    defaults: {
       allowBlank: false,
       msgTarget: 'side',
-      labelWidth: 120,
+      labelWidth: 160,
       anchor: '100%',
       xtype: 'textfield'
    },

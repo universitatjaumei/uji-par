@@ -2,7 +2,6 @@ package es.uji.apps.par.dao;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -386,8 +385,8 @@ public class ComprasDAO extends BaseDAO
     			"from par_butacas b, par_compras c, par_sesiones s, par_eventos e, par_localizaciones l " +
     			"where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id and l.id=b.localizacion_id " +
     			"and c.fecha >= TO_DATE('" + fechaInicio + "','YYYY-MM-DD') and c.fecha <= TO_DATE('" + fechaFin + " 23:59','YYYY-MM-DD HH24:MI') " +
-    			"and c.pagada = 1 and c.reserva = 0 and c.taquilla = 1 " +
-    			"and b.anulada = 0 " +
+    			"and c.pagada = " + dbHelper.trueString() + " and c.reserva = " + dbHelper.falseString() + " and c.taquilla = " + dbHelper.trueString() + " " +
+    			"and b.anulada = " + dbHelper.falseString() + " " +
     			"and c.codigo_pago_tarjeta is null " +
     			"group by c.sesion_id, e.titulo_va, b.tipo, s.fecha_celebracion, l.codigo " +
     			"order by e.titulo_va";
@@ -402,8 +401,8 @@ public class ComprasDAO extends BaseDAO
     			"from par_butacas b, par_compras c, par_sesiones s, par_eventos e " +
     			"where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id " +
     			"and c.fecha >= TO_DATE('" + fechaInicio + "','YYYY-MM-DD') and c.fecha <= TO_DATE('" + fechaFin + " 23:59','YYYY-MM-DD HH24:MI') " +
-    			"and c.pagada = 1 and c.reserva = 0" +
-    			"and b.anulada = 0 " +
+    			"and c.pagada = " + dbHelper.trueString() + " and c.reserva = " + dbHelper.falseString() + " " +
+    			"and b.anulada = " + dbHelper.falseString() + " " +
     			"group by e.id, e.titulo_va, b.tipo, c.taquilla " +
     			"order by e.titulo_va";
 		
@@ -429,14 +428,15 @@ public class ComprasDAO extends BaseDAO
     @SuppressWarnings("unchecked")
     @Transactional
     public List<Object[]> getComprasTpv(String fechaInicio, String fechaFin) {
-        String sql = "select e.titulo_va, s.fecha_celebracion, b.tipo, count(b.id) as cantidad, sum(b.precio) as total, c.sesion_id, e.porcentaje_iva, decode(b.tipo, 'normal', 1, 'descuento', 2, 'aulaTeatro', 3, 'invitacion', 4) as tipoOrden, TRUNC(c.fecha, 'DD') " +
+    	String formato = "DD";
+        String sql = "select e.titulo_va, s.fecha_celebracion, b.tipo, count(b.id) as cantidad, sum(b.precio) as total, c.sesion_id, e.porcentaje_iva, " +  dbHelper.caseString("b.tipo", new String[]{"'normal'", "1", "'descuento'", "2", "'aulaTeatro'", "3", "'invitacion'", "4"}) + " as tipoOrden, " + dbHelper.trunc("c.fecha", formato) + " " +
                 "from par_butacas b, par_compras c, par_sesiones s, par_eventos e " +
                 "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id " +
                 "and c.fecha >= TO_DATE('" + fechaInicio + "','YYYY-MM-DD') and c.fecha <= TO_DATE('" + fechaFin + " 23:59','YYYY-MM-DD HH24:MI') " +
-                "and c.reserva = 0 " +
+                "and c.reserva = " + dbHelper.falseString() + " " +
                 "and (c.codigo_pago_tarjeta is not null or c.codigo_pago_pasarela is not null) " +
-                "group by c.sesion_id, e.titulo_va, b.tipo, s.fecha_celebracion, e.porcentaje_iva, TRUNC(c.fecha, 'DD') " +
-                "order by TRUNC(c.fecha, 'DD'), s.fecha_celebracion, tipoOrden";
+                "group by c.sesion_id, e.titulo_va, b.tipo, s.fecha_celebracion, e.porcentaje_iva, " + dbHelper.trunc("c.fecha", formato) + " " +
+                "order by " + dbHelper.trunc("c.fecha", formato) + ", s.fecha_celebracion, tipoOrden";
         
         return entityManager.createNativeQuery(sql).getResultList();
     }   
@@ -444,13 +444,13 @@ public class ComprasDAO extends BaseDAO
     @SuppressWarnings("unchecked")
     @Transactional
     public List<Object[]> getComprasEventos(String fechaInicio, String fechaFin) {
-        String sql = "select e.titulo_va, s.fecha_celebracion, b.tipo, count(b.id) as cantidad, sum(b.precio) as total, e.porcentaje_iva, decode(b.tipo, 'normal', 1, 'descuento', 2, 'aulaTeatro', 3, 'invitacion', 4) as tipoOrden, e.id as eventoId, s.id as sesionId " +
+        String sql = "select e.titulo_va, s.fecha_celebracion, b.tipo, count(b.id) as cantidad, sum(b.precio) as total, e.porcentaje_iva, " + dbHelper.caseString("b.tipo", new String[]{"'normal'", "1", "'descuento'", "2", "'aulaTeatro'", "3", "'invitacion'", "4"}) + " as tipoOrden, e.id as eventoId, s.id as sesionId " +
                 "from par_butacas b, par_compras c, par_sesiones s, par_eventos e " +
                 "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id " +
                 "and s.fecha_celebracion >= TO_DATE('" + fechaInicio + "','YYYY-MM-DD') and s.fecha_celebracion <= TO_DATE('" + fechaFin + " 23:59','YYYY-MM-DD HH24:MI') " +
-                "and c.pagada = 1 " +
-                "and b.anulada = 0 " +
-                "and c.reserva = 0 " +
+                "and c.pagada = " + dbHelper.trueString() + " " +
+                "and b.anulada = " + dbHelper.falseString() + " " +
+                "and c.reserva = " + dbHelper.falseString() + " " +
                 "group by e.id, s.id, e.titulo_va, b.tipo, s.fecha_celebracion, e.porcentaje_iva " +
                 "order by s.fecha_celebracion, tipoOrden";
         
@@ -463,9 +463,9 @@ public class ComprasDAO extends BaseDAO
                 "from par_butacas b, par_compras c, par_sesiones s, par_eventos e " +
                 "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id " +
                 "and c.fecha >= TO_DATE('" + fechaInicio + "','YYYY-MM-DD') and c.fecha <= TO_DATE('" + fechaFin + " 23:59','YYYY-MM-DD HH24:MI') " +
-                "and c.pagada = 1 and c.reserva = 0 " +
-                "and b.anulada = 0 " +
-                "and c.taquilla = 1 " +
+                "and c.pagada = " + dbHelper.trueString() + " and c.reserva = " + dbHelper.falseString() + " " +
+                "and b.anulada = " + dbHelper.falseString() + " " +
+                "and c.taquilla = " + dbHelper.trueString() + " " +
                 "and c.codigo_pago_tarjeta is not null";
         
          Object result = entityManager.createNativeQuery(sql).getSingleResult();
@@ -482,9 +482,9 @@ public class ComprasDAO extends BaseDAO
                 "from par_butacas b, par_compras c, par_sesiones s, par_eventos e " +
                 "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id " +
                 "and c.fecha >= TO_DATE('" + fechaInicio + "','YYYY-MM-DD') and c.fecha <= TO_DATE('" + fechaFin + " 23:59','YYYY-MM-DD HH24:MI') " +
-                "and c.pagada = 1 and c.reserva = 0 " +
-                "and b.anulada = 0 " +
-                "and c.taquilla = 1 " +
+                "and c.pagada = " + dbHelper.trueString() + " and c.reserva = " + dbHelper.falseString() + " " +
+                "and b.anulada = " + dbHelper.falseString() + " " +
+                "and c.taquilla = " + dbHelper.trueString() + " " +
                 "and c.codigo_pago_tarjeta is null";
         
          Object result = entityManager.createNativeQuery(sql).getSingleResult();
@@ -492,7 +492,7 @@ public class ComprasDAO extends BaseDAO
          if (result == null)
              return BigDecimal.ZERO;
          else
-             return (BigDecimal) result;
+             return dbHelper.castBigDecimal(result);
     }
 
     public BigDecimal getTotalOnline(String fechaInicio, String fechaFin)
@@ -501,16 +501,16 @@ public class ComprasDAO extends BaseDAO
                 "from par_butacas b, par_compras c, par_sesiones s, par_eventos e " +
                 "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id " +
                 "and c.fecha >= TO_DATE('" + fechaInicio + "','YYYY-MM-DD') and c.fecha <= TO_DATE('" + fechaFin + " 23:59','YYYY-MM-DD HH24:MI') " +
-                "and c.pagada = 1 and c.reserva = 0 " +
-                "and b.anulada = 0 " +
-                "and c.taquilla = 0 ";
+                "and c.pagada = " + dbHelper.trueString() + " and c.reserva = " + dbHelper.falseString() + " " +
+                "and b.anulada = " + dbHelper.falseString() + " " +
+                "and c.taquilla = " + dbHelper.falseString() + " ";
         
          Object result = entityManager.createNativeQuery(sql).getSingleResult();
          
          if (result == null)
              return BigDecimal.ZERO;
          else
-             return (BigDecimal) result;
+             return dbHelper.castBigDecimal(result);
     }
 
     @Transactional

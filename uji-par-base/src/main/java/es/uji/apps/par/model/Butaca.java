@@ -20,6 +20,7 @@ public class Butaca
     private String numero;
     private BigDecimal precio;
     private String localizacion;
+    private String localizacionNombre;
     private String x;
     private String y;
     private String tipo;
@@ -69,6 +70,7 @@ public class Butaca
         numero = butacaDTO.getNumero();
         precio = butacaDTO.getPrecio();
         localizacion = butacaDTO.getParLocalizacion().getCodigo();
+        localizacionNombre = butacaDTO.getParLocalizacion().getNombreVa();
         tipo = butacaDTO.getTipo();
         presentada = butacaDTO.getPresentada();
         
@@ -228,6 +230,14 @@ public class Butaca
 
 	public void setAnulada(boolean anulada) {
 		this.anulada = anulada;
+	}
+
+	public String getLocalizacionNombre() {
+		return localizacionNombre;
+	}
+
+	public void setLocalizacionNombre(String localizacionNombre) {
+		this.localizacionNombre = localizacionNombre;
 	}
     
 }

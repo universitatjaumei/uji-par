@@ -96,10 +96,6 @@ Ext.define('Paranimf.controller.Taquilla', {
       	selector: 'panelSeleccionarNoNumeradas panelNumeroEntradas[name=discapacitados2]'
       },
       {
-      	ref: 'panelDiscapacitados3',
-      	selector: 'panelSeleccionarNoNumeradas panelNumeroEntradas[name=discapacitados3]'
-      },
-      {
       	ref: 'totalPrecioCompra',
       	selector: 'panelSeleccionarNoNumeradas label[name=totalPrecios]'
       }, {
@@ -319,16 +315,19 @@ Ext.define('Paranimf.controller.Taquilla', {
    			var precioDescuento = this.precios[localizacion]['descuento'];
    			var panel = Ext.ComponentQuery.query('panelSeleccionarNoNumeradas panelNumeroEntradas[name=' + localizacion + ']');
 
-   			if (descuentoNoDisponible(tipoEvento, precioNormal, precioDescuento))
-   			{
-   				panel[0].down('numberfield[name=descuento]').hide();
-   				panel[0].down('panel[name=preuDescuento]').hide();
-   			}
-   			else
-   			{
-   				panel[0].down('numberfield[name=descuento]').show();
-   				panel[0].down('panel[name=preuDescuento]').show();
-   			}
+        //TODO -> esta funcion es del par-public, y si no está puesto, falla
+        if (descuentoNoDisponible) {
+     			if (descuentoNoDisponible(tipoEvento, precioNormal, precioDescuento))
+     			{
+     				panel[0].down('numberfield[name=descuento]').hide();
+     				panel[0].down('panel[name=preuDescuento]').hide();
+     			}
+     			else
+     			{
+     				panel[0].down('numberfield[name=descuento]').show();
+     				panel[0].down('panel[name=preuDescuento]').show();
+     			}
+        }
    		}
    	},   	
 
@@ -361,26 +360,6 @@ Ext.define('Paranimf.controller.Taquilla', {
    				panel[0].down('panel[name=preuAulaTeatro]').update(PRECIOS + aulaTeatro + EURO);
    			}
    		}
-   		/*this.getPanelAnfiteatro().down('panel[name=preuNormal]').update(PRECIOS + this.precios['anfiteatro']['normal'] + EURO);
-   		this.getPanelPlatea1().down('panel[name=preuNormal]').update(PRECIOS + this.precios['platea1']['normal'] + EURO);
-   		this.getPanelPlatea2().down('panel[name=preuNormal]').update(PRECIOS + this.precios['platea2']['normal'] + EURO);
-   		this.getPanelDiscapacitados1().down('panel[name=preuNormal]').update(PRECIOS + this.precios['discapacitados1']['normal'] + EURO);
-   		this.getPanelDiscapacitados2().down('panel[name=preuNormal]').update(PRECIOS + this.precios['discapacitados2']['normal'] + EURO);
-   		this.getPanelDiscapacitados3().down('panel[name=preuNormal]').update(PRECIOS + this.precios['discapacitados3']['normal'] + EURO);
-
-   		this.getPanelAnfiteatro().down('panel[name=preuDescuento]').update(PRECIOS + this.precios['anfiteatro']['descuento'] + EURO);
-   		this.getPanelPlatea1().down('panel[name=preuDescuento]').update(PRECIOS + this.precios['platea1']['descuento'] + EURO);
-   		this.getPanelPlatea2().down('panel[name=preuDescuento]').update(PRECIOS + this.precios['platea2']['descuento'] + EURO);
-   		this.getPanelDiscapacitados1().down('panel[name=preuDescuento]').update(PRECIOS + this.precios['discapacitados1']['descuento'] + EURO);
-   		this.getPanelDiscapacitados2().down('panel[name=preuDescuento]').update(PRECIOS + this.precios['discapacitados2']['descuento'] + EURO);
-   		this.getPanelDiscapacitados3().down('panel[name=preuDescuento]').update(PRECIOS + this.precios['discapacitados3']['descuento'] + EURO);
-
-   		this.getPanelAnfiteatro().down('panel[name=preuInvitacion]').update(PRECIOS + this.precios['anfiteatro']['invitacion'] + EURO);
-   		this.getPanelPlatea1().down('panel[name=preuInvitacion]').update(PRECIOS + this.precios['platea1']['invitacion'] + EURO);
-   		this.getPanelPlatea2().down('panel[name=preuInvitacion]').update(PRECIOS + this.precios['platea2']['invitacion'] + EURO);
-   		this.getPanelDiscapacitados1().down('panel[name=preuInvitacion]').update(PRECIOS + this.precios['discapacitados1']['invitacion'] + EURO);
-   		this.getPanelDiscapacitados2().down('panel[name=preuInvitacion]').update(PRECIOS + this.precios['discapacitados2']['invitacion'] + EURO);
-   		this.getPanelDiscapacitados3().down('panel[name=preuInvitacion]').update(PRECIOS + this.precios['discapacitados3']['invitacion'] + EURO);*/
    	},
 
    	activaCamposCompra: function() {
@@ -397,8 +376,13 @@ Ext.define('Paranimf.controller.Taquilla', {
    				hayPrecioAulaTeatro = (this.precios[key]['aulaTeatro'] == undefined)?false:true;
    			}
 
+        /*TODO
+          -- no se podra hacer con un switch ya que las claves no seran fijas
+          -- parece facil, realizar la busqueda del panel utilizando la key en lugar del getXXX...
+          -- comprobar que, si no se encuentra el panel, que no haga nada
+        */
    			if (hayDisponibles) {
-   				switch (key) {
+   				/*switch (key) {
    					case 'anfiteatro':
    						panel = this.getPanelAnfiteatro();
    						break;
@@ -417,26 +401,35 @@ Ext.define('Paranimf.controller.Taquilla', {
    					case 'discapacitados2':
    						panel = this.getPanelDiscapacitados2();
    						break;
-   				}
-				panel.down('numberfield[name=normal]').setDisabled(!hayPrecioNormal);
-				panel.down('numberfield[name=descuento]').setDisabled(!hayPrecioDescuento);
-				panel.down('numberfield[name=invitacion]').setDisabled(!hayPrecioInvitacion);
-				panel.down('numberfield[name=aulaTeatro]').setDisabled(!hayPrecioAulaTeatro);
+   				}*/
+          var panel = Ext.ComponentQuery.query('panelSeleccionarNoNumeradas panelNumeroEntradas[name=' + key + ']');
+          //console.log(panel);
+          if (panel) {
+            panel = panel[0];
+            //console.log(panel.down('numberfield[name=normal]'));
+  				  panel.down('numberfield[name=normal]').setDisabled(!hayPrecioNormal);
+  				  panel.down('numberfield[name=descuento]').setDisabled(!hayPrecioDescuento);
+  				  panel.down('numberfield[name=invitacion]').setDisabled(!hayPrecioInvitacion);
+  				  panel.down('numberfield[name=aulaTeatro]').setDisabled(!hayPrecioAulaTeatro);
+          }
    			}
    		}
    	},
    
    	panelSeleccionarNoNumeradasCreado: function() {
-	   var me = this;
-	   var idSesion = this.getGridSesionesTaquilla().getSelectedRecord().data['id'];
-	   this.cargaPrecios(idSesion, function() {
-		   me.cargaDisponibles(idSesion, function() {
-			   me.muestraDisponibles();
-			   me.muestraPrecios();
-			   me.activaCamposCompra();
-			   me.ocultaDescuentosNoDisponiblesNoNumeradas();
-		   });
-	   });
+      var me = this;
+      var idSesion = this.getGridSesionesTaquilla().getSelectedRecord().data['id'];
+     
+      this.cargaLocalizaciones(idSesion, function() {
+        me.cargaPrecios(idSesion, function() {
+		      me.cargaDisponibles(idSesion, function() {
+            me.muestraDisponibles();
+            me.muestraPrecios();
+            me.activaCamposCompra();
+            me.ocultaDescuentosNoDisponiblesNoNumeradas();
+		      });
+        });
+      });
    	},
    
    avanzarAPasoDePago: function (butacas) {
@@ -777,36 +770,82 @@ Ext.define('Paranimf.controller.Taquilla', {
 	   this.tituloEventoPrevio = this.getGridEventosTaquilla().getSelectedRecord().data['tituloVa'];
 	   this.sesionPrevia = Ext.Date.format(this.getGridSesionesTaquilla().getSelectedRecord().data['fechaCelebracion'], 'd/m/Y H:i');
    },
+
+  cargaLocalizaciones: function(sesionId, callback) {
+    /*TODO
+      --get localizaciones de la sesion
+      --para cada localizacion
+        --añadir en el panel "localizaciones" del panel "panelSeleccionarNoNumeradas"
+          --un fieldset con
+            {
+              columnWidth: 1/2,
+              title: nombre de la localización,
+              items: [{
+                name: 'codigo_localizacion',
+                xtype: 'panelNumeroEntradas'
+              }]
+            }
+    */
+    console.log("cargaLocalizaciones");
+    var me = this;
+    this.getFormComprar().setLoading(UI.i18n.message.loading);
+    
+    Ext.Ajax.request({
+      url : urlPrefix + 'evento/sesion/' + sesionId + '/localizacion',
+      method: 'GET',
+      
+      success: function (response) {
+        me.getFormComprar().setLoading(false);
+        var jsonData = Ext.decode(response.responseText);
+
+        for (var i=0; i<jsonData.length; i++) {
+          var localizacion = jsonData[i];
+          console.log(localizacion);
+          
+          var field = new Ext.form.Panel({
+            columnWidth: 1/2,
+            title: UI.i18n.legends.entrades + " " + localizacion.nombreVa.toUpperCase(),
+            items: [{
+              name: localizacion.codigo,
+              xtype: 'panelNumeroEntradas'
+            }]
+          });
+
+          me.getLocalizacionesNoNumeradas().add(field);
+        }
+        callback();
+      },
+
+      failure: function (response) {
+        me.getFormComprar().setLoading(false);
+        alert(UI.i18n.error.loadingLocalizaciones);
+      }
+    });
+  },
    
    cargaPrecios: function(sesionId, callback) {
-	   
-	   var me = this;
-	   this.getFormComprar().setLoading(UI.i18n.message.loading);
-	   Ext.Ajax.request({
-	    	  url : urlPrefix + 'compra/' + sesionId + '/precios',
-	    	  method: 'GET',
-	    	  success: function (response) {
-	    		   me.getFormComprar().setLoading(false);
-	    		  var jsonData = Ext.decode(response.responseText);
-	    		  //console.log(jsonData);
-	    		  
-	    		  me.precios = {};
-	    		  
-	    		  for (var i=0; i<jsonData.data.length; i++)
-	    		  {
-					var sesion = jsonData.data[i];
-					me.precios[sesion.localizacion.codigo] = {normal:sesion.precio, descuento:sesion.descuento, invitacion:sesion.invitacion, aulaTeatro:sesion.aulaTeatro};
-	    		  }
+      var me = this;
+      this.getFormComprar().setLoading(UI.i18n.message.loading);
+      Ext.Ajax.request({
+    	  url : urlPrefix + 'compra/' + sesionId + '/precios',
+    	  method: 'GET',
+    	  success: function (response) {
+          me.getFormComprar().setLoading(false);
+	    		var jsonData = Ext.decode(response.responseText);
 
-	    		  //console.log(me.precios);
+	    		me.precios = {};
 	    		  
-	    		  callback();
-	    		  
-	    	  }, failure: function (response) {
-            me.getFormComprar().setLoading(false);
-	    		  alert(UI.i18n.error.loadingPreciosNoNumeradas);
-	    	  }
-	   	  });
+     		  for (var i=0; i<jsonData.data.length; i++)
+	    		{
+            var sesion = jsonData.data[i];
+            me.precios[sesion.localizacion.codigo] = {normal:sesion.precio, descuento:sesion.descuento, invitacion:sesion.invitacion, aulaTeatro:sesion.aulaTeatro};
+	    		}
+          callback();
+	    	}, failure: function (response) {
+          me.getFormComprar().setLoading(false);
+	    	  alert(UI.i18n.error.loadingPreciosNoNumeradas);
+	    	}
+	   	});
    },
    
    cargaDisponibles: function(sesionId, callback) {
@@ -947,17 +986,17 @@ Ext.define('Paranimf.controller.Taquilla', {
 
    comprar: function(button, event, opts) {
    		if (this.getGridEventosTaquilla().hasRowSelected() && this.getGridSesionesTaquilla().hasRowSelected()) {
-			var evento = this.getGridEventosTaquilla().getSelectedRecord();
-			var sesion = this.getGridSesionesTaquilla().getSelectedRecord();
+  			var evento = this.getGridEventosTaquilla().getSelectedRecord();
+  			var sesion = this.getGridSesionesTaquilla().getSelectedRecord();
 
-			this.getGridSesionesTaquilla().showComprarWindow(sesion.data['id'], evento.data['asientosNumerados'], UI.i18n.formTitle.comprar, false);
-			
-			this.getPanelComprar().show();
-			this.getPanelReservar().hide();
-			
-			this.cambiaVisibilidadBotonAnularPrevia();
-		} else
-			alert(UI.i18n.message.selectRow);
+  			this.getGridSesionesTaquilla().showComprarWindow(sesion.data['id'], evento.data['asientosNumerados'], UI.i18n.formTitle.comprar, false);
+  			
+  			this.getPanelComprar().show();
+  			this.getPanelReservar().hide();
+  			
+  			this.cambiaVisibilidadBotonAnularPrevia();
+  		} else
+  			alert(UI.i18n.message.selectRow);
    	},
    	
    	cambiaVisibilidadBotonAnularPrevia: function() {

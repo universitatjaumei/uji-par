@@ -2,13 +2,8 @@ package es.uji.apps.par.services;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
-import java.net.URL;
 import java.net.URLEncoder;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
 
-import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.client.urlconnection.HTTPSProperties;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +13,6 @@ import com.sun.jersey.api.client.WebResource;
 
 import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.utils.Utils;
-
-import javax.net.ssl.*;
 
 @Service
 public class PinpadWebService implements PinpadDataService

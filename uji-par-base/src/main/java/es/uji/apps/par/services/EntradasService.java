@@ -15,9 +15,12 @@ import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.dao.ComprasDAO;
 import es.uji.apps.par.db.ButacaDTO;
 import es.uji.apps.par.db.CompraDTO;
+import es.uji.apps.par.i18n.ResourceProperties;
+import es.uji.apps.par.model.EntradaModelReport;
 import es.uji.apps.par.report.EntradaReport;
 import es.uji.apps.par.report.EntradaTaquillaReport;
 import es.uji.apps.par.utils.DateUtils;
+import es.uji.apps.par.utils.ReportUtils;
 
 @Service
 public class EntradasService
@@ -57,7 +60,14 @@ public class EntradasService
 
         for (ButacaDTO butaca : compra.getParButacas())
         {
-            entrada.generaPaginaButaca(compra, butaca);
+        	EntradaModelReport entradaModelReport = new EntradaModelReport();
+        	entradaModelReport.setFila(butaca.getFila());
+        	entradaModelReport.setNumero(butaca.getNumero());
+            entradaModelReport.setZona(butaca.getParLocalizacion().getNombreEs());
+            entradaModelReport.setTotal(ReportUtils.formatEuros(butaca.getPrecio()));
+            entradaModelReport.setBarcode(compra.getUuid() + "-" + butaca.getId());
+            entradaModelReport.setTipo(ResourceProperties.getProperty(new Locale("ca"), "entrada." + butaca.getTipo()));
+            entrada.generaPaginaButaca(entradaModelReport, Configuration.getUrlPublic());
         }
         
         if (compra.getReciboPinpad() != null)
@@ -88,7 +98,14 @@ public class EntradasService
 
         for (ButacaDTO butaca : compra.getParButacas())
         {
-            entrada.generaPaginaButaca(compra, butaca);
+        	EntradaModelReport entradaModelReport = new EntradaModelReport();
+        	entradaModelReport.setFila(butaca.getFila());
+        	entradaModelReport.setNumero(butaca.getNumero());
+        	entradaModelReport.setZona(butaca.getParLocalizacion().getNombreVa());
+        	entradaModelReport.setTotal(ReportUtils.formatEuros(butaca.getPrecio()));
+        	entradaModelReport.setBarcode(compra.getUuid() + "-" + butaca.getId());
+        	entradaModelReport.setTipo(butaca.getTipo());
+            entrada.generaPaginaButaca(entradaModelReport, Configuration.getUrlPublic());
         }
     }
 

@@ -111,8 +111,10 @@ public class SesionesDAO extends BaseDAO
     @Transactional
     private JPAQuery getQuerySesiones(long eventoId)
     {
+    	QSalaDTO qSalaDTO = QSalaDTO.salaDTO;
         JPAQuery query = new JPAQuery(entityManager);
-        return query.from(qSesionDTO).where(qSesionDTO.parEvento.id.eq(eventoId));
+        return query.from(qSesionDTO).leftJoin(qSesionDTO.parSala, qSalaDTO).fetch().
+        		where(qSesionDTO.parEvento.id.eq(eventoId));
     }
 
     @Transactional

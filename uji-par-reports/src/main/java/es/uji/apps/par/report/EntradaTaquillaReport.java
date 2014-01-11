@@ -29,13 +29,10 @@ import es.uji.apps.fopreports.serialization.ReportSerializationException;
 import es.uji.apps.fopreports.serialization.ReportSerializer;
 import es.uji.apps.fopreports.serialization.ReportSerializerInitException;
 import es.uji.apps.fopreports.style.ReportStyle;
-import es.uji.apps.par.config.Configuration;
-import es.uji.apps.par.db.ButacaDTO;
-import es.uji.apps.par.db.CompraDTO;
 import es.uji.apps.par.i18n.ResourceProperties;
+import es.uji.apps.par.model.EntradaModelReport;
 import es.uji.apps.par.report.components.BaseTable;
 import es.uji.apps.par.report.components.EntradaReportStyle;
-import es.uji.apps.par.utils.Utils;
 
 public class EntradaTaquillaReport extends Report
 {
@@ -78,16 +75,16 @@ public class EntradaTaquillaReport extends Report
         reciboPageMaster.setRegionBody(regionBody);
     }
 
-    public void generaPaginaButaca(CompraDTO compra, ButacaDTO butaca)
+    public void generaPaginaButaca(EntradaModelReport entrada, String urlPublic)
     {
-    	this.fila = butaca.getFila();
-    	this.numero = butaca.getNumero();
-        this.zona = butaca.getParLocalizacion().getNombreEs();
-        this.total = Utils.formatEuros(butaca.getPrecio());
-        this.barcode = compra.getUuid() + "-" + butaca.getId();
-        this.tipoEntrada = ResourceProperties.getProperty(locale, "entrada." + butaca.getTipo());
+    	this.fila = entrada.getFila();
+    	this.numero = entrada.getNumero();
+        this.zona = entrada.getZona();
+        this.total = entrada.getTotal();
+        this.barcode = entrada.getBarcode();
+        this.tipoEntrada = entrada.getTipo();
 
-        creaSeccionEntrada();
+        creaSeccionEntrada(urlPublic);
 
         Block pageBreak = withNewBlock();
         pageBreak.setPageBreakAfter(PageBreakAfterType.ALWAYS);
@@ -116,7 +113,7 @@ public class EntradaTaquillaReport extends Report
         flow.getMarkerOrBlockOrBlockContainer().add(pageBreak);
     }
 
-    private void creaSeccionEntrada()
+    private void creaSeccionEntrada(String urlPublic)
     {
         Block entradaBlock = withNewBlock();
 
@@ -131,7 +128,7 @@ public class EntradaTaquillaReport extends Report
 
         entradaTable.withNewRow();
 
-        TableCell cellIzquierda = entradaTable.withNewCell(createEntradaIzquierda());
+        TableCell cellIzquierda = entradaTable.withNewCell(createEntradaIzquierda(urlPublic));
         cellIzquierda.setPadding("0.1cm");
         cellIzquierda.setPaddingTop("0.0cm");
         cellIzquierda.setBackgroundColor(FONDO_BLANCO);
@@ -139,12 +136,12 @@ public class EntradaTaquillaReport extends Report
         entradaBlock.getContent().add(entradaTable);
     }
 
-    private Block createEntradaIzquierda()
+    private Block createEntradaIzquierda(String urlPublic)
     {
         Block block = new Block();
 
         block.getContent().add(createEntradaIzquierdaArriba());
-        block.getContent().add(createEntradaIzquierdaCentro());
+        block.getContent().add(createEntradaIzquierdaCentro(urlPublic));
 
         return block;
     }
@@ -216,7 +213,7 @@ public class EntradaTaquillaReport extends Report
         return text;
 	}
 
-	private BaseTable createEntradaIzquierdaCentro()
+	private BaseTable createEntradaIzquierdaCentro(String urlPublic)
     {
         BaseTable table = new BaseTable(new EntradaReportStyle(), 2, "7.0cm", "3.2cm");
 
@@ -238,7 +235,7 @@ public class EntradaTaquillaReport extends Report
         
         table.withNewCell(createFilaButacaYUuid());
         	
-        TableCell cellBarCode = table.withNewCell(createBarcode());
+        TableCell cellBarCode = table.withNewCell(createBarcode(urlPublic));
         cellBarCode.setTextAlign(TextAlignType.RIGHT);
         cellBarCode.setPaddingLeft("0.2cm");
         
@@ -415,10 +412,10 @@ public class EntradaTaquillaReport extends Report
         return table;
     }
 
-    private Block createBarcode()
+    private Block createBarcode(String urlPublic)
     {
         ExternalGraphic externalGraphic = new ExternalGraphic();
-        externalGraphic.setSrc(Configuration.getUrlPublic() + "/rest/barcode/" + this.barcode);
+        externalGraphic.setSrc(urlPublic + "/rest/barcode/" + this.barcode);
 
         Block blockCodebar = new Block();
         blockCodebar.getContent().add(externalGraphic);

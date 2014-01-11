@@ -4,9 +4,7 @@ import java.io.File;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -14,7 +12,6 @@ import es.uji.apps.fopreports.Report;
 import es.uji.apps.fopreports.fop.Block;
 import es.uji.apps.fopreports.fop.BorderStyleType;
 import es.uji.apps.fopreports.fop.ExternalGraphic;
-import es.uji.apps.fopreports.fop.PageBreakAfterType;
 import es.uji.apps.fopreports.fop.TableCell;
 import es.uji.apps.fopreports.fop.TextAlignType;
 import es.uji.apps.fopreports.fop.WhiteSpaceType;
@@ -22,16 +19,14 @@ import es.uji.apps.fopreports.serialization.FopPDFSerializer;
 import es.uji.apps.fopreports.serialization.ReportSerializationException;
 import es.uji.apps.fopreports.serialization.ReportSerializer;
 import es.uji.apps.fopreports.serialization.ReportSerializerInitException;
-import es.uji.apps.par.SinIvaException;
-import es.uji.apps.par.config.Configuration;
+import es.uji.apps.par.exceptions.SinIvaException;
 import es.uji.apps.par.i18n.ResourceProperties;
-import es.uji.apps.par.model.Informe;
+import es.uji.apps.par.model.InformeModelReport;
 import es.uji.apps.par.report.components.BaseTable;
 import es.uji.apps.par.report.components.InformeTaquillaReportStyle;
-import es.uji.apps.par.utils.DateUtils;
-import es.uji.apps.par.utils.Utils;
+import es.uji.apps.par.utils.ReportUtils;
 
-public class InformeEventosReport extends Report
+public class InformeTaquillaTpvSubtotalesReport extends Report
 {
     private static final String FONT_SIZE = "9pt";
 
@@ -42,7 +37,7 @@ public class InformeEventosReport extends Report
     private Locale locale;
     private final InformeTaquillaReportStyle style;
 
-    private InformeEventosReport(ReportSerializer serializer, InformeTaquillaReportStyle style,
+    private InformeTaquillaTpvSubtotalesReport(ReportSerializer serializer, InformeTaquillaReportStyle style,
             Locale locale) throws ReportSerializerInitException
     {
         super(serializer, style);
@@ -51,69 +46,14 @@ public class InformeEventosReport extends Report
         this.locale = locale;
     }
 
-    public void genera(Date inicio, Date fin, List<Informe> compras) throws SinIvaException
-    {
-        if (compras.size() == 0)
-            generaPdfSinCompras();
-        else
-            generaPdfCompras(inicio, fin, compras);
-    }
-
-    private void generaPdfSinCompras()
-    {
-        Block block = withNewBlock();
-        block.getContent().add(ResourceProperties.getProperty(locale, "informeEventos.sinCompras"));
-    }
-
-    private void generaPdfCompras(Date inicio, Date fin, List<Informe> compras) throws SinIvaException
-    {
-        List<List<Informe>> separadosPorSesion = separaPorSesion(compras);
-        
-        for (List<Informe> datosSesion:separadosPorSesion)
-        {
-            creaInicioPagina(inicio, fin);
-            creaTabla(datosSesion);
-            
-            createPageBreak();
-        }
-    }
-
-    private List<List<Informe>> separaPorSesion(List<Informe> datos)
-    {
-        List<List<Informe>> result = new ArrayList<List<Informe>>();
-        List<Informe> sesionActual = new ArrayList<Informe>();
-        
-        long sesionAnterior = -1;
-        
-        for (Informe dato:datos)
-        {
-            if (sesionAnterior!=-1 && dato.getSesionId()!=sesionAnterior)
-            {
-                result.add(sesionActual);
-                sesionActual = new ArrayList<Informe>();
-            }
-            
-            sesionActual.add(dato);
-            sesionAnterior = dato.getSesionId();
-        }
-        
-        if (sesionActual.size() > 0)
-            result.add(sesionActual);
-        
-        return result;
-    }
-
-    private void createPageBreak()
-    {
-        Block pageBreak = withNewBlock();
-        pageBreak.setPageBreakAfter(PageBreakAfterType.ALWAYS);
-    }
-
-    private void creaInicioPagina(Date inicio, Date fin)
+    public void genera(String inicio, String fin, List<InformeModelReport> compras, 
+    		String cargoInformeEfectivo, String firmanteInformeEfectivo) throws SinIvaException
     {
         creaCabecera();
         creaTituloYPeriodo(inicio, fin);
         creaIntro();
+        creaTabla(compras);
+        creaFirma(cargoInformeEfectivo, firmanteInformeEfectivo);
     }
 
     private void creaCabecera()
@@ -124,7 +64,7 @@ public class InformeEventosReport extends Report
         table.withNewCell(creaLogo());
 
         Block block = new Block();
-        block.getContent().add(ResourceProperties.getProperty(locale, "informeEventos.vicerectorat"));
+        block.getContent().add(ResourceProperties.getProperty(locale, "informeTaquillaTpvSubtotales.vicerectorat"));
         block.setMarginTop("0.5cm");
         block.setMarginRight("0.5cm");
 
@@ -135,7 +75,7 @@ public class InformeEventosReport extends Report
         cell.setBorderRightStyle(BorderStyleType.SOLID);
 
         block = new Block();
-        block.getContent().add(ResourceProperties.getProperty(locale, "informeEventos.tituloCabecera"));
+        block.getContent().add(ResourceProperties.getProperty(locale, "informeTaquillaTpvSubtotales.tituloCabecera"));
         block.setMarginTop("0.5cm");
         block.setMarginLeft("0.5cm");
         TableCell cellDerecha = table.withNewCell(block);
@@ -167,9 +107,9 @@ public class InformeEventosReport extends Report
         return block;
     }
 
-    private void creaTituloYPeriodo(Date inicio, Date fin)
+    private void creaTituloYPeriodo(String inicioTexto, String finTexto)
     {
-        Block titulo = createBoldBlock(ResourceProperties.getProperty(locale, "informeEventos.titulo"));
+        Block titulo = createBoldBlock(ResourceProperties.getProperty(locale, "informeTaquillaTpvSubtotales.titulo"));
 
         titulo.setMarginTop("1cm");
         titulo.setMarginLeft("6cm");
@@ -181,11 +121,8 @@ public class InformeEventosReport extends Report
         periodo.setMarginLeft("6cm");
         periodo.setWhiteSpace(WhiteSpaceType.PRE);
 
-        String inicioTexto = DateUtils.dateToSpanishString(inicio);
-        String finTexto = DateUtils.dateToSpanishString(fin);
-
         periodo.getContent().add(
-                ResourceProperties.getProperty(locale, "informeEventos.periodo", inicioTexto, finTexto));
+                ResourceProperties.getProperty(locale, "informeTaquillaTpvSubtotales.periodo", inicioTexto, finTexto));
     }
 
     private void creaIntro()
@@ -193,7 +130,7 @@ public class InformeEventosReport extends Report
         Block intro = withNewBlock();
 
         intro.setMarginTop("1cm");
-        intro.getContent().add(ResourceProperties.getProperty(locale, "informeEventos.intro"));
+        intro.getContent().add(ResourceProperties.getProperty(locale, "informeTaquillaTpvSubtotales.intro"));
     }
 
     private Block createBoldBlock(String text)
@@ -208,79 +145,63 @@ public class InformeEventosReport extends Report
         return block;
     }
 
-    private void creaTabla(List<Informe> compras) throws SinIvaException
+    private void creaTabla(List<InformeModelReport> compras) throws SinIvaException
     {
         BaseTable table = new BaseTable(style, 7, "3.6cm", "3.6cm", "2.7cm", "3cm", "1.5cm", "1.5cm", "1.5cm");
 
         table.withNewRow();
         table.withNewCell(createBoldBlock(ResourceProperties.getProperty(locale,
-                "informeEventos.tabla.evento")));
+                "informeTaquillaTpvSubtotales.tabla.evento")));
         table.withNewCell(createBoldBlock(ResourceProperties.getProperty(locale,
-                "informeEventos.tabla.sesion")));
+                "informeTaquillaTpvSubtotales.tabla.sesion")));
         table.withNewCell(createBoldBlock(ResourceProperties.getProperty(locale,
-                "informeEventos.tabla.tipo")));
+                "informeTaquillaTpvSubtotales.tabla.tipo")));
 
         Block numeroBlock = createBoldBlock(ResourceProperties.getProperty(locale,
-                "informeEventos.tabla.numero"));
+                "informeTaquillaTpvSubtotales.tabla.numero"));
         numeroBlock.setTextAlign(TextAlignType.RIGHT);
         table.withNewCell(numeroBlock);
 
         Block baseBlock = createBoldBlock(ResourceProperties.getProperty(locale,
-                "informeEventos.tabla.base"));
+                "informeTaquillaTpvSubtotales.tabla.base"));
         baseBlock.setTextAlign(TextAlignType.RIGHT);
         table.withNewCell(baseBlock);
 
         Block ivaBlock = createBoldBlock(ResourceProperties.getProperty(locale,
-                "informeEventos.tabla.iva"));
+                "informeTaquillaTpvSubtotales.tabla.iva"));
         ivaBlock.setTextAlign(TextAlignType.RIGHT);
         table.withNewCell(ivaBlock);
 
         Block totalBlock = createBoldBlock(ResourceProperties.getProperty(locale,
-                "informeEventos.tabla.total"));
+                "informeTaquillaTpvSubtotales.tabla.total"));
         totalBlock.setTextAlign(TextAlignType.RIGHT);
         table.withNewCell(totalBlock);
 
-        BigDecimal sumaSesionEntradas = BigDecimal.ZERO;
-        BigDecimal sumaSesionBase = BigDecimal.ZERO;
-        BigDecimal sumaSesionIva = BigDecimal.ZERO;
-        BigDecimal sumaSesionTotal = BigDecimal.ZERO;
-        
-        BigDecimal sumaEventoEntradas = BigDecimal.ZERO;
-        BigDecimal sumaEventoBase = BigDecimal.ZERO;
-        BigDecimal sumaEventoIva = BigDecimal.ZERO;
-        BigDecimal sumaEventoTotal = BigDecimal.ZERO;
-        
-        BigDecimal sumaTotalEntradas = BigDecimal.ZERO;
-        BigDecimal sumaTotalBase = BigDecimal.ZERO;
-        BigDecimal sumaTotalIva = BigDecimal.ZERO;
-        BigDecimal sumaTotalTotal = BigDecimal.ZERO;
+        BigDecimal sumaEntradas = BigDecimal.ZERO;
+        BigDecimal sumaBase = BigDecimal.ZERO;
+        BigDecimal sumaIva = BigDecimal.ZERO;
+        BigDecimal sumaTotal = BigDecimal.ZERO;
 
-        long sesionAnterior = -1;
-        long eventoAnterior = -1;
-        
-        for (Informe dato : compras)
+        BigDecimal subEntradas = BigDecimal.ZERO;
+        BigDecimal subBase = BigDecimal.ZERO;
+        BigDecimal subIva = BigDecimal.ZERO;
+        BigDecimal subTotal = BigDecimal.ZERO;
+
+        String diaAnterior = "";
+
+        for (InformeModelReport dato : compras)
         {
             if (dato.getIva() == null)
                 throw new SinIvaException(dato.getEvento());
 
-            if (cambioSesion(dato, sesionAnterior))
+            if (cambioDia(dato, diaAnterior))
             {
-                creaSubtotalesSesion(table, sumaSesionEntradas, sumaSesionBase, sumaSesionIva, sumaSesionTotal);
+                creaSubtotales(table, diaAnterior, subEntradas, subBase, subIva, subTotal);
 
-                sumaSesionEntradas = BigDecimal.ZERO;
-                sumaSesionBase = BigDecimal.ZERO;
-                sumaSesionIva = BigDecimal.ZERO;
-                sumaSesionTotal = BigDecimal.ZERO;
-            }
-            
-            if (cambioEvento(dato, eventoAnterior))
-            {
-                creaSubtotalesEvento(table, sumaEventoEntradas, sumaEventoBase, sumaEventoIva, sumaEventoTotal);
-
-                sumaEventoEntradas = BigDecimal.ZERO;
-                sumaEventoBase = BigDecimal.ZERO;
-                sumaEventoIva = BigDecimal.ZERO;
-                sumaEventoTotal = BigDecimal.ZERO;
+                subEntradas = BigDecimal.ZERO;
+                subBase = BigDecimal.ZERO;
+                subIva = BigDecimal.ZERO;
+                subTotal = BigDecimal.ZERO;
             }
 
             table.withNewRow();
@@ -292,62 +213,40 @@ public class InformeEventosReport extends Report
             BigDecimal base = calculaBase(dato);
             BigDecimal iva = dato.getTotal().subtract(base);
 
-            table.withNewCell(blockAlignRight(Utils.formatEuros(base)));
-            table.withNewCell(blockAlignRight(Utils.formatEuros(iva)));
-            table.withNewCell(blockAlignRight(Utils.formatEuros(dato.getTotal())));
+            table.withNewCell(blockAlignRight(ReportUtils.formatEuros(base)));
+            table.withNewCell(blockAlignRight(ReportUtils.formatEuros(iva)));
+            table.withNewCell(blockAlignRight(ReportUtils.formatEuros(dato.getTotal())));
 
-            sumaSesionEntradas = sumaSesionEntradas.add(new BigDecimal(dato.getNumeroEntradas()));
-            sumaSesionBase = sumaSesionBase.add(base);
-            sumaSesionIva = sumaSesionIva.add(iva);
-            sumaSesionTotal = sumaSesionTotal.add(dato.getTotal());
+            subEntradas = subEntradas.add(new BigDecimal(dato.getNumeroEntradas()));
+            subBase = subBase.add(base);
+            subIva = subIva.add(iva);
+            subTotal = subTotal.add(dato.getTotal());
             
-            sumaEventoEntradas = sumaEventoEntradas.add(new BigDecimal(dato.getNumeroEntradas()));
-            sumaEventoBase = sumaEventoBase.add(base);
-            sumaEventoIva = sumaEventoIva.add(iva);
-            sumaEventoTotal = sumaEventoTotal.add(dato.getTotal());
+            sumaEntradas = sumaEntradas.add(new BigDecimal(dato.getNumeroEntradas()));
+            sumaBase = sumaBase.add(base);
+            sumaIva = sumaIva.add(iva);
+            sumaTotal = sumaTotal.add(dato.getTotal());
             
-            sumaTotalEntradas = sumaTotalEntradas.add(new BigDecimal(dato.getNumeroEntradas()));
-            sumaTotalBase = sumaTotalBase.add(base);
-            sumaTotalIva = sumaTotalIva.add(iva);
-            sumaTotalTotal = sumaTotalTotal.add(dato.getTotal());
-            
-            sesionAnterior = dato.getSesionId();
-            eventoAnterior = dato.getEventoId();
+            diaAnterior = dato.getFechaCompra();
         }
         
-        creaSubtotalesSesion(table, sumaSesionEntradas, sumaSesionBase, sumaSesionIva, sumaSesionTotal);
-        
-        //creaSubtotalesEvento(table, sumaEventoEntradas, sumaEventoBase, sumaEventoIva, sumaEventoTotal);
+        creaSubtotales(table, diaAnterior, subEntradas, subBase, subIva, subTotal);
 
         Block block = withNewBlock();
         block.setMarginTop("1cm");
         block.getContent().add(table);
 
-        //creaTotales(sumaTotalEntradas, sumaTotalBase, sumaTotalIva, sumaTotalTotal);
+        creaTotales(sumaEntradas, sumaBase, sumaIva, sumaTotal);
     }
 
-    private void creaSubtotalesSesion(BaseTable table, BigDecimal subEntradas, BigDecimal subBase, BigDecimal subIva, BigDecimal subTotal)
-    {
-        String titulo = ResourceProperties.getProperty(locale, "informeEventos.subtotalSesion");
-        
-        creaLineaTotales(table, subEntradas, subBase, subIva, subTotal, titulo);
-    }
-    
-    private void creaSubtotalesEvento(BaseTable table, BigDecimal subEntradas, BigDecimal subBase, BigDecimal subIva, BigDecimal subTotal)
-    {
-        String titulo = ResourceProperties.getProperty(locale, "informeEventos.subtotalEvento");
-        
-        creaLineaTotales(table, subEntradas, subBase, subIva, subTotal, titulo);
-    }
-
-    private void creaLineaTotales(BaseTable table, BigDecimal subEntradas, BigDecimal subBase, BigDecimal subIva,
-            BigDecimal subTotal, String titulo)
+    private void creaSubtotales(BaseTable table, String diaAnterior, BigDecimal subEntradas, BigDecimal subBase, BigDecimal subIva, BigDecimal subTotal)
     {
         table.withNewRow();
 
         table.withNewCell("");
-        
-        TableCell cell = table.withNewCell(createBoldBlock(titulo));
+
+        TableCell cell = table.withNewCell(createBoldBlock(ResourceProperties.getProperty(locale,
+                "informeTaquillaTpvSubtotales.subtotal") + diaAnterior));
         setBorders(cell);
 
         cell = table.withNewCell("");
@@ -358,17 +257,17 @@ public class InformeEventosReport extends Report
         cell = table.withNewCell(entradasBlock);
         setBorders(cell);
 
-        Block baseBlock = createBoldBlock(Utils.formatEuros(subBase));
+        Block baseBlock = createBoldBlock(ReportUtils.formatEuros(subBase));
         baseBlock.setTextAlign(TextAlignType.RIGHT);
         cell = table.withNewCell(baseBlock);
         setBorders(cell);
 
-        Block ivaBlock = createBoldBlock(Utils.formatEuros(subIva));
+        Block ivaBlock = createBoldBlock(ReportUtils.formatEuros(subIva));
         ivaBlock.setTextAlign(TextAlignType.RIGHT);
         cell = table.withNewCell(ivaBlock);
         setBorders(cell);
 
-        Block totalBlock = createBoldBlock(Utils.formatEuros(subTotal));
+        Block totalBlock = createBoldBlock(ReportUtils.formatEuros(subTotal));
         totalBlock.setTextAlign(TextAlignType.RIGHT);
         cell = table.withNewCell(totalBlock);
         setBorders(cell);
@@ -386,17 +285,12 @@ public class InformeEventosReport extends Report
         table.withNewCell(block);
     }
 
-    private boolean cambioSesion(Informe dato, long sesionAnterior)
+    private boolean cambioDia(InformeModelReport dato, String diaAnterior)
     {
-        return sesionAnterior!=-1 && dato.getSesionId()!=sesionAnterior;
-    }
-    
-    private boolean cambioEvento(Informe dato, long eventoAnterior)
-    {
-        return eventoAnterior!=-1 && dato.getEventoId()!=eventoAnterior;
+        return !diaAnterior.equals("") && !diaAnterior.equals(dato.getFechaCompra());
     }
 
-    private BigDecimal calculaBase(Informe dato)
+    private BigDecimal calculaBase(InformeModelReport dato)
     {
         BigDecimal divisor = new BigDecimal(1).add(dato.getIva().divide(new BigDecimal(100)));
 
@@ -424,7 +318,7 @@ public class InformeEventosReport extends Report
         table.withNewCell("");
 
         TableCell cell = table.withNewCell(createBoldBlock(ResourceProperties.getProperty(locale,
-                "informeEventos.totales")));
+                "informeTaquillaTpvSubtotales.totales")));
         setBorders(cell);
 
         cell = table.withNewCell("");
@@ -435,17 +329,17 @@ public class InformeEventosReport extends Report
         cell = table.withNewCell(entradasBlock);
         setBorders(cell);
 
-        Block baseBlock = createBoldBlock(Utils.formatEuros(sumaBase));
+        Block baseBlock = createBoldBlock(ReportUtils.formatEuros(sumaBase));
         baseBlock.setTextAlign(TextAlignType.RIGHT);
         cell = table.withNewCell(baseBlock);
         setBorders(cell);
 
-        Block ivaBlock = createBoldBlock(Utils.formatEuros(sumaIva));
+        Block ivaBlock = createBoldBlock(ReportUtils.formatEuros(sumaIva));
         ivaBlock.setTextAlign(TextAlignType.RIGHT);
         cell = table.withNewCell(ivaBlock);
         setBorders(cell);
 
-        Block totalBlock = createBoldBlock(Utils.formatEuros(sumaTotal));
+        Block totalBlock = createBoldBlock(ReportUtils.formatEuros(sumaTotal));
         totalBlock.setTextAlign(TextAlignType.RIGHT);
         cell = table.withNewCell(totalBlock);
         setBorders(cell);
@@ -453,26 +347,26 @@ public class InformeEventosReport extends Report
         block.getContent().add(table);
     }
 
-    private void creaFirma()
+    private void creaFirma(String cargoInformeEfectivo, String firmanteInformeEfectivo)
     {
         Block cargoBlock = withNewBlock();
         cargoBlock.setMarginTop("1cm");
-        String cargo = Configuration.getCargoInformeEfectivo();
+        String cargo = cargoInformeEfectivo;
         cargoBlock.getContent().add(cargo);
 
         Block nombreBlock = withNewBlock();
         nombreBlock.setMarginTop("2cm");
         nombreBlock.getContent().add(
-                ResourceProperties.getProperty(locale, "informeEventos.subtotales.firmado",
-                        Configuration.getFirmanteInformeEfectivo()));
+                ResourceProperties.getProperty(locale, "informeTaquillaTpvSubtotales.subtotales.firmado",
+                		firmanteInformeEfectivo));
 
         Calendar fecha = Calendar.getInstance();
 
         Block fechaBlock = withNewBlock();
         fechaBlock.setMarginTop("1cm");
         fechaBlock.getContent().add(
-                ResourceProperties.getProperty(locale, "informeEventos.subtotales.fecha",
-                        fecha.get(Calendar.DAY_OF_MONTH), DateUtils.getMesValenciaConDe(fecha),
+                ResourceProperties.getProperty(locale, "informeTaquillaTpvSubtotales.subtotales.fecha",
+                        fecha.get(Calendar.DAY_OF_MONTH), ReportUtils.getMesValenciaConDe(fecha),
                         fecha.get(Calendar.YEAR)));
     }
 
@@ -493,14 +387,14 @@ public class InformeEventosReport extends Report
             reportSerializer = new FopPDFSerializer();
     }
 
-    public static InformeEventosReport create(Locale locale)
+    public static InformeTaquillaTpvSubtotalesReport create(Locale locale)
     {
         try
         {
             initStatics();
             InformeTaquillaReportStyle estilo = new InformeTaquillaReportStyle();
 
-            return new InformeEventosReport(reportSerializer, estilo, locale);
+            return new InformeTaquillaTpvSubtotalesReport(reportSerializer, estilo, locale);
         }
         catch (ReportSerializerInitException e)
         {

@@ -13,6 +13,8 @@ import com.mysema.query.jpa.impl.JPAUpdateClause;
 
 import es.uji.apps.par.db.LocalizacionDTO;
 import es.uji.apps.par.db.QLocalizacionDTO;
+import es.uji.apps.par.db.QSalaDTO;
+import es.uji.apps.par.db.QSesionDTO;
 import es.uji.apps.par.model.Localizacion;
 
 @Repository
@@ -21,12 +23,12 @@ public class LocalizacionesDAO extends BaseDAO
     private QLocalizacionDTO qParLocalizacionDTO = QLocalizacionDTO.localizacionDTO;
 
     @Transactional
-    public List<LocalizacionDTO> get(String sortParameter, int start, int limit)
+    public List<LocalizacionDTO> get(String sortParameter, int start, int limit, Integer salaId)
     {
     	List<LocalizacionDTO> localizacion = new ArrayList<LocalizacionDTO>();
 
     	//.orderBy(qParLocalizacionDTO.nombreVa.asc()
-        for (LocalizacionDTO localizacionDB : getQueryLocalizaciones().
+        for (LocalizacionDTO localizacionDB : getQueryLocalizaciones(salaId).
         		orderBy(getSort(qParLocalizacionDTO, sortParameter)).offset(start).limit(limit).list(qParLocalizacionDTO))
         {
             localizacion.add(localizacionDB);
@@ -35,14 +37,28 @@ public class LocalizacionesDAO extends BaseDAO
         return localizacion;
     }
     
-    public List<LocalizacionDTO> get() {
-		return get("", 0, 100);
+    public List<LocalizacionDTO> getFromSesion(long idSesion) {
+    	List<LocalizacionDTO> localizacion = new ArrayList<LocalizacionDTO>();
+    	JPAQuery query = new JPAQuery(entityManager);
+    	QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
+    	QSalaDTO qSalaDTO = QSalaDTO.salaDTO;
+
+    	List<LocalizacionDTO> localizacionesDTO = query.from(qSesionDTO, qSalaDTO, qParLocalizacionDTO).
+    		where(qSesionDTO.parSala.id.eq(qSalaDTO.id).and(qParLocalizacionDTO.sala.id.eq(qSalaDTO.id)).and(qSesionDTO.id.eq(idSesion))).
+    		orderBy(getSort(qParLocalizacionDTO, "")).offset(0).limit(100).list(qParLocalizacionDTO);
+
+    	for (LocalizacionDTO localizacionDB : localizacionesDTO)
+        {
+            localizacion.add(localizacionDB);
+        }
+
+        return localizacion;
 	}
     
     @Transactional
-    private JPAQuery getQueryLocalizaciones() {
+    private JPAQuery getQueryLocalizaciones(Integer salaId) {
     	JPAQuery query = new JPAQuery(entityManager);
-    	return query.from(qParLocalizacionDTO);
+    	return query.from(qParLocalizacionDTO).where(qParLocalizacionDTO.sala.id.eq((long) salaId));
     }
 
     @Transactional
@@ -93,7 +109,7 @@ public class LocalizacionesDAO extends BaseDAO
                 .singleResult(qParLocalizacionDTO);
     }
 
-	public int getTotalLocalizaciones() {
-		return (int) getQueryLocalizaciones().count();
+	public int getTotalLocalizaciones(Integer salaId) {
+		return (int) getQueryLocalizaciones(salaId).count();
 	}
 }

@@ -25,10 +25,16 @@ public class DatabaseHelperPostgres implements DatabaseHelper
     {
         if (value == null)
             return null;
+        else if (value instanceof BigDecimal)
+        	return (BigDecimal) value;
         else if (value instanceof Float)
             return new BigDecimal((Float)value);
         else if (value instanceof BigInteger)
             return new BigDecimal((BigInteger)value);
+        else if (value instanceof Boolean)
+        	return new BigDecimal (((Boolean)value)?1:0);
+        else if (value instanceof Integer)
+        	return new BigDecimal ((Integer)value);
         else 
             throw new RuntimeException("Unknown cast type for: " + value);
     }
@@ -64,4 +70,11 @@ public class DatabaseHelperPostgres implements DatabaseHelper
     {
         return "false";
     }
+    
+    @Override
+	public String trunc(String campo, String formato) {
+    	if (formato.equals("DD"))
+    		formato = "day";
+		return "date_trunc('" + formato+ "', " + campo + ")";
+	}
 }

@@ -17,4 +17,6 @@ public interface DatabaseHelper
     public String trueString();
 
     public String falseString();
+    
+    public String trunc(String campo, String formato);
 }

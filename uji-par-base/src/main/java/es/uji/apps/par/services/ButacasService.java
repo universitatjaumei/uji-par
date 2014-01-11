@@ -62,7 +62,7 @@ public class ButacasService
     public List<DisponiblesLocalizacion> getDisponiblesNoNumerada(long idSesion)
     {
         List<DisponiblesLocalizacion> disponibles = new ArrayList<DisponiblesLocalizacion>();
-        List<LocalizacionDTO> localizaciones = localizacionesDAO.get();
+        List<LocalizacionDTO> localizaciones = localizacionesDAO.getFromSesion(idSesion);
         
         for (LocalizacionDTO localizacion: localizaciones)
         {

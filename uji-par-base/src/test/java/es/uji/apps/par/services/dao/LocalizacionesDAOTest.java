@@ -21,12 +21,12 @@ public class LocalizacionesDAOTest
     @Autowired
     LocalizacionesDAO localizacionesDAO;
 
-    @Test
+    /*@Test
     @Transactional
     public void getLocalizaciones()
     {
         Assert.assertNotNull(localizacionesDAO.get());
-    }
+    }*/
 
     @Test
     @Transactional

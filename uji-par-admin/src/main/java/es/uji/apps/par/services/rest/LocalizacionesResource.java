@@ -20,8 +20,8 @@ import javax.ws.rs.core.Response;
 
 import com.sun.jersey.api.core.InjectParam;
 
-import es.uji.apps.par.GeneralPARException;
 import es.uji.apps.par.auth.AuthChecker;
+import es.uji.apps.par.exceptions.GeneralPARException;
 import es.uji.apps.par.model.Localizacion;
 import es.uji.apps.par.services.LocalizacionesService;
 
@@ -36,10 +36,11 @@ public class LocalizacionesResource
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAll(@QueryParam("sort") String sort, @QueryParam("start") int start, @QueryParam("limit") @DefaultValue("1000") int limit)
+    public Response getAll(@QueryParam("sort") String sort, @QueryParam("start") int start, @QueryParam("limit") @DefaultValue("1000") int limit, 
+    		@QueryParam("sala") Integer salaId)
     {
-        return Response.ok().entity(new RestResponse(true, localizacionesService.get(sort, start, limit), 
-        		localizacionesService.getTotalLocalizaciones())).build();
+        return Response.ok().entity(new RestResponse(true, localizacionesService.get(sort, start, limit, salaId), 
+        		localizacionesService.getTotalLocalizaciones(salaId))).build();
     }
 
     @DELETE

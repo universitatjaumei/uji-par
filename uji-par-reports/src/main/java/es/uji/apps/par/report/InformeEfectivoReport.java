@@ -5,7 +5,6 @@ import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -20,14 +19,12 @@ import es.uji.apps.fopreports.serialization.FopPDFSerializer;
 import es.uji.apps.fopreports.serialization.ReportSerializationException;
 import es.uji.apps.fopreports.serialization.ReportSerializer;
 import es.uji.apps.fopreports.serialization.ReportSerializerInitException;
-import es.uji.apps.par.SinIvaException;
-import es.uji.apps.par.config.Configuration;
+import es.uji.apps.par.exceptions.SinIvaException;
 import es.uji.apps.par.i18n.ResourceProperties;
-import es.uji.apps.par.model.Informe;
+import es.uji.apps.par.model.InformeModelReport;
 import es.uji.apps.par.report.components.BaseTable;
 import es.uji.apps.par.report.components.InformeTaquillaReportStyle;
-import es.uji.apps.par.utils.DateUtils;
-import es.uji.apps.par.utils.Utils;
+import es.uji.apps.par.utils.ReportUtils;
 
 public class InformeEfectivoReport extends Report
 {
@@ -49,13 +46,14 @@ public class InformeEfectivoReport extends Report
         this.locale = locale;
     }
 
-    public void genera(Date inicio, Date fin, List<Informe> compras) throws SinIvaException
+    public void genera(String inicio, String fin, List<InformeModelReport> compras, String cargoInformeEfectivo, 
+    		String firmanteInformeEfectivo) throws SinIvaException
     {
         creaLogo();
         creaCabecera(inicio, fin);
         creaIntro();
         creaTabla(compras);
-        creaFirma();
+        creaFirma(cargoInformeEfectivo, firmanteInformeEfectivo);
     }
 
     private void creaLogo()
@@ -79,7 +77,7 @@ public class InformeEfectivoReport extends Report
         return block;
     }
 
-    private void creaCabecera(Date inicio, Date fin)
+    private void creaCabecera(String inicio, String fin)
     {
         Block titulo = createBoldBlock(ResourceProperties.getProperty(locale, "informeEfectivo.titulo"));
 
@@ -93,11 +91,8 @@ public class InformeEfectivoReport extends Report
         periodo.setMarginLeft("6cm");
         periodo.setWhiteSpace(WhiteSpaceType.PRE);
 
-        String inicioTexto = DateUtils.dateToSpanishString(inicio);
-        String finTexto = DateUtils.dateToSpanishString(fin);
-
         periodo.getContent().add(
-                ResourceProperties.getProperty(locale, "informeEfectivo.periodo", inicioTexto, finTexto));
+                ResourceProperties.getProperty(locale, "informeEfectivo.periodo", inicio, fin));
     }
 
     private void creaIntro()
@@ -120,7 +115,7 @@ public class InformeEfectivoReport extends Report
         return block;
     }
 
-    private void creaTabla(List<Informe> compras) throws SinIvaException
+    private void creaTabla(List<InformeModelReport> compras) throws SinIvaException
     {
         BaseTable table = new BaseTable(style, 7, "3.6cm", "3.6cm", "2.7cm", "3cm", "1.5cm", "1.5cm", "1.5cm");
 
@@ -150,7 +145,7 @@ public class InformeEfectivoReport extends Report
         BigDecimal sumaIva = BigDecimal.ZERO;
         BigDecimal sumaTotal = BigDecimal.ZERO;
 
-        for (Informe dato : compras)
+        for (InformeModelReport dato : compras)
         {
             if (dato.getIva() == null)
                 throw new SinIvaException(dato.getEvento());
@@ -164,9 +159,9 @@ public class InformeEfectivoReport extends Report
             BigDecimal base = calculaBase(dato);
             BigDecimal iva = dato.getTotal().subtract(base);
 
-            table.withNewCell(blockAlignRight(Utils.formatEuros(base)));
-            table.withNewCell(blockAlignRight(Utils.formatEuros(iva)));
-            table.withNewCell(blockAlignRight(Utils.formatEuros(dato.getTotal())));
+            table.withNewCell(blockAlignRight(ReportUtils.formatEuros(base)));
+            table.withNewCell(blockAlignRight(ReportUtils.formatEuros(iva)));
+            table.withNewCell(blockAlignRight(ReportUtils.formatEuros(dato.getTotal())));
 
             sumaEntradas = sumaEntradas.add(new BigDecimal(dato.getNumeroEntradas()));
             sumaBase = sumaBase.add(base);
@@ -181,7 +176,7 @@ public class InformeEfectivoReport extends Report
         creaTotales(sumaEntradas, sumaBase, sumaIva, sumaTotal);
     }
 
-    private BigDecimal calculaBase(Informe dato)
+    private BigDecimal calculaBase(InformeModelReport dato)
     {
         BigDecimal divisor = new BigDecimal(1).add(dato.getIva().divide(new BigDecimal(100)));
 
@@ -221,17 +216,17 @@ public class InformeEfectivoReport extends Report
         cell = table.withNewCell(entradasBlock);
         setBorders(cell);
 
-        Block baseBlock = createBoldBlock(Utils.formatEuros(sumaBase));
+        Block baseBlock = createBoldBlock(ReportUtils.formatEuros(sumaBase));
         baseBlock.setTextAlign(TextAlignType.RIGHT);
         cell = table.withNewCell(baseBlock);
         setBorders(cell);
 
-        Block ivaBlock = createBoldBlock(Utils.formatEuros(sumaIva));
+        Block ivaBlock = createBoldBlock(ReportUtils.formatEuros(sumaIva));
         ivaBlock.setTextAlign(TextAlignType.RIGHT);
         cell = table.withNewCell(ivaBlock);
         setBorders(cell);
 
-        Block totalBlock = createBoldBlock(Utils.formatEuros(sumaTotal));
+        Block totalBlock = createBoldBlock(ReportUtils.formatEuros(sumaTotal));
         totalBlock.setTextAlign(TextAlignType.RIGHT);
         cell = table.withNewCell(totalBlock);
         setBorders(cell);
@@ -239,16 +234,16 @@ public class InformeEfectivoReport extends Report
         block.getContent().add(table);
     }
 
-    private void creaFirma()
+    private void creaFirma(String cargoInformeEfectivo, String firmanteInformeEfectivo)
     {
         Block cargoBlock = withNewBlock();
         cargoBlock.setMarginTop("1cm");
-        String cargo = Configuration.getCargoInformeEfectivo();
+        String cargo = cargoInformeEfectivo;
         cargoBlock.getContent().add(cargo);
 
         Block nombreBlock = withNewBlock();
         nombreBlock.setMarginTop("2cm");
-        nombreBlock.getContent().add(ResourceProperties.getProperty(locale, "informeEfectivo.subtotales.firmado", Configuration.getFirmanteInformeEfectivo()));
+        nombreBlock.getContent().add(ResourceProperties.getProperty(locale, "informeEfectivo.subtotales.firmado", firmanteInformeEfectivo));
 
         Calendar fecha = Calendar.getInstance();
 
@@ -256,7 +251,7 @@ public class InformeEfectivoReport extends Report
         fechaBlock.setMarginTop("1cm");
         fechaBlock.getContent().add(
                 ResourceProperties.getProperty(locale, "informeEfectivo.subtotales.fecha",
-                        fecha.get(Calendar.DAY_OF_MONTH), DateUtils.getMesValenciaConDe(fecha), fecha.get(Calendar.YEAR)));
+                        fecha.get(Calendar.DAY_OF_MONTH), ReportUtils.getMesValenciaConDe(fecha), fecha.get(Calendar.YEAR)));
     }
 
     private void setBorders(TableCell cell)

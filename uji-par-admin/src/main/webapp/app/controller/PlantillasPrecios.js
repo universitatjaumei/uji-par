@@ -20,6 +20,9 @@ Ext.define('Paranimf.controller.PlantillasPrecios', {
    }, {
 	   ref: 'formPrecios',
 	   selector: 'formPrecios'
+   }, {
+      ref: 'comboLocalizaciones',
+      selector: 'formPrecios combobox[name=localizacion]'
    }],
 
    init: function() {
@@ -86,6 +89,8 @@ Ext.define('Paranimf.controller.PlantillasPrecios', {
       if (this.getGridPrecios().getSelectedColumnId() != undefined)
          localizacionId = this.getGridPrecios().getSelectedRecord(this.getGridPrecios()).data.parLocalizacione;
 
+      this.getComboLocalizaciones().store.loadData([],false);
+      this.getComboLocalizaciones().store.proxy.url = urlPrefix + 'localizacion?sala=' + this.getGridPlantillas().getSelectedRecord().data.idSala;
       this.getFormPrecios().cargaComboStore('localizacion', localizacionId);
       this.getFormPrecios().cargaComboStore('plantillaPrecios', this.getGridPlantillas().getSelectedColumnId());
    },

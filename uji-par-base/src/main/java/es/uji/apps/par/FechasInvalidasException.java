@@ -2,6 +2,8 @@ package es.uji.apps.par;
 
 import java.util.Date;
 
+import es.uji.apps.par.exceptions.GeneralPARException;
+
 @SuppressWarnings("serial")
 public class FechasInvalidasException extends GeneralPARException
 {

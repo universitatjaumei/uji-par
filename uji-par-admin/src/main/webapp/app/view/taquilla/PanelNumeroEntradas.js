@@ -5,7 +5,7 @@ Ext.define('Paranimf.view.taquilla.PanelNumeroEntradas', {
   border: 0,
   frame: false,
   padding: '5 5 5 5',
-  height: 160,
+  height: 170,
   
   defaults: {
     //anchor: '100%',
@@ -26,17 +26,18 @@ Ext.define('Paranimf.view.taquilla.PanelNumeroEntradas', {
       
     }],
     items: [{
-      columnWidth: 1/2,
+      columnWidth: 2/3,
       name: 'normal',
       fieldLabel: UI.i18n.field.normal,
-      labelWidth: 100,
+      labelWidth: 200,
+      labelAlign: 'right',
       xtype: 'numberfield',
       allowDecimals: false,
       value: 0,
       minValue: 0,
       disabled: true
     }, {
-      columnWidth: 1/2,
+      columnWidth: 1/3,
       xtype: 'panel',
       name: 'preuNormal',
       html: UI.i18n.field.precioPorEntrada + "...",
@@ -45,10 +46,11 @@ Ext.define('Paranimf.view.taquilla.PanelNumeroEntradas', {
       padding: '5 0 0 5'
     },
     {
-      columnWidth: 1/2,
-      name: 'descuento',	    	        	   
+      columnWidth: 2/3,
+      name: 'descuento',
+      labelAlign: 'right',	    	        	   
       fieldLabel: UI.i18n.field.descuento,
-      labelWidth: 100,
+      labelWidth: 200,
       xtype: 'numberfield',
       allowDecimals: false,
       value: 0,
@@ -56,7 +58,7 @@ Ext.define('Paranimf.view.taquilla.PanelNumeroEntradas', {
       disabled: true
     },
     {
-      columnWidth: 1/2,
+      columnWidth: 1/3,
       xtype: 'panel',
       name: 'preuDescuento',
       html: UI.i18n.field.precioPorEntrada + "...",
@@ -65,10 +67,11 @@ Ext.define('Paranimf.view.taquilla.PanelNumeroEntradas', {
       padding: '5 0 0 5'
     },
     {
-      columnWidth: 1/2,
-      name: 'invitacion',	    	        	   
+      columnWidth: 2/3,
+      name: 'invitacion',	
+      labelAlign: 'right',    	        	   
       fieldLabel: UI.i18n.field.invitacion,
-      labelWidth: 100,
+      labelWidth: 200,
       xtype: 'numberfield',
       allowDecimals: false,
       value: 0,
@@ -76,7 +79,7 @@ Ext.define('Paranimf.view.taquilla.PanelNumeroEntradas', {
       disabled: true
     },
     {
-      columnWidth: 1/2,
+      columnWidth: 1/3,
       name: 'preuInvitacion',
       xtype: 'panel',
       html: UI.i18n.field.precioPorEntrada + "...",
@@ -85,10 +88,11 @@ Ext.define('Paranimf.view.taquilla.PanelNumeroEntradas', {
       padding: '5 0 0 5'
     },
     {
-      columnWidth: 1/2,
-      name: 'aulaTeatro',	    	        	   
+      columnWidth: 2/3,
+      name: 'aulaTeatro',
+      labelAlign: 'right',	    	        	   
       fieldLabel: UI.i18n.field.aulaTeatro,
-      labelWidth: 100,
+      labelWidth: 200,
       xtype: 'numberfield',
       allowDecimals: false,
       value: 0,
@@ -96,7 +100,7 @@ Ext.define('Paranimf.view.taquilla.PanelNumeroEntradas', {
       disabled: true
     },
     {
-      columnWidth: 1/2,
+      columnWidth: 1/3,
       name: 'preuAulaTeatro',
       xtype: 'panel',
       html: UI.i18n.field.precioPorEntrada + "...",

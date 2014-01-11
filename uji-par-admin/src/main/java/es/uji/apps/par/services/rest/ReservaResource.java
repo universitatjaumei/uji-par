@@ -52,7 +52,8 @@ public class ReservaResource extends BaseResource
         }
         catch (ButacaOcupadaException e)
         {   
-            return errorResponse("error.butacaOcupada", getProperty("localizacion." +e.getLocalizacion()), e.getFila(), e.getNumero());
+            return errorResponse("error.butacaOcupada", getProperty("localizacion." +e.getLocalizacion()),
+            		e.getFila(), e.getNumero());
         }
         catch (CompraSinButacasException e)
         {   

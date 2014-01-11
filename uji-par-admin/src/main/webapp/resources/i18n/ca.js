@@ -119,7 +119,9 @@ UI =
             "desanularCompraReserva": "S'ha produït un error activant la compra/reserva",
             "anularEntrada": "S'ha produït un error anul·lant l'entrada",
             "errorGenerandoFicheroICAA": "S'ha produït un error generant el fitxer per a l'ICAA",
-            "markAsSent": "S'ha produït un error marcant les sessions com a enviades"
+            "markAsSent": "S'ha produït un error marcant les sessions com a enviades",
+            "salaObligatoria": "És necessari triar primer la sala",
+            "loadingLocalizaciones": "S'ha produït un error carregant les localitzacions de l'event"
         },
         "button": {
             "closeSession": "Tancar sessió",
@@ -268,10 +270,10 @@ UI =
             "ivaSGAE": "IVA SGAE",
             "retencionSGAE": "Retenció SGAE",
             "asientosNumerados": "Seients numerats",
-            "precio": "Preu",
-            "descuento": "Descompte",
+            "precio": "Tarifa general",
+            "descuento": "Jubilados - Boninstitut - Anem al teatre",
             "invitacion": "Invitació",
-            "aulaTeatro": "Aula de teatre",
+            "aulaTeatro": "Platea - Carnet jove",
             "localizacion": "Localització",
             "plantillaprecios": "Plantilla de preus",
             "horaInicioVentaOnline": "Hora d'inici de la venda online",
@@ -287,14 +289,11 @@ UI =
             "tarjeta": "Tarjeta",
             "total": "Total",
             "normal": "Normal",
-            "descuento": "Descompte",
-            "aulaTeatro": "Aula de teatre",
-            "invitacion": "Invitació",
             "disponibles":"Disponibles",
             "entradesDisponibles": "Entrades disponibles: ",
             "desde": "Des de",
             "hasta": "Fins a",
-            "observacionesReserva": "Observaciones",
+            "observacionesReserva": "Observacions",
             "idDevolucion": "Cod. TPV",
             "pagada": "Pagada",
             "caducada": "Caducada",
@@ -324,7 +323,11 @@ UI =
             "envioRetrasado": "Enviament retrasat",
             "fechaUltimoEnvioHabitual": "Data de l'últim enviament habitual",
             "tipoEnvio": "Tipus d'enviament",
-            "idEnvioFichero": "Identificador de l'enviament del fitxer"
+            "idEnvioFichero": "Identificador de l'enviament del fitxer",
+            "idSala": "Identificador intern de la sala",
+            "minutos": "Minuts",
+            "horaInicial": "Hora inicial",
+            "horaFinal": "Hora final"
         },
 
         "legends": {
@@ -333,7 +336,8 @@ UI =
             "entradesPlatea2": "Entrades PLATEA NIVELL 2",
             "entradesDiscapacitados1": "Entrades DISCAPACITATS PLATEA NIVELL 1",
             "entradesDiscapacitados2": "Entrades DISCAPACITATS PLATEA NIVELL 2",
-            "entradesDiscapacitados3": "Entrades DISCAPACITATS AMFITEATRE"
+            "entradesDiscapacitados3": "Entrades DISCAPACITATS AMFITEATRE",
+            "entrades": "Entrades"
         },
 
         "tipos": {

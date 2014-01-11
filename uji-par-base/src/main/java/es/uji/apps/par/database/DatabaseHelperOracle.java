@@ -55,4 +55,9 @@ public class DatabaseHelperOracle implements DatabaseHelper
     {
         return "0";
     }
+
+	@Override
+	public String trunc(String campo, String formato) {
+		return "TRUNC(" + campo + ", '" + formato + "')";
+	}
 }

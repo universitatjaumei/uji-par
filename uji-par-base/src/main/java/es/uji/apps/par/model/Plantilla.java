@@ -8,6 +8,7 @@ import es.uji.apps.par.db.PlantillaDTO;
 public class Plantilla {
 	private long id;
 	private String nombre;
+	private Sala sala;
 	
 	public Plantilla() {
 		
@@ -27,6 +28,9 @@ public class Plantilla {
 		if (plantillaDTO != null) {
 			plantillaPrecios.setId(plantillaDTO.getId());
 			plantillaPrecios.setNombre(plantillaDTO.getNombre());
+			if (plantillaDTO.getSala() != null) {
+				plantillaPrecios.setSala(new Sala(plantillaDTO.getSala()));
+			}
 		} else {
 			plantillaPrecios.setId(-1);
 		}
@@ -50,6 +54,9 @@ public class Plantilla {
     {
         this.id = plantillaDTO.getId();
         this.nombre = plantillaDTO.getNombre();
+        if (plantillaDTO.getSala() != null) {
+			this.sala = new Sala(plantillaDTO.getSala());
+		}
     }
 
 	public long getId() {
@@ -66,5 +73,13 @@ public class Plantilla {
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}
+
+	public Sala getSala() {
+		return sala;
+	}
+
+	public void setSala(Sala sala) {
+		this.sala = sala;
 	}
 }
