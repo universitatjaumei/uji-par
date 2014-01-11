@@ -11,6 +11,7 @@
     <name>uji-par</name>
 
     <modules>
+	<module>uji-par-reports</module>
         <module>uji-par-base</module>
         <module>uji-par-admin</module>
         <module>uji-par-web</module>
