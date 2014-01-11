@@ -27,7 +27,6 @@ import com.sun.jersey.api.core.InjectParam;
 
 import es.uji.apps.par.Constantes;
 import es.uji.apps.par.EventoNoEncontradoException;
-import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.i18n.ResourceProperties;
 import es.uji.apps.par.model.Evento;
 import es.uji.apps.par.model.PreciosSesion;
@@ -36,7 +35,7 @@ import es.uji.apps.par.services.EventosService;
 import es.uji.apps.par.services.SesionesService;
 import es.uji.apps.par.utils.DateUtils;
 import es.uji.apps.par.utils.ImageUtils;
-import es.uji.apps.par.utils.Utils;
+import es.uji.apps.par.utils.ReportUtils;
 import es.uji.commons.web.template.HTMLTemplate;
 import es.uji.commons.web.template.Template;
 
@@ -205,7 +204,7 @@ public class EventosResource extends BaseResource
         
         if (preciosSesion != null && preciosSesion.get("platea1") != null)
         {
-            return Utils.formatEuros(preciosSesion.get("platea1").getPrecio());
+            return ReportUtils.formatEuros(preciosSesion.get("platea1").getPrecio());
         }
         else
         {
