@@ -1,0 +1,569 @@
+[
+    {
+        "fila": 1,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 2,
+        "xFin": 484,
+        "xIni": 462,
+        "yFin": 560,
+        "yIni": 525
+    },
+    {
+        "fila": 1,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 4,
+        "xFin": 506,
+        "xIni": 484,
+        "yFin": 560,
+        "yIni": 525
+    },
+    {
+        "fila": 1,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 6,
+        "xFin": 528,
+        "xIni": 506,
+        "yFin": 560,
+        "yIni": 525
+    },
+    {
+        "fila": 1,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 8,
+        "xFin": 550,
+        "xIni": 528,
+        "yFin": 560,
+        "yIni": 525
+    },
+    {
+        "fila": 1,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 10,
+        "xFin": 572,
+        "xIni": 550,
+        "yFin": 560,
+        "yIni": 525
+    },
+    {
+        "fila": 1,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 12,
+        "xFin": 594,
+        "xIni": 572,
+        "yFin": 560,
+        "yIni": 525
+    },
+    {
+        "fila": 1,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 14,
+        "xFin": 616,
+        "xIni": 594,
+        "yFin": 560,
+        "yIni": 525
+    },
+    {
+        "fila": 1,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 16,
+        "xFin": 638,
+        "xIni": 616,
+        "yFin": 560,
+        "yIni": 525
+    },
+    {
+        "fila": 1,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 18,
+        "xFin": 660,
+        "xIni": 638,
+        "yFin": 560,
+        "yIni": 525
+    },
+    {
+        "fila": 2,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 2,
+        "xFin": 484,
+        "xIni": 462,
+        "yFin": 595,
+        "yIni": 560
+    },
+    {
+        "fila": 2,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 4,
+        "xFin": 506,
+        "xIni": 484,
+        "yFin": 595,
+        "yIni": 560
+    },
+    {
+        "fila": 2,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 6,
+        "xFin": 528,
+        "xIni": 506,
+        "yFin": 595,
+        "yIni": 560
+    },
+    {
+        "fila": 2,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 8,
+        "xFin": 550,
+        "xIni": 528,
+        "yFin": 595,
+        "yIni": 560
+    },
+    {
+        "fila": 2,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 10,
+        "xFin": 572,
+        "xIni": 550,
+        "yFin": 595,
+        "yIni": 560
+    },
+    {
+        "fila": 2,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 12,
+        "xFin": 594,
+        "xIni": 572,
+        "yFin": 595,
+        "yIni": 560
+    },
+    {
+        "fila": 2,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 14,
+        "xFin": 616,
+        "xIni": 594,
+        "yFin": 595,
+        "yIni": 560
+    },
+    {
+        "fila": 2,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 16,
+        "xFin": 638,
+        "xIni": 616,
+        "yFin": 595,
+        "yIni": 560
+    },
+    {
+        "fila": 2,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 18,
+        "xFin": 660,
+        "xIni": 638,
+        "yFin": 595,
+        "yIni": 560
+    },
+    {
+        "fila": 3,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 2,
+        "xFin": 484,
+        "xIni": 462,
+        "yFin": 630,
+        "yIni": 595
+    },
+    {
+        "fila": 3,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 4,
+        "xFin": 506,
+        "xIni": 484,
+        "yFin": 630,
+        "yIni": 595
+    },
+    {
+        "fila": 3,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 6,
+        "xFin": 528,
+        "xIni": 506,
+        "yFin": 630,
+        "yIni": 595
+    },
+    {
+        "fila": 3,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 8,
+        "xFin": 550,
+        "xIni": 528,
+        "yFin": 630,
+        "yIni": 595
+    },
+    {
+        "fila": 3,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 10,
+        "xFin": 572,
+        "xIni": 550,
+        "yFin": 630,
+        "yIni": 595
+    },
+    {
+        "fila": 3,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 12,
+        "xFin": 594,
+        "xIni": 572,
+        "yFin": 630,
+        "yIni": 595
+    },
+    {
+        "fila": 3,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 14,
+        "xFin": 616,
+        "xIni": 594,
+        "yFin": 630,
+        "yIni": 595
+    },
+    {
+        "fila": 3,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 16,
+        "xFin": 638,
+        "xIni": 616,
+        "yFin": 630,
+        "yIni": 595
+    },
+    {
+        "fila": 3,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 18,
+        "xFin": 660,
+        "xIni": 638,
+        "yFin": 630,
+        "yIni": 595
+    },
+    {
+        "fila": 4,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 2,
+        "xFin": 484,
+        "xIni": 462,
+        "yFin": 665,
+        "yIni": 630
+    },
+    {
+        "fila": 4,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 4,
+        "xFin": 506,
+        "xIni": 484,
+        "yFin": 665,
+        "yIni": 630
+    },
+    {
+        "fila": 4,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 6,
+        "xFin": 528,
+        "xIni": 506,
+        "yFin": 665,
+        "yIni": 630
+    },
+    {
+        "fila": 4,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 8,
+        "xFin": 550,
+        "xIni": 528,
+        "yFin": 665,
+        "yIni": 630
+    },
+    {
+        "fila": 4,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 10,
+        "xFin": 572,
+        "xIni": 550,
+        "yFin": 665,
+        "yIni": 630
+    },
+    {
+        "fila": 4,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 12,
+        "xFin": 594,
+        "xIni": 572,
+        "yFin": 665,
+        "yIni": 630
+    },
+    {
+        "fila": 4,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 14,
+        "xFin": 616,
+        "xIni": 594,
+        "yFin": 665,
+        "yIni": 630
+    },
+    {
+        "fila": 4,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 16,
+        "xFin": 638,
+        "xIni": 616,
+        "yFin": 665,
+        "yIni": 630
+    },
+    {
+        "fila": 4,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 18,
+        "xFin": 660,
+        "xIni": 638,
+        "yFin": 665,
+        "yIni": 630
+    },
+    {
+        "fila": 5,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 2,
+        "xFin": 484,
+        "xIni": 462,
+        "yFin": 700,
+        "yIni": 665
+    },
+    {
+        "fila": 5,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 4,
+        "xFin": 506,
+        "xIni": 484,
+        "yFin": 700,
+        "yIni": 665
+    },
+    {
+        "fila": 5,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 6,
+        "xFin": 528,
+        "xIni": 506,
+        "yFin": 700,
+        "yIni": 665
+    },
+    {
+        "fila": 5,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 8,
+        "xFin": 550,
+        "xIni": 528,
+        "yFin": 700,
+        "yIni": 665
+    },
+    {
+        "fila": 5,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 10,
+        "xFin": 572,
+        "xIni": 550,
+        "yFin": 700,
+        "yIni": 665
+    },
+    {
+        "fila": 5,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 12,
+        "xFin": 594,
+        "xIni": 572,
+        "yFin": 700,
+        "yIni": 665
+    },
+    {
+        "fila": 5,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 14,
+        "xFin": 616,
+        "xIni": 594,
+        "yFin": 700,
+        "yIni": 665
+    },
+    {
+        "fila": 5,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 16,
+        "xFin": 638,
+        "xIni": 616,
+        "yFin": 700,
+        "yIni": 665
+    },
+    {
+        "fila": 5,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 18,
+        "xFin": 660,
+        "xIni": 638,
+        "yFin": 700,
+        "yIni": 665
+    },
+    {
+        "fila": 6,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 2,
+        "xFin": 484,
+        "xIni": 462,
+        "yFin": 735,
+        "yIni": 700
+    },
+    {
+        "fila": 6,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 4,
+        "xFin": 506,
+        "xIni": 484,
+        "yFin": 735,
+        "yIni": 700
+    },
+    {
+        "fila": 6,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 6,
+        "xFin": 528,
+        "xIni": 506,
+        "yFin": 735,
+        "yIni": 700
+    },
+    {
+        "fila": 6,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 8,
+        "xFin": 550,
+        "xIni": 528,
+        "yFin": 735,
+        "yIni": 700
+    },
+    {
+        "fila": 6,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 10,
+        "xFin": 572,
+        "xIni": 550,
+        "yFin": 735,
+        "yIni": 700
+    },
+    {
+        "fila": 6,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 12,
+        "xFin": 594,
+        "xIni": 572,
+        "yFin": 735,
+        "yIni": 700
+    },
+    {
+        "fila": 6,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 14,
+        "xFin": 616,
+        "xIni": 594,
+        "yFin": 735,
+        "yIni": 700
+    },
+    {
+        "fila": 6,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 16,
+        "xFin": 638,
+        "xIni": 616,
+        "yFin": 735,
+        "yIni": 700
+    },
+    {
+        "fila": 6,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 18,
+        "xFin": 660,
+        "xIni": 638,
+        "yFin": 735,
+        "yIni": 700
+    },
+    {
+        "fila": 7,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 2,
+        "xFin": 484,
+        "xIni": 462,
+        "yFin": 770,
+        "yIni": 735
+    },
+    {
+        "fila": 7,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 4,
+        "xFin": 506,
+        "xIni": 484,
+        "yFin": 770,
+        "yIni": 735
+    },
+    {
+        "fila": 7,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 6,
+        "xFin": 528,
+        "xIni": 506,
+        "yFin": 770,
+        "yIni": 735
+    },
+    {
+        "fila": 7,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 8,
+        "xFin": 550,
+        "xIni": 528,
+        "yFin": 770,
+        "yIni": 735
+    },
+    {
+        "fila": 7,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 10,
+        "xFin": 572,
+        "xIni": 550,
+        "yFin": 770,
+        "yIni": 735
+    },
+    {
+        "fila": 7,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 12,
+        "xFin": 594,
+        "xIni": 572,
+        "yFin": 770,
+        "yIni": 735
+    },
+    {
+        "fila": 7,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 14,
+        "xFin": 616,
+        "xIni": 594,
+        "yFin": 770,
+        "yIni": 735
+    },
+    {
+        "fila": 7,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 16,
+        "xFin": 638,
+        "xIni": 616,
+        "yFin": 770,
+        "yIni": 735
+    },
+    {
+        "fila": 7,
+        "localizacion": "anfiteatro_lateral_par",
+        "numero": 18,
+        "xFin": 660,
+        "xIni": 638,
+        "yFin": 770,
+        "yIni": 735
+    }
+]

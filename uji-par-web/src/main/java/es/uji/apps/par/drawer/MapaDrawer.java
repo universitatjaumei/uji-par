@@ -20,13 +20,13 @@ import com.google.gson.reflect.TypeToken;
 import com.sun.jersey.api.core.InjectParam;
 
 import es.uji.apps.par.butacas.DatosButaca;
+import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.db.ButacaDTO;
 import es.uji.apps.par.services.ButacasService;
 
 @Service
 public class MapaDrawer
 {
-    private static final String[] LOCALIZACIONES = new String[] { "anfiteatro", "platea1", "platea2" };
     private static final String IMAGES_PATH = "/etc/uji/par/imagenes/";
 
     @InjectParam
@@ -51,12 +51,7 @@ public class MapaDrawer
 
     private String[] getLocalizacionesEnImagen(String localizacion)
     {
-        if (localizacion.equals("anfiteatro"))
-            return new String[] { "anfiteatro", "discapacitados3" };
-        else if (localizacion.equals("platea1"))
-            return new String[] { "platea1", "discapacitados1" };
-        else
-            return new String[] { "platea2", "discapacitados2" };
+    	return Configuration.getLocalizacionesEnImagen(localizacion);
     }
 
     public ByteArrayOutputStream generaImagen(long idSesion, String codigoLocalizacion, boolean mostrarReservadas) throws IOException
@@ -72,9 +67,10 @@ public class MapaDrawer
         {
             datosButacas = new HashMap<String, DatosButaca>();
 
-            for (String localizacion : LOCALIZACIONES)
+            for (String localizacion : Configuration.getImagenesFondo())
             {
-                loadJsonLocalizacion(localizacion);
+            	for (String localizacionImagen: Configuration.getLocalizacionesEnImagen(localizacion))
+            		loadJsonLocalizacion(localizacionImagen);
             }
         }
     }
@@ -180,7 +176,7 @@ public class MapaDrawer
         {
             imagenes = new HashMap<String, BufferedImage>();
 
-            for (String localizacion : LOCALIZACIONES)
+            for (String localizacion : Configuration.getImagenesFondo())
             {
                 loadImage(IMAGES_PATH, localizacion);
             }

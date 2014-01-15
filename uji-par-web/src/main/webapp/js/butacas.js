@@ -82,7 +82,7 @@ Butacas = (function() {
 		
 		var idDiv = idDivLocalizacion(butaca.localizacion);
 		
-		$('#localizacion_' + idDiv).append(butacaSeleccionada);
+		$('.localizacion_' + idDiv).append(butacaSeleccionada);
 	
 		butacaSeleccionada.click(function() {
 			// console.log("Click sobre seleccionada: ", butaca);
@@ -118,7 +118,7 @@ Butacas = (function() {
 	
 	function refrescaImagen(localizacion)
 	{
-		var imagen = $("#imagen_" + idDivLocalizacion(localizacion));
+		var imagen = $(".imagen_" + idDivLocalizacion(localizacion));
 		var url = imagen.attr("src");
 		
 		if (url.indexOf("?") == -1)
@@ -149,7 +149,7 @@ Butacas = (function() {
 	
 	function getSelectTipoButaca(posicion)
 	{
-		var st = '<select onchange="Butacas.cambiaTipoButaca(' + posicion + ', this.value)">';
+		var st = '<select style="width:130px !important" onchange="Butacas.cambiaTipoButaca(' + posicion + ', this.value)">';
 		
 		var selecNormal = 'selected',
 			selecDescuento = '',
@@ -249,8 +249,13 @@ Butacas = (function() {
 	}
 	
 	function selecciona(localizacion, texto, fila, numero, x, y) {
-
+		//console.log("selecciona", localizacion, texto, fila, numero, x, y);
 		var tipoEntrada = 'normal';
+		if (precios[localizacion] == undefined || precios[localizacion][tipoEntrada] == undefined) {
+			var msg = UI.i18n.error.preuNoIntroduit
+			alert(msg);
+			return;
+		}
 		
 		var butaca = {
 			localizacion : localizacion,

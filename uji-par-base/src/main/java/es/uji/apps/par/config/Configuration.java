@@ -12,6 +12,7 @@ public class Configuration
 {
     private static final String SECRET = "uji.par.secret";
     private static final String URL_PUBLIC = "uji.par.urlPublic";
+    private static final String LOCALIZACIONES = "uji.par.localizaciones";
     private static final String URL_ADMIN = "uji.par.urlAdmin";
     private static final String MAIL_HOST = "uji.par.mail.host";
     private static final String MAIL_FROM = "uji.par.mail.from";
@@ -217,4 +218,12 @@ public class Configuration
             return 0;
         }
     }
+    
+    public static String[] getImagenesFondo() {
+    	return getProperty(LOCALIZACIONES).split(",");
+    }
+
+	public static String[] getLocalizacionesEnImagen(String localizacion) {
+		return getProperty(LOCALIZACIONES + "." + localizacion).split(",");
+	}
 }

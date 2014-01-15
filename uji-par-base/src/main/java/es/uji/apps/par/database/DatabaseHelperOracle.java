@@ -60,4 +60,15 @@ public class DatabaseHelperOracle implements DatabaseHelper
 	public String trunc(String campo, String formato) {
 		return "TRUNC(" + campo + ", '" + formato + "')";
 	}
+	
+	@Override
+	public int booleanToNumber(Object valor) {
+		if (valor == null)
+			return 0;
+		if (valor instanceof Boolean)
+			if (((Boolean) valor))
+				return 1;
+		
+		return (Integer) valor;
+	}
 }

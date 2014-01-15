@@ -27,6 +27,8 @@ import com.sun.jersey.api.core.InjectParam;
 
 import es.uji.apps.par.Constantes;
 import es.uji.apps.par.EventoNoEncontradoException;
+import es.uji.apps.par.database.DatabaseHelper;
+import es.uji.apps.par.database.DatabaseHelperFactory;
 import es.uji.apps.par.i18n.ResourceProperties;
 import es.uji.apps.par.model.Evento;
 import es.uji.apps.par.model.PreciosSesion;
@@ -159,6 +161,7 @@ public class EventosResource extends BaseResource
 
     private List<Map<String, Object>> getSesionesPlantilla(List<Sesion> sesiones)
     {
+    	DatabaseHelper databaseHelper = DatabaseHelperFactory.newInstance();
         List<Map<String, Object>> sesionesPlantilla = new ArrayList<Map<String, Object>>();
 
         for (Sesion sesion : sesiones)
@@ -169,8 +172,8 @@ public class EventosResource extends BaseResource
             
             datos.put("id", sesion.getId());
             datos.put("enPlazoVentaInternet", sesion.getEnPlazoVentaInternet());
-            datos.put("canalInternet", sesion.getCanalInternet());
-            datos.put("fechaInicioVentaOnline", sesion.getFechaFinVentaOnline());
+            datos.put("canalInternet", databaseHelper.booleanToNumber(sesion.getCanalInternet()));
+            datos.put("fechaInicioVentaOnline", sesion.getFechaInicioVentaOnline());
 
             datos.put(
                     "textoFechasInternet",

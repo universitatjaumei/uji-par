@@ -1,0 +1,641 @@
+[
+    {
+        "fila": 1,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 17,
+        "xFin": 88,
+        "xIni": 66,
+        "yFin": 560,
+        "yIni": 525
+    },
+    {
+        "fila": 1,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 15,
+        "xFin": 110,
+        "xIni": 88,
+        "yFin": 560,
+        "yIni": 525
+    },
+    {
+        "fila": 1,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 13,
+        "xFin": 132,
+        "xIni": 110,
+        "yFin": 560,
+        "yIni": 525
+    },
+    {
+        "fila": 1,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 11,
+        "xFin": 154,
+        "xIni": 132,
+        "yFin": 560,
+        "yIni": 525
+    },
+    {
+        "fila": 1,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 9,
+        "xFin": 176,
+        "xIni": 154,
+        "yFin": 560,
+        "yIni": 525
+    },
+    {
+        "fila": 1,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 7,
+        "xFin": 198,
+        "xIni": 176,
+        "yFin": 560,
+        "yIni": 525
+    },
+    {
+        "fila": 1,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 5,
+        "xFin": 220,
+        "xIni": 198,
+        "yFin": 560,
+        "yIni": 525
+    },
+    {
+        "fila": 1,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 3,
+        "xFin": 242,
+        "xIni": 220,
+        "yFin": 560,
+        "yIni": 525
+    },
+    {
+        "fila": 1,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 1,
+        "xFin": 264,
+        "xIni": 242,
+        "yFin": 560,
+        "yIni": 525
+    },
+    {
+        "fila": 2,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 17,
+        "xFin": 88,
+        "xIni": 66,
+        "yFin": 595,
+        "yIni": 560
+    },
+    {
+        "fila": 2,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 15,
+        "xFin": 110,
+        "xIni": 88,
+        "yFin": 595,
+        "yIni": 560
+    },
+    {
+        "fila": 2,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 13,
+        "xFin": 132,
+        "xIni": 110,
+        "yFin": 595,
+        "yIni": 560
+    },
+    {
+        "fila": 2,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 11,
+        "xFin": 154,
+        "xIni": 132,
+        "yFin": 595,
+        "yIni": 560
+    },
+    {
+        "fila": 2,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 9,
+        "xFin": 176,
+        "xIni": 154,
+        "yFin": 595,
+        "yIni": 560
+    },
+    {
+        "fila": 2,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 7,
+        "xFin": 198,
+        "xIni": 176,
+        "yFin": 595,
+        "yIni": 560
+    },
+    {
+        "fila": 2,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 5,
+        "xFin": 220,
+        "xIni": 198,
+        "yFin": 595,
+        "yIni": 560
+    },
+    {
+        "fila": 2,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 3,
+        "xFin": 242,
+        "xIni": 220,
+        "yFin": 595,
+        "yIni": 560
+    },
+    {
+        "fila": 2,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 1,
+        "xFin": 264,
+        "xIni": 242,
+        "yFin": 595,
+        "yIni": 560
+    },
+    {
+        "fila": 3,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 19,
+        "xFin": 66,
+        "xIni": 44,
+        "yFin": 630,
+        "yIni": 595
+    },
+    {
+        "fila": 3,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 17,
+        "xFin": 88,
+        "xIni": 66,
+        "yFin": 630,
+        "yIni": 595
+    },
+    {
+        "fila": 3,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 15,
+        "xFin": 110,
+        "xIni": 88,
+        "yFin": 630,
+        "yIni": 595
+    },
+    {
+        "fila": 3,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 13,
+        "xFin": 132,
+        "xIni": 110,
+        "yFin": 630,
+        "yIni": 595
+    },
+    {
+        "fila": 3,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 11,
+        "xFin": 154,
+        "xIni": 132,
+        "yFin": 630,
+        "yIni": 595
+    },
+    {
+        "fila": 3,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 9,
+        "xFin": 176,
+        "xIni": 154,
+        "yFin": 630,
+        "yIni": 595
+    },
+    {
+        "fila": 3,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 7,
+        "xFin": 198,
+        "xIni": 176,
+        "yFin": 630,
+        "yIni": 595
+    },
+    {
+        "fila": 3,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 5,
+        "xFin": 220,
+        "xIni": 198,
+        "yFin": 630,
+        "yIni": 595
+    },
+    {
+        "fila": 3,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 3,
+        "xFin": 242,
+        "xIni": 220,
+        "yFin": 630,
+        "yIni": 595
+    },
+    {
+        "fila": 3,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 1,
+        "xFin": 264,
+        "xIni": 242,
+        "yFin": 630,
+        "yIni": 595
+    },
+    {
+        "fila": 4,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 19,
+        "xFin": 66,
+        "xIni": 44,
+        "yFin": 665,
+        "yIni": 630
+    },
+    {
+        "fila": 4,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 17,
+        "xFin": 88,
+        "xIni": 66,
+        "yFin": 665,
+        "yIni": 630
+    },
+    {
+        "fila": 4,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 15,
+        "xFin": 110,
+        "xIni": 88,
+        "yFin": 665,
+        "yIni": 630
+    },
+    {
+        "fila": 4,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 13,
+        "xFin": 132,
+        "xIni": 110,
+        "yFin": 665,
+        "yIni": 630
+    },
+    {
+        "fila": 4,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 11,
+        "xFin": 154,
+        "xIni": 132,
+        "yFin": 665,
+        "yIni": 630
+    },
+    {
+        "fila": 4,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 9,
+        "xFin": 176,
+        "xIni": 154,
+        "yFin": 665,
+        "yIni": 630
+    },
+    {
+        "fila": 4,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 7,
+        "xFin": 198,
+        "xIni": 176,
+        "yFin": 665,
+        "yIni": 630
+    },
+    {
+        "fila": 4,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 5,
+        "xFin": 220,
+        "xIni": 198,
+        "yFin": 665,
+        "yIni": 630
+    },
+    {
+        "fila": 4,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 3,
+        "xFin": 242,
+        "xIni": 220,
+        "yFin": 665,
+        "yIni": 630
+    },
+    {
+        "fila": 4,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 1,
+        "xFin": 264,
+        "xIni": 242,
+        "yFin": 665,
+        "yIni": 630
+    },
+    {
+        "fila": 5,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 21,
+        "xFin": 44,
+        "xIni": 22,
+        "yFin": 700,
+        "yIni": 665
+    },
+    {
+        "fila": 5,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 19,
+        "xFin": 66,
+        "xIni": 44,
+        "yFin": 700,
+        "yIni": 665
+    },
+    {
+        "fila": 5,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 17,
+        "xFin": 88,
+        "xIni": 66,
+        "yFin": 700,
+        "yIni": 665
+    },
+    {
+        "fila": 5,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 15,
+        "xFin": 110,
+        "xIni": 88,
+        "yFin": 700,
+        "yIni": 665
+    },
+    {
+        "fila": 5,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 13,
+        "xFin": 132,
+        "xIni": 110,
+        "yFin": 700,
+        "yIni": 665
+    },
+    {
+        "fila": 5,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 11,
+        "xFin": 154,
+        "xIni": 132,
+        "yFin": 700,
+        "yIni": 665
+    },
+    {
+        "fila": 5,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 9,
+        "xFin": 176,
+        "xIni": 154,
+        "yFin": 700,
+        "yIni": 665
+    },
+    {
+        "fila": 5,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 7,
+        "xFin": 198,
+        "xIni": 176,
+        "yFin": 700,
+        "yIni": 665
+    },
+    {
+        "fila": 5,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 5,
+        "xFin": 220,
+        "xIni": 198,
+        "yFin": 700,
+        "yIni": 665
+    },
+    {
+        "fila": 5,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 3,
+        "xFin": 242,
+        "xIni": 220,
+        "yFin": 700,
+        "yIni": 665
+    },
+    {
+        "fila": 5,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 1,
+        "xFin": 264,
+        "xIni": 242,
+        "yFin": 700,
+        "yIni": 665
+    },
+    {
+        "fila": 6,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 21,
+        "xFin": 44,
+        "xIni": 22,
+        "yFin": 735,
+        "yIni": 700
+    },
+    {
+        "fila": 6,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 19,
+        "xFin": 66,
+        "xIni": 44,
+        "yFin": 735,
+        "yIni": 700
+    },
+    {
+        "fila": 6,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 17,
+        "xFin": 88,
+        "xIni": 66,
+        "yFin": 735,
+        "yIni": 700
+    },
+    {
+        "fila": 6,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 15,
+        "xFin": 110,
+        "xIni": 88,
+        "yFin": 735,
+        "yIni": 700
+    },
+    {
+        "fila": 6,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 13,
+        "xFin": 132,
+        "xIni": 110,
+        "yFin": 735,
+        "yIni": 700
+    },
+    {
+        "fila": 6,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 11,
+        "xFin": 154,
+        "xIni": 132,
+        "yFin": 735,
+        "yIni": 700
+    },
+    {
+        "fila": 6,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 9,
+        "xFin": 176,
+        "xIni": 154,
+        "yFin": 735,
+        "yIni": 700
+    },
+    {
+        "fila": 6,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 7,
+        "xFin": 198,
+        "xIni": 176,
+        "yFin": 735,
+        "yIni": 700
+    },
+    {
+        "fila": 6,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 5,
+        "xFin": 220,
+        "xIni": 198,
+        "yFin": 735,
+        "yIni": 700
+    },
+    {
+        "fila": 6,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 3,
+        "xFin": 242,
+        "xIni": 220,
+        "yFin": 735,
+        "yIni": 700
+    },
+    {
+        "fila": 6,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 1,
+        "xFin": 264,
+        "xIni": 242,
+        "yFin": 735,
+        "yIni": 700
+    },
+    {
+        "fila": 7,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 21,
+        "xFin": 44,
+        "xIni": 22,
+        "yFin": 770,
+        "yIni": 735
+    },
+    {
+        "fila": 7,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 19,
+        "xFin": 66,
+        "xIni": 44,
+        "yFin": 770,
+        "yIni": 735
+    },
+    {
+        "fila": 7,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 17,
+        "xFin": 88,
+        "xIni": 66,
+        "yFin": 770,
+        "yIni": 735
+    },
+    {
+        "fila": 7,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 15,
+        "xFin": 110,
+        "xIni": 88,
+        "yFin": 770,
+        "yIni": 735
+    },
+    {
+        "fila": 7,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 13,
+        "xFin": 132,
+        "xIni": 110,
+        "yFin": 770,
+        "yIni": 735
+    },
+    {
+        "fila": 7,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 11,
+        "xFin": 154,
+        "xIni": 132,
+        "yFin": 770,
+        "yIni": 735
+    },
+    {
+        "fila": 7,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 9,
+        "xFin": 176,
+        "xIni": 154,
+        "yFin": 770,
+        "yIni": 735
+    },
+    {
+        "fila": 7,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 7,
+        "xFin": 198,
+        "xIni": 176,
+        "yFin": 770,
+        "yIni": 735
+    },
+    {
+        "fila": 7,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 5,
+        "xFin": 220,
+        "xIni": 198,
+        "yFin": 770,
+        "yIni": 735
+    },
+    {
+        "fila": 7,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 3,
+        "xFin": 242,
+        "xIni": 220,
+        "yFin": 770,
+        "yIni": 735
+    },
+    {
+        "fila": 7,
+        "localizacion": "anfiteatro_lateral_senar",
+        "numero": 1,
+        "xFin": 264,
+        "xIni": 242,
+        "yFin": 770,
+        "yIni": 735
+    }
+]

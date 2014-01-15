@@ -19,4 +19,6 @@ public interface DatabaseHelper
     public String falseString();
     
     public String trunc(String campo, String formato);
+    
+    public int booleanToNumber(Object valor);
 }

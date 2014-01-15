@@ -271,7 +271,7 @@ UI =
             "retencionSGAE": "Retenció SGAE",
             "asientosNumerados": "Seients numerats",
             "precio": "Tarifa general",
-            "descuento": "Jubilados - Boninstitut - Anem al teatre",
+            "descuento": "Jubilats - Boninstitut - Anem al teatre",
             "invitacion": "Invitació",
             "aulaTeatro": "Platea - Carnet jove",
             "localizacion": "Localització",
@@ -350,10 +350,10 @@ UI =
         },
 
         "tipoEntrada": {
-            "normal": "Entrada normal",
+            "normal": "Tarifa general",
             "invitacion": "Invitació",
-            "aulaTeatro": "Aula de teatre",
-            "descuento": "Entrada amb descompte"
+            "aulaTeatro": "Platea - Carnet jove",
+            "descuento": "Jubilats - Boninstitut - Anem al teatre"
         }
     }
 }

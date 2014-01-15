@@ -316,7 +316,7 @@ Ext.define('Paranimf.controller.Taquilla', {
    			var panel = Ext.ComponentQuery.query('panelSeleccionarNoNumeradas panelNumeroEntradas[name=' + localizacion + ']');
 
         //TODO -> esta funcion es del par-public, y si no está puesto, falla
-        if (descuentoNoDisponible) {
+        if (descuentoNoDisponible != undefined) {
      			if (descuentoNoDisponible(tipoEvento, precioNormal, precioDescuento))
      			{
      				panel[0].down('numberfield[name=descuento]').hide();

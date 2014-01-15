@@ -9,11 +9,14 @@ UI =
             "butacaEntero": "Seient: ",
             "filaEntero": "Fila: ",
             "tipo": "Tipus",
-            "tipoNormal": "Normal",
-            "tipoDescuento": "Descompte",
+            "tipoNormal": "Tarifa general",
+            "tipoDescuento": "Jubilats - Boninstitut - Anem al teatre",
             "tipoInvitacion": "Invitació",
-            "tipoAulaTeatro": "Aula de teatre",
+            "tipoAulaTeatro": "Platea - Carnet jove",
             "totalEntradas": "Total compra (IVA incl.): "
+        },
+        "error": {
+            "preuNoIntroduit": "Aquesta localització no té el preu assignat per a aquesta sessió i per tant, no està disponible"
         }
     }
 };
