@@ -228,14 +228,17 @@ public class SesionesService
 			throw new CampoRequeridoException("Fecha de celebración");
 		if (sesion.getHoraCelebracion() == null)
 			throw new CampoRequeridoException("Hora de celebración");
-		if (sesion.getFechaInicioVentaOnline() == null)
-			throw new CampoRequeridoException("Fecha de inicio de la venta online");
-		if (sesion.getFechaFinVentaOnline() == null)
-			throw new CampoRequeridoException("Fecha de fin de la venta online");
-		if (sesion.getHoraInicioVentaOnline() == null)
-			throw new CampoRequeridoException("Hora de inicio de la venta online");
-		if (sesion.getHoraFinVentaOnline() == null)
-			throw new CampoRequeridoException("Hora de fin de la venta online");
+		
+		if (sesion.getCanalInternet()) {
+			if (sesion.getFechaInicioVentaOnline() == null)
+				throw new CampoRequeridoException("Fecha de inicio de la venta online");
+			if (sesion.getFechaFinVentaOnline() == null)
+				throw new CampoRequeridoException("Fecha de fin de la venta online");
+			if (sesion.getHoraInicioVentaOnline() == null)
+				throw new CampoRequeridoException("Hora de inicio de la venta online");
+			if (sesion.getHoraFinVentaOnline() == null)
+				throw new CampoRequeridoException("Hora de fin de la venta online");
+		}
 	}
 
 	public List<PreciosSesion> getPreciosSesion(Long sesionId, String sortParameter, int start, int limit) {

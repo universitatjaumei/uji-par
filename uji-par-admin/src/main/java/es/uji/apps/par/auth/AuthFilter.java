@@ -73,7 +73,11 @@ public class AuthFilter implements Filter
             }
             else
             {
-                sResponse.sendRedirect(Configuration.getUrlAdmin() + "/rest/login");
+            	String url = ((HttpServletRequest)request).getRequestURL().toString();
+            	if (url.toLowerCase().contains("par/rest/index"))
+            		sResponse.sendRedirect(Configuration.getUrlAdmin() + "/rest/login");
+            	else
+            		sResponse.sendError(403);
             }
         }
     }

@@ -6,11 +6,10 @@ Ext.Loader.setConfig({
    }*/
 });
 
-/*Ext.Ajax.on('requestexception', function (conn, response, options) {
-    if (response.status === 302 || response.status === 0) {
-        window.location = 'http://www.uji.es';
-    }
-});*/
+Ext.Ajax.on('requestexception', function (conn, response, options) {
+   if (response.status === 403)
+      window.location = urlPrefix + 'index';
+});
 
 delete Ext.tip.Tip.prototype.minWidth;
   
