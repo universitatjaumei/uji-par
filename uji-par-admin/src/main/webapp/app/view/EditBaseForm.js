@@ -70,7 +70,7 @@ Ext.define('Paranimf.view.EditBaseForm', {
 	    		  me.up('window').close();
             grid.deseleccionar();
 	          grid.store.load();
-	    	  }, failure: function (response) {
+	    	  }, failure: function (form, action) {
 	    		  if (callback)
 	    			  callback(form, action);
 	    		  else

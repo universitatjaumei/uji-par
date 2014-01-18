@@ -22,6 +22,7 @@ import es.uji.apps.par.db.ButacaDTO;
 import es.uji.apps.par.db.CompraDTO;
 import es.uji.apps.par.db.QButacaDTO;
 import es.uji.apps.par.db.QCompraDTO;
+import es.uji.apps.par.db.QEventoDTO;
 import es.uji.apps.par.db.QSesionDTO;
 import es.uji.apps.par.db.SesionDTO;
 import es.uji.apps.par.model.Sesion;
@@ -522,6 +523,7 @@ public class ComprasDAO extends BaseDAO
         entityManager.persist(compra);
     }
 
+    @Transactional
     public BigDecimal getRecaudacionSesiones(List<Sesion> sesiones)
     {
         QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
@@ -546,6 +548,7 @@ public class ComprasDAO extends BaseDAO
             return total;
     }
 
+    @Transactional
     public int getEspectadores(List<Sesion> sesiones)
     {
         QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
@@ -570,4 +573,16 @@ public class ComprasDAO extends BaseDAO
         else
             return butacas.intValue();
     }
+
+    @Transactional
+	public List<CompraDTO> getComprasOfEvento(long eventoId) {
+		QEventoDTO qEvento = QEventoDTO.eventoDTO;
+		QSesionDTO qSesion = QSesionDTO.sesionDTO;
+		QCompraDTO qCompra = QCompraDTO.compraDTO;
+		
+		JPAQuery query = new JPAQuery(entityManager);
+		return query.from(qEvento, qSesion, qCompra).
+				where(qEvento.id.eq(eventoId).and(qSesion.parEvento.id.eq(qEvento.id).
+				and(qCompra.parSesion.id.eq(qSesion.id)))).list(qCompra);
+	}
 }

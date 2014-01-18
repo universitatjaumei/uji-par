@@ -192,12 +192,15 @@ public class SesionesService
         
     	sesion.setFechaCelebracionWithDate(DateUtils.addTimeToDate(sesion.getFechaCelebracion(),
                 sesion.getHoraCelebracion()));
-        sesion.setFechaInicioVentaOnlineWithDate(DateUtils.addTimeToDate(sesion.getFechaInicioVentaOnline(), 
-        		sesion.getHoraInicioVentaOnline()));
-        sesion.setFechaFinVentaOnlineWithDate(DateUtils.addTimeToDate(sesion.getFechaFinVentaOnline(), 
-        		sesion.getHoraFinVentaOnline()));
         
-        checkIfDatesAreValid(sesion);
+    	if (sesion.getCanalInternet()) {
+    		sesion.setFechaInicioVentaOnlineWithDate(DateUtils.addTimeToDate(sesion.getFechaInicioVentaOnline(), 
+    				sesion.getHoraInicioVentaOnline()));
+    		sesion.setFechaFinVentaOnlineWithDate(DateUtils.addTimeToDate(sesion.getFechaFinVentaOnline(), 
+    				sesion.getHoraFinVentaOnline()));
+        
+        	checkIfDatesAreValid(sesion);
+    	}
 	}
     
 	@Transactional

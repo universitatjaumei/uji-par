@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.uji.apps.par.CampoRequeridoException;
+import es.uji.apps.par.EventoConCompras;
 import es.uji.apps.par.EventoNoEncontradoException;
+import es.uji.apps.par.dao.ComprasDAO;
 import es.uji.apps.par.dao.EventosDAO;
 import es.uji.apps.par.db.EventoDTO;
 import es.uji.apps.par.model.Evento;
@@ -16,6 +18,9 @@ public class EventosService
 {
     @Autowired
     private EventosDAO eventosDAO;
+    
+    @Autowired
+    private ComprasDAO comprasDAO;
 
     public List<Evento> getEventosConSesiones()
     {
@@ -59,11 +64,24 @@ public class EventosService
             throw new CampoRequeridoException("Tipo de evento");
     }
 
-    public void updateEvento(Evento evento) throws CampoRequeridoException
+    public void updateEvento(Evento evento) throws CampoRequeridoException, EventoConCompras
     {
         checkRequiredFields(evento);
-        eventosDAO.updateEvento(evento);
+        
+        if (hasEventoCompras(evento) && modificanAsientosNumerados(evento))
+        	throw new EventoConCompras(evento.getId());
+        else
+        	eventosDAO.updateEvento(evento);
     }
+
+	private boolean modificanAsientosNumerados(Evento evento) {
+		EventoDTO eventoDTO = eventosDAO.getEventoById(evento.getId());
+		return eventoDTO.getAsientosNumerados() != evento.getAsientosNumerados();
+	}
+
+	private boolean hasEventoCompras(Evento evento) {
+		return comprasDAO.getComprasOfEvento(evento.getId()).size() > 0;
+	}
 
     public Evento getEvento(Long eventoId) throws EventoNoEncontradoException
     {

@@ -121,7 +121,9 @@ UI =
             "errorGenerandoFicheroICAA": "S'ha produït un error generant el fitxer per a l'ICAA",
             "markAsSent": "S'ha produït un error marcant les sessions com a enviades",
             "salaObligatoria": "És necessari triar primer la sala",
-            "loadingLocalizaciones": "S'ha produït un error carregant les localitzacions de l'event"
+            "loadingLocalizaciones": "S'ha produït un error carregant les localitzacions de l'event",
+            "dataIniciPosterior": "Error, la data d'inici no pot ser posterior a la de fi",
+            "dataEventAnterior": "Error, la data de la sessió no pot ser anterior a la data de fi de venda online"
         },
         "button": {
             "closeSession": "Tancar sessió",

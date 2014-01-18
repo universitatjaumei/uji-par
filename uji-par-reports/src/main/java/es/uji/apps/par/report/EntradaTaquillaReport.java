@@ -38,11 +38,13 @@ public class EntradaTaquillaReport extends Report
 {
     private static final String FONDO_BLANCO = "#FFFFFF";
     private static final String GRIS_OSCURO = "#666666";
-    private static final String sizeTxtParanimf = "22pt";
-    private static final String sizeTxtDireccionParanimf = "6pt";
+    private static final String sizeTxtParanimf = "15pt";
+    private static final String sizeTxtParanimfSmall = "10pt";
+    private static final String sizeTxtDireccionEntidad = "6pt";
     private static final String sizeTxtTituloEvento = "22pt";
     private static final String sizeTxtZonaFilaButaca = "15pt";
     private static final int sizeTxtZonaFilaButacaInt = 15;
+	private static final String sizeContentLogo = "3cm";
 
     private static FopPDFSerializer reportSerializer;
 
@@ -124,7 +126,7 @@ public class EntradaTaquillaReport extends Report
         style.setSimplePageMasterMarginTop("0");
         style.setSimplePageMasterRegionBodyMarginTop("0");
 
-        BaseTable entradaTable = new BaseTable(style, 1, "10.4cm");
+        BaseTable entradaTable = new BaseTable(style, 3, "10.4cm", "0.5cm", "4.5cm");
 
         entradaTable.withNewRow();
 
@@ -132,8 +134,62 @@ public class EntradaTaquillaReport extends Report
         cellIzquierda.setPadding("0.1cm");
         cellIzquierda.setPaddingTop("0.0cm");
         cellIzquierda.setBackgroundColor(FONDO_BLANCO);
+        
+        entradaTable.withNewCell("");
+        
+        TableCell cellDerecha = entradaTable.withNewCell(createEntradaDerecha(urlPublic));
+        cellDerecha.setPadding("0.1cm");
+        cellDerecha.setPaddingTop("0.0cm");
+        cellDerecha.setBackgroundColor(FONDO_BLANCO);
+        cellDerecha.setBorderLeftColor("black");
+        cellDerecha.setBorderLeftStyle(BorderStyleType.DASHED);
+        cellDerecha.setBorderLeftWidth("0.5");
 
         entradaBlock.getContent().add(entradaTable);
+    }
+    
+    private Block createEntradaDerecha(String urlPublic) {
+    	Block blockGeneral = new Block();
+    	Block blockInferior = new Block();
+    	
+    	BlockContainer bc = new BlockContainer();
+    	bc.setWidth("7cm");
+    	bc.setReferenceOrientation("-90");
+    	
+    	bc.getMarkerOrBlockOrBlockContainer().add(createTextEntidad(EntradaTaquillaReport.sizeTxtParanimfSmall));
+    	bc.getMarkerOrBlockOrBlockContainer().add(getBlockWithText(getTextEntidadCIF(), EntradaTaquillaReport.sizeTxtDireccionEntidad));
+    	
+    	Block blockTitulo = createTitulo("10pt", false);
+    	blockTitulo.setMarginTop("0.1cm");
+    	
+    	bc.getMarkerOrBlockOrBlockContainer().add(blockTitulo);
+    	
+        
+    	BlockContainer bcInferior = new BlockContainer();
+    	bcInferior.setWidth("7cm");
+    	bcInferior.setReferenceOrientation("0");
+    	
+    	bcInferior.getMarkerOrBlockOrBlockContainer().add(getBlockWithText(getDiaEvento() + " - " + getHoraEvento(), "8pt"));
+    	bcInferior.getMarkerOrBlockOrBlockContainer().add(getBlockWithText(getHoraApertura(), "8pt"));
+    	bcInferior.getMarkerOrBlockOrBlockContainer().add(getBlockWithText(getTipoEntradaPrecio(), "8pt"));
+    	bcInferior.getMarkerOrBlockOrBlockContainer().add(getBlockWithText(this.zona.toUpperCase(), "8pt"));
+    	
+        if (this.fila != null && this.numero != null)
+        	bcInferior.getMarkerOrBlockOrBlockContainer().add(getBlockWithText(getFilaButaca(), "8pt"));
+        
+        bcInferior.getMarkerOrBlockOrBlockContainer().add(getBlockWithText(this.barcode, "6pt"));
+        
+        blockInferior.getContent().add(bcInferior);
+        
+        BaseTable table = new BaseTable(new EntradaReportStyle(), 2, "5cm", "5cm");
+        table.withNewRow();
+        table.withNewCell(blockInferior);
+        table.withNewCell(createBarcode(urlPublic));
+        
+        bc.getMarkerOrBlockOrBlockContainer().add(table);
+        blockGeneral.getContent().add(bc);
+
+        return blockGeneral;
     }
 
     private Block createEntradaIzquierda(String urlPublic)
@@ -151,22 +207,28 @@ public class EntradaTaquillaReport extends Report
         BaseTable table = new BaseTable(new EntradaReportStyle(), 1, "10.4cm");
 
         table.withNewRow();
-        table.withNewCell(createParanimfDireccionLogo());
+        table.withNewCell(createEntidadDireccionLogo());
 
         table.withNewRow();
         table.withNewCell(createHorizontalLine());
         return table;
     }
     
-    private Block createParanimfDireccionLogo() {
-    	String textUJICIF = ResourceProperties.getProperty(locale, "entrada.universitat") + ". " + ResourceProperties.getProperty(locale, "entrada.cifSimple");
-    	String textDireccion = ResourceProperties.getProperty(locale, "entrada.direccion");
+    private String getTextEntidadCIF() {
+    	return ResourceProperties.getProperty(locale, "entrada.nombreEntidad") + ". " + ResourceProperties.getProperty(locale, "entrada.cifSimple");
+    }
+    
+    private String getTextDireccion() {
+    	return ResourceProperties.getProperty(locale, "entrada.direccion");
+    }
+    
+    private Block createEntidadDireccionLogo() {
     	Block b = new Block();
     	
     	BlockContainer bc = new BlockContainer();
-    	bc.getMarkerOrBlockOrBlockContainer().add(createTextParanimf(EntradaTaquillaReport.sizeTxtParanimf));
-    	bc.getMarkerOrBlockOrBlockContainer().add(getBlockWithText(textUJICIF, EntradaTaquillaReport.sizeTxtDireccionParanimf));
-    	bc.getMarkerOrBlockOrBlockContainer().add(getBlockWithText(textDireccion, EntradaTaquillaReport.sizeTxtDireccionParanimf));
+    	bc.getMarkerOrBlockOrBlockContainer().add(createTextEntidad(EntradaTaquillaReport.sizeTxtParanimf));
+    	bc.getMarkerOrBlockOrBlockContainer().add(getBlockWithText(getTextEntidadCIF(), EntradaTaquillaReport.sizeTxtDireccionEntidad));
+    	bc.getMarkerOrBlockOrBlockContainer().add(getBlockWithText(getTextDireccion(), EntradaTaquillaReport.sizeTxtDireccionEntidad));
     	Block bloqueUJIDireccionCIF = new Block();
     	bloqueUJIDireccionCIF.getContent().add(bc);
     	
@@ -174,7 +236,7 @@ public class EntradaTaquillaReport extends Report
     	table.withNewRow();
     	table.withNewCell(bloqueUJIDireccionCIF);
         
-        TableCell cell = table.withNewCell(logoUji());
+        TableCell cell = table.withNewCell(getLogo());
         cell.setTextAlign(TextAlignType.CENTER);
         cell.setDisplayAlign(DisplayAlignType.AFTER);
         
@@ -220,7 +282,7 @@ public class EntradaTaquillaReport extends Report
         table.setMarginTop("0");
 
         table.withNewRow();
-        table.withNewCell(createTitulo(), "2");
+        table.withNewCell(createTitulo(EntradaTaquillaReport.sizeTxtTituloEvento, true), "2");
 
         table.withNewRow();
         TableCell cellEnmedio = table.withNewCell(createEntradaFechaHoras(), "2");
@@ -244,12 +306,16 @@ public class EntradaTaquillaReport extends Report
     }
 	
 	private Block createTipoEntradaPrecio() {
-		String txtTipoEntradaPrecio = ResourceProperties.getProperty(locale, "entrada.precio").toUpperCase() + this.tipoEntrada + " " + this.total + " €";
+		String txtTipoEntradaPrecio = getTipoEntradaPrecio();
 		Block block = getBlockWithText(txtTipoEntradaPrecio, "10pt");
 		
 		block.setMarginRight("0.3cm");
 		
 		return block;
+	}
+
+	private String getTipoEntradaPrecio() {
+		return ResourceProperties.getProperty(locale, "entrada.precio").toUpperCase() + this.tipoEntrada + " " + this.total + " €";
 	}
 
 	private Block createFilaButacaYUuid() {
@@ -289,18 +355,20 @@ public class EntradaTaquillaReport extends Report
 		filaButaca.setFontWeight("bold");
 		filaButaca.setWrapOption(WrapOptionType.NO_WRAP);
 		
-       	String txtFila = ResourceProperties.getProperty(locale, "entrada.fila") + this.fila;
-       	String txtButaca = ResourceProperties.getProperty(locale, "entrada.butacaSimple") + this.numero;
-       	String txtFilaButaca = txtFila + " | " + txtButaca;
-       	
-       	filaButaca.getContent().add(txtFilaButaca);
+       	filaButaca.getContent().add(getFilaButaca());
        	bc.getMarkerOrBlockOrBlockContainer().add(filaButaca);
        	
-       	int width = getWidthTexto(txtFilaButaca, Font.BOLD, EntradaTaquillaReport.sizeTxtZonaFilaButacaInt) - 8;
+       	int width = getWidthTexto(getFilaButaca(), Font.BOLD, EntradaTaquillaReport.sizeTxtZonaFilaButacaInt) - 8;
        	bc.setWidth(width + "px");
        	bc.setWrapOption(WrapOptionType.NO_WRAP);
 		b.getContent().add(bc);
         return b;
+    }
+    
+    private String getFilaButaca() {
+    	String txtFila = ResourceProperties.getProperty(locale, "entrada.fila") + this.fila;
+       	String txtButaca = ResourceProperties.getProperty(locale, "entrada.butacaSimple") + this.numero;
+       	return txtFila + " | " + txtButaca; 
     }
 
 	private Block createZona() {
@@ -327,10 +395,10 @@ public class EntradaTaquillaReport extends Report
 		return b;
 	}
 
-	private Block createTitulo() {
+	private Block createTitulo(String sizeTitulo, boolean withDots) {
 		Block titulo = new Block();
-        titulo.setFontSize(EntradaTaquillaReport.sizeTxtTituloEvento);
-        String textoAMostrar = getTextoAMostrar();
+        titulo.setFontSize(sizeTitulo);
+        String textoAMostrar = (withDots)?getTextoAMostrar():this.titulo;
         titulo.setFontStyle(FontStyleType.ITALIC);
         titulo.getContent().add(textoAMostrar);
         titulo.setMarginBottom("0.1cm");
@@ -359,31 +427,25 @@ public class EntradaTaquillaReport extends Report
         return texto;
 	}
 
-	private ExternalGraphic logoUji()
+	private ExternalGraphic getLogo()
     {
         ExternalGraphic externalGraphic = new ExternalGraphic();
-        externalGraphic.setSrc(new File("/etc/uji/par/imagenes/uji_logo.png").getAbsolutePath());
-        externalGraphic.setContentWidth("3cm");
+        externalGraphic.setSrc(new File("/etc/uji/par/imagenes/logo.svg").getAbsolutePath());
+        externalGraphic.setContentWidth(EntradaTaquillaReport.sizeContentLogo);
 
         return externalGraphic;
     }
-
-    private Block createEntradaFechaHoras()
+	
+	private Block createEntradaFechaHoras()
     {
         Block block = new Block();
         BaseTable table = new BaseTable(new EntradaReportStyle(), 2, "3.3cm", "7.4cm");
 
         table.withNewRow();
         
-        String dia = ResourceProperties.getProperty(locale, "entrada.dia") + this.fecha;
-        String hora =  this.hora + " " + ResourceProperties.getProperty(locale, "entrada.horas");
-        String horaApertura = ResourceProperties.getProperty(locale, "entrada.apertura") + 
-        		": ";
-        
-        if (this.horaApertura != null)
-        {
-            horaApertura += this.horaApertura + " " + ResourceProperties.getProperty(locale, "entrada.horas"); 
-        }
+        String dia = getDiaEvento();
+        String hora =  getHoraEvento();
+        String horaApertura = getHoraApertura();
         
         TableCell cell = table.withNewCell(getBlockWithText(dia, "12pt"));
         cell.setBorderRight("1px solid");
@@ -400,6 +462,22 @@ public class EntradaTaquillaReport extends Report
         block.getContent().add(table);
         return block;
     }
+
+	private String getHoraEvento() {
+		return this.hora + " " + ResourceProperties.getProperty(locale, "entrada.horas");
+	}
+
+	private String getDiaEvento() {
+		return ResourceProperties.getProperty(locale, "entrada.dia") + this.fecha;
+	}
+	
+	private String getHoraApertura() {
+		String horaApertura = ResourceProperties.getProperty(locale, "entrada.apertura") + ": ";
+        
+        if (this.horaApertura != null)
+            horaApertura += this.horaApertura + " " + ResourceProperties.getProperty(locale, "entrada.horas"); 
+        return horaApertura;
+	}
 
     private BaseTable createCondicionesYWeb()
     {
@@ -423,10 +501,10 @@ public class EntradaTaquillaReport extends Report
         return blockCodebar;
     }
     
-    private Block createTextParanimf(String fontSize)
+    private Block createTextEntidad(String fontSize)
     {
         Block textParanimf = new Block();
-        textParanimf.getContent().add(ResourceProperties.getProperty(locale, "entrada.paranimf"));
+        textParanimf.getContent().add(ResourceProperties.getProperty(locale, "entrada.nombreLocalizacion"));
         textParanimf.setFontSize(fontSize);
         textParanimf.setFontStyle(FontStyleType.ITALIC);
         return textParanimf;
@@ -449,7 +527,7 @@ public class EntradaTaquillaReport extends Report
             reportStyle.setSimplePageMasterMarginLeft("0.3cm");
             reportStyle.setSimplePageMasterMarginBottom("0.3cm");
             reportStyle.setSimplePageMasterMarginTop("0.3cm");
-            reportStyle.setSimplePageMasterPageWidth("11cm");
+            reportStyle.setSimplePageMasterPageWidth("16cm");
             reportStyle.setSimplePageMasterPageHeight("8cm");
             reportStyle.setSimplePageMasterRegionBeforeExtent("0cm");
             reportStyle.setSimplePageMasterRegionAfterExtent("0cm");

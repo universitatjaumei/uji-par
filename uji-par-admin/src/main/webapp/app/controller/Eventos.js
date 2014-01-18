@@ -56,6 +56,12 @@ Ext.define('Paranimf.controller.Eventos', {
    }, {
       ref: 'fieldsetReservesOnline',
       selector: 'formSesiones fieldset[name=reservesOnline]'
+   }, {
+      ref: 'fechaCelebracion',
+      selector: 'formSesiones datefield[name=fechaCelebracion]'
+   }, {
+      ref: 'horaCelebracion',
+      selector: 'formSesiones timefield[name=horaCelebracion]'
    }],
 
    init: function() {
@@ -373,7 +379,12 @@ Ext.define('Paranimf.controller.Eventos', {
    saveEventoFormData: function(button, event, opts) {
       var grid = this.getGridEventos();
       var form = this.getFormEventos();
-      form.saveFormData(grid, urlPrefix + 'evento', undefined, 'multipart/form-data');
+      form.saveFormData(grid, urlPrefix + 'evento', undefined, 'multipart/form-data', function(form, action) {
+         if (action != undefined && action.response != undefined && action.response.responseText != undefined) {
+            var respuesta = Ext.JSON.decode(action.response.responseText, true);
+            alert(respuesta.msg);
+         }
+      });
    },
    
    loadSesiones: function(selectionModel, record) {
@@ -396,19 +407,46 @@ Ext.define('Paranimf.controller.Eventos', {
    },
    
    saveSesionFormData: function(button, event, opts) {
-	   var eventoId = this.getGridEventos().getSelectedColumnId();
+      var form = this.getFormSesiones();
+      if (form.isValid()) {
+   	   var eventoId = this.getGridEventos().getSelectedColumnId();
 
-	   var grid = this.getGridSesiones();
-	   var form = this.getFormSesiones();
+   	   var grid = this.getGridSesiones();
+   	   
 
-      this.getFormSesiones().getForm().findField('preciosSesion').setValue(this.getGridPreciosSesion().toJSON());
-      
-      var sala = this.getFormSesiones().getForm().findField('sala');
-      
-      if (sala.getValue() == '')
-    	  sala.setValue(null);
-      
-	  form.saveFormData(grid, urlPrefix + 'evento/' + eventoId + '/sesiones');
+         if (this.getCheckboxVentaOnline().value) {
+            var dataInicialVentaOnline = this.getFechaInicioVentaOnline().value;
+            var h = this.getHoraInicioVentaOnline().rawValue.split(":");
+            dataInicialVentaOnline.setHours(h[0], h[1]);
+            
+            var dataFinalVentaOnline = this.getFechaFinVentaOnline().value;
+            h = this.getHoraFinVentaOnline().rawValue.split(":");
+            dataFinalVentaOnline.setHours(h[0], h[1]);
+
+            if (dataInicialVentaOnline > dataFinalVentaOnline) {
+               alert(UI.i18n.error.dataIniciPosterior);
+               return;
+            }
+
+            var dataSessio = this.getFechaCelebracion().value;
+            h = this.getHoraCelebracion().rawValue.split(":");
+            dataSessio.setHours(h[0], h[1]);
+            console.log(dataSessio);
+            if (dataSessio < dataFinalVentaOnline) {
+               alert(UI.i18n.error.dataEventAnterior);
+               return;
+            }
+         }
+
+         this.getFormSesiones().getForm().findField('preciosSesion').setValue(this.getGridPreciosSesion().toJSON());
+         
+         var sala = this.getFormSesiones().getForm().findField('sala');
+         
+         if (sala.getValue() == '')
+       	  sala.setValue(null);
+         
+         form.saveFormData(grid, urlPrefix + 'evento/' + eventoId + '/sesiones');
+      }
    },
    
    removeSesion: function(button, event, opts) {
