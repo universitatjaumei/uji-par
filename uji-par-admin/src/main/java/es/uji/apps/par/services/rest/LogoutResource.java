@@ -9,6 +9,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import es.uji.apps.par.auth.Authenticator;
+import es.uji.apps.par.config.Configuration;
 
 @Path("logout")
 public class LogoutResource extends BaseResource
@@ -23,7 +24,7 @@ public class LogoutResource extends BaseResource
         currentRequest.getSession().removeAttribute(Authenticator.USER_ATTRIBUTE);
         currentRequest.getSession().removeAttribute(Authenticator.READONLY_ATTRIBUTE);
         
-        currentResponse.sendRedirect("login");
+        currentResponse.sendRedirect(Configuration.getUrlAdmin() + "/rest/login");
         return null;
     }
 }
