@@ -253,8 +253,8 @@ Ext.define('Paranimf.controller.Taquilla', {
    	},
    	
    	anularPrevia: function() {
-   		console.log(this.idCompraPrevia);
-   		console.log(this.butacasSeleccionadasPrevia);
+   		//console.log(this.idCompraPrevia);
+   		//console.log(this.butacasSeleccionadasPrevia);
    		
    		var textoButacas = "";
    		
@@ -265,7 +265,7 @@ Ext.define('Paranimf.controller.Taquilla', {
 
    			if (butaca['fila']!=null && butaca['numero']!=null)
    				filaNum = " fila: " + butaca['fila'] + ", num: " + butaca['numero'];
-   			
+   			//console.log(butaca['localizacion']);
    			textoButacas += UI.i18n.tipos[butaca['localizacion']]  + filaNum + ' (' + UI.i18n.tipoEntrada[butaca['tipo']] + ')<br>';  			
    		}
    		
@@ -281,7 +281,7 @@ Ext.define('Paranimf.controller.Taquilla', {
    	},
    	
    	llamaAnularPrevia: function() {
-   		console.log('llamaAnularPrevia');
+   		//console.log('llamaAnularPrevia');
    		
    		var me = this;
    		
@@ -462,7 +462,7 @@ Ext.define('Paranimf.controller.Taquilla', {
 	    	  }, failure: function (response) {
             me.getFormComprar().setLoading(false);
 	    		  var respuesta = Ext.JSON.decode(response.responseText, true);
-	    		  console.log(respuesta);
+	    		  //console.log(respuesta);
 	    		  
 	    		  if (respuesta['message']!=null)
 	    			  alert(respuesta['message']);
@@ -568,7 +568,7 @@ Ext.define('Paranimf.controller.Taquilla', {
 	    		   
 	    	  }, failure: function (response) {
 	    		  me.getFormComprar().setLoading(false);
-	    		  console.log(respuesta);
+	    		  //console.log(respuesta);
 	    		  
 	    		  me.habilitaBotonPagar();
 
@@ -605,7 +605,7 @@ Ext.define('Paranimf.controller.Taquilla', {
 	    		  
 	    	  }, failure: function (response) {
             me.getFormComprar().setLoading(false); 
-            console.log(respuesta);
+            //console.log(respuesta);
 	    		  
 	    		  me.habilitaBotonReservar();
 	    		  
@@ -631,7 +631,7 @@ Ext.define('Paranimf.controller.Taquilla', {
 	    	  jsonData: concepto,
 	    	  success: function (response) {
 	           me.getFormComprar().setLoading(false);
-	    		  console.log('Pago con tarjeta aceptado:', response);
+	    		  //console.log('Pago con tarjeta aceptado:', response);
 	    		  
     			  var respuesta = Ext.JSON.decode(response.responseText, true);
     			  
@@ -786,7 +786,7 @@ Ext.define('Paranimf.controller.Taquilla', {
               }]
             }
     */
-    console.log("cargaLocalizaciones");
+    //console.log("cargaLocalizaciones");
     var me = this;
     this.getFormComprar().setLoading(UI.i18n.message.loading);
     
@@ -988,8 +988,10 @@ Ext.define('Paranimf.controller.Taquilla', {
    		if (this.getGridEventosTaquilla().hasRowSelected() && this.getGridSesionesTaquilla().hasRowSelected()) {
   			var evento = this.getGridEventosTaquilla().getSelectedRecord();
   			var sesion = this.getGridSesionesTaquilla().getSelectedRecord();
+        console.log(evento, sesion);
 
-  			this.getGridSesionesTaquilla().showComprarWindow(sesion.data['id'], evento.data['asientosNumerados'], UI.i18n.formTitle.comprar, false);
+        var title = UI.i18n.formTitle.comprar + " -> " + UI.i18n.message.evento + ": " + evento.data.tituloVa + " - " + UI.i18n.message.sessio + ": " + Ext.Date.format(sesion.data.fechaCelebracion, 'd/m/Y H:i');
+  			this.getGridSesionesTaquilla().showComprarWindow(sesion.data['id'], evento.data['asientosNumerados'], title, false);
   			
   			this.getPanelComprar().show();
   			this.getPanelReservar().hide();
@@ -1010,8 +1012,9 @@ Ext.define('Paranimf.controller.Taquilla', {
    		if (this.getGridEventosTaquilla().hasRowSelected() && this.getGridSesionesTaquilla().hasRowSelected()) {
 			var evento = this.getGridEventosTaquilla().getSelectedRecord();
 			var sesion = this.getGridSesionesTaquilla().getSelectedRecord();
+      var title = UI.i18n.formTitle.reservar + " -> " + UI.i18n.message.evento + ": " + evento.data.tituloVa + " - " + UI.i18n.message.sessio + ": " + Ext.Date.format(sesion.data.fechaCelebracion, 'd/m/Y H:i');
 
-			this.getGridSesionesTaquilla().showComprarWindow(sesion.data['id'], evento.data['asientosNumerados'], UI.i18n.formTitle.reservar, true);
+			this.getGridSesionesTaquilla().showComprarWindow(sesion.data['id'], evento.data['asientosNumerados'], title, true);
 
 			this.getPanelReservar().show();
 			this.getPanelComprar().hide();

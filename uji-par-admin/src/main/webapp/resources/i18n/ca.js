@@ -52,7 +52,9 @@ UI =
             "35mm": "35 mm",
             "digital": "Digital",
             "3d": "3D",
-            "noRowSelectedFileICAA": "És obligatori seleccionar almenys una sessió"
+            "noRowSelectedFileICAA": "És obligatori seleccionar almenys una sessió",
+            "evento": "Event",
+            "sessio": "Sessió"
         },
         "storeWeekDay": {
             "wed": "Dimecres",
@@ -347,6 +349,7 @@ UI =
             "anfiteatro": "Amfiteatre",
             "platea1": "Platea 1",
             "platea2": "Platea 2",
+            "general": "General",
             "discapacitados1": "Discapacitats Platea nivell 1",
             "discapacitados2": "Discapacitats Platea nivell 2",
             "discapacitados3": "Discapacitats Amfiteatre"
