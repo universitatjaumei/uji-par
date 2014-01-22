@@ -454,6 +454,9 @@ Ext.define('Paranimf.controller.Eventos', {
    },
    
    editSesion: function(button, event, opts) {
-      this.getGridSesiones().edit('formSesiones', undefined, undefined, 0.8);
+      if (this.getGridEventos().hasRowSelected)
+         this.getGridSesiones().edit('formSesiones', undefined, undefined, 0.8);
+      else
+         alert(UI.i18n.error.eventSelected);
    }
 });

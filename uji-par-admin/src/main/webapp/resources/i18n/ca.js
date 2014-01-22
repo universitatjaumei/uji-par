@@ -123,7 +123,8 @@ UI =
             "salaObligatoria": "És necessari triar primer la sala",
             "loadingLocalizaciones": "S'ha produït un error carregant les localitzacions de l'event",
             "dataIniciPosterior": "Error, la data d'inici no pot ser posterior a la de fi",
-            "dataEventAnterior": "Error, la data de la sessió no pot ser anterior a la data de fi de venda online"
+            "dataEventAnterior": "Error, la data de la sessió no pot ser anterior a la data de fi de venda online",
+            "eventSelected": "Error, és necessari seleccionar un event"
         },
         "button": {
             "closeSession": "Tancar sessió",
