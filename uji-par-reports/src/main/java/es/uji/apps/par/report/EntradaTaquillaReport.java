@@ -4,14 +4,17 @@ import java.awt.Canvas;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.io.File;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Locale;
+
+import org.apache.fop.apps.FopFactory;
+import org.xml.sax.SAXException;
 
 import es.uji.apps.fopreports.Report;
 import es.uji.apps.fopreports.fop.Block;
 import es.uji.apps.fopreports.fop.BlockContainer;
 import es.uji.apps.fopreports.fop.BorderStyleType;
-import es.uji.apps.fopreports.fop.DisplayAlignType;
 import es.uji.apps.fopreports.fop.ExternalGraphic;
 import es.uji.apps.fopreports.fop.Flow;
 import es.uji.apps.fopreports.fop.FontStyleType;
@@ -38,15 +41,15 @@ public class EntradaTaquillaReport extends Report
 {
     private static final String FONDO_BLANCO = "#FFFFFF";
     private static final String GRIS_OSCURO = "#666666";
-    private static final String sizeTxtParanimf = "15pt";
     private static final String sizeTxtParanimfSmall = "10pt";
     private static final String sizeTxtDireccionEntidad = "6pt";
     private static final String sizeTxtTituloEvento = "22pt";
     private static final String sizeTxtZonaFilaButaca = "15pt";
-    private static final int sizeTxtZonaFilaButacaInt = 15;
-	private static final String sizeContentLogo = "3cm";
+	private static final String sixeZonaImpresion = "72.2mm";
+	private static final String font = "Verdana";
 
     private static FopPDFSerializer reportSerializer;
+    private static FopFactory fopFactory;
 
     private Locale locale;
 
@@ -87,7 +90,7 @@ public class EntradaTaquillaReport extends Report
         this.tipoEntrada = entrada.getTipo();
 
         creaSeccionEntrada(urlPublic);
-
+        //this.getSimplePageMaster().setPageHeight("auto");
         Block pageBreak = withNewBlock();
         pageBreak.setPageBreakAfter(PageBreakAfterType.ALWAYS);
     }
@@ -119,128 +122,69 @@ public class EntradaTaquillaReport extends Report
     {
         Block entradaBlock = withNewBlock();
 
-        EntradaReportStyle style = new EntradaReportStyle();
-        style.setFontFamily("Arial");
+        EntradaReportStyle style = getStyleWithFont();
         style.setSimplePageMasterMarginBottom("0");
         style.setSimplePageMasterRegionBodyMarginBottom("0");
         style.setSimplePageMasterMarginTop("0");
         style.setSimplePageMasterRegionBodyMarginTop("0");
 
-        BaseTable entradaTable = new BaseTable(style, 3, "10.4cm", "0.5cm", "4.5cm");
-
+        BaseTable entradaTable = new BaseTable(style, 1, EntradaTaquillaReport.sixeZonaImpresion);
         entradaTable.withNewRow();
-
-        TableCell cellIzquierda = entradaTable.withNewCell(createEntradaIzquierda(urlPublic));
-        cellIzquierda.setPadding("0.1cm");
+        entradaTable.withNewCell(createLogo());
+        entradaTable.withNewRow();
+        entradaTable.withNewCell(createEntradaIzquierdaCentro(urlPublic));
+        entradaTable.withNewRow();
+        entradaTable.withNewCell(createHorizontalLine());
+        entradaTable.withNewRow();
+        entradaTable.withNewCell(createEntradaDerecha(urlPublic));
+        /*cellIzquierda.setPadding("0.0cm");
         cellIzquierda.setPaddingTop("0.0cm");
-        cellIzquierda.setBackgroundColor(FONDO_BLANCO);
+        cellIzquierda.setBackgroundColor(FONDO_BLANCO);*/
         
-        entradaTable.withNewCell("");
-        
-        TableCell cellDerecha = entradaTable.withNewCell(createEntradaDerecha(urlPublic));
+        /*TableCell cellDerecha = entradaTable.withNewCell(createEntradaDerecha(urlPublic));
         cellDerecha.setPadding("0.1cm");
         cellDerecha.setPaddingTop("0.0cm");
         cellDerecha.setBackgroundColor(FONDO_BLANCO);
         cellDerecha.setBorderLeftColor("black");
         cellDerecha.setBorderLeftStyle(BorderStyleType.DASHED);
-        cellDerecha.setBorderLeftWidth("0.5");
+        cellDerecha.setBorderLeftWidth("0.5");*/
 
         entradaBlock.getContent().add(entradaTable);
+        //entradaBlock.getContent().add(linea);
+        //entradaBlock.getContent().add(inferior);
+        //add(entradaTable);
     }
     
     private Block createEntradaDerecha(String urlPublic) {
     	Block blockGeneral = new Block();
-    	Block blockInferior = new Block();
+    	Block blockIzquierda = new Block();
     	
     	BlockContainer bc = new BlockContainer();
-    	bc.setWidth("7cm");
-    	bc.setReferenceOrientation("-90");
-    	
-    	bc.getMarkerOrBlockOrBlockContainer().add(createTextEntidad(EntradaTaquillaReport.sizeTxtParanimfSmall));
-    	bc.getMarkerOrBlockOrBlockContainer().add(getBlockWithText(getTextEntidadCIF(), EntradaTaquillaReport.sizeTxtDireccionEntidad));
-    	
-    	Block blockTitulo = createTitulo("10pt", false);
-    	blockTitulo.setMarginTop("0.1cm");
-    	
-    	bc.getMarkerOrBlockOrBlockContainer().add(blockTitulo);
-    	
+    	bc.setWidth("100%");
+    	String fontSize = "13pt";
+    	bc.getMarkerOrBlockOrBlockContainer().add(getBlockWithText(getTituloPequenyoAMostrar(), fontSize));
+    	bc.getMarkerOrBlockOrBlockContainer().add(getBlockWithText(this.fecha + "-" + this.hora, fontSize));
+    	if (this.fila != null && this.numero != null)
+    		bc.getMarkerOrBlockOrBlockContainer().add(getBlockWithText("P.B." + this.fila + "-" + this.numero, fontSize));
+    	bc.getMarkerOrBlockOrBlockContainer().add(getBlockWithText(this.tipoEntrada + " " + this.total + " €", fontSize));
+        blockIzquierda.getContent().add(bc);
         
-    	BlockContainer bcInferior = new BlockContainer();
-    	bcInferior.setWidth("7cm");
-    	bcInferior.setReferenceOrientation("0");
-    	
-    	bcInferior.getMarkerOrBlockOrBlockContainer().add(getBlockWithText(getDiaEvento() + " - " + getHoraEvento(), "8pt"));
-    	bcInferior.getMarkerOrBlockOrBlockContainer().add(getBlockWithText(getHoraApertura(), "8pt"));
-    	bcInferior.getMarkerOrBlockOrBlockContainer().add(getBlockWithText(getTipoEntradaPrecio(), "8pt"));
-    	bcInferior.getMarkerOrBlockOrBlockContainer().add(getBlockWithText(this.zona.toUpperCase(), "8pt"));
-    	
-        if (this.fila != null && this.numero != null)
-        	bcInferior.getMarkerOrBlockOrBlockContainer().add(getBlockWithText(getFilaButaca(), "8pt"));
-        
-        bcInferior.getMarkerOrBlockOrBlockContainer().add(getBlockWithText(this.barcode, "6pt"));
-        
-        blockInferior.getContent().add(bcInferior);
-        
-        BaseTable table = new BaseTable(new EntradaReportStyle(), 2, "5cm", "5cm");
+    	BaseTable table = new BaseTable(getStyleWithFont(), 2, "42.2mm", "30mm");
         table.withNewRow();
-        table.withNewCell(blockInferior);
-        table.withNewCell(createBarcode(urlPublic));
+        table.withNewCell(blockIzquierda);
+        TableCell c = table.withNewCell(createBarcode(urlPublic));
+        c.setTextAlign(TextAlignType.RIGHT);
         
-        bc.getMarkerOrBlockOrBlockContainer().add(table);
-        blockGeneral.getContent().add(bc);
-
+        blockGeneral.getContent().add(table);
+        Block referencia = getBlockWithText(this.barcode, "8pt");
+        referencia.setTextAlign(TextAlignType.CENTER);
+        blockGeneral.getContent().add(referencia);
         return blockGeneral;
     }
-
-    private Block createEntradaIzquierda(String urlPublic)
-    {
-        Block block = new Block();
-
-        block.getContent().add(createEntradaIzquierdaArriba());
-        block.getContent().add(createEntradaIzquierdaCentro(urlPublic));
-
-        return block;
-    }
-
-    private BaseTable createEntradaIzquierdaArriba()
-    {
-        BaseTable table = new BaseTable(new EntradaReportStyle(), 1, "10.4cm");
-
-        table.withNewRow();
-        table.withNewCell(createEntidadDireccionLogo());
-
-        table.withNewRow();
-        table.withNewCell(createHorizontalLine());
-        return table;
-    }
     
-    private String getTextEntidadCIF() {
-    	return ResourceProperties.getProperty(locale, "entrada.nombreEntidad") + ". " + ResourceProperties.getProperty(locale, "entrada.cifSimple");
-    }
-    
-    private String getTextDireccion() {
-    	return ResourceProperties.getProperty(locale, "entrada.direccion");
-    }
-    
-    private Block createEntidadDireccionLogo() {
+    private Block createLogo() {
     	Block b = new Block();
-    	
-    	BlockContainer bc = new BlockContainer();
-    	bc.getMarkerOrBlockOrBlockContainer().add(createTextEntidad(EntradaTaquillaReport.sizeTxtParanimf));
-    	bc.getMarkerOrBlockOrBlockContainer().add(getBlockWithText(getTextEntidadCIF(), EntradaTaquillaReport.sizeTxtDireccionEntidad));
-    	bc.getMarkerOrBlockOrBlockContainer().add(getBlockWithText(getTextDireccion(), EntradaTaquillaReport.sizeTxtDireccionEntidad));
-    	Block bloqueUJIDireccionCIF = new Block();
-    	bloqueUJIDireccionCIF.getContent().add(bc);
-    	
-    	BaseTable table = new BaseTable(new EntradaReportStyle(), 2, "7.5cm", "2.5cm");
-    	table.withNewRow();
-    	table.withNewCell(bloqueUJIDireccionCIF);
-        
-        TableCell cell = table.withNewCell(getLogo());
-        cell.setTextAlign(TextAlignType.CENTER);
-        cell.setDisplayAlign(DisplayAlignType.AFTER);
-        
-    	b.getContent().add(table);
+    	b.getContent().add(getLogo());
     	return b;
 	}
 
@@ -275,41 +219,41 @@ public class EntradaTaquillaReport extends Report
         return text;
 	}
 
-	private BaseTable createEntradaIzquierdaCentro(String urlPublic)
+	private Block createEntradaIzquierdaCentro(String urlPublic)
     {
-        BaseTable table = new BaseTable(new EntradaReportStyle(), 2, "7.0cm", "3.2cm");
+		Block b = new Block();
+		EntradaReportStyle reportStyle = getStyleWithFont();
+        BaseTable table = new BaseTable(reportStyle, 1, EntradaTaquillaReport.sixeZonaImpresion);
 
         table.setMarginTop("0");
 
         table.withNewRow();
-        table.withNewCell(createTitulo(EntradaTaquillaReport.sizeTxtTituloEvento, true), "2");
+        table.withNewCell(createTitulo(EntradaTaquillaReport.sizeTxtTituloEvento, true));
 
         table.withNewRow();
-        TableCell cellEnmedio = table.withNewCell(createEntradaFechaHoras(), "2");
+        TableCell cellEnmedio = table.withNewCell(createEntradaFechaHoras());
         cellEnmedio.setPadding("0cm");
         cellEnmedio.setBackgroundColor(FONDO_BLANCO);
         
         table.withNewRow();
-        table.withNewCell(createZona(), "2");
+        table.withNewCell(createZona());
         
         table.withNewRow();
-        //this.fila = "10";this.numero = "10";
-        
         table.withNewCell(createFilaButacaYUuid());
-        	
+        /*table.withNewRow();
         TableCell cellBarCode = table.withNewCell(createBarcode(urlPublic));
         cellBarCode.setTextAlign(TextAlignType.RIGHT);
-        cellBarCode.setPaddingLeft("0.2cm");
+        cellBarCode.setPaddingLeft("0.2cm");*/
         
-
-        return table;
+        b.getContent().add(table);
+        return b;
     }
 	
 	private Block createTipoEntradaPrecio() {
 		String txtTipoEntradaPrecio = getTipoEntradaPrecio();
 		Block block = getBlockWithText(txtTipoEntradaPrecio, "10pt");
 		
-		block.setMarginRight("0.3cm");
+		//block.setMarginRight("0.3cm");
 		
 		return block;
 	}
@@ -342,27 +286,14 @@ public class EntradaTaquillaReport extends Report
 
     private Block createFilaYButaca()
     {
-        Block b = new Block();
-		BlockContainer bc = new BlockContainer();
 		Block filaButaca = new Block();
-		
-		filaButaca.setPaddingLeft("0.1cm");
-		filaButaca.setPaddingRight("0.1cm");
-		filaButaca.setPaddingTop("0.1cm");
-		filaButaca.setMarginTop("0.1cm");
-		filaButaca.setBorder("1px solid");
+
 		filaButaca.setFontSize(EntradaTaquillaReport.sizeTxtZonaFilaButaca);
 		filaButaca.setFontWeight("bold");
-		filaButaca.setWrapOption(WrapOptionType.NO_WRAP);
+		filaButaca.setWrapOption(WrapOptionType.WRAP);
 		
        	filaButaca.getContent().add(getFilaButaca());
-       	bc.getMarkerOrBlockOrBlockContainer().add(filaButaca);
-       	
-       	int width = getWidthTexto(getFilaButaca(), Font.BOLD, EntradaTaquillaReport.sizeTxtZonaFilaButacaInt) - 8;
-       	bc.setWidth(width + "px");
-       	bc.setWrapOption(WrapOptionType.NO_WRAP);
-		b.getContent().add(bc);
-        return b;
+        return filaButaca;
     }
     
     private String getFilaButaca() {
@@ -373,32 +304,19 @@ public class EntradaTaquillaReport extends Report
 
 	private Block createZona() {
 		String txtZona = this.zona.toUpperCase();
-		Block b = new Block();
-		BlockContainer bc = new BlockContainer();
 		Block blkZona = new Block();
-
-		blkZona.setPaddingLeft("0.1cm");
-		blkZona.setPaddingRight("0.1cm");
-		blkZona.setPaddingTop("0.1cm");
-		blkZona.setMarginTop("0");
 		blkZona.getContent().add(txtZona);
-		blkZona.setBorder("1px solid");
 		blkZona.setFontSize(EntradaTaquillaReport.sizeTxtZonaFilaButaca);
-		blkZona.setWrapOption(WrapOptionType.NO_WRAP);
-		bc.getMarkerOrBlockOrBlockContainer().add(blkZona);
-		
-		int width = getWidthTexto(txtZona, Font.PLAIN, EntradaTaquillaReport.sizeTxtZonaFilaButacaInt) + 8;
-		bc.setWidth(width + "px");
-		bc.setWrapOption(WrapOptionType.NO_WRAP);
-		
-		b.getContent().add(bc);
-		return b;
+		blkZona.setWrapOption(WrapOptionType.WRAP);
+
+		return blkZona;
 	}
 
 	private Block createTitulo(String sizeTitulo, boolean withDots) {
 		Block titulo = new Block();
+		titulo.setWrapOption(WrapOptionType.WRAP);
         titulo.setFontSize(sizeTitulo);
-        String textoAMostrar = (withDots)?getTextoAMostrar():this.titulo;
+        String textoAMostrar = this.titulo;
         titulo.setFontStyle(FontStyleType.ITALIC);
         titulo.getContent().add(textoAMostrar);
         titulo.setMarginBottom("0.1cm");
@@ -406,32 +324,11 @@ public class EntradaTaquillaReport extends Report
         return titulo;
 	}
 	
-	private int getWidthTexto(String texto, int tipo, int size) {
-		Font font = new Font("Arial", tipo, size);
-        Canvas c = new Canvas();
-        FontMetrics fm = c.getFontMetrics(font);
-        return fm.stringWidth(texto);
-	}
-
-    private String getTextoAMostrar() {
-        boolean textoIncorrecto = true;
-        String texto = this.titulo;
-        
-        while (textoIncorrecto) {
-        	int width = getWidthTexto(texto, Font.ITALIC, 22);
-        	if (width > 308)
-        		texto = texto.substring(0, texto.lastIndexOf(" ")) + "...";
-        	else
-        		textoIncorrecto = false;
-        }
-        return texto;
-	}
-
 	private ExternalGraphic getLogo()
     {
         ExternalGraphic externalGraphic = new ExternalGraphic();
         externalGraphic.setSrc(new File("/etc/uji/par/imagenes/logo.svg").getAbsolutePath());
-        externalGraphic.setContentWidth(EntradaTaquillaReport.sizeContentLogo);
+        externalGraphic.setContentWidth(EntradaTaquillaReport.sixeZonaImpresion);
 
         return externalGraphic;
     }
@@ -439,25 +336,21 @@ public class EntradaTaquillaReport extends Report
 	private Block createEntradaFechaHoras()
     {
         Block block = new Block();
-        BaseTable table = new BaseTable(new EntradaReportStyle(), 2, "3.3cm", "7.4cm");
-
+        BaseTable table = new BaseTable(getStyleWithFont(), 1, EntradaTaquillaReport.sixeZonaImpresion);
         table.withNewRow();
         
         String dia = getDiaEvento();
         String hora =  getHoraEvento();
         String horaApertura = getHoraApertura();
         
-        TableCell cell = table.withNewCell(getBlockWithText(dia, "12pt"));
-        cell.setBorderRight("1px solid");
-        TableCell cellHora = table.withNewCell(getBlockWithText(hora, "12pt"));
-        cellHora.setPaddingLeft("0.4cm");
+        table.withNewCell(getBlockWithText(dia + " | " + hora, "12pt"));
         
         table.withNewRow();
         TableCell celdaApertura = table.withNewCell(getBlockWithText(horaApertura , "7pt"));
         celdaApertura.setPaddingTop("0.1cm");
+        table.withNewRow();
         
-        TableCell celdaTipoEntrada = table.withNewCell(createTipoEntradaPrecio(), "1");
-        celdaTipoEntrada.setTextAlign(TextAlignType.RIGHT);
+        table.withNewCell(createTipoEntradaPrecio());
 
         block.getContent().add(table);
         return block;
@@ -481,12 +374,16 @@ public class EntradaTaquillaReport extends Report
 
     private BaseTable createCondicionesYWeb()
     {
-        BaseTable table = new BaseTable(new EntradaReportStyle(), 1, "7.2cm");
+        BaseTable table = new BaseTable(getStyleWithFont(), 1, "7.2cm");
         table.withNewRow();
-        table.withNewCell(getBlockWithText(ResourceProperties.getProperty(locale, "entrada.entradaValida"), "8pt"));
+        Block valida = getBlockWithText(ResourceProperties.getProperty(locale, "entrada.entradaValida"), "8pt");
+        valida.setTextAlign(TextAlignType.JUSTIFY);
+        table.withNewCell(valida);
 
         table.withNewRow();
-        table.withNewCell(getBlockWithText(ResourceProperties.getProperty(locale, "entrada.condicionesWeb"), "8pt"));
+        Block web = getBlockWithText(ResourceProperties.getProperty(locale, "entrada.condicionesWeb"), "8pt");
+        valida.setTextAlign(TextAlignType.JUSTIFY);
+        table.withNewCell(web);
         return table;
     }
 
@@ -510,25 +407,28 @@ public class EntradaTaquillaReport extends Report
         return textParanimf;
     }
 
-    private static void initStatics() throws ReportSerializerInitException
+    private static void initStatics() throws ReportSerializerInitException, SAXException, IOException
     {
         if (reportSerializer == null)
             reportSerializer = new FopPDFSerializer();
+        
+        fopFactory = FopFactory.newInstance();
+        fopFactory.setUserConfig(new File("/etc/uji/par/fop.xconf"));
     }
 
-    public static EntradaTaquillaReport create(Locale locale)
+    public static EntradaTaquillaReport create(Locale locale) throws SAXException, IOException
     {
         try
         {
             initStatics();
             EntradaReportStyle reportStyle = new EntradaReportStyle();
-            reportStyle.setFontFamily("Arial");
-            reportStyle.setSimplePageMasterMarginRight("0.3cm");
-            reportStyle.setSimplePageMasterMarginLeft("0.3cm");
+            reportStyle.setFontFamily(EntradaTaquillaReport.font);
+            reportStyle.setSimplePageMasterMarginRight("3.7mm");
+            reportStyle.setSimplePageMasterMarginLeft("3.85mm");
             reportStyle.setSimplePageMasterMarginBottom("0.3cm");
             reportStyle.setSimplePageMasterMarginTop("0.3cm");
-            reportStyle.setSimplePageMasterPageWidth("16cm");
-            reportStyle.setSimplePageMasterPageHeight("8cm");
+            reportStyle.setSimplePageMasterPageWidth("8cm");
+            reportStyle.setSimplePageMasterPageHeight("15cm");
             reportStyle.setSimplePageMasterRegionBeforeExtent("0cm");
             reportStyle.setSimplePageMasterRegionAfterExtent("0cm");
             reportStyle.setSimplePageMasterRegionBodyMarginTop("0cm");
@@ -544,7 +444,7 @@ public class EntradaTaquillaReport extends Report
 
     public void serialize(OutputStream output) throws ReportSerializationException
     {
-        super.serialize(output);
+        super.serialize(output, fopFactory);
     }
 
     public void setTitulo(String titulo)
@@ -566,4 +466,31 @@ public class EntradaTaquillaReport extends Report
     {
         this.horaApertura = horaApertura;
     }
+    
+    private EntradaReportStyle getStyleWithFont() {
+    	EntradaReportStyle reportStyle = new EntradaReportStyle();
+        reportStyle.setFontFamily(EntradaTaquillaReport.font);
+        return reportStyle;
+    }
+    
+    private int getWidthTexto(String texto, int tipo, int size) {
+		Font font = new Font(EntradaTaquillaReport.font, tipo, size);
+        Canvas c = new Canvas();
+        FontMetrics fm = c.getFontMetrics(font);
+        return fm.stringWidth(texto);
+	}
+
+    private String getTituloPequenyoAMostrar() {
+        boolean textoIncorrecto = true;
+        String texto = this.titulo;
+        
+        while (textoIncorrecto) {
+        	int width = getWidthTexto(texto, Font.PLAIN, 13);
+        	if (width > 100)
+        		texto = texto.substring(0, texto.lastIndexOf(" ")) + "...";
+        	else
+        		textoIncorrecto = false;
+        }
+        return texto;
+	}
 }

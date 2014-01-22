@@ -62,8 +62,8 @@ public class BarcodeService
         Map<EncodeHintType,Object> hints = new HashMap<EncodeHintType, Object>();
         //hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
         hints.put(EncodeHintType.MARGIN, 2);
-        
-        BitMatrix matrix = writer.encode(text, BarcodeFormat.QR_CODE, 70, 70, hints);
+        int widthHeight = 200;
+        BitMatrix matrix = writer.encode(text, BarcodeFormat.QR_CODE, widthHeight, widthHeight, hints);
 
         MatrixToImageWriter.writeToStream(matrix, "PNG", output);
     }

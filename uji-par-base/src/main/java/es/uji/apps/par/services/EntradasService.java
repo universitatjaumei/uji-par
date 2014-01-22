@@ -2,6 +2,7 @@ package es.uji.apps.par.services;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Locale;
 
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
+import org.xml.sax.SAXException;
 
 import es.uji.apps.fopreports.serialization.ReportSerializationException;
 import es.uji.apps.par.config.Configuration;
@@ -37,11 +39,10 @@ public class EntradasService
         entrada.serialize(outputStream);
     }
     
-    public void generaEntradaTaquilla(String uuidCompra, OutputStream outputStream) throws ReportSerializationException {
+    public void generaEntradaTaquilla(String uuidCompra, OutputStream outputStream) throws ReportSerializationException, SAXException, IOException {
     	EntradaTaquillaReport entrada = EntradaTaquillaReport.create(new Locale("ca"));
 
         rellenaEntradaTaquilla(uuidCompra, entrada);
-
         entrada.serialize(outputStream);
 	}
 
