@@ -132,12 +132,19 @@ Ext.define('Paranimf.view.evento.FormSesiones', {
 	          forceSelection:true,
 	          store: new Ext.data.SimpleStore({
 	            fields: ['value', 'name'],
-	              data: [
-	                ['35mm', UI.i18n.message['35mm']],
-	                ['digital', UI.i18n.message['digital']],
-	                ['3d', UI.i18n.message['3d']]
-	              ]
-	          })      
+	            data: [
+	              ['0', UI.i18n.formatosProyeccion._35m],
+	              ['1', UI.i18n.formatosProyeccion._2d],
+	              ['2', UI.i18n.formatosProyeccion._3d],
+                ['3', UI.i18n.formatosProyeccion.dvd],
+                ['4', UI.i18n.formatosProyeccion.blueray],
+                ['5', UI.i18n.formatosProyeccion.beta],
+                ['6', UI.i18n.formatosProyeccion.vhs],
+                ['7', UI.i18n.formatosProyeccion.imax],
+                ['8', UI.i18n.formatosProyeccion.omnimax],
+                ['9', UI.i18n.formatosProyeccion.betamax]
+	            ]
+	          })
 	         },{
 	          fieldLabel: UI.i18n.field.versionLinguistica,
 	          name: 'versionLinguistica',
@@ -149,7 +156,19 @@ Ext.define('Paranimf.view.evento.FormSesiones', {
 	          store: new Ext.data.SimpleStore({
 	            fields: ['value', 'name'],
 	              data: [
-	                ['falta', UI.i18n.message.falta]
+	                ['S', UI.i18n.versionLinguistica.S],
+                  ['B', UI.i18n.versionLinguistica.B],
+                  ['R', UI.i18n.versionLinguistica.R],
+                  ['Q', UI.i18n.versionLinguistica.Q],
+                  ['P', UI.i18n.versionLinguistica.P],
+                  ['Z', UI.i18n.versionLinguistica.Z],
+                  ['W', UI.i18n.versionLinguistica.W],
+                  ['Y', UI.i18n.versionLinguistica.Y],
+                  ['V', UI.i18n.versionLinguistica.V],
+                  ['U', UI.i18n.versionLinguistica.U],
+                  ['T', UI.i18n.versionLinguistica.T],
+                  ['F', UI.i18n.versionLinguistica.F],
+                  ['X', UI.i18n.versionLinguistica.X]
 	              ]
 	          })      
 	         }

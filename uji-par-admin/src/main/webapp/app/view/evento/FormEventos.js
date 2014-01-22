@@ -277,7 +277,7 @@ Ext.define('Paranimf.view.evento.FormEventos', {
       store: new Ext.data.SimpleStore({
         fields: ['value', 'name'],
           data: [
-            ['falta', UI.i18n.message.falta]
+            ['1', UI.i18n.message.falta]
           ]
       })      
      }, {
@@ -291,7 +291,17 @@ Ext.define('Paranimf.view.evento.FormEventos', {
       store: new Ext.data.SimpleStore({
         fields: ['value', 'name'],
           data: [
-            ['falta', UI.i18n.message.falta]
+            ["1", UI.i18n.versionOriginal.castella],
+             ["2", UI.i18n.versionOriginal.catala],
+             ["3", UI.i18n.versionOriginal.vasc],
+             ["4", UI.i18n.versionOriginal.gallec],
+             ["5", UI.i18n.versionOriginal.valencia],
+             ["6", UI.i18n.versionOriginal.angles],
+             ["7", UI.i18n.versionOriginal.frances],
+             ["8", UI.i18n.versionOriginal.alema],
+             ["9", UI.i18n.versionOriginal.portugues],
+             ["A", UI.i18n.versionOriginal.italia],
+             ["Z", UI.i18n.versionOriginal.altres]
           ]
       })      
      }, {
@@ -308,7 +318,13 @@ Ext.define('Paranimf.view.evento.FormEventos', {
          store: new Ext.data.SimpleStore({
            fields: ['value', 'name'],
              data: [
-               ['falta', UI.i18n.message.falta]
+               ["1", UI.i18n.subtitulos.castella],
+               ["2", UI.i18n.subtitulos.catala],
+               ["3", UI.i18n.subtitulos.vasc],
+               ["4", UI.i18n.subtitulos.gallec],
+               ["5", UI.i18n.subtitulos.valencia],
+               ["9", UI.i18n.subtitulos.altres],
+               ["0", UI.i18n.subtitulos.sense]
              ]
          })      
      }]

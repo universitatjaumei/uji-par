@@ -356,6 +356,59 @@ UI =
             "invitacion": "Invitació",
             "aulaTeatro": "Platea - Carnet jove",
             "descuento": "Jubilats - Boninstitut - Anem al teatre"
+        },
+
+        "versionOriginal": {
+            "castella": "Castellà",
+            "catala": "Català",
+            "vasc": "Vasc",
+            "gallec": "Gallec",
+            "valencia": "Valencià",
+            "angles": "Anglès",
+            "frances": "Francès",
+            "alema": "Alemà",
+            "portugues": "Portuguès",
+            "italia": "Italià",
+            "altres": "Altres llengües"
+        },
+
+        "subtitulos": {
+            "castella": "Castellà",
+            "catala": "Català",
+            "vasc": "Vasc",
+            "gallec": "Gallec",
+            "valencia": "Valencià",
+            "altres": "Altres llengües",
+            "sense": "Sense subtítols"
+        },
+
+        "formatosProyeccion": {
+            "_35m": "35 m.m.",
+            "_2d": "Digital 2D",
+            "_3d": "Digital 3D",
+            "dvd": "DVD",
+            "blueray": "Bluray",
+            "beta": "Betacam",
+            "vhs": "VHS",
+            "imax": "IMAX",
+            "omnimax": "Omnimax",
+            "betamax": "Betamax"
+        },
+
+        "versionLinguistica": {
+            "S": "Original Castellano",
+            "B": "Original Valenciano",
+            "R": "Original Catalán ",
+            "Q": "Original Vasco ",
+            "P": "Original Gallego ",
+            "Z": "Original Otras Lenguas",
+            "W": "Doblada Castellano ",
+            "Y": "Doblada Valenciano",
+            "V": "Doblada Catalán ",
+            "U": "Doblada Vasco ",
+            "T": "Doblada Gallego ",
+            "F": "Doblada Otras Lenguas",
+            "X": "Sin diálogos"
         }
     }
 }
