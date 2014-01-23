@@ -35,7 +35,7 @@ public class ComunicacionesICAAResource extends BaseResource
         byte[] arr = comunicacionesICAAService.generaFicheroICAA(ids, fechaEnvioHabitualAnterior, tipoEnvio);
 		return Response.ok(arr, 
 				MediaType.TEXT_PLAIN).
-				header("content-disposition","attachment; filename = informeICAA.txt").build();
+				header("Content-Disposition","attachment; filename =\"informeICAA.txt\"").build();
     }
     
     @PUT
