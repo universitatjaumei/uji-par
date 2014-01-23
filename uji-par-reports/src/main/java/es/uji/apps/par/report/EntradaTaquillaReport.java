@@ -163,10 +163,11 @@ public class EntradaTaquillaReport extends Report
     	bc.setWidth("100%");
     	String fontSize = "13pt";
     	bc.getMarkerOrBlockOrBlockContainer().add(getBlockWithText(getTituloPequenyoAMostrar(), fontSize));
-    	bc.getMarkerOrBlockOrBlockContainer().add(getBlockWithText(this.fecha + "-" + this.hora, fontSize));
+
     	if (this.fila != null && this.numero != null)
     		bc.getMarkerOrBlockOrBlockContainer().add(getBlockWithText("P.B." + this.fila + "-" + this.numero, fontSize));
     	bc.getMarkerOrBlockOrBlockContainer().add(getBlockWithText(this.tipoEntrada + " " + this.total + " €", fontSize));
+    	bc.getMarkerOrBlockOrBlockContainer().add(getBlockWithText(this.fecha + "-" + this.hora, fontSize));
         blockIzquierda.getContent().add(bc);
         
     	BaseTable table = new BaseTable(getStyleWithFont(), 2, "42.2mm", "30mm");
@@ -192,7 +193,7 @@ public class EntradaTaquillaReport extends Report
     {
         Leader line = new Leader();
         line.setColor(GRIS_OSCURO);
-        line.setBorderAfterStyle(BorderStyleType.SOLID);
+        line.setBorderAfterStyle(BorderStyleType.DOTTED);
         line.setLeaderLengthOptimum("100%");
 
         Block b = new Block();
