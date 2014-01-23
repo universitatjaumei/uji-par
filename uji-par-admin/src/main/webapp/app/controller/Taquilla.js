@@ -988,7 +988,7 @@ Ext.define('Paranimf.controller.Taquilla', {
    		if (this.getGridEventosTaquilla().hasRowSelected() && this.getGridSesionesTaquilla().hasRowSelected()) {
   			var evento = this.getGridEventosTaquilla().getSelectedRecord();
   			var sesion = this.getGridSesionesTaquilla().getSelectedRecord();
-        console.log(evento, sesion);
+        //console.log(evento, sesion);
 
         var title = UI.i18n.formTitle.comprar + " -> " + UI.i18n.message.evento + ": " + evento.data.tituloVa + " - " + UI.i18n.message.sessio + ": " + Ext.Date.format(sesion.data.fechaCelebracion, 'd/m/Y H:i');
   			this.getGridSesionesTaquilla().showComprarWindow(sesion.data['id'], evento.data['asientosNumerados'], title, false);

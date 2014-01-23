@@ -62,6 +62,9 @@ Ext.define('Paranimf.controller.Eventos', {
    }, {
       ref: 'horaCelebracion',
       selector: 'formSesiones timefield[name=horaCelebracion]'
+   }, {
+      ref: 'horaApertura',
+      selector: 'formSesiones timefield[name=horaApertura]'
    }],
 
    init: function() {
@@ -148,8 +151,19 @@ Ext.define('Paranimf.controller.Eventos', {
          }, 
          'formSesiones checkbox[name=canalInternet]': {
             change: this.enableDisableCanalInternet
+         }, 
+
+         'formSesiones timefield[name=horaCelebracion]': {
+            change: this.actualizaHoraApertura
          }
       });
+   },
+
+   actualizaHoraApertura: function(obj, newValue, oldValue) {
+      if (newValue != undefined && newValue != '') {
+         var d = new Date(newValue.getTime() - 30 * 60000);
+         this.getHoraApertura().setValue(d);
+      }
    },
 
    enableDisableCanalInternet: function(obj, newValue, oldValue) {
@@ -454,7 +468,7 @@ Ext.define('Paranimf.controller.Eventos', {
    },
    
    editSesion: function(button, event, opts) {
-      if (this.getGridEventos().hasRowSelected)
+      if (this.getGridEventos().hasRowSelected() && this.getGridSesiones().hasRowSelected())
          this.getGridSesiones().edit('formSesiones', undefined, undefined, 0.8);
       else
          alert(UI.i18n.error.eventSelected);

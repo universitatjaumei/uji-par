@@ -2,7 +2,10 @@ Ext.define('Paranimf.store.Eventos', {
    extend: 'Ext.data.Store',
    model: 'Paranimf.model.Evento',
 
-   sorters: ['tituloEs'],
+   sorters: [{
+      property: 'fechaPrimeraSesion',
+      direction: 'DESC'
+   }],
    autoLoad: false,
    autoSync: true,
    pageSize: 20,
