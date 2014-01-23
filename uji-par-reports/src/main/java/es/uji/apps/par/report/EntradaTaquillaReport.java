@@ -275,9 +275,10 @@ public class EntradaTaquillaReport extends Report
             b = new Block();
         }
         
-        Block blockUuid = getBlockWithText(this.barcode, "8pt", false, true);
+        Block blockUuid = getBlockWithText(this.barcode, "8pt");
+        blockUuid.setFontWeight("normal");
         blockUuid.setMarginTop("0.1cm");
-        blockUuid.setMarginBottom("0.05cm");
+        blockUuid.setMarginBottom("0.1cm");
         b.getContent().add(blockUuid);
         
         b.getContent().add(createCondicionesYWeb());
