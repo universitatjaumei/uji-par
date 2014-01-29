@@ -11,12 +11,28 @@
     <name>uji-par</name>
 
     <modules>
-	<module>uji-par-reports</module>
+	<!--<module>uji-par-reports</module>-->
         <module>uji-par-base</module>
         <module>uji-par-admin</module>
         <module>uji-par-web</module>
         <module>uji-par-sync</module>
     </modules>
+
+    <profiles>
+    	<profile>
+      		<id>uji</id>
+      		<modules>
+            	<module>uji-par-reports</module>
+			</modules>
+    	</profile>
+
+    	<profile>
+      		<id>benicassim</id>
+      		<modules>
+        		<module>uji-par-reports-benicassim</module>
+      		</modules>
+    	</profile>
+  	</profiles>
 
     <build>
         <pluginManagement>
