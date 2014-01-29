@@ -1,6 +1,8 @@
 package es.uji.apps.par.services.rest;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,6 +39,7 @@ import es.uji.apps.par.model.Evento;
 import es.uji.apps.par.model.PreciosSesion;
 import es.uji.apps.par.model.ResultadoCompra;
 import es.uji.apps.par.model.Sesion;
+import es.uji.apps.par.model.Tarifa;
 import es.uji.apps.par.services.ButacasService;
 import es.uji.apps.par.services.ComprasService;
 import es.uji.apps.par.services.SesionesService;
@@ -109,6 +112,7 @@ public class EntradasResource extends BaseResource
         template.put("hora", sesion.getHoraCelebracion());
         template.put("pagina", buildPublicPageInfo(urlBase, url, getLocale().getLanguage().toString()));
         template.put("tipoEventoEs", sesion.getEvento().getParTiposEvento().getNombreEs());
+        //template.put("tarifas", sesionesService)
 
         if (error != null && !error.equals(""))
         {
@@ -547,6 +551,15 @@ public class EntradasResource extends BaseResource
         template.put("muestraReservadas", true);
         template.put("modoAdmin", true);
         template.put("tipoEventoEs", sesion.getEvento().getParTiposEvento().getNombreEs());
+        Calendar cal = Calendar.getInstance();
+        template.put("millis", cal.getTime().getTime());
+        List<Tarifa> tarifas = new ArrayList<Tarifa>();
+        
+        if (sesion.getPreciosSesion() != null && sesion.getPreciosSesion().size() > 0)
+        	tarifas = sesionesService.getTarifasConPrecioSinPlantilla(sesionId);
+        else if (sesion.getPlantillaPrecios() != null)
+        	tarifas = sesionesService.getTarifasConPrecioConPlantilla(sesionId);
+        template.put("tarifas", tarifas);
 
         if (getLocale().getLanguage().equals("ca"))
         {

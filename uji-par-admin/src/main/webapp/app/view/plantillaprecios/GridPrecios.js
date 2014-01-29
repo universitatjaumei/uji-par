@@ -28,28 +28,21 @@ Ext.define('Paranimf.view.plantillaprecios.GridPrecios', {
         hidden: true,
         text: UI.i18n.field.idLocalitzacio
       }, {
+        dataIndex: 'tarifa',
+        hidden: true,
+        text: UI.i18n.field.idTarifa
+      }, {
         dataIndex: 'localizacion_nombre',
         text: UI.i18n.field.localizacion,
         flex: 2,
         sortable: false
       }, {
+        dataIndex: 'tarifa_nombre',
+        text: UI.i18n.field.tarifa,
+        flex: 2
+      }, {
         dataIndex: 'precio',
         text: UI.i18n.field.precio,
-        flex: 1,
-        renderer: Ext.util.Format.numberRenderer("0.00")
-      },{
-        dataIndex: 'descuento',
-        text: UI.i18n.field.descuento,
-        flex: 1,
-        renderer: Ext.util.Format.numberRenderer("0.00")
-      },{
-        dataIndex: 'invitacion',
-        text: UI.i18n.field.invitacion,
-        flex: 1,
-        renderer: Ext.util.Format.numberRenderer("0.00")
-      },{
-    	dataIndex: 'aulaTeatro',
-        text: UI.i18n.field.aulaTeatro,
         flex: 1,
         renderer: Ext.util.Format.numberRenderer("0.00")
       }];

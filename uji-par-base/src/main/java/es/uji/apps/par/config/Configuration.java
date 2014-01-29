@@ -34,6 +34,12 @@ public class Configuration
     private static final String SYNC_TIPO = "uji.sync.lugar";
     private static final String SYNC_URL_TIPO = "uji.sync.rss";
     private static final String SYNC_HORAS_INICIO_VENTA_ONLINE = "uji.sync.horasInicioVentaOnlineTrasCreacion";
+    private static final String ENTRADA_TAQUILLA_REPORT = "uji.reports.entradaTaquillaReport.class";
+    private static final String ENTRADA_ONLINE_REPORT = "uji.reports.entradaOnlineReport.class";
+	private static final String INFORME_TAQUILLA_REPORT = "uji.reports.informeTaquilla.class";
+	private static final String INFORME_EFECTIVO_REPORT = "uji.reports.informeEfectivo.class";
+	private static final String INFORME_TAQUILLA_SUBTOTALES_TPV_REPORT = "uji.reports.informeTaquillaTpvSubtotales.class";
+	private static final String INFORME_EVENTOS_REPORT = "uji.reports.informeEventos.class";
     
 
     public static Logger log = Logger.getLogger(Configuration.class);
@@ -172,6 +178,11 @@ public class Configuration
         return getProperty(AUTH_CLASS);
     }
     
+    public static String getEntradaTaquillaReport()
+    {
+        return getProperty(ENTRADA_TAQUILLA_REPORT);
+    }
+    
     public static String getAdminLogin()
     {
         return getProperty(ADMIN_LOGIN);
@@ -225,5 +236,25 @@ public class Configuration
 
 	public static String[] getLocalizacionesEnImagen(String localizacion) {
 		return getProperty(LOCALIZACIONES + "." + localizacion).split(",");
+	}
+
+	public static String getEntradaOnlineReport() {
+		return getProperty(ENTRADA_ONLINE_REPORT);
+	}
+
+	public static String getInformeTaquillaReport() {
+		return getProperty(INFORME_TAQUILLA_REPORT);
+	}
+
+	public static String getInformeEfectivoReport() {
+		return getProperty(INFORME_EFECTIVO_REPORT);
+	}
+
+	public static String getInformeTaquillaTpvSubtotalesReport() {
+		return getProperty(INFORME_TAQUILLA_SUBTOTALES_TPV_REPORT);
+	}
+
+	public static String getInformeEventosReport() {
+		return getProperty(INFORME_EVENTOS_REPORT);
 	}
 }

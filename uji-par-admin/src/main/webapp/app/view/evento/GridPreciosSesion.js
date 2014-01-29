@@ -19,31 +19,21 @@ Ext.define('Paranimf.view.evento.GridPreciosSesion', {
         sortable: false,
         text: UI.i18n.field.idLocalitzacio
       }, {
+        dataIndex: 'tarifa',
+        hidden: true,
+        text: UI.i18n.field.idTarifa
+      }, {
         dataIndex: 'localizacion_nombre',
         text: UI.i18n.field.localizacion,
         flex: 2,
         sortable: false
       }, {
+        dataIndex: 'tarifa_nombre',
+        text: UI.i18n.field.tarifa,
+        flex: 2
+      }, {
         dataIndex: 'precio',
         text: UI.i18n.field.precio,
-        flex: 1,
-        sortable: false,
-        renderer: Ext.util.Format.numberRenderer("0.00")
-      },{
-        dataIndex: 'descuento',
-        text: UI.i18n.field.descuento,
-        flex: 1,
-        sortable: false,
-        renderer: Ext.util.Format.numberRenderer("0.00")
-      },{
-        dataIndex: 'invitacion',
-        text: UI.i18n.field.invitacion,
-        flex: 1,
-        sortable: false,
-        renderer: Ext.util.Format.numberRenderer("0.00")
-      },{
-        dataIndex: 'aulaTeatro',
-        text: UI.i18n.field.aulaTeatro,
         flex: 1,
         sortable: false,
         renderer: Ext.util.Format.numberRenderer("0.00")
@@ -65,11 +55,9 @@ Ext.define('Paranimf.view.evento.GridPreciosSesion', {
             jsonFilas += ",";
 
           jsonFilas += '{';
-          jsonFilas += '"descuento":' + this.store.getRange()[i].data.descuento + ',';
           jsonFilas += '"precio":' + this.store.getRange()[i].data.precio + ',';
-          jsonFilas += '"invitacion":' + this.store.getRange()[i].data.invitacion + ',';
-          jsonFilas += '"aulaTeatro":' + this.store.getRange()[i].data.aulaTeatro + ',';
-          jsonFilas += '"localizacion":{"id": ' + this.store.getRange()[i].data.localizacion + '}';
+          jsonFilas += '"localizacion":{"id": ' + this.store.getRange()[i].data.localizacion + '},';
+          jsonFilas += '"tarifa":{"id": ' + this.store.getRange()[i].data.tarifa + '}';
           jsonFilas += '}';
       }
       jsonFilas = "[" + jsonFilas + "]";

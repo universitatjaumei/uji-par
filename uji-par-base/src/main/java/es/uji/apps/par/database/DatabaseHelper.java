@@ -21,4 +21,6 @@ public interface DatabaseHelper
     public String trunc(String campo, String formato);
     
     public int booleanToNumber(Object valor);
+    
+    public String toInteger(String columna);
 }

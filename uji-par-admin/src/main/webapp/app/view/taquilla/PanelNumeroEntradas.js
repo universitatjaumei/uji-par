@@ -8,7 +8,6 @@ Ext.define('Paranimf.view.taquilla.PanelNumeroEntradas', {
   height: 170,
   
   defaults: {
-    //anchor: '100%',
     labelWidth: 100
   },
    
@@ -20,12 +19,13 @@ Ext.define('Paranimf.view.taquilla.PanelNumeroEntradas', {
   }, {
     padding: '5 0 0 0',
     xtype: 'panel',
+    name: 'panelTarifas',
+    autoScroll: true,
+    //minHeight: 10,
+    height: 20,
     border: 0,
     layout: 'column',
-    defaults: [{
-      
-    }],
-    items: [{
+    items: [/*{
       columnWidth: 2/3,
       name: 'normal',
       fieldLabel: UI.i18n.field.normal,
@@ -107,6 +107,6 @@ Ext.define('Paranimf.view.taquilla.PanelNumeroEntradas', {
       border: false,
       minHeight: 30,
       padding: '5 0 0 5'
-    }]
+    }*/]
   }]
 });

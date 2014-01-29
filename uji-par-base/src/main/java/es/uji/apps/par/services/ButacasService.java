@@ -11,6 +11,7 @@ import es.uji.apps.par.dao.LocalizacionesDAO;
 import es.uji.apps.par.db.ButacaDTO;
 import es.uji.apps.par.db.CompraDTO;
 import es.uji.apps.par.db.LocalizacionDTO;
+import es.uji.apps.par.db.TarifaDTO;
 import es.uji.apps.par.model.Butaca;
 import es.uji.apps.par.model.DisponiblesLocalizacion;
 
@@ -76,10 +77,15 @@ public class ButacasService
     }
 
 	public List<Butaca> getButacasCompra(Long idCompra, String sort, int start, int limit) {
-		List<ButacaDTO> listaButacasDTO = butacasDAO.getButacasCompra(idCompra, sort, start, limit);
+		List<Object[]> listaButacasDTO = butacasDAO.getButacasCompra(idCompra, sort, start, limit);
 		List<Butaca> listaButacas = new ArrayList<Butaca>();
-		for (ButacaDTO butacaDTO: listaButacasDTO)
-			listaButacas.add(new Butaca(butacaDTO));
+		for (Object[] objButacaTarifa: listaButacasDTO) {
+			ButacaDTO butacaDTO = (ButacaDTO) objButacaTarifa[0];
+			TarifaDTO tarifaDTO = (TarifaDTO) objButacaTarifa[1];
+			Butaca butaca = new Butaca(butacaDTO);
+			butaca.setTipo(tarifaDTO.getNombre());
+			listaButacas.add(butaca);
+		}
 		
 		return listaButacas;
 	}

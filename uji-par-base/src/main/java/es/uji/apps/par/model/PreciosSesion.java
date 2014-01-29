@@ -19,6 +19,7 @@ public class PreciosSesion {
 	private BigDecimal invitacion;
 	private BigDecimal precio;
 	private BigDecimal aulaTeatro;
+	private Tarifa tarifa;
 	
 	public PreciosSesion() {
 		
@@ -27,20 +28,16 @@ public class PreciosSesion {
 	public PreciosSesion(PreciosPlantilla preciosPlantilla) {
         this.id = preciosPlantilla.getId();
         this.localizacion = preciosPlantilla.getLocalizacion();
-        this.descuento = preciosPlantilla.getDescuento();
-        this.invitacion = preciosPlantilla.getInvitacion();
         this.precio = preciosPlantilla.getPrecio();
-        this.aulaTeatro = preciosPlantilla.getAulaTeatro();
+        this.tarifa = preciosPlantilla.getTarifa();
     }
 	
 	public PreciosSesion(PreciosSesionDTO preciosSesion) {
 		this.id = preciosSesion.getId();
 		this.localizacion = Localizacion.localizacionDTOtoLocalizacion(preciosSesion.getParLocalizacione());
 		this.sesion = Sesion.SesionDTOToSesion(preciosSesion.getParSesione());
-		this.descuento = preciosSesion.getDescuento();
-		this.invitacion = preciosSesion.getInvitacion();
 		this.precio = preciosSesion.getPrecio();
-		this.aulaTeatro = preciosSesion.getAulaTeatro();
+		this.tarifa = Tarifa.tarifaDTOToTarifa(preciosSesion.getParTarifa());
 	}
 
 	public long getId() {
@@ -111,15 +108,8 @@ public class PreciosSesion {
 
 	public static PreciosSesionDTO precioSesionToPrecioSesionDTO(PreciosSesion preciosSesion) {
 		PreciosSesionDTO preciosSesionDTO = new PreciosSesionDTO();
-		preciosSesionDTO.setDescuento(preciosSesion.getDescuento());
 		preciosSesionDTO.setPrecio(preciosSesion.getPrecio());
-		preciosSesionDTO.setInvitacion(preciosSesion.getInvitacion());
-		preciosSesionDTO.setAulaTeatro(preciosSesion.getAulaTeatro());
-		
-		/*LocalizacionDTO localizacionDTO = new LocalizacionDTO();
-		localizacionDTO.setId(preciosSesion.getLocalizacion().getId());
-		preciosSesionDTO.setParLocalizacione(localizacionDTO);*/
-		
+		preciosSesionDTO.setParTarifa(Tarifa.toDTO(preciosSesion.getTarifa()));
 		preciosSesionDTO.setParLocalizacione(Localizacion.localizacionToLocalizacionDTO(preciosSesion.getLocalizacion()));
 		
 		if (preciosSesion.getSesion() != null) {
@@ -129,5 +119,13 @@ public class PreciosSesion {
 		}
 		
 		return preciosSesionDTO;
+	}
+
+	public Tarifa getTarifa() {
+		return tarifa;
+	}
+
+	public void setTarifa(Tarifa tarifa) {
+		this.tarifa = tarifa;
 	}
 }

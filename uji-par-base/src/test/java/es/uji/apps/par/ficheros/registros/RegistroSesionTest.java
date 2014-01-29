@@ -7,8 +7,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import es.uji.apps.par.RegistroSerializaException;
-import es.uji.apps.par.ficheros.registros.RegistroSesion;
-import es.uji.apps.par.ficheros.registros.TipoIncidencia;
 
 public class RegistroSesionTest
 {

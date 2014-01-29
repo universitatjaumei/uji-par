@@ -338,6 +338,7 @@ public class ComprasDAO extends BaseDAO
         }
     } 
 
+    @Transactional
     private boolean butacaOcupada(ButacaDTO butaca)
     {
         QButacaDTO b = QButacaDTO.butacaDTO;
@@ -353,6 +354,7 @@ public class ComprasDAO extends BaseDAO
         return query.count() > 0;
     }
 
+    @Transactional
     public List<CompraDTO> getReservasACaducar(Date date)
     {
         QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
@@ -382,14 +384,16 @@ public class ComprasDAO extends BaseDAO
     @SuppressWarnings("unchecked")
 	@Transactional
 	public List<Object[]> getComprasInFechas(String fechaInicio, String fechaFin) {
-    	String sql = "select e.titulo_va, s.fecha_celebracion, b.tipo, l.codigo, count(b.id) as cantidad, sum(b.precio) as total, c.sesion_id " +
-    			"from par_butacas b, par_compras c, par_sesiones s, par_eventos e, par_localizaciones l " +
+    	String sql = "select e.titulo_va, s.fecha_celebracion, b.tipo, l.codigo, count(b.id) as cantidad, sum(b.precio) as total, c.sesion_id, " +
+    			"l.nombre_va, f.nombre " +
+    			"from par_butacas b, par_compras c, par_sesiones s, par_eventos e, par_localizaciones l, par_tarifas f " +
     			"where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id and l.id=b.localizacion_id " +
     			"and c.fecha >= TO_DATE('" + fechaInicio + "','YYYY-MM-DD') and c.fecha <= TO_DATE('" + fechaFin + " 23:59','YYYY-MM-DD HH24:MI') " +
     			"and c.pagada = " + dbHelper.trueString() + " and c.reserva = " + dbHelper.falseString() + " and c.taquilla = " + dbHelper.trueString() + " " +
     			"and b.anulada = " + dbHelper.falseString() + " " +
     			"and c.codigo_pago_tarjeta is null " +
-    			"group by c.sesion_id, e.titulo_va, b.tipo, s.fecha_celebracion, l.codigo " +
+    			"and f.id = " + dbHelper.toInteger("b.tipo") + " " + 
+    			"group by c.sesion_id, e.titulo_va, b.tipo, s.fecha_celebracion, l.codigo, l.nombre_va, f.nombre " +
     			"order by e.titulo_va";
     	
     	return entityManager.createNativeQuery(sql).getResultList();
@@ -398,13 +402,15 @@ public class ComprasDAO extends BaseDAO
 	@SuppressWarnings("unchecked")
 	@Transactional
 	public List<Object[]> getComprasPorEventoInFechas(String fechaInicio, String fechaFin) {
-		String sql = "select e.id, e.titulo_va, b.tipo, count(b.id) as cantidad, sum(b.precio) as total, c.taquilla " +
-    			"from par_butacas b, par_compras c, par_sesiones s, par_eventos e " +
+		String sql = "select e.id, e.titulo_va, b.tipo, count(b.id) as cantidad, sum(b.precio) as total, c.taquilla, " +
+				"f.nombre " +
+    			"from par_butacas b, par_compras c, par_sesiones s, par_eventos e, par_tarifas f " +
     			"where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id " +
     			"and c.fecha >= TO_DATE('" + fechaInicio + "','YYYY-MM-DD') and c.fecha <= TO_DATE('" + fechaFin + " 23:59','YYYY-MM-DD HH24:MI') " +
     			"and c.pagada = " + dbHelper.trueString() + " and c.reserva = " + dbHelper.falseString() + " " +
     			"and b.anulada = " + dbHelper.falseString() + " " +
-    			"group by e.id, e.titulo_va, b.tipo, c.taquilla " +
+    			"and f.id = " + dbHelper.toInteger("b.tipo") + " " + 
+    			"group by e.id, e.titulo_va, b.tipo, c.taquilla, f.nombre " +
     			"order by e.titulo_va";
 		
     	return entityManager.createNativeQuery(sql).getResultList();
@@ -458,6 +464,7 @@ public class ComprasDAO extends BaseDAO
         return entityManager.createNativeQuery(sql).getResultList();
     }
 
+    @Transactional
     public BigDecimal getTotalTaquillaTpv(String fechaInicio, String fechaFin)
     {
         String sql = "select sum(b.precio) " +
@@ -477,6 +484,7 @@ public class ComprasDAO extends BaseDAO
              return (BigDecimal) result;
     }
 
+    @Transactional
     public BigDecimal getTotalTaquillaEfectivo(String fechaInicio, String fechaFin)
     {
         String sql = "select sum(b.precio) " +
@@ -496,6 +504,7 @@ public class ComprasDAO extends BaseDAO
              return dbHelper.castBigDecimal(result);
     }
 
+    @Transactional
     public BigDecimal getTotalOnline(String fechaInicio, String fechaFin)
     {
         String sql = "select sum(b.precio) " +

@@ -7,8 +7,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.Transient;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,20 +61,21 @@ public class ComprasService
     {
         Sesion sesion = sesionesService.getSesion(sesionId);
         Evento evento = sesion.getEvento();
-        Map<String, PreciosSesion> precios = sesionesService.getPreciosSesionPorLocalizacion(sesionId);
+        Map<String, Map<Long, PreciosSesion>> precios = sesionesService.getPreciosSesionPorLocalizacion(sesionId);
 
         if (!sesion.getEnPlazoVentaInternet())
             throw new FueraDePlazoVentaInternetException(sesionId);
         
         for (Butaca butaca : butacasSeleccionadas)
         {
+        	Map<Long, PreciosSesion> mapaTarifasPrecios = precios.get(butaca.getLocalizacion());
             if (butaca.getTipo().equals("invitacion"))
                 throw new CompraInvitacionPorInternetException();
             
             if (butaca.getTipo().equals("aulaTeatro"))
                 throw new CompraAulaTeatroPorInternetException();            
             
-            if (esButacaDescuentoNoDisponible(butaca.getTipo(), evento, precios.get(butaca.getLocalizacion())))
+            if (esButacaDescuentoNoDisponible(butaca.getTipo(), evento, mapaTarifasPrecios.get(butaca.getTipo())))
                 throw new CompraButacaDescuentoNoDisponible();
         }
         
@@ -156,22 +155,12 @@ public class ComprasService
     public BigDecimal calculaImporteButacas(Long sesionId, List<Butaca> butacasSeleccionadas, boolean taquilla)
     {
         BigDecimal importe = new BigDecimal("0");
-        Map<String, PreciosSesion> preciosLocalizacion = sesionesService.getPreciosSesionPorLocalizacion(sesionId);
+        Map<String, Map<Long, PreciosSesion>> preciosLocalizacion = sesionesService.getPreciosSesionPorLocalizacion(sesionId);
 
         for (Butaca butaca : butacasSeleccionadas)
         {
-            PreciosSesion precioLocalizacion = preciosLocalizacion.get(butaca.getLocalizacion());
-
-            if (butaca.getTipo().equals("normal"))
-                importe = importe.add(precioLocalizacion.getPrecio());
-            else if (butaca.getTipo().equals("descuento"))
-                importe = importe.add(precioLocalizacion.getDescuento());
-            else if (butaca.getTipo().equals("invitacion"))
-                importe = importe.add(precioLocalizacion.getInvitacion());
-            else if (butaca.getTipo().equals("aulaTeatro"))
-                importe = importe.add(precioLocalizacion.getAulaTeatro());            
-            else
-                throw new RuntimeException("Butaca con tipo de precio no reconocido: " + butaca);
+        	Map<Long, PreciosSesion> mapaTarifasPrecios = preciosLocalizacion.get(butaca.getLocalizacion());
+            importe = importe.add(mapaTarifasPrecios.get(Long.valueOf(butaca.getTipo())).getPrecio());
         }
 
         if (!taquilla)

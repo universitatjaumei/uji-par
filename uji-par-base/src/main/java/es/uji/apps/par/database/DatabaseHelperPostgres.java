@@ -91,4 +91,8 @@ public class DatabaseHelperPostgres implements DatabaseHelper
 		
 		return (Integer) valor;
 	}
+	
+	public String toInteger(String columna) {
+		return "CAST(coalesce(" + columna + ", '0') AS integer)";
+	}
 }

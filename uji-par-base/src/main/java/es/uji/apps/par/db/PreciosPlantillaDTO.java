@@ -1,9 +1,18 @@
 package es.uji.apps.par.db;
 
 import java.io.Serializable;
-import javax.persistence.*;
-
 import java.math.BigDecimal;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 
 /**
@@ -38,6 +47,10 @@ public class PreciosPlantillaDTO implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="PLANTILLA_ID")
 	private PlantillaDTO parPlantilla;
+	
+	@ManyToOne
+	@JoinColumn(name="TARIFA_ID")
+	private TarifaDTO parTarifa;
 
 	public PreciosPlantillaDTO() {
 	}
@@ -96,6 +109,14 @@ public class PreciosPlantillaDTO implements Serializable {
 
 	public void setParPlantilla(PlantillaDTO parPlantilla) {
 		this.parPlantilla = parPlantilla;
+	}
+
+	public TarifaDTO getParTarifa() {
+		return parTarifa;
+	}
+
+	public void setParTarifa(TarifaDTO parTarifa) {
+		this.parTarifa = parTarifa;
 	}
 
 }

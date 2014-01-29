@@ -22,6 +22,7 @@ import es.uji.apps.par.db.QButacaDTO;
 import es.uji.apps.par.db.QCompraDTO;
 import es.uji.apps.par.db.QLocalizacionDTO;
 import es.uji.apps.par.db.QSesionDTO;
+import es.uji.apps.par.db.QTarifaDTO;
 import es.uji.apps.par.db.SesionDTO;
 import es.uji.apps.par.model.Butaca;
 
@@ -30,7 +31,7 @@ public class ButacasDAO extends BaseDAO
 {
     @Autowired
     private LocalizacionesDAO localizacionesDAO;
-
+    
     @Autowired
     private SesionesDAO sesionesDAO;
 
@@ -151,17 +152,9 @@ public class ButacasDAO extends BaseDAO
     
                 for (PreciosSesionDTO precioSesion : parPreciosSesions)
                 {
-                    if (precioSesion.getParLocalizacione().getCodigo().equals(butaca.getLocalizacion()))
-                    {
-                        if (butaca.getTipo().equals("normal"))
-                            butacaDTO.setPrecio(precioSesion.getPrecio());
-                        else if (butaca.getTipo().equals("descuento"))
-                            butacaDTO.setPrecio(precioSesion.getDescuento());
-                        else if (butaca.getTipo().equals("aulaTeatro"))
-                            butacaDTO.setPrecio(precioSesion.getAulaTeatro());                        
-                        else if (butaca.getTipo().equals("invitacion"))
-                            butacaDTO.setPrecio(precioSesion.getInvitacion());                        
-                    }
+                    if (precioSesion.getParLocalizacione().getCodigo().equals(butaca.getLocalizacion()) &&
+                    		precioSesion.getParTarifa().getId() == Long.valueOf(butaca.getTipo()))
+                        butacaDTO.setPrecio(precioSesion.getPrecio());
                 }
                 
                 entityManager.persist(butacaDTO);
@@ -205,18 +198,20 @@ public class ButacasDAO extends BaseDAO
     }
 
     @Transactional
-	public List<ButacaDTO> getButacasCompra(Long idCompra, String sortParameter, int start, int limit) {
-		return getQueryButacasCompra(idCompra).orderBy(getSort(qButacaDTO, sortParameter)).offset(start).limit(limit).list(qButacaDTO);
+	public List<Object[]> getButacasCompra(Long idCompra, String sortParameter, int start, int limit) {
+    	QTarifaDTO qTarifaDTO = QTarifaDTO.tarifaDTO;
+		return getQueryButacasCompra(idCompra).orderBy(getSort(qButacaDTO, sortParameter)).offset(start).limit(limit).list(qButacaDTO, qTarifaDTO);
 	}
     
     @Transactional
     private JPAQuery getQueryButacasCompra(Long idCompra) {
     	JPAQuery query = new JPAQuery(entityManager);
     	QCompraDTO qCompraDTO= QCompraDTO.compraDTO;
+    	QTarifaDTO qTarifaDTO = QTarifaDTO.tarifaDTO;
     	
-    	return query.from(qButacaDTO)
+    	return query.from(qButacaDTO, qTarifaDTO)
     	        .join(qButacaDTO.parCompra, qCompraDTO).fetch()
-    	        .where(qCompraDTO.id.eq(idCompra));
+    	        .where(qCompraDTO.id.eq(idCompra).and(qTarifaDTO.id.eq(qButacaDTO.tipo.castToNum(Long.class))));
     }
 
     @Transactional

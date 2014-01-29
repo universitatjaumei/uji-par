@@ -13,9 +13,11 @@ import com.mysema.query.jpa.impl.JPAUpdateClause;
 import es.uji.apps.par.db.PreciosPlantillaDTO;
 import es.uji.apps.par.db.QLocalizacionDTO;
 import es.uji.apps.par.db.QPreciosPlantillaDTO;
+import es.uji.apps.par.db.QTarifaDTO;
 import es.uji.apps.par.model.Localizacion;
 import es.uji.apps.par.model.Plantilla;
 import es.uji.apps.par.model.PreciosPlantilla;
+import es.uji.apps.par.model.Tarifa;
 
 @Repository
 public class PreciosPlantillaDAO extends BaseDAO {
@@ -40,7 +42,10 @@ public class PreciosPlantillaDAO extends BaseDAO {
 	private JPAQuery getQueryPreciosPlantilla(long plantillaPreciosId) {
 		JPAQuery query = new JPAQuery(entityManager);
 		QLocalizacionDTO qLocalizacionDTO = QLocalizacionDTO.localizacionDTO;
-		return query.from(qPreciosPlantillaDTO, qLocalizacionDTO).where(qPreciosPlantillaDTO.parPlantilla.id.eq(plantillaPreciosId).
+		QTarifaDTO qTarifa = QTarifaDTO.tarifaDTO;
+		return query.from(qPreciosPlantillaDTO, qLocalizacionDTO, qTarifa).
+				where(qPreciosPlantillaDTO.parPlantilla.id.eq(plantillaPreciosId).
+				and(qPreciosPlantillaDTO.parTarifa.id.eq(qTarifa.id)).
         		and(qLocalizacionDTO.id.eq(qPreciosPlantillaDTO.parLocalizacione.id)));
 	}
 	
@@ -53,13 +58,10 @@ public class PreciosPlantillaDAO extends BaseDAO {
 	@Transactional
 	public PreciosPlantilla add(PreciosPlantilla precio) {
 		PreciosPlantillaDTO preciosPlantillaDTO = new PreciosPlantillaDTO();
-		preciosPlantillaDTO.setDescuento(precio.getDescuento());
-		preciosPlantillaDTO.setInvitacion(precio.getInvitacion());
 		preciosPlantillaDTO.setParLocalizacione(Localizacion.localizacionToLocalizacionDTO(precio.getLocalizacion()));
-		//precioDTO.setParLocalizacione(precio.getLocalizacion());
 		preciosPlantillaDTO.setParPlantilla(Plantilla.plantillaPreciosToPlantillaPreciosDTO(precio.getPlantillaPrecios()));
 		preciosPlantillaDTO.setPrecio(precio.getPrecio());
-		preciosPlantillaDTO.setAulaTeatro(precio.getAulaTeatro());
+		preciosPlantillaDTO.setParTarifa(Tarifa.toDTO(precio.getTarifa()));
 		
 		entityManager.persist(preciosPlantillaDTO);
 		precio.setId(preciosPlantillaDTO.getId());
@@ -70,11 +72,7 @@ public class PreciosPlantillaDAO extends BaseDAO {
 	@Transactional
 	public PreciosPlantilla update(PreciosPlantilla precio) {
 		JPAUpdateClause update = new JPAUpdateClause(entityManager, qPreciosPlantillaDTO);
-        update.set(qPreciosPlantillaDTO.descuento, precio.getDescuento())
-        		.set(qPreciosPlantillaDTO.invitacion, precio.getInvitacion())
-        		.set(qPreciosPlantillaDTO.precio, precio.getPrecio())
-        		.set(qPreciosPlantillaDTO.aulaTeatro, precio.getAulaTeatro())
-        		//.set(qPrecioDTO.parLocalizacione, Localizacion.localizacionToLocalizacionDTO(precio.getLocalizacion()))
+        update.set(qPreciosPlantillaDTO.precio, precio.getPrecio())
         		.set(qPreciosPlantillaDTO.parLocalizacione, Localizacion.localizacionToLocalizacionDTO(precio.getLocalizacion()))
         		.set(qPreciosPlantillaDTO.parPlantilla, Plantilla.plantillaPreciosToPlantillaPreciosDTO(precio.getPlantillaPrecios()))
                 .where(qPreciosPlantillaDTO.id.eq(precio.getId())).execute();

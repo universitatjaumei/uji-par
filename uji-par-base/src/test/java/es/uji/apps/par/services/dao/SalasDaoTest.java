@@ -1,7 +1,6 @@
 package es.uji.apps.par.services.dao;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.List;
 
 import junit.framework.Assert;

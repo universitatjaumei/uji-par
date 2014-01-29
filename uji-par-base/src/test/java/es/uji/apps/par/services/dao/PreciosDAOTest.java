@@ -1,7 +1,5 @@
 package es.uji.apps.par.services.dao;
 
-import java.math.BigDecimal;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,11 +14,6 @@ import es.uji.apps.par.dao.LocalizacionesDAO;
 import es.uji.apps.par.dao.PlantillasDAO;
 import es.uji.apps.par.dao.PreciosPlantillaDAO;
 import es.uji.apps.par.dao.TiposEventosDAO;
-import es.uji.apps.par.model.Evento;
-import es.uji.apps.par.model.Localizacion;
-import es.uji.apps.par.model.Plantilla;
-import es.uji.apps.par.model.PreciosPlantilla;
-import es.uji.apps.par.model.TipoEvento;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @TransactionConfiguration(transactionManager = "transactionManager")

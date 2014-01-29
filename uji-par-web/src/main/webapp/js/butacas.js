@@ -8,6 +8,8 @@ Butacas = (function() {
 	var reserva;
 	var modoAdmin;
 	var tipoEvento;
+	var tarifaDefecto = '';
+	var tarifas = {};
 	
 	var butacasSeleccionadas = [];
 	
@@ -32,11 +34,31 @@ Butacas = (function() {
 	
 	function cargaPrecios(callback) {
 		$.getJSON(baseUrl + '/rest/entrada/' + sesionId + '/precios', function(respuesta){
-			
+			//console.log("RESPUESTA");
+			//console.log(respuesta);
 			for (var i=0; i<respuesta.data.length; i++)
 			{
 				var sesion = respuesta.data[i];
-				precios[sesion.localizacion.codigo] = {normal:sesion.precio, descuento:sesion.descuento, invitacion:sesion.invitacion, aulaTeatro:sesion.aulaTeatro};
+				var idTarifa = sesion.tarifa.id;
+				
+				if (modoAdmin) {
+					console.log("ES MODO ADMIN");
+					tarifas[sesion.tarifa.id] = sesion.tarifa.nombre;
+				}
+				else {
+					console.log("NO ES MODO ADMIN", sesion.tarifa);
+					if (sesion.tarifa.isPublico == 'on')
+						tarifas[sesion.tarifa.id] = sesion.tarifa.nombre;
+				}
+					
+				
+				
+				if (precios[sesion.localizacion.codigo] == undefined)
+					precios[sesion.localizacion.codigo]= {};
+				
+				if (sesion.tarifa.defecto)
+					tarifaDefecto = sesion.tarifa.id;
+				precios[sesion.localizacion.codigo][idTarifa] = sesion.precio;
 			}
 			
 			refrescaEstadoButacas();
@@ -78,14 +100,12 @@ Butacas = (function() {
 		butacaSeleccionada.css("left", butaca.x + "px");
 		butacaSeleccionada.css("top", butaca.y + "px");
 		
-		console.log(butacaSeleccionada);
+		//console.log(butacaSeleccionada);
 		
 		var idDiv = idDivLocalizacion(butaca.localizacion);
-		
 		$('.localizacion_' + idDiv).append(butacaSeleccionada);
 	
 		butacaSeleccionada.click(function() {
-			// console.log("Click sobre seleccionada: ", butaca);
 			selecciona(butaca.localizacion, butaca.texto, butaca.fila, butaca.numero,
 					butaca.x, butaca.y);
 		});
@@ -130,8 +150,6 @@ Butacas = (function() {
 	}
 	
 	function muestraDetallesSeleccionadas() {
-		var detalles = "";
-	
 		$('#detallesSeleccionadas').empty();
 	
 		for ( var i = 0; i < butacasSeleccionadas.length; i++) {
@@ -144,60 +162,20 @@ Butacas = (function() {
 					+ getSelectTipoButaca(i)
 					+ '<span>' + butacasSeleccionadas[i].precio.toFixed(2) + ' €</span></div>');
 			$('#detallesSeleccionadas').append(fila);
+			var combo = $('#detallesSeleccionadas select:last');
+			combo.val(butacasSeleccionadas[i].tipo);
 		}
 	}
 	
 	function getSelectTipoButaca(posicion)
 	{
 		var st = '<select style="width:130px !important" onchange="Butacas.cambiaTipoButaca(' + posicion + ', this.value)">';
-		
-		var selecNormal = 'selected',
-			selecDescuento = '',
-			selecInvitacion = '',
-			selecAulaTeatro = '';
-		
-		if (butacasSeleccionadas[posicion]['tipo'] == 'descuento')
-		{
-			selecNormal = '';
-			selecDescuento = 'selected';
-			selecInvitacion = '';
-			selecAulaTeatro = '';
+		//console.log("BUTACAS SELECCIONADAS", butacasSeleccionadas, tarifas);
+		if (tarifas != undefined) {
+			for (var key in tarifas) {
+				st += '<option value="' + key + '">' + tarifas[key];
+			}
 		}
-		else if (butacasSeleccionadas[posicion]['tipo'] == 'invitacion')
-		{
-			selecNormal = '';
-			selecDescuento = '';
-			selecInvitacion = 'selected';
-			selecAulaTeatro = '';
-		}
-		else if (butacasSeleccionadas[posicion]['tipo'] == 'aulaTeatro')
-		{
-			selecNormal = '';
-			selecDescuento = '';
-			selecInvitacion = '';
-			selecAulaTeatro = 'selected';
-		}		
-		
-		st += '<option ' + selecNormal + ' value="normal">' + UI.i18n.butacas.tipoNormal;
-		
-		var butaca = butacasSeleccionadas[posicion];
-		var precioNormal = precios[butaca['localizacion']]['normal'];
-		var precioDescuento = precios[butaca['localizacion']]['descuento'];
-		
-		if (!descuentoNoDisponible(tipoEvento, precioNormal, precioDescuento))
-		{
-			st += '</option><option ' + selecDescuento + ' value="descuento">' + UI.i18n.butacas.tipoDescuento + '</option>';	
-		}
-		
-		if (modoAdmin)
-		{
-			st += '<option ' + selecInvitacion + ' value="invitacion">' + UI.i18n.butacas.tipoInvitacion + '</option>';
-			
-			var precioAulaTeatro = precios[butaca['localizacion']]['aulaTeatro'];
-			if (precioAulaTeatro > 0)
-				st += '<option ' + selecAulaTeatro + ' value="aulaTeatro">' + UI.i18n.butacas.tipoAulaTeatro + '</option>';
-		}
-		
 		st += '</select>';
 		
 		return st;
@@ -249,10 +227,8 @@ Butacas = (function() {
 	}
 	
 	function selecciona(localizacion, texto, fila, numero, x, y) {
-		//console.log("selecciona", localizacion, texto, fila, numero, x, y);
-		var tipoEntrada = 'normal';
-		if (precios[localizacion] == undefined || precios[localizacion][tipoEntrada] == undefined) {
-			var msg = UI.i18n.error.preuNoIntroduit
+		if (precios[localizacion] == undefined || precios[localizacion][tarifaDefecto] == undefined) {
+			var msg = UI.i18n.error.preuNoIntroduit;
 			alert(msg);
 			return;
 		}
@@ -263,16 +239,14 @@ Butacas = (function() {
 			numero : numero,
 			x : x,
 			y : y,
-			tipo : tipoEntrada,
-			precio: precios[localizacion][tipoEntrada],
+			tipo : tarifaDefecto,
+			precio: precios[localizacion][tarifaDefecto],
 			texto: texto
 		};
 	
-		if (estaSeleccionada(butaca)) {
-			// console.log('Ya está seleccionada:', butaca);
+		if (estaSeleccionada(butaca))
 			eliminaButacaSeleccionada(butaca);
-		} else {
-			// console.log('Añade a seleccionadas:', butaca);
+		else {
 			anyadeButacaSeleccionada(butaca);
 			compruebaEstadoButacas();
 		}

@@ -18,17 +18,15 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
 
 import es.uji.apps.fopreports.serialization.ReportSerializationException;
+import es.uji.apps.par.SinIvaException;
 import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.dao.ComprasDAO;
 import es.uji.apps.par.database.DatabaseHelper;
 import es.uji.apps.par.database.DatabaseHelperFactory;
-import es.uji.apps.par.exceptions.SinIvaException;
 import es.uji.apps.par.model.Informe;
-import es.uji.apps.par.model.InformeModelReport;
-import es.uji.apps.par.report.InformeEfectivoReport;
-import es.uji.apps.par.report.InformeEventosReport;
-import es.uji.apps.par.report.InformeTaquillaReport;
-import es.uji.apps.par.report.InformeTaquillaTpvSubtotalesReport;
+import es.uji.apps.par.report.EntradaReportFactory;
+import es.uji.apps.par.report.InformeInterface;
+import es.uji.apps.par.report.InformeModelReport;
 import es.uji.apps.par.utils.DateUtils;
 import es.uji.apps.par.utils.Utils;
 
@@ -41,9 +39,24 @@ public class ReportService
     
     private DatabaseHelper dbHelper;
     
-    public ReportService()
+    private InformeInterface informeTaquillaReport;
+    private InformeInterface informeEfectivoReport;
+    private InformeInterface informeTaquillaTpvSubtotalesReport;
+    private InformeInterface informeEventosReport;
+    
+    /*static
+    {
+       	entradaTaquillaReport = EntradaReportFactory.newInstanceTaquilla();
+       	entradaOnlineReport = EntradaReportFactory.newInstanceOnline();
+    }*/
+    
+    public ReportService() throws InstantiationException, IllegalAccessException, ClassNotFoundException
     {
         dbHelper = DatabaseHelperFactory.newInstance();
+        informeTaquillaReport = EntradaReportFactory.newInstanceInformeTaquilla();
+        informeEfectivoReport = EntradaReportFactory.newInstanceInformeEfectivo();
+        informeTaquillaTpvSubtotalesReport = EntradaReportFactory.newInstanceInformeTaquillaTpvSubtotalesReport();
+        informeEventosReport = EntradaReportFactory.newInstanceInformeEventosReport();
     }
 
     public ByteArrayOutputStream getExcelTaquilla(String fechaInicio, String fechaFin) throws IOException
@@ -72,10 +85,9 @@ public class ReportService
         Informe informe = new Informe();
         informe.setEvento(Utils.safeObjectToString(fila[0]));
         informe.setSesion(DateUtils.dateToSpanishStringWithHour(Utils.objectToDate(fila[1])).toString());
-        String tipoEntrada = Utils.safeObjectToString(fila[2]);
-        tipoEntrada = tipoEntradaBBDDToText(tipoEntrada);
+        String tipoEntrada = Utils.safeObjectToString(fila[8]);
         informe.setTipoEntrada(tipoEntrada);
-        informe.setLocalizacion(localizacionBBDDToText(Utils.safeObjectToString(fila[3])));
+        informe.setLocalizacion(Utils.safeObjectToString(fila[7]));
         informe.setNumeroEntradas(Utils.safeObjectBigDecimalToInt(dbHelper.castBigDecimal(fila[4])));
         informe.setTotal(dbHelper.castBigDecimal(fila[5]));
 
@@ -143,32 +155,11 @@ public class ReportService
         return tipoEntrada;
     }
 
-    private String localizacionBBDDToText(String localizacion)
-    {
-        String result = "";
-
-        if (localizacion.equals("platea1"))
-            result = "Platea 1";
-        else if (localizacion.equals("platea2"))
-            result = "Platea 2";
-        else if (localizacion.equals("anfiteatro"))
-            result = "Amfiteatre";
-        else if (localizacion.equals("discapacitados1"))
-            result = "Discapacitats Platea 1";
-        else if (localizacion.equals("discapacitados2"))
-            result = "Discapacitats Platea 2";
-        else if (localizacion.equals("discapacitados3"))
-            result = "Discapacitats Amfiteatre";
-
-        return result;
-    }
-
     private InformeModelReport objectToInformeEvento(Object[] fila)
     {
     	InformeModelReport informe = new InformeModelReport();
         informe.setEvento(Utils.safeObjectToString(fila[1]));
-        String tipoEntrada = Utils.safeObjectToString(fila[2]);
-        tipoEntrada = tipoEntradaBBDDToText(tipoEntrada);
+        String tipoEntrada = Utils.safeObjectToString(fila[6]);
         informe.setTipoEntrada(tipoEntrada);
         informe.setNumeroEntradas(Utils.safeObjectBigDecimalToInt(dbHelper.castBigDecimal(fila[3])));
         informe.setTotal(dbHelper.castBigDecimal(fila[4]));
@@ -224,7 +215,7 @@ public class ReportService
     public void getPdfTaquilla(String fechaInicio, String fechaFin, OutputStream bos)
             throws ReportSerializationException, ParseException
     {
-        InformeTaquillaReport informe = InformeTaquillaReport.create(new Locale("ca"));
+    	InformeInterface informe = informeTaquillaReport.create(new Locale("ca"));
 
         List<InformeModelReport> compras = objectsToInformes(comprasDAO.getComprasPorEventoInFechas(fechaInicio, fechaFin));
 
@@ -246,8 +237,7 @@ public class ReportService
     public void getPdfEfectivo(String fechaInicio, String fechaFin, OutputStream bos)
             throws ReportSerializationException, ParseException, SinIvaException
     {
-        InformeEfectivoReport informe = InformeEfectivoReport.create(new Locale("ca"));
-
+        InformeInterface informe = informeEfectivoReport.create(new Locale("ca"));
         List<InformeModelReport> compras = objectsSesionesToInformesIva(comprasDAO.getComprasEfectivo(fechaInicio, fechaFin));
         
         informe.genera(getSpanishStringDateFromBBDDString(fechaInicio), 
@@ -260,7 +250,7 @@ public class ReportService
     public void getPdfTpvSubtotales(String fechaInicio, String fechaFin, OutputStream bos)
             throws ReportSerializationException, ParseException, SinIvaException
     {
-        InformeTaquillaTpvSubtotalesReport informe = InformeTaquillaTpvSubtotalesReport.create(new Locale("ca"));
+    	InformeInterface informe = informeTaquillaTpvSubtotalesReport.create(new Locale("ca"));
 
         List<InformeModelReport> compras = objectsSesionesToInformesTpv(comprasDAO.getComprasTpv(fechaInicio, fechaFin));
 
@@ -273,7 +263,7 @@ public class ReportService
     public void getPdfEventos(String fechaInicio, String fechaFin, OutputStream bos)
             throws ReportSerializationException, ParseException, SinIvaException
     {
-        InformeEventosReport informe = InformeEventosReport.create(new Locale("ca"));
+        InformeInterface informe = informeEventosReport.create(new Locale("ca"));
 
         List<InformeModelReport> compras = objectsSesionesToInformesEventos(comprasDAO.getComprasEventos(fechaInicio, fechaFin));
 

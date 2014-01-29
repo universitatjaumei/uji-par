@@ -31,13 +31,11 @@ import es.uji.apps.par.database.DatabaseHelper;
 import es.uji.apps.par.database.DatabaseHelperFactory;
 import es.uji.apps.par.i18n.ResourceProperties;
 import es.uji.apps.par.model.Evento;
-import es.uji.apps.par.model.PreciosSesion;
 import es.uji.apps.par.model.Sesion;
 import es.uji.apps.par.services.EventosService;
 import es.uji.apps.par.services.SesionesService;
 import es.uji.apps.par.utils.DateUtils;
 import es.uji.apps.par.utils.ImageUtils;
-import es.uji.apps.par.utils.ReportUtils;
 import es.uji.commons.web.template.HTMLTemplate;
 import es.uji.commons.web.template.Template;
 
@@ -198,21 +196,7 @@ public class EventosResource extends BaseResource
         
         String diaSemana = ResourceProperties.getProperty(getLocale(), "dia.abreviado." + cal.get(Calendar.DAY_OF_WEEK));
         
-        return diaSemana + " " + format.format(cal.getTime());// + " / " + getPrecioSesion(sesion) + " euros";
-    }
-    
-    private String getPrecioSesion(Sesion sesion)
-    {
-        Map<String, PreciosSesion> preciosSesion = sesionesService.getPreciosSesionPorLocalizacion(sesion.getId());
-        
-        if (preciosSesion != null && preciosSesion.get("platea1") != null)
-        {
-            return ReportUtils.formatEuros(preciosSesion.get("platea1").getPrecio());
-        }
-        else
-        {
-            return "-";
-        }
+        return diaSemana + " " + format.format(cal.getTime());
     }
 
     @GET

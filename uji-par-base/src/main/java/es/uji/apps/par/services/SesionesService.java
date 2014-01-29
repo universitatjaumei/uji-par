@@ -17,11 +17,13 @@ import es.uji.apps.par.dao.LocalizacionesDAO;
 import es.uji.apps.par.dao.SesionesDAO;
 import es.uji.apps.par.db.PreciosSesionDTO;
 import es.uji.apps.par.db.SesionDTO;
+import es.uji.apps.par.db.TarifaDTO;
 import es.uji.apps.par.model.Evento;
 import es.uji.apps.par.model.Localizacion;
 import es.uji.apps.par.model.PreciosPlantilla;
 import es.uji.apps.par.model.PreciosSesion;
 import es.uji.apps.par.model.Sesion;
+import es.uji.apps.par.model.Tarifa;
 import es.uji.apps.par.utils.DateUtils;
 
 @Service
@@ -269,12 +271,14 @@ public class SesionesService
 		return getPreciosSesion(sesionId, "", 0, 100);
 	}
 	
-	public Map<String, PreciosSesion> getPreciosSesionPorLocalizacion(Long sesionId)
+	public Map<String, Map<Long, PreciosSesion>> getPreciosSesionPorLocalizacion(Long sesionId)
 	{
-	    Map<String, PreciosSesion> resultado = new HashMap<String, PreciosSesion>();
-	    
-	    for (PreciosSesion precio: getPreciosSesion(sesionId))
-	        resultado.put(precio.getLocalizacion().getCodigo(), precio);
+	    Map<String, Map<Long, PreciosSesion>> resultado = new HashMap<String, Map<Long, PreciosSesion>>();
+	    Map<Long, PreciosSesion> tarifasPrecios = new HashMap<Long, PreciosSesion>();
+	    for (PreciosSesion precio: getPreciosSesion(sesionId)) {
+	    	tarifasPrecios.put(precio.getTarifa().getId(), precio);
+	        resultado.put(precio.getLocalizacion().getCodigo(), tarifasPrecios);
+	    }
 	    
         return resultado;
 	}
@@ -322,5 +326,27 @@ public class SesionesService
 			listaSesiones.add(sesion);
 		}
 		return listaSesiones;
+	}
+
+	public List<Tarifa> getTarifasConPrecioSinPlantilla(long sesionId) {
+		List<TarifaDTO> tarifasDTO = sesionDAO.getTarifasPreciosSesion(sesionId);
+		List<Tarifa> tarifas = new ArrayList<Tarifa>();
+		
+		for (TarifaDTO tarifaDTO: tarifasDTO) {
+			Tarifa tarifa = Tarifa.tarifaDTOToTarifa(tarifaDTO);
+			tarifas.add(tarifa);
+		}
+		return tarifas;
+	}
+
+	public List<Tarifa> getTarifasConPrecioConPlantilla(long sesionId) {
+		List<TarifaDTO> tarifasDTO = sesionDAO.getTarifasPreciosPlantilla(sesionId);
+		List<Tarifa> tarifas = new ArrayList<Tarifa>();
+		
+		for (TarifaDTO tarifaDTO: tarifasDTO) {
+			Tarifa tarifa = Tarifa.tarifaDTOToTarifa(tarifaDTO);
+			tarifas.add(tarifa);
+		}
+		return tarifas;
 	}
 }

@@ -1,9 +1,17 @@
 package es.uji.apps.par.db;
 
 import java.io.Serializable;
-import javax.persistence.*;
-
 import java.math.BigDecimal;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 
 /**
@@ -38,6 +46,10 @@ public class PreciosSesionDTO implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="SESION_ID")
 	private SesionDTO parSesione;
+	
+	@ManyToOne
+	@JoinColumn(name="TARIFA_ID")
+	private TarifaDTO parTarifa;
 
 	public PreciosSesionDTO() {
 	}
@@ -105,6 +117,14 @@ public class PreciosSesionDTO implements Serializable {
 
 	public void setParSesione(SesionDTO parSesione) {
 		this.parSesione = parSesione;
+	}
+
+	public TarifaDTO getParTarifa() {
+		return parTarifa;
+	}
+
+	public void setParTarifa(TarifaDTO parTarifa) {
+		this.parTarifa = parTarifa;
 	}
 
 }

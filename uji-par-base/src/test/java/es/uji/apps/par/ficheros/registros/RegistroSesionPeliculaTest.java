@@ -6,7 +6,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import es.uji.apps.par.RegistroSerializaException;
-import es.uji.apps.par.ficheros.registros.RegistroSesionPelicula;
 
 public class RegistroSesionPeliculaTest
 {

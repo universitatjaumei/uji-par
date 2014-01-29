@@ -16,6 +16,7 @@ public class PreciosPlantilla {
 	private BigDecimal invitacion;
 	private BigDecimal precio;
 	private BigDecimal aulaTeatro;
+	private Tarifa tarifa;
 	
 	public PreciosPlantilla() {
 		
@@ -30,6 +31,7 @@ public class PreciosPlantilla {
 		this.id = preciosPlantilla.getId();
 		this.localizacion = Localizacion.localizacionDTOtoLocalizacion(preciosPlantilla.getParLocalizacione());
 		this.plantillaPrecios = Plantilla.plantillaPreciosDTOtoPlantillaPrecios(preciosPlantilla.getParPlantilla());
+		this.tarifa = Tarifa.tarifaDTOToTarifa(preciosPlantilla.getParTarifa());
 		this.descuento = preciosPlantilla.getDescuento();
 		this.invitacion = preciosPlantilla.getInvitacion();
 		this.precio = preciosPlantilla.getPrecio();
@@ -91,4 +93,12 @@ public class PreciosPlantilla {
     public void setAulaTeatro(BigDecimal aulaTeatro) {
         this.aulaTeatro = aulaTeatro;
     }
+
+	public Tarifa getTarifa() {
+		return tarifa;
+	}
+
+	public void setTarifa(Tarifa tarifa) {
+		this.tarifa = tarifa;
+	}
 }

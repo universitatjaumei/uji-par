@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.List;
 import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +16,14 @@ import org.xml.sax.SAXException;
 import es.uji.apps.fopreports.serialization.ReportSerializationException;
 import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.dao.ComprasDAO;
+import es.uji.apps.par.dao.TarifasDAO;
 import es.uji.apps.par.db.ButacaDTO;
 import es.uji.apps.par.db.CompraDTO;
-import es.uji.apps.par.i18n.ResourceProperties;
-import es.uji.apps.par.model.EntradaModelReport;
-import es.uji.apps.par.report.EntradaReport;
-import es.uji.apps.par.report.EntradaTaquillaReport;
+import es.uji.apps.par.db.TarifaDTO;
+import es.uji.apps.par.report.EntradaModelReport;
+import es.uji.apps.par.report.EntradaReportFactory;
+import es.uji.apps.par.report.EntradaReportOnlineInterface;
+import es.uji.apps.par.report.EntradaReportTaquillaInterface;
 import es.uji.apps.par.utils.DateUtils;
 import es.uji.apps.par.utils.ReportUtils;
 
@@ -29,10 +32,22 @@ public class EntradasService
 {
     @Autowired
     private ComprasDAO comprasDAO;
+    
+    @Autowired
+    private TarifasDAO tarifasDAO;
+    
+    private static EntradaReportTaquillaInterface entradaTaquillaReport;
+    private static EntradaReportOnlineInterface entradaOnlineReport;
+    
+    static
+    {
+       	entradaTaquillaReport = EntradaReportFactory.newInstanceTaquilla();
+       	entradaOnlineReport = EntradaReportFactory.newInstanceOnline();
+    }
 
     public void generaEntrada(String uuidCompra, OutputStream outputStream) throws ReportSerializationException
     {
-        EntradaReport entrada = EntradaReport.create(new Locale("ca"));
+    	EntradaReportOnlineInterface entrada = entradaOnlineReport.create(new Locale("ca"));
 
         rellenaEntrada(uuidCompra, entrada);
 
@@ -40,14 +55,15 @@ public class EntradasService
     }
     
     public void generaEntradaTaquilla(String uuidCompra, OutputStream outputStream) throws ReportSerializationException, SAXException, IOException {
-    	EntradaTaquillaReport entrada = EntradaTaquillaReport.create(new Locale("ca"));
+    	EntradaReportTaquillaInterface entrada = entradaTaquillaReport.create(new Locale("ca"));
 
         rellenaEntradaTaquilla(uuidCompra, entrada);
         entrada.serialize(outputStream);
 	}
 
-    private void rellenaEntradaTaquilla(String uuidCompra, EntradaTaquillaReport entrada) {
+    private void rellenaEntradaTaquilla(String uuidCompra, EntradaReportTaquillaInterface entrada) {
     	CompraDTO compra = comprasDAO.getCompraByUuid(uuidCompra);
+    	List<TarifaDTO> tarifas = tarifasDAO.getAll("", 0, 100);
 
         String tituloEs = compra.getParSesion().getParEvento().getTituloEs();
         String fecha = DateUtils.dateToSpanishString(compra.getParSesion().getFechaCelebracion());
@@ -67,7 +83,14 @@ public class EntradasService
             entradaModelReport.setZona(butaca.getParLocalizacion().getNombreEs());
             entradaModelReport.setTotal(ReportUtils.formatEuros(butaca.getPrecio()));
             entradaModelReport.setBarcode(compra.getUuid() + "-" + butaca.getId());
-            entradaModelReport.setTipo(ResourceProperties.getProperty(new Locale("ca"), "entrada." + butaca.getTipo()));
+            
+            for (TarifaDTO tarifa: tarifas) {
+            	if (tarifa.getId() == Long.valueOf(butaca.getTipo())) {
+            		entradaModelReport.setTipo(tarifa.getNombre());
+            		break;
+            	}
+            }
+            
             entrada.generaPaginaButaca(entradaModelReport, Configuration.getUrlPublic());
         }
         
@@ -80,7 +103,7 @@ public class EntradasService
         }
 	}
 
-	private void rellenaEntrada(String uuidCompra, EntradaReport entrada)
+	private void rellenaEntrada(String uuidCompra, EntradaReportOnlineInterface entrada)
     {
         CompraDTO compra = comprasDAO.getCompraByUuid(uuidCompra);
 

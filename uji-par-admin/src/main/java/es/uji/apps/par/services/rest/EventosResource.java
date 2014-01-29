@@ -26,8 +26,8 @@ import com.sun.jersey.multipart.FormDataBodyPart;
 import com.sun.jersey.multipart.FormDataParam;
 
 import es.uji.apps.par.EventoNoEncontradoException;
+import es.uji.apps.par.GeneralPARException;
 import es.uji.apps.par.auth.AuthChecker;
-import es.uji.apps.par.exceptions.GeneralPARException;
 import es.uji.apps.par.model.Evento;
 import es.uji.apps.par.model.Sesion;
 import es.uji.apps.par.services.EventosService;

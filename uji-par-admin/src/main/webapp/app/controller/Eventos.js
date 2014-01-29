@@ -143,7 +143,7 @@ Ext.define('Paranimf.controller.Eventos', {
          },
 
          'formPreciosSesion': {
-            afterrender: this.cargaLocalizaciones
+            afterrender: this.cargaStores
          }, 
 
          'formPreciosSesion button[action=save]': {
@@ -247,10 +247,11 @@ Ext.define('Paranimf.controller.Eventos', {
       }
    },   
 
-   cargaLocalizaciones: function(comp, opts) {
+   cargaStores: function(comp, opts) {
       this.getComboLocalizaciones().store.loadData([],false);
       this.getComboLocalizaciones().store.proxy.url = urlPrefix + 'localizacion?sala=' + this.getComboSala().value;
       this.getFormPreciosSesion().cargaComboStore('localizacion');
+      this.getFormPreciosSesion().cargaComboStore('tarifa');
    },
 
    addPrecioSesion: function(button, event, opts) {
@@ -261,41 +262,40 @@ Ext.define('Paranimf.controller.Eventos', {
          alert(UI.i18n.error.salaObligatoria);
    }, 
 
-   existeRecordConLocalizacionElegida: function(indexFilaSeleccionada, localizacionSeleccionada) {
-      var indexConMismaLocalizacion = this.getGridPreciosSesion().store.findExact('localizacion', localizacionSeleccionada);
-      if (indexConMismaLocalizacion == -1)
-         return false;
-      else if (indexConMismaLocalizacion == indexFilaSeleccionada)
-         return false;
-      else
-         return true;
+   existeRecordConLocalizacionYTarifaElegida: function(indexFilaSeleccionada, localizacionSeleccionada, tarifaSeleccionada) {
+      var encontrado = false;
+      for (var i=0;i<this.getGridPreciosSesion().store.count();i++) {
+         var record = this.getGridPreciosSesion().store.getAt(i);
+         //console.log(record, localizacionSeleccionada, tarifaSeleccionada);
+         if (record.data.localizacion == localizacionSeleccionada && record.data.tarifa == tarifaSeleccionada)
+            encontrado = true;
+      }
+      return encontrado;
    },
 
    savePrecioSesion: function(button, event, opts) {
+      //console.log("savePrecioSesion");
       var indiceFilaSeleccionada = this.getGridPreciosSesion().getIndiceFilaSeleccionada();
-      var localizacionSeleccionada = button.up('form').getForm().findField('localizacion').value
+      var localizacionSeleccionada = button.up('form').getForm().findField('localizacion').value;
+      var tarifaSeleccionada = button.up('form').getForm().findField('tarifa').value;
 
-      if (!this.existeRecordConLocalizacionElegida(indiceFilaSeleccionada, localizacionSeleccionada)) {
+      if (!this.existeRecordConLocalizacionYTarifaElegida(indiceFilaSeleccionada, localizacionSeleccionada, tarifaSeleccionada)) {
          var precioSesion = new Ext.create('Paranimf.model.PrecioSesion', {
             plantillaPrecios :-1,
             precio : button.up('form').getForm().findField('precio').value,
-            descuento : button.up('form').getForm().findField('descuento').value,
-            invitacion : button.up('form').getForm().findField('invitacion').value,
-            aulaTeatro : button.up('form').getForm().findField('aulaTeatro').value,
             localizacion: localizacionSeleccionada,
-            localizacion_nombre: button.up('form').getForm().findField('localizacion').rawValue
+            localizacion_nombre: button.up('form').getForm().findField('localizacion').rawValue,
+            tarifa: tarifaSeleccionada,
+            tarifa_nombre: button.up('form').getForm().findField('tarifa').rawValue,
          });
-
-         //console.log(precioSesion);
 
          if (indiceFilaSeleccionada != -1) {
             var recordSeleccionado = this.getGridPreciosSesion().store.getAt(indiceFilaSeleccionada);
             recordSeleccionado.set('precio', precioSesion.data.precio);
-            recordSeleccionado.set('descuento', precioSesion.data.descuento);
-            recordSeleccionado.set('invitacion', precioSesion.data.invitacion);
-            recordSeleccionado.set('aulaTeatro', precioSesion.data.aulaTeatro);
             recordSeleccionado.set('localizacion', precioSesion.data.localizacion);
             recordSeleccionado.set('localizacion_nombre', precioSesion.data.localizacion_nombre);
+            recordSeleccionado.set('tarifa', precioSesion.data.tarifa);
+            recordSeleccionado.set('tarifa_nombre', precioSesion.data.tarifa_nombre);
             recordSeleccionado.commit(true);
          }
          else

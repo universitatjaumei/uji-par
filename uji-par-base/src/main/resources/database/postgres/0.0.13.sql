@@ -64,3 +64,40 @@ ALTER TABLE PAR_SALAS ADD PRIMARY KEY (id);
 ALTER TABLE PAR_SESIONES ADD PRIMARY KEY (id);
 ALTER TABLE PAR_TIPOS_EVENTO ADD PRIMARY KEY (id);
 ALTER TABLE PAR_USUARIOS ADD PRIMARY KEY (id);
+
+
+CREATE TABLE PAR_TARIFAS
+(
+  ID serial NOT NULL,
+  NOMBRE VARCHAR(100) NOT NULL,
+  ISPUBLICA boolean default true,
+  DEFECTO boolean default false,
+  CONSTRAINT "PAR_TARIFAS_pkey" PRIMARY KEY (ID)
+);
+
+ALTER TABLE par_precios_plantilla ADD COLUMN tarifa_id integer;
+ALTER TABLE par_precios_plantilla ADD CONSTRAINT par_precios_plantilla_par_fk3 FOREIGN KEY (tarifa_id) REFERENCES
+par_tarifas (id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+ALTER TABLE par_precios_plantilla DROP CONSTRAINT par_precios_plantilla_plantilla_id_localizacion_id_tarifa_i_key;
+
+ALTER TABLE par_precios_sesion ADD COLUMN tarifa_id integer;
+ALTER TABLE par_precios_sesion DROP CONSTRAINT par_precios_sesion_uk1;
+ALTER TABLE par_precios_sesion ADD CONSTRAINT par_precios_sesion_par_ta_fk2 FOREIGN KEY (tarifa_id) 
+	REFERENCES par_tarifas (id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+ALTER TABLE par_precios_sesion ADD UNIQUE (localizacion_id, sesion_id, tarifa_id);
+
+
+/*CREATE TABLE PAR_TARIFAS_CINES
+(
+  ID serial NOT NULL,
+  PAR_CINE_ID integer NOT NULL,
+  PAR_TARIFA_ID integer NOT NULL,
+  CONSTRAINT "PAR_TARIFAS_CINES_pkey" PRIMARY KEY (ID),
+  CONSTRAINT "PAR_TARIFAS_PAR_TARIFAS_ID_fkey" FOREIGN KEY (PAR_TARIFA_ID)
+      REFERENCES PAR_TARIFAS (ID) MATCH SIMPLE
+      ON UPDATE RESTRICT ON DELETE RESTRICT,
+  CONSTRAINT "PAR_TARIFAS_PAR_CINES_ID_fkey" FOREIGN KEY (PAR_CINE_ID)
+      REFERENCES PAR_CINES (ID) MATCH SIMPLE
+      ON UPDATE CASCADE ON DELETE CASCADE
+);*/

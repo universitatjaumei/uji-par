@@ -86,13 +86,17 @@ Ext.define('Paranimf.controller.PlantillasPrecios', {
 
    recargaStores: function(comp, opts) {
       var localizacionId = undefined;
-      if (this.getGridPrecios().getSelectedColumnId() != undefined)
+      var tarifaId = undefined;
+      if (this.getGridPrecios().getSelectedColumnId() != undefined) {
          localizacionId = this.getGridPrecios().getSelectedRecord(this.getGridPrecios()).data.parLocalizacione;
-
+         tarifaId = this.getGridPrecios().getSelectedRecord(this.getGridPrecios()).data.tarifaId;
+      }
+      //console.log("TARIFA", tarifaId);
       this.getComboLocalizaciones().store.loadData([],false);
       this.getComboLocalizaciones().store.proxy.url = urlPrefix + 'localizacion?sala=' + this.getGridPlantillas().getSelectedRecord().data.idSala;
       this.getFormPrecios().cargaComboStore('localizacion', localizacionId);
       this.getFormPrecios().cargaComboStore('plantillaPrecios', this.getGridPlantillas().getSelectedColumnId());
+      this.getFormPrecios().cargaComboStore('tarifa', tarifaId)
    },
 
    addPlantilla: function(button, event, opts) {
@@ -141,16 +145,9 @@ Ext.define('Paranimf.controller.PlantillasPrecios', {
 	   var form = this.getFormPrecios();
 	   
 	   var precio = this.getFormPrecios().getForm().findField('precio');
-	   var descuento = this.getFormPrecios().getForm().findField('descuento');
-	   var invitacion = this.getFormPrecios().getForm().findField('invitacion');
-	   var aulaTeatro = this.getFormPrecios().getForm().findField('aulaTeatro');
 	   
 	   // Pasar precios a float para que se envíen bien al REST
 	   precio.setRawValue(precio.value);
-	   descuento.setRawValue(descuento.value);
-	   invitacion.setRawValue(invitacion.value);
-	   aulaTeatro.setRawValue(aulaTeatro.value);
-	   
 	   form.saveFormData(grid, urlPrefix + 'plantillaprecios/' + plantillaId + '/precios');
    },
    

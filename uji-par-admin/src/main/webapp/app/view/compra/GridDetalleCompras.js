@@ -62,12 +62,7 @@ Ext.define('Paranimf.view.compra.GridDetalleCompras', {
     }, {
       dataIndex: 'tipo',
       text: UI.i18n.field.tipusEntrada,
-      flex: 1,
-      renderer: function(val) {
-        console.log(val);
-        console.log(eval("UI.i18n.tipoEntrada." + val));
-        return (val!=undefined&&val!='')?eval("UI.i18n.tipoEntrada." + val):'';
-      }
+      flex: 1
     }, {
       dataIndex: 'precio',
       text: UI.i18n.field.precio,

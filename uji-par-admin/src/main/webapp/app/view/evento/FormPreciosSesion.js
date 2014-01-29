@@ -25,35 +25,18 @@ Ext.define('Paranimf.view.evento.FormPreciosSesion', {
     queryMode: 'local',
     typeAhead: true
    }, {
+    fieldLabel: UI.i18n.field.tarifa,
+    name: 'tarifa',
+    xtype: 'combobox',
+    displayField: 'nombre',
+    valueField: 'id',
+    store: 'Tarifas',
+    disabled: true,
+    queryMode: 'local',
+    typeAhead: true
+   }, {
     fieldLabel: UI.i18n.field.precio,
     name: 'precio',
-    spinUpEnabled: false,
-    spinDownEnabled: false,
-    minValue: 0,
-    xtype: 'numericfield',
-    decimalPrecision: 2,
-    alwaysDisplayDecimals: true
-   },{
-    fieldLabel: UI.i18n.field.descuento,
-    name: 'descuento',
-    spinUpEnabled: false,
-    spinDownEnabled: false,
-    minValue: 0,
-    xtype: 'numericfield',
-    decimalPrecision: 2,
-    alwaysDisplayDecimals: true
-   },{
-    fieldLabel: UI.i18n.field.invitacion,
-    name: 'invitacion',
-    spinUpEnabled: false,
-    spinDownEnabled: false,
-    minValue: 0,
-    xtype: 'numericfield',
-    decimalPrecision: 2,
-    alwaysDisplayDecimals: true
-   },{
-    fieldLabel: UI.i18n.field.aulaTeatro,
-    name: 'aulaTeatro',
     spinUpEnabled: false,
     spinDownEnabled: false,
     minValue: 0,

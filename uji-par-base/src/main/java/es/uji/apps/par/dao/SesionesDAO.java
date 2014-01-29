@@ -22,10 +22,13 @@ import es.uji.apps.par.db.QCompraDTO;
 import es.uji.apps.par.db.QEnvioDTO;
 import es.uji.apps.par.db.QEnviosSesionDTO;
 import es.uji.apps.par.db.QEventoDTO;
+import es.uji.apps.par.db.QPreciosPlantillaDTO;
 import es.uji.apps.par.db.QPreciosSesionDTO;
 import es.uji.apps.par.db.QSalaDTO;
 import es.uji.apps.par.db.QSesionDTO;
+import es.uji.apps.par.db.QTarifaDTO;
 import es.uji.apps.par.db.SesionDTO;
+import es.uji.apps.par.db.TarifaDTO;
 import es.uji.apps.par.ficheros.registros.RegistroPelicula;
 import es.uji.apps.par.ficheros.registros.RegistroSesion;
 import es.uji.apps.par.ficheros.registros.RegistroSesionPelicula;
@@ -192,8 +195,10 @@ public class SesionesDAO extends BaseDAO
     @Transactional
     private JPAQuery getQueryPreciosSesion(long sesionId)
     {
+    	QTarifaDTO qTarifa = QTarifaDTO.tarifaDTO;
         JPAQuery query = new JPAQuery(entityManager);
-        return query.from(qPreciosSesionDTO).where(qPreciosSesionDTO.parSesione.id.eq(sesionId));
+        return query.from(qPreciosSesionDTO, qTarifa).where(qPreciosSesionDTO.parSesione.id.eq(sesionId).
+        		and(qTarifa.id.eq(qPreciosSesionDTO.parTarifa.id)));
     }
 
     @Transactional
@@ -207,7 +212,8 @@ public class SesionesDAO extends BaseDAO
     public SesionDTO getSesion(long sesionId)
     {
         JPAQuery query = new JPAQuery(entityManager);
-        return query.from(qSesionDTO).leftJoin(qSesionDTO.parPreciosSesions, qPreciosSesionDTO)
+        return query.from(qSesionDTO).
+        		leftJoin(qSesionDTO.parPreciosSesions, qPreciosSesionDTO)
                 .where(qSesionDTO.id.eq(sesionId)).uniqueResult(qSesionDTO);
     }
 
@@ -419,5 +425,24 @@ public class SesionesDAO extends BaseDAO
        	query.where(condicion);
         
         return query.orderBy(getSort(qSesionDTO, sort)).list(qSesionDTO);
+	}
+
+    @Transactional
+	public List<TarifaDTO> getTarifasPreciosSesion(long sesionId) {
+    	QTarifaDTO qTarifa = QTarifaDTO.tarifaDTO;
+        JPAQuery query = new JPAQuery(entityManager);
+        return query.from(qPreciosSesionDTO, qTarifa).where(qPreciosSesionDTO.parSesione.id.eq(sesionId).
+        		and(qTarifa.id.eq(qPreciosSesionDTO.parTarifa.id))).listDistinct(qTarifa);
+	}
+
+    @Transactional
+	public List<TarifaDTO> getTarifasPreciosPlantilla(long sesionId) {
+		QTarifaDTO qTarifa = QTarifaDTO.tarifaDTO;
+		QPreciosPlantillaDTO qPreciosPlantilla = QPreciosPlantillaDTO.preciosPlantillaDTO;
+		
+        JPAQuery query = new JPAQuery(entityManager);
+        return query.from(qPreciosPlantilla, qTarifa).where(qPreciosPlantilla.parPlantilla.id.eq(
+        		new JPASubQuery().from(qSesionDTO).where(qSesionDTO.id.eq(sesionId)).unique(qSesionDTO.parPlantilla.id)).
+       		and(qTarifa.id.eq(qPreciosPlantilla.parTarifa.id))).listDistinct(qTarifa);
 	}
 }

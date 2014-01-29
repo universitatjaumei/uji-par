@@ -190,7 +190,8 @@ UI =
             "compras": "Gestió de compres i reserves",
             "detalleCompras": "Detall compra/reserva seleccionada",
             "comprasReservasHechas": "Compres i reserves realitzades",
-            "sesionesICAA": "Sessions realitzades entre les dates seleccionades"
+            "sesionesICAA": "Sessions realitzades entre les dates seleccionades",
+            "tarifas": "Gestió de les tarifes de preus"
         },
         
         "field": {
@@ -275,10 +276,10 @@ UI =
             "ivaSGAE": "IVA SGAE",
             "retencionSGAE": "Retenció SGAE",
             "asientosNumerados": "Seients numerats",
-            "precio": "Tarifa general",
-            "descuento": "Jubilats - Boninstitut - Anem al teatre",
-            "invitacion": "Invitació",
-            "aulaTeatro": "Platea - Carnet jove",
+            "precio": "Preu",
+            //"descuento": "Jubilats - Boninstitut - Anem al teatre",
+            //"invitacion": "Invitació",
+            //"aulaTeatro": "Platea - Carnet jove",
             "localizacion": "Localització",
             "plantillaprecios": "Plantilla de preus",
             "horaInicioVentaOnline": "Hora d'inici de la venda online",
@@ -332,7 +333,11 @@ UI =
             "idSala": "Identificador intern de la sala",
             "minutos": "Minuts",
             "horaInicial": "Hora inicial",
-            "horaFinal": "Hora final"
+            "horaFinal": "Hora final",
+            "isPublico": "És públic?",
+            "idTarifa": "Identificador de la tarifa",
+            "tarifa": "Tarifa",
+            "defecto": "Tarifa per defecte"
         },
 
         "legends": {
@@ -355,12 +360,12 @@ UI =
             "discapacitados3": "Discapacitats Amfiteatre"
         },
 
-        "tipoEntrada": {
+        /*"tipoEntrada": {
             "normal": "Tarifa general",
             "invitacion": "Invitació",
             "aulaTeatro": "Platea - Carnet jove",
             "descuento": "Jubilats - Boninstitut - Anem al teatre"
-        },
+        },*/
 
         "versionOriginal": {
             "castella": "Castellà",

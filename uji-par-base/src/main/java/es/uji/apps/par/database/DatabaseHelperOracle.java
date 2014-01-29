@@ -71,4 +71,8 @@ public class DatabaseHelperOracle implements DatabaseHelper
 		
 		return (Integer) valor;
 	}
+	
+	public String toInteger(String columna) {
+		return "TO_NUMBER(" + columna + ")";
+	}
 }

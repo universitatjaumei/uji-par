@@ -7,8 +7,6 @@ import javax.ws.rs.ext.Provider;
 
 import org.apache.log4j.Logger;
 
-import es.uji.apps.par.exceptions.GeneralPARException;
-
 @Provider
 public class CommonExceptionMapper implements ExceptionMapper<Exception>
 {
