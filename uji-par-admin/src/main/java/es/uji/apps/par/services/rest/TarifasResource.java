@@ -40,8 +40,8 @@ public class TarifasResource
     public Response getAll(@QueryParam("sort") @DefaultValue("[{\"property\":\"nombre\",\"direction\":\"ASC\"}]") String sort, 
     		@QueryParam("start") int start, @QueryParam("limit") @DefaultValue("1000") int limit)
     {
-        List<Tarifa> eventos = tarifasService.getAll(sort, start, limit);
-        return Response.ok().entity(new RestResponse(true, eventos, eventos.size())).build();
+        List<Tarifa> tarifas = tarifasService.getAll(sort, start, limit);
+        return Response.ok().entity(new RestResponse(true, tarifas, tarifas.size())).build();
     }
 
     @POST

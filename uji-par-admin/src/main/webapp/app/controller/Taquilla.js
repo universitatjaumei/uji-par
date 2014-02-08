@@ -754,6 +754,7 @@ Ext.define('Paranimf.controller.Taquilla', {
           var field = new Ext.form.Panel({
             columnWidth: 1/2,
             name: localizacion.codigo,
+            hidden: true,
             title: UI.i18n.legends.entrades + " " + localizacion.nombreVa.toUpperCase(),
             items: [{
               name: localizacion.codigo,
@@ -839,6 +840,8 @@ Ext.define('Paranimf.controller.Taquilla', {
           });
 
           var panelConNombreDeLocalizacionDeTarifa = Ext.ComponentQuery.query('panelSeleccionarNoNumeradas panelNumeroEntradas[name=' + sesion.localizacion.codigo + '] panel[name=panelTarifas]')[0];
+          var panelAHacerVisible = Ext.ComponentQuery.query('panelSeleccionarNoNumeradas panel[name=' + sesion.localizacion.codigo + ']')[0];
+          panelAHacerVisible.show();
           panelConNombreDeLocalizacionDeTarifa.add(field);
           panelConNombreDeLocalizacionDeTarifa.add(label);
           panelConNombreDeLocalizacionDeTarifa.setHeight(panelConNombreDeLocalizacionDeTarifa.height+25);

@@ -24,11 +24,10 @@ import es.uji.apps.fopreports.serialization.ReportSerializer;
 import es.uji.apps.fopreports.serialization.ReportSerializerInitException;
 import es.uji.apps.fopreports.style.ReportStyle;
 import es.uji.apps.par.i18n.ResourceProperties;
-import es.uji.apps.par.model.EntradaModelReport;
 import es.uji.apps.par.report.components.BaseTable;
 import es.uji.apps.par.report.components.EntradaReportStyle;
 
-public class EntradaReport extends Report
+public class EntradaReport extends Report implements EntradaReportOnlineInterface
 {
     private static final String GRIS_OSCURO = "#666666";
     private static final String FONDO_GRIS = "#EEEEEE";
@@ -49,6 +48,10 @@ public class EntradaReport extends Report
     private String urlPublicidad;
     private String urlPortada;
     private String barcode;
+    
+    public EntradaReport() throws ReportSerializerInitException {
+    	super(reportSerializer, new EntradaReportStyle());
+    }
 
     private EntradaReport(ReportSerializer serializer, ReportStyle style, Locale locale)
             throws ReportSerializerInitException
@@ -173,7 +176,7 @@ public class EntradaReport extends Report
         cell.setDisplayAlign(DisplayAlignType.CENTER);
 
         table.withNewRow();
-        table.withNewCell(ResourceProperties.getProperty(locale, "entrada.universitat"), "2");
+        table.withNewCell(ResourceProperties.getProperty(locale, "entrada.nombreEntidad"), "2");
 
         table.withNewRow();
         table.withNewCell(ResourceProperties.getProperty(locale, "entrada.direccion"), "2");
@@ -330,7 +333,7 @@ public class EntradaReport extends Report
         cell.setDisplayAlign(DisplayAlignType.CENTER);
 
         table.withNewRow();
-        table.withNewCell(ResourceProperties.getProperty(locale, "entrada.universitat"), "2");
+        table.withNewCell(ResourceProperties.getProperty(locale, "entrada.nombreEntidad"), "2");
 
         table.withNewRow();
         table.withNewCell(ResourceProperties.getProperty(locale, "entrada.direccion"), "2");
@@ -341,7 +344,7 @@ public class EntradaReport extends Report
     private Block createTextParanimf(String fontSize)
     {
         Block textParanimf = new Block();
-        textParanimf.getContent().add(ResourceProperties.getProperty(locale, "entrada.paranimf"));
+        textParanimf.getContent().add(ResourceProperties.getProperty(locale, "entrada.nombreLocalizacion"));
         textParanimf.setFontSize(fontSize);
         textParanimf.setFontStyle(FontStyleType.ITALIC);
         return textParanimf;
@@ -444,7 +447,7 @@ public class EntradaReport extends Report
             reportSerializer = new FopPDFSerializer();
     }
 
-    public static EntradaReport create(Locale locale)
+    public EntradaReportOnlineInterface create(Locale locale)
     {
         try
         {
@@ -469,6 +472,7 @@ public class EntradaReport extends Report
     {
         this.titulo = titulo;
     }
+
 
     public void setFecha(String fecha)
     {

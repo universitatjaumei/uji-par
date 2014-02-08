@@ -4,6 +4,7 @@
   <artifactId>uji-par-reports</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>uji-par-reports</name>
+	<packaging>jar</packaging>
   
   <parent>
     <groupId>es.uji.apps.par</groupId>
@@ -12,11 +13,11 @@
   </parent>
   
   <dependencies>
-  	<!-- <dependency>
+  	<dependency>
       <groupId>es.uji.apps.par</groupId>
       <artifactId>uji-par-base</artifactId>
       <version>0.0.12-SNAPSHOT</version>
-    </dependency>-->
+    </dependency>
     
   	<dependency>
 	    <groupId>es.uji.apps</groupId>
@@ -24,10 +25,12 @@
 	    <version>0.0.2-SNAPSHOT</version>
     </dependency>
     
+    <!-- 
     <dependency>
-	    <groupId>net.sf.barcode4j</groupId>
-	    <artifactId>barcode4j</artifactId>
-	    <version>2.1</version>
-    </dependency>
+  		<groupId>es.uji.apps</groupId>
+  		<artifactId>uji-fopreports</artifactId>
+  		<version>0.0.2</version>
+	</dependency>
+     -->
    </dependencies>
 </project>

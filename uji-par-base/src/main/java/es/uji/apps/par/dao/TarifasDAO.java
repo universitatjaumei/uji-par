@@ -20,7 +20,8 @@ public class TarifasDAO extends BaseDAO
 {
     private QTarifaDTO qTarifaDTO = QTarifaDTO.tarifaDTO;
     
-    private DatabaseHelper databaseHelper;
+    @SuppressWarnings("unused")
+	private DatabaseHelper databaseHelper;
 
     public TarifasDAO()
     {

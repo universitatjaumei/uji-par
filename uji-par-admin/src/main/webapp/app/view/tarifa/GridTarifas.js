@@ -30,7 +30,9 @@ Ext.define('Paranimf.view.tarifa.GridTarifas', {
         flex: 1,
         renderer: function(value) {
           if (value == 'on')
-            return "Sí"
+            return "Sí";
+          else
+            return "No";
         }
       }, {
         dataIndex: 'defecto',
@@ -38,7 +40,9 @@ Ext.define('Paranimf.view.tarifa.GridTarifas', {
         flex: 1,
         renderer: function(value) {
           if (value == 'on')
-            return "Sí"
+            return "Sí";
+          else
+            return "No";
         }
       }];
 

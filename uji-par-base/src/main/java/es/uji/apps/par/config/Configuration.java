@@ -40,6 +40,7 @@ public class Configuration
 	private static final String INFORME_EFECTIVO_REPORT = "uji.reports.informeEfectivo.class";
 	private static final String INFORME_TAQUILLA_SUBTOTALES_TPV_REPORT = "uji.reports.informeTaquillaTpvSubtotales.class";
 	private static final String INFORME_EVENTOS_REPORT = "uji.reports.informeEventos.class";
+	private static final String BARCODE_WIDTH_HEIGHT = "uji.reports.barcodeWidthHeight";
     
 
     public static Logger log = Logger.getLogger(Configuration.class);
@@ -256,5 +257,9 @@ public class Configuration
 
 	public static String getInformeEventosReport() {
 		return getProperty(INFORME_EVENTOS_REPORT);
+	}
+
+	public static String getBarcodeWidthHeight() {
+		return getProperty(BARCODE_WIDTH_HEIGHT);
 	}
 }

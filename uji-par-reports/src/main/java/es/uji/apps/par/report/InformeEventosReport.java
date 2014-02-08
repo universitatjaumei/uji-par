@@ -5,6 +5,7 @@ import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -20,14 +21,14 @@ import es.uji.apps.fopreports.serialization.FopPDFSerializer;
 import es.uji.apps.fopreports.serialization.ReportSerializationException;
 import es.uji.apps.fopreports.serialization.ReportSerializer;
 import es.uji.apps.fopreports.serialization.ReportSerializerInitException;
-import es.uji.apps.par.exceptions.SinIvaException;
+import es.uji.apps.par.SinIvaException;
+import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.i18n.ResourceProperties;
-import es.uji.apps.par.model.InformeModelReport;
 import es.uji.apps.par.report.components.BaseTable;
 import es.uji.apps.par.report.components.InformeTaquillaReportStyle;
 import es.uji.apps.par.utils.ReportUtils;
 
-public class InformeEventosReport extends Report
+public class InformeEventosReport extends Report implements InformeInterface
 {
     private static final String FONT_SIZE = "9pt";
 
@@ -36,7 +37,11 @@ public class InformeEventosReport extends Report
     private static FopPDFSerializer reportSerializer;
 
     private Locale locale;
-    private final InformeTaquillaReportStyle style;
+    private InformeTaquillaReportStyle style;
+    
+    public InformeEventosReport() throws ReportSerializerInitException {
+		super(reportSerializer, new InformeTaquillaReportStyle());
+	}
 
     private InformeEventosReport(ReportSerializer serializer, InformeTaquillaReportStyle style,
             Locale locale) throws ReportSerializerInitException
@@ -404,7 +409,8 @@ public class InformeEventosReport extends Report
         return blockEntradas;
     }
 
-    /*private void creaTotales(BigDecimal sumaEntradas, BigDecimal sumaBase, BigDecimal sumaIva, BigDecimal sumaTotal)
+    @SuppressWarnings("unused")
+	private void creaTotales(BigDecimal sumaEntradas, BigDecimal sumaBase, BigDecimal sumaIva, BigDecimal sumaTotal)
     {
         Block block = withNewBlock();
         //block.setMarginLeft("10cm");
@@ -446,18 +452,19 @@ public class InformeEventosReport extends Report
         block.getContent().add(table);
     }
 
-    private void creaFirma(String cargoInformeEfectivo, String firmanteInformeEfectivo)
+    @SuppressWarnings("unused")
+	private void creaFirma()
     {
         Block cargoBlock = withNewBlock();
         cargoBlock.setMarginTop("1cm");
-        String cargo = cargoInformeEfectivo;
+        String cargo = Configuration.getCargoInformeEfectivo();
         cargoBlock.getContent().add(cargo);
 
         Block nombreBlock = withNewBlock();
         nombreBlock.setMarginTop("2cm");
         nombreBlock.getContent().add(
                 ResourceProperties.getProperty(locale, "informeEventos.subtotales.firmado",
-                		firmanteInformeEfectivo));
+                        Configuration.getFirmanteInformeEfectivo()));
 
         Calendar fecha = Calendar.getInstance();
 
@@ -465,9 +472,9 @@ public class InformeEventosReport extends Report
         fechaBlock.setMarginTop("1cm");
         fechaBlock.getContent().add(
                 ResourceProperties.getProperty(locale, "informeEventos.subtotales.fecha",
-                        fecha.get(Calendar.DAY_OF_MONTH), DateUtils.getMesValenciaConDe(fecha),
+                        fecha.get(Calendar.DAY_OF_MONTH), ReportUtils.getMesValenciaConDe(fecha),
                         fecha.get(Calendar.YEAR)));
-    }*/
+    }
 
     private void setBorders(TableCell cell)
     {
@@ -486,7 +493,7 @@ public class InformeEventosReport extends Report
             reportSerializer = new FopPDFSerializer();
     }
 
-    public static InformeEventosReport create(Locale locale)
+    public InformeInterface create(Locale locale)
     {
         try
         {
@@ -505,4 +512,17 @@ public class InformeEventosReport extends Report
     {
         super.serialize(output);
     }
+	public void genera(String inicio, String fin,
+			List<InformeModelReport> compras, BigDecimal totalTaquillaTPV,
+			BigDecimal totalTaquillaEfectivo, BigDecimal totalOnline) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void genera(String inicio, String fin,
+			List<InformeModelReport> compras, String cargoInformeEfectivo,
+			String firmanteInformeEfectivo) throws SinIvaException {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -57,6 +57,7 @@ public class Sesion
         this.canalInternet = sesionDTO.getCanalInternet();
         this.canalTaquilla = sesionDTO.getCanalTaquilla();
         this.plantillaPrecios = Plantilla.plantillaPreciosDTOtoPlantillaPrecios(sesionDTO.getParPlantilla());
+        //this.preciosSesion = PreciosSesion.listaPreciosSesionDTOToListaPreciosSesion(sesionDTO.getParPreciosSesions());
 
         this.horaCelebracion = DateUtils.getHourAndMinutesWithLeadingZeros(sesionDTO.getFechaCelebracion());
         this.horaInicioVentaOnline = DateUtils.getHourAndMinutesWithLeadingZeros(sesionDTO.getFechaInicioVentaOnline());

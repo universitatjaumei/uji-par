@@ -193,7 +193,7 @@ public class EventosDAO extends BaseDAO
             tipoEvento.setId(databaseHelper.castId(array[10]));
             tipoEvento.setNombreEs((String) array[11]);
             tipoEvento.setNombreVa((String) array[12]);
-            tipoEvento.setExportarICAA((Boolean) array[33]);
+            tipoEvento.setExportarICAA(databaseHelper.castBoolean(array[33]));
             evento.setParTipoEvento(tipoEvento);
         }
 

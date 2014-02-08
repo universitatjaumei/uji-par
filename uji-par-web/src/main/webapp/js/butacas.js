@@ -211,10 +211,13 @@ Butacas = (function() {
 	{
 		var butaca = butacasSeleccionadas[posicion];
 		
-		butaca.tipo = tipo;
-		butaca.precio = precios[butaca.localizacion][tipo];
+		if (precios[butaca.localizacion][tipo] != undefined) {
+			butaca.tipo = tipo;
+			butaca.precio = precios[butaca.localizacion][tipo];
 		
-		refrescaEstadoButacas();
+			refrescaEstadoButacas();
+		} else
+			alert(UI.i18n.error.tarifaNoDisponible1 + "B" + butaca.numero + " F" + butaca.fila + UI.i18n.error.tarifaNoDisponible2);
 	}
 	
 	function cambiaTipoTodasButacas(tipo)

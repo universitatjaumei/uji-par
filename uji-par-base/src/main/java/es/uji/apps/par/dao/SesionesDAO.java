@@ -92,7 +92,7 @@ public class SesionesDAO extends BaseDAO
         queryVendidas.from(qButacaDTO);
         queryVendidas.where(qSesionDTO.id.eq(qButacaDTO.parSesion.id).and(qButacaDTO.anulada.eq(false)));
 
-        List<Object[]> sesiones = query.orderBy(getSort(qSesionDTO, sortParameter)).offset(start).limit(limit)
+        List<Object[]> sesiones = query.orderBy(getSort(qSesionDTO, sortParameter))/*.offset(start).limit(limit)*/
                 .list(qSesionDTO, queryVendidas.count());
 
         return sesiones;
@@ -213,7 +213,7 @@ public class SesionesDAO extends BaseDAO
     {
         JPAQuery query = new JPAQuery(entityManager);
         return query.from(qSesionDTO).
-        		leftJoin(qSesionDTO.parPreciosSesions, qPreciosSesionDTO)
+        		leftJoin(qSesionDTO.parPreciosSesions, qPreciosSesionDTO).fetch()
                 .where(qSesionDTO.id.eq(sesionId)).uniqueResult(qSesionDTO);
     }
 
@@ -240,42 +240,38 @@ public class SesionesDAO extends BaseDAO
     {
         QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
         QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
-        QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
         QSalaDTO qSalaDTO = QSalaDTO.salaDTO;
 
         List<Long> idsSesiones = Sesion.getIdsSesiones(sesiones);
-
-        JPASubQuery queryButacas = new JPASubQuery();
-        queryButacas.from(qButacaDTO);
-        queryButacas.where(qSesionDTO.id.eq(qButacaDTO.parSesion.id)
-                .and(qButacaDTO.anulada.eq(false)));
-        
         JPAQuery query = new JPAQuery(entityManager);
+        
         List<Object[]> resultado = query
-                .from(qSesionDTO)
-                .join(qSesionDTO.parSala, qSalaDTO)
-                .leftJoin(qSesionDTO.parCompras, qCompraDTO)
-                .where(qSesionDTO.id.in(idsSesiones)
-                        .and(qCompraDTO.anulada.isNull().or(qCompraDTO.anulada.eq(false))))
-                .distinct()
-                .groupBy(qSesionDTO)
-                .list(qSesionDTO, queryButacas.count(), qCompraDTO.importe.sum());
+        	.from(qSesionDTO)
+        	.join(qSesionDTO.parSala, qSalaDTO)
+        	.leftJoin(qSesionDTO.parCompras, qCompraDTO)
+            .where(qSesionDTO.id.in(idsSesiones)
+            .and(qCompraDTO.anulada.isNull().or(qCompraDTO.anulada.eq(false))))
+            .distinct()
+            .groupBy(qSesionDTO.id, qSalaDTO.codigo, qSesionDTO.fechaCelebracion)
+            .list(qSesionDTO.id, qSalaDTO.codigo, qSesionDTO.fechaCelebracion, qCompraDTO.importe.sum());
         
         List<RegistroSesion> registros = new ArrayList<RegistroSesion>();
         
         for (Object[] row:resultado)
         {
-            SesionDTO sesion = (SesionDTO) row[0];
-            Long espectadores = (Long) row[1];
-            BigDecimal recaudacion = (BigDecimal) row[2]; 
+        	long idSesion = (Long) row[0];
+        	String codigoSala = (String) row[1];
+        	Date fechaCelebracion = (Date) row[2];
+            BigDecimal recaudacion = (BigDecimal) row[3];
+            Long espectadores = getEspectadores(idSesion);
             
             RegistroSesion registro = new RegistroSesion();
             
-            registro.setCodigoSala(sesion.getParSala().getCodigo());
+            registro.setCodigoSala(codigoSala);
             registro.setEspectadores(espectadores.intValue());
             registro.setPeliculas(1);
-            registro.setFecha(sesion.getFechaCelebracion());
-            registro.setHora(HOUR_FORMAT.format(sesion.getFechaCelebracion()));
+            registro.setFecha(fechaCelebracion);
+            registro.setHora(HOUR_FORMAT.format(fechaCelebracion));
             //TODO -> Hay que tener en la base de datos si se producen incidencias en la sesion
             //Necesitamos saber los valores de la bbdd de incidencias del ICAA para ver de qué tipo son
             registro.setIncidencia(TipoIncidencia.SIN_INCIDENCIAS);
@@ -291,7 +287,17 @@ public class SesionesDAO extends BaseDAO
         return registros;
     }
 
-    @Transactional
+    private Long getEspectadores(long sesionId) {
+    	QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
+    	JPAQuery query = new JPAQuery(entityManager);
+    	return query.from(qButacaDTO).
+    		where(qButacaDTO.parSesion.id.eq(sesionId).and(
+    			qButacaDTO.anulada.eq(false).or(qButacaDTO.anulada.isNull()
+    		))
+    	).count();
+	}
+
+	@Transactional
     public List<RegistroSesionPelicula> getRegistrosSesionesPeliculas(List<Sesion> sesiones)
     {
         QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;

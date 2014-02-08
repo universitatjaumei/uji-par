@@ -19,14 +19,13 @@ import es.uji.apps.fopreports.serialization.FopPDFSerializer;
 import es.uji.apps.fopreports.serialization.ReportSerializationException;
 import es.uji.apps.fopreports.serialization.ReportSerializer;
 import es.uji.apps.fopreports.serialization.ReportSerializerInitException;
-import es.uji.apps.par.exceptions.SinIvaException;
+import es.uji.apps.par.SinIvaException;
 import es.uji.apps.par.i18n.ResourceProperties;
-import es.uji.apps.par.model.InformeModelReport;
 import es.uji.apps.par.report.components.BaseTable;
 import es.uji.apps.par.report.components.InformeTaquillaReportStyle;
 import es.uji.apps.par.utils.ReportUtils;
 
-public class InformeTaquillaTpvSubtotalesReport extends Report
+public class InformeTaquillaTpvSubtotalesReport extends Report implements InformeInterface
 {
     private static final String FONT_SIZE = "9pt";
 
@@ -35,7 +34,11 @@ public class InformeTaquillaTpvSubtotalesReport extends Report
     private static FopPDFSerializer reportSerializer;
 
     private Locale locale;
-    private final InformeTaquillaReportStyle style;
+    private InformeTaquillaReportStyle style;
+    
+    public InformeTaquillaTpvSubtotalesReport() throws ReportSerializerInitException {
+		super(reportSerializer, new InformeTaquillaReportStyle());
+	}
 
     private InformeTaquillaTpvSubtotalesReport(ReportSerializer serializer, InformeTaquillaReportStyle style,
             Locale locale) throws ReportSerializerInitException
@@ -387,7 +390,7 @@ public class InformeTaquillaTpvSubtotalesReport extends Report
             reportSerializer = new FopPDFSerializer();
     }
 
-    public static InformeTaquillaTpvSubtotalesReport create(Locale locale)
+    public InformeInterface create(Locale locale)
     {
         try
         {
@@ -406,4 +409,16 @@ public class InformeTaquillaTpvSubtotalesReport extends Report
     {
         super.serialize(output);
     }
+	public void genera(String inicio, String fin,
+			List<InformeModelReport> compras, BigDecimal totalTaquillaTPV,
+			BigDecimal totalTaquillaEfectivo, BigDecimal totalOnline) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void genera(String inicio, String fin,
+			List<InformeModelReport> compras) throws SinIvaException {
+		// TODO Auto-generated method stub
+		
+	}
 }

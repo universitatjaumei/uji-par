@@ -555,10 +555,11 @@ public class EntradasResource extends BaseResource
         template.put("millis", cal.getTime().getTime());
         List<Tarifa> tarifas = new ArrayList<Tarifa>();
         
-        if (sesion.getPreciosSesion() != null && sesion.getPreciosSesion().size() > 0)
-        	tarifas = sesionesService.getTarifasConPrecioSinPlantilla(sesionId);
-        else if (sesion.getPlantillaPrecios() != null)
+        if (sesion.getPlantillaPrecios() != null && sesion.getPlantillaPrecios().getId() != -1)
         	tarifas = sesionesService.getTarifasConPrecioConPlantilla(sesionId);
+        else
+        	tarifas = sesionesService.getTarifasConPrecioSinPlantilla(sesionId);
+        	
         template.put("tarifas", tarifas);
 
         if (getLocale().getLanguage().equals("ca"))

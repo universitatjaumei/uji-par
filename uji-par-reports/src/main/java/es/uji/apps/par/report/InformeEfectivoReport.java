@@ -19,14 +19,13 @@ import es.uji.apps.fopreports.serialization.FopPDFSerializer;
 import es.uji.apps.fopreports.serialization.ReportSerializationException;
 import es.uji.apps.fopreports.serialization.ReportSerializer;
 import es.uji.apps.fopreports.serialization.ReportSerializerInitException;
-import es.uji.apps.par.exceptions.SinIvaException;
+import es.uji.apps.par.SinIvaException;
 import es.uji.apps.par.i18n.ResourceProperties;
-import es.uji.apps.par.model.InformeModelReport;
 import es.uji.apps.par.report.components.BaseTable;
 import es.uji.apps.par.report.components.InformeTaquillaReportStyle;
 import es.uji.apps.par.utils.ReportUtils;
 
-public class InformeEfectivoReport extends Report
+public class InformeEfectivoReport extends Report implements InformeInterface
 {
     private static final String FONT_SIZE = "9pt";
 
@@ -35,7 +34,11 @@ public class InformeEfectivoReport extends Report
     private static FopPDFSerializer reportSerializer;
 
     private Locale locale;
-    private final InformeTaquillaReportStyle style;
+    private InformeTaquillaReportStyle style;
+    
+    public InformeEfectivoReport() throws ReportSerializerInitException {
+		super(reportSerializer, new InformeTaquillaReportStyle());
+	}
 
     private InformeEfectivoReport(ReportSerializer serializer, InformeTaquillaReportStyle style, Locale locale)
             throws ReportSerializerInitException
@@ -90,6 +93,7 @@ public class InformeEfectivoReport extends Report
         periodo.setMarginTop("0.5cm");
         periodo.setMarginLeft("6cm");
         periodo.setWhiteSpace(WhiteSpaceType.PRE);
+
 
         periodo.getContent().add(
                 ResourceProperties.getProperty(locale, "informeEfectivo.periodo", inicio, fin));
@@ -271,7 +275,7 @@ public class InformeEfectivoReport extends Report
             reportSerializer = new FopPDFSerializer();
     }
 
-    public static InformeEfectivoReport create(Locale locale)
+    public InformeInterface create(Locale locale)
     {
         try
         {
@@ -290,4 +294,15 @@ public class InformeEfectivoReport extends Report
     {
         super.serialize(output);
     }
+	public void genera(String inicio, String fin, List<InformeModelReport> compras, BigDecimal totalTaquillaTPV,
+			BigDecimal totalTaquillaEfectivo, BigDecimal totalOnline) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void genera(String inicio, String fin,
+			List<InformeModelReport> compras) throws SinIvaException {
+		// TODO Auto-generated method stub
+		
+	}
 }

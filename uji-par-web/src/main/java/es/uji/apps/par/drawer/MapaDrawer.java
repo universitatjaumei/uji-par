@@ -4,7 +4,10 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -28,6 +31,7 @@ import es.uji.apps.par.services.ButacasService;
 public class MapaDrawer
 {
     private static final String IMAGES_PATH = "/etc/uji/par/imagenes/";
+    private static final String BUTACAS_PATH = "/etc/uji/par/butacas/";
 
     @InjectParam
     ButacasService butacasService;
@@ -75,7 +79,7 @@ public class MapaDrawer
         }
     }
 
-    private void loadJsonLocalizacion(String localizacion)
+    private void loadJsonLocalizacion(String localizacion) throws FileNotFoundException
     {
         List<DatosButaca> listaButacas = parseaJsonButacas(localizacion);
 
@@ -87,15 +91,15 @@ public class MapaDrawer
         }
     }
 
-    private List<DatosButaca> parseaJsonButacas(String localizacion)
+    private List<DatosButaca> parseaJsonButacas(String localizacion) throws FileNotFoundException
     {
         Gson gson = new Gson();
         Type fooType = new TypeToken<List<DatosButaca>>()
         {
         }.getType();
-
-        InputStreamReader jsonReader = new InputStreamReader(MapaDrawer.class.getResourceAsStream("/butacas/"
-                + localizacion + ".json"));
+        
+        InputStream inputStream = new FileInputStream(BUTACAS_PATH + "/" + localizacion + ".json");
+        InputStreamReader jsonReader = new InputStreamReader(inputStream);
 
         List<DatosButaca> listaButacas = gson.fromJson(jsonReader, fooType);
         return listaButacas;

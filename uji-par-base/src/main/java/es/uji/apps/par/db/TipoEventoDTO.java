@@ -37,7 +37,7 @@ public class TipoEventoDTO implements Serializable {
 	@OneToMany(mappedBy="parTiposEvento")
 	private List<EventoDTO> parEventos;
 	
-	@Column(name="exportar_icaa")
+	@Column(name="EXPORTAR_ICAA")
 	private Boolean exportarICAA;
 
 	public TipoEventoDTO() {

@@ -79,7 +79,9 @@ ALTER TABLE par_precios_plantilla ADD COLUMN tarifa_id integer;
 ALTER TABLE par_precios_plantilla ADD CONSTRAINT par_precios_plantilla_par_fk3 FOREIGN KEY (tarifa_id) REFERENCES
 par_tarifas (id) ON UPDATE CASCADE ON DELETE CASCADE;
 
-ALTER TABLE par_precios_plantilla DROP CONSTRAINT par_precios_plantilla_plantilla_id_localizacion_id_tarifa_i_key;
+/*ALTER TABLE par_precios_plantilla DROP CONSTRAINT par_precios_plantilla_plantilla_id_localizacion_id_tarifa_i_key;*/
+ALTER TABLE par_precios_plantilla DROP CONSTRAINT par_precios_plantilla_uk1;
+ALTER TABLE par_precios_plantilla ADD UNIQUE (localizacion_id, plantilla_id, tarifa_id);
 
 ALTER TABLE par_precios_sesion ADD COLUMN tarifa_id integer;
 ALTER TABLE par_precios_sesion DROP CONSTRAINT par_precios_sesion_uk1;

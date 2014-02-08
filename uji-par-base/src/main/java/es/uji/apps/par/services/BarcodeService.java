@@ -23,6 +23,8 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 
+import es.uji.apps.par.config.Configuration;
+
 @Service
 public class BarcodeService
 {
@@ -62,8 +64,9 @@ public class BarcodeService
         Map<EncodeHintType,Object> hints = new HashMap<EncodeHintType, Object>();
         //hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
         hints.put(EncodeHintType.MARGIN, 2);
-        int widthHeight = 200;
-        BitMatrix matrix = writer.encode(text, BarcodeFormat.QR_CODE, widthHeight, widthHeight, hints);
+        String widthHeight = Configuration.getBarcodeWidthHeight();
+        BitMatrix matrix = writer.encode(text, BarcodeFormat.QR_CODE, Integer.valueOf(widthHeight), 
+        		Integer.valueOf(widthHeight), hints);
 
         MatrixToImageWriter.writeToStream(matrix, "PNG", output);
     }

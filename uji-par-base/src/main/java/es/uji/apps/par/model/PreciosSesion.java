@@ -105,6 +105,16 @@ public class PreciosSesion {
 		
 		return listaPreciosSesionDTO;
 	}
+	
+	public static List<PreciosSesion> listaPreciosSesionDTOToListaPreciosSesion(List<PreciosSesionDTO> listaPreciosSesionDTO) {
+		List<PreciosSesion> listaPreciosSesion = new ArrayList<PreciosSesion>();
+		if (listaPreciosSesionDTO != null) {
+			for (PreciosSesionDTO preciosSesionDTO: listaPreciosSesionDTO)
+				listaPreciosSesion.add(PreciosSesion.precioSesionDTOToPrecioSesion(preciosSesionDTO));
+		}
+		
+		return listaPreciosSesion;
+	}
 
 	public static PreciosSesionDTO precioSesionToPrecioSesionDTO(PreciosSesion preciosSesion) {
 		PreciosSesionDTO preciosSesionDTO = new PreciosSesionDTO();
@@ -119,6 +129,21 @@ public class PreciosSesion {
 		}
 		
 		return preciosSesionDTO;
+	}
+	
+	public static PreciosSesion precioSesionDTOToPrecioSesion(PreciosSesionDTO preciosSesionDTO) {
+		PreciosSesion preciosSesion = new PreciosSesion();
+		preciosSesion.setPrecio(preciosSesionDTO.getPrecio());
+		preciosSesion.setTarifa(Tarifa.tarifaDTOToTarifa(preciosSesionDTO.getParTarifa()));
+		preciosSesion.setLocalizacion(Localizacion.localizacionDTOtoLocalizacion(preciosSesionDTO.getParLocalizacione()));
+		
+		if (preciosSesionDTO.getParSesione() != null) {
+			Sesion sesion = new Sesion();
+			sesion.setId(preciosSesionDTO.getId());
+			preciosSesion.setSesion(sesion);
+		}
+		
+		return preciosSesion;
 	}
 
 	public Tarifa getTarifa() {

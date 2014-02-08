@@ -9,10 +9,10 @@ UI =
             "butacaEntero": "Seient: ",
             "filaEntero": "Fila: ",
             "tipo": "Tipus",
-            "tipoNormal": "Tarifa general",
-            "tipoDescuento": "Jubilats - Boninstitut - Anem al teatre",
+            "tipoNormal": "Normal",
+            "tipoDescuento": "Descompte",
             "tipoInvitacion": "Invitació",
-            "tipoAulaTeatro": "Platea - Carnet jove",
+            "tipoAulaTeatro": "Aula de teatre",
             "totalEntradas": "Total compra (IVA incl.): "
         },
         "error": {
