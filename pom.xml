@@ -22,14 +22,15 @@
     	<profile>
       		<id>uji</id>
       		<modules>
-            	<module>uji-par-reports</module>
-			</modules>
+        	    	<module>uji-par-reports</module>
+		</modules>
     	</profile>
 
     	<profile>
       		<id>benicassim</id>
       		<modules>
         		<module>uji-par-reports-benicassim</module>
+			<module>uji-par-web-benicassim</module>
       		</modules>
     	</profile>
   	</profiles>
