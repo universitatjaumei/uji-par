@@ -118,6 +118,15 @@ public class EventosResource
         return Response.ok().entity(new RestResponse(true, sesiones, sesiones.size())).build();
     }
     
+    @PUT
+    @Path("sesionesficheros/{sesionId}/incidencia/{incidenciaId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response setIncidencia(@PathParam("sesionId") long sesionId, @PathParam("incidenciaId") int incidenciaId) {
+    	sesionesService.setIncidencia(sesionId, incidenciaId);
+    	
+    	return Response.ok().entity(new RestResponse(true)).build();
+    }
+    
     @GET
     @Path("{eventoId}/sesiones/{sesionId}/precios")
     @Produces(MediaType.APPLICATION_JSON)
