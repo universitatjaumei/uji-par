@@ -101,8 +101,7 @@ public class MapaDrawer
         InputStream inputStream = new FileInputStream(BUTACAS_PATH + "/" + localizacion + ".json");
         InputStreamReader jsonReader = new InputStreamReader(inputStream);
 
-        List<DatosButaca> listaButacas = gson.fromJson(jsonReader, fooType);
-        return listaButacas;
+        return gson.fromJson(jsonReader, fooType);
     }
 
     private ByteArrayOutputStream imagenToOutputStream(BufferedImage img) throws IOException
@@ -193,7 +192,9 @@ public class MapaDrawer
 
         if (butacaOcupadaDiscapacitado == null)
         {
-            butacaOcupadaDiscapacitado = ImageIO.read(new File(IMAGES_PATH + "/ocupadaDiscapacitado.png"));
+            File f = new File(IMAGES_PATH + "/ocupadaDiscapacitado.png");
+            if (f.exists())
+                butacaOcupadaDiscapacitado = ImageIO.read(f);
         }
         
         if (butacaReservada == null)
@@ -203,7 +204,9 @@ public class MapaDrawer
         
         if (butacaReservadaDiscapacitado == null)
         {
-            butacaReservadaDiscapacitado = ImageIO.read(new File(IMAGES_PATH + "/reservadaDiscapacitado.png"));
+            File f = new File(IMAGES_PATH + "/reservadaDiscapacitado.png");
+            if (f.exists())
+                butacaReservadaDiscapacitado = ImageIO.read(f);
         }
     }
 
