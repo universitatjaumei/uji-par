@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import es.uji.apps.par.IncidenciaNotFoundException;
 import es.uji.apps.par.dao.CinesDAO;
 import es.uji.apps.par.dao.ComprasDAO;
 import es.uji.apps.par.dao.SalasDAO;
@@ -40,7 +41,8 @@ public class FicherosService
     @Autowired
     private SesionesDAO sesionesDAO;
 
-    public FicheroRegistros generaFicheroRegistros(Date fechaEnvioAnterior, String tipo, List<Sesion> sesiones)
+    public FicheroRegistros generaFicheroRegistros(Date fechaEnvioAnterior, String tipo, List<Sesion> sesiones) 
+    		throws IncidenciaNotFoundException
     {
         FicheroRegistros ficheroRegistros = new FicheroRegistros();
 
@@ -100,7 +102,7 @@ public class FicherosService
         return registrosSala;
     }
 
-    private List<RegistroSesion> generaRegistrosSesion(List<Sesion> sesiones)
+    private List<RegistroSesion> generaRegistrosSesion(List<Sesion> sesiones) throws IncidenciaNotFoundException
     {
         return sesionesDAO.getRegistrosSesiones(sesiones);
     }

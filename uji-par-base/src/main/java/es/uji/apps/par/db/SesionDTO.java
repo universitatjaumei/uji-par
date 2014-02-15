@@ -62,6 +62,9 @@ public class SesionDTO implements Serializable {
     @Column(name="RSS_ID")
     private String rssId;
     
+    @Column(name="INCIDENCIA_ID")
+    private Integer incidenciaId;
+    
 	//bi-directional many-to-one association to PreciosSesionDTO
 	@OneToMany(mappedBy="parSesione", cascade=CascadeType.PERSIST)
 	private List<PreciosSesionDTO> parPreciosSesions;
@@ -264,5 +267,13 @@ public class SesionDTO implements Serializable {
 
 	public void setParEnviosSesion(List<EnviosSesionDTO> parEnviosSesion) {
 		this.parEnviosSesion = parEnviosSesion;
+	}
+
+	public Integer getIncidenciaId() {
+		return incidenciaId;
+	}
+
+	public void setIncidenciaId(Integer incidenciaId) {
+		this.incidenciaId = incidenciaId;
 	}
 }

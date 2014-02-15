@@ -40,6 +40,7 @@ public class Sesion
     private String rssId;
     private String tipoEnvio;
     private Long idEnvioFichero;
+    private Integer incidenciaId;
 
     public Sesion()
     {
@@ -67,6 +68,7 @@ public class Sesion
         this.formato = sesionDTO.getFormato();
         this.versionLinguistica = sesionDTO.getVersionLinguistica();
         this.rssId = sesionDTO.getRssId();
+        this.incidenciaId = sesionDTO.getIncidenciaId();
         
         if (sesionDTO.getParSala() != null)
             this.sala = new Sala(sesionDTO.getParSala());
@@ -222,6 +224,7 @@ public class Sesion
 		sesion.setRssId(sesionDTO.getRssId());
 		
 		sesion.setSala(new Sala(sesionDTO.getParSala()));
+		sesion.setIncidenciaId(sesionDTO.getIncidenciaId());
 		
 		return sesion;
 	}
@@ -261,6 +264,7 @@ public class Sesion
 		sesionDTO.setFormato(sesion.getFormato());
 		sesionDTO.setVersionLinguistica(sesion.getVersionLinguistica());
 		sesionDTO.setRssId(sesion.getRssId());
+		sesionDTO.setIncidenciaId(sesion.getIncidenciaId());
 		
 		return sesionDTO;
 	}
@@ -427,5 +431,13 @@ public class Sesion
 
 	public void setIdEnvioFichero(Long idEnvioFichero) {
 		this.idEnvioFichero = idEnvioFichero;
+	}
+
+	public Integer getIncidenciaId() {
+		return incidenciaId;
+	}
+
+	public void setIncidenciaId(Integer incidenciaId) {
+		this.incidenciaId = incidenciaId;
 	}
  }

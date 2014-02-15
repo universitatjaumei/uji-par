@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.uji.apps.par.CampoRequeridoException;
+import es.uji.apps.par.IncidenciaNotFoundException;
 import es.uji.apps.par.RegistroSerializaException;
 import es.uji.apps.par.TipoEnvioInvalidoException;
 import es.uji.apps.par.dao.ComunicacionesICAADAO;
@@ -27,7 +28,7 @@ public class ComunicacionesICAAService {
 	ComunicacionesICAADAO comunicacionesICAADAO;
 
 	public byte[] generaFicheroICAA(List<Integer> ids, String fechaEnvioHabitualAnterior, String tipoEnvio) 
-			throws TipoEnvioInvalidoException, CampoRequeridoException, RegistroSerializaException {
+			throws TipoEnvioInvalidoException, CampoRequeridoException, RegistroSerializaException, IncidenciaNotFoundException {
 		checkTipoEnvio(tipoEnvio);
 		checkIds(ids);
 		Date fechaEnvioAnterior = getDateEnvio(fechaEnvioHabitualAnterior);

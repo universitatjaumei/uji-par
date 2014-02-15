@@ -16,6 +16,7 @@ import com.mysema.query.jpa.impl.JPASubQuery;
 import com.mysema.query.jpa.impl.JPAUpdateClause;
 import com.mysema.query.types.expr.BooleanExpression;
 
+import es.uji.apps.par.IncidenciaNotFoundException;
 import es.uji.apps.par.db.PreciosSesionDTO;
 import es.uji.apps.par.db.QButacaDTO;
 import es.uji.apps.par.db.QCompraDTO;
@@ -38,6 +39,7 @@ import es.uji.apps.par.model.Plantilla;
 import es.uji.apps.par.model.Sala;
 import es.uji.apps.par.model.Sesion;
 import es.uji.apps.par.utils.DateUtils;
+import es.uji.apps.par.utils.Utils;
 
 @Repository
 public class SesionesDAO extends BaseDAO
@@ -236,7 +238,7 @@ public class SesionesDAO extends BaseDAO
     }
 
     @Transactional
-    public List<RegistroSesion> getRegistrosSesiones(List<Sesion> sesiones)
+    public List<RegistroSesion> getRegistrosSesiones(List<Sesion> sesiones) throws IncidenciaNotFoundException
     {
         QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
         QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
@@ -253,7 +255,7 @@ public class SesionesDAO extends BaseDAO
             .and(qCompraDTO.anulada.isNull().or(qCompraDTO.anulada.eq(false))))
             .distinct()
             .groupBy(qSesionDTO.id, qSalaDTO.codigo, qSesionDTO.fechaCelebracion)
-            .list(qSesionDTO.id, qSalaDTO.codigo, qSesionDTO.fechaCelebracion, qCompraDTO.importe.sum());
+            .list(qSesionDTO.id, qSalaDTO.codigo, qSesionDTO.fechaCelebracion, qCompraDTO.importe.sum(), qSesionDTO.incidenciaId);
         
         List<RegistroSesion> registros = new ArrayList<RegistroSesion>();
         
@@ -272,9 +274,7 @@ public class SesionesDAO extends BaseDAO
             registro.setPeliculas(1);
             registro.setFecha(fechaCelebracion);
             registro.setHora(HOUR_FORMAT.format(fechaCelebracion));
-            //TODO -> Hay que tener en la base de datos si se producen incidencias en la sesion
-            //Necesitamos saber los valores de la bbdd de incidencias del ICAA para ver de qué tipo son
-            registro.setIncidencia(TipoIncidencia.SIN_INCIDENCIAS);
+            registro.setIncidencia(TipoIncidencia.intToTipoIncidencia(Utils.safeObjectToInt(row[4])));
 
             if (recaudacion == null)
                 registro.setRecaudacion(BigDecimal.ZERO);
@@ -450,5 +450,11 @@ public class SesionesDAO extends BaseDAO
         return query.from(qPreciosPlantilla, qTarifa).where(qPreciosPlantilla.parPlantilla.id.eq(
         		new JPASubQuery().from(qSesionDTO).where(qSesionDTO.id.eq(sesionId)).unique(qSesionDTO.parPlantilla.id)).
        		and(qTarifa.id.eq(qPreciosPlantilla.parTarifa.id))).listDistinct(qTarifa);
+	}
+
+    @Transactional
+	public void setIncidencia(long sesionId, int incidenciaId) {
+		JPAUpdateClause jpaUpdate = new JPAUpdateClause(entityManager, qSesionDTO);
+		jpaUpdate.set(qSesionDTO.incidenciaId, incidenciaId).where(qSesionDTO.id.eq(sesionId)).execute();
 	}
 }

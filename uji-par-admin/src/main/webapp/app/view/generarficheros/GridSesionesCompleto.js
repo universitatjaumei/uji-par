@@ -13,6 +13,10 @@ Ext.define('Paranimf.view.generarficheros.GridSesionesCompleto', {
     xtype: 'button',
     text: UI.i18n.button.marcarComoEnviados,
     action: 'markAsSent'
+   }, {
+    xtype: 'button',
+    text: UI.i18n.button.setIncidencia,
+    action: 'setIncidencia'
    }],
 
    dockedItems: [],
@@ -33,6 +37,10 @@ Ext.define('Paranimf.view.generarficheros.GridSesionesCompleto', {
       hidden: true,
       text: UI.i18n.field.idEnvioFichero
     }, {
+      dataIndex: 'incidenciaId',
+      hidden: true,
+      text: UI.i18n.field.incidenciaCodigo
+    }, {
       dataIndex: 'tituloEs',
       flex: 3,
       text: UI.i18n.field.tituloMulti
@@ -45,7 +53,8 @@ Ext.define('Paranimf.view.generarficheros.GridSesionesCompleto', {
     }, {
       dataIndex: 'horaApertura',
       text: UI.i18n.field.opening,
-      flex: 1
+      flex: 1,
+      hidden: true
     }, {
       dataIndex: 'fechaGeneracionFichero',
       text: UI.i18n.field.ficheroICAAgenerado,
@@ -68,12 +77,25 @@ Ext.define('Paranimf.view.generarficheros.GridSesionesCompleto', {
         else if (value == 'AT')
           return UI.i18n.field.envioRetrasado
       }
+    }, {
+      dataIndex: 'incidenciaNombre',
+      text: UI.i18n.field.incidencia,
+      flex: 1,
+      renderer: function(value, p)  {
+        var txt = eval("UI.i18n.incidencias.i" + p.record.data.incidenciaId);
+        p.tdAttr = 'data-qtip="' + txt + '"';
+        return txt;
+      }
     }];
 
     this.callParent(arguments);
   },
 
   showDatosFicheroForm: function() {
-      this.createPercentageModalWindow('formDatosFichero', undefined, undefined, UI.i18n.formTitle.datosFichero).show();
-   }
+    this.createPercentageModalWindow('formDatosFichero', undefined, undefined, UI.i18n.formTitle.datosFichero).show();
+  },
+
+  showIncidenciasForm: function() {
+    this.createPercentageModalWindow('formIncidencias', undefined, undefined, UI.i18n.formTitle.incidencias).show();
+  }
 });

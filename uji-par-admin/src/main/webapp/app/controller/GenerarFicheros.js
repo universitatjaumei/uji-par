@@ -1,8 +1,8 @@
 Ext.define('Paranimf.controller.GenerarFicheros', {
    extend: 'Ext.app.Controller',
 
-   views: ['EditModalWindow', 'EditBaseForm', 'EditBaseGrid', 'generarficheros.PanelSesiones', 'generarficheros.GridSesionesCompleto', 'generarficheros.FormDatosFichero'],
-   stores: ['SesionesFicheros', 'TipoEnvio'],
+   views: ['EditModalWindow', 'EditBaseForm', 'EditBaseGrid', 'generarficheros.PanelSesiones', 'generarficheros.GridSesionesCompleto', 'generarficheros.FormDatosFichero', 'generarficheros.FormIncidencias'],
+   stores: ['SesionesFicheros', 'TipoEnvio', 'Incidencias'],
    models: ['Sesion'],
 
    refs: [{
@@ -23,6 +23,12 @@ Ext.define('Paranimf.controller.GenerarFicheros', {
    }, {
       ref: 'tipoEnvio',
       selector: 'formDatosFichero combobox[name=tipoEnvio]'
+   }, {
+      ref: 'comboIncidencias',
+      selector: 'formIncidencias combobox[name=incidencias]'
+   }, {
+      ref: 'formIncidencias',
+      selector: 'formIncidencias'
    }],
 
    init: function() {
@@ -45,8 +51,30 @@ Ext.define('Paranimf.controller.GenerarFicheros', {
 
          'formDatosFichero button[action=cancel]': {
             click: this.reloadGrid
+         }, 
+
+         'panelSesionesFicheros button[action=setIncidencia]': {
+            click: this.setIncidencia
+         },
+
+         'formIncidencias button[action=save]': {
+            click: this.saveIncidencia
          }
       });
+   },
+
+   setIncidencia: function() {
+      if (this.getGridSesionesCompleto().rowsSelectedCount() == 1) {
+         this.getGridSesionesCompleto().showIncidenciasForm();
+      } else {
+         alert(UI.i18n.message.onlyOneRowSelected);
+      }
+   },
+
+   saveIncidencia: function() {
+      var rec = this.getGridSesionesCompleto().getSelectedRecord();
+      var url = urlPrefix + 'evento/sesionesficheros/' + rec.data.id + '/incidencia/' + this.getComboIncidencias().value;
+      this.getFormIncidencias().saveFormData(this.getGridSesionesCompleto(), url, 'PUT');
    },
 
    markAsSent: function() {

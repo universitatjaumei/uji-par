@@ -322,6 +322,7 @@ public class SesionesService
 					));
 				sesion.setTipoEnvio(sesionDTO.getParEnviosSesion().get(0).getTipoEnvio());
 				sesion.setIdEnvioFichero(sesionDTO.getParEnviosSesion().get(0).getParEnvio().getId());
+				sesion.setIncidenciaId(sesionDTO.getIncidenciaId());
 			}
 			listaSesiones.add(sesion);
 		}
@@ -348,5 +349,9 @@ public class SesionesService
 			tarifas.add(tarifa);
 		}
 		return tarifas;
+	}
+
+	public void setIncidencia(long sesionId, int incidenciaId) {
+		sesionDAO.setIncidencia(sesionId, incidenciaId);
 	}
 }

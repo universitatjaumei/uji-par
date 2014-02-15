@@ -9,7 +9,8 @@ UI =
             "comprar": "Realitzar compra",
             "reservar": "Realitzar reserva",
             "anularPrevia": "Anul·lar compra prèvia",
-            "datosFichero": "Dades necessàries per a generar el fitxer per a l'ICAA"
+            "datosFichero": "Dades necessàries per a generar el fitxer per a l'ICAA",
+            "incidencias": "Selecció de la incidència ocorreguda en la sessió seleccionada"
         },
         "message": {
         	"event": "És obligatori seleccionar un event",
@@ -54,7 +55,8 @@ UI =
             "3d": "3D",
             "noRowSelectedFileICAA": "És obligatori seleccionar almenys una sessió",
             "evento": "Event",
-            "sessio": "Sessió"
+            "sessio": "Sessió",
+            "onlyOneRowSelected": "És obligatori seleccionar una única sessió"
         },
         "storeWeekDay": {
             "wed": "Dimecres",
@@ -126,7 +128,9 @@ UI =
             "loadingLocalizaciones": "S'ha produït un error carregant les localitzacions de l'event",
             "dataIniciPosterior": "Error, la data d'inici no pot ser posterior a la de fi",
             "dataEventAnterior": "Error, la data de la sessió no pot ser anterior a la data de fi de venda online",
-            "eventSelected": "Error, és necessari seleccionar un event"
+            "eventSelected": "Error, és necessari seleccionar un event",
+            "precioRepetido": "Error, aquesta tarifa ja s'ha utilitzat per a aquesta localització",
+            "setIncidencia": "S'ha produït un error actualitzant la incidència"
         },
         "button": {
             "closeSession": "Tancar sessió",
@@ -164,7 +168,8 @@ UI =
             "generatePdfTpv": "PDF de TPV",
             "generatePdfEventos": "PDF SGAE",
             "saveFileICAA": "Generar fitxer per a l'ICAA",
-            "marcarComoEnviados": "Marcar com a enviades a l'ICAA"
+            "marcarComoEnviados": "Marcar com a enviades a l'ICAA",
+            "setIncidencia": "Ficar incidència"
         },
         "calendar": {
             "calendar": "Calendari de reserves",
@@ -337,7 +342,10 @@ UI =
             "isPublico": "És públic?",
             "idTarifa": "Identificador de la tarifa",
             "tarifa": "Tarifa",
-            "defecto": "Tarifa per defecte"
+            "defecto": "Tarifa per defecte",
+            "incidenciaCodigo": "Codi d'incidència",
+            "incidencia": "Incidència",
+            "selectIncidencia": "Seleccione la incidència"
         },
 
         "legends": {
@@ -418,6 +426,17 @@ UI =
             "T": "Doblada Gallego ",
             "F": "Doblada Otras Lenguas",
             "X": "Sin diálogos"
+        },
+
+        "incidencias": {
+            "i0": "Sense incidències",
+            "i5": "Venda manual (degradada)",
+            "i6": "Venda manual + anul·lació de vendes",
+            "i7": "Venda manual sessió actual + anul·lació de programació (sessió prèvia a la mateixa hora)",
+            "i8": "Venda manual sessió actual + anul·lació de vendes sessió actual + anul·lació de programació (sessió prèvia)",
+            "i9": "Anul·lació de vendes",
+            "i10": "Anul·lació de programació (sessió prèvia a la mateixa hora)",
+            "i11": "Anul·lació de vendes sessió actual + anul·lació de programació (sessió prèvia a la mateixa hora)"
         }
     }
 }

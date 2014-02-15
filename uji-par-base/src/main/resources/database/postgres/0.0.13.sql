@@ -89,6 +89,8 @@ ALTER TABLE par_precios_sesion ADD CONSTRAINT par_precios_sesion_par_ta_fk2 FORE
 	REFERENCES par_tarifas (id) ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE par_precios_sesion ADD UNIQUE (localizacion_id, sesion_id, tarifa_id);
 
+ALTER TABLE par_sesiones ADD COLUMN incidencia_id integer;
+update par_sesiones set incidencia_id = 0;
 
 /*CREATE TABLE PAR_TARIFAS_CINES
 (

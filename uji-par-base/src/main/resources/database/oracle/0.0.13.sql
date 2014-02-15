@@ -103,6 +103,9 @@ UPDATE "PAR_BUTACAS" set TIPO = 2 where TIPO = 'descuento';
 UPDATE "PAR_BUTACAS" set TIPO = 3 where TIPO = 'invitacion';
 UPDATE "PAR_BUTACAS" set TIPO = 4 where tipo = 'aulaTeatro';
 
+ALTER TABLE "PAR_SESIONES" ADD COLUMN("INCIDENCIA_ID" NUMBER);
+update "PAR_SESIONES" set INCIDENCIA_ID = 0;
+
 
 /*
  * para actualizar las plantillas y precios, hacer lo mismo para par_precios_sesion
