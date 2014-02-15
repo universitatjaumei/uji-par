@@ -9,7 +9,9 @@ Ext.define('Paranimf.view.taquilla.PanelTaquilla', {
     flex: 1,
     region: 'north',
     autoScroll: true,
-    xtype: 'gridEventosTaquilla'
+    xtype: 'gridEventosTaquilla',
+    split: true,
+    collapsible: true
   },{
     flex: 1,
     region: 'center',

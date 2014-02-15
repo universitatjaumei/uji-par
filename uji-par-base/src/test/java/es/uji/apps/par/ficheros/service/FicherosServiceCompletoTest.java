@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
+import es.uji.apps.par.PrecioRepetidoException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,8 +27,7 @@ public class FicherosServiceCompletoTest extends FicherosServiceBaseTest
     private FicherosService service;
 
     @Before
-    public void setup()
-    {
+    public void setup() throws PrecioRepetidoException {
         super.setup();
     }
 

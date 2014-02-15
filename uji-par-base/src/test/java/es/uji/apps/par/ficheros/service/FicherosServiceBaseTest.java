@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.Arrays;
 
+import es.uji.apps.par.PrecioRepetidoException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import es.uji.apps.par.ButacaOcupadaException;
@@ -69,8 +70,7 @@ public class FicherosServiceBaseTest
     protected Evento evento;
 
 
-    protected void setup()
-    {
+    protected void setup() throws PrecioRepetidoException {
         cine = creaCine();
         localizacion = creaLocalizacion("Platea");
         sala = creaSala("567", "Sala 1");
@@ -198,8 +198,7 @@ public class FicherosServiceBaseTest
         return butaca;
     }
 
-    protected PreciosPlantilla creaPrecioPlantilla(double normal, double descuento, double invitacion)
-    {
+    protected PreciosPlantilla creaPrecioPlantilla(double normal, double descuento, double invitacion) throws PrecioRepetidoException {
         PreciosPlantilla preciosPlantilla = new PreciosPlantilla(localizacion, plantilla);
 
         preciosPlantilla.setPrecio(new BigDecimal(normal));

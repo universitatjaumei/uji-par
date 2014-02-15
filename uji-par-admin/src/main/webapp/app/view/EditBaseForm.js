@@ -19,10 +19,13 @@ Ext.define('Paranimf.view.EditBaseForm', {
 
   saveFormData: function(grid, url, method, contentType, callback) {
     var me = this;
-    var id = me.getForm().findField('id').getValue();
+    var id;
     var methodHTTP;
     var ct;
     var formURL;
+    
+    if (me.getForm().findField('id') != undefined)
+      id = me.getForm().findField('id').getValue();
     
     if (me.getForm().isValid()) {
       if (method) {
@@ -55,9 +58,8 @@ Ext.define('Paranimf.view.EditBaseForm', {
   	        },failure: function(form, action) {
   	            if (callback)
   	              callback(form, action);
-  	            else {
+  	            else
   	              alert(UI.i18n.error.formSave);
-  	            }
   	            me.setLoading(false);
   	        }
   	      });
@@ -75,7 +77,7 @@ Ext.define('Paranimf.view.EditBaseForm', {
 	    			  callback(form, action);
 	    		  else
 	    			  alert(UI.i18n.error.formSave);
-	              me.setLoading(false);
+            me.setLoading(false);
 	    	  }
 	   	  });
       }

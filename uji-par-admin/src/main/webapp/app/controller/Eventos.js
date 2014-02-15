@@ -65,6 +65,9 @@ Ext.define('Paranimf.controller.Eventos', {
    }, {
       ref: 'horaApertura',
       selector: 'formSesiones timefield[name=horaApertura]'
+   }, {
+      ref: 'comboPlantillaPrecios',
+      selector: 'formSesiones combobox[name=plantillaPrecios]'
    }],
 
    init: function() {
@@ -233,16 +236,11 @@ Ext.define('Paranimf.controller.Eventos', {
             console.log('idEvento:', idEvento);
             console.log('idSesion:', idSesion);
             
-            Ext.Ajax.request({
-              url : urlPrefix + 'evento/' + idEvento + '/sesiones/' + idSesion + '/precios',
-              method: 'GET',
-              success: function (response) {
-                  var respuesta = Ext.JSON.decode(response.responseText, true);
-                  gridPreciosSesion.store.loadRawData(respuesta.data);
-              }, failure: function (response) {
-                 alert(UI.i18n.error.loadingPrecios);
-              }
-            });
+            gridPreciosSesion.store.proxy.url = urlPrefix + 'evento/' + idEvento + '/sesiones/' + idSesion + '/precios';
+            gridPreciosSesion.store.load(function(records, operation, success) {
+               if (!success)
+                  alert(UI.i18n.error.loadingPrecios);
+            })
          }
       }
    },   
@@ -452,7 +450,10 @@ Ext.define('Paranimf.controller.Eventos', {
             }
          }
 
-         this.getFormSesiones().getForm().findField('preciosSesion').setValue(this.getGridPreciosSesion().toJSON());
+         if (this.getComboPlantillaPrecios().value == -1)
+            this.getFormSesiones().getForm().findField('preciosSesion').setValue(this.getGridPreciosSesion().toJSON());
+         else
+            this.getFormSesiones().getForm().findField('preciosSesion').setValue(undefined);
          
          var sala = this.getFormSesiones().getForm().findField('sala');
          

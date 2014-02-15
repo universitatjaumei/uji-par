@@ -18,26 +18,29 @@ Ext.define('Paranimf.view.plantillaprecios.GridPrecios', {
       this.columns = [{
         dataIndex: 'id',
         hidden: true,
-        text: UI.i18n.field.idIntern
+        text: UI.i18n.field.idIntern,
+        sortable: false
       }, {
         dataIndex: 'plantillaPrecios',
         hidden: true,
-        text: UI.i18n.field.plantillaPreusInterna
-      }, {
-        dataIndex: 'parLocalizacione',
-        hidden: true,
-        text: UI.i18n.field.idLocalitzacio
-      }, {
-        dataIndex: 'tarifa',
-        hidden: true,
-        text: UI.i18n.field.idTarifa
-      }, {
-        dataIndex: 'localizacion_nombre',
-        text: UI.i18n.field.localizacion,
-        flex: 2,
+        text: UI.i18n.field.plantillaPreusInterna,
         sortable: false
       }, {
-        dataIndex: 'tarifa_nombre',
+        dataIndex: 'localizacion_id',
+        hidden: true,
+        text: UI.i18n.field.idLocalitzacio,
+        sortable: false
+      }, {
+        dataIndex: 'tarifa_id',
+        hidden: true,
+        text: UI.i18n.field.idTarifa,
+        sortable: false
+      }, {
+        dataIndex: 'parLocalizacione.nombreVa',
+        text: UI.i18n.field.localizacion,
+        flex: 2
+      }, {
+        dataIndex: 'parTarifa.nombre',
         text: UI.i18n.field.tarifa,
         flex: 2
       }, {

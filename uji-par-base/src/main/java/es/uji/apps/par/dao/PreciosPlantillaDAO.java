@@ -3,6 +3,8 @@ package es.uji.apps.par.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.uji.apps.par.PrecioRepetidoException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,16 +59,16 @@ public class PreciosPlantillaDAO extends BaseDAO {
 		
 	@Transactional
 	public PreciosPlantilla add(PreciosPlantilla precio) {
-		PreciosPlantillaDTO preciosPlantillaDTO = new PreciosPlantillaDTO();
-		preciosPlantillaDTO.setParLocalizacione(Localizacion.localizacionToLocalizacionDTO(precio.getLocalizacion()));
-		preciosPlantillaDTO.setParPlantilla(Plantilla.plantillaPreciosToPlantillaPreciosDTO(precio.getPlantillaPrecios()));
-		preciosPlantillaDTO.setPrecio(precio.getPrecio());
-		preciosPlantillaDTO.setParTarifa(Tarifa.toDTO(precio.getTarifa()));
-		
-		entityManager.persist(preciosPlantillaDTO);
-		precio.setId(preciosPlantillaDTO.getId());
-		
-		return precio;
+        PreciosPlantillaDTO preciosPlantillaDTO = new PreciosPlantillaDTO();
+        preciosPlantillaDTO.setParLocalizacione(Localizacion.localizacionToLocalizacionDTO(precio.getLocalizacion()));
+        preciosPlantillaDTO.setParPlantilla(Plantilla.plantillaPreciosToPlantillaPreciosDTO(precio.getPlantillaPrecios()));
+        preciosPlantillaDTO.setPrecio(precio.getPrecio());
+        preciosPlantillaDTO.setParTarifa(Tarifa.toDTO(precio.getTarifa()));
+
+        entityManager.persist(preciosPlantillaDTO);
+        precio.setId(preciosPlantillaDTO.getId());
+
+        return precio;
 	}
 	
 	@Transactional

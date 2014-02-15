@@ -822,7 +822,7 @@ Ext.define('Paranimf.controller.Taquilla', {
             columnWidth: 2/3,
             name: sesion.tarifa.id,
             fieldLabel: sesion.tarifa.nombre,
-            labelWidth: 200,
+            labelWidth: 260,
             labelAlign: 'right',
             allowDecimals: false,
             value: 0,

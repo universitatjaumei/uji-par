@@ -9,7 +9,9 @@ Ext.define('Paranimf.view.evento.PanelEventos', {
     flex: 1,
     region: 'north',
     autoScroll: true,
-    xtype: 'gridEventos'
+    xtype: 'gridEventos',
+    split: true,
+    collapsible: true
   }, {
     flex: 1,
     region: 'center',

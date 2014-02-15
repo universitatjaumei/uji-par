@@ -9,7 +9,9 @@ Ext.define('Paranimf.view.compra.PanelComprasReservas', {
     flex: 1,
     region: 'north',
     autoScroll: true,
-    xtype: 'gridEventosComprasReservas'
+    xtype: 'gridEventosComprasReservas',
+    split: true,
+    collapsible: true
   },{
     region: 'center',
     flex: 1,

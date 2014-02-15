@@ -3,7 +3,9 @@ package es.uji.apps.par.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.uji.apps.par.PrecioRepetidoException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import es.uji.apps.par.CampoRequeridoException;
@@ -28,9 +30,13 @@ public class PreciosPlantillaService {
 		preciosDAO.remove(plantillaId, precioId);
 	}
 
-	public PreciosPlantilla add(PreciosPlantilla precio) throws CampoRequeridoException {
-		checkRequiredFields(precio);
-		return preciosDAO.add(precio);
+	public PreciosPlantilla add(PreciosPlantilla precio) throws CampoRequeridoException, PrecioRepetidoException {
+        try {
+		    checkRequiredFields(precio);
+		    return preciosDAO.add(precio);
+        } catch (DataIntegrityViolationException e) {
+            throw new PrecioRepetidoException();
+        }
 	}
 
 	private void checkRequiredFields(PreciosPlantilla precio) throws CampoRequeridoException {

@@ -148,7 +148,9 @@ Ext.define('Paranimf.controller.PlantillasPrecios', {
 	   
 	   // Pasar precios a float para que se envíen bien al REST
 	   precio.setRawValue(precio.value);
-	   form.saveFormData(grid, urlPrefix + 'plantillaprecios/' + plantillaId + '/precios');
+	   form.saveFormData(grid, urlPrefix + 'plantillaprecios/' + plantillaId + '/precios', undefined, undefined, function(form, action) {
+         alert(UI.i18n.error.precioRepetido);
+      });
    },
    
    removePrecio: function(button, event, opts) {

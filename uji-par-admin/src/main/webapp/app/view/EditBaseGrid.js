@@ -173,6 +173,10 @@ Ext.define('Paranimf.view.EditBaseGrid', {
          return true;
    },
 
+   rowsSelectedCount: function() {
+      return this.getSelectionModel().getSelection().length;
+   },
+
    addItemToStore: function(item) {
       this.store.add(item);
    },

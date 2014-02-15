@@ -14,28 +14,27 @@ Ext.define('Paranimf.view.evento.GridPreciosSesion', {
         sortable: false,
         text: UI.i18n.field.idIntern
       }, {
-        dataIndex: 'localizacion',
+        dataIndex: 'localizacion_id',
         hidden: true,
         sortable: false,
         text: UI.i18n.field.idLocalitzacio
       }, {
-        dataIndex: 'tarifa',
+        dataIndex: 'tarifa_id',
         hidden: true,
+        sortable: false,
         text: UI.i18n.field.idTarifa
       }, {
-        dataIndex: 'localizacion_nombre',
+        dataIndex: 'parLocalizacione.nombreVa',
         text: UI.i18n.field.localizacion,
         flex: 2,
-        sortable: false
       }, {
-        dataIndex: 'tarifa_nombre',
+        dataIndex: 'parTarifa.nombre',
         text: UI.i18n.field.tarifa,
         flex: 2
       }, {
         dataIndex: 'precio',
         text: UI.i18n.field.precio,
         flex: 1,
-        sortable: false,
         renderer: Ext.util.Format.numberRenderer("0.00")
       }];
 
