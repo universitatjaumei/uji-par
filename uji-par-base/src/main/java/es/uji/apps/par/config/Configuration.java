@@ -42,6 +42,7 @@ public class Configuration
 	private static final String INFORME_EVENTOS_REPORT = "uji.reports.informeEventos.class";
 	private static final String BARCODE_WIDTH_HEIGHT = "uji.reports.barcodeWidthHeight";
 	private static final String LOGO_REPORT = "uji.reports.logo";
+	private static final String API_KEY = "api.key";
     
 
     public static Logger log = Logger.getLogger(Configuration.class);
@@ -266,5 +267,9 @@ public class Configuration
 
 	public static String getLogoReport() {
 		return getProperty(LOGO_REPORT);
+	}
+
+	public static String getApiKey() {
+		return getProperty(API_KEY);
 	}
 }

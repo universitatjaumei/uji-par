@@ -264,7 +264,7 @@ public class Sesion
 		sesionDTO.setFormato(sesion.getFormato());
 		sesionDTO.setVersionLinguistica(sesion.getVersionLinguistica());
 		sesionDTO.setRssId(sesion.getRssId());
-		sesionDTO.setIncidenciaId(sesion.getIncidenciaId());
+		sesionDTO.setIncidenciaId((sesion.getIncidenciaId()==null)?0:sesion.getIncidenciaId());
 		
 		return sesionDTO;
 	}
