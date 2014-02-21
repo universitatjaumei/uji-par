@@ -3,6 +3,7 @@ package es.uji.apps.par.dao;
 import java.lang.reflect.Type;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -451,5 +452,18 @@ public class EventosDAO extends BaseDAO
     @Transactional
 	public int getTotalEventos() {
 		return (int) getQueryEventos().count();
+	}
+
+    @Transactional
+	public List<EventoDTO> getEventosActivosParaVentaOnline() {
+		JPAQuery query = new JPAQuery(entityManager);
+		QSesionDTO qSesionDTO = new QSesionDTO("qSesionDTO");
+		Calendar cal = Calendar.getInstance();
+		Timestamp currentTime = new Timestamp(cal.getTime().getTime());
+		
+		return query.from(qEventoDTO).join(qEventoDTO.parSesiones, qSesionDTO).where(
+			qSesionDTO.canalInternet.eq(true).and(
+			qSesionDTO.fechaInicioVentaOnline.before(currentTime).and(
+			qSesionDTO.fechaFinVentaOnline.after(currentTime)))).list(qEventoDTO);
 	}
 }

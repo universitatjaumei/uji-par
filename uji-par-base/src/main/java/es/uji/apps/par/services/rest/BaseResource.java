@@ -21,7 +21,6 @@ import es.uji.commons.web.template.model.Pagina;
 public class BaseResource
 {
     protected static final String APP = "par";
-    //TODO - que la coja del properties
     //private static final String API_KEY = "kajshdka234hsdoiuqhiu918092";
     private static final String API_KEY = Configuration.getApiKey();
 

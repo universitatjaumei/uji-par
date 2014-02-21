@@ -31,6 +31,7 @@ import es.uji.apps.par.database.DatabaseHelper;
 import es.uji.apps.par.database.DatabaseHelperFactory;
 import es.uji.apps.par.i18n.ResourceProperties;
 import es.uji.apps.par.model.Evento;
+import es.uji.apps.par.model.EventoParaSync;
 import es.uji.apps.par.model.Sesion;
 import es.uji.apps.par.services.EventosService;
 import es.uji.apps.par.services.SesionesService;
@@ -69,6 +70,22 @@ public class EventosResource extends BaseResource
         imagenesANull(eventos);
 
         return Response.ok().entity(new RestResponse(true, eventos, 0)).build();
+    }
+    
+    @GET
+    @Path("activos")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getEventosActivosParaVentaOnline()
+    {
+        if (!correctApiKey(request))
+        {
+            return apiAccessDenied();
+        }
+        
+        List<EventoParaSync> eventos;
+        
+        eventos = eventosService.getEventosActivosParaVentaOnline();
+        return Response.ok().entity(eventos).build();
     }
 
     private void imagenesANull(List<Evento> eventos)

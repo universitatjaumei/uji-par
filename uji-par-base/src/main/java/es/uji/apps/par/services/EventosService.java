@@ -1,5 +1,6 @@
 package es.uji.apps.par.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,10 +9,12 @@ import org.springframework.stereotype.Service;
 import es.uji.apps.par.CampoRequeridoException;
 import es.uji.apps.par.EventoConCompras;
 import es.uji.apps.par.EventoNoEncontradoException;
+import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.dao.ComprasDAO;
 import es.uji.apps.par.dao.EventosDAO;
 import es.uji.apps.par.db.EventoDTO;
 import es.uji.apps.par.model.Evento;
+import es.uji.apps.par.model.EventoParaSync;
 
 @Service
 public class EventosService
@@ -114,5 +117,19 @@ public class EventosService
 
 	public int getTotalEventos() {
 		return eventosDAO.getTotalEventos();
+	}
+
+	//url: "http://www.example.com/test/23173?idioma=##IDIOMA##"
+	public List<EventoParaSync> getEventosActivosParaVentaOnline() {
+		List<EventoDTO> eventosDTO = eventosDAO.getEventosActivosParaVentaOnline();
+		List<EventoParaSync> eventosParaSync = new ArrayList<EventoParaSync>();
+		String urlPrefix = Configuration.getUrlPublic() + "/rest/evento/";
+		String urlSuffix = "/##IDIOMA##";
+		
+		for (EventoDTO eventoDTO: eventosDTO) {
+			EventoParaSync eventoParaSync = new EventoParaSync(eventoDTO.getRssId(), urlPrefix + eventoDTO.getRssId() + urlSuffix);
+			eventosParaSync.add(eventoParaSync);
+		}
+		return eventosParaSync;
 	}
 }
