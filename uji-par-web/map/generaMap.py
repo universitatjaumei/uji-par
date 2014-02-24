@@ -35,10 +35,10 @@ def genera_json(localizacion, x_ini, y_ini, ancho_imagen, alto_imagen, ancho_cel
     butacas = []
 
     if descendente_fila:
-        fila = 1
+        fila = fila_ini 
     else:
         fila = (alto_imagen-y_ini) / alto_celda + (fila_ini-1)
-    print fila
+    #print fila
     if descendente:
         inc_butaca = -inc_butaca
 

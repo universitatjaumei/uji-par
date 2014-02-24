@@ -16,10 +16,21 @@
         android:gravity="center" >
 
         <TextView
+            android:id="@+id/eventos_empty_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableBottom="@drawable/ic_refresh"
             android:text="@string/eventos_list_empty"
+            android:padding="10sp"
+            android:textSize="16sp" />
+        
+        <TextView
+            android:id="@+id/settings_empty_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableBottom="@android:drawable/ic_menu_preferences"
+            android:text="@string/settings_empty"
+            android:padding="10sp"
             android:textSize="16sp" />
     </LinearLayout>
 

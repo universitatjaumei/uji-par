@@ -14,20 +14,23 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.media.MediaPlayer;
 import android.os.CountDownTimer;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.Vibrator;
+import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
+import com.fourtic.paranimf.entradas.activity.SettingsActivity;
 import com.fourtic.paranimf.entradas.constants.Constants;
 
 public class Utils
 {
-    private static SimpleDateFormat HOUR_FORMAT = new SimpleDateFormat("HH:mm");
+	private static SimpleDateFormat HOUR_FORMAT = new SimpleDateFormat("HH:mm");
     private static SimpleDateFormat WEEKDAY_FORMAT = new SimpleDateFormat("EEEE");
     private static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd MMMM yyyy");
     private static SimpleDateFormat DATE_WITH_TIME_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm");
@@ -208,5 +211,4 @@ public class Utils
 
         return timer;
     }
-
 }

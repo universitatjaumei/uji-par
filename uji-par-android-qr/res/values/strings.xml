@@ -4,6 +4,7 @@
     <string name="app_name">Entrades</string>
     <string name="title_eventos">Events</string>
     <string name="action_sincronizar">Sincronitzar</string>
+    <string name="action_settings">Ajustos</string>
     <string name="title_sesiones">Sesions</string>
     <string name="sincronizar">Sincronitzar</string>
     <string name="vendidas">Venudes:</string>
@@ -34,7 +35,9 @@
     <string name="error_sincronizando_eventos">Error sincronitzant els events</string>
     <string name="error_de_conexion">Error de connexió</string>
     <string name="conexion_red_no_disponible">Connexió de xarxa no disponible</string>
+    <string name="no_url_apikey">És obligatori introduir una url i API key</string>
     <string name="eventos_list_empty">"Per a sincronitzar els events premeu "</string>
+    <string name="settings_empty">"Per poder sincronitzar cal introduir una URL i API key vàlides des de "</string>
     <string name="action_sincronizar_entradas">Sincronitzar entrades</string>
     <string name="error_consultando_butacas_movil">Error llegint entrades guardades al mòbil</string>
     <string name="error_guardando_backup_butacas">Error guardant backup de entrades</string>
@@ -45,5 +48,11 @@
     <string name="error_actualizando_eventos_rest">Error recuperant events des de la web</string>
     <string name="marcada_como_presentada">Entrada marcada com presentada</string>
     <string name="instalar_barcode_scanner">Per favor, instaleu la app \"Barcode scanner\" des de Google Play</string>
+    <string name="pref_host">URL de conexió</string>
+    <string name="pref_host_summ">Exemple: http://www.exemple.com</string>
+    <string name="pref_port">Port</string>
+    <string name="pref_port_summ"></string>
+    <string name="pref_apikey">API key</string>
+    <string name="pref_apikey_summ"></string>
 
 </resources>

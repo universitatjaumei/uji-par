@@ -1,20 +1,23 @@
 package com.fourtic.paranimf.entradas.activity;
 
-import com.crashlytics.android.Crashlytics;
 import java.sql.SQLException;
 
 import roboguice.inject.InjectView;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.crashlytics.android.Crashlytics;
 import com.fourtic.paranimf.entradas.R;
 import com.fourtic.paranimf.entradas.activity.base.BaseNormalActivity;
 import com.fourtic.paranimf.entradas.adapter.EventosListAdapter;
@@ -33,6 +36,12 @@ public class EventosActivity extends BaseNormalActivity
 
     @InjectView(R.id.sinEventos)
     private ViewGroup sinEventos;
+    
+    @InjectView(R.id.eventos_empty_text)
+    private TextView eventosEmptyText;
+    
+    @InjectView(R.id.settings_empty_text)
+    private TextView settingsEmptyText;
 
     @Inject
     private EventoDao eventoDao;
@@ -93,7 +102,25 @@ public class EventosActivity extends BaseNormalActivity
     protected void onStart()
     {
         super.onStart();
+        
         cargaEventosDesdeBd();
+    }
+    
+    @Override
+    protected void onResume() 
+    {
+    	super.onResume();
+    	
+        if (isEmptyURLOrAPIKey())
+        {
+        	eventosEmptyText.setVisibility(View.GONE);
+        	settingsEmptyText.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+        	eventosEmptyText.setVisibility(View.VISIBLE);
+        	settingsEmptyText.setVisibility(View.GONE);
+        }
     }
 
     private void cargaEventosDesdeBd()
@@ -112,7 +139,8 @@ public class EventosActivity extends BaseNormalActivity
     public boolean onCreateOptionsMenu(Menu menu)
     {
         super.onCreateOptionsMenu(menu);
-        getSupportMenuInflater().inflate(R.menu.eventos, menu);
+    	getSupportMenuInflater().inflate(R.menu.settings, menu);
+    	getSupportMenuInflater().inflate(R.menu.eventos, menu);
 
         return true;
     }
@@ -125,14 +153,34 @@ public class EventosActivity extends BaseNormalActivity
         case R.id.action_sync:
             
             if (network.estaActiva())
-                sincroniza();
+            {
+            	if (isEmptyURLOrAPIKey())
+            		muestraError(getString(R.string.no_url_apikey));
+            	else
+            		sincroniza();
+            }
             else
                 muestraError(getString(R.string.conexion_red_no_disponible));
+
+            return true;
+        case R.id.action_settings:
+            
+        	Intent settingsIntent = new Intent(this, SettingsActivity.class);
+            this.startActivity(settingsIntent);
 
             return true;
         default:
             return super.onOptionsItemSelected(item);
         }
+    }
+    
+    private boolean isEmptyURLOrAPIKey()
+    {
+    	SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+    	String host = sharedPref.getString(SettingsActivity.PREF_HOST, "");
+    	String apiKey = sharedPref.getString(SettingsActivity.PREF_APIKEY, "");
+    	
+    	return host == null || host.length() == 0 || apiKey == null || apiKey.length() == 0;
     }
 
     private void sincroniza()
