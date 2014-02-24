@@ -43,7 +43,7 @@ public class PlantillasPreciosResource extends BaseResource{
     }
 
     @DELETE
-    @Path("{id}")
+    @Path("editables/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response remove(@PathParam("id") String id)
     {

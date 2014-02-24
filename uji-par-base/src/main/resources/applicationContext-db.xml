@@ -34,11 +34,11 @@
     <property name="jdbcUrl">
       <value>${uji.db.jdbcUrl}</value>
     </property>
-    <property name="initialPoolSize" value="10" />
-    <property name="maxPoolSize" value="100" />
-    <property name="minPoolSize" value="10" />
-    <property name="acquireIncrement" value="5" />
-    <property name="acquireRetryAttempts" value="30" />
+    <property name="initialPoolSize" value="${uji.db.initialPoolSize}" />
+    <property name="maxPoolSize" value="${uji.db.maxPoolSize}" />
+    <property name="minPoolSize" value="${uji.db.minPoolSize}" />
+    <property name="acquireIncrement" value="${uji.db.acquireIncrement}" />
+    <property name="acquireRetryAttempts" value="10" />
     <property name="idleConnectionTestPeriod">
       <value>14400</value>
     </property>
@@ -47,8 +47,8 @@
     </property>
     <property name="properties">
       <props>
-        <prop key="c3p0.max_size">100</prop>
-        <prop key="c3p0.min_size">10</prop>
+        <prop key="c3p0.max_size">${uji.db.maxPoolSize}</prop>
+        <prop key="c3p0.min_size">${uji.db.minPoolSize}</prop>
         <prop key="c3p0.max_statements">0</prop>
         <prop key="c3p0.preferredTestQuery">${uji.db.preferredTestQuery}</prop>
         <prop key="user">${uji.db.username}</prop>

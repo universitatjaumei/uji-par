@@ -37,7 +37,10 @@ Ext.define('Paranimf.controller.Eventos', {
       selector: 'formSesiones combobox[name=sala]'
    }, {
       ref: 'comboLocalizaciones',
-      selector: 'formPreciosSesion combobox[name=localizacion]'
+      selector: 'formPreciosSesion combobox[name=localizacion_id]'
+   }, {
+      ref: 'comboTarifas',
+      selector: 'formPreciosSesion combobox[name=tarifa_id]'
    }, {
       ref: 'checkboxVentaOnline',
       selector: 'formSesiones checkbox[name=canalInternet]'
@@ -248,8 +251,8 @@ Ext.define('Paranimf.controller.Eventos', {
    cargaStores: function(comp, opts) {
       this.getComboLocalizaciones().store.loadData([],false);
       this.getComboLocalizaciones().store.proxy.url = urlPrefix + 'localizacion?sala=' + this.getComboSala().value;
-      this.getFormPreciosSesion().cargaComboStore('localizacion');
-      this.getFormPreciosSesion().cargaComboStore('tarifa');
+      this.getFormPreciosSesion().cargaComboStore('localizacion_id');
+      this.getFormPreciosSesion().cargaComboStore('tarifa_id');
    },
 
    addPrecioSesion: function(button, event, opts) {
@@ -274,26 +277,27 @@ Ext.define('Paranimf.controller.Eventos', {
    savePrecioSesion: function(button, event, opts) {
       //console.log("savePrecioSesion");
       var indiceFilaSeleccionada = this.getGridPreciosSesion().getIndiceFilaSeleccionada();
-      var localizacionSeleccionada = button.up('form').getForm().findField('localizacion').value;
-      var tarifaSeleccionada = button.up('form').getForm().findField('tarifa').value;
+      var localizacionSeleccionada = this.getComboLocalizaciones().value;
+      var tarifaSeleccionada = this.getComboTarifas().value;
 
       if (!this.existeRecordConLocalizacionYTarifaElegida(indiceFilaSeleccionada, localizacionSeleccionada, tarifaSeleccionada)) {
          var precioSesion = new Ext.create('Paranimf.model.PrecioSesion', {
             plantillaPrecios :-1,
             precio : button.up('form').getForm().findField('precio').value,
-            localizacion: localizacionSeleccionada,
-            localizacion_nombre: button.up('form').getForm().findField('localizacion').rawValue,
-            tarifa: tarifaSeleccionada,
-            tarifa_nombre: button.up('form').getForm().findField('tarifa').rawValue,
+            localizacion_id: localizacionSeleccionada,
+            "parLocalizacione.nombreVa": this.getComboLocalizaciones().rawValue,
+            tarifa_id: tarifaSeleccionada,
+            "parTarifa.nombre": this.getComboTarifas().rawValue,
          });
-
+         //console.log(precioSesion);
          if (indiceFilaSeleccionada != -1) {
             var recordSeleccionado = this.getGridPreciosSesion().store.getAt(indiceFilaSeleccionada);
+            console.log(recordSeleccionado);
             recordSeleccionado.set('precio', precioSesion.data.precio);
-            recordSeleccionado.set('localizacion', precioSesion.data.localizacion);
-            recordSeleccionado.set('localizacion_nombre', precioSesion.data.localizacion_nombre);
-            recordSeleccionado.set('tarifa', precioSesion.data.tarifa);
-            recordSeleccionado.set('tarifa_nombre', precioSesion.data.tarifa_nombre);
+            recordSeleccionado.set('localizacion_id', precioSesion.data.localizacion_id);
+            recordSeleccionado.set('parLocalizacione.nombreVa', precioSesion.data["parLocalizacione.nombreVa"]);
+            recordSeleccionado.set('tarifa_id', precioSesion.data.tarifa_id);
+            recordSeleccionado.set('parTarifa.nombre', precioSesion.data["parTarifa.nombre"]);
             recordSeleccionado.commit(true);
          }
          else
@@ -394,7 +398,13 @@ Ext.define('Paranimf.controller.Eventos', {
       form.saveFormData(grid, urlPrefix + 'evento', undefined, 'multipart/form-data', function(form, action) {
          if (action != undefined && action.response != undefined && action.response.responseText != undefined) {
             var respuesta = Ext.JSON.decode(action.response.responseText, true);
-            alert(respuesta.msg);
+            var key = "UI.i18n.error." + respuesta.message;
+            var msg = eval(key);
+
+            if (msg != undefined)
+               alert(msg);
+            else
+               alert(UI.i18n.error.formSave);
          }
       });
    },

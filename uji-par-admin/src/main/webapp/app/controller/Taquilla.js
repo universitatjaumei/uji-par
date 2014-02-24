@@ -42,6 +42,10 @@ Ext.define('Paranimf.controller.Taquilla', {
       {
         ref: 'verEntrada',
         selector: 'formComprar button[name=verEntrada]'
+      },
+      {
+        ref: 'printEntradaDirectamente',
+        selector: 'formComprar button[name=printEntradaDirectamente]'
       },      
       {
       	ref: 'botonPagar',
@@ -142,41 +146,44 @@ Ext.define('Paranimf.controller.Taquilla', {
              click: this.reservar
          },         
          'formComprar #comprarAnterior': {
-        	 click: this.comprarAnterior
+        	   click: this.comprarAnterior
          },
          'formComprar #comprarSiguiente': {
-        	 click: this.comprarSiguiente
+        	   click: this.comprarSiguiente
          },
          'formComprar #comprarCancelar': {
-        	 click: this.cerrarComprar
+        	   click: this.cerrarComprar
          },
          'formComprar #anularPrevia': {
-        	 click: this.anularPrevia
+        	   click: this.anularPrevia
          },         
          'formComprar': {
              afterrender: this.iniciaFormComprar
          },    
          'formComprar #pagar': {
-        	 click: this.registraCompra
+        	   click: this.registraCompra
          },
          'formComprar #reservar': {
-        	 click: this.registraReserva
+        	   click: this.registraReserva
          },        
          'formComprar button[name=verEntrada]': {
-        	 click: this.verEntrada 
+        	  click: this.verEntrada 
+         },
+         'formComprar button[name=printEntradaDirectamente]': {
+            click: this.printEntradaDirectamente
          },
          'panelSeleccionarNoNumeradas': {
-            afterrender: this.panelSeleccionarNoNumeradasCreado
+             afterrender: this.panelSeleccionarNoNumeradasCreado
          },
          'panelNumeroEntradas numberfield': {
-         	change: this.actualizaPrecio
+         	  change: this.actualizaPrecio
          },
          'formComprar #tipoPago': {
             change: this.muestraOcultaDevolucionImporte
          },
 
          'formComprar #pasoPagar numberfield[name=importePagado]': {
-          change: this.actualizaCambioADevolver
+            change: this.actualizaCambioADevolver
          },
 
          'formComprar panel[name=panelReservar]': {
@@ -694,6 +701,7 @@ Ext.define('Paranimf.controller.Taquilla', {
    
    muestraEnlacePdf: function() {
 	   this.getVerEntrada().show();
+     this.getPrintEntradaDirectamente().show();
    },
    
    verEntrada: function() {
@@ -711,6 +719,18 @@ Ext.define('Paranimf.controller.Taquilla', {
 	   this.windowEntrada = window.open(href, 'Imprimir entrada');
 	   this.windowEntrada.print();
    },
+
+  printEntradaDirectamente: function() {
+    this.getFormComprar().up('window').close();
+    this.comprar();
+
+    if (this.windowEntrada != null)
+      // Cerramos para evitar imprimir las entradas anteriores
+      this.windowEntrada.close();
+     
+    var href = urlPrefix + 'compra/' + this.uuidCompra + '/silentpdftaquilla';
+    this.windowEntrada = window.open(href, 'Imprimir entradas');
+  },
    
    guardarDatosCompraPrevia: function() {
 	   this.butacasSeleccionadasPrevia = this.butacasSeleccionadas;

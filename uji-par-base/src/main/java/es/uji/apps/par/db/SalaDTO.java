@@ -90,7 +90,11 @@ public class SalaDTO implements Serializable
         this.parPlantas = new ArrayList<PlantaSalaDTO>();
     }
 
-    public long getId()
+    public SalaDTO(long id) {
+		setId(id);
+	}
+
+	public long getId()
     {
         return this.id;
     }

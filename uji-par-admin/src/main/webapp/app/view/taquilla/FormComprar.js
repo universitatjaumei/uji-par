@@ -106,8 +106,8 @@ Ext.define('Paranimf.view.taquilla.FormComprar', {
 							    store: new Ext.data.SimpleStore({
 							      fields: ['value', 'name'],
 							        data: [
-							          ['metalico', UI.i18n.field.metalico],
-							          ['tarjeta', UI.i18n.field.tarjeta]
+							          ['metalico', UI.i18n.field.metalico]/*,
+							          ['tarjeta', UI.i18n.field.tarjeta]*/
 							        ]
 							    })
 							 }, {
@@ -139,7 +139,13 @@ Ext.define('Paranimf.view.taquilla.FormComprar', {
 								scale: 'large',
 								text: UI.i18n.button.verEntrada,
 								hidden: true
-						    }
+						    }/*, {
+					    	 	xtype: 'button',
+						    	name: 'printEntradaDirectamente',
+								scale: 'large',
+								text: UI.i18n.button.printEntradaDirectamente,
+								hidden: true
+						    }*/
 				     	]},
 		       	        {
 		       	        	name: 'panelReservar',

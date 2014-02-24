@@ -55,8 +55,8 @@ Ext.define('Paranimf.view.evento.GridPreciosSesion', {
 
           jsonFilas += '{';
           jsonFilas += '"precio":' + this.store.getRange()[i].data.precio + ',';
-          jsonFilas += '"localizacion":{"id": ' + this.store.getRange()[i].data.localizacion + '},';
-          jsonFilas += '"tarifa":{"id": ' + this.store.getRange()[i].data.tarifa + '}';
+          jsonFilas += '"localizacion":{"id": ' + this.store.getRange()[i].data.localizacion_id + '},';
+          jsonFilas += '"tarifa":{"id": ' + this.store.getRange()[i].data.tarifa_id + '}';
           jsonFilas += '}';
       }
       jsonFilas = "[" + jsonFilas + "]";

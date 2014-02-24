@@ -130,7 +130,8 @@ UI =
             "dataEventAnterior": "Error, la data de la sessió no pot ser anterior a la data de fi de venda online",
             "eventSelected": "Error, és necessari seleccionar un event",
             "precioRepetido": "Error, aquesta tarifa ja s'ha utilitzat per a aquesta localització",
-            "setIncidencia": "S'ha produït un error actualitzant la incidència"
+            "setIncidencia": "S'ha produït un error actualitzant la incidència",
+            "sessioAmbCompres": "No es permet canviar si la sessió és numerada o no, quan un event ja té compres realitzades"
         },
         "button": {
             "closeSession": "Tancar sessió",
@@ -169,7 +170,8 @@ UI =
             "generatePdfEventos": "PDF SGAE",
             "saveFileICAA": "Generar fitxer per a l'ICAA",
             "marcarComoEnviados": "Marcar com a enviades a l'ICAA",
-            "setIncidencia": "Ficar incidència"
+            "setIncidencia": "Ficar incidència",
+            "printEntradaDirectamente": "Imprimir directament"
         },
         "calendar": {
             "calendar": "Calendari de reserves",

@@ -393,9 +393,12 @@ public class EventosDAO extends BaseDAO
             eventoDTO.setSubtitulos(evento.getSubtitulos());
             
             eventoDTO.setParTiposEvento(TipoEvento.tipoEventoToTipoEventoDTO(evento.getParTiposEvento()));
-            eventoDTO.setImagen(evento.getImagen());
-            eventoDTO.setImagenSrc(evento.getImagenSrc());
-            eventoDTO.setImagenContentType(evento.getImagenContentType());
+            
+            if (evento.getImagenSrc() != null && !evento.getImagenSrc().equals("")) {
+            	eventoDTO.setImagen(evento.getImagen());
+            	eventoDTO.setImagenSrc(evento.getImagenSrc());
+            	eventoDTO.setImagenContentType(evento.getImagenContentType());
+            }
 
             entityManager.persist(eventoDTO);
         }

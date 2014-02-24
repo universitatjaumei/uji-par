@@ -34,10 +34,6 @@
 					<type>war</type>
 				</dependency>
 			</dependencies>
-			<!-- <build> <plugins> <plugin> <groupId>org.apache.maven.plugins</groupId> 
-				<artifactId>maven-war-plugin</artifactId> <version>2.3</version> <configuration> 
-				<includes> <include>src/main/webapp</include> </includes> </configuration> 
-				</plugin> </plugins> </build> -->
 			<build>
 				<plugins>
 					<plugin>
@@ -49,6 +45,45 @@
 								<overlay>
 									<groupId>es.uji.apps.par</groupId>
 									<artifactId>uji-par-web-benicassim</artifactId>
+									<!-- <includes>
+										<include>*</include>
+									</includes>-->
+								</overlay>
+								<overlay>
+									<!-- empty groupId/artifactId represents the current build -->
+								</overlay>
+							</overlays>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>vila-real</id>
+			<dependencies>
+				<dependency>
+					<groupId>es.uji.apps.par</groupId>
+					<artifactId>uji-par-reports-vila-real</artifactId>
+					<version>0.0.1-SNAPSHOT</version>
+				</dependency>
+				<dependency>
+					<groupId>es.uji.apps.par</groupId>
+					<artifactId>uji-par-web-vila-real</artifactId>
+					<version>0.0.1-SNAPSHOT</version>
+					<type>war</type>
+				</dependency>
+			</dependencies>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-war-plugin</artifactId>
+						<version>2.3</version>
+						<configuration>
+							<overlays>
+								<overlay>
+									<groupId>es.uji.apps.par</groupId>
+									<artifactId>uji-par-web-vila-real</artifactId>
 									<!-- <includes>
 										<include>*</include>
 									</includes>-->
@@ -177,7 +212,7 @@
 				<configuration>
 					<connectors>
 						<connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
-							<port>9001</port>
+							<port>9003</port>
 						</connector>
 					</connectors>
 					<webXml>target/web.xml</webXml>

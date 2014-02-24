@@ -26,12 +26,12 @@ Ext.define('Paranimf.view.plantillaprecios.GridPrecios', {
         text: UI.i18n.field.plantillaPreusInterna,
         sortable: false
       }, {
-        dataIndex: 'localizacion_id',
+        dataIndex: 'localizacion',
         hidden: true,
         text: UI.i18n.field.idLocalitzacio,
         sortable: false
       }, {
-        dataIndex: 'tarifa_id',
+        dataIndex: 'tarifa',
         hidden: true,
         text: UI.i18n.field.idTarifa,
         sortable: false

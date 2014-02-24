@@ -73,7 +73,7 @@ public class EventosResource extends BaseResource
     }
     
     @GET
-    @Path("activos")
+    @Path("activos/online")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getEventosActivosParaVentaOnline()
     {

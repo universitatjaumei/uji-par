@@ -17,13 +17,17 @@ public class ResourceProperties
     
     public static String getProperty(Locale locale, String propertyName, Object ... objects)
     {
+    	String language = LENGUAJES[0];
         if (properties == null)
             initProperties();
         
+        if (locale != null)
+        	language = locale.getLanguage();
+        
         if (objects.length == 0) 
-            return properties.get(locale.getLanguage()).getString(propertyName);
+            return properties.get(language).getString(propertyName);
         else 
-            return String.format(properties.get(locale.getLanguage()).getString(propertyName), objects);
+            return String.format(properties.get(language).getString(propertyName), objects);
     }
 
     private static void initProperties()

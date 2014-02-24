@@ -16,7 +16,7 @@ Ext.define('Paranimf.view.evento.FormPreciosSesion', {
     allowBlank: true
    }, {
     fieldLabel: UI.i18n.field.localizacion,
-    name: 'localizacion',
+    name: 'localizacion_id',
     xtype: 'combobox',
     displayField: 'nombreVa',
     valueField: 'id',
@@ -26,7 +26,7 @@ Ext.define('Paranimf.view.evento.FormPreciosSesion', {
     typeAhead: true
    }, {
     fieldLabel: UI.i18n.field.tarifa,
-    name: 'tarifa',
+    name: 'tarifa_id',
     xtype: 'combobox',
     displayField: 'nombre',
     valueField: 'id',

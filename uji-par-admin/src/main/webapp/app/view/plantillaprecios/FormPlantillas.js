@@ -20,5 +20,14 @@ Ext.define('Paranimf.view.plantillaprecios.FormPlantillas', {
    }, {
       fieldLabel: UI.i18n.field.name_va,
       name: 'nombre'
-  }]
+   }, {
+        fieldLabel: UI.i18n.field.sala,
+        name: 'sala',
+        xtype: 'combobox',
+        displayField: 'nombre',
+        valueField: 'id',
+        store: 'Salas',
+        queryMode: 'local',
+        typeAhead: true
+   }]
 });

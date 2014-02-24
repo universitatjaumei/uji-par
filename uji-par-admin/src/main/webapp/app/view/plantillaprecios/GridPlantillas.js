@@ -20,7 +20,7 @@ Ext.define('Paranimf.view.plantillaprecios.GridPlantillas', {
         hidden: true,
         text: UI.i18n.field.idIntern
       }, {
-        dataIndex: 'idSala',
+        dataIndex: 'sala',
         hidden: true,
         text: UI.i18n.field.idSala
       }, {

@@ -13,6 +13,7 @@ import com.mysema.query.jpa.impl.JPAUpdateClause;
 import es.uji.apps.par.db.PlantillaDTO;
 import es.uji.apps.par.db.QPlantillaDTO;
 import es.uji.apps.par.db.QSalaDTO;
+import es.uji.apps.par.db.SalaDTO;
 import es.uji.apps.par.model.Plantilla;
 
 @Repository
@@ -64,6 +65,7 @@ public class PlantillasDAO extends BaseDAO {
 	public Plantilla add(Plantilla plantillaPrecios) {
 		PlantillaDTO plantillaDTO = new PlantillaDTO();
 		plantillaDTO.setNombre(plantillaPrecios.getNombre());
+		plantillaDTO.setSala(new SalaDTO(plantillaPrecios.getSala().getId()));
 		
 		entityManager.persist(plantillaDTO);
 		plantillaPrecios.setId(plantillaDTO.getId());
@@ -75,7 +77,8 @@ public class PlantillasDAO extends BaseDAO {
 	public Plantilla update(Plantilla plantillaPrecios) {
 		JPAUpdateClause update = new JPAUpdateClause(entityManager, qPlantillaDTO);
         update.set(qPlantillaDTO.nombre, plantillaPrecios.getNombre())
-                .where(qPlantillaDTO.id.eq(plantillaPrecios.getId())).execute();
+        	.set(qPlantillaDTO.sala, new SalaDTO(plantillaPrecios.getSala().getId()))
+            .where(qPlantillaDTO.id.eq(plantillaPrecios.getId())).execute();
 
         return plantillaPrecios;
 	}

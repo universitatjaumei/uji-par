@@ -33,7 +33,9 @@ public class ReportResource extends BaseResource
 	@Produces("application/vnd.ms-excel")
 	public Response generateExcelTaquilla(@PathParam("fechaInicio") String fechaInicio, @PathParam("fechaFin") String fechaFin) throws TranscoderException, IOException {
 		ByteArrayOutputStream ostream = reportService.getExcelTaquilla(fechaInicio, fechaFin);
-		return Response.ok(ostream.toByteArray(), MediaType.APPLICATION_OCTET_STREAM).header("Content-Disposition","attachment; filename =\"informeTaquilla " + fechaInicio + "-" + fechaFin + ".xls\"").build();
+		return Response.ok(ostream.toByteArray())
+				.header("Content-Disposition","attachment; filename =\"informeTaquilla " + fechaInicio + "-" + fechaFin + ".xls\"")
+				.build();
 	}
     
     @POST
@@ -41,7 +43,9 @@ public class ReportResource extends BaseResource
 	@Produces("application/vnd.ms-excel")
 	public Response generateExcelEventos(@PathParam("fechaInicio") String fechaInicio, @PathParam("fechaFin") String fechaFin) throws TranscoderException, IOException {
 		ByteArrayOutputStream ostream = reportService.getExcelEventos(fechaInicio, fechaFin);
-		return Response.ok(ostream.toByteArray(), MediaType.APPLICATION_OCTET_STREAM).header("Content-Disposition","attachment; filename =\"informeEvents " + fechaInicio + "-" + fechaFin + ".xls\"").build();
+		return Response.ok(ostream.toByteArray())
+				.header("Content-Disposition","attachment; filename =\"informeEvents " + fechaInicio + "-" + fechaFin + ".xls\"")
+				.build();
 	}
     
     @POST
@@ -52,7 +56,9 @@ public class ReportResource extends BaseResource
         
         reportService.getPdfTaquilla(fechaInicio, fechaFin, ostream);
         
-        return Response.ok(ostream.toByteArray(), MediaType.APPLICATION_OCTET_STREAM).header("Content-Disposition","attachment; filename =\"informeTaquilla " + fechaInicio + "-" + fechaFin + ".pdf\"").build();
+        return Response.ok(ostream.toByteArray())
+        		.header("Content-Disposition","attachment; filename =\"informeTaquilla " + fechaInicio + "-" + fechaFin + ".pdf\"")
+        		.type("application/pdf").build();
     }    
     
     @POST
@@ -73,7 +79,9 @@ public class ReportResource extends BaseResource
             return Response.serverError().type(MediaType.TEXT_PLAIN).entity(errorMsj).build();
         }
         
-        return Response.ok(ostream.toByteArray(), MediaType.APPLICATION_OCTET_STREAM).header("Content-Disposition","attachment; filename =\"informeTaquilla " + fechaInicio + "-" + fechaFin + ".pdf\"").build();
+        return Response.ok(ostream.toByteArray())
+        		.header("Content-Disposition","attachment; filename =\"informeTaquilla " + fechaInicio + "-" + fechaFin + ".pdf\"")
+        		.type("application/pdf").build();
     } 
     
     @POST
@@ -94,7 +102,9 @@ public class ReportResource extends BaseResource
             return Response.serverError().type(MediaType.TEXT_PLAIN).entity(errorMsj).build();
         }
         
-        return Response.ok(ostream.toByteArray(), MediaType.APPLICATION_OCTET_STREAM).header("Content-Disposition","attachment; filename =\"informeTaquilla " + fechaInicio + "-" + fechaFin + ".pdf\"").build();
+        return Response.ok(ostream.toByteArray())
+        		.header("Content-Disposition","attachment; filename =\"informeTaquilla " + fechaInicio + "-" + fechaFin + ".pdf\"")
+        		.type("application/pdf").build();
     } 
     
     @POST
@@ -115,6 +125,8 @@ public class ReportResource extends BaseResource
             return Response.serverError().type(MediaType.TEXT_PLAIN).entity(errorMsj).build();
         }
         
-        return Response.ok(ostream.toByteArray(), MediaType.APPLICATION_OCTET_STREAM).header("Content-Disposition","attachment; filename =\"informeEventos " + fechaInicio + "-" + fechaFin + ".pdf\"").build();
+        return Response.ok(ostream.toByteArray())
+        		.header("Content-Disposition","attachment; filename =\"informeEventos " + fechaInicio + "-" + fechaFin + ".pdf\"")
+        		.type("application/pdf").build();
     } 
 }

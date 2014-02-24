@@ -2,7 +2,7 @@ Ext.define('Paranimf.controller.PlantillasPrecios', {
    extend: 'Ext.app.Controller',
 
    views: ['EditModalWindow', 'EditBaseForm', 'EditBaseGrid', 'plantillaprecios.PanelPlantillasPrecios', 'plantillaprecios.GridPlantillas', 'plantillaprecios.FormPlantillas', 'plantillaprecios.GridPrecios', 'plantillaprecios.FormPrecios'],
-   stores: ['PlantillasPrecios', 'Precios', 'Localizaciones', 'PlantillasPreciosEditables'],
+   stores: ['PlantillasPrecios', 'Precios', 'Localizaciones', 'PlantillasPreciosEditables', 'Salas'],
    models: ['PlantillaPrecios', 'Precio', 'Localizacion'],
 
    refs: [{
@@ -93,10 +93,10 @@ Ext.define('Paranimf.controller.PlantillasPrecios', {
       }
       //console.log("TARIFA", tarifaId);
       this.getComboLocalizaciones().store.loadData([],false);
-      this.getComboLocalizaciones().store.proxy.url = urlPrefix + 'localizacion?sala=' + this.getGridPlantillas().getSelectedRecord().data.idSala;
+      this.getComboLocalizaciones().store.proxy.url = urlPrefix + 'localizacion?sala=' + this.getGridPlantillas().getSelectedRecord().data.sala;
       this.getFormPrecios().cargaComboStore('localizacion', localizacionId);
       this.getFormPrecios().cargaComboStore('plantillaPrecios', this.getGridPlantillas().getSelectedColumnId());
-      this.getFormPrecios().cargaComboStore('tarifa', tarifaId)
+      this.getFormPrecios().cargaComboStore('tarifa', tarifaId);
    },
 
    addPlantilla: function(button, event, opts) {

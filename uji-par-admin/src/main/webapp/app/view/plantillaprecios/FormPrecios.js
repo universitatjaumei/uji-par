@@ -47,8 +47,8 @@ Ext.define('Paranimf.view.plantillaprecios.FormPrecios', {
    }, {
     fieldLabel: UI.i18n.field.precio,
     name: 'precio',
-    spinUpEnabled: false,
-    spinDownEnabled: false,
+    spinUpEnabled: true,
+    spinDownEnabled: true,
     minValue: 0,
     xtype: 'numericfield',
     decimalPrecision: 2,
