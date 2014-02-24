@@ -83,28 +83,7 @@ Ext.application({
                autoScroll: true,
                border: false,
                flex: 1,
-               items: [{
-                     border: false,
-                     xtype: 'dashboard'
-                  }, {
-                     xtype: 'gridUsuarios'
-                  }, {
-                     xtype: 'gridTiposEventos'
-                  }, {
-                     xtype: 'panelEventos'
-                  }, {
-                     xtype: 'panelPlantillas'
-                  }, {
-                     xtype: 'panelTaquilla'
-                  }, {
-                     xtype: 'panelComprasReservas'
-                  }, {
-                     xtype: 'panelInformes'
-                  }, {
-                     xtype: 'panelSesionesFicheros'
-                  }, {
-                     xtype: 'panelTarifas'
-                  }],
+               items: views,
                listeners: {
                   afterlayout: function(container, layout, opts) {
                      document.getElementById("divCargador").style.display = 'none';
