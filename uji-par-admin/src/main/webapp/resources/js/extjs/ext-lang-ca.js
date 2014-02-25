@@ -60,9 +60,11 @@ Ext.onReady(function() {
         };
 
         Ext.Date.dayNames = ["Diumenge", "Dilluns", "Dimarts", "Dimecres", "Dijous", "Divendres", "Dissabte"];
+	   Ext.Date.shortDayNames = ["Dg", "Dl", "Dt", "Dc", "Dj", "Dv", "Ds"];
+       //Ext.Date.shortDayNames = ["Dl", "Dt", "Dc", "Dj", "Dv", "Ds", "Dg"];
 
         Ext.Date.getShortDayName = function(day) {
-            return Ext.Date.dayNames[day].substring(0, 3);
+            return Ext.Date.shortDayNames[day];
         };
 
         Ext.Date.parseCodes.S.s = "(?:st|nd|rd|th)";

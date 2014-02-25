@@ -96986,8 +96986,8 @@ Ext.define('Ext.picker.Date', {
             '<table id="{id}-eventEl" class="{baseCls}-inner" cellspacing="0" role="presentation">',
                 '<thead role="presentation"><tr role="presentation">',
                     '<tpl for="dayNames">',
-                        '<th role="columnheader" class="{parent.baseCls}-column-header" title="{.}">',
-                            '<div class="{parent.baseCls}-column-header-inner">{.:this.firstInitial}</div>',
+                        '<th role="columnheader" class="{parent.baseCls}-column-header"">',
+                            '<div class="{parent.baseCls}-column-header-inner">{%this.getShortDayName(xindex, out)%}</div>',
                         '</th>',
                     '</tpl>',
                 '</tr></thead>',
@@ -97021,7 +97021,13 @@ Ext.define('Ext.picker.Date', {
             },
             renderMonthBtn: function(values, out) {
                 Ext.DomHelper.generateMarkup(values.$comp.monthBtn.getRenderTree(), out);
-            }
+            },
+		 getShortDayName: function(day, out) {
+            if (day != 7)
+                Ext.DomHelper.generateMarkup(Ext.Date.shortDayNames[day], out);
+            else
+                Ext.DomHelper.generateMarkup(Ext.Date.shortDayNames[0], out);
+         }
         }
     ],
 
@@ -103959,47 +103965,48 @@ Ext.define('Ext.view.Table', {
             cellSelector = me.getCellSelector();
 
             
-            
-            if (oldRowDom.mergeAttributes) {
-                oldRowDom.mergeAttributes(newRowDom, true);
-            } else {
-                newAttrs = newRowDom.attributes;
-                attLen = newAttrs.length;
-                for (attrIndex = 0; attrIndex < attLen; attrIndex++) {
-                    attName = newAttrs[attrIndex].name;
-                    if (attName !== 'id') {
-                        oldRowDom.setAttribute(attName, newAttrs[attrIndex].value);
+            if (oldRowDom) {
+                if (oldRowDom.mergeAttributes) {
+                    oldRowDom.mergeAttributes(newRowDom, true);
+                } else {
+                    newAttrs = newRowDom.attributes;
+                    attLen = newAttrs.length;
+                    for (attrIndex = 0; attrIndex < attLen; attrIndex++) {
+                        attName = newAttrs[attrIndex].name;
+                        if (attName !== 'id') {
+                            oldRowDom.setAttribute(attName, newAttrs[attrIndex].value);
+                        }
+                    }
+                }
+
+        
+                for (colIndex = 0; colIndex < colCount; colIndex++) {
+                    column = columns[colIndex];
+
+                    
+                    
+                    if (me.shouldUpdateCell(record, column, changedFieldNames)) {
+
+                        
+                        
+                        cellSelector = me.getCellSelector(column);
+                        oldCell = Ext.DomQuery.selectNode(cellSelector, oldRowDom);
+                        newCell = Ext.DomQuery.selectNode(cellSelector, newRowDom);
+
+                        
+                        if (isEditing) {
+                            Ext.fly(oldCell).syncContent(newCell);
+                        }
+                        
+                        else {
+                            
+                            row = oldCell.parentNode;
+                            row.insertBefore(newCell, oldCell);
+                            row.removeChild(oldCell);
+                        }
                     }
                 }
             }
-
-        
-        for (colIndex = 0; colIndex < colCount; colIndex++) {
-            column = columns[colIndex];
-
-            
-            
-            if (me.shouldUpdateCell(record, column, changedFieldNames)) {
-
-                
-                
-                cellSelector = me.getCellSelector(column);
-                oldCell = Ext.DomQuery.selectNode(cellSelector, oldRowDom);
-                newCell = Ext.DomQuery.selectNode(cellSelector, newRowDom);
-
-                
-                if (isEditing) {
-                    Ext.fly(oldCell).syncContent(newCell);
-                }
-                
-                else {
-                    
-                    row = oldCell.parentNode;
-                    row.insertBefore(newCell, oldCell);
-                    row.removeChild(oldCell);
-                }
-            }
-        }
     },
 
     shouldUpdateCell: function(record, column, changedFieldNames){
