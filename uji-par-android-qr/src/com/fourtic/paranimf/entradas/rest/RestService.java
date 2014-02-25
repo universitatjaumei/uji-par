@@ -53,7 +53,7 @@ public class RestService {
 		this.client = new AsyncHttpClient();
 		this.gson = new Gson();
 
-		client.setTimeout(10000);
+		client.setTimeout(30000);
 		initCookieStore(context);
 		initSsl();
 	}
