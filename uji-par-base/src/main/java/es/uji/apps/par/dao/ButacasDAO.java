@@ -219,6 +219,7 @@ public class ButacasDAO extends BaseDAO
 		return (int) getQueryButacasCompra(idCompra).count();
 	}
 
+    @Transactional
     public List<ButacaDTO> getButacasNoAnuladas(Long idSesion)
     {
         QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
