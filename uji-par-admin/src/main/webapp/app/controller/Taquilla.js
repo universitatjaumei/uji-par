@@ -109,6 +109,9 @@ Ext.define('Paranimf.controller.Taquilla', {
         ref: 'importeADevolver',
         selector: 'formComprar #pasoPagar label[name=dineroADevolver]'
       }, {
+        ref: 'referenciaDePago',
+        selector: 'formComprar #pasoPagar textfield[name=referenciaDePago]'
+      }, {
         ref: 'hiddenTotalPrecio',
         selector: 'formComprar #pasoPagar hiddenfield[name=hiddenTotalPrecio]'
       }, {
@@ -179,7 +182,7 @@ Ext.define('Paranimf.controller.Taquilla', {
          	  change: this.actualizaPrecio
          },
          'formComprar #tipoPago': {
-            change: this.muestraOcultaDevolucionImporte
+            select: this.muestraOcultaDevolucionImporte
          },
 
          'formComprar #pasoPagar numberfield[name=importePagado]': {
@@ -209,11 +212,25 @@ Ext.define('Paranimf.controller.Taquilla', {
       this.getImporteADevolver().setText(UI.i18n.field.importeADevolver + importeADevolver.toFixed(2) + " €");
     },
 
-    muestraOcultaDevolucionImporte: function(combo, newvalue, oldvalue) {
+    muestraOcultaDevolucionImporte: function(combo, records, eOpts) {
+      var newvalue = combo.getValue();
+
+      this.getBotonPagar().setText(UI.i18n.button.pagar);
+
+      this.getImportePagado().hide();
+      this.getImporteADevolver().hide();
+      this.getReferenciaDePago().hide();
+
       if (newvalue == 'metalico')
+      {
         this.getImportePagado().show();
-      else
-        this.getImportePagado().hide();
+        this.getImporteADevolver().show();
+      }
+      else if (newvalue == 'tarjetaOffline')
+      {
+        this.getBotonPagar().setText(UI.i18n.button.registrarPago);
+        this.getReferenciaDePago().show(); 
+      }
     },
 
    	actualizaPrecio: function() {
@@ -493,6 +510,16 @@ Ext.define('Paranimf.controller.Taquilla', {
    registraCompra: function() {
 	   
 	   var tipoPago = Ext.getCmp('tipoPago').value;
+     
+     if (tipoPago == 'tarjetaOffline')
+     {
+        var referenciaDePago = this.getReferenciaDePago().getValue().trim();
+        if (referenciaDePago == undefined || !referenciaDePago || referenciaDePago == "")
+        {
+         alert(UI.i18n.error.errorReferenciaDePago);
+         return false;
+        }
+     }
 	   
 	   this.deshabilitaBotonPagar();
 	   
@@ -516,11 +543,15 @@ Ext.define('Paranimf.controller.Taquilla', {
 	    		   {
 	    			   me.marcaPagada(me.idCompra);
 	    		   }   
-	    		   else
+	    		   else if (tipoPago == 'tarjeta')
 	    		   {
 	    			   var tituloEvento = me.getGridEventosTaquilla().getSelectedRecord().data['tituloVa'];
 	    			   me.pagarConTarjeta(respuesta['id'], tituloEvento);
-	    		   }   
+	    		   }
+             else if (tipoPago == 'tarjetaOffline')
+             {
+                me.marcaPagada(me.idCompra, me.getReferenciaDePago().getValue().trim());
+             }
 	    		   
 	    	  }, failure: function (response) {
 	    		  me.getFormComprar().setLoading(false);
@@ -1039,12 +1070,12 @@ Ext.define('Paranimf.controller.Taquilla', {
 			alert(UI.i18n.message.selectRow);
    	},
    
-   marcaPagada: function(idCompra) {
+   marcaPagada: function(idCompra, referenciaDePago) {
 	   
 	   var me = this;
 	   
 	   Ext.Ajax.request({
-	    	  url : urlPrefix + 'pago/' + idCompra + '/pagada',
+	    	  url : urlPrefix + 'pago/' + idCompra + '/pagada' + (referenciaDePago != undefined ? "?referencia=" + referenciaDePago : ""),
 	    	  method: 'POST',
 	    	  success: function (response) {
 	   

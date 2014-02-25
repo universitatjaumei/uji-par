@@ -8,6 +8,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
@@ -66,10 +67,13 @@ public class PagoResource extends BaseResource
     @POST
     @Path("{idCompra}/pagada")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void marcaPagada(@PathParam("idCompra") Long idCompra)
+    public void marcaPagada(@PathParam("idCompra") Long idCompra, @QueryParam("referencia") String referenciaDePago)
     {
         AuthChecker.canWrite(currentRequest);
         
-        compras.marcaPagada(idCompra);
+        if (referenciaDePago != null)
+        	compras.marcarPagadaConReferenciaDePago(idCompra, referenciaDePago);
+        else
+        	compras.marcaPagada(idCompra);
     }
 }

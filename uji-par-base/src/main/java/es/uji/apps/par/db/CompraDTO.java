@@ -67,6 +67,9 @@ public class CompraDTO implements Serializable {
 	@Column(name = "IMPORTE")
 	private BigDecimal importe;
 	
+	@Column(name = "REFERENCIA_PAGO")
+	private String referenciaPago;
+	
     @ManyToOne
     @JoinColumn(name="SESION_ID")
     private SesionDTO parSesion;
@@ -332,4 +335,12 @@ public class CompraDTO implements Serializable {
     public void setCaducada(Boolean caducada) {
         this.caducada = caducada;
     }
+
+	public String getReferenciaPago() {
+		return referenciaPago;
+	}
+
+	public void setReferenciaPago(String referenciaPago) {
+		this.referenciaPago = referenciaPago;
+	}
 }

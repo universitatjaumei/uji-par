@@ -4,11 +4,16 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
+import org.thymeleaf.util.StringUtils;
+
+import es.uji.apps.par.i18n.ResourceProperties;
 
 public class Configuration
 {
@@ -20,6 +25,7 @@ public class Configuration
     private static final String MAIL_HOST = "uji.par.mail.host";
     private static final String MAIL_FROM = "uji.par.mail.from";
     private static final String COMO_LLEGAR = "uji.par.urlComoLlegar";
+    private static final String PAY_MODES = "uji.par.paymodes";
     private static final String URL_CONDICIONES_PRIVACIDAD = "uji.par.urlCondicionesPrivacidad";
     private static final String GASTOS_GESTION = "uji.par.gastosGestion";
     private static final String ENVIAR_MAILS_ERROR = "uji.par.enviarMailsError";
@@ -46,6 +52,7 @@ public class Configuration
 	private static final String BARCODE_WIDTH_HEIGHT = "uji.reports.barcodeWidthHeight";
 	private static final String LOGO_REPORT = "uji.reports.logo";
 	private static final String API_KEY = "api.key";
+
     
 
     public static Logger log = Logger.getLogger(Configuration.class);
@@ -95,6 +102,30 @@ public class Configuration
         }
         
         return value.trim();
+    }
+    
+    public static String getPayModes()
+    {
+    	List<String> payModesJs = new ArrayList<String>(Arrays.asList("['metalico', '" + ResourceProperties.getProperty(new Locale("ca"), "paymode.metalico") + "']",
+    	         "['tarjeta', '" + ResourceProperties.getProperty(new Locale("ca"), "paymode.tarjeta") + "']",
+    	         "['tarjetaOffline', '" + ResourceProperties.getProperty(new Locale("ca"), "paymode.tarjetaOffline") + "']"));
+    	
+    	List<String> modes = Arrays.asList(getProperty(PAY_MODES).split(PROPERTIES_SEPARATOR));
+    	List<String> payModes = new ArrayList<String>();
+    	for (String mode : modes)
+    	{
+    		for (String payModeJs : payModesJs)
+    		{
+    			if (payModeJs.contains(mode))
+    			{
+    				payModes.add(payModeJs);
+    				payModesJs.remove(payModeJs);
+    				break;
+    			}
+    		}
+    	}
+    	
+    	return "[" + StringUtils.join(payModes, PROPERTIES_SEPARATOR) + "]";
     }
 
     public static String getUrlPublic()

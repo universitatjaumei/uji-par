@@ -23,7 +23,8 @@ public class IndexResource extends BaseResource
 
         template.put("user", currentRequest.getSession().getAttribute(Authenticator.USER_ATTRIBUTE));
         template.put("urlPublic", Configuration.getUrlPublic());
-
+        template.put("payModes", Configuration.getPayModes());
+        
         return template;
     }
 

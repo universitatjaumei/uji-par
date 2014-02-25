@@ -105,3 +105,5 @@ update par_sesiones set incidencia_id = 0;
       REFERENCES PAR_CINES (ID) MATCH SIMPLE
       ON UPDATE CASCADE ON DELETE CASCADE
 );*/
+
+ALTER TABLE par_compras ADD COLUMN referencia_pago character varying(255);

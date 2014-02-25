@@ -105,10 +105,7 @@ Ext.define('Paranimf.view.taquilla.FormComprar', {
 							    forceSelection:true,
 							    store: new Ext.data.SimpleStore({
 							      fields: ['value', 'name'],
-							        data: [
-							          ['metalico', UI.i18n.field.metalico]/*,
-							          ['tarjeta', UI.i18n.field.tarjeta]*/
-							        ]
+							        data: payModes
 							    })
 							 }, {
 								xtype: 'label',
@@ -125,6 +122,12 @@ Ext.define('Paranimf.view.taquilla.FormComprar', {
 								name: 'dineroADevolver',
 								xtype: 'label',
 								text: UI.i18n.field.importeADevolver
+							}, {
+								name: 'referenciaDePago',
+								xtype: 'textfield',
+								allowBlank: false,
+								hidden: true,
+								fieldLabel: UI.i18n.field.referenciaDePago
 							}, {
 								xtype: 'button',
 								id: 'pagar',

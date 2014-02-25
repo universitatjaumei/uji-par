@@ -130,3 +130,5 @@ update "PAR_SESIONES" set INCIDENCIA_ID = 0;
 --insert into par_precios_plantilla (localizacion_id, plantilla_id, precio, tarifa_id) values (3,1653,7,5203);
 --insert into par_precios_plantilla (localizacion_id, plantilla_id, precio, tarifa_id) values (2,1653,7,5203);
 --insert into par_precios_plantilla (localizacion_id, plantilla_id, precio, tarifa_id) values (1,1653,7,5203);
+
+ALTER TABLE "PAR_COMPRAS" ADD ("REFERENCIA_PAGO" VARCHAR(400));

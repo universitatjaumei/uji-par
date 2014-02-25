@@ -177,6 +177,11 @@ public class ComprasService
     {
         comprasDAO.marcarPagada(idCompra);
     }
+    
+	public void marcarPagadaConReferenciaDePago(Long idCompra, String referenciaDePago) {
+		
+		comprasDAO.marcarPagadaConReferenciaDePago(idCompra, referenciaDePago);		
+	}
 
     public void eliminaPendientes()
     {

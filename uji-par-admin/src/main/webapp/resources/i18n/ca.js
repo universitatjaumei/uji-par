@@ -81,6 +81,7 @@ UI =
             "errorRegistrandoCompra": "S'ha produït un error registrant la compra a la base de dades",
             "errorReservandoButacas": "S'ha produït un error registrant la reserva de butaques",
             "errorRealizaPago": "S'ha produït un error iniciant el pagament amb tarjeta",
+            "errorReferenciaDePago": "Ha de realitzar el pagament des de la TPV, i després de l'operació, introduir la referència de pagament a la casella corresponent",
             "pinpad": {
             	"-1":"Inicialització de pagaments incorrecta",
             	"-2":"Dades entrada incorrectes per a realitzar transacció",
@@ -151,6 +152,7 @@ UI =
             "eliminarImagen": "Esborrar imatge - NO ES POT CANCEL·LAR",
             "comprar": "Comprar",
             "pagar": "Pagar",
+            "registrarPago": "Registrar el pagament",
             "anterior": "&laquo; Anterior",
             "siguiente": "Següent &raquo;",
             "anularPrevia": "Anul·lar compra prèvia",
@@ -324,6 +326,7 @@ UI =
             "tipusEntrada": "Tipus d'entrada",
             "printAtHome": "Marcar per a que l'entrada s'imprimisca amb format Print-At-Home",
             "importePagado": "Import pagat",
+            "referenciaDePago": "Referència del pagament",
             "rssId": "Identificador del event en l'agenda",
             "importeADevolver": "Quantitat a retornar: ",
             "inicioReserva": "Inici reserva",
