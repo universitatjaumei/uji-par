@@ -38,14 +38,6 @@ public class RestService {
 	private static final String PORT_SEPARATOR = ":";
 
 	private static String BASE_SECURE_URL = "/par-public/rest";
-	// private static String BASE_SECURE_URL =
-	// "http://192.168.3.103:9003/par-public/rest";
-	// private static String BASE_SECURE_URL =
-	// "http://ujiapps.uji.es/par-public/rest";
-	// private static String BASE_SECURE_URL =
-	// "https://wifi.benicassim.es/japps/par-public/rest";
-
-	// private static final String API_KEY = "kajshdka234hsdoiuqhiu918092";
 
 	private AsyncHttpClient client;
 	private Gson gson;
