@@ -4,13 +4,16 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
 public class Configuration
 {
-    private static final String SECRET = "uji.par.secret";
+    private static final String PROPERTIES_SEPARATOR = ",";
+	private static final String SECRET = "uji.par.secret";
     private static final String URL_PUBLIC = "uji.par.urlPublic";
     private static final String LOCALIZACIONES = "uji.par.localizaciones";
     private static final String URL_ADMIN = "uji.par.urlAdmin";
@@ -186,24 +189,24 @@ public class Configuration
         return getProperty(ENTRADA_TAQUILLA_REPORT);
     }
     
-    public static String getAdminLogin()
+    public static List<String> getAdminLogin()
     {
-        return getProperty(ADMIN_LOGIN);
+        return Arrays.asList(getProperty(ADMIN_LOGIN).split(PROPERTIES_SEPARATOR));
     }
     
-    public static String getAdminPassword()
+    public static List<String> getAdminPassword()
     {
-        return getProperty(ADMIN_PASSWORD);
+        return Arrays.asList(getProperty(ADMIN_PASSWORD).split(PROPERTIES_SEPARATOR));
     }
 
-    public static String getUserReadonlyLogin()
+    public static List<String> getUserReadonlyLogin()
     {
-        return getProperty(USER_READONLY_LOGIN);
+        return Arrays.asList(getProperty(USER_READONLY_LOGIN).split(PROPERTIES_SEPARATOR));
     }
     
-    public static String getUserReadonlyPassword()
+    public static List<String> getUserReadonlyPassword()
     {
-        return getProperty(USER_READONLY_PASSWORD);
+        return Arrays.asList(getProperty(USER_READONLY_PASSWORD).split(PROPERTIES_SEPARATOR));
     }
     
     public static String getJdbUrl()
@@ -218,7 +221,7 @@ public class Configuration
     
     public static String[] getSyncUrlsRss()
     {
-        return getProperty(SYNC_URL_TIPO).split(",");
+        return getProperty(SYNC_URL_TIPO).split(PROPERTIES_SEPARATOR);
     }
     
     public static int getSyncHorasInicioVentaOnline()
@@ -234,11 +237,11 @@ public class Configuration
     }
     
     public static String[] getImagenesFondo() {
-    	return getProperty(LOCALIZACIONES).split(",");
+    	return getProperty(LOCALIZACIONES).split(PROPERTIES_SEPARATOR);
     }
 
 	public static String[] getLocalizacionesEnImagen(String localizacion) {
-		return getProperty(LOCALIZACIONES + "." + localizacion).split(",");
+		return getProperty(LOCALIZACIONES + "." + localizacion).split(PROPERTIES_SEPARATOR);
 	}
 
 	public static String getEntradaOnlineReport() {

@@ -1,5 +1,7 @@
 package es.uji.apps.par.auth;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -51,17 +53,18 @@ public class FileAuthenticator implements Authenticator
         return loginOk(request, Configuration.getUserReadonlyLogin(), Configuration.getUserReadonlyPassword());
     }
     
-    private boolean loginOk(HttpServletRequest request, String login, String passwordCifrado)
+    private boolean loginOk(HttpServletRequest request, List<String> logins, List<String> passwordsCifrado)
     {
         String loginFromRequest = request.getParameter(LOGIN_PARAM);
 
-        if (loginFromRequest != null && loginFromRequest.equals(login))
+        if (loginFromRequest != null && logins.contains(loginFromRequest))
         {
-            return encryptor.checkPassword(request.getParameter(PASSWORD_PARAM), passwordCifrado);
+        	int indexLogin = logins.indexOf(loginFromRequest);
+        	return encryptor.checkPassword(request.getParameter(PASSWORD_PARAM), passwordsCifrado.get(indexLogin));
         }
         else
         {
-            return false;
+        	return false;
         }
     }
     
