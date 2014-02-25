@@ -79,7 +79,11 @@ public class SettingsActivity extends BasePreferenceActivity implements
 			if (text != null && text.length() > 0)
 				p.setSummary(editTextPref.getText());
 			else
-				p.setSummary(getResources().getString(getResources().getIdentifier("@string/" + p.getKey() + "_summ", "strings", this.getPackageName())));
+			{
+				int resourceId = getResources().getIdentifier("@string/" + p.getKey() + "_summ", "strings", this.getPackageName());
+				if (resourceId > 0)
+					p.setSummary(getResources().getString(resourceId));
+			}
 		}
 	}
 }
