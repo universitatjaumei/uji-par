@@ -221,7 +221,7 @@ public class Evento
         this.tituloEs = tituloEs;
     }
 
-    public Evento(String tituloEs, String descripcionEs, String companyiaEs, String interpretesEs,
+    public Evento(String rssId, String tituloEs, String descripcionEs, String companyiaEs, String interpretesEs,
             String duracionEs, String premiosEs, String caracteristicasEs, String comentariosEs,
             String tituloVa, String descripcionVa, String companyiaVa, String interpretesVa,
             String duracionVa, String premiosVa, String caracteristicasVa, String comentariosVa,
@@ -230,6 +230,7 @@ public class Evento
             String expediente, String codigoDistribuidora, String nombreDistribuidora, String nacionalidad, String vo, String metraje, String subtitulos)
     {
         this.sesiones = new ArrayList<Sesion>();
+        this.rssId = rssId;
         this.tituloEs = tituloEs;
         this.descripcionEs = descripcionEs;
         this.companyiaEs = companyiaEs;

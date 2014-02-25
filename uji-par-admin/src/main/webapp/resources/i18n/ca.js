@@ -324,7 +324,7 @@ UI =
             "tipusEntrada": "Tipus d'entrada",
             "printAtHome": "Marcar per a que l'entrada s'imprimisca amb format Print-At-Home",
             "importePagado": "Import pagat",
-            "rssId": "Id RSS",
+            "rssId": "Identificador del event en l'agenda",
             "importeADevolver": "Quantitat a retornar: ",
             "inicioReserva": "Inici reserva",
             "finReserva": "Fi reserva",

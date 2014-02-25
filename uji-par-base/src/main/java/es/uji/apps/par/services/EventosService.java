@@ -61,6 +61,8 @@ public class EventosService
 
     private void checkRequiredFields(Evento evento) throws CampoRequeridoException
     {
+    	if (evento.getRssId() == null || evento.getRssId().isEmpty())
+            throw new CampoRequeridoException("RSS Id");
         if (evento.getTituloEs() == null || evento.getTituloEs().isEmpty())
             throw new CampoRequeridoException("Título");
         if (evento.getParTiposEvento() == null)

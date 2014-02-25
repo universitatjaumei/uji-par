@@ -166,7 +166,7 @@ public class EventosResource
             @FormDataParam("retencionSGAE") BigDecimal retencionSGAE,
             @FormDataParam("ivaSGAE") BigDecimal ivaSGAE,
             @FormDataParam("asientosNumerados") Boolean asientosNumerados,
-            
+            @FormDataParam("rssId") String rssId,
             @FormDataParam("expediente") String expediente,
             @FormDataParam("codigoDistribuidora") String codigoDistribuidora,
             @FormDataParam("nombreDistribuidora") String nombreDistribuidora,
@@ -178,7 +178,7 @@ public class EventosResource
         String nombreArchivo = (dataBinaryDetail != null) ? dataBinaryDetail.getFileName() : "";
         String mediaType = (imagenBodyPart != null) ? imagenBodyPart.getMediaType().toString() : "";
 
-        Evento evento = new Evento(tituloEs, descripcionEs, companyiaEs, interpretesEs, duracionEs,
+        Evento evento = new Evento(rssId, tituloEs, descripcionEs, companyiaEs, interpretesEs, duracionEs,
                 premiosEs, caracteristicasEs, comentariosEs, tituloVa, descripcionVa, companyiaVa,
                 interpretesVa, duracionVa, premiosVa, caracteristicasVa, comentariosVa, dataBinary,
                 nombreArchivo, mediaType, tipoEventoId, porcentajeIVA, retencionSGAE, ivaSGAE, asientosNumerados, 
@@ -230,7 +230,7 @@ public class EventosResource
             @FormDataParam("retencionSGAE") BigDecimal retencionSGAE,
             @FormDataParam("ivaSGAE") BigDecimal ivaSGAE,
             @FormDataParam("asientosNumerados") Boolean asientosNumerados,
-            
+            @FormDataParam("rssId") String rssId,
             @FormDataParam("expediente") String expediente,
             @FormDataParam("codigoDistribuidora") String codigoDistribuidora,
             @FormDataParam("nombreDistribuidora") String nombreDistribuidora,
@@ -244,7 +244,7 @@ public class EventosResource
         String nombreArchivo = (dataBinaryDetail != null) ? dataBinaryDetail.getFileName() : "";
         String mediaType = (imagenBodyPart != null) ? imagenBodyPart.getMediaType().toString() : "";
 
-        Evento evento = new Evento(tituloEs, descripcionEs, companyiaEs, interpretesEs, duracionEs,
+        Evento evento = new Evento(rssId, tituloEs, descripcionEs, companyiaEs, interpretesEs, duracionEs,
                 premiosEs, caracteristicasEs, comentariosEs, tituloVa, descripcionVa, companyiaVa,
                 interpretesVa, duracionVa, premiosVa, caracteristicasVa, comentariosVa, dataBinary,
                 nombreArchivo, mediaType, tipoEventoId, porcentajeIVA, retencionSGAE, ivaSGAE, asientosNumerados, 

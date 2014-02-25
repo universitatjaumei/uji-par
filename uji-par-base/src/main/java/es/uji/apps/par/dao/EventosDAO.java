@@ -331,6 +331,7 @@ public class EventosDAO extends BaseDAO
         eventoDTO.setPremiosEs(evento.getPremiosEs());
         eventoDTO.setPremiosVa(evento.getPremiosVa());
 
+        eventoDTO.setRssId(evento.getRssId());
         eventoDTO.setTituloEs(evento.getTituloEs());
         eventoDTO.setTituloVa(evento.getTituloVa());
         
@@ -362,6 +363,7 @@ public class EventosDAO extends BaseDAO
         {
             EventoDTO eventoDTO = listaEventos.get(0);
             
+            eventoDTO.setRssId(evento.getRssId());
             eventoDTO.setTituloEs(evento.getTituloEs());
             eventoDTO.setTituloVa(evento.getTituloVa());
             eventoDTO.setDescripcionEs(evento.getDescripcionEs());

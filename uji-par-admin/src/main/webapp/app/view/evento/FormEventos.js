@@ -44,6 +44,11 @@ Ext.define('Paranimf.view.evento.FormEventos', {
          anchor: '100%'
      },
     items: [{
+      fieldLabel: UI.i18n.field.rssId,
+      labelWidth: 210,
+      name: 'rssId',
+      allowBlank: false
+      }, {
       fieldLabel: UI.i18n.field.title,
       name: 'tituloEs',
       allowBlank: false
