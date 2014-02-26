@@ -17,4 +17,5 @@ public interface EntradaReportTaquillaInterface {
 	public void generaPaginaButaca(EntradaModelReport entrada, String urlPublic);
 	public void generaPaginasReciboPinpad(String reciboPinpad);
 	public void serialize(OutputStream output) throws ReportSerializationException;
+	public void setUrlPortada(String urlPortada);
 }

@@ -74,6 +74,8 @@ public class EntradasService
         entrada.setFecha(fecha);
         entrada.setHora(hora);
         entrada.setHoraApertura(horaApertura);
+        entrada.setUrlPortada(Configuration.getUrlPublic() + "/rest/evento/"
+                + compra.getParSesion().getParEvento().getId() + "/imagenEntrada");
 
         for (ButacaDTO butaca : compra.getParButacas())
         {
@@ -83,6 +85,7 @@ public class EntradasService
             entradaModelReport.setZona(butaca.getParLocalizacion().getNombreEs());
             entradaModelReport.setTotal(ReportUtils.formatEuros(butaca.getPrecio()));
             entradaModelReport.setBarcode(compra.getUuid() + "-" + butaca.getId());
+            entradaModelReport.setTipo(butaca.getTipo());
             
             for (TarifaDTO tarifa: tarifas) {
             	if (tarifa.getId() == Long.valueOf(butaca.getTipo())) {

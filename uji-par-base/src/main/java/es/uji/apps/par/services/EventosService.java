@@ -126,7 +126,7 @@ public class EventosService
 		List<EventoDTO> eventosDTO = eventosDAO.getEventosActivosParaVentaOnline();
 		List<EventoParaSync> eventosParaSync = new ArrayList<EventoParaSync>();
 		String urlPrefix = Configuration.getUrlPublic() + "/rest/evento/";
-		String urlSuffix = "/##IDIOMA##";
+		String urlSuffix = "?lang=##IDIOMA##";
 		
 		for (EventoDTO eventoDTO: eventosDTO) {
 			EventoParaSync eventoParaSync = new EventoParaSync(eventoDTO.getRssId(), urlPrefix + eventoDTO.getRssId() + urlSuffix);
