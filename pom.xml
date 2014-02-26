@@ -15,7 +15,7 @@
         <module>uji-par-base</module>
         <module>uji-par-admin</module>
         <module>uji-par-web</module>
-        <module>uji-par-sync</module>
+        <!--<module>uji-par-sync</module>-->
     </modules>
 
     <profiles>
@@ -33,6 +33,13 @@
 			<module>uji-par-web-benicassim</module>
       		</modules>
     	</profile>
+	<profile>
+		<id>vila-real</id>
+		<modules>
+			<module>uji-par-reports-vila-real</module>
+                        <module>uji-par-web-vila-real</module>
+		</modules>
+	</profile>
   	</profiles>
 
     <build>
