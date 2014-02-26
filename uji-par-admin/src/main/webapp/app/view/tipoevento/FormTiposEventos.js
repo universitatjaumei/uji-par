@@ -26,7 +26,7 @@ Ext.define('Paranimf.view.tipoevento.FormTiposEventos', {
       xtype: 'combobox',
       queryMode: 'local',
       name: 'exportarICAA',
-      labelWidth: 150,
+      labelWidth: 280,
       valueField: 'id',
       displayField: 'label',
       fieldLabel: UI.i18n.field.exportarICAA,

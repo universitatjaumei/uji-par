@@ -231,7 +231,7 @@ Ext.define('Paranimf.view.evento.FormEventos', {
     displayField: 'nombreEs',
     valueField: 'id',
     store: 'TiposEventosSinPaginar',
-    queryMode: 'local',
+    queryMode: 'remote',
     typeAhead: true
   }, {
     fieldLabel: UI.i18n.field.asientosNumerados,
