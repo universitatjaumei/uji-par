@@ -95,7 +95,7 @@ public class ComprasService
 
     private boolean descuentoCero(PreciosSesion precioSesion)
     {
-        return precioSesion.getDescuento().equals(BigDecimal.ZERO);
+        return precioSesion.getDescuento() == null || precioSesion.getDescuento().equals(BigDecimal.ZERO);
     }
     
     private boolean cineTeatroMenorDe(Evento evento, PreciosSesion precioSesion, BigDecimal descuentoLimite)

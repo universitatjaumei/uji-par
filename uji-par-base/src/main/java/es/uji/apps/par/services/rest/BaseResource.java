@@ -5,6 +5,7 @@ import java.util.Locale;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
@@ -21,6 +22,7 @@ import es.uji.commons.web.template.model.Pagina;
 public class BaseResource
 {
     protected static final String APP = "par";
+    protected static final String LANG = "language";
     //private static final String API_KEY = "kajshdka234hsdoiuqhiu918092";
     private static final String API_KEY = Configuration.getApiKey();
 
@@ -29,9 +31,23 @@ public class BaseResource
 
     protected Locale getLocale()
     {
+    	HttpSession session = currentRequest.getSession();
+    	String lang = (String) session.getAttribute(LANG);
+    	
+    	return getLocale(lang);
+    }
+    
+    protected Locale getLocale(String lang)
+    {
         String idiomaFinal = "ca";
 
-        if (currentRequest != null)
+        if (lang != null && lang.length() > 0)
+        {
+        	HttpSession session = currentRequest.getSession();
+        	session.setAttribute(LANG, lang);
+        	idiomaFinal = lang;
+        }
+        else if (currentRequest != null)
         {
             if (currentRequest.getCookies() != null)
             {
@@ -95,7 +111,7 @@ public class BaseResource
         menu.addGrupo(grupo);
 
         Pagina pagina = new Pagina(urlBase, url, idioma);
-        pagina.setTitulo("Paranimf");
+        pagina.setTitulo(Configuration.getHtmlTitle());
         pagina.setSubTitulo("");
         pagina.setMenu(menu);
 

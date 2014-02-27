@@ -1,9 +1,9 @@
 package es.uji.apps.par.services.rest;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -42,6 +42,7 @@ import es.uji.apps.par.model.Sesion;
 import es.uji.apps.par.model.Tarifa;
 import es.uji.apps.par.services.ButacasService;
 import es.uji.apps.par.services.ComprasService;
+import es.uji.apps.par.services.EntradasService;
 import es.uji.apps.par.services.SesionesService;
 import es.uji.apps.par.utils.DateUtils;
 import es.uji.apps.par.utils.Utils;
@@ -51,9 +52,6 @@ import es.uji.commons.web.template.Template;
 @Path("entrada")
 public class EntradasResource extends BaseResource
 {
-    public static final String BUTACAS_COMPRA = "butacasCompra";
-    public static final String UUID_COMPRA = "uuidCompra";
-
     public static Logger log = Logger.getLogger(EntradasResource.class);
 
     @InjectParam
@@ -81,7 +79,7 @@ public class EntradasResource extends BaseResource
     {
         Sesion sesion = sesionesService.getSesion(sesionId);
 
-        if (sesion.getEvento().getAsientosNumerados().equals(BigDecimal.ONE))
+        if (Utils.isAsientosNumerados(sesion.getEvento()))
         {
             return paginaSeleccionEntradasNumeradas(sesionId, null, null, null);
         }
@@ -103,14 +101,16 @@ public class EntradasResource extends BaseResource
 
         Evento evento = sesion.getEvento();
 
-        Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "seleccionEntrada", getLocale(), APP);
+        Locale locale = getLocale();
+        String language = locale.getLanguage();
+        Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "seleccionEntrada", locale, APP);
         template.put("evento", evento);
         template.put("sesion", sesion);
-        template.put("idioma", getLocale().getLanguage());
+        template.put("idioma", language);
         template.put("baseUrl", getBaseUrlPublic());
         template.put("fecha", DateUtils.dateToSpanishString(sesion.getFechaCelebracion()));
         template.put("hora", sesion.getHoraCelebracion());
-        template.put("pagina", buildPublicPageInfo(urlBase, url, getLocale().getLanguage().toString()));
+        template.put("pagina", buildPublicPageInfo(urlBase, url, language.toString()));
         template.put("tipoEventoEs", sesion.getEvento().getParTiposEvento().getNombreEs());
         //template.put("tarifas", sesionesService)
 
@@ -119,7 +119,7 @@ public class EntradasResource extends BaseResource
             template.put("error", error);
         }
 
-        String butacasSesion = (String) currentRequest.getSession().getAttribute(BUTACAS_COMPRA);
+        String butacasSesion = (String) currentRequest.getSession().getAttribute(EntradasService.BUTACAS_COMPRA);
         if (butacasSesion == null)
         {
             template.put("butacasSesion", "[]");
@@ -129,13 +129,13 @@ public class EntradasResource extends BaseResource
             template.put("butacasSesion", butacasSesion);
         }
 
-        String uuidCompra = (String) currentRequest.getSession().getAttribute(UUID_COMPRA);
+        String uuidCompra = (String) currentRequest.getSession().getAttribute(EntradasService.UUID_COMPRA);
         if (uuidCompra != null)
         {
             template.put("uuidCompra", uuidCompra);
         }
 
-        if (getLocale().getLanguage().equals("ca"))
+        if (language.equals("ca"))
         {
             template.put("titulo", evento.getTituloVa());
             template.put("tipoEvento", evento.getParTiposEvento().getNombreVa());
@@ -158,6 +158,7 @@ public class EntradasResource extends BaseResource
         }
 
         template.put("gastosGestion", Float.parseFloat(Configuration.getGastosGestion()));
+        template.put("lang", language);
         
         ResponseBuilder builder = Response.ok(template);
 
@@ -175,14 +176,16 @@ public class EntradasResource extends BaseResource
 
         Evento evento = sesion.getEvento();
 
-        Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "seleccionEntradaNoNumerada", getLocale(), APP);
+        Locale locale = getLocale();
+        String language = locale.getLanguage();
+        Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "seleccionEntradaNoNumerada", locale, APP);
         template.put("evento", evento);
         template.put("sesion", sesion);
-        template.put("idioma", getLocale().getLanguage());
+        template.put("idioma", language);
         template.put("baseUrl", getBaseUrlPublic());
         template.put("fecha", DateUtils.dateToSpanishString(sesion.getFechaCelebracion()));
         template.put("hora", sesion.getHoraCelebracion());
-        template.put("pagina", buildPublicPageInfo(urlBase, urlBase, getLocale().getLanguage().toString()));
+        template.put("pagina", buildPublicPageInfo(urlBase, urlBase, language.toString()));
 
         if (platea1Normal == null || platea1Normal.equals(""))
             template.put("platea1Normal", "0");
@@ -209,13 +212,13 @@ public class EntradasResource extends BaseResource
             template.put("error", error);
         }
 
-        String uuidCompra = (String) currentRequest.getSession().getAttribute(UUID_COMPRA);
+        String uuidCompra = (String) currentRequest.getSession().getAttribute(EntradasService.UUID_COMPRA);
         if (uuidCompra != null)
         {
             template.put("uuidCompra", uuidCompra);
         }
 
-        if (getLocale().getLanguage().equals("ca"))
+        if (language.equals("ca"))
         {
             template.put("titulo", evento.getTituloVa());
         }
@@ -238,7 +241,8 @@ public class EntradasResource extends BaseResource
         }
 
         template.put("gastosGestion", Float.parseFloat(Configuration.getGastosGestion()));
-
+        template.put("lang", language);
+        
         ResponseBuilder builder = Response.ok(template);
 
         return Utils.noCache(builder).build();
@@ -256,7 +260,7 @@ public class EntradasResource extends BaseResource
     {
         Sesion sesion = sesionesService.getSesion(sesionId);
 
-        if (sesion.getEvento().getAsientosNumerados().equals(BigDecimal.ONE))
+        if (Utils.isAsientosNumerados(sesion.getEvento()))
         {
             return compraEntradaNumeradaHtml(sesionId, butacasSeleccionadasJSON, uuidCompra);
         }
@@ -304,8 +308,8 @@ public class EntradasResource extends BaseResource
 
         if (resultadoCompra.getCorrecta())
         {
-            currentRequest.getSession().setAttribute(BUTACAS_COMPRA, butacasSeleccionadasJSON);
-            currentRequest.getSession().setAttribute(UUID_COMPRA, resultadoCompra.getUuid());
+            currentRequest.getSession().setAttribute(EntradasService.BUTACAS_COMPRA, butacasSeleccionadasJSON);
+            currentRequest.getSession().setAttribute(EntradasService.UUID_COMPRA, resultadoCompra.getUuid());
 
             currentResponse.sendRedirect(getBaseUrlPublic() + "/rest/entrada/" + resultadoCompra.getUuid() + "/datosComprador");
             return null;
@@ -368,7 +372,7 @@ public class EntradasResource extends BaseResource
 
         if (resultadoCompra.getCorrecta())
         {
-            currentRequest.getSession().setAttribute(UUID_COMPRA, resultadoCompra.getUuid());
+            currentRequest.getSession().setAttribute(EntradasService.UUID_COMPRA, resultadoCompra.getUuid());
 
             currentResponse.sendRedirect(getBaseUrlPublic() + "/rest/entrada/" + resultadoCompra.getUuid() + "/datosComprador");
             return null;
@@ -386,13 +390,16 @@ public class EntradasResource extends BaseResource
             String direccion, String poblacion, String cp, String provincia, String telefono, String email,
             String infoPeriodica, String condicionesPrivacidad, String error) throws Exception
     {
-        Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "datosComprador", getLocale(), APP);
+        Locale locale = getLocale();
+        String language = locale.getLanguage();
+        Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "datosComprador", locale, APP);
         String urlBase = getBaseUrlPublic();
         String url = request.getRequestURL().toString();
-        template.put("pagina", buildPublicPageInfo(urlBase, url, getLocale().getLanguage().toString()));
+        template.put("pagina", buildPublicPageInfo(urlBase, url, language.toString()));
         template.put("baseUrl", getBaseUrlPublic());
         
-        template.put("idioma", getLocale().getLanguage());
+        template.put("idioma", language);
+        template.put("lang", language);
 
         template.put("uuidCompra", uuidCompra);
 
@@ -410,7 +417,7 @@ public class EntradasResource extends BaseResource
         CompraDTO compra = comprasService.getCompraByUuid(uuidCompra);
         
         if (compra != null) {
-	        if (getLocale().getLanguage().equals("ca"))
+	        if (language.equals("ca"))
 	        	template.put("tipoEvento", compra.getParSesion().getParEvento().getParTiposEvento().getNombreVa());
 	        else
 	        	template.put("tipoEvento", compra.getParSesion().getParEvento().getParTiposEvento().getNombreEs());
@@ -420,7 +427,7 @@ public class EntradasResource extends BaseResource
 	
 	        template.put("infoPeriodica", infoPeriodica);
         } else
-        	error = ResourceProperties.getProperty(getLocale(), "error.compraCaducada");;
+        	error = ResourceProperties.getProperty(locale, "error.compraCaducada");;
 
         if (error != null && !error.equals(""))
         {
@@ -482,9 +489,13 @@ public class EntradasResource extends BaseResource
                     ResourceProperties.getProperty(getLocale(), "error.datosComprador.compraCaducada"));
         }
 
-        Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "tpv", getLocale(), APP);
+        Locale locale = getLocale();
+        String language = locale.getLanguage();
         
-        template.put("idioma", getLocale().getLanguage());
+        Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "tpv", locale, APP);
+        
+        template.put("idioma", language);
+        template.put("lang", language);
         template.put("baseUrl", getBaseUrlPublic());
 
         String importe = Utils.monedaToCents(compra.getImporte());
@@ -502,13 +513,17 @@ public class EntradasResource extends BaseResource
 
     private Response paginaFueraDePlazo() throws Exception
     {
-    	Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "compraFinalizada", getLocale(), APP);
+    	Locale locale = getLocale();
+        String language = locale.getLanguage();
+        
+    	Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "compraFinalizada", locale, APP);
     	String urlBase = getBaseUrlPublic();
         String url = request.getRequestURL().toString();
-        template.put("pagina", buildPublicPageInfo(urlBase, url, getLocale().getLanguage().toString()));
+        template.put("pagina", buildPublicPageInfo(urlBase, url, language.toString()));
         template.put("baseUrl", getBaseUrlPublic());
         
-        template.put("idioma", getLocale().getLanguage());
+        template.put("idioma", language);
+        template.put("lang", language);
     	
         return Response.ok(template).build();
     }
@@ -536,12 +551,15 @@ public class EntradasResource extends BaseResource
     @Produces(MediaType.TEXT_HTML)
     public Response butacasFragment(@PathParam("id") long sesionId, @QueryParam("reserva") String reserva) throws Exception
     {
-        HTMLTemplate template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "butacasFragment", getLocale(), APP);
+    	Locale locale = getLocale();
+        String language = locale.getLanguage();
+        HTMLTemplate template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "butacasFragment", locale, APP);
 
         Sesion sesion = sesionesService.getSesion(sesionId);
 
         template.put("baseUrl", getBaseUrlPublic());
-        template.put("idioma", getLocale().getLanguage());
+        template.put("idioma", language);
+        template.put("lang", language);
         template.put("sesion", sesion);
         template.put("fecha", DateUtils.dateToSpanishString(sesion.getFechaCelebracion()));
         template.put("hora", sesion.getHoraCelebracion());
@@ -562,7 +580,7 @@ public class EntradasResource extends BaseResource
         	
         template.put("tarifas", tarifas);
 
-        if (getLocale().getLanguage().equals("ca"))
+        if (language.equals("ca"))
         {
             template.put("titulo", sesion.getEvento().getTituloVa());
         }

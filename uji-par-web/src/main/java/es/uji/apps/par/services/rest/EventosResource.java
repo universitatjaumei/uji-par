@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +16,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -99,13 +101,13 @@ public class EventosResource extends BaseResource
     @GET
     @Path("{contenidoId}")
     @Produces(MediaType.TEXT_HTML)
-    public Template getEvento(@PathParam("contenidoId") Long contenidoId) throws Exception
+    public Template getEvento(@PathParam("contenidoId") Long contenidoId, @QueryParam("lang") String lang) throws Exception
     {
         try
         {
             Evento evento = eventosService.getEventoByRssId(contenidoId);
 
-            return getTemplateEvento(evento);
+            return getTemplateEvento(evento, lang);
         }
         catch (EventoNoEncontradoException e)
         {
@@ -115,17 +117,20 @@ public class EventosResource extends BaseResource
 
     private Template getTemplateEventoNoEncontrado() throws MalformedURLException, ParseException
     {
-        HTMLTemplate template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "eventoNoEncontrado", getLocale(), APP);
+    	Locale locale = getLocale();
+    	String language = locale.getLanguage();
+        HTMLTemplate template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "eventoNoEncontrado", locale, APP);
         
         String url = request.getRequestURL().toString();
 
-        template.put("pagina", buildPublicPageInfo(getBaseUrlPublic(), url, getLocale().getLanguage().toString()));
+        template.put("pagina", buildPublicPageInfo(getBaseUrlPublic(), url, language.toString()));
         template.put("baseUrl", getBaseUrlPublic());
+        template.put("lang", language);
         
         return template;
     }
 
-    private Template getTemplateEvento(Evento evento) throws MalformedURLException, ParseException
+    private Template getTemplateEvento(Evento evento, String langparam) throws MalformedURLException, ParseException
     {
         List<Sesion> sesiones = sesionesService.getSesiones(evento.getId());
 
@@ -133,7 +138,8 @@ public class EventosResource extends BaseResource
 
         String tipoEvento, titulo, companyia, duracion, caracteristicas, premios, descripcion;
 
-        if (getLocale().getLanguage().equals("ca"))
+        String language = getLocale(langparam).getLanguage();
+		if (language.equals("ca"))
         {
             tipoEvento = evento.getParTiposEvento().getNombreVa();
             titulo = evento.getTituloVa();
@@ -156,7 +162,7 @@ public class EventosResource extends BaseResource
 
         String url = request.getRequestURL().toString();
 
-        template.put("pagina", buildPublicPageInfo(getBaseUrlPublic(), url, getLocale().getLanguage().toString()));
+        template.put("pagina", buildPublicPageInfo(getBaseUrlPublic(), url, language.toString()));
         template.put("baseUrl", getBaseUrlPublic());
         
         template.put("tipoEvento", tipoEvento);
@@ -170,6 +176,7 @@ public class EventosResource extends BaseResource
         template.put("evento", evento);
         template.put("sesiones", sesiones);
         template.put("sesionesPlantilla", getSesionesPlantilla(sesiones));
+        template.put("lang", language);
 
         return template;
     }

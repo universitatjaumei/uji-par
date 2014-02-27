@@ -30,6 +30,9 @@ import es.uji.apps.par.utils.ReportUtils;
 @Service
 public class EntradasService
 {
+    public static final String BUTACAS_COMPRA = "butacasCompra";
+    public static final String UUID_COMPRA = "uuidCompra";
+    
     @Autowired
     private ComprasDAO comprasDAO;
     

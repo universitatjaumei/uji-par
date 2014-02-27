@@ -12,6 +12,7 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import es.uji.apps.par.model.Evento;
 import es.uji.apps.par.model.OrdreGrid;
 
 public class Utils
@@ -131,5 +132,11 @@ public class Utils
 
 	public static Date objectToDate(Object object) {
 		return (Date) object;
+	}
+	
+	public static boolean isAsientosNumerados(Evento evento)
+	{
+		// TODO: Esto se hacía comparando con BigDecimal.ONE
+		return evento.getAsientosNumerados().equals(true);
 	}
 }

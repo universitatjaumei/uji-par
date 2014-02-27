@@ -22,6 +22,7 @@ import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.db.CompraDTO;
 import es.uji.apps.par.i18n.ResourceProperties;
 import es.uji.apps.par.services.ComprasService;
+import es.uji.apps.par.services.EntradasService;
 import es.uji.apps.par.services.MailService;
 import es.uji.commons.web.template.HTMLTemplate;
 import es.uji.commons.web.template.Template;
@@ -93,35 +94,43 @@ public class TpvResource extends BaseResource
 
     private void eliminaCompraDeSesion()
     {
-        currentRequest.getSession().removeAttribute(EntradasResource.BUTACAS_COMPRA);
-        currentRequest.getSession().removeAttribute(EntradasResource.UUID_COMPRA);
+        currentRequest.getSession().removeAttribute(EntradasService.BUTACAS_COMPRA);
+        currentRequest.getSession().removeAttribute(EntradasService.UUID_COMPRA);
     }
 
     private Template paginaExito(CompraDTO compra, String recibo) throws Exception
     {
-        Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "compraValida", getLocale(), APP);
+    	Locale locale = getLocale();
+        String language = locale.getLanguage();
+        
+        Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "compraValida", locale, APP);
         String url = request.getRequestURL().toString();
 
-        template.put("pagina", buildPublicPageInfo(Configuration.getUrlPublic(), url, getLocale().getLanguage().toString()));
+        template.put("pagina", buildPublicPageInfo(Configuration.getUrlPublic(), url, language.toString()));
         template.put("baseUrl", getBaseUrlPublic());
 
         template.put("referencia", recibo);
         template.put("email", compra.getEmail());
         template.put("url", getBaseUrlPublic() + "/rest/compra/" + compra.getUuid() + "/pdf");
         template.put("urlComoLlegar", Configuration.getUrlComoLlegar());
+        template.put("lang", language);
 
         return template;
     }
 
     private HTMLTemplate paginaError(CompraDTO compra) throws Exception
     {
-        HTMLTemplate template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "compraIncorrecta", getLocale(), APP);
+    	Locale locale = getLocale();
+        String language = locale.getLanguage();
+        
+        HTMLTemplate template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "compraIncorrecta", locale, APP);
         String url = request.getRequestURL().toString();
 
-        template.put("pagina", buildPublicPageInfo(getBaseUrlPublic(), url, getLocale().getLanguage().toString()));
+        template.put("pagina", buildPublicPageInfo(getBaseUrlPublic(), url, language.toString()));
         template.put("baseUrl", getBaseUrlPublic());
 
         template.put("urlReintentar", getBaseUrlPublic() + "/rest/entrada/" + compra.getParSesion().getId());
+        template.put("lang", language);
         
         return template;
     }

@@ -39,6 +39,7 @@ public class Configuration
     private static final String ADMIN_PASSWORD = "uji.par.auth.admin.password";
     private static final String USER_READONLY_LOGIN = "uji.par.auth.readonly.login";
     private static final String USER_READONLY_PASSWORD = "uji.par.auth.readonly.password";    
+    private static final String ALLOWED_IPS = "uji.par.auth.allowedips";
     private static final String JDBC_URL = "uji.db.jdbcUrl";
     private static final String SYNC_TIPO = "uji.sync.lugar";
     private static final String SYNC_URL_TIPO = "uji.sync.rss";
@@ -52,9 +53,8 @@ public class Configuration
 	private static final String BARCODE_WIDTH_HEIGHT = "uji.reports.barcodeWidthHeight";
 	private static final String LOGO_REPORT = "uji.reports.logo";
 	private static final String API_KEY = "api.key";
+	private static final String HTML_TITLE = "uji.par.htmltitle";
 	private static final String URL_PUBLIC_SIN_HTTPS = "uji.par.urlPublicSinHTTPS";
-
-    
 
     public static Logger log = Logger.getLogger(Configuration.class);
 
@@ -306,6 +306,10 @@ public class Configuration
 
 	public static String getApiKey() {
 		return getProperty(API_KEY);
+	}
+
+	public static String getHtmlTitle() {
+		return getProperty(HTML_TITLE);
 	}
 
 	public static String getUrlPublicSinHTTPS() {
