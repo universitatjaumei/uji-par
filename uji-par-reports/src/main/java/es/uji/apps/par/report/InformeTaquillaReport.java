@@ -18,6 +18,7 @@ import es.uji.apps.fopreports.serialization.ReportSerializationException;
 import es.uji.apps.fopreports.serialization.ReportSerializer;
 import es.uji.apps.fopreports.serialization.ReportSerializerInitException;
 import es.uji.apps.par.SinIvaException;
+import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.i18n.ResourceProperties;
 import es.uji.apps.par.report.components.BaseTable;
 import es.uji.apps.par.report.components.InformeTaquillaReportStyle;
@@ -60,7 +61,7 @@ public class InformeTaquillaReport extends Report implements InformeInterface
     private void creaLogo()
     {
         ExternalGraphic externalGraphic = new ExternalGraphic();
-        externalGraphic.setSrc(new File("/etc/uji/par/imagenes/uji_logo_color.png").getAbsolutePath());
+        externalGraphic.setSrc(new File("/etc/uji/par/imagenes/" + Configuration.getLogoReport()).getAbsolutePath());
         externalGraphic.setMaxWidth("2cm");
 
         Block block = withNewBlock();

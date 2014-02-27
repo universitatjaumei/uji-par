@@ -496,4 +496,9 @@ public class EntradaTaquillaReport extends Report implements EntradaReportTaquil
     {
         this.horaApertura = horaApertura;
     }
+
+	public void setUrlPortada(String urlPortada) {
+		// TODO Auto-generated method stub
+		
+	}
 }

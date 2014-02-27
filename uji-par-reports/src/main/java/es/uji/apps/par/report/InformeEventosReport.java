@@ -148,7 +148,7 @@ public class InformeEventosReport extends Report implements InformeInterface
     private Block creaLogo()
     {
         ExternalGraphic externalGraphic = new ExternalGraphic();
-        externalGraphic.setSrc(new File("/etc/uji/par/imagenes/uji_logo_color.png").getAbsolutePath());
+        externalGraphic.setSrc(new File("/etc/uji/par/imagenes/" + Configuration.getLogoReport()).getAbsolutePath());
         externalGraphic.setMaxWidth("2cm");
 
         Block block = new Block();
