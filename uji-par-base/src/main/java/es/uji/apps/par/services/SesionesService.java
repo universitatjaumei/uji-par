@@ -274,15 +274,34 @@ public class SesionesService
 	public Map<String, Map<Long, PreciosSesion>> getPreciosSesionPorLocalizacion(Long sesionId)
 	{
 	    Map<String, Map<Long, PreciosSesion>> resultado = new HashMap<String, Map<Long, PreciosSesion>>();
-	    Map<Long, PreciosSesion> tarifasPrecios = new HashMap<Long, PreciosSesion>();
-	    for (PreciosSesion precio: getPreciosSesion(sesionId)) {
-	    	tarifasPrecios.put(precio.getTarifa().getId(), precio);
-	        resultado.put(precio.getLocalizacion().getCodigo(), tarifasPrecios);
+	    
+	    List<PreciosSesion> preciosSesion = getPreciosSesion(sesionId);
+	    for (Localizacion localizacion : localizacionesPorSesion(preciosSesion))
+	    {
+	    	Map<Long, PreciosSesion> tarifasPrecios = new HashMap<Long, PreciosSesion>();
+	    	for (PreciosSesion precio: preciosSesion) {
+	    		if (precio.getLocalizacion().getCodigo().equals(localizacion.getCodigo()))
+	    			tarifasPrecios.put(precio.getTarifa().getId(), precio);
+	    	}
+	    	resultado.put(localizacion.getCodigo(), tarifasPrecios);
 	    }
 	    
         return resultado;
 	}
 	
+	private List<Localizacion> localizacionesPorSesion(List<PreciosSesion> preciosSesion) {
+		List<Localizacion> localizaciones = new ArrayList<Localizacion>();
+		
+		for (PreciosSesion precioSesion : preciosSesion)
+		{
+			Localizacion localizacion = precioSesion.getLocalizacion();
+			if (!localizaciones.contains(localizacion))
+					localizaciones.add(localizacion);
+		}
+		
+		return localizaciones;
+	}
+
 	public Sesion getSesion(long id)
 	{
 	    return new Sesion(sesionDAO.getSesion(id));
