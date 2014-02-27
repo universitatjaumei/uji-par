@@ -52,6 +52,7 @@ public class Configuration
 	private static final String BARCODE_WIDTH_HEIGHT = "uji.reports.barcodeWidthHeight";
 	private static final String LOGO_REPORT = "uji.reports.logo";
 	private static final String API_KEY = "api.key";
+	private static final String URL_PUBLIC_SIN_HTTPS = "uji.par.urlPublicSinHTTPS";
 
     
 
@@ -305,5 +306,9 @@ public class Configuration
 
 	public static String getApiKey() {
 		return getProperty(API_KEY);
+	}
+
+	public static String getUrlPublicSinHTTPS() {
+		return getProperty(URL_PUBLIC_SIN_HTTPS);
 	}
 }
