@@ -22,11 +22,6 @@
 
   <dependencies>
   
-  	<!-- <dependency>
-      <groupId>es.uji.apps.par</groupId>
-      <artifactId>uji-par-reports</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
-  	</dependency>-->
 
     <dependency>
       <groupId>es.uji.commons</groupId>
@@ -36,41 +31,9 @@
 
     <dependency>
       <groupId>es.uji.commons</groupId>
-      <artifactId>uji-commons-sso</artifactId>
-      <version>0.1.2</version>
-      <exclusions>
-      	<exclusion>
-      	  <groupId>hsqldb</groupId>
-      	  <artifactId>hsqldb</artifactId>
-      	</exclusion>
-      </exclusions>
-    </dependency>
-
-    <dependency>
-      <groupId>es.uji.commons</groupId>
       <artifactId>uji-commons-web-template-model</artifactId>
       <version>0.0.3</version>
     </dependency>
-
-    <dependency>
-      <groupId>es.uji.commons</groupId>
-      <artifactId>uji-commons-rest</artifactId>
-      <version>0.1.15</version>
-      <exclusions>
-      	<exclusion>
-      	  <groupId>hsqldb</groupId>
-      	  <artifactId>hsqldb</artifactId>
-      	</exclusion>
-      	<exclusion>
-      	  <groupId>com.sun.jersey</groupId>
-      	  <artifactId>jersey-core</artifactId>
-      	</exclusion>
-        <exclusion>
-          <groupId>es.uji.commons</groupId>
-          <artifactId>uji-commons-sso</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>    
 
       <!-- Spring -->
 

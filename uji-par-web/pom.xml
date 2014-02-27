@@ -84,12 +84,9 @@
 								<overlay>
 									<groupId>es.uji.apps.par</groupId>
 									<artifactId>uji-par-web-vila-real</artifactId>
-									<!-- <includes>
-										<include>*</include>
-									</includes>-->
 								</overlay>
 								<overlay>
-									<!-- empty groupId/artifactId represents the current build -->
+									<!-- empty groupId/artifactId represents the current build-->
 								</overlay>
 							</overlays>
 						</configuration>
@@ -119,6 +116,38 @@
 			<groupId>es.uji.apps.par</groupId>
 			<artifactId>uji-par-base</artifactId>
 			<version>0.0.12-SNAPSHOT</version>
+		</dependency>
+		
+		<dependency>
+	     	<groupId>es.uji.commons</groupId>
+	      	<artifactId>uji-commons-sso</artifactId>
+	      	<version>0.1.2</version>
+	      	<exclusions>
+		      	<exclusion>
+		      	  	<groupId>hsqldb</groupId>
+	      	  		<artifactId>hsqldb</artifactId>
+	      		</exclusion>
+	      	</exclusions>
+	    </dependency>
+		
+		<dependency>
+			<groupId>es.uji.commons</groupId>
+			<artifactId>uji-commons-rest</artifactId>
+			<version>0.1.15</version>
+			<exclusions>
+				<exclusion>
+	 					<groupId>hsqldb</groupId>
+	 					<artifactId>hsqldb</artifactId>
+				</exclusion>
+				<exclusion>
+	 					<groupId>com.sun.jersey</groupId>
+	 					<artifactId>jersey-core</artifactId>
+				</exclusion>
+					<exclusion>
+	  					<groupId>es.uji.commons</groupId>
+	  					<artifactId>uji-commons-sso</artifactId>
+					</exclusion>
+			</exclusions>
 		</dependency>
 
 		<!-- jUnit -->
