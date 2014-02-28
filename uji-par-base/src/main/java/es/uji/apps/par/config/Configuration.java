@@ -39,7 +39,6 @@ public class Configuration
     private static final String ADMIN_PASSWORD = "uji.par.auth.admin.password";
     private static final String USER_READONLY_LOGIN = "uji.par.auth.readonly.login";
     private static final String USER_READONLY_PASSWORD = "uji.par.auth.readonly.password";    
-    private static final String ALLOWED_IPS = "uji.par.auth.allowedips";
     private static final String JDBC_URL = "uji.db.jdbcUrl";
     private static final String SYNC_TIPO = "uji.sync.lugar";
     private static final String SYNC_URL_TIPO = "uji.sync.rss";
@@ -55,6 +54,11 @@ public class Configuration
 	private static final String API_KEY = "api.key";
 	private static final String HTML_TITLE = "uji.par.htmltitle";
 	private static final String URL_PUBLIC_SIN_HTTPS = "uji.par.urlPublicSinHTTPS";
+	private static final String TPV_CURRENCY = "uji.tpv.currency";
+	private static final String TPV_CODE = "uji.tpv.code";
+	private static final String TPV_TERMINAL = "uji.tpv.terminal";
+	private static final String TPV_TRANSACTION = "uji.tpv.transaction";
+	private static final String TPV_NOMBRE = "uji.tpv.nombre";
 
     public static Logger log = Logger.getLogger(Configuration.class);
 
@@ -88,6 +92,19 @@ public class Configuration
     {
         instance = null;
         instance = new Configuration();
+    }
+    
+    private static String getNoObligatoryProperty(String propertyName)
+    {
+        try
+        {
+            String property = getProperty(propertyName);
+            return property;
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
     }
 
     private static String getProperty(String propertyName)
@@ -314,5 +331,25 @@ public class Configuration
 
 	public static String getUrlPublicSinHTTPS() {
 		return getProperty(URL_PUBLIC_SIN_HTTPS);
+	}
+
+	public static String getTpvCurrency() {
+		return getNoObligatoryProperty(TPV_CURRENCY);
+	}
+
+	public static String getTpvCode() {
+		return getNoObligatoryProperty(TPV_CODE);
+	}
+
+	public static String getTpvTerminal() {
+		return getNoObligatoryProperty(TPV_TERMINAL);
+	}
+
+	public static String getTpvTransaction() {
+		return getNoObligatoryProperty(TPV_TRANSACTION);
+	}
+
+	public static String getTpvNombre() {
+		return getNoObligatoryProperty(TPV_NOMBRE);
 	}
 }

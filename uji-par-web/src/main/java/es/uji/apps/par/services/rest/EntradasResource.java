@@ -52,7 +52,11 @@ import es.uji.commons.web.template.Template;
 @Path("entrada")
 public class EntradasResource extends BaseResource
 {
-    public static Logger log = Logger.getLogger(EntradasResource.class);
+    private static final String TPV_ORDER_PREFIX_CODE_CAJAMAR = "0000";
+	private static final String TPV_LANG_ES_CODE = "001";
+	private static final String TPV_LANG_CA_CODE = "003";
+
+	public static Logger log = Logger.getLogger(EntradasResource.class);
 
     @InjectParam
     private SesionesService sesionesService;
@@ -498,15 +502,43 @@ public class EntradasResource extends BaseResource
         template.put("lang", language);
         template.put("baseUrl", getBaseUrlPublic());
 
+        String secret = Configuration.getSecret();
+        
         String importe = Utils.monedaToCents(compra.getImporte());
         String url = getBaseUrlPublic() + "/rest/tpv/resultado";
+        String urlOk = getBaseUrlPublic() + "/rest/tpv/ok";
+        String urlKo = getBaseUrlPublic() + "/rest/tpv/ko";
 
         template.put("identificador", compra.getId());
         template.put("concepto", compra.getParSesion().getParEvento().getTituloVa());
         template.put("importe", importe);
         template.put("correo", email);
         template.put("url", url);
-        template.put("hash", Utils.sha1(compra.getId() + importe + email + url + Configuration.getSecret()));
+        template.put("hash", Utils.sha1(compra.getId() + importe + email + url + secret));
+        
+        if (language.equals("ca"))
+        	template.put("langCode", TPV_LANG_CA_CODE);
+        else
+        	template.put("langCode", TPV_LANG_ES_CODE);
+
+        String tpvCode = Configuration.getTpvCode();
+        String tpvCurrency = Configuration.getTpvCurrency();
+        String tpvTransaction = Configuration.getTpvTransaction();
+        String tpvTerminal = Configuration.getTpvTerminal();
+        String tpvNombre = Configuration.getTpvNombre();
+        
+        template.put("order", TPV_ORDER_PREFIX_CODE_CAJAMAR + compra.getId());
+        if (tpvCode != null && tpvCurrency != null && tpvTransaction != null && tpvTerminal != null && tpvNombre != null)
+        {
+	        template.put("currency", tpvCurrency);
+	        template.put("code", tpvCode);
+	        template.put("terminal", tpvTerminal);
+	        template.put("transaction", tpvTransaction);
+	        template.put("nombre", tpvNombre);
+	        template.put("hashcajamar", Utils.sha1(importe + TPV_ORDER_PREFIX_CODE_CAJAMAR + compra.getId() + tpvCode + tpvCurrency + tpvTransaction + url + secret));
+        }
+        template.put("urlOk", urlOk);
+        template.put("urlKo", urlKo);
 
         return Response.ok(template).build();
     }
