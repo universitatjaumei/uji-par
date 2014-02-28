@@ -61,8 +61,8 @@ public class RestService {
 	public void setURLFromPreferences(Context context) {
 		SharedPreferences sharedPref = PreferenceManager
 				.getDefaultSharedPreferences(context);
-		String host = sharedPref.getString(SettingsActivity.PREF_HOST, "");
-		String port = sharedPref.getString(SettingsActivity.PREF_PORT, "");
+		String host = sharedPref.getString(SettingsActivity.PREF_HOST, "").trim();
+		String port = sharedPref.getString(SettingsActivity.PREF_PORT, "").trim();
 
 		if (host.endsWith("/"))
 			host = host.substring(0, host.length() - 1);
@@ -76,7 +76,7 @@ public class RestService {
 	public void setAPIKeyFromPreferences(Context context) {
 		SharedPreferences sharedPref = PreferenceManager
 				.getDefaultSharedPreferences(context);
-		this.apiKey = sharedPref.getString(SettingsActivity.PREF_APIKEY, "");
+		this.apiKey = sharedPref.getString(SettingsActivity.PREF_APIKEY, "").trim();
 	}
 
 	private void initSsl() {
