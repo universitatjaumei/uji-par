@@ -151,7 +151,8 @@ public class MapaDrawer
                             imagenOcupada = butacaOcupada;
                     }
 
-                    graphics.drawImage(imagenOcupada, butaca.getxIni(), butaca.getyIni(), null);
+                    if (butaca != null)
+                    	graphics.drawImage(imagenOcupada, butaca.getxIni(), butaca.getyIni(), null);
                 }
             }
         }
@@ -165,12 +166,16 @@ public class MapaDrawer
     }
 
 	private boolean esDiscapacitadoAnfiteatro(DatosButaca butaca) {
-		return butaca.getLocalizacion().startsWith("discapacitados3");
+		if (butaca != null && butaca.getLocalizacion() != null)
+			return butaca.getLocalizacion().startsWith("discapacitados3");
+		return false;
 	}
 
 	private boolean esDiscapacitado(DatosButaca butaca)
     {
-        return butaca.getLocalizacion().startsWith("discapacitados");
+		if (butaca != null && butaca.getLocalizacion() != null)
+			return butaca.getLocalizacion().startsWith("discapacitados");
+		return false;
     }
 
     private void cargaImagenes() throws IOException
