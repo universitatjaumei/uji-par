@@ -134,7 +134,7 @@ public class EventosResource
     		@QueryParam("sort") String sort, @QueryParam("start") int start, @QueryParam("limit") @DefaultValue("1000") int limit)
     {
         return Response.ok().entity(new RestResponse(true, 
-        		sesionesService.getPreciosSesion(sesionId, sort, start, limit), 
+        		sesionesService.getPreciosSesion(sesionId, sort, start, limit, true), 
         		sesionesService.getTotalPreciosSesion(sesionId)))
                 .build();
     }

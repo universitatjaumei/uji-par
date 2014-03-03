@@ -54,6 +54,10 @@ Ext.define('Paranimf.view.compra.GridSesionesComprasReservas', {
       dataIndex: 'butacasVendidas',
       text: UI.i18n.field.butacasVendidas,
       flex: 1
+    }, {
+      dataIndex: 'butacasReservadas',
+      text: UI.i18n.field.butacasReservadas,
+      flex: 1
     }];
 
     this.callParent(arguments);

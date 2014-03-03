@@ -168,7 +168,7 @@ public class CompraResource extends BaseResource {
 		return Response
 				.ok()
 				.entity(new RestResponse(true, sesionesService
-						.getPreciosSesion(sesionId, sort, start, limit),
+						.getPreciosSesion(sesionId, sort, start, limit, true),
 						sesionesService.getTotalPreciosSesion(sesionId)))
 				.build();
 	}

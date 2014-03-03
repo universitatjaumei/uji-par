@@ -56,7 +56,8 @@ UI =
             "noRowSelectedFileICAA": "És obligatori seleccionar almenys una sessió",
             "evento": "Event",
             "sessio": "Sessió",
-            "onlyOneRowSelected": "És obligatori seleccionar una única sessió"
+            "onlyOneRowSelected": "És obligatori seleccionar una única sessió",
+            "informesGenerals": "Informes generals per a totes les sessions"
         },
         "storeWeekDay": {
             "wed": "Dimecres",
@@ -173,7 +174,9 @@ UI =
             "saveFileICAA": "Generar fitxer per a l'ICAA",
             "marcarComoEnviados": "Marcar com a enviades a l'ICAA",
             "setIncidencia": "Ficar incidència",
-            "printEntradaDirectamente": "Imprimir directament"
+            "printEntradaDirectamente": "Imprimir directament",
+            "filtrarSessions": "Veure sessions d'aquestes dates",
+            "generarInformeSesion": "Generar informe de la sessió"
         },
         "calendar": {
             "calendar": "Calendari de reserves",
@@ -200,7 +203,8 @@ UI =
             "detalleCompras": "Detall compra/reserva seleccionada",
             "comprasReservasHechas": "Compres i reserves realitzades",
             "sesionesICAA": "Sessions realitzades entre les dates seleccionades",
-            "tarifas": "Gestió de les tarifes de preus"
+            "tarifas": "Gestió de les tarifes de preus",
+            "informeSessions": "Informes de sessió"
         },
         
         "field": {
@@ -263,6 +267,7 @@ UI =
 			"eventDate": "Data de celebració",
 			"opening": "Obertura de portes",
 			"butacasVendidas": "Butaques venudes",
+                  "butacasReservadas": "Butaques reservades",
 			"startOnlineSelling": "Inici venda online",
 			"canalInternet": "Disponible per a venda online",
 			"endOnlineSelling": "Fi venda online",

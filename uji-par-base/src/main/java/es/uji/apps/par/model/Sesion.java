@@ -33,6 +33,7 @@ public class Sesion
     private Plantilla plantillaPrecios;
     private List<PreciosSesion> preciosSesion;
     private long butacasVendidas;
+    private long butacasReservadas;
     private String nombre;
     private String formato;
     private Sala sala;
@@ -439,5 +440,13 @@ public class Sesion
 
 	public void setIncidenciaId(Integer incidenciaId) {
 		this.incidenciaId = incidenciaId;
+	}
+
+	public long getButacasReservadas() {
+		return butacasReservadas;
+	}
+
+	public void setButacasReservadas(long butacasReservadas) {
+		this.butacasReservadas = butacasReservadas;
 	}
  }

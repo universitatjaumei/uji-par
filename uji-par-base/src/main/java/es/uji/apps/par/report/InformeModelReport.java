@@ -14,6 +14,10 @@ public class InformeModelReport {
     private String localizacion;
     private long eventoId;
     private long sesionId;
+    private Integer vendidasTPV;
+    private Integer vendidasMetalico;
+    private Integer canceladasTaquilla;
+    private Integer vendidasTaquilla;
 
     public InformeModelReport()
     {
@@ -106,5 +110,36 @@ public class InformeModelReport {
     public void setSesionId(long sesionId) {
         this.sesionId = sesionId;
     }
-	
+
+	public Integer getVendidasTPV() {
+		return vendidasTPV;
+	}
+
+	public void setVendidasTPV(Integer vendidasTPV) {
+		this.vendidasTPV = vendidasTPV;
+	}
+
+	public Integer getVendidasMetalico() {
+		return vendidasMetalico;
+	}
+
+	public void setVendidasMetalico(Integer vendidasMetalico) {
+		this.vendidasMetalico = vendidasMetalico;
+	}
+
+	public Integer getCanceladasTaquilla() {
+		return canceladasTaquilla;
+	}
+
+	public void setCanceladasTaquilla(Integer canceladasTaquilla) {
+		this.canceladasTaquilla = canceladasTaquilla;
+	}
+
+	public Integer getVendidasTaquilla() {
+		return vendidasTaquilla;
+	}
+
+	public void setVendidasTaquilla(Integer vendidasTaquilla) {
+		this.vendidasTaquilla = vendidasTaquilla;
+	}
 }

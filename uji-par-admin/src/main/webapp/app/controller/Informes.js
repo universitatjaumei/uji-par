@@ -1,9 +1,9 @@
 Ext.define('Paranimf.controller.Informes', {
    extend: 'Ext.app.Controller',
 
-   views: ['EditModalWindow', 'EditBaseForm', 'EditBaseGrid', 'informes.PanelInformes'],
-   stores: [],
-   models: [],
+   views: ['EditModalWindow', 'EditBaseForm', 'EditBaseGrid', 'informes.PanelInformes', 'informes.GridSesionesInformes'],
+   stores: ['SesionesInformes'],
+   models: ['Sesion'],
 
    refs: [{
       ref: 'fechaInicio',
@@ -11,6 +11,9 @@ Ext.define('Paranimf.controller.Informes', {
    }, {
       ref: 'fechaFin',
       selector: 'panelInformes datefield[name=fechaFin]'
+   }, {
+      ref: 'gridSesionesInformes',
+      selector: 'gridSesionesInformes'
    }],
 
    init: function() {
@@ -38,8 +41,37 @@ Ext.define('Paranimf.controller.Informes', {
 
          'panelInformes button[action=generateExcelEvento]': {
            click: this.generateExcelEvento
+         }, 
+
+         'panelInformes button[action=filtrarSessions]': {
+            click: this.filtraSesiones
+         },
+
+         'panelInformes button[action=generarInformeSesion]': {
+            click: this.generarInformeSesion
          }
       });
+   },
+
+   generarInformeSesion: function() {
+      var idsSelected = this.getGridSesionesInformes().getSelectedColumnValues("id");
+      if (idsSelected && idsSelected.length == 1) {
+         this.generatePdfSesion(idsSelected[0]);
+      } else
+         alert(UI.i18n.message.selectRow);
+   },
+
+   filtraSesiones: function() {
+      if (!this.sonFechasValidas(this.getFechaInicio().value, this.getFechaFin().value))
+         return;
+
+      var storeSesiones = this.getGridSesionesInformes().getStore();
+      storeSesiones.getProxy().url = urlPrefix + 'evento/sesionesficheros';
+      storeSesiones.getProxy().extraParams = {
+         'fechaInicio': this.getFechaInicio().rawValue,
+         'fechaFin': this.getFechaFin().rawValue
+      };
+      storeSesiones.load();
    },
 
    generateExcelTaquilla: function(button, event, opts) {
@@ -59,6 +91,16 @@ Ext.define('Paranimf.controller.Informes', {
       document.body.appendChild(form);
       form.submit();
    }, 
+
+   generatePdfSesion: function(idSesion) {
+      var form = document.createElement("form");
+      form.setAttribute("method", "post");
+      form.setAttribute("action", urlPrefix + 'report/sesion/' + idSesion + '/pdf');
+      form.setAttribute("target", "_blank");
+
+      document.body.appendChild(form);
+      form.submit();      
+   },
    
    generatePdfTaquilla: function(button, event, opts) {
       console.log(this.getFechaInicio(), this.getFechaFin());

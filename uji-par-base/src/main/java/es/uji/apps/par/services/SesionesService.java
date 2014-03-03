@@ -56,9 +56,11 @@ public class SesionesService
             
             SesionDTO sesionDTO = (SesionDTO) fila[0];
             Long butacasVendidas = (Long)fila[1];
+            Long butacasReservadas = (Long)fila[2];
             
             Sesion sesion = new Sesion(sesionDTO);
             sesion.setButacasVendidas(butacasVendidas);
+            sesion.setButacasReservadas(butacasReservadas);
             
             listaSesiones.add(sesion);
         }
@@ -246,32 +248,46 @@ public class SesionesService
 		}
 	}
 
-	public List<PreciosSesion> getPreciosSesion(Long sesionId, String sortParameter, int start, int limit) {
+	public List<PreciosSesion> getPreciosSesion(Long sesionId, String sortParameter, int start, int limit, boolean mostrarTarifasInternas) {
 		List<PreciosSesion> listaPreciosSesion = new ArrayList<PreciosSesion>();
     	
 		Sesion sesion = getSesion(sesionId);
 		
 		if (sesion.getPlantillaPrecios().getId() == -1)
 		{
-        	for (PreciosSesionDTO precioSesionDB: sesionDAO.getPreciosSesion(sesionId, sortParameter, start, limit))
+        	for (PreciosSesionDTO precioSesionDB: sesionDAO.getPreciosSesion(sesionId, sortParameter, start, limit)) {
+        		if (!precioSesionDB.getParTarifa().getIsPublica() && !mostrarTarifasInternas)
+        			continue;
+        			
         		listaPreciosSesion.add(new PreciosSesion(precioSesionDB));
+        	}
 		}
 		else
 		{
 		    List<PreciosPlantilla> preciosPlantilla = preciosPlantillaService.getPreciosOfPlantilla(sesion.getPlantillaPrecios().getId(), sortParameter, start, limit);
             
-            for(PreciosPlantilla precioPlantilla: preciosPlantilla)
+            for(PreciosPlantilla precioPlantilla: preciosPlantilla) {
+            	if (!precioPlantilla.getTarifa().getIsPublico().equals("on") && !mostrarTarifasInternas)
+        			continue;
+            	
                 listaPreciosSesion.add(new PreciosSesion(precioPlantilla));
+            }
 		}
 		
         return listaPreciosSesion;
 	}
 	
 	public List<PreciosSesion> getPreciosSesion(Long sesionId) {
-		return getPreciosSesion(sesionId, "", 0, 100);
+		return getPreciosSesion(sesionId, "", 0, 100, true);
 	}
 	
-	public Map<String, Map<Long, PreciosSesion>> getPreciosSesionPorLocalizacion(Long sesionId)
+	public List<PreciosSesion> getPreciosSesionPublicos(Long sesionId) {
+		return getPreciosSesion(sesionId, "", 0, 100, false);
+	}
+	
+	
+	
+	private Map<String, Map<Long, PreciosSesion>> getPreciosSesionPorLocalizacion(Long sesionId, boolean mostrarTarifasInternas)
 	{
 	    Map<String, Map<Long, PreciosSesion>> resultado = new HashMap<String, Map<Long, PreciosSesion>>();
 	    
@@ -280,13 +296,25 @@ public class SesionesService
 	    {
 	    	Map<Long, PreciosSesion> tarifasPrecios = new HashMap<Long, PreciosSesion>();
 	    	for (PreciosSesion precio: preciosSesion) {
-	    		if (precio.getLocalizacion().getCodigo().equals(localizacion.getCodigo()))
+	    		if (precio.getLocalizacion().getCodigo().equals(localizacion.getCodigo())) {
+	    			if (!precio.getTarifa().getIsPublico().equals("on") && !mostrarTarifasInternas)
+	    				continue;
+	    			
 	    			tarifasPrecios.put(precio.getTarifa().getId(), precio);
+	    		}
 	    	}
 	    	resultado.put(localizacion.getCodigo(), tarifasPrecios);
 	    }
 	    
         return resultado;
+	}
+	
+	public Map<String, Map<Long, PreciosSesion>> getPreciosSesionPublicosPorLocalizacion(long sesionId) {
+		return getPreciosSesionPorLocalizacion(sesionId, false);
+	}
+	
+	public Map<String, Map<Long, PreciosSesion>> getPreciosSesionPorLocalizacion(long sesionId) {
+		return getPreciosSesionPorLocalizacion(sesionId, true);
 	}
 	
 	private List<Localizacion> localizacionesPorSesion(List<PreciosSesion> preciosSesion) {
@@ -349,21 +377,33 @@ public class SesionesService
 	}
 
 	public List<Tarifa> getTarifasConPrecioSinPlantilla(long sesionId) {
-		List<TarifaDTO> tarifasDTO = sesionDAO.getTarifasPreciosSesion(sesionId);
+		return _getTarifasConPrecioSinPlantilla(sesionId, true);
+	}
+
+	public List<Tarifa> getTarifasConPrecioConPlantilla(long sesionId) {
+		return _getTarifasConPrecioConPlantilla(sesionId, true);
+	}
+	
+	private List<Tarifa> _getTarifasConPrecioConPlantilla(long sesionId, boolean tambienInternas) {
+		List<TarifaDTO> tarifasDTO = sesionDAO.getTarifasPreciosPlantilla(sesionId);
 		List<Tarifa> tarifas = new ArrayList<Tarifa>();
 		
 		for (TarifaDTO tarifaDTO: tarifasDTO) {
+			if (tarifaDTO.getIsPublica() != null && !tarifaDTO.getIsPublica() && !tambienInternas)
+				continue;
 			Tarifa tarifa = Tarifa.tarifaDTOToTarifa(tarifaDTO);
 			tarifas.add(tarifa);
 		}
 		return tarifas;
 	}
-
-	public List<Tarifa> getTarifasConPrecioConPlantilla(long sesionId) {
-		List<TarifaDTO> tarifasDTO = sesionDAO.getTarifasPreciosPlantilla(sesionId);
+	
+	private List<Tarifa> _getTarifasConPrecioSinPlantilla(long sesionId, boolean tambienInternas) {
+		List<TarifaDTO> tarifasDTO = sesionDAO.getTarifasPreciosSesion(sesionId);
 		List<Tarifa> tarifas = new ArrayList<Tarifa>();
 		
 		for (TarifaDTO tarifaDTO: tarifasDTO) {
+			if (!tarifaDTO.getIsPublica() && !tambienInternas)
+				continue;
 			Tarifa tarifa = Tarifa.tarifaDTOToTarifa(tarifaDTO);
 			tarifas.add(tarifa);
 		}
@@ -372,5 +412,13 @@ public class SesionesService
 
 	public void setIncidencia(long sesionId, int incidenciaId) {
 		sesionDAO.setIncidencia(sesionId, incidenciaId);
+	}
+
+	public List<Tarifa> getTarifasPublicasConPrecioConPlantilla(long sesionId) {
+		return _getTarifasConPrecioConPlantilla(sesionId, false);
+	}
+
+	public List<Tarifa> getTarifasPublicasConPrecioSinPlantilla(long sesionId) {
+		return _getTarifasConPrecioSinPlantilla(sesionId, false);
 	}
 }

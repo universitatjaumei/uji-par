@@ -3,11 +3,15 @@ package es.uji.apps.par.services.rest;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.List;
 
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -18,7 +22,9 @@ import com.sun.jersey.api.core.InjectParam;
 
 import es.uji.apps.fopreports.serialization.ReportSerializationException;
 import es.uji.apps.par.SinIvaException;
+import es.uji.apps.par.model.Sesion;
 import es.uji.apps.par.services.ReportService;
+import es.uji.apps.par.services.SesionesService;
 
 @Path("report")
 public class ReportResource extends BaseResource
@@ -27,6 +33,9 @@ public class ReportResource extends BaseResource
     
     @InjectParam
     private ReportService reportService;
+    
+    @InjectParam
+    private SesionesService sesionesService;
     
     @POST
 	@Path("taquilla/{fechaInicio}/{fechaFin}")
@@ -59,7 +68,21 @@ public class ReportResource extends BaseResource
         return Response.ok(ostream.toByteArray())
         		.header("Content-Disposition","attachment; filename =\"informeTaquilla " + fechaInicio + "-" + fechaFin + ".pdf\"")
         		.type("application/pdf").build();
-    }    
+    }
+    
+    @POST
+    @Path("sesion/{idSesion}/pdf")
+    @Produces("application/pdf")
+    public Response generatePdfSesion(@PathParam("idSesion") long idSesion) throws TranscoderException, IOException, 
+    	ReportSerializationException, ParseException, SinIvaException {
+        ByteArrayOutputStream ostream = new ByteArrayOutputStream();
+        
+        reportService.getPdfSesion(idSesion, ostream);
+        
+        return Response.ok(ostream.toByteArray())
+        		.header("Content-Disposition","attachment; filename =\"informeSesion.pdf\"")
+        		.type("application/pdf").build();
+    } 
     
     @POST
     @Path("taquilla/{fechaInicio}/{fechaFin}/efectivo/pdf")
@@ -128,5 +151,16 @@ public class ReportResource extends BaseResource
         return Response.ok(ostream.toByteArray())
         		.header("Content-Disposition","attachment; filename =\"informeEventos " + fechaInicio + "-" + fechaFin + ".pdf\"")
         		.type("application/pdf").build();
-    } 
+    }
+    
+    @GET
+    @Path("sesiones")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response filtraSesiones(@QueryParam("fechaInicio") String fechaInicio, @QueryParam("fechaFin") String fechaFin, 
+    		@QueryParam("sort") @DefaultValue("[{\"property\":\"nombre\",\"direction\":\"ASC\"}]") String sort, 
+    		@QueryParam("start") int start, @QueryParam("limit") @DefaultValue("1000") int limit) {
+    	
+    	List<Sesion> sesiones = sesionesService.getSesionesCinePorFechas(fechaInicio, fechaFin, sort);
+        return Response.ok().entity(new RestResponse(true, sesiones, sesiones.size())).build();
+    }
 }

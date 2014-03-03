@@ -79,7 +79,7 @@ Ext.define('Paranimf.controller.GenerarFicheros', {
 
    markAsSent: function() {
       var idsSelected = this.getGridSesionesCompleto().getSelectedColumnValues("idEnvioFichero");
-      console.log(idsSelected);
+      //console.log(idsSelected);
       if (idsSelected && idsSelected.length > 0) {
          this.getGridSesionesCompleto().setLoading(UI.i18n.message.loading);
          var me = this;

@@ -61,7 +61,7 @@ public class ComprasService
     {
         Sesion sesion = sesionesService.getSesion(sesionId);
         Evento evento = sesion.getEvento();
-        Map<String, Map<Long, PreciosSesion>> precios = sesionesService.getPreciosSesionPorLocalizacion(sesionId);
+        Map<String, Map<Long, PreciosSesion>> precios = sesionesService.getPreciosSesionPublicosPorLocalizacion(sesionId);
 
         if (!sesion.getEnPlazoVentaInternet())
             throw new FueraDePlazoVentaInternetException(sesionId);

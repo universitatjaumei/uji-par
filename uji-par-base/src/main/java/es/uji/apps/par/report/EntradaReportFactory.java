@@ -55,4 +55,13 @@ public class EntradaReportFactory
     				Configuration.getInformeEventosReport());
     	}
 	}
+
+	public static InformeInterface newInstanceInformeSesionReport() {
+		try {
+    		return (InformeInterface) Class.forName(Configuration.getInformeSesionReport()).newInstance();
+    	} catch(Exception e) {
+    		throw new RuntimeException("Imposible instanciar la clase del pdf de informe de sesión: " + 
+    				Configuration.getInformeEventosReport());
+    	}
+	}
 }

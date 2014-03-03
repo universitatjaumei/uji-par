@@ -28,10 +28,17 @@ import org.springframework.stereotype.Service;
 import es.uji.apps.fopreports.serialization.ReportSerializationException;
 import es.uji.apps.par.SinIvaException;
 import es.uji.apps.par.config.Configuration;
+import es.uji.apps.par.dao.CinesDAO;
 import es.uji.apps.par.dao.ComprasDAO;
+import es.uji.apps.par.dao.SesionesDAO;
 import es.uji.apps.par.database.DatabaseHelper;
 import es.uji.apps.par.database.DatabaseHelperFactory;
+import es.uji.apps.par.db.SesionDTO;
+import es.uji.apps.par.model.Cine;
+import es.uji.apps.par.model.Evento;
 import es.uji.apps.par.model.Informe;
+import es.uji.apps.par.model.Sala;
+import es.uji.apps.par.model.Sesion;
 import es.uji.apps.par.report.EntradaReportFactory;
 import es.uji.apps.par.report.InformeInterface;
 import es.uji.apps.par.report.InformeModelReport;
@@ -43,6 +50,12 @@ public class ReportService {
 
 	@Autowired
 	ComprasDAO comprasDAO;
+	
+	@Autowired
+	SesionesDAO sesionesDAO;
+	
+	@Autowired
+	CinesDAO cinesDAO;
 
 	private DatabaseHelper dbHelper;
 
@@ -50,6 +63,7 @@ public class ReportService {
 	private InformeInterface informeEfectivoReport;
 	private InformeInterface informeTaquillaTpvSubtotalesReport;
 	private InformeInterface informeEventosReport;
+	private InformeInterface informeSesionReport;
 
 	/*
 	 * static { entradaTaquillaReport =
@@ -57,17 +71,13 @@ public class ReportService {
 	 * EntradaReportFactory.newInstanceOnline(); }
 	 */
 
-	public ReportService() throws InstantiationException,
-			IllegalAccessException, ClassNotFoundException {
+	public ReportService() throws InstantiationException, IllegalAccessException, ClassNotFoundException {
 		dbHelper = DatabaseHelperFactory.newInstance();
-		informeTaquillaReport = EntradaReportFactory
-				.newInstanceInformeTaquilla();
-		informeEfectivoReport = EntradaReportFactory
-				.newInstanceInformeEfectivo();
-		informeTaquillaTpvSubtotalesReport = EntradaReportFactory
-				.newInstanceInformeTaquillaTpvSubtotalesReport();
-		informeEventosReport = EntradaReportFactory
-				.newInstanceInformeEventosReport();
+		informeTaquillaReport = EntradaReportFactory.newInstanceInformeTaquilla();
+		informeEfectivoReport = EntradaReportFactory.newInstanceInformeEfectivo();
+		informeTaquillaTpvSubtotalesReport = EntradaReportFactory.newInstanceInformeTaquillaTpvSubtotalesReport();
+		informeEventosReport = EntradaReportFactory.newInstanceInformeEventosReport();
+		informeSesionReport = EntradaReportFactory.newInstanceInformeSesionReport();
 	}
 
 	public ByteArrayOutputStream getExcelTaquilla(String fechaInicio,
@@ -112,8 +122,7 @@ public class ReportService {
 		informe.setEvento(Utils.safeObjectToString(fila[0]));
 		informe.setSesion(DateUtils.dateToSpanishStringWithHour(
 				Utils.objectToDate(fila[1])).toString());
-		String tipoEntrada = Utils.safeObjectToString(fila[2]);
-		tipoEntrada = tipoEntradaBBDDToText(tipoEntrada);
+		String tipoEntrada = Utils.safeObjectToString(fila[8]);
 		informe.setTipoEntrada(tipoEntrada);
 		informe.setNumeroEntradas(Utils.safeObjectBigDecimalToInt(dbHelper
 				.castBigDecimal(fila[3])));
@@ -128,8 +137,7 @@ public class ReportService {
 		informe.setEvento(Utils.safeObjectToString(fila[0]));
 		informe.setSesion(DateUtils.dateToSpanishStringWithHour(
 				Utils.objectToDate(fila[1])).toString());
-		String tipoEntrada = Utils.safeObjectToString(fila[2]);
-		tipoEntrada = tipoEntradaBBDDToText(tipoEntrada);
+		String tipoEntrada = Utils.safeObjectToString(fila[9]);
 		informe.setTipoEntrada(tipoEntrada);
 		informe.setNumeroEntradas(Utils.safeObjectBigDecimalToInt(dbHelper
 				.castBigDecimal(fila[3])));
@@ -146,8 +154,7 @@ public class ReportService {
 		informe.setEvento(Utils.safeObjectToString(fila[0]));
 		informe.setSesion(DateUtils.dateToSpanishStringWithHour(
 				Utils.objectToDate(fila[1])).toString());
-		String tipoEntrada = Utils.safeObjectToString(fila[2]);
-		tipoEntrada = tipoEntradaBBDDToText(tipoEntrada);
+		String tipoEntrada = Utils.safeObjectToString(fila[9]);
 		informe.setTipoEntrada(tipoEntrada);
 		informe.setNumeroEntradas(Utils.safeObjectBigDecimalToInt(dbHelper
 				.castBigDecimal(fila[3])));
@@ -159,18 +166,6 @@ public class ReportService {
 				.castBigDecimal(fila[8])));
 
 		return informe;
-	}
-
-	private String tipoEntradaBBDDToText(String tipoEntrada) {
-		if (tipoEntrada.equals("normal"))
-			tipoEntrada = "Normal";
-		else if (tipoEntrada.equals("descuento"))
-			tipoEntrada = "Descompte";
-		else if (tipoEntrada.equals("invitacion"))
-			tipoEntrada = "Invitació";
-		else if (tipoEntrada.equals("aulaTeatro"))
-			tipoEntrada = "Teatre";
-		return tipoEntrada;
 	}
 
 	private InformeModelReport objectToInformeEvento(Object[] fila) {
@@ -232,42 +227,31 @@ public class ReportService {
 		return excelService.getExcel();
 	}
 
-	public void getPdfTaquilla(String fechaInicio, String fechaFin,
-			OutputStream bos) throws ReportSerializationException,
+	public void getPdfTaquilla(String fechaInicio, String fechaFin, OutputStream bos) throws ReportSerializationException,
 			ParseException {
-		InformeInterface informe = informeTaquillaReport
-				.create(new Locale("ca"));
+		InformeInterface informe = informeTaquillaReport.create(new Locale("ca"));
 
-		List<InformeModelReport> compras = objectsToInformes(comprasDAO
-				.getComprasPorEventoInFechas(fechaInicio, fechaFin));
+		List<InformeModelReport> compras = objectsToInformes(comprasDAO.getComprasPorEventoInFechas(fechaInicio, fechaFin));
 
-		BigDecimal totalTaquillaTpv = comprasDAO.getTotalTaquillaTpv(
-				fechaInicio, fechaFin);
-		BigDecimal totalTaquillaEfectivo = comprasDAO.getTotalTaquillaEfectivo(
-				fechaInicio, fechaFin);
-		BigDecimal totalOnline = comprasDAO.getTotalOnline(fechaInicio,
-				fechaFin);
+		BigDecimal totalTaquillaTpv = comprasDAO.getTotalTaquillaTpv(fechaInicio, fechaFin);
+		BigDecimal totalTaquillaEfectivo = comprasDAO.getTotalTaquillaEfectivo(fechaInicio, fechaFin);
+		BigDecimal totalOnline = comprasDAO.getTotalOnline(fechaInicio, fechaFin);
 
-		informe.genera(getSpanishStringDateFromBBDDString(fechaInicio),
-				getSpanishStringDateFromBBDDString(fechaFin), compras,
+		informe.genera(getSpanishStringDateFromBBDDString(fechaInicio), getSpanishStringDateFromBBDDString(fechaFin), compras,
 				totalTaquillaTpv, totalTaquillaEfectivo, totalOnline);
 
 		informe.serialize(bos);
 	}
 
-	private String getSpanishStringDateFromBBDDString(String fecha)
-			throws ParseException {
+	private String getSpanishStringDateFromBBDDString(String fecha)	throws ParseException {
 		Date dt = DateUtils.databaseStringToDate(fecha);
 		return DateUtils.dateToSpanishString(dt);
 	}
 
-	public void getPdfEfectivo(String fechaInicio, String fechaFin,
-			OutputStream bos) throws ReportSerializationException,
+	public void getPdfEfectivo(String fechaInicio, String fechaFin,	OutputStream bos) throws ReportSerializationException,
 			ParseException, SinIvaException {
-		InformeInterface informe = informeEfectivoReport
-				.create(new Locale("ca"));
-		List<InformeModelReport> compras = objectsSesionesToInformesIva(comprasDAO
-				.getComprasEfectivo(fechaInicio, fechaFin));
+		InformeInterface informe = informeEfectivoReport.create(new Locale("ca"));
+		List<InformeModelReport> compras = objectsSesionesToInformesIva(comprasDAO.getComprasEfectivo(fechaInicio, fechaFin));
 
 		informe.genera(getSpanishStringDateFromBBDDString(fechaInicio),
 				getSpanishStringDateFromBBDDString(fechaFin), compras,
@@ -351,7 +335,23 @@ public class ReportService {
 
 		return result;
 	}
+	
+	public void getPdfSesion(long sesionId, ByteArrayOutputStream bos) throws SinIvaException, ReportSerializationException {
+		InformeInterface informe = informeSesionReport.create(new Locale("ca"));
+		SesionDTO sesionDTO = sesionesDAO.getSesion(sesionId);
+		Sesion sesion = Sesion.SesionDTOToSesion(sesionDTO);
+		Cine cine = Cine.cineDTOToCine(cinesDAO.getCines().get(0));
+		Sala sala = Sala.salaDTOtoSala(sesionDTO.getParSala());
+		Evento evento = Evento.eventoDTOtoEvento(sesionDTO.getParEvento());
+		InformeModelReport resumen = comprasDAO.getResumenSesion(sesionId);
 
+		informe.genera(Configuration.getCargoInformeEfectivo(), Configuration.getFirmanteInformeEfectivo(),
+				cine, sala, evento, sesion, 
+				resumen.getNumeroEntradas(), resumen.getCanceladasTaquilla(), resumen.getTotal());
+
+		informe.serialize(bos);
+	}
+	
 	public static void main(String[] args) throws Exception {
 		ApplicationContext ctx = new ClassPathXmlApplicationContext(
 				"/applicationContext-db.xml");

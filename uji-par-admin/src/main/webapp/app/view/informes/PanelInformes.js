@@ -11,45 +11,68 @@ Ext.define('Paranimf.view.informes.PanelInformes', {
     region: 'center',
     autoScroll: true,
     xtype: 'panel',
+    defaults: {
+      border: 0,
+      xtype: 'panel',
+      layout: 'hbox',
+      margin: '0px 0px 10px 0px'
+    },
     items: [{
-      xtype: 'datefield',
-      name: 'fechaInicio',
-      startDay: 1,
-      fieldLabel: UI.i18n.field.startDate
+      items: [{
+        xtype: 'datefield',
+        name: 'fechaInicio',
+        startDay: 1,
+        fieldLabel: UI.i18n.field.startDate,
+        margin: '0px 10px 0px 0px'
+      }, {
+        xtype: 'datefield',
+        name: 'fechaFin',
+        startDay: 1,
+        fieldLabel: UI.i18n.field.endDate,
+        margin: '0px 10px 0px 0px'
+      }, {
+        xtype: 'button',
+        action: 'filtrarSessions',
+        text: UI.i18n.button.filtrarSessions
+      }], 
     }, {
-      xtype: 'datefield',
-      name: 'fechaFin',
-      startDay: 1,
-      fieldLabel: UI.i18n.field.endDate
+      items: [{
+        border: 0,
+        html: UI.i18n.message.informesGenerals,
+        margin: '0px 10px 0px 0px'
+      }, {
+        xtype: 'button',
+        action: 'generateExcelTaquilla',
+        text: UI.i18n.button.generateExcelTaquilla
+      }, {
+        style: 'margin-left: 10px',
+        xtype: 'button',
+        action: 'generateExcelEvento',
+        text: UI.i18n.button.generateExcelEvento
+      }, {
+        style: 'margin-left: 10px',
+        xtype: 'button',
+        action: 'generatePdfTaquilla',
+        text: UI.i18n.button.generatePdfTaquilla
+      }, {
+        style: 'margin-left: 10px',
+        xtype: 'button',
+        action: 'generatePdfEfectivo',
+        text: UI.i18n.button.generatePdfEfectivo
+      }, {
+        style: 'margin-left: 10px',
+        xtype: 'button',
+        action: 'generatePdfTpv',
+        text: UI.i18n.button.generatePdfTpv
+      }, {
+        style: 'margin-left: 10px',
+        xtype: 'button',
+        action: 'generatePdfEventos',
+        text: UI.i18n.button.generatePdfEventos
+      }]
     }, {
-      xtype: 'button',
-      action: 'generateExcelTaquilla',
-      text: UI.i18n.button.generateExcelTaquilla
-    }, {
-      style: 'margin-left: 10px',
-      xtype: 'button',
-      action: 'generateExcelEvento',
-      text: UI.i18n.button.generateExcelEvento
-    }, {
-      style: 'margin-left: 10px',
-      xtype: 'button',
-      action: 'generatePdfTaquilla',
-      text: UI.i18n.button.generatePdfTaquilla
-    }, {
-      style: 'margin-left: 10px',
-      xtype: 'button',
-      action: 'generatePdfEfectivo',
-      text: UI.i18n.button.generatePdfEfectivo
-    }, {
-      style: 'margin-left: 10px',
-      xtype: 'button',
-      action: 'generatePdfTpv',
-      text: UI.i18n.button.generatePdfTpv
-    }, {
-      style: 'margin-left: 10px',
-      xtype: 'button',
-      action: 'generatePdfEventos',
-      text: UI.i18n.button.generatePdfEventos
+      border: 1,
+      xtype: 'gridSesionesInformes'
     }]
   }]
 });

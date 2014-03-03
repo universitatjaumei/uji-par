@@ -49,6 +49,7 @@ public class Configuration
 	private static final String INFORME_EFECTIVO_REPORT = "uji.reports.informeEfectivo.class";
 	private static final String INFORME_TAQUILLA_SUBTOTALES_TPV_REPORT = "uji.reports.informeTaquillaTpvSubtotales.class";
 	private static final String INFORME_EVENTOS_REPORT = "uji.reports.informeEventos.class";
+	private static final String INFORME_SESION_REPORT = "uji.reports.informeSesion.class";	
 	private static final String BARCODE_WIDTH_HEIGHT = "uji.reports.barcodeWidthHeight";
 	private static final String LOGO_REPORT = "uji.reports.logo";
 	private static final String API_KEY = "api.key";
@@ -351,5 +352,9 @@ public class Configuration
 
 	public static String getTpvNombre() {
 		return getNoObligatoryProperty(TPV_NOMBRE);
+	}
+
+	public static String getInformeSesionReport() {
+		return getProperty(INFORME_SESION_REPORT); 
 	}
 }

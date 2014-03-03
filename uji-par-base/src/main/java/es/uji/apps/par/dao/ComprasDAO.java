@@ -2,6 +2,7 @@ package es.uji.apps.par.dao;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -26,6 +27,7 @@ import es.uji.apps.par.db.QEventoDTO;
 import es.uji.apps.par.db.QSesionDTO;
 import es.uji.apps.par.db.SesionDTO;
 import es.uji.apps.par.model.Sesion;
+import es.uji.apps.par.report.InformeModelReport;
 import es.uji.apps.par.utils.DateUtils;
 
 @Repository
@@ -263,7 +265,8 @@ public class ComprasDAO extends BaseDAO
     }
     
     @Transactional
-    public List<CompraDTO> getComprasBySesion(long sesionId, int showAnuladas, String sortParameter, int start, int limit, int showOnline, String search)
+    public List<CompraDTO> getComprasBySesion(long sesionId, int showAnuladas, String sortParameter, 
+    		int start, int limit, int showOnline, String search)
     {
     	QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
     	return getQueryComprasBySesion(sesionId, showAnuladas, showOnline, search).orderBy(getSort(qCompraDTO, sortParameter)).
@@ -430,14 +433,18 @@ public class ComprasDAO extends BaseDAO
     @SuppressWarnings("unchecked")
     @Transactional
     public List<Object[]> getComprasEfectivo(String fechaInicio, String fechaFin) {
-        String sql = "select e.titulo_va, s.fecha_celebracion, b.tipo, count(b.id) as cantidad, sum(b.precio) as total, c.sesion_id, e.porcentaje_iva, " +  dbHelper.caseString("b.tipo", new String[]{"'normal'", "1", "'descuento'", "2", "'aulaTeatro'", "3", "'invitacion'", "4"}) + " as tipoOrden " +
-                "from par_butacas b, par_compras c, par_sesiones s, par_eventos e " +
+        String sql = "select e.titulo_va, s.fecha_celebracion, b.tipo, count(b.id) as cantidad, sum(b.precio) as total, " +
+        		"c.sesion_id, e.porcentaje_iva, " + 
+        		dbHelper.caseString("b.tipo", new String[]{"'normal'", "1", "'descuento'", "2", "'aulaTeatro'", "3", "'invitacion'", "4"}) + " as tipoOrden, " +
+        		"f.nombre " +
+                "from par_butacas b, par_compras c, par_sesiones s, par_eventos e, par_tarifas f " +
                 "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id " +
                 "and c.fecha >= TO_DATE('" + fechaInicio + "','YYYY-MM-DD') and c.fecha <= TO_DATE('" + fechaFin + " 23:59','YYYY-MM-DD HH24:MI') " +
                 "and c.pagada = " + dbHelper.trueString() + " and c.reserva = " + dbHelper.falseString() + " and c.taquilla = " + dbHelper.trueString() + " " +
                 "and b.anulada = " + dbHelper.falseString() + " " +
                 "and c.codigo_pago_tarjeta is null " +
-                "group by c.sesion_id, e.titulo_va, b.tipo, s.fecha_celebracion, e.porcentaje_iva " +
+                "and f.id = " + dbHelper.toInteger("b.tipo") + " " +
+                "group by c.sesion_id, e.titulo_va, b.tipo, s.fecha_celebracion, e.porcentaje_iva, f.nombre " +
                 "order by e.titulo_va, s.fecha_celebracion, tipoOrden";
         
         return entityManager.createNativeQuery(sql).getResultList();
@@ -447,13 +454,16 @@ public class ComprasDAO extends BaseDAO
     @Transactional
     public List<Object[]> getComprasTpv(String fechaInicio, String fechaFin) {
     	String formato = "DD";
-        String sql = "select e.titulo_va, s.fecha_celebracion, b.tipo, count(b.id) as cantidad, sum(b.precio) as total, c.sesion_id, e.porcentaje_iva, " +  dbHelper.caseString("b.tipo", new String[]{"'normal'", "1", "'descuento'", "2", "'aulaTeatro'", "3", "'invitacion'", "4"}) + " as tipoOrden, " + dbHelper.trunc("c.fecha", formato) + " " +
-                "from par_butacas b, par_compras c, par_sesiones s, par_eventos e " +
+        String sql = "select e.titulo_va, s.fecha_celebracion, b.tipo, count(b.id) as cantidad, sum(b.precio) as total, c.sesion_id, " +
+        		"e.porcentaje_iva, " +  dbHelper.caseString("b.tipo", new String[]{"'normal'", "1", "'descuento'", "2", "'aulaTeatro'", "3", "'invitacion'", "4"}) + 
+        		" as tipoOrden, " + dbHelper.trunc("c.fecha", formato) + ", f.nombre " +
+                "from par_butacas b, par_compras c, par_sesiones s, par_eventos e, par_tarifas f " +
                 "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id " +
                 "and c.fecha >= TO_DATE('" + fechaInicio + "','YYYY-MM-DD') and c.fecha <= TO_DATE('" + fechaFin + " 23:59','YYYY-MM-DD HH24:MI') " +
                 "and c.reserva = " + dbHelper.falseString() + " " +
                 "and (c.codigo_pago_tarjeta is not null or c.codigo_pago_pasarela is not null) " +
-                "group by c.sesion_id, e.titulo_va, b.tipo, s.fecha_celebracion, e.porcentaje_iva, " + dbHelper.trunc("c.fecha", formato) + " " +
+                "and f.id = " + dbHelper.toInteger("b.tipo") + " " +
+                "group by c.sesion_id, e.titulo_va, b.tipo, s.fecha_celebracion, e.porcentaje_iva, " + dbHelper.trunc("c.fecha", formato) + ", f.nombre " +
                 "order by " + dbHelper.trunc("c.fecha", formato) + ", s.fecha_celebracion, tipoOrden";
         
         return entityManager.createNativeQuery(sql).getResultList();
@@ -462,14 +472,17 @@ public class ComprasDAO extends BaseDAO
     @SuppressWarnings("unchecked")
     @Transactional
     public List<Object[]> getComprasEventos(String fechaInicio, String fechaFin) {
-        String sql = "select e.titulo_va, s.fecha_celebracion, b.tipo, count(b.id) as cantidad, sum(b.precio) as total, e.porcentaje_iva, " + dbHelper.caseString("b.tipo", new String[]{"'normal'", "1", "'descuento'", "2", "'aulaTeatro'", "3", "'invitacion'", "4"}) + " as tipoOrden, e.id as eventoId, s.id as sesionId " +
-                "from par_butacas b, par_compras c, par_sesiones s, par_eventos e " +
+        String sql = "select e.titulo_va, s.fecha_celebracion, b.tipo, count(b.id) as cantidad, sum(b.precio) as total, " +
+        		"e.porcentaje_iva, " + dbHelper.caseString("b.tipo", new String[]{"'normal'", "1", "'descuento'", "2", "'aulaTeatro'", "3", "'invitacion'", "4"}) + 
+        		" as tipoOrden, e.id as eventoId, s.id as sesionId, f.nombre " +
+                "from par_butacas b, par_compras c, par_sesiones s, par_eventos e, par_tarifas f " +
                 "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id " +
                 "and s.fecha_celebracion >= TO_DATE('" + fechaInicio + "','YYYY-MM-DD') and s.fecha_celebracion <= TO_DATE('" + fechaFin + " 23:59','YYYY-MM-DD HH24:MI') " +
                 "and c.pagada = " + dbHelper.trueString() + " " +
                 "and b.anulada = " + dbHelper.falseString() + " " +
                 "and c.reserva = " + dbHelper.falseString() + " " +
-                "group by e.id, s.id, e.titulo_va, b.tipo, s.fecha_celebracion, e.porcentaje_iva " +
+                "and f.id = " + dbHelper.toInteger("b.tipo") + " " +
+                "group by e.id, s.id, e.titulo_va, b.tipo, s.fecha_celebracion, e.porcentaje_iva, f.nombre " +
                 "order by s.fecha_celebracion, tipoOrden";
         
         return entityManager.createNativeQuery(sql).getResultList();
@@ -604,5 +617,32 @@ public class ComprasDAO extends BaseDAO
 		return query.from(qEvento, qSesion, qCompra).
 				where(qEvento.id.eq(eventoId).and(qSesion.parEvento.id.eq(qEvento.id).
 				and(qCompra.parSesion.id.eq(qSesion.id)))).list(qCompra);
+	}
+
+	public InformeModelReport getResumenSesion(Long sesionId) {
+		InformeModelReport r = new InformeModelReport();
+		JPAQuery query = new JPAQuery(entityManager);
+		QButacaDTO qButaca = QButacaDTO.butacaDTO;
+		Long vendidas = query.from(qButaca).
+				where(
+					qButaca.parSesion.id.eq(sesionId).and(
+					qButaca.anulada.eq(false).and(
+					qButaca.parCompra.reserva.eq(false)))
+				).count();
+		r.setNumeroEntradas(vendidas.intValue());
+		
+		query = new JPAQuery(entityManager);
+		Long canceladas = query.from(qButaca).
+				where(
+					qButaca.parSesion.id.eq(sesionId).and(
+					qButaca.parCompra.reserva.eq(false).and(
+					qButaca.anulada.eq(true)))
+				).count();
+		r.setCanceladasTaquilla(canceladas.intValue());
+		
+		Sesion sesion = new Sesion(sesionId.intValue());
+		r.setTotal(getRecaudacionSesiones(Arrays.asList(sesion)));
+		
+		return r;
 	}
 }

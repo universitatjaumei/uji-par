@@ -110,7 +110,7 @@ public class DateUtils
     	return time/1000;
     }
 
-	public static Object dateToSpanishStringWithHour(Date fecha) {
+	public static String dateToSpanishStringWithHour(Date fecha) {
 		if (fecha == null)
     		throw new NullPointerException();
     	

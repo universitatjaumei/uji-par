@@ -82,6 +82,7 @@ public class SesionesDAO extends BaseDAO
     {
         QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
         QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
+        QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
 
         JPAQuery query;
 
@@ -91,11 +92,17 @@ public class SesionesDAO extends BaseDAO
             query = getQuerySesiones(eventoId);
 
         JPASubQuery queryVendidas = new JPASubQuery();
-        queryVendidas.from(qButacaDTO);
-        queryVendidas.where(qSesionDTO.id.eq(qButacaDTO.parSesion.id).and(qButacaDTO.anulada.eq(false)));
+        queryVendidas.from(qButacaDTO, qCompraDTO);
+        queryVendidas.where(qSesionDTO.id.eq(qButacaDTO.parSesion.id).and(qButacaDTO.anulada.eq(false)).
+        		and(qButacaDTO.parCompra.id.eq(qCompraDTO.id).and(qCompraDTO.reserva.eq(false))));
+        
+        JPASubQuery queryReservadas = new JPASubQuery();
+        queryReservadas.from(qButacaDTO, qCompraDTO);
+        queryReservadas.where(qSesionDTO.id.eq(qButacaDTO.parSesion.id).and(qButacaDTO.anulada.eq(false)).
+        		and(qButacaDTO.parCompra.id.eq(qCompraDTO.id).and(qCompraDTO.reserva.eq(true))));
 
         List<Object[]> sesiones = query.orderBy(getSort(qSesionDTO, sortParameter))/*.offset(start).limit(limit)*/
-                .list(qSesionDTO, queryVendidas.count());
+                .list(qSesionDTO, queryVendidas.list(qButacaDTO).count(), queryReservadas.list(qButacaDTO).count());
 
         return sesiones;
     }

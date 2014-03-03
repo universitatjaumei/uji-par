@@ -18,6 +18,7 @@ Ext.define('Paranimf.model.Sesion', {
       {name: 'plantillaPrecios_nombre', mapping: 'plantillaPrecios.nombre'},
       'preciosSesion',
       'butacasVendidas',
+      'butacasReservadas',
       'nombre',
       'formato',
       'versionLinguistica',
