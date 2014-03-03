@@ -85,7 +85,7 @@ public class EntradasService
         	EntradaModelReport entradaModelReport = new EntradaModelReport();
         	entradaModelReport.setFila(butaca.getFila());
         	entradaModelReport.setNumero(butaca.getNumero());
-            entradaModelReport.setZona(butaca.getParLocalizacion().getNombreEs());
+            entradaModelReport.setZona(butaca.getParLocalizacion().getNombreVa());
             entradaModelReport.setTotal(ReportUtils.formatEuros(butaca.getPrecio()));
             entradaModelReport.setBarcode(compra.getUuid() + "-" + butaca.getId());
             entradaModelReport.setTipo(butaca.getTipo());
