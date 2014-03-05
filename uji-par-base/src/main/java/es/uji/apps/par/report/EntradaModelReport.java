@@ -8,6 +8,7 @@ public class EntradaModelReport {
 	private String barcode;
 	private String zona;
 	private String tipo;
+	private Boolean tarifaDefecto;
 	
 	public EntradaModelReport() {
 		
@@ -50,6 +51,14 @@ public class EntradaModelReport {
 
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
+	}
+
+	public Boolean getTarifaDefecto() {
+		return tarifaDefecto;
+	}
+
+	public void setTarifaDefecto(Boolean tarifaDefecto) {
+		this.tarifaDefecto = tarifaDefecto;
 	}
 	
 }

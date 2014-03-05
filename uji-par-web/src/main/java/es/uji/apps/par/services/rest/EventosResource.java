@@ -185,9 +185,14 @@ public class EventosResource extends BaseResource
     {
     	DatabaseHelper databaseHelper = DatabaseHelperFactory.newInstance();
         List<Map<String, Object>> sesionesPlantilla = new ArrayList<Map<String, Object>>();
+        Calendar cal = Calendar.getInstance();
+        
 
         for (Sesion sesion : sesiones)
         {
+        	if (sesion.getFechaCelebracion().before(cal.getTime()))
+        		continue;
+        	
             Map<String, Object> datos = new HashMap<String, Object>();
 
             datos.put("texto", getFechaSesion(sesion));

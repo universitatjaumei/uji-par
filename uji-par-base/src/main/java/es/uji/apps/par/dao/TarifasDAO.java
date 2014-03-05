@@ -54,4 +54,14 @@ public class TarifasDAO extends BaseDAO
 		JPADeleteClause delete = new JPADeleteClause(entityManager, qTarifaDTO);
 		delete.where(qTarifaDTO.id.eq(tarifa.getId())).execute();
 	}
+    
+    @Transactional
+	public TarifaDTO get(int idTarifa) {
+		JPAQuery query = new JPAQuery(entityManager);
+		List<TarifaDTO> tarifaDTO = query.from(qTarifaDTO).where(qTarifaDTO.id.eq(new Long(idTarifa))).list(qTarifaDTO);
+		if (tarifaDTO.size() == 1)
+			return tarifaDTO.get(0);
+		else
+			return null;
+    }
 }

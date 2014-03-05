@@ -13,9 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import es.uji.apps.par.ButacaOcupadaAlActivarException;
 import es.uji.apps.par.ButacaOcupadaException;
-import es.uji.apps.par.CompraAulaTeatroPorInternetException;
 import es.uji.apps.par.CompraButacaDescuentoNoDisponible;
-import es.uji.apps.par.CompraInvitacionPorInternetException;
 import es.uji.apps.par.CompraSinButacasException;
 import es.uji.apps.par.FueraDePlazoVentaInternetException;
 import es.uji.apps.par.NoHayButacasLibresException;
@@ -55,28 +53,23 @@ public class ComprasService
     }
 
     @Transactional
-    public ResultadoCompra realizaCompraInternet(Long sesionId, List<Butaca> butacasSeleccionadas, String uuidCompraActual) throws FueraDePlazoVentaInternetException,
-            NoHayButacasLibresException, ButacaOcupadaException, CompraSinButacasException, CompraInvitacionPorInternetException, CompraButacaDescuentoNoDisponible, 
-            CompraAulaTeatroPorInternetException
+    public ResultadoCompra realizaCompraInternet(Long sesionId, List<Butaca> butacasSeleccionadas, String uuidCompraActual) throws Exception
     {
         Sesion sesion = sesionesService.getSesion(sesionId);
         Evento evento = sesion.getEvento();
-        Map<String, Map<Long, PreciosSesion>> precios = sesionesService.getPreciosSesionPublicosPorLocalizacion(sesionId);
+        Map<String, Map<Long, PreciosSesion>> preciosPorZona = sesionesService.getPreciosSesionPublicosPorLocalizacion(sesionId);
 
         if (!sesion.getEnPlazoVentaInternet())
             throw new FueraDePlazoVentaInternetException(sesionId);
         
         for (Butaca butaca : butacasSeleccionadas)
         {
-        	Map<Long, PreciosSesion> mapaTarifasPrecios = precios.get(butaca.getLocalizacion());
-            if (butaca.getTipo().equals("invitacion"))
-                throw new CompraInvitacionPorInternetException();
-            
-            if (butaca.getTipo().equals("aulaTeatro"))
-                throw new CompraAulaTeatroPorInternetException();            
-            
-            if (esButacaDescuentoNoDisponible(butaca.getTipo(), evento, mapaTarifasPrecios.get(butaca.getTipo())))
-                throw new CompraButacaDescuentoNoDisponible();
+        	Map<Long, PreciosSesion> mapaTarifasPrecios = preciosPorZona.get(butaca.getLocalizacion());
+        	
+        	//TODO -> Con los cambios de ahora, esta parte igual no funciona para la UJI (ya que solamente lo usa ella)
+        	if (butaca.getTipo() != null)
+        		if (esButacaDescuentoNoDisponible(butaca.getTipo(), evento, mapaTarifasPrecios.get(butaca.getTipo())))
+        			throw new CompraButacaDescuentoNoDisponible();
         }
         
         // Si teníamos una compra en marcha la eliminamos (puede pasar cuando intentamos pagar con tarjeta y volvemos atrás)        
@@ -85,12 +78,13 @@ public class ComprasService
 
         return registraCompra(sesionId, butacasSeleccionadas, false);
     }
-    
 
-    // Intentamos comprar una butaca de tipo descuento pero el descuento no está disponible (casos: descuento 0 ó cine/teatro con precio < 8 €)
+    
+	// Intentamos comprar una butaca de tipo descuento pero el descuento no está disponible (casos: descuento 0 ó cine/teatro con precio < 8 €)
     public boolean esButacaDescuentoNoDisponible(String tipoButaca, Evento evento, PreciosSesion precioLocalizacion)
     {
-        return tipoButaca.equals("descuento") && (descuentoCero(precioLocalizacion) || cineTeatroMenorDe(evento, precioLocalizacion, new BigDecimal(8)));
+        return tipoButaca != null && tipoButaca.equals("descuento") && 
+        		(descuentoCero(precioLocalizacion) || cineTeatroMenorDe(evento, precioLocalizacion, new BigDecimal(8)));
     }
 
     private boolean descuentoCero(PreciosSesion precioSesion)
@@ -104,28 +98,6 @@ public class ComprasService
         
         return (tipoEvento.equals("cine") || tipoEvento.equals("teatro")) && precioSesion.getPrecio().compareTo(descuentoLimite) < 0;
     }
-
-    public ResultadoCompra realizaCompraInternet(Long sesionId, int platea1Normal, int platea1Descuento,
-            int platea2Normal, int platea2Descuento, String uuidCompra) throws FueraDePlazoVentaInternetException, 
-            NoHayButacasLibresException, ButacaOcupadaException, CompraSinButacasException, CompraInvitacionPorInternetException, CompraButacaDescuentoNoDisponible, 
-            CompraAulaTeatroPorInternetException
-    {
-        List<Butaca> butacasSeleccionadas = new ArrayList<Butaca>();
-        
-        for (int i=0; i<platea1Normal; i++)
-            butacasSeleccionadas.add(new Butaca("platea1", "normal"));
-
-        for (int i=0; i<platea1Descuento; i++)
-            butacasSeleccionadas.add(new Butaca("platea1", "descuento"));
-        
-        for (int i=0; i<platea2Normal; i++)
-            butacasSeleccionadas.add(new Butaca("platea2", "normal"));
-
-        for (int i=0; i<platea2Descuento; i++)
-            butacasSeleccionadas.add(new Butaca("platea2", "descuento"));
-        
-        return realizaCompraInternet(sesionId, butacasSeleccionadas, uuidCompra);
-    }    
 
     @Transactional
     private synchronized ResultadoCompra registraCompra(Long sesionId, List<Butaca> butacasSeleccionadas, boolean taquilla)
