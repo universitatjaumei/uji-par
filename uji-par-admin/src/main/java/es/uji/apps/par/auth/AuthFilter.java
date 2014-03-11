@@ -61,19 +61,23 @@ public class AuthFilter implements Filter
 
         if (session.getAttribute(Authenticator.USER_ATTRIBUTE) != null)
         {
+        	log.info("Ya autenticados " + sRequest.getRequestURI());
             chain.doFilter(request, response);
         }
         else
         {
+        	log.info("Autenticamos " + sRequest.getRequestURI());
             int authResult = this.authClass.authenticate(sRequest);
 
             if (authResult == Authenticator.AUTH_OK)
             {
+            	log.info("Autenticamos " + sRequest.getRequestURI() + " OK");
                 chain.doFilter(request, response);
             }
             else
             {
             	String url = ((HttpServletRequest)request).getRequestURL().toString();
+            	log.info("Autenticamos " + url + " KO");
             	if (url.toLowerCase().contains("par/rest/index"))
             		sResponse.sendRedirect(Configuration.getUrlAdmin() + "/rest/login");
             	else
