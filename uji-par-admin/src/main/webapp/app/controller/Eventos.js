@@ -2,8 +2,8 @@ Ext.define('Paranimf.controller.Eventos', {
    extend: 'Ext.app.Controller',
 
    views: ['EditModalWindow', 'EditBaseForm', 'EditBaseGrid', 'evento.GridEventos', 'evento.FormEventos', 'evento.PanelEventos', 'evento.GridSesiones', 'evento.FormSesiones', 'evento.GridPreciosSesion', 'evento.FormPreciosSesion'],
-   stores: ['Eventos', 'TiposEventosSinPaginar', 'Sesiones', 'PlantillasPrecios', 'PreciosSesion', 'Salas'],
-   models: ['Evento', 'Sesion', 'PrecioSesion', 'Sala'],
+   stores: ['Eventos', 'TiposEventosSinPaginar', 'Sesiones', 'PlantillasPrecios', 'PreciosSesion', 'Salas', 'Nacionalidades'],
+   models: ['Evento', 'Sesion', 'PrecioSesion', 'Sala', 'HoraMinuto'],
 
    refs: [{
       ref: 'gridEventos',

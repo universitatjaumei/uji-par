@@ -438,6 +438,17 @@ UI =
             "X": "Sin diálogos"
         },
 
+        "nacionalidades": {
+            "ES": 'Espanyola',
+            "US": "Americana",
+            "EN": 'Anglesa',
+            "FR": "Francesa",
+            "DE": "Alemana",
+            "PO": "Portuguesa",
+            "IT": "Italiana",
+            "altra": "Altra nacionalitat"
+        },
+
         "incidencias": {
             "i0": "Sense incidències",
             "i5": "Venda manual (degradada)",

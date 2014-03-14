@@ -275,16 +275,11 @@ Ext.define('Paranimf.view.evento.FormEventos', {
       fieldLabel: UI.i18n.field.nacionalidad,
       name: 'nacionalidad',
       xtype: 'combobox',
-      displayField: 'name',
-      valueField : 'value',
+      store: 'Nacionalidades',
+      displayField: 'label',
+      valueField : 'id',
       queryMode: 'local',
-      forceSelection:true,
-      store: new Ext.data.SimpleStore({
-        fields: ['value', 'name'],
-          data: [
-            ['1', UI.i18n.message.falta]
-          ]
-      })      
+      forceSelection:true
      }, {
       fieldLabel: UI.i18n.field.vo,
       name: 'vo',
