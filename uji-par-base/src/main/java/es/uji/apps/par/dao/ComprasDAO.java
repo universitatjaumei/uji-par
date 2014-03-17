@@ -613,7 +613,8 @@ public class ComprasDAO extends BaseDAO
                 .join(qCompraDTO.parButacas, qButacaDTO)
                 .where(qSesionDTO.id.in(idsSesiones)
                         .and(qCompraDTO.reserva.eq(false))
-                        .and(qCompraDTO.anulada.eq(false)))
+                        .and(qCompraDTO.anulada.eq(false))
+                        .and(qButacaDTO.anulada.eq(false)))
                 .uniqueResult(qButacaDTO.count());
         
         if (butacas == null)

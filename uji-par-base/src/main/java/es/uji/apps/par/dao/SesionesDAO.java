@@ -93,12 +93,12 @@ public class SesionesDAO extends BaseDAO
 
         JPASubQuery queryVendidas = new JPASubQuery();
         queryVendidas.from(qButacaDTO, qCompraDTO);
-        queryVendidas.where(qSesionDTO.id.eq(qButacaDTO.parSesion.id).and(qButacaDTO.anulada.eq(false)).
+        queryVendidas.where(qSesionDTO.id.eq(qButacaDTO.parSesion.id).and(qButacaDTO.anulada.eq(false).or(qButacaDTO.anulada.isNull())).
         		and(qButacaDTO.parCompra.id.eq(qCompraDTO.id).and(qCompraDTO.reserva.eq(false))));
         
         JPASubQuery queryReservadas = new JPASubQuery();
         queryReservadas.from(qButacaDTO, qCompraDTO);
-        queryReservadas.where(qSesionDTO.id.eq(qButacaDTO.parSesion.id).and(qButacaDTO.anulada.eq(false)).
+        queryReservadas.where(qSesionDTO.id.eq(qButacaDTO.parSesion.id).and(qButacaDTO.anulada.eq(false).or(qButacaDTO.anulada.isNull())).
         		and(qButacaDTO.parCompra.id.eq(qCompraDTO.id).and(qCompraDTO.reserva.eq(true))));
 
         List<Object[]> sesiones = query.orderBy(getSort(qSesionDTO, sortParameter))/*.offset(start).limit(limit)*/
@@ -250,6 +250,7 @@ public class SesionesDAO extends BaseDAO
         QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
         QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
         QSalaDTO qSalaDTO = QSalaDTO.salaDTO;
+        QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
 
         List<Long> idsSesiones = Sesion.getIdsSesiones(sesiones);
         JPAQuery query = new JPAQuery(entityManager);
@@ -258,11 +259,13 @@ public class SesionesDAO extends BaseDAO
         	.from(qSesionDTO)
         	.join(qSesionDTO.parSala, qSalaDTO)
         	.leftJoin(qSesionDTO.parCompras, qCompraDTO)
+        	.leftJoin(qCompraDTO.parButacas, qButacaDTO)
             .where(qSesionDTO.id.in(idsSesiones)
-            .and(qCompraDTO.anulada.isNull().or(qCompraDTO.anulada.eq(false))))
+            .and(qCompraDTO.anulada.isNull().or(qCompraDTO.anulada.eq(false))
+            .and(qButacaDTO.anulada.isNull().or(qButacaDTO.anulada.eq(false)))))
             .distinct()
             .groupBy(qSesionDTO.id, qSalaDTO.codigo, qSesionDTO.fechaCelebracion)
-            .list(qSesionDTO.id, qSalaDTO.codigo, qSesionDTO.fechaCelebracion, qCompraDTO.importe.sum(), qSesionDTO.incidenciaId);
+            .list(qSesionDTO.id, qSalaDTO.codigo, qSesionDTO.fechaCelebracion, qButacaDTO.precio.sum(), qSesionDTO.incidenciaId);
         
         List<RegistroSesion> registros = new ArrayList<RegistroSesion>();
         
