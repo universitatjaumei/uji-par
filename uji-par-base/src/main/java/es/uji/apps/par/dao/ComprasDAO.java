@@ -402,7 +402,8 @@ public class ComprasDAO extends BaseDAO
     			"l.nombre_va, f.nombre " +
     			"from par_butacas b, par_compras c, par_sesiones s, par_eventos e, par_localizaciones l, par_tarifas f " +
     			"where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id and l.id=b.localizacion_id " +
-    			"and c.fecha >= TO_DATE('" + fechaInicio + "','YYYY-MM-DD') and c.fecha <= TO_DATE('" + fechaFin + " 23:59','YYYY-MM-DD HH24:MI') " +
+    			"and TO_CHAR(c.fecha, 'YYYY-MM-DD HH24:MI') >= '" + fechaInicio + " 00:00' " +
+    			"and TO_CHAR(c.fecha, 'YYYY-MM-DD HH24:MI') <= '" + fechaFin + " 23:59' " +
     			"and c.pagada = " + dbHelper.trueString() + " and c.reserva = " + dbHelper.falseString() + " and c.taquilla = " + dbHelper.trueString() + " " +
     			"and b.anulada = " + dbHelper.falseString() + " " +
     			"and c.codigo_pago_tarjeta is null " +
@@ -420,7 +421,8 @@ public class ComprasDAO extends BaseDAO
 				"f.nombre " +
     			"from par_butacas b, par_compras c, par_sesiones s, par_eventos e, par_tarifas f " +
     			"where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id " +
-    			"and c.fecha >= TO_DATE('" + fechaInicio + "','YYYY-MM-DD') and c.fecha <= TO_DATE('" + fechaFin + " 23:59','YYYY-MM-DD HH24:MI') " +
+    			"and TO_CHAR(c.fecha, 'YYYY-MM-DD HH24:MI') >= '" + fechaInicio + " 00:00' " +
+    			"and TO_CHAR(c.fecha, 'YYYY-MM-DD HH24:MI') <= '" + fechaFin + " 23:59' " +
     			"and c.pagada = " + dbHelper.trueString() + " and c.reserva = " + dbHelper.falseString() + " " +
     			"and b.anulada = " + dbHelper.falseString() + " " +
     			"and f.id = " + dbHelper.toInteger("b.tipo") + " " + 
@@ -439,7 +441,8 @@ public class ComprasDAO extends BaseDAO
         		"f.nombre " +
                 "from par_butacas b, par_compras c, par_sesiones s, par_eventos e, par_tarifas f " +
                 "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id " +
-                "and c.fecha >= TO_DATE('" + fechaInicio + "','YYYY-MM-DD') and c.fecha <= TO_DATE('" + fechaFin + " 23:59','YYYY-MM-DD HH24:MI') " +
+                "and TO_CHAR(c.fecha, 'YYYY-MM-DD HH24:MI') >= '" + fechaInicio + " 00:00' " +
+    			"and TO_CHAR(c.fecha, 'YYYY-MM-DD HH24:MI') <= '" + fechaFin + " 23:59' " +
                 "and c.pagada = " + dbHelper.trueString() + " and c.reserva = " + dbHelper.falseString() + " and c.taquilla = " + dbHelper.trueString() + " " +
                 "and b.anulada = " + dbHelper.falseString() + " " +
                 "and c.codigo_pago_tarjeta is null " +
@@ -459,7 +462,8 @@ public class ComprasDAO extends BaseDAO
         		" as tipoOrden, " + dbHelper.trunc("c.fecha", formato) + ", f.nombre " +
                 "from par_butacas b, par_compras c, par_sesiones s, par_eventos e, par_tarifas f " +
                 "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id " +
-                "and c.fecha >= TO_DATE('" + fechaInicio + "','YYYY-MM-DD') and c.fecha <= TO_DATE('" + fechaFin + " 23:59','YYYY-MM-DD HH24:MI') " +
+                "and TO_CHAR(c.fecha, 'YYYY-MM-DD HH24:MI') >= '" + fechaInicio + " 00:00' " +
+    			"and TO_CHAR(c.fecha, 'YYYY-MM-DD HH24:MI') <= '" + fechaFin + " 23:59' " +
                 "and c.reserva = " + dbHelper.falseString() + " " +
                 "and (c.codigo_pago_tarjeta is not null or c.codigo_pago_pasarela is not null) " +
                 "and f.id = " + dbHelper.toInteger("b.tipo") + " " +
@@ -477,7 +481,9 @@ public class ComprasDAO extends BaseDAO
         		" as tipoOrden, e.id as eventoId, s.id as sesionId, f.nombre " +
                 "from par_butacas b, par_compras c, par_sesiones s, par_eventos e, par_tarifas f " +
                 "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id " +
-                "and s.fecha_celebracion >= TO_DATE('" + fechaInicio + "','YYYY-MM-DD') and s.fecha_celebracion <= TO_DATE('" + fechaFin + " 23:59','YYYY-MM-DD HH24:MI') " +
+                "and TO_CHAR(s.fecha_celebracion, 'YYYY-MM-DD HH24:MI') >= '" + fechaInicio + " 00:00' " +
+    			"and TO_CHAR(s.fecha_celebracion, 'YYYY-MM-DD HH24:MI') <= '" + fechaFin + " 23:59' " +
+                //"and s.fecha_celebracion >= TO_DATE('" + fechaInicio + "','YYYY-MM-DD') and s.fecha_celebracion <= TO_DATE('" + fechaFin + " 23:59','YYYY-MM-DD HH24:MI') " +
                 "and c.pagada = " + dbHelper.trueString() + " " +
                 "and b.anulada = " + dbHelper.falseString() + " " +
                 "and c.reserva = " + dbHelper.falseString() + " " +
@@ -494,7 +500,9 @@ public class ComprasDAO extends BaseDAO
         String sql = "select sum(b.precio) " +
                 "from par_butacas b, par_compras c, par_sesiones s, par_eventos e " +
                 "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id " +
-                "and c.fecha >= TO_DATE('" + fechaInicio + "','YYYY-MM-DD') and c.fecha <= TO_DATE('" + fechaFin + " 23:59','YYYY-MM-DD HH24:MI') " +
+                "and TO_CHAR(c.fecha, 'YYYY-MM-DD HH24:MI') >= '" + fechaInicio + " 00:00' " +
+    			"and TO_CHAR(c.fecha, 'YYYY-MM-DD HH24:MI') <= '" + fechaFin + " 23:59' " +
+                //"and c.fecha >= TO_DATE('" + fechaInicio + "','YYYY-MM-DD') and c.fecha <= TO_DATE('" + fechaFin + " 23:59','YYYY-MM-DD HH24:MI') " +
                 "and c.pagada = " + dbHelper.trueString() + " and c.reserva = " + dbHelper.falseString() + " " +
                 "and b.anulada = " + dbHelper.falseString() + " " +
                 "and c.taquilla = " + dbHelper.trueString() + " " +
@@ -514,7 +522,9 @@ public class ComprasDAO extends BaseDAO
         String sql = "select sum(b.precio) " +
                 "from par_butacas b, par_compras c, par_sesiones s, par_eventos e " +
                 "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id " +
-                "and c.fecha >= TO_DATE('" + fechaInicio + "','YYYY-MM-DD') and c.fecha <= TO_DATE('" + fechaFin + " 23:59','YYYY-MM-DD HH24:MI') " +
+                "and TO_CHAR(c.fecha, 'YYYY-MM-DD HH24:MI') >= '" + fechaInicio + " 00:00' " +
+    			"and TO_CHAR(c.fecha, 'YYYY-MM-DD HH24:MI') <= '" + fechaFin + " 23:59' " +
+                //"and c.fecha >= TO_DATE('" + fechaInicio + "','YYYY-MM-DD') and c.fecha <= TO_DATE('" + fechaFin + " 23:59','YYYY-MM-DD HH24:MI') " +
                 "and c.pagada = " + dbHelper.trueString() + " and c.reserva = " + dbHelper.falseString() + " " +
                 "and b.anulada = " + dbHelper.falseString() + " " +
                 "and c.taquilla = " + dbHelper.trueString() + " " +
@@ -534,7 +544,9 @@ public class ComprasDAO extends BaseDAO
         String sql = "select sum(b.precio) " +
                 "from par_butacas b, par_compras c, par_sesiones s, par_eventos e " +
                 "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id " +
-                "and c.fecha >= TO_DATE('" + fechaInicio + "','YYYY-MM-DD') and c.fecha <= TO_DATE('" + fechaFin + " 23:59','YYYY-MM-DD HH24:MI') " +
+                "and TO_CHAR(c.fecha, 'YYYY-MM-DD HH24:MI') >= '" + fechaInicio + " 00:00' " +
+    			"and TO_CHAR(c.fecha, 'YYYY-MM-DD HH24:MI') <= '" + fechaFin + " 23:59' " +
+                //"and c.fecha >= TO_DATE('" + fechaInicio + "','YYYY-MM-DD') and c.fecha <= TO_DATE('" + fechaFin + " 23:59','YYYY-MM-DD HH24:MI') " +
                 "and c.pagada = " + dbHelper.trueString() + " and c.reserva = " + dbHelper.falseString() + " " +
                 "and b.anulada = " + dbHelper.falseString() + " " +
                 "and c.taquilla = " + dbHelper.falseString() + " ";
