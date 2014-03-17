@@ -44,10 +44,6 @@ Ext.define('Paranimf.controller.Taquilla', {
         selector: 'formComprar button[name=verEntrada]'
       },
       {
-        ref: 'printEntradaDirectamente',
-        selector: 'formComprar button[name=printEntradaDirectamente]'
-      },      
-      {
       	ref: 'botonPagar',
         selector: 'formComprar #pagar'
       },
@@ -172,9 +168,6 @@ Ext.define('Paranimf.controller.Taquilla', {
          'formComprar button[name=verEntrada]': {
         	  click: this.verEntrada 
          },
-         'formComprar button[name=printEntradaDirectamente]': {
-            click: this.printEntradaDirectamente
-         },
          'panelSeleccionarNoNumeradas': {
              afterrender: this.panelSeleccionarNoNumeradasCreado
          },
@@ -275,20 +268,16 @@ Ext.define('Paranimf.controller.Taquilla', {
    	},
    	
    	anularPrevia: function() {
-   		//console.log(this.idCompraPrevia);
-   		//console.log(this.butacasSeleccionadasPrevia);
-   		
    		var textoButacas = "";
    		
-   		for (var i=0; i<this.butacasSeleccionadasPrevia.length; i++)
-   		{
+   		for (var i=0; i<this.butacasSeleccionadasPrevia.length; i++) {
    			var butaca = this.butacasSeleccionadasPrevia[i];
    			var filaNum = "";
 
    			if (butaca['fila']!=null && butaca['numero']!=null)
-   				filaNum = " fila: " + butaca['fila'] + ", num: " + butaca['numero'];
-   			//console.log(butaca['localizacion']);
-   			textoButacas += UI.i18n.tipos[butaca['localizacion']]  + filaNum + ' (' + UI.i18n.tipoEntrada[butaca['tipo']] + ')<br>';  			
+   				filaNum = " fila: " + butaca['fila'] + ", núm: " + butaca['numero'];
+   			//textoButacas += UI.i18n.tipos[butaca['localizacion']]  + filaNum + ' (' + UI.i18n.tipoEntrada[butaca['tipo']] + ')<br>';  			
+        textoButacas += filaNum;
    		}
    		
    		var textoConfirm = UI.i18n.message.anularPreviaIntro + '<br><b>' + this.tituloEventoPrevio + '</b><br>' + 
@@ -303,8 +292,6 @@ Ext.define('Paranimf.controller.Taquilla', {
    	},
    	
    	llamaAnularPrevia: function() {
-   		//console.log('llamaAnularPrevia');
-   		
    		var me = this;
    		
    		Ext.Ajax.request({
@@ -732,7 +719,6 @@ Ext.define('Paranimf.controller.Taquilla', {
    
    muestraEnlacePdf: function() {
 	   this.getVerEntrada().show();
-     this.getPrintEntradaDirectamente().show();
    },
    
    verEntrada: function() {
@@ -751,20 +737,10 @@ Ext.define('Paranimf.controller.Taquilla', {
 	   //this.windowEntrada.print();
    },
 
-  printEntradaDirectamente: function() {
-    this.getFormComprar().up('window').close();
-    this.comprar();
-
-    if (this.windowEntrada != null)
-      // Cerramos para evitar imprimir las entradas anteriores
-      this.windowEntrada.close();
-     
-    var href = urlPrefix + 'compra/' + this.uuidCompra + '/silentpdftaquilla';
-    this.windowEntrada = window.open(href, 'Imprimir entradas');
-  },
-   
    guardarDatosCompraPrevia: function() {
+      console.log("guardarDatosCompraPrevia");
 	   this.butacasSeleccionadasPrevia = this.butacasSeleccionadas;
+      console.log("guardarDatosCompraPrevia- ", this.butacasSeleccionadasPrevia);
 	   this.idCompraPrevia = this.idCompra;
 	   this.idSesionPrevia = this.getGridSesionesTaquilla().getSelectedRecord().data['id'];
 	   this.tituloEventoPrevio = this.getGridEventosTaquilla().getSelectedRecord().data['tituloVa'];
@@ -1050,10 +1026,10 @@ Ext.define('Paranimf.controller.Taquilla', {
    	},
    	
    	cambiaVisibilidadBotonAnularPrevia: function() {
-		if (this.butacasSeleccionadasPrevia)
-			this.getBotonAnularPrevia().show();
-		else
-			this.getBotonAnularPrevia().hide();
+		  if (this.butacasSeleccionadasPrevia)
+        this.getBotonAnularPrevia().show();
+		  else
+        this.getBotonAnularPrevia().hide();
    	},
    
    	reservar: function(button, event, opts) {
