@@ -247,6 +247,14 @@ public class SesionesService
 				throw new CampoRequeridoException("Hora de fin de la venta online");
 		}
 	}
+	
+	private boolean mostrarTarifa(TarifaDTO tarifa, boolean mostrarTarifasInternas) {
+		if ((tarifa.getIsPublica() == null && !mostrarTarifasInternas) || 
+    		(tarifa.getIsPublica() != null && !tarifa.getIsPublica() && !mostrarTarifasInternas))
+    		return false;
+		else
+			return true;
+	}
 
 	public List<PreciosSesion> getPreciosSesion(Long sesionId, String sortParameter, int start, int limit, boolean mostrarTarifasInternas) {
 		List<PreciosSesion> listaPreciosSesion = new ArrayList<PreciosSesion>();
@@ -256,10 +264,8 @@ public class SesionesService
 		if (sesion.getPlantillaPrecios().getId() == -1)
 		{
         	for (PreciosSesionDTO precioSesionDB: sesionDAO.getPreciosSesion(sesionId, sortParameter, start, limit)) {
-        		if (!precioSesionDB.getParTarifa().getIsPublica() && !mostrarTarifasInternas)
-        			continue;
-        			
-        		listaPreciosSesion.add(new PreciosSesion(precioSesionDB));
+        		if (mostrarTarifa(precioSesionDB.getParTarifa(), mostrarTarifasInternas))
+        			listaPreciosSesion.add(new PreciosSesion(precioSesionDB));
         	}
 		}
 		else
@@ -389,7 +395,8 @@ public class SesionesService
 		List<Tarifa> tarifas = new ArrayList<Tarifa>();
 		
 		for (TarifaDTO tarifaDTO: tarifasDTO) {
-			if (tarifaDTO.getIsPublica() != null && !tarifaDTO.getIsPublica() && !tambienInternas)
+			//if (tarifaDTO.getIsPublica() != null && !tarifaDTO.getIsPublica() && !tambienInternas)
+			if (!mostrarTarifa(tarifaDTO, tambienInternas))
 				continue;
 			Tarifa tarifa = Tarifa.tarifaDTOToTarifa(tarifaDTO);
 			tarifas.add(tarifa);
@@ -402,7 +409,8 @@ public class SesionesService
 		List<Tarifa> tarifas = new ArrayList<Tarifa>();
 		
 		for (TarifaDTO tarifaDTO: tarifasDTO) {
-			if (!tarifaDTO.getIsPublica() && !tambienInternas)
+			//if (!tarifaDTO.getIsPublica() && !tambienInternas)
+			if (!mostrarTarifa(tarifaDTO, tambienInternas))
 				continue;
 			Tarifa tarifa = Tarifa.tarifaDTOToTarifa(tarifaDTO);
 			tarifas.add(tarifa);
