@@ -748,7 +748,7 @@ Ext.define('Paranimf.controller.Taquilla', {
 	   
 	   var href = urlPrefix + 'compra/' + this.uuidCompra + '/pdftaquilla';
 	   this.windowEntrada = window.open(href, 'Imprimir entrada');
-	   this.windowEntrada.print();
+	   //this.windowEntrada.print();
    },
 
   printEntradaDirectamente: function() {
