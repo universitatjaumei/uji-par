@@ -302,7 +302,7 @@ public class InformeTaquillaReport extends Report implements InformeInterface
 
 	public void genera(String cargo, String firmante, Cine cine, Sala sala,
 			Evento evento, Sesion sesion, Integer vendidas, Integer anuladas,
-			BigDecimal total) throws SinIvaException {
+			BigDecimal total, List<InformeModelReport> compras) throws SinIvaException {
 		// TODO Auto-generated method stub
 		
 	}
