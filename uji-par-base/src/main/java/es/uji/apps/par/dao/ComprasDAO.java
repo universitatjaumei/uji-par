@@ -561,6 +561,7 @@ public class ComprasDAO extends BaseDAO
     {
         QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
         QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
+        QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
         
         List<Long> idsSesiones = Sesion.getIdsSesiones(sesiones);
         
@@ -569,11 +570,13 @@ public class ComprasDAO extends BaseDAO
         BigDecimal total = query
                 .from(qCompraDTO)
                 .join(qCompraDTO.parSesion, qSesionDTO)
+                .join(qCompraDTO.parButacas, qButacaDTO)
                 .where(qSesionDTO.id.in(idsSesiones)
                         .and(qCompraDTO.reserva.eq(false))
-                        .and(qCompraDTO.anulada.eq(false)))
+                        .and(qCompraDTO.anulada.eq(false))
+                        .and(qButacaDTO.anulada.eq(false)))
                 .distinct()        
-                .uniqueResult(qCompraDTO.importe.sum());
+                .uniqueResult(qButacaDTO.precio.sum());
         
         if (total == null)
             return BigDecimal.ZERO;
