@@ -25,6 +25,7 @@ import es.uji.apps.par.SinIvaException;
 import es.uji.apps.par.model.Sesion;
 import es.uji.apps.par.services.ReportService;
 import es.uji.apps.par.services.SesionesService;
+import es.uji.apps.par.utils.DateUtils;
 
 @Path("report")
 public class ReportResource extends BaseResource
@@ -77,10 +78,13 @@ public class ReportResource extends BaseResource
     	ReportSerializationException, ParseException, SinIvaException {
         ByteArrayOutputStream ostream = new ByteArrayOutputStream();
         
+        Sesion sesion = sesionesService.getSesion(idSesion);
+        String fileName = "informeSesion " + DateUtils.dateToSpanishStringWithHour(sesion.getFechaCelebracion()) + ".pdf";
+        
         reportService.getPdfSesion(idSesion, ostream);
         
         return Response.ok(ostream.toByteArray())
-        		.header("Content-Disposition","attachment; filename =\"informeSesion.pdf\"")
+        		.header("Content-Disposition","attachment; filename =\"" + fileName + "\"")
         		.type("application/pdf").build();
     } 
     

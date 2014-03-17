@@ -20,6 +20,6 @@ public interface InformeInterface {
 	public void genera(String inicio, String fin, List<InformeModelReport> compras, String cargoInformeEfectivo, 
     		String firmanteInformeEfectivo) throws SinIvaException;
 	public void genera(String cargo, String firmante, Cine cine, Sala sala, Evento evento, Sesion sesion, 
-			Integer vendidas, Integer anuladas, BigDecimal total) throws SinIvaException;
+			Integer vendidas, Integer anuladas, BigDecimal total, List<InformeModelReport> compras) throws SinIvaException;
 	public void genera(String inicio, String fin, List<InformeModelReport> compras) throws SinIvaException;
 }

@@ -57,6 +57,27 @@ public class ButacasDAO extends BaseDAO
 
         return list;
     }
+    
+    @Transactional
+    public List<Object[]> getButacas(long idSesion)
+    {
+        QLocalizacionDTO qLocalizacionDTO = QLocalizacionDTO.localizacionDTO;
+        QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
+        QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
+        QTarifaDTO qTarifaDTO = QTarifaDTO.tarifaDTO;
+        
+        JPAQuery query = new JPAQuery(entityManager);
+
+        List<Object[]> list = query
+                .from(qButacaDTO, qTarifaDTO)
+                .join(qButacaDTO.parSesion, qSesionDTO)
+                .join(qButacaDTO.parLocalizacion, qLocalizacionDTO).fetch()
+                .leftJoin(qButacaDTO.parCompra, qCompraDTO).fetch()
+                .where(qSesionDTO.id.eq(idSesion).and(qButacaDTO.tipo.castToNum(Long.class).eq(qTarifaDTO.id)))
+            .list(qButacaDTO, qTarifaDTO.nombre, qTarifaDTO.id);
+
+        return list;
+    }
 
     @Transactional
     public void addButaca(ButacaDTO butacaDTO)

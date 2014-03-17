@@ -28,11 +28,13 @@ import org.springframework.stereotype.Service;
 import es.uji.apps.fopreports.serialization.ReportSerializationException;
 import es.uji.apps.par.SinIvaException;
 import es.uji.apps.par.config.Configuration;
+import es.uji.apps.par.dao.ButacasDAO;
 import es.uji.apps.par.dao.CinesDAO;
 import es.uji.apps.par.dao.ComprasDAO;
 import es.uji.apps.par.dao.SesionesDAO;
 import es.uji.apps.par.database.DatabaseHelper;
 import es.uji.apps.par.database.DatabaseHelperFactory;
+import es.uji.apps.par.db.ButacaDTO;
 import es.uji.apps.par.db.SesionDTO;
 import es.uji.apps.par.model.Cine;
 import es.uji.apps.par.model.Evento;
@@ -50,6 +52,9 @@ public class ReportService {
 
 	@Autowired
 	ComprasDAO comprasDAO;
+	
+	@Autowired
+	ButacasDAO butacasDAO;
 	
 	@Autowired
 	SesionesDAO sesionesDAO;
@@ -344,10 +349,20 @@ public class ReportService {
 		Sala sala = Sala.salaDTOtoSala(sesionDTO.getParSala());
 		Evento evento = Evento.eventoDTOtoEvento(sesionDTO.getParEvento());
 		InformeModelReport resumen = comprasDAO.getResumenSesion(sesionId);
+		List<Object[]> butacasYTarifas = butacasDAO.getButacas(sesionId);
+		
+		List<InformeModelReport> compras = new ArrayList<InformeModelReport>();
+		for (Object[] butacaYTarifa: butacasYTarifas) {
+			ButacaDTO butacaDTO = (ButacaDTO) butacaYTarifa[0];
+			String nombreTarifa = String.valueOf(butacaYTarifa[1]);
+			InformeModelReport informeModel = InformeModelReport.fromButaca(butacaDTO);
+			informeModel.setTipoEntrada(nombreTarifa);
+			compras.add(informeModel);
+		}
 
 		informe.genera(Configuration.getCargoInformeEfectivo(), Configuration.getFirmanteInformeEfectivo(),
 				cine, sala, evento, sesion, 
-				resumen.getNumeroEntradas(), resumen.getCanceladasTaquilla(), resumen.getTotal());
+				resumen.getNumeroEntradas(), resumen.getCanceladasTaquilla(), resumen.getTotal(), compras);
 
 		informe.serialize(bos);
 	}

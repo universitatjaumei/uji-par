@@ -1,6 +1,11 @@
 package es.uji.apps.par.report;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
+import es.uji.apps.par.db.ButacaDTO;
+import es.uji.apps.par.utils.DateUtils;
 
 public class InformeModelReport {
 	private String evento;
@@ -18,6 +23,7 @@ public class InformeModelReport {
     private Integer vendidasMetalico;
     private Integer canceladasTaquilla;
     private Integer vendidasTaquilla;
+    private Boolean anulada;
 
     public InformeModelReport()
     {
@@ -141,5 +147,25 @@ public class InformeModelReport {
 
 	public void setVendidasTaquilla(Integer vendidasTaquilla) {
 		this.vendidasTaquilla = vendidasTaquilla;
+	}
+
+	public static InformeModelReport fromButaca(ButacaDTO butaca) {
+		InformeModelReport informeModel = new InformeModelReport();
+		informeModel.setSesion(DateUtils.dateToSpanishStringWithHour(butaca.getParSesion().getFechaCelebracion()).toString());
+		informeModel.setTipoEntrada(butaca.getTipo());
+		informeModel.setNumeroEntradas(1);
+		informeModel.setFechaCompra(DateUtils.dateToSpanishString(butaca.getParCompra().getFecha()));
+		informeModel.setTotal(butaca.getPrecio());
+		informeModel.setLocalizacion(butaca.getParLocalizacion().getNombreVa());
+		informeModel.setAnulada(butaca.getAnulada());
+		return informeModel;
+	}
+
+	public Boolean getAnulada() {
+		return anulada;
+	}
+
+	public void setAnulada(Boolean anulada) {
+		this.anulada = anulada;
 	}
 }
