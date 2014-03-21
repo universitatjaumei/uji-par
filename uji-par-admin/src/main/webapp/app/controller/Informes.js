@@ -66,7 +66,7 @@ Ext.define('Paranimf.controller.Informes', {
          return;
 
       var storeSesiones = this.getGridSesionesInformes().getStore();
-      storeSesiones.getProxy().url = urlPrefix + 'evento/sesionesficheros';
+      storeSesiones.getProxy().url = urlPrefix + 'evento/sesionesficheros/todo';
       storeSesiones.getProxy().extraParams = {
          'fechaInicio': this.getFechaInicio().rawValue,
          'fechaFin': this.getFechaFin().rawValue

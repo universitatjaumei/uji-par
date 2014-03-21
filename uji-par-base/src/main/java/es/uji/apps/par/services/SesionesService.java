@@ -352,12 +352,8 @@ public class SesionesService
 	public int getTotalPreciosSesion(Long sesionId) {
 		return sesionDAO.getTotalPreciosSesion(sesionId);
 	}
-
-	public List<Sesion> getSesionesCinePorFechas(String fechaInicio, String fechaFin, String sort) {
-		Date dtInicio = DateUtils.spanishStringToDate(fechaInicio);
-		Date dtFin = DateUtils.spanishStringToDate(fechaFin);
-		dtFin = DateUtils.addTimeToDate(dtFin, "23:59");
-		List<SesionDTO> sesionesDTO = sesionDAO.getSesionesCinePorFechas(dtInicio, dtFin, sort);
+	
+	private List<Sesion> getSesionesProFechas(List<SesionDTO> sesionesDTO) {
 		List<Sesion> listaSesiones = new ArrayList<Sesion>();
 		
 		for (SesionDTO sesionDTO: sesionesDTO) {
@@ -380,6 +376,22 @@ public class SesionesService
 			listaSesiones.add(sesion);
 		}
 		return listaSesiones;
+	}
+
+	public List<Sesion> getSesionesCinePorFechas(String fechaInicio, String fechaFin, String sort) {
+		Date dtInicio = DateUtils.spanishStringToDate(fechaInicio);
+		Date dtFin = DateUtils.spanishStringToDate(fechaFin);
+		dtFin = DateUtils.addTimeToDate(dtFin, "23:59");
+		List<SesionDTO> sesionesDTO = sesionDAO.getSesionesCinePorFechas(dtInicio, dtFin, sort);
+		return getSesionesProFechas(sesionesDTO);
+	}
+	
+	public List<Sesion> getSesionesPorFechas(String fechaInicio, String fechaFin, String sort) {
+		Date dtInicio = DateUtils.spanishStringToDate(fechaInicio);
+		Date dtFin = DateUtils.spanishStringToDate(fechaFin);
+		dtFin = DateUtils.addTimeToDate(dtFin, "23:59");
+		List<SesionDTO> sesionesDTO = sesionDAO.getSesionesPorFechas(dtInicio, dtFin, sort);
+		return getSesionesProFechas(sesionesDTO);
 	}
 
 	public List<Tarifa> getTarifasConPrecioSinPlantilla(long sesionId) {

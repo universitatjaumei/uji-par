@@ -9,6 +9,8 @@ import java.util.List;
 
 import javax.ws.rs.core.Response.ResponseBuilder;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -17,6 +19,10 @@ import es.uji.apps.par.model.OrdreGrid;
 
 public class Utils
 {
+	public static String stripAccents(String texto) {
+    	return StringUtils.stripAccents(texto);
+    }
+	
     public static String sha1(String string)
     {
         MessageDigest md = null;

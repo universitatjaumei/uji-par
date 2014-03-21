@@ -118,6 +118,16 @@ public class EventosResource
         return Response.ok().entity(new RestResponse(true, sesiones, sesiones.size())).build();
     }
     
+    @GET
+    @Path("sesionesficheros/todo")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getSesionesPorFechas(@QueryParam("fechaInicio") String fechaInicio, @QueryParam("fechaFin") String fechaFin,
+    		@QueryParam("sort") String sort, @QueryParam("start") int start, @QueryParam("limit") @DefaultValue("1000") int limit)
+    {
+    	List<Sesion> sesiones = sesionesService.getSesionesPorFechas(fechaInicio, fechaFin, sort);
+        return Response.ok().entity(new RestResponse(true, sesiones, sesiones.size())).build();
+    }
+    
     @PUT
     @Path("sesionesficheros/{sesionId}/incidencia/{incidenciaId}")
     @Produces(MediaType.APPLICATION_JSON)
