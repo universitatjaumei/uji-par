@@ -3,6 +3,7 @@ package es.uji.apps.par.utils;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.security.MessageDigest;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;

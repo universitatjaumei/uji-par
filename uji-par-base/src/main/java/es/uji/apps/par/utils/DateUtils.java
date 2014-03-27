@@ -14,6 +14,7 @@ public class DateUtils
     private static final SimpleDateFormat DATABASE_DAY = new SimpleDateFormat("yyyy-MM-dd");
     private static final SimpleDateFormat FORMAT_HOUR = new SimpleDateFormat("HH:mm");
     private static final SimpleDateFormat FORMAT_DAY_HOUR = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+    private static final SimpleDateFormat FORMAT_FILE_DAY_HOUR = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
     private static final SimpleDateFormat DATABASE_WITH_SECONDS = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static final SimpleDateFormat FORMAT_DDMMYY = new SimpleDateFormat("ddMMyy");
 
@@ -115,6 +116,13 @@ public class DateUtils
     		throw new NullPointerException();
     	
     	return FORMAT_DAY_HOUR.format(fecha);
+	}
+	
+	public static String dateToStringForFileNames(Date fecha) {
+		if (fecha == null)
+    		throw new NullPointerException();
+    	
+    	return FORMAT_FILE_DAY_HOUR.format(fecha);
 	}
 	
     public static Date spanishStringWithHourstoDate(String spanishDate) throws ParseException {

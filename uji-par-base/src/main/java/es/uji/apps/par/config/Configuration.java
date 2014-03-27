@@ -60,6 +60,10 @@ public class Configuration
 	private static final String TPV_TERMINAL = "uji.tpv.terminal";
 	private static final String TPV_TRANSACTION = "uji.tpv.transaction";
 	private static final String TPV_NOMBRE = "uji.tpv.nombre";
+	private static final String URL_TPV = "uji.tpv.url";
+	private static final String MAILING_CLASS = "uji.par.mail.class";
+	private static final String TMP_FOLDER = "uji.tmp.folder";
+	private static final String PGP_PASSPHRASE = "uji.pgp.key";
 
     public static Logger log = Logger.getLogger(Configuration.class);
 
@@ -356,5 +360,21 @@ public class Configuration
 
 	public static String getInformeSesionReport() {
 		return getProperty(INFORME_SESION_REPORT); 
+	}
+	
+	public static String getURLTPV() {
+		return getProperty(URL_TPV);
+	}
+
+	public static String getMailingClass() {
+		return getProperty(MAILING_CLASS);
+	}
+
+	public static String getTmpFolder() {
+		return getProperty(TMP_FOLDER);
+	}
+
+	public static String getPassphrase() {
+		return getProperty(PGP_PASSPHRASE);
 	}
 }

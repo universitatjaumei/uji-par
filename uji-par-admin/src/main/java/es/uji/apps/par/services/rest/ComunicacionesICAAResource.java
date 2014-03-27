@@ -1,5 +1,7 @@
 package es.uji.apps.par.services.rest;
 
+import java.io.IOException;
+import java.security.NoSuchProviderException;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -30,7 +32,8 @@ public class ComunicacionesICAAResource extends BaseResource
     @Produces(MediaType.TEXT_PLAIN)
     public Response generaFicheroICAA(@FormParam("ids") List<Integer> ids, 
     		@FormParam("fechaEnvioHabitualAnterior") String fechaEnvioHabitualAnterior, @FormParam("tipoEnvio") String tipoEnvio)
-    		throws GeneralPARException, RegistroSerializaException, IncidenciaNotFoundException
+    		throws GeneralPARException, RegistroSerializaException, IncidenciaNotFoundException, 
+    		NoSuchProviderException, IOException, InterruptedException
     {
         AuthChecker.canWrite(currentRequest);
         byte[] arr = comunicacionesICAAService.generaFicheroICAA(ids, fechaEnvioHabitualAnterior, tipoEnvio);

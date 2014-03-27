@@ -1,5 +1,7 @@
 package es.uji.apps.par.services;
 
+import java.io.IOException;
+import java.security.NoSuchProviderException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -28,17 +30,19 @@ public class ComunicacionesICAAService {
 	ComunicacionesICAADAO comunicacionesICAADAO;
 
 	public byte[] generaFicheroICAA(List<Integer> ids, String fechaEnvioHabitualAnterior, String tipoEnvio) 
-			throws TipoEnvioInvalidoException, CampoRequeridoException, RegistroSerializaException, IncidenciaNotFoundException {
+			throws TipoEnvioInvalidoException, CampoRequeridoException, RegistroSerializaException, 
+			IncidenciaNotFoundException, NoSuchProviderException, IOException, InterruptedException {
 		checkTipoEnvio(tipoEnvio);
 		checkIds(ids);
 		Date fechaEnvioAnterior = getDateEnvio(fechaEnvioHabitualAnterior);
 		List<Sesion> sesiones = getSesionesFromIDs(ids);
 		FicheroRegistros ficheroRegistros = ficherosService.generaFicheroRegistros(fechaEnvioAnterior, tipoEnvio, sesiones);
 		byte[] contenido = ficheroRegistros.toByteArray();
+		byte[] contenidoCifrado = ficherosService.encryptData(contenido);
 		
 		comunicacionesICAADAO.addNewEnvio(ids, ficheroRegistros.getRegistroBuzon().getFechaEnvio(), tipoEnvio);
 		
-		return contenido;
+		return contenidoCifrado;
 	}
 
 	private List<Sesion> getSesionesFromIDs(List<Integer> ids) {
