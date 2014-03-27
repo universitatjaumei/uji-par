@@ -9,6 +9,7 @@ public class EntradaModelReport {
 	private String zona;
 	private String tipo;
 	private Boolean tarifaDefecto;
+	private String iniciales;
 	
 	public EntradaModelReport() {
 		
@@ -59,6 +60,14 @@ public class EntradaModelReport {
 
 	public void setTarifaDefecto(Boolean tarifaDefecto) {
 		this.tarifaDefecto = tarifaDefecto;
+	}
+
+	public String getIniciales() {
+		return iniciales;
+	}
+
+	public void setIniciales(String iniciales) {
+		this.iniciales = iniciales;
 	}
 	
 }

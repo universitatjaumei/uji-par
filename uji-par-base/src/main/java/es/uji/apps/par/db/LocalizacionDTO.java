@@ -38,6 +38,9 @@ public class LocalizacionDTO implements Serializable {
 
 	@Column(name="NOMBRE_VA")
 	private String nombreVa;
+	
+	@Column(name="INICIALES")
+	private String iniciales;
 
 	@Column(name="TOTAL_ENTRADAS")
 	private BigDecimal totalEntradas;
@@ -124,6 +127,14 @@ public class LocalizacionDTO implements Serializable {
 
 	public void setSala(SalaDTO sala) {
 		this.sala = sala;
+	}
+
+	public String getIniciales() {
+		return iniciales;
+	}
+
+	public void setIniciales(String iniciales) {
+		this.iniciales = iniciales;
 	}
 
 }

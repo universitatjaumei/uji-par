@@ -107,3 +107,5 @@ update par_sesiones set incidencia_id = 0;
 );*/
 
 ALTER TABLE par_compras ADD COLUMN referencia_pago character varying(255);
+
+ALTER TABLE par_localizaciones ADD COLUMN iniciales character varying(100);

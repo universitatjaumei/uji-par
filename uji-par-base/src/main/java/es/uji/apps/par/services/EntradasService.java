@@ -89,6 +89,7 @@ public class EntradasService
             entradaModelReport.setTotal(ReportUtils.formatEuros(butaca.getPrecio()));
             entradaModelReport.setBarcode(compra.getUuid() + "-" + butaca.getId());
             entradaModelReport.setTipo(butaca.getTipo());
+            entradaModelReport.setIniciales(butaca.getParLocalizacion().getIniciales());
             
             for (TarifaDTO tarifa: tarifas) {
             	if (tarifa.getId() == Long.valueOf(butaca.getTipo())) {
