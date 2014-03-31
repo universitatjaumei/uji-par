@@ -68,12 +68,12 @@ public class EntradasService
     	CompraDTO compra = comprasDAO.getCompraByUuid(uuidCompra);
     	List<TarifaDTO> tarifas = tarifasDAO.getAll("", 0, 100);
 
-        String tituloEs = compra.getParSesion().getParEvento().getTituloEs();
+        String tituloVa = compra.getParSesion().getParEvento().getTituloVa();
         String fecha = DateUtils.dateToSpanishString(compra.getParSesion().getFechaCelebracion());
         String hora = DateUtils.dateToHourString(compra.getParSesion().getFechaCelebracion());
         String horaApertura = compra.getParSesion().getHoraApertura();
 
-        entrada.setTitulo(tituloEs);
+        entrada.setTitulo(tituloVa);
         entrada.setFecha(fecha);
         entrada.setHora(hora);
         entrada.setHoraApertura(horaApertura);
