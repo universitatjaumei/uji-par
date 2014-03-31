@@ -19,7 +19,9 @@ import es.uji.apps.par.GeneralPARException;
 import es.uji.apps.par.IncidenciaNotFoundException;
 import es.uji.apps.par.RegistroSerializaException;
 import es.uji.apps.par.auth.AuthChecker;
+import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.services.ComunicacionesICAAService;
+import es.uji.apps.par.utils.DateUtils;
 
 @Path("comunicacionesicaa")
 public class ComunicacionesICAAResource extends BaseResource
@@ -37,9 +39,10 @@ public class ComunicacionesICAAResource extends BaseResource
     {
         AuthChecker.canWrite(currentRequest);
         byte[] arr = comunicacionesICAAService.generaFicheroICAA(ids, fechaEnvioHabitualAnterior, tipoEnvio);
+        String fileName = Configuration.getCodigoBuzon() + tipoEnvio + DateUtils.getNumeroSemana();
 		return Response.ok(arr, 
 				MediaType.TEXT_PLAIN).
-				header("Content-Disposition","attachment; filename =\"informeICAA.txt\"").build();
+				header("Content-Disposition","attachment; filename =\"" + fileName + "\"").build();
     }
     
     @PUT

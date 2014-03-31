@@ -152,4 +152,10 @@ public class DateUtils
     {
         return FORMAT_DDMMYY.format(fecha);
     }
+
+	public static String getNumeroSemana() {
+		Calendar cal = Calendar.getInstance();
+		int week = cal.get(Calendar.WEEK_OF_YEAR);
+		return String.format("%03d", week);
+	}
 }

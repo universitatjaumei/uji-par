@@ -64,6 +64,7 @@ public class Configuration
 	private static final String MAILING_CLASS = "uji.par.mail.class";
 	private static final String TMP_FOLDER = "uji.tmp.folder";
 	private static final String PGP_PASSPHRASE = "uji.pgp.key";
+	private static final String CODIGO_BUZON = "uji.codigo.buzon";
 
     public static Logger log = Logger.getLogger(Configuration.class);
 
@@ -376,5 +377,9 @@ public class Configuration
 
 	public static String getPassphrase() {
 		return getProperty(PGP_PASSPHRASE);
+	}
+
+	public static String getCodigoBuzon() {
+		return getProperty(CODIGO_BUZON);
 	}
 }
