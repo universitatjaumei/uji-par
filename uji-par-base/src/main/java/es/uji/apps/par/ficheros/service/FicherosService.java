@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.uji.apps.par.IncidenciaNotFoundException;
+import es.uji.apps.par.SesionSinFormatoIdiomaIcaaException;
 import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.dao.CinesDAO;
 import es.uji.apps.par.dao.ComprasDAO;
@@ -49,7 +50,7 @@ public class FicherosService
     private SesionesDAO sesionesDAO;
 
     public FicheroRegistros generaFicheroRegistros(Date fechaEnvioAnterior, String tipo, List<Sesion> sesiones) 
-    		throws IncidenciaNotFoundException, UnsupportedEncodingException
+    		throws IncidenciaNotFoundException, UnsupportedEncodingException, SesionSinFormatoIdiomaIcaaException
     {
         FicheroRegistros ficheroRegistros = new FicheroRegistros();
 
@@ -114,7 +115,7 @@ public class FicherosService
         return sesionesDAO.getRegistrosSesiones(sesiones);
     }
 
-    private List<RegistroSesionPelicula> generaRegistrosSesionPelicula(List<Sesion> sesiones)
+    private List<RegistroSesionPelicula> generaRegistrosSesionPelicula(List<Sesion> sesiones) throws SesionSinFormatoIdiomaIcaaException
     {
         return sesionesDAO.getRegistrosSesionesPeliculas(sesiones);
     }

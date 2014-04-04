@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +18,8 @@ import com.mysema.query.jpa.impl.JPAUpdateClause;
 import com.mysema.query.types.expr.BooleanExpression;
 
 import es.uji.apps.par.IncidenciaNotFoundException;
+import es.uji.apps.par.SesionSinFormatoIdiomaIcaaException;
+import es.uji.apps.par.db.EventoDTO;
 import es.uji.apps.par.db.PreciosSesionDTO;
 import es.uji.apps.par.db.QButacaDTO;
 import es.uji.apps.par.db.QCompraDTO;
@@ -27,8 +30,10 @@ import es.uji.apps.par.db.QPreciosPlantillaDTO;
 import es.uji.apps.par.db.QPreciosSesionDTO;
 import es.uji.apps.par.db.QSalaDTO;
 import es.uji.apps.par.db.QSesionDTO;
+import es.uji.apps.par.db.QSesionFormatoIdiomaICAADTO;
 import es.uji.apps.par.db.QTarifaDTO;
 import es.uji.apps.par.db.SesionDTO;
+import es.uji.apps.par.db.SesionFormatoIdiomaICAADTO;
 import es.uji.apps.par.db.TarifaDTO;
 import es.uji.apps.par.ficheros.registros.RegistroPelicula;
 import es.uji.apps.par.ficheros.registros.RegistroSesion;
@@ -48,6 +53,9 @@ public class SesionesDAO extends BaseDAO
     
     private QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
     private QPreciosSesionDTO qPreciosSesionDTO = QPreciosSesionDTO.preciosSesionDTO;
+    
+    @Autowired
+    private EventosDAO eventosDAO;
 
     @Transactional
     public List<SesionDTO> getSesiones(long eventoId, String sortParameter, int start, int limit)
@@ -147,12 +155,43 @@ public class SesionesDAO extends BaseDAO
     public Sesion addSesion(Sesion sesion)
     {
         SesionDTO sesionDTO = Sesion.SesionToSesionDTO(sesion);
-
         persistSesion(sesionDTO);
-
         sesion.setId(sesionDTO.getId());
+        addSesionFormatoIdiomaIfNeeded(sesion.getEvento().getId(), sesion.getFormato(), sesion.getVersionLinguistica());
         return sesion;
     }
+    
+    @Transactional
+    private void addSesionFormatoIdiomaIfNeeded(long eventoId, String formato, String versionLinguistica) {
+		EventoDTO eventoDTO = eventosDAO.getEventoById(eventoId);
+        if (eventoDTO.getParTiposEvento().getExportarICAA()) {
+	        List<SesionFormatoIdiomaICAADTO> sesionesFormatIdiomaICAA = 
+	        		getSesionFormatoIdiomaIcaa(formato, versionLinguistica, eventoId);
+	        
+	        if (sesionesFormatIdiomaICAA.size() == 0)
+	        	addSesionFormatoIdiomaICAA(formato, versionLinguistica, eventoId);
+        }
+	}
+
+    @Transactional
+	private void addSesionFormatoIdiomaICAA(String formato,	String versionLinguistica, long eventoId) {
+		SesionFormatoIdiomaICAADTO sesionFormatoIdiomaICAA = new SesionFormatoIdiomaICAADTO();
+		sesionFormatoIdiomaICAA.setFormato(formato);
+		sesionFormatoIdiomaICAA.setVersionLinguistica(versionLinguistica);
+		sesionFormatoIdiomaICAA.setParEvento(new EventoDTO(eventoId));
+		entityManager.persist(sesionFormatoIdiomaICAA);
+	}
+
+    @Transactional
+	private List<SesionFormatoIdiomaICAADTO> getSesionFormatoIdiomaIcaa(String formato, String versionLinguistica, long eventoId) {
+		QSesionFormatoIdiomaICAADTO qSesionFormatoIdiomaICAA = QSesionFormatoIdiomaICAADTO.sesionFormatoIdiomaICAADTO;
+        JPAQuery query = new JPAQuery(entityManager);
+        return query.from(qSesionFormatoIdiomaICAA).where(
+        	qSesionFormatoIdiomaICAA.formato.eq(formato)
+        	.and(qSesionFormatoIdiomaICAA.versionLinguistica.eq(versionLinguistica))
+        	.and(qSesionFormatoIdiomaICAA.parEvento.id.eq(eventoId))
+        ).list(qSesionFormatoIdiomaICAA);
+	}
 
     @Transactional
     public void updateSesion(Sesion sesion)
@@ -177,8 +216,7 @@ public class SesionesDAO extends BaseDAO
             update.set(qSesionDTO.parSala, Sala.salaToSalaDTO(sesion.getSala()));
 
         update.where(qSesionDTO.id.eq(sesion.getId())).execute();
-        
-        //entityManager.merge(Sesion.SesionToSesionDTO(sesion));
+        addSesionFormatoIdiomaIfNeeded(sesion.getEvento().getId(), sesion.getFormato(), sesion.getVersionLinguistica());
     }
 
     @Transactional
@@ -308,7 +346,7 @@ public class SesionesDAO extends BaseDAO
 	}
 
 	@Transactional
-    public List<RegistroSesionPelicula> getRegistrosSesionesPeliculas(List<Sesion> sesiones)
+    public List<RegistroSesionPelicula> getRegistrosSesionesPeliculas(List<Sesion> sesiones) throws SesionSinFormatoIdiomaIcaaException
     {
         QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
         QEventoDTO qEventoDTO = QEventoDTO.eventoDTO;
@@ -317,26 +355,30 @@ public class SesionesDAO extends BaseDAO
         
         JPAQuery query = new JPAQuery(entityManager);
 
-        List<Object[]> resultado = query
+        List<SesionDTO> resultado = query
                 .from(qSesionDTO)
                 .join(qSesionDTO.parEvento, qEventoDTO)
                 .join(qSesionDTO.parSala).fetch()
                 .where(qSesionDTO.id.in(idsSesiones))
                 .distinct()
-                .list(qSesionDTO, qEventoDTO.id);
+                .list(qSesionDTO);
         
         List<RegistroSesionPelicula> registros = new ArrayList<RegistroSesionPelicula>();
         
-        for (Object[] row:resultado)
+        for (SesionDTO sesionDTO : resultado)
         {
-            SesionDTO sesion = (SesionDTO) row[0];
-            Long idEvento = (Long) row[1];
+            List<SesionFormatoIdiomaICAADTO> sesionesFormatoIdiomaIcaa = 
+            		getSesionFormatoIdiomaIcaa(sesionDTO.getFormato(), sesionDTO.getVersionLinguistica(), sesionDTO.getParEvento().getId());
             
+            if (sesionesFormatoIdiomaIcaa.size() == 0) {
+            	throw new SesionSinFormatoIdiomaIcaaException(sesionDTO.getParEvento().getId(), 
+            			sesionDTO.getFormato(), sesionDTO.getVersionLinguistica());
+            }
             RegistroSesionPelicula registro = new RegistroSesionPelicula();
-            registro.setCodigoSala(sesion.getParSala().getCodigo());
-            registro.setCodigoPelicula(idEvento.intValue());
-            registro.setFecha(sesion.getFechaCelebracion());
-            registro.setHora(HOUR_FORMAT.format(sesion.getFechaCelebracion()));
+            registro.setCodigoSala(sesionDTO.getParSala().getCodigo());
+            registro.setCodigoPelicula((int) sesionesFormatoIdiomaIcaa.get(0).getId());
+            registro.setFecha(sesionDTO.getFechaCelebracion());
+            registro.setHora(HOUR_FORMAT.format(sesionDTO.getFechaCelebracion()));
             
             registros.add(registro);
         }

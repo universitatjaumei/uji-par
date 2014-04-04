@@ -112,6 +112,10 @@ public class EventoDTO implements Serializable {
 	@OneToMany(mappedBy="parEvento")
 	private List<SesionDTO> parSesiones;
 	
+	//bi-directional many-to-one association to SesionFormatoIdiomaICAADTO
+	@OneToMany(mappedBy="parEvento")
+	private List<SesionFormatoIdiomaICAADTO> parSesionesFormatoIdiomaICAA;
+	
     @Column(name="EXPEDIENTE")
     private String expediente;
 
@@ -134,6 +138,10 @@ public class EventoDTO implements Serializable {
     private String subtitulos;   
     
 	public EventoDTO() {
+	}
+
+	public EventoDTO(long eventoId) {
+		this.id = eventoId;
 	}
 
 	public long getId() {
@@ -423,4 +431,13 @@ public class EventoDTO implements Serializable {
     {
         this.subtitulos = subtitulos;
     }
+
+	public List<SesionFormatoIdiomaICAADTO> getParSesionesFormatoIdiomaICAA() {
+		return parSesionesFormatoIdiomaICAA;
+	}
+
+	public void setParSesionesFormatoIdiomaICAA(
+			List<SesionFormatoIdiomaICAADTO> parSesionesFormatoIdiomaICAA) {
+		this.parSesionesFormatoIdiomaICAA = parSesionesFormatoIdiomaICAA;
+	}
 }

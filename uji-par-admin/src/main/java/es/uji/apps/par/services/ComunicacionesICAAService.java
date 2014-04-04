@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import es.uji.apps.par.CampoRequeridoException;
 import es.uji.apps.par.IncidenciaNotFoundException;
 import es.uji.apps.par.RegistroSerializaException;
+import es.uji.apps.par.SesionSinFormatoIdiomaIcaaException;
 import es.uji.apps.par.TipoEnvioInvalidoException;
 import es.uji.apps.par.dao.ComunicacionesICAADAO;
 import es.uji.apps.par.ficheros.registros.FicheroRegistros;
@@ -31,7 +32,7 @@ public class ComunicacionesICAAService {
 
 	public byte[] generaFicheroICAA(List<Integer> ids, String fechaEnvioHabitualAnterior, String tipoEnvio) 
 			throws TipoEnvioInvalidoException, CampoRequeridoException, RegistroSerializaException, 
-			IncidenciaNotFoundException, NoSuchProviderException, IOException, InterruptedException {
+			IncidenciaNotFoundException, NoSuchProviderException, IOException, InterruptedException, SesionSinFormatoIdiomaIcaaException {
 		checkTipoEnvio(tipoEnvio);
 		checkIds(ids);
 		Date fechaEnvioAnterior = getDateEnvio(fechaEnvioHabitualAnterior);

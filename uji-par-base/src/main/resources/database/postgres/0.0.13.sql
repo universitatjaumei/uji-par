@@ -109,3 +109,23 @@ update par_sesiones set incidencia_id = 0;
 ALTER TABLE par_compras ADD COLUMN referencia_pago character varying(255);
 
 ALTER TABLE par_localizaciones ADD COLUMN iniciales character varying(100);
+
+CREATE TABLE par_sesiones_formato_idioma_icaa
+(
+  id serial NOT NULL,
+  formato character varying(400) NOT NULL,
+  ver_ling character varying(400) NOT NULL,
+  evento_id integer NOT NULL,
+  CONSTRAINT par_sesiones_formato_idioma_icaa_pkey PRIMARY KEY (id ),
+  CONSTRAINT par_sesiones_formato_idioma_icaa_evento_id_fkey FOREIGN KEY (evento_id)
+      REFERENCES par_eventos (id) MATCH SIMPLE
+      ON UPDATE CASCADE ON DELETE CASCADE
+)
+WITH (
+  OIDS=FALSE
+);
+
+/*insert into par_sesiones_formato_idioma_icaa (formato, ver_ling, evento_id) 
+select s.formato, s.ver_ling, s.evento_id from par_sesiones s, par_eventos e, par_tipos_evento t where s.evento_id = e.id and e.tipo_evento_id = t.id and t.exportar_icaa = true;
+després eliminar evento_id, formato, idioma_icaa repetits
+*/

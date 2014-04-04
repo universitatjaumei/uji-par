@@ -169,9 +169,9 @@ public class SesionesService
         	sesion.setPreciosSesion(listaPreciosSesion);
         }
     	
-    	SesionDTO sesionDTO = sesionDAO.persistSesion(Sesion.SesionToSesionDTO(sesion));
-		
-    	sesion.setId(sesionDTO.getId());
+    	sesionDAO.addSesion(sesion);
+    	//SesionDTO sesionDTO = sesionDAO.persistSesion(Sesion.SesionToSesionDTO(sesion));
+    	//sesion.setId(sesionDTO.getId());
         return sesion;
     }
 

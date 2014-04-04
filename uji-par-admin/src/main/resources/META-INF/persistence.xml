@@ -23,6 +23,7 @@
     <class>es.uji.apps.par.db.TarifasCineDTO</class>
     <class>es.uji.apps.par.db.TipoEventoDTO</class>
     <class>es.uji.apps.par.db.UsuarioDTO</class>
+    <class>es.uji.apps.par.db.SesionFormatoIdiomaICAADTO</class>
 
     <class>es.uji.commons.sso.db.ApaAcceso</class>
     <class>es.uji.commons.sso.db.ApaAplicacione</class>
