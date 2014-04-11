@@ -21,6 +21,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.sun.jersey.api.core.InjectParam;
@@ -421,6 +422,7 @@ public class EntradasResource extends BaseResource
         return Response.ok(template).build();
     }
 
+    //TODO -> Verificar que funciona con el tpv de la uji
     @POST
     @Path("{uuidCompra}/datosComprador")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -492,12 +494,13 @@ public class EntradasResource extends BaseResource
         String secret = Configuration.getSecret();
         
         String importe = Utils.monedaToCents(compra.getImporte());
-        String url = getBaseUrlPublic() + "/rest/tpv/resultado";
+        String url = Configuration.getUrlPublicSinHTTPS() + "/rest/tpv/resultado";
         String urlOk = getBaseUrlPublic() + "/rest/tpv/ok";
         String urlKo = getBaseUrlPublic() + "/rest/tpv/ko";
 
         template.put("identificador", compra.getId());
-        template.put("concepto", compra.getParSesion().getParEvento().getTituloVa());
+        String concepto = StringUtils.stripAccents(compra.getParSesion().getParEvento().getTituloVa().toUpperCase());
+        template.put("concepto", concepto);
         template.put("importe", importe);
         template.put("correo", email);
         template.put("url", url);
