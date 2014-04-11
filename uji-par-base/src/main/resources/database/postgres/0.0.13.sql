@@ -112,17 +112,14 @@ ALTER TABLE par_localizaciones ADD COLUMN iniciales character varying(100);
 
 CREATE TABLE par_sesiones_formato_idioma_icaa
 (
-  id serial NOT NULL,
-  formato character varying(400) NOT NULL,
-  ver_ling character varying(400) NOT NULL,
+  ID serial NOT NULL,
+  FORMATO varchar(400) NOT NULL,
+  ver_ling varchar(400) NOT NULL,
   evento_id integer NOT NULL,
   CONSTRAINT par_sesiones_formato_idioma_icaa_pkey PRIMARY KEY (id ),
   CONSTRAINT par_sesiones_formato_idioma_icaa_evento_id_fkey FOREIGN KEY (evento_id)
-      REFERENCES par_eventos (id) MATCH SIMPLE
+      REFERENCES par_eventos (id)
       ON UPDATE CASCADE ON DELETE CASCADE
-)
-WITH (
-  OIDS=FALSE
 );
 
 /*insert into par_sesiones_formato_idioma_icaa (formato, ver_ling, evento_id) 
