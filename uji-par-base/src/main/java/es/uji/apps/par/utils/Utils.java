@@ -3,7 +3,6 @@ package es.uji.apps.par.utils;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.security.MessageDigest;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -144,6 +143,8 @@ public class Utils
 	public static boolean isAsientosNumerados(Evento evento)
 	{
 		// TODO: Esto se hacía comparando con BigDecimal.ONE
+		if (evento.getAsientosNumerados() == null)
+			return false;
 		return evento.getAsientosNumerados().equals(true);
 	}
 }
