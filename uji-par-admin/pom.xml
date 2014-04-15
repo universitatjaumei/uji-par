@@ -6,41 +6,6 @@
  <packaging>war</packaging>
  <name>uji-par-admin</name>
 
- <profiles>
- 	<profile>
-		<id>uji</id>
-		<dependencies>
-				<dependency>
-					<groupId>es.uji.apps.par</groupId>
-					<artifactId>uji-par-reports</artifactId>
-					<version>0.0.1-SNAPSHOT</version>
-				</dependency>
-			</dependencies>
-		</profile>
-
-		<profile>
-			<id>benicassim</id>
-			<dependencies>
-				<dependency>
-					<groupId>es.uji.apps.par</groupId>
-					<artifactId>uji-par-reports-benicassim</artifactId>
-					<version>0.0.1-SNAPSHOT</version>
-				</dependency>
-			</dependencies>
-		</profile>
-
-		<profile>
-			<id>vila-real</id>
-			<dependencies>
-				<dependency>
-					<groupId>es.uji.apps.par</groupId>
-					<artifactId>uji-par-reports-vila-real</artifactId>
-					<version>0.0.1-SNAPSHOT</version>
-				</dependency>
-			</dependencies>
-		</profile>
-	</profiles>
-
 	<properties>
 		<jersey.version>1.13</jersey.version>
 		<spring.version>3.1.2.RELEASE</spring.version>
