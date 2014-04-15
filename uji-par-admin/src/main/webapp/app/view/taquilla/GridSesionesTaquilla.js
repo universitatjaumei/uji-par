@@ -83,10 +83,10 @@ Ext.define('Paranimf.view.taquilla.GridSesionesTaquilla', {
   	if (asientosNumerados)
   	{
   		cardLayout.setActiveItem(0);
-  		var url = urlPublic + "/rest/entrada/butacasFragment/" + idSesion;
+  		var url = urlPublic + "/rest/entrada/butacasFragment/" + idSesion + "?if=true";
   		
   		if (modoReserva)
-  			url += '?reserva=true';
+  			url += '&reserva=true';
   		
   		Ext.getDom('iframeButacas').src = url;
   	}

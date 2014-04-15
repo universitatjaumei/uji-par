@@ -571,7 +571,8 @@ public class EntradasResource extends BaseResource
     @GET
     @Path("butacasFragment/{id}")
     @Produces(MediaType.TEXT_HTML)
-    public Response butacasFragment(@PathParam("id") long sesionId, @QueryParam("reserva") String reserva) throws Exception
+    public Response butacasFragment(@PathParam("id") long sesionId, @QueryParam("reserva") String reserva, 
+    		@QueryParam("if") String isAdmin) throws Exception
     {
     	Locale locale = getLocale();
         String language = locale.getLanguage();
@@ -588,6 +589,7 @@ public class EntradasResource extends BaseResource
         template.put("ocultaComprar", "true");
         template.put("gastosGestion", 0.0);
         template.put("modoReserva", reserva!=null && reserva.equals("true"));
+        template.put("estilopublico", "false");
         template.put("muestraReservadas", true);
         template.put("modoAdmin", true);
         template.put("tipoEventoEs", sesion.getEvento().getParTiposEvento().getNombreEs());
