@@ -494,7 +494,7 @@ public class EntradasResource extends BaseResource
         String secret = Configuration.getSecret();
         
         String importe = Utils.monedaToCents(compra.getImporte());
-        String url = Configuration.getUrlPublicSinHTTPS() + "/rest/tpv/resultado";
+        String url = Configuration.getWSDLURL();
         String urlOk = getBaseUrlPublic() + "/rest/tpv/ok";
         String urlKo = getBaseUrlPublic() + "/rest/tpv/ko";
 
