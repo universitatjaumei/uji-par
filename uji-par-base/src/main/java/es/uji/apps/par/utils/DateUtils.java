@@ -46,6 +46,16 @@ public class DateUtils
         
         return cal.getTime();
     }
+    
+    public static String getCurrentDateAsDatabaseString() {
+    	Calendar cal = Calendar.getInstance();
+    	return DATABASE_WITH_SECONDS.format(cal.getTime());
+    }
+    
+    public static Date getCurrentDate() {
+    	Calendar cal = Calendar.getInstance();
+    	return cal.getTime();
+    }
 
     private static boolean isTimestamp(String spanishDate) {
     	if (spanishDate.contains("/"))

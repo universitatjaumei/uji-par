@@ -2,6 +2,8 @@ package es.uji.apps.par.db;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -342,5 +344,15 @@ public class CompraDTO implements Serializable {
 
 	public void setReferenciaPago(String referenciaPago) {
 		this.referenciaPago = referenciaPago;
+	}
+
+	public static CompraDTO resultsetToDTO(ResultSet res) throws SQLException {
+		CompraDTO compra = new CompraDTO();
+		compra.setCaducada(res.getBoolean("caducada"));
+		compra.setId(res.getLong("id"));
+		compra.setUuid(res.getString("uuid"));
+		compra.setEmail(res.getString("email"));
+		
+		return compra;
 	}
 }

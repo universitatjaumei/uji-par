@@ -40,6 +40,8 @@ public class Configuration
     private static final String USER_READONLY_LOGIN = "uji.par.auth.readonly.login";
     private static final String USER_READONLY_PASSWORD = "uji.par.auth.readonly.password";    
     private static final String JDBC_URL = "uji.db.jdbcUrl";
+    private static final String DB_USER = "uji.db.username";
+    private static final String DB_PASS = "uji.db.password";
     private static final String SYNC_TIPO = "uji.sync.lugar";
     private static final String SYNC_URL_TIPO = "uji.sync.rss";
     private static final String SYNC_HORAS_INICIO_VENTA_ONLINE = "uji.sync.horasInicioVentaOnlineTrasCreacion";
@@ -386,5 +388,13 @@ public class Configuration
 
 	public static String getWSDLURL() {
 		return getProperty(WSDL_URL);
+	}
+	
+	public static String getDBUser() {
+		return getProperty(DB_USER);
+	}
+	
+	public static String getDBPassword() {
+		return getProperty(DB_PASS);
 	}
 }
