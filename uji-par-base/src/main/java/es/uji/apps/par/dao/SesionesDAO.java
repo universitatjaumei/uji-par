@@ -165,11 +165,13 @@ public class SesionesDAO extends BaseDAO
     private void addSesionFormatoIdiomaIfNeeded(long eventoId, String formato, String versionLinguistica) {
 		EventoDTO eventoDTO = eventosDAO.getEventoById(eventoId);
         if (eventoDTO.getParTiposEvento().getExportarICAA()) {
-	        List<SesionFormatoIdiomaICAADTO> sesionesFormatIdiomaICAA = 
-	        		getSesionFormatoIdiomaIcaa(formato, versionLinguistica, eventoId);
-	        
-	        if (sesionesFormatIdiomaICAA.size() == 0)
-	        	addSesionFormatoIdiomaICAA(formato, versionLinguistica, eventoId);
+        	if (formato != null && versionLinguistica != null) {
+		        List<SesionFormatoIdiomaICAADTO> sesionesFormatIdiomaICAA = 
+		        		getSesionFormatoIdiomaIcaa(formato, versionLinguistica, eventoId);
+		        
+		        if (sesionesFormatIdiomaICAA.size() == 0)
+		        	addSesionFormatoIdiomaICAA(formato, versionLinguistica, eventoId);
+        	}
         }
 	}
 
