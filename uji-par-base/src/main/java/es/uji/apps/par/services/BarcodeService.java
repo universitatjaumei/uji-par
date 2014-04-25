@@ -58,16 +58,15 @@ public class BarcodeService
         }
     }
 
-    public void generaBarcodeQr(String text, OutputStream output) throws WriterException, IOException
+    public void generaBarcodeQr(String text, String size, OutputStream output) throws WriterException, IOException
     {
+    	String widthHeight = (size == null)?Configuration.getBarcodeWidthHeight():size;
+    		
         QRCodeWriter writer = new QRCodeWriter();
         Map<EncodeHintType,Object> hints = new HashMap<EncodeHintType, Object>();
-        //hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
         hints.put(EncodeHintType.MARGIN, 2);
-        String widthHeight = Configuration.getBarcodeWidthHeight();
         BitMatrix matrix = writer.encode(text, BarcodeFormat.QR_CODE, Integer.valueOf(widthHeight), 
         		Integer.valueOf(widthHeight), hints);
-
         MatrixToImageWriter.writeToStream(matrix, "PNG", output);
     }
 
