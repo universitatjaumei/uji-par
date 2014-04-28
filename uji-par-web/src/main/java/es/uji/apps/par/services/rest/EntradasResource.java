@@ -525,9 +525,10 @@ public class EntradasResource extends BaseResource
 	        template.put("terminal", tpvTerminal);
 	        template.put("transaction", tpvTransaction);
 	        template.put("nombre", tpvNombre);
-	        log.info("Preparamos sha1 para envio con: " + importe + TPV_ORDER_PREFIX_CODE_CAJAMAR + compra.getId() + 
-	        		", " + tpvCode + ", " + tpvCurrency + ", " + tpvTransaction + ", " + url + ", " + secret);
-	        String shaEnvio = Utils.sha1(importe + TPV_ORDER_PREFIX_CODE_CAJAMAR + compra.getId() + tpvCode + tpvCurrency + tpvTransaction + url + secret);
+	        String shaText = importe + TPV_ORDER_PREFIX_CODE_CAJAMAR + compra.getId() + 
+	        		", " + tpvCode + ", " + tpvCurrency + ", " + tpvTransaction + ", " + url + ", " + secret;
+	        log.info("Preparamos sha1 para envio con: " + shaText);
+	        String shaEnvio = Utils.sha1(shaText);
 	        template.put("hashcajamar", shaEnvio);
 	        log.info("Sha1 para envio generado " + shaEnvio);
         }
