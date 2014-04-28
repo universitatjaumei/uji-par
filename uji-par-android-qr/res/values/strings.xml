@@ -48,7 +48,7 @@
     <string name="error_actualizando_eventos_rest">Error recuperant events des de la web</string>
     <string name="marcada_como_presentada">Entrada marcada com presentada</string>
     <string name="instalar_barcode_scanner">Per favor, instaleu la app \"Barcode scanner\" des de Google Play</string>
-    <string name="pref_host">URL de conexió</string>
+    <string name="pref_host">URL de connexió</string>
     <string name="pref_host_summ">Exemple: http://www.exemple.com</string>
     <string name="pref_port">Port</string>
     <string name="pref_port_summ"></string>
