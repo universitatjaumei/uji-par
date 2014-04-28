@@ -10,6 +10,7 @@ import java.util.List;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -19,12 +20,15 @@ import es.uji.apps.par.model.OrdreGrid;
 
 public class Utils
 {
+	public static Logger log = Logger.getLogger(Utils.class);
+	
 	public static String stripAccents(String texto) {
     	return StringUtils.stripAccents(texto);
     }
 	
     public static String sha1(String string)
     {
+    	log.info("Preparamos sha1 con: " + string);
         MessageDigest md = null;
         try
         {
