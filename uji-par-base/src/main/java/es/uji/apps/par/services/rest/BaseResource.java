@@ -89,6 +89,14 @@ public class BaseResource
     {
         return Configuration.getUrlPublic();
     }
+    
+    
+    //para evitar el problema de proxy de benicassim en las redirecciones absolutas
+    //deberían arreglarlo ellos pero no lo quieren hacer
+    protected String getBaseUrlPublicLimpio()
+    {
+        return Configuration.getUrlPublicLimpio();
+    }
 
     public Response errorResponse(String messageProperty, Object... values)
     {

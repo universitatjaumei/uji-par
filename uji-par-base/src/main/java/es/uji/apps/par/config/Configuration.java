@@ -57,6 +57,7 @@ public class Configuration
 	private static final String API_KEY = "api.key";
 	private static final String HTML_TITLE = "uji.par.htmltitle";
 	private static final String URL_PUBLIC_SIN_HTTPS = "uji.par.urlPublicSinHTTPS";
+	private static final String URL_PUBLIC_LIMPIO = "uji.par.urlPublicLimpio";
 	private static final String TPV_CURRENCY = "uji.tpv.currency";
 	private static final String TPV_CODE = "uji.tpv.code";
 	private static final String TPV_TERMINAL = "uji.tpv.terminal";
@@ -396,5 +397,9 @@ public class Configuration
 	
 	public static String getDBPassword() {
 		return getProperty(DB_PASS);
+	}
+
+	public static String getUrlPublicLimpio() {
+		return getProperty(URL_PUBLIC_LIMPIO);
 	}
 }
