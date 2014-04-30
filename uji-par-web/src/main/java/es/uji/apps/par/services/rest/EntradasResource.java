@@ -458,9 +458,7 @@ public class EntradasResource extends BaseResource
 
         if (infoPeriodica == null || infoPeriodica.equals(""))
         {
-            return rellenaDatosComprador(uuidCompra, nombre, apellidos, direccion, poblacion, cp, provincia, telefono,
-                    email, infoPeriodica, condicionesPrivacidad,
-                    ResourceProperties.getProperty(getLocale(), "error.datosComprador.infoPeriodica"));
+            infoPeriodica = "no";
         }
 
         if (condicionesPrivacidad == null || condicionesPrivacidad.equals(""))
