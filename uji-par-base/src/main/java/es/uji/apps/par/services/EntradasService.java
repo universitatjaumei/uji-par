@@ -32,6 +32,7 @@ public class EntradasService
 {
     public static final String BUTACAS_COMPRA = "butacasCompra";
     public static final String UUID_COMPRA = "uuidCompra";
+    public static final String ID_SESION = "idSesion";
     
     @Autowired
     private ComprasDAO comprasDAO;
