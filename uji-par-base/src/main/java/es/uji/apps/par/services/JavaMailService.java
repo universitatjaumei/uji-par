@@ -110,15 +110,15 @@ public class JavaMailService implements MailInterface
     //al llamarse desde el job de quartz, no se inyecta el mailDAO, y lo enviamos desde la interfaz
     public synchronized void enviaPendientes(MailDAO mailDAO) throws MessageNotSentException
     {
-        log.info("Enviando mails pendientes...");
+        log.info("** - Enviando mails pendientes desde JavaMailService...");
 
         List<MailDTO> mails = mailDAO.getMailsPendientes();
 
-        /*for (MailDTO mail : mails)
+        for (MailDTO mail : mails)
         {
             enviaMail(mail.getDe(), mail.getPara(), mail.getTitulo(), mail.getTexto());
             mailDAO.marcaEnviado(mail.getId());
-        }*/
+        }
     }
     
     public static void main(String[] args) throws MessageNotSentException
