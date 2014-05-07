@@ -1,5 +1,7 @@
 package es.uji.apps.par.services;
 
+import java.util.List;
+
 import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
@@ -10,12 +12,13 @@ import org.springframework.stereotype.Service;
 
 import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.dao.MailDAO;
+import es.uji.apps.par.db.MailDTO;
 import es.uji.commons.messaging.client.MessageNotSentException;
 import es.uji.commons.messaging.client.MessagingClient;
 import es.uji.commons.messaging.client.model.MailMessage;
 
 @Service
-public class MailService
+public class MailService implements MailInterface
 {
     public static Logger log = Logger.getLogger(MailService.class);
 
@@ -26,7 +29,7 @@ public class MailService
 
     public MailService()
     {
-        //client = new MessagingClient();
+        
     }
 
     public void anyadeEnvio(String to, String titulo, String texto)
@@ -44,22 +47,21 @@ public class MailService
 
         mensaje.addToRecipient(para);
 
-        client.send(mensaje);
+        //client.send(mensaje);
     }
 
-    public synchronized void enviaPendientes() throws MessageNotSentException
+    //al llamarse desde el job de quartz, no se inyecta el mailDAO, y lo enviamos desde la interfaz
+    public synchronized void enviaPendientes(MailDAO mailDAO) throws MessageNotSentException
     {
-        /*
         log.info("Enviando mails pendientes...");
 
-        List<MailDTO> mails = mailDao.getMailsPendientes();
+        List<MailDTO> mails = mailDAO.getMailsPendientes();
 
         for (MailDTO mail : mails)
         {
             enviaMail(mail.getDe(), mail.getPara(), mail.getTitulo(), mail.getTexto());
-            mailDao.marcaEnviado(mail.getId());
+            mailDAO.marcaEnviado(mail.getId());
         }
-        */
     }
 
     public static void main(String[] args) throws MessageNotSentException
