@@ -141,7 +141,7 @@ public class Sesion
 
     public void setCanalInternet(String canalInternet)
     {
-        this.canalInternet = (canalInternet != null && canalInternet.equals("1"));
+        this.canalInternet = (canalInternet != null && (canalInternet.equals("1") || canalInternet.equals("true")));
     }
 
     public Boolean getCanalTaquilla()
@@ -151,7 +151,7 @@ public class Sesion
 
     public void setCanalTaquilla(String canalTaquilla)
     {
-        this.canalTaquilla = (canalTaquilla != null && canalTaquilla.equals("1"));
+        this.canalTaquilla = (canalTaquilla != null && (canalTaquilla.equals("1") || canalTaquilla.equals("true")));
     }
 
     // TODO
