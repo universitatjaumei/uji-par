@@ -169,7 +169,7 @@ public class EventosSyncBenicassim implements EventosSync
         {
             evento.setTituloVa(item.getTitle());
             evento.setCaracteristicasVa(item.getResumen());
-            evento.setDuracionVa(item.getDuracio());
+            evento.setDuracionVa(getDuracion(item.getDuracio()));
             evento.setDescripcionVa(item.getContenido());
 
             if (item.getTipo() != null && !item.getTipo().equals(""))
@@ -187,7 +187,7 @@ public class EventosSyncBenicassim implements EventosSync
         {
             evento.setTituloEs(item.getTitle());
             evento.setCaracteristicasEs(item.getResumen());
-            evento.setDuracionEs(item.getDuracio());
+            evento.setDuracionEs(getDuracion(item.getDuracio()));
             evento.setDescripcionEs(item.getContenido());
 
             if (item.getTipo() != null && !item.getTipo().equals(""))
@@ -219,7 +219,14 @@ public class EventosSyncBenicassim implements EventosSync
         }
     }
 
-    private void logeaTipoNoEncontrado(EventoDTO evento, String tipo, String idioma)
+    private String getDuracion(String duracio) {
+		if (duracio == null || duracio.equals("") || duracio.equals("0") || duracio.toLowerCase().equals("0 min"))
+			return null;
+		else
+			return duracio;
+	}
+
+	private void logeaTipoNoEncontrado(EventoDTO evento, String tipo, String idioma)
     {
         log.error(String.format("No se ha encontrado el tipo \"%s\" para evento: %d - %s - idioma: %s", tipo,
                 evento.getId(), evento.getTituloVa(), idioma));
