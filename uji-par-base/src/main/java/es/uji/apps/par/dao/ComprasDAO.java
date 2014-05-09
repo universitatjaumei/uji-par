@@ -291,10 +291,12 @@ public class ComprasDAO extends BaseDAO
 			if (search.matches(isNumeric)) {
 				long numericSearch = Integer.parseInt(search);
 				builder.and(qCompraDTO.uuid.like('%' + search + '%').or(qCompraDTO.observacionesReserva.like('%' + search + '%').
+						or(qCompraDTO.nombre.like('%' + search + '%').or(qCompraDTO.apellidos.like('%' + search + '%'))).
 						or(qCompraDTO.id.eq(numericSearch))));
 			}
 			else
-				builder.and(qCompraDTO.uuid.like('%' + search + '%').or(qCompraDTO.observacionesReserva.like('%' + search + '%')));
+				builder.and(qCompraDTO.uuid.like('%' + search + '%').or(qCompraDTO.observacionesReserva.like('%' + search + '%')).
+					or(qCompraDTO.nombre.like('%' + search + '%').or(qCompraDTO.apellidos.like('%' + search + '%'))));
 		}
 		
 		return query.from(qCompraDTO).where(builder);
