@@ -5,6 +5,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -57,6 +59,7 @@ public class EntradasResource extends BaseResource
     private static final String TPV_ORDER_PREFIX_CODE_CAJAMAR = "0000";
 	private static final String TPV_LANG_ES_CODE = "001";
 	private static final String TPV_LANG_CA_CODE = "003";
+	private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
 	public static Logger log = Logger.getLogger(EntradasResource.class);
 
@@ -455,6 +458,14 @@ public class EntradasResource extends BaseResource
             return rellenaDatosComprador(uuidCompra, nombre, apellidos, direccion, poblacion, cp, provincia, telefono,
                     email, infoPeriodica, condicionesPrivacidad,
                     ResourceProperties.getProperty(getLocale(), "error.datosComprador.email"));
+        } else {
+        	Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+    		Matcher matcher = pattern.matcher(email);
+    		if (!matcher.matches()) {
+    			return rellenaDatosComprador(uuidCompra, nombre, apellidos, direccion, poblacion, cp, provincia, telefono,
+                        email, infoPeriodica, condicionesPrivacidad,
+                        ResourceProperties.getProperty(getLocale(), "error.datosComprador.email"));
+    		}
         }
 
         if (infoPeriodica == null || infoPeriodica.equals(""))
