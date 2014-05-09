@@ -35,6 +35,7 @@ import es.uji.apps.par.i18n.ResourceProperties;
 import es.uji.apps.par.model.Evento;
 import es.uji.apps.par.model.EventoParaSync;
 import es.uji.apps.par.model.Sesion;
+import es.uji.apps.par.services.EntradasService;
 import es.uji.apps.par.services.EventosService;
 import es.uji.apps.par.services.SesionesService;
 import es.uji.apps.par.utils.DateUtils;
@@ -45,6 +46,7 @@ import es.uji.commons.web.template.Template;
 @Path("evento")
 public class EventosResource extends BaseResource
 {
+	
     public static Logger log = Logger.getLogger(EventosResource.class);
     
     @InjectParam
@@ -133,6 +135,7 @@ public class EventosResource extends BaseResource
     private Template getTemplateEvento(Evento evento, String langparam) throws MalformedURLException, ParseException
     {
         List<Sesion> sesiones = sesionesService.getSesiones(evento.getId());
+        borrarEntradasSeleccionadasConAnterioridad();
 
         Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "eventoDetalle", getLocale(), APP);
 
@@ -180,6 +183,10 @@ public class EventosResource extends BaseResource
 
         return template;
     }
+
+	private void borrarEntradasSeleccionadasConAnterioridad() {
+		currentRequest.getSession().removeAttribute(EntradasService.BUTACAS_COMPRA);
+	}
 
     private List<Map<String, Object>> getSesionesPlantilla(List<Sesion> sesiones)
     {
