@@ -247,7 +247,8 @@ public class ComprasDAO extends BaseDAO
     }
 
     @Transactional
-    public void rellenaDatosComprador(String uuidCompra, String nombre, String apellidos, String direccion, String poblacion, String cp, String provincia, String telefono, String email, Object infoPeriodica)
+    public void rellenaDatosComprador(String uuidCompra, String nombre, String apellidos, String direccion, 
+    		String poblacion, String cp, String provincia, String telefono, String email, Object infoPeriodica)
     {
         CompraDTO compra = getCompraByUuid(uuidCompra);
         
@@ -290,13 +291,14 @@ public class ComprasDAO extends BaseDAO
 			String isNumeric = "^[\\d]+$";
 			if (search.matches(isNumeric)) {
 				long numericSearch = Integer.parseInt(search);
-				builder.and(qCompraDTO.uuid.like('%' + search + '%').or(qCompraDTO.observacionesReserva.like('%' + search + '%').
-						or(qCompraDTO.nombre.like('%' + search + '%').or(qCompraDTO.apellidos.like('%' + search + '%'))).
+				builder.and(qCompraDTO.uuid.toUpperCase().like('%' + search.toUpperCase() + '%').or(qCompraDTO.observacionesReserva.toUpperCase().like('%' + search.toUpperCase() + '%').
 						or(qCompraDTO.id.eq(numericSearch))));
 			}
-			else
-				builder.and(qCompraDTO.uuid.like('%' + search + '%').or(qCompraDTO.observacionesReserva.like('%' + search + '%')).
-					or(qCompraDTO.nombre.like('%' + search + '%').or(qCompraDTO.apellidos.like('%' + search + '%'))));
+			else {
+				search = search.toUpperCase();
+				builder.and(qCompraDTO.uuid.toUpperCase().like('%' + search + '%').or(qCompraDTO.observacionesReserva.toUpperCase().like('%' + search + '%')).
+					or(qCompraDTO.nombre.toUpperCase().like('%' + search + '%').or(qCompraDTO.apellidos.toUpperCase().like('%' + search + '%'))));
+			}
 		}
 		
 		return query.from(qCompraDTO).where(builder);
