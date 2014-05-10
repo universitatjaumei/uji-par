@@ -14,6 +14,7 @@ import com.mysema.query.jpa.impl.JPAQuery;
 
 import es.uji.apps.par.db.MailDTO;
 import es.uji.apps.par.db.QMailDTO;
+import es.uji.apps.par.utils.DateUtils;
 
 @Repository
 public class MailDAO
@@ -32,7 +33,7 @@ public class MailDAO
         mailDTO.setPara(para);
         mailDTO.setTitulo(titulo);
         mailDTO.setTexto(texto);
-        mailDTO.setFechaCreado(new Timestamp(new Date().getTime()));
+        mailDTO.setFechaCreado(new Timestamp(DateUtils.getCurrentDate().getTime()));
 
         entityManager.persist(mailDTO);
     }
