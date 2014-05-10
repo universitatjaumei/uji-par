@@ -464,7 +464,7 @@ public class EntradasResource extends BaseResource
     		if (!matcher.matches()) {
     			return rellenaDatosComprador(uuidCompra, nombre, apellidos, direccion, poblacion, cp, provincia, telefono,
                         email, infoPeriodica, condicionesPrivacidad,
-                        ResourceProperties.getProperty(getLocale(), "error.datosComprador.email"));
+                        ResourceProperties.getProperty(getLocale(), "error.datosComprador.emailIncorrecto"));
     		}
         }
 
