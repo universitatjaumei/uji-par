@@ -33,7 +33,8 @@ public class MailDAO
         mailDTO.setTitulo(titulo);
         mailDTO.setTexto(texto);
         mailDTO.setFechaCreado(new Timestamp(DateUtils.getCurrentDate().getTime()));
-
+        
+        System.out.println("--> Insertamos mail con fecha de creacion ?" + mailDTO.getFechaCreado());
         entityManager.persist(mailDTO);
     }
 
