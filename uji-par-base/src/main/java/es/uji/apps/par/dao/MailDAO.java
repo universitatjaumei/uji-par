@@ -1,7 +1,6 @@
 package es.uji.apps.par.dao;
 
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -50,7 +49,7 @@ public class MailDAO
     {
         MailDTO mail = getMailById(id);
 
-        mail.setFechaEnviado(new Timestamp(new Date().getTime()));
+        mail.setFechaEnviado(new Timestamp(DateUtils.getCurrentDate().getTime()));
 
         entityManager.persist(mail);
     }
@@ -59,5 +58,4 @@ public class MailDAO
     {
         return entityManager.find(MailDTO.class, mailId);
     }
-
 }
