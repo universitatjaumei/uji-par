@@ -100,8 +100,17 @@ Ext.define('Paranimf.controller.ComprasReservas', {
 
       'panelCompras button[action=search]': {
         click: this.buscarCompra
+      },
+
+      'panelCompras textfield[name=buscadorCompras]': {
+        specialkey: this.buscarCompraConEnter
       }
     });     
+  },
+
+  buscarCompraConEnter: function(field, e) {
+    if (e.getKey() == e.ENTER)
+      this.buscarCompra();
   },
 
   buscarCompra: function() {
