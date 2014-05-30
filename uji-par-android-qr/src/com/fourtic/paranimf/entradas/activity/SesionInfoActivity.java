@@ -8,6 +8,7 @@ import roboguice.inject.InjectView;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -199,23 +200,22 @@ public class SesionInfoActivity extends BaseNormalActivity
 
     protected void abreActividadEscanear()
     {
-        /*if (aplicacionInstalada(BARCODE_SCANNER_PACKAGE))
+        if (aplicacionInstalada(BARCODE_SCANNER_PACKAGE))
         {
-            Intent intent = new Intent(BARCODE_SCANNER_PACKAGE + ".SCAN");
-            startActivityForResult(intent, REQUEST_CODE);
+            /*Intent intent = new Intent(BARCODE_SCANNER_PACKAGE + ".SCAN");
+            startActivityForResult(intent, REQUEST_CODE);*/
+            IntentIntegrator scanIntegrator = new IntentIntegrator(this);
+            scanIntegrator.initiateScan();
         }
         else
         {
             Toast.makeText(this, R.string.instalar_barcode_scanner, Toast.LENGTH_LONG)
                     .show();
             abrirGooglePlay(BARCODE_SCANNER_PACKAGE);
-        }*/
-    	
-    	IntentIntegrator scanIntegrator = new IntentIntegrator(this);
-    	scanIntegrator.initiateScan();
+        }
     }
 
-    /*private void abrirGooglePlay(String appPackage)
+    private void abrirGooglePlay(String appPackage)
     {
         try
         {
@@ -226,7 +226,7 @@ public class SesionInfoActivity extends BaseNormalActivity
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id="
                     + appPackage)));
         }
-    }*/
+    }
 
     protected void abreActividadManual()
     {
