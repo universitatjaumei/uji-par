@@ -8,7 +8,6 @@ import roboguice.inject.InjectView;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -32,12 +31,14 @@ import com.fourtic.paranimf.entradas.sync.SincronizadorButacas;
 import com.fourtic.paranimf.entradas.sync.SincronizadorButacas.SyncCallback;
 import com.fourtic.paranimf.utils.Utils;
 import com.google.inject.Inject;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 public class SesionInfoActivity extends BaseNormalActivity
 {
     private static final String BARCODE_SCANNER_PACKAGE = "com.google.zxing.client.android";
 
-    private static final int REQUEST_CODE = 1;
+    private static final int REQUEST_CODE = 49374;
 
     @Inject
     private ButacaDao butacaDao;
@@ -198,7 +199,7 @@ public class SesionInfoActivity extends BaseNormalActivity
 
     protected void abreActividadEscanear()
     {
-        if (aplicacionInstalada(BARCODE_SCANNER_PACKAGE))
+        /*if (aplicacionInstalada(BARCODE_SCANNER_PACKAGE))
         {
             Intent intent = new Intent(BARCODE_SCANNER_PACKAGE + ".SCAN");
             startActivityForResult(intent, REQUEST_CODE);
@@ -208,10 +209,13 @@ public class SesionInfoActivity extends BaseNormalActivity
             Toast.makeText(this, R.string.instalar_barcode_scanner, Toast.LENGTH_LONG)
                     .show();
             abrirGooglePlay(BARCODE_SCANNER_PACKAGE);
-        }
+        }*/
+    	
+    	IntentIntegrator scanIntegrator = new IntentIntegrator(this);
+    	scanIntegrator.initiateScan();
     }
 
-    private void abrirGooglePlay(String appPackage)
+    /*private void abrirGooglePlay(String appPackage)
     {
         try
         {
@@ -222,7 +226,7 @@ public class SesionInfoActivity extends BaseNormalActivity
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id="
                     + appPackage)));
         }
-    }
+    }*/
 
     protected void abreActividadManual()
     {
@@ -238,7 +242,15 @@ public class SesionInfoActivity extends BaseNormalActivity
         {
             try
             {
-                procesCodigoBarras(data);
+            	IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+            	if (scanningResult != null) {
+            		procesCodigoBarras(scanningResult);
+            	}
+            	else{
+            	    Toast toast = Toast.makeText(getApplicationContext(), 
+            	        "No scan data received!", Toast.LENGTH_SHORT);
+            	    toast.show();
+            	}
             }
             catch (Exception e)
             {
@@ -247,11 +259,11 @@ public class SesionInfoActivity extends BaseNormalActivity
         }
     };
 
-    private void procesCodigoBarras(Intent data) throws SQLException
+    private void procesCodigoBarras(IntentResult scanningResult) throws SQLException
     {
         abreActividadEscanear();
 
-        String uuid = data.getStringExtra("SCAN_RESULT");
+        String uuid = scanningResult.getContents();//data.getStringExtra("SCAN_RESULT");
 
         try
         {
