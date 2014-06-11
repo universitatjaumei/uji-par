@@ -110,6 +110,10 @@ import android.util.Log;
 public class IntentIntegrator {
 
   public static final int REQUEST_CODE = 0x0000c0de; // Only use bottom 16 bits
+  
+  private static final long DEFAULT_INTENT_RESULT_DURATION_MS = 0L;
+  public static final String RESULT_DISPLAY_DURATION_MS = "RESULT_DISPLAY_DURATION_MS";
+  
   private static final String TAG = IntentIntegrator.class.getSimpleName();
 
   public static final String DEFAULT_TITLE = "Install Barcode Scanner?";
@@ -294,6 +298,7 @@ public class IntentIntegrator {
    */
   public final AlertDialog initiateScan(Collection<String> desiredBarcodeFormats, int cameraId) {
     Intent intentScan = new Intent(BS_PACKAGE + ".SCAN");
+    intentScan.putExtra(RESULT_DISPLAY_DURATION_MS, DEFAULT_INTENT_RESULT_DURATION_MS);
     intentScan.addCategory(Intent.CATEGORY_DEFAULT);
 
     // check which types of codes to scan for

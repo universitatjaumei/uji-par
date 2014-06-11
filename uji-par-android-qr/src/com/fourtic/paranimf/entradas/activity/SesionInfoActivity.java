@@ -202,8 +202,6 @@ public class SesionInfoActivity extends BaseNormalActivity
     {
         if (aplicacionInstalada(BARCODE_SCANNER_PACKAGE))
         {
-            /*Intent intent = new Intent(BARCODE_SCANNER_PACKAGE + ".SCAN");
-            startActivityForResult(intent, REQUEST_CODE);*/
             IntentIntegrator scanIntegrator = new IntentIntegrator(this);
             scanIntegrator.initiateScan();
         }
@@ -240,7 +238,7 @@ public class SesionInfoActivity extends BaseNormalActivity
     {
         if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK)
         {
-            try
+        	try
             {
             	IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
             	if (scanningResult != null) {
