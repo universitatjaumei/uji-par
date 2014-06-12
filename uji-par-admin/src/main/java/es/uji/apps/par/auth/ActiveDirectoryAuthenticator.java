@@ -1,5 +1,6 @@
 package es.uji.apps.par.auth;
 
+import java.util.List;
 import java.util.Properties;
 
 import javax.naming.Context;
@@ -35,8 +36,14 @@ public class ActiveDirectoryAuthenticator implements Authenticator {
 			log.info("Autenticamos usuario " + login);
 
 			if (login != null && loginAdminOk(login, password)) {
-				session.setAttribute(USER_ATTRIBUTE, login);
-				return AUTH_OK;
+				if (tienePermisoParaEntrar(login)) {
+					log.info("Usuario " + login + " autenticado y con permiso");
+					session.setAttribute(USER_ATTRIBUTE, login);
+					return AUTH_OK;
+				} else {
+					log.info("El usuario " + login + " autentica bien pero no tiene permiso para entrar");
+					return AUTH_FAILED;
+				}
 			} else {
 				return AUTH_FAILED;
 			}
@@ -44,6 +51,14 @@ public class ActiveDirectoryAuthenticator implements Authenticator {
 			log.error("Error autenticando usuario " + login, e);
 			return AUTH_FAILED;
 		}
+	}
+
+	private boolean tienePermisoParaEntrar(String login) {
+		List<String> admins = Configuration.getAdminLogin();
+		
+		if (login != null && admins.contains(login))
+			return true;
+		return false;
 	}
 
 	public boolean loginAdminOk(String login, String password) throws Exception {
@@ -64,7 +79,7 @@ public class ActiveDirectoryAuthenticator implements Authenticator {
 		constraints.setSearchScope(SearchControls.SUBTREE_SCOPE);
 
 		NamingEnumeration<SearchResult> results = ctx.search(activeDirectoryDC,
-				"(userPrincipalName=" + login + "@" + activeDirectoryDomain + ")",	constraints);
+				"(sAMAccountName=" + login +  ")",	constraints);
 		if (results != null && results.hasMore()) {
 			SearchResult sr = (SearchResult) results.next();
 			String dn = sr.getName();
