@@ -69,6 +69,10 @@ public class Configuration
 	private static final String PGP_PASSPHRASE = "uji.pgp.key";
 	private static final String CODIGO_BUZON = "uji.codigo.buzon";
 	private static final String WSDL_URL = "uji.tpv.wsdlurl";
+	private static final String ACTIVE_DIRECTORY_IP = "activedirectory.ip";
+	private static final String ACTIVE_DIRECTORY_Port = "activedirectory.port";
+	private static final String ACTIVE_DIRECTORY_DOMAIN = "activedirectory.domain";
+	private static final String ACTIVE_DIRECTORY_DC = "activedirectory.dc";
 
     public static Logger log = Logger.getLogger(Configuration.class);
 
@@ -401,5 +405,21 @@ public class Configuration
 
 	public static String getUrlPublicLimpio() {
 		return getProperty(URL_PUBLIC_LIMPIO);
+	}
+	
+	public static String getActiveDirectoryIP() {
+		return getProperty(ACTIVE_DIRECTORY_IP);
+	}
+	
+	public static String getActiveDirectoryPort() {
+		return getProperty(ACTIVE_DIRECTORY_Port);
+	}
+	
+	public static String getActiveDirectoryDomain() {
+		return getProperty(ACTIVE_DIRECTORY_DOMAIN);
+	}
+	
+	public static String getActiveDirectoryDC() {
+		return getProperty(ACTIVE_DIRECTORY_DC);
 	}
 }
