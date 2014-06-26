@@ -1,8 +1,11 @@
 package es.uji.apps.par.services;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -131,5 +134,18 @@ public class EventosService
 			eventosParaSync.add(eventoParaSync);
 		}
 		return eventosParaSync;
+	}
+
+	public byte[] getImagenSustitutivaSiExiste() throws IOException {
+		String path = Configuration.getPathImagenSustitutiva();
+		if (path != null) {
+			FileInputStream fis = new FileInputStream("/etc/uji/par/imagenes/" + path);
+			return IOUtils.toByteArray(fis);
+		} else
+			return null;
+	}
+
+	public String getImagenSustitutivaContentType() {
+		return Configuration.getImagenSustitutivaContentType();
 	}
 }

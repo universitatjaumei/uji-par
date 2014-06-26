@@ -260,10 +260,19 @@ public class EventosResource extends BaseResource
             Evento evento = eventosService.getEvento(eventoId);
 
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
-
-            ImageUtils.changeDpi(evento.getImagen(), bos, 3);
-
-            return Response.ok(bos.toByteArray()).type(evento.getImagenContentType()).build();
+            byte[] imagen = (evento.getImagen() != null)?evento.getImagen():eventosService.getImagenSustitutivaSiExiste();
+            String contentType = (evento.getImagenContentType() != null)?evento.getImagenContentType():eventosService.getImagenSustitutivaContentType();
+            
+            //si no hay imagen sustitutiva, siempre devolvemos la de bbdd, aunque sea nula
+            if (imagen == null)
+            	imagen = evento.getImagen();
+            
+            if (contentType == null)
+            	contentType = evento.getImagenContentType();
+            
+            ImageUtils.changeDpi(imagen, bos, 3);
+            return Response.ok(bos.toByteArray()).type(contentType).build();
+            
         }
         catch (EventoNoEncontradoException e)
         {

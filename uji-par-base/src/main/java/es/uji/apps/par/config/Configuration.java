@@ -73,6 +73,8 @@ public class Configuration
 	private static final String ACTIVE_DIRECTORY_Port = "activedirectory.port";
 	private static final String ACTIVE_DIRECTORY_DOMAIN = "activedirectory.domain";
 	private static final String ACTIVE_DIRECTORY_DC = "activedirectory.dc";
+	private static final String IMAGEN_SUSTITUTIVA = "uji.reports.imagenSustitutiva";
+	private static final String IMAGEN_SUSTITUTIVA_CONTENT_TYPE = "uji.reports.imagenSustitutivaContentType";
 
     public static Logger log = Logger.getLogger(Configuration.class);
 
@@ -421,5 +423,13 @@ public class Configuration
 	
 	public static String getActiveDirectoryDC() {
 		return getProperty(ACTIVE_DIRECTORY_DC);
+	}
+
+	public static String getPathImagenSustitutiva() {
+		return getProperty(IMAGEN_SUSTITUTIVA);
+	}
+
+	public static String getImagenSustitutivaContentType() {
+		return getProperty(IMAGEN_SUSTITUTIVA_CONTENT_TYPE);
 	}
 }
