@@ -75,6 +75,7 @@ public class Configuration
 	private static final String ACTIVE_DIRECTORY_DC = "activedirectory.dc";
 	private static final String IMAGEN_SUSTITUTIVA = "uji.reports.imagenSustitutiva";
 	private static final String IMAGEN_SUSTITUTIVA_CONTENT_TYPE = "uji.reports.imagenSustitutivaContentType";
+	private static final String PORCENTAJE_IVA_DEFECTO = "uji.par.porcentajeIvaDefecto";
 
     public static Logger log = Logger.getLogger(Configuration.class);
 
@@ -431,5 +432,9 @@ public class Configuration
 
 	public static String getImagenSustitutivaContentType() {
 		return getProperty(IMAGEN_SUSTITUTIVA_CONTENT_TYPE);
+	}
+
+	public static String getPorcentajeIvaDefecto() {
+		return getProperty(PORCENTAJE_IVA_DEFECTO);
 	}
 }

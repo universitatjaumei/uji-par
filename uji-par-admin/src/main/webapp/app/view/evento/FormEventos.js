@@ -138,12 +138,13 @@ Ext
 									anchor : '100%',
 									spinUpEnabled : false,
 									spinDownEnabled : false,
+									labelWidth: 120,
 									minValue : 0
 								},
 								items : [ {
 									fieldLabel : UI.i18n.field.porcentajeIVA,
 									name : 'porcentajeIVA',
-									allowBlank : true
+									allowBlank : false
 								}, {
 									fieldLabel : UI.i18n.field.ivaSGAE,
 									name : 'ivaSGAE',

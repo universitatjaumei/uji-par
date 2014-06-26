@@ -2,6 +2,7 @@ package es.uji.apps.par.sync.uji;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.text.ParseException;
 import java.util.Calendar;
@@ -217,9 +218,20 @@ public class EventosSyncBenicassim implements EventosSync
         {
             evento.setTituloVa(evento.getTituloEs());
         }
+        
+        if (evento.getPorcentajeIva() == null)
+        	evento.setPorcentajeIva(getPorcentajeIvaDefecto());
     }
 
-    private String getDuracion(String duracio) {
+    private BigDecimal getPorcentajeIvaDefecto() {
+		String porcentajeIvaDefecto = Configuration.getPorcentajeIvaDefecto();
+		if (porcentajeIvaDefecto == null)
+			porcentajeIvaDefecto = "0";
+			
+		return new BigDecimal(porcentajeIvaDefecto);
+	}
+
+	private String getDuracion(String duracio) {
 		if (duracio == null || duracio.equals("") || duracio.equals("0") || duracio.toLowerCase().equals("0 min"))
 			return null;
 		else
