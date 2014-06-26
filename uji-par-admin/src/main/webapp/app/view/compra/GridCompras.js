@@ -31,6 +31,7 @@ Ext.define('Paranimf.view.compra.GridCompras', {
    }],
 
   viewConfig: {
+    enableTextSelection: true,
     getRowClass: function(record) {
       if (record && record.data.anulada)
         return 'gridAnulada'
