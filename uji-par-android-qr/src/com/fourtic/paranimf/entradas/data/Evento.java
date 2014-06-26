@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
+import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable
@@ -16,6 +18,9 @@ public class Evento
     @SerializedName("tituloVa")
     @DatabaseField(columnName = "titulo")
     private String titulo;
+    
+    @ForeignCollectionField
+    private ForeignCollection<Sesion> sesionesLazy;
 
     private List<Sesion> sesiones;
 
@@ -65,4 +70,12 @@ public class Evento
     {
         return this.modificado;
     }
+
+	public ForeignCollection<Sesion> getSesionesLazy() {
+		return sesionesLazy;
+	}
+
+	public void setSesionesLazy(ForeignCollection<Sesion> sesionesLazy) {
+		this.sesionesLazy = sesionesLazy;
+	}
 }

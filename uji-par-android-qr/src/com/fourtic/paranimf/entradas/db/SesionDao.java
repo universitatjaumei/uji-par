@@ -23,7 +23,7 @@ public class SesionDao
 {
     DbHelperService dbHelper;
 
-    private Dao<Sesion, Integer> dao;
+    Dao<Sesion, Integer> dao;
 
     @Inject
     public SesionDao(DbHelperService dbHelper)

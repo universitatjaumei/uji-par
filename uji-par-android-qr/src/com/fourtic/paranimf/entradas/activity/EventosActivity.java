@@ -11,9 +11,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -40,6 +40,9 @@ public class EventosActivity extends BaseNormalActivity
     @InjectView(R.id.eventos_empty_text)
     private TextView eventosEmptyText;
     
+    @InjectView(R.id.filter_text)
+    private TextView filterText;
+    
     @InjectView(R.id.settings_empty_text)
     private TextView settingsEmptyText;
 
@@ -53,6 +56,8 @@ public class EventosActivity extends BaseNormalActivity
     private EstadoRed network;
 
     private EventosListAdapter adapter;
+    
+    boolean isChecked = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -113,11 +118,13 @@ public class EventosActivity extends BaseNormalActivity
     	
         if (isEmptyURLOrAPIKey())
         {
+        	filterText.setVisibility(View.GONE);
         	eventosEmptyText.setVisibility(View.GONE);
         	settingsEmptyText.setVisibility(View.VISIBLE);
         }
         else
         {
+        	filterText.setVisibility(View.VISIBLE);
         	eventosEmptyText.setVisibility(View.VISIBLE);
         	settingsEmptyText.setVisibility(View.GONE);
         }
@@ -128,6 +135,8 @@ public class EventosActivity extends BaseNormalActivity
         try
         {
             adapter.update(eventoDao.getEventos());
+            if (isChecked)
+            	adapter.getFilter().filter("");
         }
         catch (SQLException e)
         {
@@ -142,6 +151,14 @@ public class EventosActivity extends BaseNormalActivity
     	getSupportMenuInflater().inflate(R.menu.settings, menu);
     	getSupportMenuInflater().inflate(R.menu.eventos, menu);
 
+        return true;
+    }
+    
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem checkable = menu.findItem(R.id.action_filter);
+        checkable.setChecked(isChecked);
+        filterText.setText(R.string.filter_on);
         return true;
     }
 
@@ -167,6 +184,16 @@ public class EventosActivity extends BaseNormalActivity
             
         	Intent settingsIntent = new Intent(this, SettingsActivity.class);
             this.startActivity(settingsIntent);
+
+            return true;
+        case R.id.action_filter:
+        	isChecked = !item.isChecked();
+            item.setChecked(isChecked);
+            if (isChecked)
+            	filterText.setText(R.string.filter_on);
+            else
+            	filterText.setText(R.string.filter_off);
+        	cargaEventosDesdeBd();
 
             return true;
         default:
