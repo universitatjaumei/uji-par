@@ -280,6 +280,10 @@ public class ComprasService
     public void rellenaCodigoPagoPasarela(long idCompra, String recibo) {
         comprasDAO.rellenaCodigoPagoPasarela(idCompra, recibo);
     }
+
+	public void passarACompra(Long sesionId, Long idCompraReserva) {
+		comprasDAO.passarACompra(sesionId, idCompraReserva);
+	}
 }
 
 

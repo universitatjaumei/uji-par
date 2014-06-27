@@ -42,6 +42,7 @@ UI =
             "noNumerada": "Sessió no numerada",
             "sureAnular": "Està segur d'anul·lar la compra/reserva seleccionada?",
             "sureDesanular": "Està segur d'activar la compra/reserva seleccionada?",
+            "surePassarACompra": "Està segur de passar a compra la reserva seleccionada?",
             "printTaquilla": "Taquilla",
             "printAtHome": "Print-At-Home",
             "print": "Imprimir",
@@ -121,6 +122,7 @@ UI =
             	"40":"Sense dades EMV des del servidor"
             },
             "anularCompraReserva": "S'ha produït un error anul·lant la compra/reserva",
+            "passarReservaCompra": "S'ha produït un error passant la reserva a compra",            
             "fechasObligatorias": "Les dates són obligatòries",
             "desanularCompraReserva": "S'ha produït un error activant la compra/reserva",
             "anularEntrada": "S'ha produït un error anul·lant l'entrada",
@@ -176,7 +178,8 @@ UI =
             "setIncidencia": "Ficar incidència",
             "printEntradaDirectamente": "Imprimir directament",
             "filtrarSessions": "Veure sessions d'aquestes dates",
-            "generarInformeSesion": "Generar informe de la sessió"
+            "generarInformeSesion": "Generar informe de la sessió",
+            "passToCompra": "Passar reserva a compra"
         },
         "calendar": {
             "calendar": "Calendari de reserves",

@@ -76,7 +76,11 @@ Ext.define('Paranimf.controller.ComprasReservas', {
       
       'gridCompras button[action=desanular]': {
         click: this.desanularCompraReserva
-      },      
+      },
+
+      'gridCompras button[action=passToCompra]': {
+        click: this.passarReservaACompra
+      },
 
       'gridCompras': {
         selectionchange: this.loadButacas
@@ -196,7 +200,47 @@ Ext.define('Paranimf.controller.ComprasReservas', {
         });
       }
     }
-  },  
+  },
+
+  passarReservaACompra: function() {
+    if (!this.getGridCompras().hasRowSelected())
+      alert(UI.i18n.message.selectRow);
+    else {
+      var selectedRecord = this.getGridCompras().getSelectedRecord();
+      console.log(selectedRecord);
+      if (selectedRecord.data.reserva == true) {
+        if (confirm(UI.i18n.message.surePassarACompra)) {
+          console.log("vamos")
+          var idSesion = this.getGridSesionesComprasReservas().getSelectedColumnId();
+          var idCompra = this.getGridCompras().getSelectedColumnId();
+          var me = this;
+          this.getGridCompras().setLoading(UI.i18n.message.loading);
+
+          Ext.Ajax.request({
+            url : urlPrefix + 'compra/' + idSesion + '/passaracompra/' + idCompra,
+            method: 'PUT',
+            success: function (response) {
+              me.setStoreCompras();
+              me.getGridCompras().setLoading(false);
+              me.getGridCompras().deseleccionar();
+              me.getGridCompras().getStore().load();
+            }, failure: function (response) {
+              
+              me.getGridCompras().setLoading(false);
+              
+              var resp = Ext.JSON.decode(response.responseText, true);
+              
+              if (resp['message'])
+                alert(resp['message']);
+              else  
+                alert(UI.i18n.error.passarReservaCompra);
+            }
+          });
+        }
+      } else
+        console.log("COMPRA");
+    }
+  },
 
   anularButacas: function() {
     if (!this.getGridDetalleCompras().hasRowSelected())

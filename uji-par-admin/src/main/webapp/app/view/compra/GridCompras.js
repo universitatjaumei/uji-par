@@ -12,6 +12,9 @@ Ext.define('Paranimf.view.compra.GridCompras', {
     action: 'desanular',
     text: UI.i18n.button.desanular
   }, {
+    action: 'passToCompra',
+    text: UI.i18n.button.passToCompra
+  }, {
     xtype: 'checkbox',
     action: 'showAnuladas',
     fieldLabel: UI.i18n.field.mostrarAnuladas,

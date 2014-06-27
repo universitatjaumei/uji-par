@@ -667,4 +667,20 @@ public class ComprasDAO extends BaseDAO
 		
 		return r;
 	}
+
+	@Transactional
+	public void passarACompra(Long sesionId, Long idCompraReserva) {
+		QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
+		JPAUpdateClause updateC = new JPAUpdateClause(entityManager, qCompraDTO);
+		updateC
+			.set(qCompraDTO.reserva, false)
+			.set(qCompraDTO.pagada, true)
+			//.set(qCompraDTO.desde, null)
+			//.set(qCompraDTO.hasta, null)
+			.set(qCompraDTO.caducada, false)
+			.set(qCompraDTO.anulada, false)
+			.where(qCompraDTO.id.eq(idCompraReserva)
+				.and(qCompraDTO.parSesion.id.eq(sesionId)
+				.and(qCompraDTO.reserva.eq(true)))).execute();
+	}
 }

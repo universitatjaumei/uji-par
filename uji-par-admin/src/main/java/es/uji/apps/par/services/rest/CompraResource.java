@@ -111,6 +111,16 @@ public class CompraResource extends BaseResource {
 					e.getFila(), e.getNumero());
 		}
 	}
+	
+	@PUT
+	@Path("{idSesion}/passaracompra/{idCompra}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response passarACompra(@PathParam("idSesion") Long sesionId, @PathParam("idCompra") Long idCompraReserva) {
+		AuthChecker.canWrite(currentRequest);
+
+		comprasService.passarACompra(sesionId, idCompraReserva);
+		return Response.ok().build();
+	}
 
 	@PUT
 	@Path("{idSesion}/{idCompraReserva}/{idButaca}")
