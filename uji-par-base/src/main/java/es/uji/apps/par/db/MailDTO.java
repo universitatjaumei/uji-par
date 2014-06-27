@@ -43,6 +43,8 @@ public class MailDTO implements Serializable
 
     @Column(name = "FECHA_ENVIADO")
     private Timestamp fechaEnviado;
+    
+    private String uuid;
 
     public MailDTO()
     {
@@ -117,5 +119,13 @@ public class MailDTO implements Serializable
     {
         this.fechaEnviado = fechaEnviado;
     }
+
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
 
 }

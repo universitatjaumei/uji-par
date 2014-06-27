@@ -47,11 +47,11 @@ public class MailService implements MailInterface
 
         mensaje.addToRecipient(para);
 
-        //client.send(mensaje);
+        client.send(mensaje);
     }
 
     //al llamarse desde el job de quartz, no se inyecta el mailDAO, y lo enviamos desde la interfaz
-    public synchronized void enviaPendientes(MailDAO mailDAO) throws MessageNotSentException
+    public synchronized void enviaPendientes(MailDAO mailDAO, EntradasService entradasService) throws MessageNotSentException
     {
         log.info("Enviando mails pendientes...");
 

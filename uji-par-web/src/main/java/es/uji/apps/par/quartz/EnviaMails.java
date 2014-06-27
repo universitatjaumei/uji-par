@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.dao.MailDAO;
+import es.uji.apps.par.services.EntradasService;
 import es.uji.apps.par.services.MailInterface;
 import es.uji.commons.messaging.client.MessageNotSentException;
 
@@ -14,6 +15,10 @@ public class EnviaMails
 {
 	@Autowired
 	MailDAO mailDAO;
+	
+	@Autowired
+	EntradasService entradasService;
+	
 	public static Logger log = Logger.getLogger(EnviaMails.class);
 	
 	public static MailInterface newInstanceMailSender()
@@ -30,6 +35,6 @@ public class EnviaMails
     {
     	log.info("Inicializamos envío de mails");
     	MailInterface mailService = EnviaMails.newInstanceMailSender();
-        mailService.enviaPendientes(mailDAO);
+        mailService.enviaPendientes(mailDAO, entradasService);
     }
 }

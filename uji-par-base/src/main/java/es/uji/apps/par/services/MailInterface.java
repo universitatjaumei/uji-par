@@ -5,6 +5,6 @@ import es.uji.commons.messaging.client.MessageNotSentException;
 
 
 public interface MailInterface {
-	public void enviaPendientes(MailDAO mailDAO) throws MessageNotSentException;
+	public void enviaPendientes(MailDAO mailDAO, EntradasService entradasService) throws MessageNotSentException;
 	public void anyadeEnvio(String to, String titulo, String texto);
 }

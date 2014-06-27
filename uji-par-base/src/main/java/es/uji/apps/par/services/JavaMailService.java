@@ -1,12 +1,15 @@
 package es.uji.apps.par.services;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
 import javax.mail.Address;
+import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.AddressException;
@@ -87,12 +90,41 @@ public class JavaMailService implements MailInterface
             Message message = createMailMessage(de, para, titulo);
             MimeMultipart multipart = createMailBodyMessage(texto);
             message.setContent(multipart);
-
             Transport.send(message);
-        }
-        catch (MessagingException me) {
+        }catch (MessagingException me) {
         	log.error("Error enviando mail ", me);
             throw new MessageNotSentException();
+     	}
+    }
+            
+            
+    private void enviaMailMultipart(String de, String para, String titulo, String texto, String uuid, 
+    		EntradasService entradasService) throws MessageNotSentException {
+    	try {
+    		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    		entradasService.generaEntrada(uuid, baos);
+    		Message message = createMailMessage(de, para, titulo);
+            Multipart multipart = new MimeMultipart();
+            BodyPart messageBodyPart = new MimeBodyPart();
+            messageBodyPart.setText(texto);
+            multipart.addBodyPart(messageBodyPart);
+
+            byte[] pdf = baos.toByteArray();
+            MimeBodyPart attachment = new MimeBodyPart();
+            attachment.setFileName("entrada.pdf");
+            attachment.setContent(pdf, "application/pdf");
+            multipart.addBodyPart(attachment);
+
+            message.setContent(multipart);
+            Transport.send(message);
+        } catch (Exception me) {
+        	log.error("Error enviando mail multipart", me);
+        	try {
+        		enviaMail(de, para, titulo, texto);
+        	} catch (Exception e) {
+        		log.error("Error enviando mail", me);
+        		throw new MessageNotSentException();
+        	}
      	}
     }
     
@@ -107,8 +139,8 @@ public class JavaMailService implements MailInterface
         return multipart;
     }
 
-    //al llamarse desde el job de quartz, no se inyecta el mailDAO, y lo enviamos desde la interfaz
-    public synchronized void enviaPendientes(MailDAO mailDAO) throws MessageNotSentException
+    //al llamarse desde el job de quartz, no se inyecta el mailDAO, ni el service y lo enviamos desde la interfaz
+    public synchronized void enviaPendientes(MailDAO mailDAO, EntradasService entradasService) throws MessageNotSentException
     {
         log.info("** - Enviando mails pendientes desde JavaMailService...");
 
@@ -116,7 +148,7 @@ public class JavaMailService implements MailInterface
 
         for (MailDTO mail : mails)
         {
-            enviaMail(mail.getDe(), mail.getPara(), mail.getTitulo(), mail.getTexto());
+        	enviaMailMultipart(mail.getDe(), mail.getPara(), mail.getTitulo(), mail.getTexto(), mail.getUuid(), entradasService);
             mailDAO.marcaEnviado(mail.getId());
         }
     }
@@ -125,6 +157,6 @@ public class JavaMailService implements MailInterface
     {
     	JavaMailService mail = new JavaMailService();
 
-        mail.enviaMail("no_reply@uji.es", "soporte@4tic.com", "Esto es el cuerpo", "Hola que tal!");
+        mail.enviaMailMultipart("no_reply@uji.es", "nicolas.manero@4tic.com", "Esto es el cuerpo", "Hola que tal!", "uuid", null);
     }
 }
