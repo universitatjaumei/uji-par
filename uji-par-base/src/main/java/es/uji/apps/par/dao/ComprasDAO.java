@@ -13,8 +13,11 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mysema.query.BooleanBuilder;
+import com.mysema.query.Tuple;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.jpa.impl.JPAUpdateClause;
+import com.mysema.query.types.QTuple;
+import com.sun.istack.logging.Logger;
 
 import es.uji.apps.par.ButacaOcupadaAlActivarException;
 import es.uji.apps.par.database.DatabaseHelper;
@@ -33,6 +36,7 @@ import es.uji.apps.par.utils.DateUtils;
 @Repository
 public class ComprasDAO extends BaseDAO
 {
+	public static Logger log = Logger.getLogger(ComprasDAO.class);
     private static final int ELIMINA_PENDIENTES_MINUTOS = 20;
     
     @Autowired
@@ -250,6 +254,7 @@ public class ComprasDAO extends BaseDAO
     public void rellenaDatosComprador(String uuidCompra, String nombre, String apellidos, String direccion, 
     		String poblacion, String cp, String provincia, String telefono, String email, Object infoPeriodica)
     {
+    	log.info("RellenaDatosComprador uuidCompra" + uuidCompra + " nombre " + nombre + " " + apellidos);
         CompraDTO compra = getCompraByUuid(uuidCompra);
         
         compra.setNombre(nombre);
@@ -266,18 +271,20 @@ public class ComprasDAO extends BaseDAO
     }
     
     @Transactional
-    public List<CompraDTO> getComprasBySesion(long sesionId, int showAnuladas, String sortParameter, 
+    public List<Tuple> getComprasBySesion(long sesionId, int showAnuladas, String sortParameter, 
     		int start, int limit, int showOnline, String search)
     {
     	QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
-    	return getQueryComprasBySesion(sesionId, showAnuladas, showOnline, search).orderBy(getSort(qCompraDTO, sortParameter)).
-    			offset(start).limit(limit).list(qCompraDTO);
+    	QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
+    	return getQueryComprasBySesion(sesionId, showAnuladas, showOnline, search, true).orderBy(getSort(qCompraDTO, sortParameter)).
+    			offset(start).limit(limit).list(new QTuple(qCompraDTO, qButacaDTO.precio.sum()));
     }
 
     @Transactional
-	private JPAQuery getQueryComprasBySesion(long sesionId, int showAnuladas, int showOnline, String search) {
+	private JPAQuery getQueryComprasBySesion(long sesionId, int showAnuladas, int showOnline, String search, boolean doJoinButacas) {
 		JPAQuery query = new JPAQuery(entityManager);
 		QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
+		QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
 		BooleanBuilder builder = new BooleanBuilder();
 		builder.and(qCompraDTO.parSesion.id.eq(sesionId));
 		
@@ -301,12 +308,16 @@ public class ComprasDAO extends BaseDAO
 			}
 		}
 		
-		return query.from(qCompraDTO).where(builder);
+		if (doJoinButacas)
+			return query.from(qCompraDTO).leftJoin(qCompraDTO.parButacas, qButacaDTO).where(builder
+					.and(qButacaDTO.anulada.isNull().or(qButacaDTO.anulada.eq(false)))).groupBy(qCompraDTO.id);
+		else
+			return query.from(qCompraDTO).where(builder);
 	}
 
     @Transactional
 	public int getTotalComprasBySesion(Long sesionId, int showAnuladas, int showOnline, String search) {
-		return (int) getQueryComprasBySesion(sesionId, showAnuladas, showOnline, search).count();
+		return (int) getQueryComprasBySesion(sesionId, showAnuladas, showOnline, search, false).count();
 	}
 
     @Transactional
@@ -389,15 +400,6 @@ public class ComprasDAO extends BaseDAO
          
         return compras;
     }
-
-    @Transactional
-	public void anularButaca(Long idButaca) {
-    	QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
-		
-		JPAUpdateClause updateButacas = new JPAUpdateClause(entityManager, qButacaDTO);
-		updateButacas.set(qButacaDTO.anulada, true).
-			where(qButacaDTO.id.eq(idButaca)).execute();
-	}
 
     @SuppressWarnings("unchecked")
 	@Transactional

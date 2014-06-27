@@ -3,6 +3,7 @@ package es.uji.apps.par.services.rest;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.print.PrintException;
@@ -43,7 +44,6 @@ import es.uji.apps.par.services.SesionesService;
 @Path("compra")
 public class CompraResource extends BaseResource {
 	public static Logger log = Logger.getLogger(CompraResource.class);
-	private static boolean jobRunning = true;
 
 	@InjectParam
 	private ComprasService comprasService;
@@ -120,7 +120,7 @@ public class CompraResource extends BaseResource {
 			@PathParam("idButaca") Long idButaca) {
 		AuthChecker.canWrite(currentRequest);
 
-		comprasService.anularButaca(idButaca);
+		comprasService.anularButacas(Arrays.asList(idButaca));
 		return Response.ok().build();
 	}
 

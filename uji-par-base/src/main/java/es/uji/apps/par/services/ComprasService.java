@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mysema.query.Tuple;
+
 import es.uji.apps.par.ButacaOcupadaAlActivarException;
 import es.uji.apps.par.ButacaOcupadaException;
 import es.uji.apps.par.CompraButacaDescuentoNoDisponible;
@@ -218,10 +220,14 @@ public class ComprasService
     {
         List<Compra> result = new ArrayList<Compra>();
         
-        List<CompraDTO> compras = comprasDAO.getComprasBySesion(sesionId, showAnuladas, sortParameter, start, limit, showOnline, search);
+        List<Tuple> tuples = comprasDAO.getComprasBySesion(sesionId, showAnuladas, sortParameter, start, limit, showOnline, search);
 
-        for (CompraDTO compraDTO: compras)
+        for (Tuple tupla: tuples) {
+        	CompraDTO compraDTO = tupla.get(0, CompraDTO.class);
+        	BigDecimal importe = tupla.get(1, BigDecimal.class);
+        	compraDTO.setImporte(importe);
             result.add(new Compra(compraDTO));
+        }
         
         return result;
     }
@@ -260,27 +266,18 @@ public class ComprasService
     {
         List<CompraDTO> aCaducar = comprasDAO.getReservasACaducar(new Date());
         
-        for (CompraDTO compraDTO:aCaducar)
-        {
+        for (CompraDTO compraDTO:aCaducar) {
             anularCompraReserva(compraDTO.getId());
         }
     }
-
-	public void anularButaca(Long idButaca) {
-		comprasDAO.anularButaca(idButaca);
-	}
 	
 	@Transactional
     public void anularButacas(List<Long> idsButacas) {
-	    
 	    for (Long idButaca: idsButacas)
-	    {
-	        comprasDAO.anularButaca(idButaca);
-	    }
+	    	butacasDAO.anularButaca(idButaca);
 	}
 
-    public void rellenaCodigoPagoPasarela(long idCompra, String recibo)
-    {
+    public void rellenaCodigoPagoPasarela(long idCompra, String recibo) {
         comprasDAO.rellenaCodigoPagoPasarela(idCompra, recibo);
     }
 }

@@ -177,8 +177,7 @@ public class ButacasDAOTest extends BaseDAOTest
         butacasDao.addButaca(butaca);
     
         Assert.assertEquals(1, butacasDao.getOcupadas(sesion.getId(), localizacion.getCodigo()));
-        
-        comprasDao.anularButaca(butaca.getId());
+        butacasDao.anularButaca(butaca.getId());
         
         Assert.assertEquals(0, butacasDao.getOcupadas(sesion.getId(), localizacion.getCodigo()));
     }    

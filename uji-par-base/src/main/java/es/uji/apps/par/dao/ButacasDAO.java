@@ -261,5 +261,19 @@ public class ButacasDAO extends BaseDAO
                 .set(qButacaDTO.presentada, butaca.getPresentada()).execute();
         }
     }
+    
+    @Transactional
+	public void anularButaca(Long idButaca) {
+    	QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
+		
+		JPAUpdateClause updateButacas = new JPAUpdateClause(entityManager, qButacaDTO);
+		updateButacas.set(qButacaDTO.anulada, true).
+			where(qButacaDTO.id.eq(idButaca)).execute();
+	}
 
+    @Transactional
+	public ButacaDTO getButaca(Long idButaca) {
+        JPAQuery query = new JPAQuery(entityManager);
+        return query.from(qButacaDTO).where(qButacaDTO.id.eq(idButaca)).singleResult(qButacaDTO);
+	}
 }
