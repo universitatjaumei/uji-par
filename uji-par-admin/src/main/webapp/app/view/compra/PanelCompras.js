@@ -37,7 +37,7 @@ Ext.define('Paranimf.view.compra.PanelCompras', {
     minHeight: 100,
     split: true,
     header: true,
-    flex: 2
+    flex: 1
   }, {
     region: 'south',
     xtype: 'gridDetalleCompras',
