@@ -34,6 +34,7 @@ import es.uji.apps.par.CompraInvitacionPorInternetException;
 import es.uji.apps.par.CompraSinButacasException;
 import es.uji.apps.par.Constantes;
 import es.uji.apps.par.FueraDePlazoVentaInternetException;
+import es.uji.apps.par.NoHayButacasLibresException;
 import es.uji.apps.par.butacas.EstadoButacasRequest;
 import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.db.CompraDTO;
@@ -354,7 +355,12 @@ public class EntradasResource extends BaseResource
         {
             String error = ResourceProperties.getProperty(getLocale(), "error.seleccionEntradas.compraDescuentoNoDisponible");
             return paginaSeleccionEntradasNoNumeradas(sesionId, error);
-        } catch (Exception e) {
+        }
+        catch (NoHayButacasLibresException e) {
+        	String error = ResourceProperties.getProperty(getLocale(), "error.noHayButacasParaLocalizacion") + " " + e.getLocalizacion();
+        	return paginaSeleccionEntradasNoNumeradas(sesionId, error);
+        }
+        catch (Exception e) {
         	String error = ResourceProperties.getProperty(getLocale(), "error.errorGeneral");
         	return paginaSeleccionEntradasNoNumeradas(sesionId, error);
         }
