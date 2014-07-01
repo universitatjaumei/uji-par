@@ -54,7 +54,8 @@ public class ComprasService
         return registraCompra(sesionId, butacasSeleccionadas, true);
     }
 
-    @Transactional
+    @Transactional(rollbackForClassName={"CompraButacaDescuentoNoDisponible","FueraDePlazoVentaInternetException",
+    		"NoHayButacasLibresException","ButacaOcupadaException","CompraSinButacasException"})
     public ResultadoCompra realizaCompraInternet(Long sesionId, List<Butaca> butacasSeleccionadas, String uuidCompraActual) throws Exception
     {
         Sesion sesion = sesionesService.getSesion(sesionId);
@@ -101,7 +102,8 @@ public class ComprasService
         return (tipoEvento.equals("cine") || tipoEvento.equals("teatro")) && precioSesion.getPrecio().compareTo(descuentoLimite) < 0;
     }
 
-    @Transactional
+    @Transactional(rollbackForClassName={"NoHayButacasLibresException","ButacaOcupadaException",
+    		"CompraSinButacasException"})
     private synchronized ResultadoCompra registraCompra(Long sesionId, List<Butaca> butacasSeleccionadas, boolean taquilla)
             throws NoHayButacasLibresException, ButacaOcupadaException, CompraSinButacasException
     {
@@ -114,8 +116,7 @@ public class ComprasService
 
         CompraDTO compraDTO;
 
-        compraDTO = comprasDAO.insertaCompra(sesionId, new Date(), taquilla,
-                importe);
+        compraDTO = comprasDAO.insertaCompra(sesionId, new Date(), taquilla, importe);
 
         butacasDAO.reservaButacas(sesionId, compraDTO, butacasSeleccionadas);
 
@@ -191,7 +192,8 @@ public class ComprasService
         return cal.getTime();
     }
 
-    @Transactional
+    @Transactional(rollbackForClassName={"NoHayButacasLibresException","ButacaOcupadaException",
+	"CompraSinButacasException"})
     public ResultadoCompra reservaButacas(Long sesionId, Date desde, Date hasta, List<Butaca> butacasSeleccionadas, String observaciones, 
     		int horaInicial, int horaFinal, int minutoInicial, int minutoFinal) 
             throws NoHayButacasLibresException, ButacaOcupadaException, CompraSinButacasException
