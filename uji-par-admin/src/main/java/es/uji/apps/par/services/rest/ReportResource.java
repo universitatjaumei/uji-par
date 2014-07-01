@@ -3,6 +3,8 @@ package es.uji.apps.par.services.rest;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.ws.rs.DefaultValue;
@@ -86,7 +88,30 @@ public class ReportResource extends BaseResource
         return Response.ok(ostream.toByteArray())
         		.header("Content-Disposition","attachment; filename =\"" + fileName + "\"")
         		.type("application/pdf").build();
-    } 
+    }
+    
+    @POST
+    @Path("evento/{idEvento}/pdf")
+    @Produces("application/pdf")
+    public Response generatePdfEvento(@PathParam("idEvento") long idEvento) throws TranscoderException, IOException, 
+    	ReportSerializationException, ParseException, SinIvaException {
+        ByteArrayOutputStream ostream = new ByteArrayOutputStream();
+        
+        List<Sesion> sesiones = sesionesService.getSesiones(idEvento);
+        Collections.sort(sesiones, new Comparator<Sesion>() {
+			@Override
+			public int compare(Sesion o1, Sesion o2) {
+				return o1.getFechaCelebracion().compareTo(o2.getFechaCelebracion());
+			}
+		});
+        String fileName = "informeEvento-" + idEvento + ".pdf";
+        
+        reportService.getPdfSesiones(sesiones, ostream);
+        
+        return Response.ok(ostream.toByteArray())
+        		.header("Content-Disposition","attachment; filename =\"" + fileName + "\"")
+        		.type("application/pdf").build();
+    }
     
     @POST
     @Path("taquilla/{fechaInicio}/{fechaFin}/efectivo/pdf")

@@ -179,6 +179,7 @@ UI =
             "printEntradaDirectamente": "Imprimir directament",
             "filtrarSessions": "Veure sessions d'aquestes dates",
             "generarInformeSesion": "Generar informe de la sessió",
+            "generarInformeEvento": "Generar informe del event",
             "passToCompra": "Passar reserva a compra"
         },
         "calendar": {

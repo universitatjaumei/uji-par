@@ -39,6 +39,7 @@ import es.uji.apps.par.db.SesionDTO;
 import es.uji.apps.par.model.Cine;
 import es.uji.apps.par.model.Evento;
 import es.uji.apps.par.model.Informe;
+import es.uji.apps.par.model.InformeSesion;
 import es.uji.apps.par.model.Sala;
 import es.uji.apps.par.model.Sesion;
 import es.uji.apps.par.report.EntradaReportFactory;
@@ -341,11 +342,34 @@ public class ReportService {
 		return result;
 	}
 	
-	public void getPdfSesion(long sesionId, ByteArrayOutputStream bos) throws SinIvaException, ReportSerializationException {
+	public void getPdfSesion(long sesionId, ByteArrayOutputStream bos) throws SinIvaException, ReportSerializationException, IOException {
 		InformeInterface informe = informeSesionReport.create(new Locale("ca"));
+		Cine cine = Cine.cineDTOToCine(cinesDAO.getCines().get(0));
+		List<InformeSesion> informesSesion = new ArrayList<InformeSesion>();
+		informesSesion.add(getInformeSesion(sesionId));
+		informe.genera(Configuration.getCargoInformeEfectivo(), Configuration.getFirmanteInformeEfectivo(), informesSesion, cine, true);
+
+		informe.serialize(bos);
+	}
+	
+	public void getPdfSesiones(List<Sesion> sesiones, ByteArrayOutputStream bos) throws SinIvaException, ReportSerializationException, IOException {
+		InformeInterface informe = informeSesionReport.create(new Locale("ca"));
+		List<InformeSesion> informesSesion = new ArrayList<InformeSesion>();
+		Cine cine = Cine.cineDTOToCine(cinesDAO.getCines().get(0));
+		for (Sesion sesion: sesiones)
+		{
+			long sesionId = sesion.getId();
+			informesSesion.add(getInformeSesion(sesionId));
+		}
+		
+		informe.genera(Configuration.getCargoInformeEfectivo(), Configuration.getFirmanteInformeEfectivo(), informesSesion, cine, false);
+
+		informe.serialize(bos);
+	}
+
+	private InformeSesion getInformeSesion(long sesionId) {
 		SesionDTO sesionDTO = sesionesDAO.getSesion(sesionId);
 		Sesion sesion = Sesion.SesionDTOToSesion(sesionDTO);
-		Cine cine = Cine.cineDTOToCine(cinesDAO.getCines().get(0));
 		Sala sala = Sala.salaDTOtoSala(sesionDTO.getParSala());
 		Evento evento = Evento.eventoDTOtoEvento(sesionDTO.getParEvento());
 		InformeModelReport resumen = comprasDAO.getResumenSesion(sesionId);
@@ -359,12 +383,17 @@ public class ReportService {
 			informeModel.setTipoEntrada(nombreTarifa);
 			compras.add(informeModel);
 		}
-
-		informe.genera(Configuration.getCargoInformeEfectivo(), Configuration.getFirmanteInformeEfectivo(),
-				cine, sala, evento, sesion, 
-				resumen.getNumeroEntradas(), resumen.getCanceladasTaquilla(), resumen.getTotal(), compras);
-
-		informe.serialize(bos);
+		
+		InformeSesion informeSesion = new InformeSesion();
+		informeSesion.setSala(sala);
+		informeSesion.setSesion(sesion);
+		informeSesion.setEvento(evento);
+		informeSesion.setVendidas(resumen.getNumeroEntradas());
+		informeSesion.setAnuladas(resumen.getCanceladasTaquilla());
+		informeSesion.setTotal(resumen.getTotal());
+		informeSesion.setCompras(compras);
+		
+		return informeSesion;
 	}
 	
 	public static void main(String[] args) throws Exception {

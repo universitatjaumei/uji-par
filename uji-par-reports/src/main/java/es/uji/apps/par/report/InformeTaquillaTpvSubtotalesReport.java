@@ -23,9 +23,7 @@ import es.uji.apps.par.SinIvaException;
 import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.i18n.ResourceProperties;
 import es.uji.apps.par.model.Cine;
-import es.uji.apps.par.model.Evento;
-import es.uji.apps.par.model.Sala;
-import es.uji.apps.par.model.Sesion;
+import es.uji.apps.par.model.InformeSesion;
 import es.uji.apps.par.report.components.BaseTable;
 import es.uji.apps.par.report.components.InformeTaquillaReportStyle;
 import es.uji.apps.par.utils.ReportUtils;
@@ -427,9 +425,7 @@ public class InformeTaquillaTpvSubtotalesReport extends Report implements Inform
 		
 	}
 
-	public void genera(String cargo, String firmante, Cine cine, Sala sala,
-			Evento evento, Sesion sesion, Integer vendidas, Integer anuladas,
-			BigDecimal total, List<InformeModelReport> compras) throws SinIvaException {
+	public void genera(String cargo, String firmante, List<InformeSesion> informesSesion, Cine cine, boolean printSesion) throws SinIvaException {
 		// TODO Auto-generated method stub
 		
 	}

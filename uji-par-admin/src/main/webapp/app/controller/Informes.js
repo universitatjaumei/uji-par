@@ -49,6 +49,10 @@ Ext.define('Paranimf.controller.Informes', {
 
          'panelInformes button[action=generarInformeSesion]': {
             click: this.generarInformeSesion
+         },
+
+         'panelInformes button[action=generarInformeEvento]': {
+            click: this.generarInformeEvento
          }
       });
    },
@@ -57,6 +61,14 @@ Ext.define('Paranimf.controller.Informes', {
       var idsSelected = this.getGridSesionesInformes().getSelectedColumnValues("id");
       if (idsSelected && idsSelected.length == 1) {
          this.generatePdfSesion(idsSelected[0]);
+      } else
+         alert(UI.i18n.message.selectRow);
+   },
+
+   generarInformeEvento: function() {
+      var idsSelected = this.getGridSesionesInformes().getSelectedColumnValues("evento");
+      if (idsSelected && idsSelected.length == 1) {
+         this.generatePdfEvento(idsSelected[0].id);
       } else
          alert(UI.i18n.message.selectRow);
    },
@@ -96,6 +108,16 @@ Ext.define('Paranimf.controller.Informes', {
       var form = document.createElement("form");
       form.setAttribute("method", "post");
       form.setAttribute("action", urlPrefix + 'report/sesion/' + idSesion + '/pdf');
+      form.setAttribute("target", "_blank");
+
+      document.body.appendChild(form);
+      form.submit();      
+   },
+
+   generatePdfEvento: function(idEvento) {
+      var form = document.createElement("form");
+      form.setAttribute("method", "post");
+      form.setAttribute("action", urlPrefix + 'report/evento/' + idEvento + '/pdf');
       form.setAttribute("target", "_blank");
 
       document.body.appendChild(form);

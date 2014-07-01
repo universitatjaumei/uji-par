@@ -8,7 +8,11 @@ Ext.define('Paranimf.view.informes.GridSesionesInformes', {
   tbar: [{
     action: 'generarInformeSesion',
     xtype: 'button',
-    text: UI.i18n.button.generarInformeSesion,
+    text: UI.i18n.button.generarInformeSesion
+  },{ 
+    action: 'generarInformeEvento',
+    xtype: 'button',
+    text: UI.i18n.button.generarInformeEvento
   }],
 
   dockedItems: [{
