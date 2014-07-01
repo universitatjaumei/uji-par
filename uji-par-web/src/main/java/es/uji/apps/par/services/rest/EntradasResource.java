@@ -357,7 +357,14 @@ public class EntradasResource extends BaseResource
             return paginaSeleccionEntradasNoNumeradas(sesionId, error);
         }
         catch (NoHayButacasLibresException e) {
-        	String error = ResourceProperties.getProperty(getLocale(), "error.noHayButacasParaLocalizacion") + " " + e.getLocalizacion();
+        	String error = "";
+        	try {
+        		error = ResourceProperties.getProperty(getLocale(), "error.noHayButacasParaLocalizacion") + " " + 
+        				ResourceProperties.getProperty(getLocale(), "localizacion." + e.getLocalizacion());
+        	} catch (Exception ex) {
+        		error = ResourceProperties.getProperty(getLocale(), "error.errorGeneral");
+        	}
+        	
         	return paginaSeleccionEntradasNoNumeradas(sesionId, error);
         }
         catch (Exception e) {
