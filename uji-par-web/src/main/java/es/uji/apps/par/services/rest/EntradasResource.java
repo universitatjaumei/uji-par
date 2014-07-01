@@ -362,7 +362,7 @@ public class EntradasResource extends BaseResource
         		error = ResourceProperties.getProperty(getLocale(), "error.noHayButacasParaLocalizacion") + " " + 
         				ResourceProperties.getProperty(getLocale(), "localizacion." + e.getLocalizacion());
         	} catch (Exception ex) {
-        		error = ResourceProperties.getProperty(getLocale(), "error.errorGeneral");
+        		error = ResourceProperties.getProperty(getLocale(), "error.noHayButacasParaLocalizacion");
         	}
         	
         	return paginaSeleccionEntradasNoNumeradas(sesionId, error);
