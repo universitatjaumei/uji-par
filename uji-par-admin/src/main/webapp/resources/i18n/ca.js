@@ -135,7 +135,8 @@ UI =
             "eventSelected": "Error, és necessari seleccionar un event",
             "precioRepetido": "Error, aquesta tarifa ja s'ha utilitzat per a aquesta localització",
             "setIncidencia": "S'ha produït un error actualitzant la incidència",
-            "sessioAmbCompres": "No es permet canviar si la sessió és numerada o no, quan un event ja té compres realitzades"
+            "sessioAmbCompres": "No es permet canviar si la sessió és numerada o no, quan un event ja té compres realitzades",
+            "compraNoReserva": "La fila seleccionada no és una reserva"
         },
         "button": {
             "closeSession": "Tancar sessió",
@@ -179,7 +180,7 @@ UI =
             "printEntradaDirectamente": "Imprimir directament",
             "filtrarSessions": "Veure sessions d'aquestes dates",
             "generarInformeSesion": "Generar informe de la sessió",
-            "generarInformeEvento": "Generar informe del event",
+            "generarInformeEvento": "Generar informe de l'event",
             "passToCompra": "Passar reserva a compra"
         },
         "calendar": {
