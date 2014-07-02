@@ -44,6 +44,7 @@ public class MailDTO implements Serializable
     @Column(name = "FECHA_ENVIADO")
     private Timestamp fechaEnviado;
     
+    @Column(name = "COMPRA_UUID")
     private String uuid;
 
     public MailDTO()
