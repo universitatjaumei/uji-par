@@ -238,7 +238,7 @@ Ext.define('Paranimf.controller.ComprasReservas', {
           });
         }
       } else
-        console.log("COMPRA");
+        alert(UI.i18n.error.compraNoReserva);
     }
   },
 
