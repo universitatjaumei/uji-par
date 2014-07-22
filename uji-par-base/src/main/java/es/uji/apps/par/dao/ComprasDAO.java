@@ -288,8 +288,11 @@ public class ComprasDAO extends BaseDAO
 		BooleanBuilder builder = new BooleanBuilder();
 		builder.and(qCompraDTO.parSesion.id.eq(sesionId));
 		
-		if (showAnuladas == 0)
+		if (showAnuladas == 0) {
 			builder.and(qCompraDTO.anulada.isNull().or(qCompraDTO.anulada.eq(false)));
+			if (doJoinButacas)
+				builder.and(qButacaDTO.anulada.isNull().or(qButacaDTO.anulada.eq(false)));
+		}
 		
 		if (showOnline == 0)
 			builder.and(qCompraDTO.taquilla.eq(true));
@@ -309,8 +312,7 @@ public class ComprasDAO extends BaseDAO
 		}
 		
 		if (doJoinButacas)
-			return query.from(qCompraDTO).leftJoin(qCompraDTO.parButacas, qButacaDTO).where(builder
-					.and(qButacaDTO.anulada.isNull().or(qButacaDTO.anulada.eq(false)))).groupBy(qCompraDTO.id);
+			return query.from(qCompraDTO).leftJoin(qCompraDTO.parButacas, qButacaDTO).where(builder).groupBy(qCompraDTO.id);
 		else
 			return query.from(qCompraDTO).where(builder);
 	}
