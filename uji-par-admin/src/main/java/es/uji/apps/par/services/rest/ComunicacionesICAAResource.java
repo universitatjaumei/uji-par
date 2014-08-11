@@ -5,13 +5,11 @@ import java.security.NoSuchProviderException;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DefaultValue;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -35,13 +33,12 @@ public class ComunicacionesICAAResource extends BaseResource
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.TEXT_PLAIN)
     public Response generaFicheroICAA(@FormParam("ids") List<Integer> ids, 
-    		@FormParam("fechaEnvioHabitualAnterior") String fechaEnvioHabitualAnterior, @FormParam("tipoEnvio") String tipoEnvio,
-    		@QueryParam("cifrar") @DefaultValue("0") Integer cifrar)
+    		@FormParam("fechaEnvioHabitualAnterior") String fechaEnvioHabitualAnterior, @FormParam("tipoEnvio") String tipoEnvio)
     		throws GeneralPARException, RegistroSerializaException, IncidenciaNotFoundException, 
     		NoSuchProviderException, IOException, InterruptedException
     {
         AuthChecker.canWrite(currentRequest);
-        byte[] arr = comunicacionesICAAService.generaFicheroICAA(ids, fechaEnvioHabitualAnterior, tipoEnvio, cifrar);
+        byte[] arr = comunicacionesICAAService.generaFicheroICAA(ids, fechaEnvioHabitualAnterior, tipoEnvio);
         String fileName = Configuration.getCodigoBuzon() + tipoEnvio + DateUtils.getNumeroSemana();
 		return Response.ok(arr, 
 				MediaType.TEXT_PLAIN).
