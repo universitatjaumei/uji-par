@@ -33,7 +33,7 @@ public class ButacasResource extends BaseResource
     @GET
     @Path("{idSesion}/butacas")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getEventos(@PathParam("idSesion") Long idSesion) throws InterruptedException
+    public Response getButacasNoAnuladas(@PathParam("idSesion") Long idSesion) throws InterruptedException
     {
         if (!correctApiKey(request))
         {
