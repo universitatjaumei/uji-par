@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import es.uji.apps.par.GeneralPARException;
+import es.uji.apps.par.RegistroSerializaException;
 import es.uji.apps.par.db.SalaDTO;
 
 @XmlRootElement
@@ -208,5 +210,21 @@ public class Sala
     public void setCine(Cine cine)
     {
         this.cine = cine;
+    }
+    
+    public static void checkValidity(String nombre, String codigo) throws RegistroSerializaException {
+        if (nombre == null)
+            throw new RegistroSerializaException(GeneralPARException.NOMBRE_SALA_NULO_CODE);
+        
+        Sala.checkValidity(codigo);
+    }
+    
+    public static void checkValidity(String codigo) throws RegistroSerializaException {
+    	if (codigo == null)
+            throw new RegistroSerializaException(GeneralPARException.SALA_NULA_CODE);
+    	
+    	 if (codigo.length() > 6)
+             throw new RegistroSerializaException(GeneralPARException.CODIGO_SALA_LARGO_CODE);
+                     
     }
 }

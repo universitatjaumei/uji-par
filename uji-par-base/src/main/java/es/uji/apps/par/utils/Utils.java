@@ -3,6 +3,7 @@ package es.uji.apps.par.utils;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.security.MessageDigest;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -150,5 +151,13 @@ public class Utils
 		if (evento.getAsientosNumerados() == null)
 			return false;
 		return evento.getAsientosNumerados().equals(true);
+	}
+	
+	public static List<Long> listIntegerToListLong(List<Integer> enteros) {
+		List<Long> listaLong = new ArrayList<Long>();
+		for (Integer entero: enteros) {
+			listaLong.add(new Long(entero));
+		}
+		return listaLong;
 	}
 }

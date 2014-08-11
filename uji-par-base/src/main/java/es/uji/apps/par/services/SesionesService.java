@@ -353,25 +353,27 @@ public class SesionesService
 		return sesionDAO.getTotalPreciosSesion(sesionId);
 	}
 	
-	private List<Sesion> getSesionesProFechas(List<SesionDTO> sesionesDTO) {
+	private List<Sesion> getSesionesPorFechas(List<SesionDTO> sesionesDTO, boolean conEnvios) {
 		List<Sesion> listaSesiones = new ArrayList<Sesion>();
 		
 		for (SesionDTO sesionDTO: sesionesDTO) {
 			Sesion sesion = Sesion.SesionDTOToSesion(sesionDTO);
 			sesion.setFechaCelebracionWithDate(new Date(sesion.getFechaCelebracion().getTime()/1000));
 			
-			if (sesionDTO.getParEnviosSesion().size() > 0) {
-				sesion.setFechaGeneracionFichero(new Date(
-					sesionDTO.getParEnviosSesion().get(0).getParEnvio().getFechaGeneracionFichero().getTime()/1000
-				));
-				
-				if (sesionDTO.getParEnviosSesion().get(0).getParEnvio().getFechaEnvioFichero() != null)
-					sesion.setFechaEnvioFichero(new Date(
-							sesionDTO.getParEnviosSesion().get(0).getParEnvio().getFechaEnvioFichero().getTime()/1000
+			if (conEnvios) {
+				if (sesionDTO.getParEnviosSesion().size() > 0) {
+					sesion.setFechaGeneracionFichero(new Date(
+						sesionDTO.getParEnviosSesion().get(0).getParEnvio().getFechaGeneracionFichero().getTime()/1000
 					));
-				sesion.setTipoEnvio(sesionDTO.getParEnviosSesion().get(0).getTipoEnvio());
-				sesion.setIdEnvioFichero(sesionDTO.getParEnviosSesion().get(0).getParEnvio().getId());
-				sesion.setIncidenciaId(sesionDTO.getIncidenciaId());
+					
+					if (sesionDTO.getParEnviosSesion().get(0).getParEnvio().getFechaEnvioFichero() != null)
+						sesion.setFechaEnvioFichero(new Date(
+								sesionDTO.getParEnviosSesion().get(0).getParEnvio().getFechaEnvioFichero().getTime()/1000
+						));
+					sesion.setTipoEnvio(sesionDTO.getParEnviosSesion().get(0).getTipoEnvio());
+					sesion.setIdEnvioFichero(sesionDTO.getParEnviosSesion().get(0).getParEnvio().getId());
+					sesion.setIncidenciaId(sesionDTO.getIncidenciaId());
+				}
 			}
 			listaSesiones.add(sesion);
 		}
@@ -383,7 +385,15 @@ public class SesionesService
 		Date dtFin = DateUtils.spanishStringToDate(fechaFin);
 		dtFin = DateUtils.addTimeToDate(dtFin, "23:59");
 		List<SesionDTO> sesionesDTO = sesionDAO.getSesionesCinePorFechas(dtInicio, dtFin, sort);
-		return getSesionesProFechas(sesionesDTO);
+		return getSesionesPorFechas(sesionesDTO, false);
+	}
+	
+	public List<Sesion> getSesionesICAAPorFechas(String fechaInicio, String fechaFin, String sort) {
+		Date dtInicio = DateUtils.spanishStringToDate(fechaInicio);
+		Date dtFin = DateUtils.spanishStringToDate(fechaFin);
+		dtFin = DateUtils.addTimeToDate(dtFin, "23:59");
+		List<SesionDTO> sesionesDTO = sesionDAO.getSesionesICAAPorFechas(dtInicio, dtFin, sort);
+		return getSesionesPorFechas(sesionesDTO, true);
 	}
 	
 	public List<Sesion> getSesionesPorFechas(String fechaInicio, String fechaFin, String sort) {
@@ -391,7 +401,7 @@ public class SesionesService
 		Date dtFin = DateUtils.spanishStringToDate(fechaFin);
 		dtFin = DateUtils.addTimeToDate(dtFin, "23:59");
 		List<SesionDTO> sesionesDTO = sesionDAO.getSesionesPorFechas(dtInicio, dtFin, sort);
-		return getSesionesProFechas(sesionesDTO);
+		return getSesionesPorFechas(sesionesDTO, false);
 	}
 
 	public List<Tarifa> getTarifasConPrecioSinPlantilla(long sesionId) {

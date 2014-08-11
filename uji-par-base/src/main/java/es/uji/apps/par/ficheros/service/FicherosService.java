@@ -86,8 +86,6 @@ public class FicherosService
         registroBuzon.setRecaudacion(comprasDAO.getRecaudacionSesiones(sesiones));
         registroBuzon.setEspectadores(comprasDAO.getEspectadores(sesiones));
 
-        // int lineasRegistroSala = salasDAO.getSalas(sesiones).size(); 
-
         return registroBuzon;
     }
 
@@ -159,85 +157,6 @@ public class FicherosService
 
         return registros;
     }
-    
-    /*public static byte[] encryptData(byte[] toEncrypt) throws IOException, PGPException, NoSuchProviderException {
-        PGPPublicKey key = buildEncryptionKey(publicKey);
-        byte[] encrypted = encrypt(toEncrypt, key);
-        return encrypted;
-    }
-    
-    
-    private static PGPPublicKeyRing getKeyring(InputStream keyBlockStream) throws IOException {
-        // PGPUtil.getDecoderStream() will detect ASCII-armor automatically and decode it,
-        // the PGPObject factory then knows how to read all the data in the encoded stream
-        PGPObjectFactory factory = new PGPObjectFactory(PGPUtil.getDecoderStream(keyBlockStream));
-     
-        // these files should really just have one object in them,
-        // and that object should be a PGPPublicKeyRing.
-        Object o = factory.nextObject();
-        if (o instanceof PGPPublicKeyRing) {
-            return (PGPPublicKeyRing)o;
-        }
-        throw new IllegalArgumentException("Input text does not contain a PGP Public Key");
-    }
- 
-    @SuppressWarnings("rawtypes")
-	private static PGPPublicKey buildEncryptionKey(String publicKey) throws IOException, PGPException {
-        PGPPublicKeyRing keyRing = getKeyring(new FileInputStream(new File(publicKey)));
-        PGPPublicKey ret = null;
-
-        Iterator kIt = keyRing.getPublicKeys();
- 
-        while (kIt.hasNext()) {
-            ret = (PGPPublicKey) kIt.next();
- 
-            if (ret.isEncryptionKey()) {
-                break;
-            }
-        }
-  
-        return ret;
-    }
-     
-    private static byte[] encrypt(byte[] clearData, PGPPublicKey encKey)  throws IOException, PGPException, NoSuchProviderException {
-        Security.addProvider(new BouncyCastleProvider());
-         
-        ByteArrayOutputStream encOut = new ByteArrayOutputStream();
-        //OutputStream out = new ByteArrayOutputStream();// = new ArmoredOutputStream(encOut);
-        ByteArrayOutputStream bOut = new ByteArrayOutputStream();
- 
-        PGPCompressedDataGenerator comData = new PGPCompressedDataGenerator(PGPCompressedDataGenerator.ZIP);
-        OutputStream cos = comData.open(bOut); // open it with the final destination
-        PGPLiteralDataGenerator lData = new PGPLiteralDataGenerator();
- 
-        // we want to generate compressed data. This might be a user option later,
-        // in which case we would pass in bOut.
-        OutputStream pOut = lData.open(cos, // the compressed output stream
-                PGPLiteralData.BINARY, PGPLiteralData.CONSOLE, // "filename" to store
-                clearData.length, // length of clear data
-                new Date() // current time
-                );
-        pOut.write(clearData);
- 
-        lData.close();
-        comData.close();
- 
-        PGPEncryptedDataGenerator cPk = new PGPEncryptedDataGenerator(
-                PGPEncryptedData.CAST5, true, new SecureRandom(),
-                "BC");
- 
-        cPk.addMethod(encKey);
- 
-        byte[] bytes = bOut.toByteArray();
- 
-        OutputStream cOut = cPk.open(encOut, bytes.length);
-        cOut.write(bytes); // obtain the actual bytes from the compressed stream
-        cOut.close();
-        encOut.close();
- 
-        return encOut.toByteArray();
-        //return bytes;
-    }*/
     
     public byte[] encryptData(byte[] contenido) throws IOException, InterruptedException {
     	Calendar cal = Calendar.getInstance();

@@ -7,10 +7,10 @@ Ext.define('Paranimf.view.informes.PanelInformes', {
 
   items: [{
     border: false,
-    flex: 1,
-    region: 'center',
-    autoScroll: true,
+    region: 'north',
+    autoScroll: false,
     xtype: 'panel',
+    height: 70,
     defaults: {
       border: 0,
       xtype: 'panel',
@@ -70,9 +70,9 @@ Ext.define('Paranimf.view.informes.PanelInformes', {
         action: 'generatePdfEventos',
         text: UI.i18n.button.generatePdfEventos
       }]
-    }, {
-      border: 1,
+    }
+  ]}, {
+      region: 'center',
       xtype: 'gridSesionesInformes'
-    }]
   }]
 });

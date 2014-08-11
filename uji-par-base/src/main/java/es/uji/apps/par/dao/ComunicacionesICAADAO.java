@@ -1,17 +1,20 @@
 package es.uji.apps.par.dao;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.jpa.impl.JPAUpdateClause;
 
 import es.uji.apps.par.db.EnvioDTO;
 import es.uji.apps.par.db.EnviosSesionDTO;
 import es.uji.apps.par.db.QEnvioDTO;
+import es.uji.apps.par.db.QEnviosSesionDTO;
 import es.uji.apps.par.db.SesionDTO;
 
 @Repository
@@ -47,5 +50,12 @@ public class ComunicacionesICAADAO extends BaseDAO
 		JPAUpdateClause updateClause = new JPAUpdateClause(entityManager, qEnvioDTO);
 		updateClause.set(qEnvioDTO.fechaEnvioFichero, new Timestamp(fechaEnvio.getTime())).
 		where(qEnvioDTO.id.in(ids)).execute();
+	}
+
+	@Transactional
+	public long checkIfFicherosGenerados(List<Long> ids) {
+		QEnviosSesionDTO qEnviosSesion = QEnviosSesionDTO.enviosSesionDTO;
+		JPAQuery query = new JPAQuery(entityManager);
+		return query.from(qEnviosSesion).where(qEnviosSesion.parSesion.id.in(ids)).count();
 	}
 }

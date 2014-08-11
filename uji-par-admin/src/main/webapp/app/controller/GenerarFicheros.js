@@ -63,12 +63,23 @@ Ext.define('Paranimf.controller.GenerarFicheros', {
       });
    },
 
-   setIncidencia: function() {
-      if (this.getGridSesionesCompleto().rowsSelectedCount() == 1) {
-         this.getGridSesionesCompleto().showIncidenciasForm();
-      } else {
-         alert(UI.i18n.message.onlyOneRowSelected);
+   isAnyAlreadySent: function() {
+      var records = this.getGridSesionesCompleto().getSelectionModel().getSelection();
+      for (var i=0;i<records.length;i++) {
+         if (records[i].data.fechaGeneracionFichero != undefined)
+            return true;
       }
+   },
+
+   setIncidencia: function() {
+      if (!this.isAnyAlreadySent()) {
+         if (this.getGridSesionesCompleto().rowsSelectedCount() == 1) {
+            this.getGridSesionesCompleto().showIncidenciasForm();
+         } else {
+            alert(UI.i18n.message.onlyOneRowSelected);
+         }
+      } else
+         alert(UI.i18n.error.fitxerJaGenerat);
    },
 
    saveIncidencia: function() {
@@ -107,33 +118,71 @@ Ext.define('Paranimf.controller.GenerarFicheros', {
 
    showOpcionsFileICAA: function() {
       var idsSelected = this.getGridSesionesCompleto().getSelectedColumnIds();
-      console.log(idsSelected);
-      if (idsSelected && idsSelected.length > 0) {
-         this.getGridSesionesCompleto().showDatosFicheroForm();
+      //console.log(idsSelected);
+      if (!this.isAnyAlreadySent()) {
+         if (idsSelected && idsSelected.length > 0)
+            this.getGridSesionesCompleto().showDatosFicheroForm();
+         else
+            alert(UI.i18n.message.noRowSelectedFileICAA);
       } else
-         alert(UI.i18n.message.noRowSelectedFileICAA);
+         alert(UI.i18n.error.fitxerJaGenerat);
    },
 
    saveFileICAA: function() {
       if (this.getFormDatosFichero().isValid()) {
-         var me = this;
-         var idsSelected = this.getGridSesionesCompleto().getSelectedColumnIds();
-         var fechaEnvioHabitualAnterior = this.getFechaUltimoEnvioHabitual().rawValue;
-         var tipoEnvio = this.getTipoEnvio().value;
+         if (!this.isAnyAlreadySent()) {
+            var me = this;
+            var idsSelected = this.getGridSesionesCompleto().getSelectedColumnIds();
+            var fechaEnvioHabitualAnterior = this.getFechaUltimoEnvioHabitual().rawValue;
+            var tipoEnvio = this.getTipoEnvio().value;
+            this.getFormDatosFichero().setLoading(UI.i18n.message.loading);
 
-         this.getFormDatosFichero().getForm().doAction('standardsubmit', {
-            standardSubmit: true,
-            target: '_blank',
-            url : urlPrefix + 'comunicacionesicaa',
-            method: 'POST',
-            timeout: 120000,
-            params: {
-               ids: idsSelected,
-               fechaEnvioHabitualAnterior: fechaEnvioHabitualAnterior,
-               tipoEnvio: tipoEnvio
-            }
-         });
+            Ext.Ajax.request({
+               url : urlPrefix + 'comunicacionesicaa/check',
+               method: 'POST',
+               params: {
+                  ids: idsSelected,
+                  tipoEnvio: tipoEnvio
+               },
+               success: function (response) {
+                  me.getFormDatosFichero().getForm().doAction('standardsubmit', {
+                     standardSubmit: true,
+                     target: '_blank',
+                     url : urlPrefix + 'comunicacionesicaa',
+                     method: 'POST',
+                     timeout: 120000,
+                     params: {
+                        ids: idsSelected,
+                        fechaEnvioHabitualAnterior: fechaEnvioHabitualAnterior,
+                        tipoEnvio: tipoEnvio
+                     }
+                  });
+                  me.getFormDatosFichero().setLoading(false);
+               }, failure: function (response) {
+                  me.getFormDatosFichero().setLoading(false);
+                  var responseText = me.getResponseText(response);
+                  console.log(responseText);
+                  if (responseText != undefined) {
+                     if (responseText.codi != undefined && (responseText.codi >= 519 && responseText.codi <= 546)) {
+                        console.log(responseText.codi, eval("UI.i18n.error.error" + responseText.codi));
+                        alert(eval("UI.i18n.error.error" + responseText.codi));
+                     }
+                     else
+                        alert(UI.i18n.error.markAsSent);
+                  } else
+                     alert(UI.i18n.error.markAsSent);
+               }
+            });
+         } else
+            alert(UI.i18n.error.fitxerJaGenerat);
       }
+   },
+
+   getResponseText: function(response) {
+      console.log(response);
+      if (response.responseText != undefined)
+         return Ext.JSON.decode(response.responseText, true);
+      return undefined;  
    },
 
    filtrarSesiones: function() {

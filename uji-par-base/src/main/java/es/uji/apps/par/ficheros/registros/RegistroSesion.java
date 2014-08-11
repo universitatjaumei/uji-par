@@ -6,7 +6,8 @@ import java.util.Date;
 import java.util.Locale;
 
 import es.uji.apps.par.RegistroSerializaException;
-import es.uji.apps.par.ficheros.utils.FicherosUtils;
+import es.uji.apps.par.model.Sala;
+import es.uji.apps.par.model.Sesion;
 
 public class RegistroSesion
 {
@@ -92,26 +93,12 @@ public class RegistroSesion
 
     public String serializa() throws RegistroSerializaException
     {
-        if (codigoSala == null)
-            throw new RegistroSerializaException("La sesión tiene el código de sala nulo");
-
-        if (fecha == null)
-            throw new RegistroSerializaException("La fecha de sesión es nula");
-
-        if (hora == null)
-            throw new RegistroSerializaException("La hora de sesión es nula");
-
-        if (recaudacion == null)
-            throw new RegistroSerializaException("La recaudacion de la sesión es nula");
-
-        if (incidencia == null)
-            throw new RegistroSerializaException("La sesión tiene las incidencias nulas. Si no tiene incidencias debe tener el valor correspondiente a SIN_INCIDENCIAS");
-
-        FicherosUtils.compruebaCodigoSala(codigoSala);
-
-        if (hora.length() != 4)
-            throw new RegistroSerializaException("hora es un string de tamaño distinto de 4 carácteres: hora=" + hora);
-
+    	Sala.checkValidity(codigoSala);
+    	Sesion.checkFechaCelebracion(fecha);
+        Sesion.checkHoraCelebracion(hora);
+        Sesion.checkIncidencia(incidencia);
+        Sesion.checkRecaudacion(recaudacion);
+        
         String result = String.format(Locale.ENGLISH, "2%-12s%s%s%02d%05d%08.2f%s", codigoSala,
                 DAY_FORMAT.format(fecha), hora, peliculas, espectadores, recaudacion, incidencia.getCodigo());
 

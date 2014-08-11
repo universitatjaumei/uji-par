@@ -114,7 +114,7 @@ public class EventosResource
     public Response getSesionesCinePorFechas(@QueryParam("fechaInicio") String fechaInicio, @QueryParam("fechaFin") String fechaFin,
     		@QueryParam("sort") String sort, @QueryParam("start") int start, @QueryParam("limit") @DefaultValue("1000") int limit)
     {
-    	List<Sesion> sesiones = sesionesService.getSesionesCinePorFechas(fechaInicio, fechaFin, sort);
+    	List<Sesion> sesiones = sesionesService.getSesionesICAAPorFechas(fechaInicio, fechaFin, sort);
         return Response.ok().entity(new RestResponse(true, sesiones, sesiones.size())).build();
     }
     

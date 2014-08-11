@@ -247,7 +247,8 @@ public class ButacasDAO extends BaseDAO
         
         JPAQuery query = new JPAQuery(entityManager);
         return query.from(qButacaDTO).join(qButacaDTO.parCompra, qCompraDTO).fetch()
-                .where(qButacaDTO.parSesion.id.eq(idSesion).and(qButacaDTO.anulada.eq(false)))
+                .where(qButacaDTO.parSesion.id.eq(idSesion).and(qButacaDTO.anulada.eq(false)
+                		.and(qCompraDTO.reserva.eq(false))))
                 .distinct().list(qButacaDTO);
     }
 

@@ -8,11 +8,17 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.apache.log4j.Logger;
+
+import es.uji.apps.par.GeneralPARException;
+import es.uji.apps.par.RegistroSerializaException;
 import es.uji.apps.par.db.EventoDTO;
 
 @XmlRootElement
 public class Evento
 {
+	private static Logger logger = Logger.getLogger(Evento.class);
+	
     private long id;
     private String tituloEs;
     private String tituloVa;
@@ -630,4 +636,69 @@ public class Evento
     {
         this.subtitulos = subtitulos;
     }
+
+	public static void checkValidity(int codigoPelicula, String codigoExpediente, String titulo, String codigoDistribuidora2, 
+			String nombreDistribuidora2, String versionOriginal, String versionLinguistica, String idiomaSubtitulos, 
+			String formatoProyeccion) throws RegistroSerializaException {
+		if (codigoPelicula == 0)
+        	throw new RegistroSerializaException(GeneralPARException.CODIGO_PELICULA_NULO_CODE);
+
+        if (codigoExpediente == null)
+            throw new RegistroSerializaException(GeneralPARException.CODIGO_EXPEDIENTE_NULO_CODE);
+
+        if (titulo == null)
+            throw new RegistroSerializaException(GeneralPARException.TITULO_PELICULA_NULO_CODE);
+
+        if (codigoDistribuidora2 == null)
+            throw new RegistroSerializaException(GeneralPARException.CODIGO_DISTRIBUIDORA_NULO_CODE);
+
+        if (nombreDistribuidora2 == null)
+            throw new RegistroSerializaException(GeneralPARException.NOMBRE_DISTRIBUIDORA_NULO_CODE);
+
+        if (versionOriginal == null)
+            throw new RegistroSerializaException(GeneralPARException.VERSION_ORIGINAL_NULO_CODE);
+
+        if (versionLinguistica == null)
+            throw new RegistroSerializaException(GeneralPARException.VERSION_LINGUISTICA_NULO_CODE);
+
+        if (idiomaSubtitulos == null)
+            throw new RegistroSerializaException(GeneralPARException.IDIOMA_SUBTITULOS_NULO_CODE);
+
+        if (formatoProyeccion == null)
+            throw new RegistroSerializaException(GeneralPARException.FORMATO_PROYECCION_NULO_CODE);
+        
+        if (Integer.toString(codigoPelicula).length() > 5) {
+        	logger.error("El codigo de película tiene más de 5 caracteres: " + codigoPelicula);
+            throw new RegistroSerializaException(GeneralPARException.CODIGO_PELICULA_LARGO_CODE);
+        }
+
+        if (codigoExpediente.length() > 12) {
+        	logger.error("El codigo de expediente tiene más de 12 caracteres: " + codigoExpediente);
+            throw new RegistroSerializaException(GeneralPARException.CODIGO_EXPEDIENTE_LARGO_CODE);
+        }
+
+        if (codigoDistribuidora2.length() > 12) {
+        	logger.error("El codigo de distribuidora tiene más de 12 caracteres: " + codigoDistribuidora2);
+            throw new RegistroSerializaException(GeneralPARException.CODIGO_DISTRIBUIDORA_LARGO_CODE);
+        }
+
+        if (nombreDistribuidora2.length() > 50) {
+        	logger.error("El nombre de distribuidora tiene más de 50 caracteres: " + nombreDistribuidora2);
+        	throw new RegistroSerializaException(GeneralPARException.NOMBRE_DISTRIBUIDORA_LARGO_CODE);
+        }
+
+        if (versionOriginal.length() != 1)
+            throw new RegistroSerializaException(GeneralPARException.DIGITOS_VERSION_ORIGINAL_CODE);
+
+        if (versionLinguistica.length() != 1)
+            throw new RegistroSerializaException(GeneralPARException.DIGITOS_VERSION_LINGUISTICA_CODE);
+
+        if (idiomaSubtitulos.length() != 1)
+            throw new RegistroSerializaException(GeneralPARException.DIGITOS_IDIOMA_SUBTITULOS_CODE);
+        
+        if (formatoProyeccion.length() != 1)
+        	throw new RegistroSerializaException(GeneralPARException.DIGITOS_FORMATO_PROYECCION_CODE);
+	}
+    
+    
 }

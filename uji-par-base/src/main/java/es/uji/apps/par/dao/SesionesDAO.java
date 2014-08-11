@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mysema.query.BooleanBuilder;
 import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.jpa.impl.JPASubQuery;
@@ -185,7 +186,7 @@ public class SesionesDAO extends BaseDAO
 	}
 
     @Transactional
-	private List<SesionFormatoIdiomaICAADTO> getSesionFormatoIdiomaIcaa(String formato, String versionLinguistica, long eventoId) {
+	public List<SesionFormatoIdiomaICAADTO> getSesionFormatoIdiomaIcaa(String formato, String versionLinguistica, long eventoId) {
 		QSesionFormatoIdiomaICAADTO qSesionFormatoIdiomaICAA = QSesionFormatoIdiomaICAADTO.sesionFormatoIdiomaICAADTO;
         JPAQuery query = new JPAQuery(entityManager);
         return query.from(qSesionFormatoIdiomaICAA).where(
@@ -347,7 +348,7 @@ public class SesionesDAO extends BaseDAO
     	).count();
 	}
 
-	@Transactional
+	@Transactional(rollbackFor=SesionSinFormatoIdiomaIcaaException.class)
     public List<RegistroSesionPelicula> getRegistrosSesionesPeliculas(List<Sesion> sesiones) throws SesionSinFormatoIdiomaIcaaException
     {
         QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
@@ -369,6 +370,9 @@ public class SesionesDAO extends BaseDAO
         
         for (SesionDTO sesionDTO : resultado)
         {
+        	if (sesionDTO.getFormato() == null)
+        		throw new SesionSinFormatoIdiomaIcaaException(sesionDTO.getParEvento().getTituloVa());
+        	
             List<SesionFormatoIdiomaICAADTO> sesionesFormatoIdiomaIcaa = 
             		getSesionFormatoIdiomaIcaa(sesionDTO.getFormato(), sesionDTO.getVersionLinguistica(), sesionDTO.getParEvento().getId());
             
@@ -468,6 +472,39 @@ public class SesionesDAO extends BaseDAO
 	public List<SesionDTO> getSesionesCinePorFechas(Date dtInicio, Date dtFin, String sort) {
 		QSalaDTO qSalaDTO = QSalaDTO.salaDTO;
 		QEventoDTO qEventoDTO = QEventoDTO.eventoDTO;
+
+        JPAQuery query = new JPAQuery(entityManager);
+        query.from(qSesionDTO).join(qSesionDTO.parEvento, qEventoDTO).leftJoin(qSesionDTO.parSala, qSalaDTO).fetch();
+        
+        if (dtInicio != null || dtFin != null) {
+        	BooleanBuilder condicion = new BooleanBuilder();
+	        
+        	if (dtInicio != null) 
+	        	condicion = condicion.and(qSesionDTO.fechaCelebracion.goe(new Timestamp(dtInicio.getTime())));
+	        
+	        if (dtFin != null)
+	        	condicion = condicion.and(qSesionDTO.fechaCelebracion.loe(new Timestamp(dtFin.getTime())));
+	       
+	       	query.where(condicion);
+        }
+        
+        return query.orderBy(getSort(qSesionDTO, sort)).listDistinct(qSesionDTO);
+	}
+    
+    @Transactional
+	public List<SesionDTO> getSesiones(List<Long> ids) {
+		QSalaDTO qSalaDTO = QSalaDTO.salaDTO;
+		QEventoDTO qEventoDTO = QEventoDTO.eventoDTO;
+
+        JPAQuery query = new JPAQuery(entityManager);
+        return query.from(qSesionDTO).join(qSesionDTO.parEvento, qEventoDTO).leftJoin(qSesionDTO.parSala, qSalaDTO).fetch()
+        .where(qSesionDTO.id.in(ids)).list(qSesionDTO);
+	}
+    
+    @Transactional
+	public List<SesionDTO> getSesionesICAAPorFechas(Date dtInicio, Date dtFin, String sort) {
+		QSalaDTO qSalaDTO = QSalaDTO.salaDTO;
+		QEventoDTO qEventoDTO = QEventoDTO.eventoDTO;
 		QEnviosSesionDTO qEnviosSesion = QEnviosSesionDTO.enviosSesionDTO;
 		QEnvioDTO qEnvioDTO = QEnvioDTO.envioDTO;
 
@@ -484,20 +521,17 @@ public class SesionesDAO extends BaseDAO
        
        	query.where(condicion);
         
-        return query.orderBy(getSort(qSesionDTO, sort)).list(qSesionDTO);
+        return query.orderBy(getSort(qSesionDTO, sort)).listDistinct(qSesionDTO);
 	}
     
     @Transactional
     public List<SesionDTO> getSesionesPorFechas(Date dtInicio, Date dtFin, String sort) {
     	QSalaDTO qSalaDTO = QSalaDTO.salaDTO;
 		QEventoDTO qEventoDTO = QEventoDTO.eventoDTO;
-		QEnviosSesionDTO qEnviosSesion = QEnviosSesionDTO.enviosSesionDTO;
-		QEnvioDTO qEnvioDTO = QEnvioDTO.envioDTO;
 
         JPAQuery query = new JPAQuery(entityManager);
-        query.from(qSesionDTO).join(qSesionDTO.parEvento, qEventoDTO).leftJoin(qSesionDTO.parSala, qSalaDTO).fetch().
-        	leftJoin(qSesionDTO.parEnviosSesion, qEnviosSesion).fetch().leftJoin(qEnviosSesion.parEnvio, qEnvioDTO).fetch();
-        BooleanExpression condicion = qEventoDTO.id.ne(new Long(-1000));
+        query.from(qSesionDTO).join(qSesionDTO.parEvento, qEventoDTO).leftJoin(qSesionDTO.parSala, qSalaDTO).fetch();
+        BooleanBuilder condicion = new BooleanBuilder();
         
         if (dtInicio != null) 
         	condicion = condicion.and(qSesionDTO.fechaCelebracion.goe(new Timestamp(dtInicio.getTime())));

@@ -98,7 +98,7 @@ public class UsuariosResourceTest extends BaseResourceTest
         ResponseMessage resultatOperacio = response.getEntity(new GenericType<ResponseMessage>()
         {
         });
-        Assert.assertEquals(CampoRequeridoException.CAMPO_OBLIGATORIO + "Mail",
+        Assert.assertEquals(CampoRequeridoException.REQUIRED_FIELD + "Mail",
                 resultatOperacio.getMessage());
     }
 
@@ -112,7 +112,7 @@ public class UsuariosResourceTest extends BaseResourceTest
         ResponseMessage resultatOperacio = response.getEntity(new GenericType<ResponseMessage>()
         {
         });
-        Assert.assertEquals(CampoRequeridoException.CAMPO_OBLIGATORIO + "Nombre",
+        Assert.assertEquals(CampoRequeridoException.REQUIRED_FIELD + "Nombre",
                 resultatOperacio.getMessage());
     }
 
@@ -126,7 +126,7 @@ public class UsuariosResourceTest extends BaseResourceTest
         ResponseMessage resultatOperacio = response.getEntity(new GenericType<ResponseMessage>()
         {
         });
-        Assert.assertEquals(CampoRequeridoException.CAMPO_OBLIGATORIO + "Usuario",
+        Assert.assertEquals(CampoRequeridoException.REQUIRED_FIELD + "Usuario",
                 resultatOperacio.getMessage());
     }
 
@@ -194,7 +194,7 @@ public class UsuariosResourceTest extends BaseResourceTest
         {
         });
 
-        Assert.assertEquals(CampoRequeridoException.CAMPO_OBLIGATORIO + "Mail",
+        Assert.assertEquals(CampoRequeridoException.REQUIRED_FIELD + "Mail",
                 parResponseMessage.getMessage());
     }
 }

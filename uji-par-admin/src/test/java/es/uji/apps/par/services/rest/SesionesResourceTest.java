@@ -182,7 +182,7 @@ public class SesionesResourceTest extends BaseResourceTest
     	ResponseMessage resultatOperacio = response.getEntity(new GenericType<ResponseMessage>()
         {
         });
-        Assert.assertEquals(CampoRequeridoException.CAMPO_OBLIGATORIO + "Fecha de celebración",
+        Assert.assertEquals(CampoRequeridoException.REQUIRED_FIELD + "Fecha de celebración",
     	                resultatOperacio.getMessage());
     }
 
@@ -198,7 +198,7 @@ public class SesionesResourceTest extends BaseResourceTest
     	ResponseMessage resultatOperacio = response.getEntity(new GenericType<ResponseMessage>()
         {
         });
-        Assert.assertEquals(CampoRequeridoException.CAMPO_OBLIGATORIO + "Hora de celebración",
+        Assert.assertEquals(CampoRequeridoException.REQUIRED_FIELD + "Hora de celebración",
     	                resultatOperacio.getMessage());
     }
     
@@ -247,7 +247,7 @@ public class SesionesResourceTest extends BaseResourceTest
     	ResponseMessage resultatOperacio = response.getEntity(new GenericType<ResponseMessage>()
         {
         });
-        Assert.assertEquals(CampoRequeridoException.CAMPO_OBLIGATORIO + "Fecha de inicio de la venta online",
+        Assert.assertEquals(CampoRequeridoException.REQUIRED_FIELD + "Fecha de inicio de la venta online",
             resultatOperacio.getMessage());
     }
     
@@ -262,7 +262,7 @@ public class SesionesResourceTest extends BaseResourceTest
     	ResponseMessage resultatOperacio = response.getEntity(new GenericType<ResponseMessage>()
         {
         });
-        Assert.assertEquals(CampoRequeridoException.CAMPO_OBLIGATORIO + "Fecha de fin de la venta online",
+        Assert.assertEquals(CampoRequeridoException.REQUIRED_FIELD + "Fecha de fin de la venta online",
             resultatOperacio.getMessage());
     }
     
@@ -277,7 +277,7 @@ public class SesionesResourceTest extends BaseResourceTest
     	ResponseMessage resultatOperacio = response.getEntity(new GenericType<ResponseMessage>()
         {
         });
-        Assert.assertEquals(CampoRequeridoException.CAMPO_OBLIGATORIO + "Hora de inicio de la venta online",
+        Assert.assertEquals(CampoRequeridoException.REQUIRED_FIELD + "Hora de inicio de la venta online",
             resultatOperacio.getMessage());
     }
     
@@ -292,7 +292,7 @@ public class SesionesResourceTest extends BaseResourceTest
     	ResponseMessage resultatOperacio = response.getEntity(new GenericType<ResponseMessage>()
         {
         });
-        Assert.assertEquals(CampoRequeridoException.CAMPO_OBLIGATORIO + "Hora de fin de la venta online",
+        Assert.assertEquals(CampoRequeridoException.REQUIRED_FIELD + "Hora de fin de la venta online",
             resultatOperacio.getMessage());
     }
      

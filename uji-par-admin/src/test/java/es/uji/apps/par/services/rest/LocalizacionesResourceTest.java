@@ -91,7 +91,7 @@ public class LocalizacionesResourceTest extends BaseResourceTest
         ResponseMessage resultatOperacio = response.getEntity(new GenericType<ResponseMessage>()
         {
         });
-        Assert.assertEquals(CampoRequeridoException.CAMPO_OBLIGATORIO + "Nombre",
+        Assert.assertEquals(CampoRequeridoException.REQUIRED_FIELD + "Nombre",
                 resultatOperacio.getMessage());
     }
 
@@ -161,7 +161,7 @@ public class LocalizacionesResourceTest extends BaseResourceTest
         {
         });
 
-        Assert.assertEquals(CampoRequeridoException.CAMPO_OBLIGATORIO + "Nombre",
+        Assert.assertEquals(CampoRequeridoException.REQUIRED_FIELD + "Nombre",
                 parResponseMessage.getMessage());
     }
 }

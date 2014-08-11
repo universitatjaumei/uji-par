@@ -5,6 +5,8 @@ import java.math.BigDecimal;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import es.uji.apps.par.GeneralPARException;
+import es.uji.apps.par.RegistroSerializaException;
 import es.uji.apps.par.db.CineDTO;
 
 @XmlRootElement
@@ -203,5 +205,13 @@ public class Cine implements Serializable
     public void setIva(BigDecimal iva)
     {
         this.iva = iva;
+    }
+    
+    public static void checkValidity(String codi) throws RegistroSerializaException {
+    	if (codi == null)
+            throw new RegistroSerializaException(GeneralPARException.CODIGO_CINE_NULO_CODE);
+    	
+    	if (codi.length() != 3)
+            throw new RegistroSerializaException(GeneralPARException.FORMATO_CODIGO_CINE_INCORRECTO_CODE);
     }
 }

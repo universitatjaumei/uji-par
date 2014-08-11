@@ -1,5 +1,7 @@
 package es.uji.apps.par.model;
 
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -11,12 +13,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import es.uji.apps.par.GeneralPARException;
+import es.uji.apps.par.RegistroSerializaException;
+import es.uji.apps.par.TipoEnvioInvalidoException;
 import es.uji.apps.par.db.SesionDTO;
+import es.uji.apps.par.ficheros.registros.TipoIncidencia;
 import es.uji.apps.par.utils.DateUtils;
 
 @XmlRootElement
 public class Sesion
 {
+	private static SimpleDateFormat HOUR_FORMAT = new SimpleDateFormat("HHmm");
+	
     private long id;
     private Evento evento;
     private Date fechaCelebracion;
@@ -448,5 +456,53 @@ public class Sesion
 
 	public void setButacasReservadas(long butacasReservadas) {
 		this.butacasReservadas = butacasReservadas;
+	}
+	
+	public static void checkFechaCelebracion(String fechaCelebracion) throws RegistroSerializaException {
+		if (fechaCelebracion == null)
+            throw new RegistroSerializaException(GeneralPARException.FECHA_SESION_PROGRAMADA_NULA_CODE);
+	}
+	
+	public static void checkTipoEnvio(String tipoEnvio) throws TipoEnvioInvalidoException {
+		if (tipoEnvio == null || (!tipoEnvio.equals("FL") && !tipoEnvio.equals("AT")))
+			throw new TipoEnvioInvalidoException();
+	}
+
+	public static void checkFechaCelebracion(Date fecha) throws RegistroSerializaException {
+		if (fecha == null)
+            throw new RegistroSerializaException(GeneralPARException.FECHA_SESION_PROGRAMADA_NULA_CODE);
+	}
+
+	public static void checkHoraCelebracion(String hora) throws RegistroSerializaException {
+		if (hora == null)
+            throw new RegistroSerializaException(GeneralPARException.HORA_SESION_PROGRAMADA_NULA_CODE);
+		
+		if (hora.length() != 4)
+            throw new RegistroSerializaException(GeneralPARException.FORMATO_HORA_INCORRECTO_CODE);
+	}
+
+	public static void checkIncidencia(TipoIncidencia incidencia) throws RegistroSerializaException {
+		if (incidencia == null)
+            throw new RegistroSerializaException(GeneralPARException.INCIDENCIAS_NULAS_CODE);
+	}
+	
+	public static void checkIncidencia(Integer incidenciaId) throws RegistroSerializaException {
+		if (incidenciaId == null)
+            throw new RegistroSerializaException(GeneralPARException.INCIDENCIAS_NULAS_CODE);
+	}
+
+	public static void checkRecaudacion(BigDecimal recaudacion) throws RegistroSerializaException {
+		if (recaudacion == null)
+            throw new RegistroSerializaException(GeneralPARException.RECAUDACION_NULA_CODE);
+	}
+	
+	//TODO deberíamos comprobar la recaudacion
+	public static void checkSesion(Date fechaCelebracion, String tipoEnvio, Integer incidenciaId) 
+			throws RegistroSerializaException {
+		Sesion.checkFechaCelebracion(fechaCelebracion);
+		Sesion.checkTipoEnvio(tipoEnvio);
+		Sesion.checkHoraCelebracion(HOUR_FORMAT.format(fechaCelebracion));
+		Sesion.checkIncidencia(incidenciaId);
+		//Sesion.checkRecaudacion(recaudacion);
 	}
  }

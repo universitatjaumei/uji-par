@@ -55,4 +55,15 @@ public class ComunicacionesICAAResource extends BaseResource
         
 		return Response.ok().build();
     }
+    
+    @POST
+    @Path("check")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response checkEventosBeforeGenerateICAAFile(@FormParam("ids") List<Integer> ids, @FormParam("tipoEnvio") String tipoEnvio)
+    		throws GeneralPARException {
+        AuthChecker.canWrite(currentRequest);
+        comunicacionesICAAService.checkEventosBeforeGenerateICAAFile(ids, tipoEnvio);
+		return Response.ok().build();
+    }
 }

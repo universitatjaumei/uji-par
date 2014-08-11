@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.Locale;
 
 import es.uji.apps.par.RegistroSerializaException;
+import es.uji.apps.par.model.Cine;
+import es.uji.apps.par.model.Sesion;
 
 public class RegistroBuzon
 {
@@ -100,21 +102,10 @@ public class RegistroBuzon
 
     public String serializa() throws RegistroSerializaException
     {
-        if (codigo == null)
-            throw new RegistroSerializaException("El código del cine es nulo");
+    	Cine.checkValidity(codigo);
+    	Sesion.checkTipoEnvio(tipo);
 
-        if (tipo == null)
-            throw new RegistroSerializaException("El tipo de envío (FL, AT) es nulo");
-
-        if (codigo.length() != 3)
-            throw new RegistroSerializaException("El código del cine es un string de tamaño distinto de 3 carácteres: codigo="
-                    + codigo);
-
-        if (tipo.length() != 2)
-            throw new RegistroSerializaException("El tipo de envío es un string de tamaño distinto de 2 carácteres: tipo="
-                    + tipo);
-
-        Calendar calDiaAnterior = Calendar.getInstance();
+    	Calendar calDiaAnterior = Calendar.getInstance();
         
         if (fechaEnvioHabitualAnterior == null)
             calDiaAnterior.setTime(fechaEnvio);
