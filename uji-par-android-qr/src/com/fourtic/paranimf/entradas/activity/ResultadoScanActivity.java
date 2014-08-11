@@ -18,7 +18,7 @@ import com.fourtic.paranimf.entradas.scan.ResultadoScan;
 
 public class ResultadoScanActivity extends BaseNormalActivity
 {
-    private static final long RETARDO_OK = 500;
+    private static final long RETARDO_OK = 100;
     private static final long RETARDO_ERROR = 2000;
 
     @InjectView(R.id.dialogRoot)
