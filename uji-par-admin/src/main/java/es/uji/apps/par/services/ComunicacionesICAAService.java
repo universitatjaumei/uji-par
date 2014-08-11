@@ -45,7 +45,7 @@ public class ComunicacionesICAAService {
 	@Autowired
 	CinesDAO cinesDAO;
 
-	public byte[] generaFicheroICAA(List<Integer> ids, String fechaEnvioHabitualAnterior, String tipoEnvio) 
+	public byte[] generaFicheroICAA(List<Integer> ids, String fechaEnvioHabitualAnterior, String tipoEnvio, Integer cifrar) 
 			throws RegistroSerializaException, 
 			IncidenciaNotFoundException, NoSuchProviderException, IOException, InterruptedException, GeneralPARException {
 		Sesion.checkTipoEnvio(tipoEnvio);
@@ -59,7 +59,10 @@ public class ComunicacionesICAAService {
 		
 		comunicacionesICAADAO.addNewEnvio(ids, ficheroRegistros.getRegistroBuzon().getFechaEnvio(), tipoEnvio);
 		
-		return contenidoCifrado;
+		if (cifrar == 1)
+			return contenido;
+		else
+			return contenidoCifrado;
 	}
 
 	private List<Sesion> getSesionesFromIDs(List<Integer> ids) {
