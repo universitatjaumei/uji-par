@@ -6,6 +6,6 @@ public class CompraAulaTeatroPorInternetException extends GeneralPARException
 {
     public CompraAulaTeatroPorInternetException()
     {
-        super("Compra de tipo \"aula de teatro\" por internet");
+        super(TIPO_INCORRECTO_COMPRA_INTERNET_CODE);
     }
 }

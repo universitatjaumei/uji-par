@@ -9,7 +9,7 @@ public class NoHayButacasLibresException extends GeneralPARException
 
     public NoHayButacasLibresException(Long sesionId, String localizacion)
     {
-        super(String.format("No hay butacas libres: sesionId = %d, localizacion=%s", sesionId,
+        super(SESION_SIN_BUTACAS_LIBRES_CODE, SESION_SIN_BUTACAS_LIBRES + String.format("sesionId = %d, localizacion=%s", sesionId,
                 localizacion));
 
         this.sesionId = sesionId;

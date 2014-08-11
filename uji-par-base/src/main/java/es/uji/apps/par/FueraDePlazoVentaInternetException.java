@@ -7,6 +7,6 @@ public class FueraDePlazoVentaInternetException extends GeneralPARException
 {
     public FueraDePlazoVentaInternetException(Long sesionId)
     {
-        super("Fuera de plazo para venta por internet: sesionId = " + sesionId);
+        super(VENTA_FUERA_DE_PLAZO_CODE, VENTA_FUERA_DE_PLAZO + "sesionId = " + sesionId);
     }
 }

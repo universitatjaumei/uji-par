@@ -6,6 +6,6 @@ public class CompraButacaDescuentoNoDisponible extends GeneralPARException
 {
     public CompraButacaDescuentoNoDisponible()
     {
-        super("Se ha intentado comprar una butaca con descuento cero");
+        super(COMPRA_BUTACA_DESCUENTO_NO_DISPONIBLE_CODE);
     }
 }

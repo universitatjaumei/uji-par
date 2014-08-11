@@ -8,7 +8,7 @@ public class SinIvaException extends GeneralPARException
 
     public SinIvaException(String evento)
     {
-        super(String.format("Evento sin IVA: %s", evento));
+        super(EVENTO_SIN_IVA_CODE, EVENTO_SIN_IVA + String.format("%s", evento));
         this.evento = evento;
     }
 

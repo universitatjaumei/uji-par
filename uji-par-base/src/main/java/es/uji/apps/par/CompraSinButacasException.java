@@ -6,6 +6,6 @@ public class CompraSinButacasException extends GeneralPARException
 {
     public CompraSinButacasException()
     {
-        super("Compra sin butacas seleccionadas");
+        super(COMPRA_SIN_BUTACAS_CODE);
     }
 }

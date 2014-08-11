@@ -5,7 +5,7 @@ package es.uji.apps.par;
 public class EventoConCompras extends GeneralPARException {
 
 	public EventoConCompras(long idEvento) {
-		super("sessioAmbCompres");
+		super(SESION_CON_COMPRAS_CODE);
 	}
 
 }

@@ -6,6 +6,6 @@ public class CompraInvitacionPorInternetException extends GeneralPARException
 {
     public CompraInvitacionPorInternetException()
     {
-        super("Compra de entrada tipo invitación por internet");
+        super(COMPRA_INVITACION_INTERNET_NO_DISPONIBLE_CODE);
     }
 }
