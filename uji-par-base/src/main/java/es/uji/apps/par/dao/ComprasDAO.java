@@ -677,8 +677,8 @@ public class ComprasDAO extends BaseDAO
 		updateC
 			.set(qCompraDTO.reserva, false)
 			.set(qCompraDTO.pagada, true)
-			.set(qCompraDTO.desde, null)
-			.set(qCompraDTO.hasta, null)
+			.setNull(qCompraDTO.desde)
+			.setNull(qCompraDTO.hasta)
 			.set(qCompraDTO.caducada, false)
 			.set(qCompraDTO.anulada, false)
 			.where(qCompraDTO.id.eq(idCompraReserva)
