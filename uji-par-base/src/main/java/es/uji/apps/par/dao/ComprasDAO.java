@@ -392,11 +392,11 @@ public class ComprasDAO extends BaseDAO
         
         JPAQuery query = new JPAQuery(entityManager);
 
-         List<CompraDTO> compras = query
+        List<CompraDTO> compras = query
                 .from(qCompraDTO)
                 .where(qCompraDTO.reserva.eq(true)
-                        .and(qCompraDTO.anulada.eq(false))
-                        .and(qCompraDTO.hasta.lt(DateUtils.dateToTimestampSafe(date))))
+                    .and(qCompraDTO.anulada.eq(false))
+                    .and(qCompraDTO.hasta.lt(DateUtils.dateToTimestampSafe(date))))
                 .distinct()
                 .list(qCompraDTO);
          
@@ -677,8 +677,8 @@ public class ComprasDAO extends BaseDAO
 		updateC
 			.set(qCompraDTO.reserva, false)
 			.set(qCompraDTO.pagada, true)
-			//.set(qCompraDTO.desde, null)
-			//.set(qCompraDTO.hasta, null)
+			.set(qCompraDTO.desde, null)
+			.set(qCompraDTO.hasta, null)
 			.set(qCompraDTO.caducada, false)
 			.set(qCompraDTO.anulada, false)
 			.where(qCompraDTO.id.eq(idCompraReserva)
