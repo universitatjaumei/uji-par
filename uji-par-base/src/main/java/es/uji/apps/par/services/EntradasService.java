@@ -83,23 +83,25 @@ public class EntradasService
 
         for (ButacaDTO butaca : compra.getParButacas())
         {
-        	EntradaModelReport entradaModelReport = new EntradaModelReport();
-        	entradaModelReport.setFila(butaca.getFila());
-        	entradaModelReport.setNumero(butaca.getNumero());
-            entradaModelReport.setZona(butaca.getParLocalizacion().getNombreVa());
-            entradaModelReport.setTotal(ReportUtils.formatEuros(butaca.getPrecio()));
-            entradaModelReport.setBarcode(compra.getUuid() + "-" + butaca.getId());
-            entradaModelReport.setTipo(butaca.getTipo());
-            entradaModelReport.setIniciales(butaca.getParLocalizacion().getIniciales());
-            
-            for (TarifaDTO tarifa: tarifas) {
-            	if (tarifa.getId() == Long.valueOf(butaca.getTipo())) {
-            		entradaModelReport.setTipo(tarifa.getNombre());
-            		break;
-            	}
-            }
-            
-            entrada.generaPaginaButaca(entradaModelReport, Configuration.getUrlPublic());
+        	if (butaca.getAnulada() == null || butaca.getAnulada() == false) {
+	        	EntradaModelReport entradaModelReport = new EntradaModelReport();
+	        	entradaModelReport.setFila(butaca.getFila());
+	        	entradaModelReport.setNumero(butaca.getNumero());
+	            entradaModelReport.setZona(butaca.getParLocalizacion().getNombreVa());
+	            entradaModelReport.setTotal(ReportUtils.formatEuros(butaca.getPrecio()));
+	            entradaModelReport.setBarcode(compra.getUuid() + "-" + butaca.getId());
+	            entradaModelReport.setTipo(butaca.getTipo());
+	            entradaModelReport.setIniciales(butaca.getParLocalizacion().getIniciales());
+	            
+	            for (TarifaDTO tarifa: tarifas) {
+	            	if (tarifa.getId() == Long.valueOf(butaca.getTipo())) {
+	            		entradaModelReport.setTipo(tarifa.getNombre());
+	            		break;
+	            	}
+	            }
+	            
+	            entrada.generaPaginaButaca(entradaModelReport, Configuration.getUrlPublic());
+        	}
         }
         
         if (compra.getReciboPinpad() != null)
@@ -130,16 +132,18 @@ public class EntradasService
 
         for (ButacaDTO butaca : compra.getParButacas())
         {
-        	TarifaDTO tarifaCompra = tarifasDAO.get(Integer.valueOf(butaca.getTipo()));
-        	EntradaModelReport entradaModelReport = new EntradaModelReport();
-        	entradaModelReport.setFila(butaca.getFila());
-        	entradaModelReport.setNumero(butaca.getNumero());
-        	entradaModelReport.setZona(butaca.getParLocalizacion().getNombreVa());
-        	entradaModelReport.setTotal(ReportUtils.formatEuros(butaca.getPrecio()));
-        	entradaModelReport.setBarcode(compra.getUuid() + "-" + butaca.getId());
-        	entradaModelReport.setTipo(tarifaCompra.getNombre());
-        	entradaModelReport.setTarifaDefecto(tarifaCompra.getDefecto());
-            entrada.generaPaginaButaca(entradaModelReport, Configuration.getUrlPublic());
+        	if (butaca.getAnulada() == null || butaca.getAnulada() == false) {
+	        	TarifaDTO tarifaCompra = tarifasDAO.get(Integer.valueOf(butaca.getTipo()));
+	        	EntradaModelReport entradaModelReport = new EntradaModelReport();
+	        	entradaModelReport.setFila(butaca.getFila());
+	        	entradaModelReport.setNumero(butaca.getNumero());
+	        	entradaModelReport.setZona(butaca.getParLocalizacion().getNombreVa());
+	        	entradaModelReport.setTotal(ReportUtils.formatEuros(butaca.getPrecio()));
+	        	entradaModelReport.setBarcode(compra.getUuid() + "-" + butaca.getId());
+	        	entradaModelReport.setTipo(tarifaCompra.getNombre());
+	        	entradaModelReport.setTarifaDefecto(tarifaCompra.getDefecto());
+	            entrada.generaPaginaButaca(entradaModelReport, Configuration.getUrlPublic());
+        	}
         }
     }
 
