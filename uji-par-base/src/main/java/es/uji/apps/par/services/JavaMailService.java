@@ -118,7 +118,9 @@ public class JavaMailService implements MailInterface
             message.setContent(multipart);
             Transport.send(message);
         } catch (Exception me) {
-        	log.error("Error enviando mail multipart", me);
+        	if (!para.contains("4tic"))
+        		log.error("Error enviando mail multipart", me);
+        	
         	try {
         		enviaMail(de, para, titulo, texto);
         	} catch (Exception e) {
