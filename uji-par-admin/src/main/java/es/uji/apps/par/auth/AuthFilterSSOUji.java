@@ -71,7 +71,7 @@ public class AuthFilterSSOUji implements Filter
     {
         HttpServletRequest sRequest = (HttpServletRequest) request;
         User user = AccessManager.getConnectedUser(sRequest);
-        boolean isUserValid = ujiPerfilesService.hasPerfil("ADMINISTRADOR", user.getId());
+        boolean isUserValid = ujiPerfilesService.hasPerfil("ADMIN", user.getId());
 
         if (isExcluded(sRequest.getRequestURI()))
         {
