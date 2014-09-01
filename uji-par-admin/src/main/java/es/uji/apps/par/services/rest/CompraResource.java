@@ -1,12 +1,10 @@
 package es.uji.apps.par.services.rest;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.print.PrintException;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
@@ -22,11 +20,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
-import org.xml.sax.SAXException;
 
 import com.sun.jersey.api.core.InjectParam;
 
-import es.uji.apps.fopreports.serialization.ReportSerializationException;
 import es.uji.apps.par.ButacaOcupadaAlActivarException;
 import es.uji.apps.par.ButacaOcupadaException;
 import es.uji.apps.par.CompraSinButacasException;
@@ -254,15 +250,5 @@ public class CompraResource extends BaseResource {
 				.header("Pragma", "no-cache").header("Expires", "0").build();
 
 		return response;
-	}
-
-	@GET
-	@Path("{id}/silentpdftaquilla")
-	public void printDirectamente(@PathParam("id") String uuidCompra)
-			throws ReportSerializationException, SAXException, IOException,
-			InterruptedException, PrintException {
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		entradasService.generaEntradaTaquilla(uuidCompra, bos);
-		reportService.silentPrint(bos);
 	}
 }

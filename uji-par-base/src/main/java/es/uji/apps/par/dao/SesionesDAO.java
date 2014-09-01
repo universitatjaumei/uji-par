@@ -12,9 +12,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mysema.query.BooleanBuilder;
+import com.mysema.query.Tuple;
+import com.mysema.query.jpa.JPASubQuery;
 import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
-import com.mysema.query.jpa.impl.JPASubQuery;
 import com.mysema.query.jpa.impl.JPAUpdateClause;
 import com.mysema.query.types.expr.BooleanExpression;
 
@@ -86,7 +87,7 @@ public class SesionesDAO extends BaseDAO
     }
 
     @Transactional
-    public List<Object[]> getSesionesConButacasVendidas(long eventoId, boolean activas, String sortParameter,
+    public List<Tuple> getSesionesConButacasVendidas(long eventoId, boolean activas, String sortParameter,
             int start, int limit)
     {
         QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
@@ -110,7 +111,7 @@ public class SesionesDAO extends BaseDAO
         queryReservadas.where(qSesionDTO.id.eq(qButacaDTO.parSesion.id).and(qButacaDTO.anulada.eq(false).or(qButacaDTO.anulada.isNull())).
         		and(qButacaDTO.parCompra.id.eq(qCompraDTO.id).and(qCompraDTO.reserva.eq(true))));
 
-        List<Object[]> sesiones = query.orderBy(getSort(qSesionDTO, sortParameter))/*.offset(start).limit(limit)*/
+        List<Tuple> sesiones = query.orderBy(getSort(qSesionDTO, sortParameter))/*.offset(start).limit(limit)*/
                 .list(qSesionDTO, queryVendidas.list(qButacaDTO).count(), queryReservadas.list(qButacaDTO).count());
 
         return sesiones;
@@ -296,7 +297,7 @@ public class SesionesDAO extends BaseDAO
         List<Long> idsSesiones = Sesion.getIdsSesiones(sesiones);
         JPAQuery query = new JPAQuery(entityManager);
         
-        List<Object[]> resultado = query
+        List<Tuple> resultado = query
         	.from(qSesionDTO)
         	.join(qSesionDTO.parSala, qSalaDTO)
         	.leftJoin(qSesionDTO.parCompras, qCompraDTO)
@@ -310,12 +311,12 @@ public class SesionesDAO extends BaseDAO
         
         List<RegistroSesion> registros = new ArrayList<RegistroSesion>();
         
-        for (Object[] row:resultado)
+        for (Tuple row: resultado)
         {
-        	long idSesion = (Long) row[0];
-        	String codigoSala = (String) row[1];
-        	Date fechaCelebracion = (Date) row[2];
-            BigDecimal recaudacion = (BigDecimal) row[3];
+        	long idSesion = row.get(0, Long.class);
+        	String codigoSala = (String) row.get(1, String.class);
+        	Date fechaCelebracion = row.get(2, Date.class);
+            BigDecimal recaudacion = row.get(3, BigDecimal.class);
             Long espectadores = getEspectadores(idSesion);
             
             RegistroSesion registro = new RegistroSesion();
@@ -325,7 +326,7 @@ public class SesionesDAO extends BaseDAO
             registro.setPeliculas(1);
             registro.setFecha(fechaCelebracion);
             registro.setHora(HOUR_FORMAT.format(fechaCelebracion));
-            registro.setIncidencia(TipoIncidencia.intToTipoIncidencia(Utils.safeObjectToInt(row[4])));
+            registro.setIncidencia(TipoIncidencia.intToTipoIncidencia(Utils.safeObjectToInt(row.get(4, BigDecimal.class))));
 
             if (recaudacion == null)
                 registro.setRecaudacion(BigDecimal.ZERO);
@@ -402,7 +403,7 @@ public class SesionesDAO extends BaseDAO
         
         JPAQuery query = new JPAQuery(entityManager);
 
-        List<Object[]> resultado = query
+        List<Tuple> resultado = query
                 .from(qSesionDTO)
                 .join(qSesionDTO.parEvento, qEventoDTO)
                 .join(qSesionDTO.parSala).fetch()
@@ -412,10 +413,10 @@ public class SesionesDAO extends BaseDAO
         
         List<RegistroPelicula> registros = new ArrayList<RegistroPelicula>();
         
-        for (Object[] row:resultado)
+        for (Tuple row: resultado)
         {
-            SesionDTO sesion = (SesionDTO) row[0];
-            Long idEvento = (Long) row[1];
+            SesionDTO sesion = row.get(0, SesionDTO.class);
+            Long idEvento = row.get(1, Long.class);
             
             RegistroPelicula registro = new RegistroPelicula();
             registro.setCodigoSala(sesion.getParSala().getCodigo());
@@ -488,7 +489,7 @@ public class SesionesDAO extends BaseDAO
 	       	query.where(condicion);
         }
         
-        return query.orderBy(getSort(qSesionDTO, sort)).listDistinct(qSesionDTO);
+        return query.orderBy(getSort(qSesionDTO, sort)).distinct().list(qSesionDTO);
 	}
     
     @Transactional
@@ -521,7 +522,7 @@ public class SesionesDAO extends BaseDAO
        
        	query.where(condicion);
         
-        return query.orderBy(getSort(qSesionDTO, sort)).listDistinct(qSesionDTO);
+        return query.orderBy(getSort(qSesionDTO, sort)).distinct().list(qSesionDTO);
 	}
     
     @Transactional
@@ -549,7 +550,7 @@ public class SesionesDAO extends BaseDAO
     	QTarifaDTO qTarifa = QTarifaDTO.tarifaDTO;
         JPAQuery query = new JPAQuery(entityManager);
         return query.from(qPreciosSesionDTO, qTarifa).where(qPreciosSesionDTO.parSesione.id.eq(sesionId).
-        		and(qTarifa.id.eq(qPreciosSesionDTO.parTarifa.id))).listDistinct(qTarifa);
+        		and(qTarifa.id.eq(qPreciosSesionDTO.parTarifa.id))).distinct().list(qTarifa);
 	}
 
     @Transactional
@@ -560,7 +561,7 @@ public class SesionesDAO extends BaseDAO
         JPAQuery query = new JPAQuery(entityManager);
         return query.from(qPreciosPlantilla, qTarifa).where(qPreciosPlantilla.parPlantilla.id.eq(
         		new JPASubQuery().from(qSesionDTO).where(qSesionDTO.id.eq(sesionId)).unique(qSesionDTO.parPlantilla.id)).
-       		and(qTarifa.id.eq(qPreciosPlantilla.parTarifa.id))).listDistinct(qTarifa);
+       		and(qTarifa.id.eq(qPreciosPlantilla.parTarifa.id))).distinct().list(qTarifa);
 	}
 
     @Transactional

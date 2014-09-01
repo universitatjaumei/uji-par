@@ -1,15 +1,17 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
- <modelVersion>4.0.0</modelVersion>
- <groupId>es.uji.apps.par</groupId>
- <artifactId>uji-par-admin</artifactId>
- <version>0.0.12-SNAPSHOT</version>
- <packaging>war</packaging>
- <name>uji-par-admin</name>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>es.uji.apps.par</groupId>
+	<artifactId>uji-par-admin</artifactId>
+	<version>0.0.12-SNAPSHOT</version>
+	<packaging>war</packaging>
+	<name>uji-par-admin</name>
 
 	<properties>
 		<jersey.version>1.13</jersey.version>
 		<spring.version>3.1.2.RELEASE</spring.version>
-		<aspectj.version>1.6.10.RC1</aspectj.version>
+		<!-- <aspectj.version>1.6.10.RC1</aspectj.version>-->
+		<aspectj.version>1.7.4</aspectj.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -20,6 +22,13 @@
 	</parent>
 
 	<dependencies>
+	
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
+			<scope>provided</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>org.apache.poi</groupId>
@@ -29,11 +38,17 @@
 
 		<dependency>
 			<groupId>es.uji.apps.par</groupId>
+			<artifactId>uji-par-reports</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>es.uji.apps.par</groupId>
 			<artifactId>uji-par-base</artifactId>
 			<version>0.0.12-SNAPSHOT</version>
 		</dependency>
-		
-		<dependency>
+
+		<!-- <dependency>
 	     	<groupId>es.uji.commons</groupId>
 	      	<artifactId>uji-commons-sso</artifactId>
 	      	<version>0.1.2</version>
@@ -62,6 +77,22 @@
 	  					<groupId>es.uji.commons</groupId>
 	  					<artifactId>uji-commons-sso</artifactId>
 					</exclusion>
+			</exclusions>
+		</dependency>-->
+
+		<dependency>
+			<groupId>es.uji.commons</groupId>
+			<artifactId>uji-commons-testing</artifactId>
+			<version>0.2.1</version>
+			<exclusions>
+				<exclusion>
+					<groupId>log4j</groupId>
+					<artifactId>log4j</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>log4j-over-slf4j</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 
@@ -120,8 +151,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.1</version>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>1.7</source>
+					<target>1.7</target>
 				</configuration>
 			</plugin>
 
@@ -144,20 +175,31 @@
 				</executions>
 			</plugin>
 
+			<!-- <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>aspectj-maven-plugin</artifactId> 
+				<version>1.3.1</version> <dependencies> <dependency> <groupId>org.aspectj</groupId> 
+				<artifactId>aspectjrt</artifactId> <version>1.6.10.RC1</version> </dependency> 
+				<dependency> <groupId>org.aspectj</groupId> <artifactId>aspectjtools</artifactId> 
+				<version>1.6.10.RC1</version> </dependency> </dependencies> <executions> 
+				<execution> <goals> <goal>compile</goal> <goal>test-compile</goal> </goals> 
+				</execution> </executions> <configuration> <outxml>true</outxml> <aspectLibraries> 
+				<aspectLibrary> <groupId>org.springframework</groupId> <artifactId>spring-aspects</artifactId> 
+				</aspectLibrary> </aspectLibraries> <source>1.6</source> <target>1.6</target> 
+				</configuration> </plugin> -->
+			<!-- Weaving de dependencias -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>aspectj-maven-plugin</artifactId>
-				<version>1.3.1</version>
+				<version>1.6</version>
 				<dependencies>
 					<dependency>
 						<groupId>org.aspectj</groupId>
 						<artifactId>aspectjrt</artifactId>
-						<version>1.6.10.RC1</version>
+						<version>${aspectj.version}</version>
 					</dependency>
 					<dependency>
 						<groupId>org.aspectj</groupId>
 						<artifactId>aspectjtools</artifactId>
-						<version>1.6.10.RC1</version>
+						<version>${aspectj.version}</version>
 					</dependency>
 				</dependencies>
 				<executions>
@@ -169,6 +211,25 @@
 					</execution>
 				</executions>
 				<configuration>
+					<showWeaveInfo>false</showWeaveInfo>
+					<verbose>false</verbose>
+					<source>1.7</source>
+					<target>1.7</target>
+					<complianceLevel>1.7</complianceLevel>
+					<weaveDependencies> 
+						<weaveDependency> 
+							<groupId>es.uji.commons</groupId> 
+							<artifactId>uji-commons-db</artifactId>
+						</weaveDependency>
+						<weaveDependency> 
+							<groupId>es.uji.commons</groupId>
+							<artifactId>uji-commons-sso</artifactId> 
+						</weaveDependency>
+						<weaveDependency>
+							<groupId>es.uji.commons</groupId>
+							<artifactId>uji-commons-rest</artifactId> 
+						</weaveDependency>
+					</weaveDependencies>
 					<outxml>true</outxml>
 					<aspectLibraries>
 						<aspectLibrary>
@@ -176,11 +237,10 @@
 							<artifactId>spring-aspects</artifactId>
 						</aspectLibrary>
 					</aspectLibraries>
-					<source>1.6</source>
-					<target>1.6</target>
 				</configuration>
 			</plugin>
 
+			<!-- sustitucion de variables en el web.xml -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
@@ -190,10 +250,10 @@
 				</configuration>
 			</plugin>
 
-			<plugin>
+			<!-- <plugin>
 				<groupId>org.mortbay.jetty</groupId>
 				<artifactId>maven-jetty-plugin</artifactId>
-				<version>6.1.22</version>
+				<version>6.1.26</version>
 				<configuration>
 					<connectors>
 						<connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
@@ -203,7 +263,27 @@
 					<webXml>target/web.xml</webXml>
 					<contextPath>/par</contextPath>
 				</configuration>
+			</plugin>-->
+			<plugin>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>9.1.2.v20140210</version>
+				<configuration>
+					<stopKey>ujiapps</stopKey>
+					<stopPort>9905</stopPort>
+					<systemProperties>
+						<systemProperty>
+							<name>jetty.port</name>
+							<value>9002</value>
+						</systemProperty>
+					</systemProperties>
+					<webApp>
+						<contextPath>/par</contextPath>
+						<descriptor>target/web.xml</descriptor>
+					</webApp>
+				</configuration>
 			</plugin>
+			
 		</plugins>
 		<pluginManagement>
 			<plugins>

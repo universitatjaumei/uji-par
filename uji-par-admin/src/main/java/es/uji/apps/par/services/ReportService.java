@@ -11,19 +11,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import javax.print.Doc;
-import javax.print.DocFlavor;
-import javax.print.DocPrintJob;
-import javax.print.PrintException;
-import javax.print.PrintService;
-import javax.print.PrintServiceLookup;
-import javax.print.SimpleDoc;
-
 import org.apache.poi.ss.usermodel.Row;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
+
+import com.mysema.query.Tuple;
 
 import es.uji.apps.fopreports.serialization.ReportSerializationException;
 import es.uji.apps.par.SinIvaException;
@@ -373,12 +367,12 @@ public class ReportService {
 		Sala sala = Sala.salaDTOtoSala(sesionDTO.getParSala());
 		Evento evento = Evento.eventoDTOtoEvento(sesionDTO.getParEvento());
 		InformeModelReport resumen = comprasDAO.getResumenSesion(sesionId);
-		List<Object[]> butacasYTarifas = butacasDAO.getButacas(sesionId);
+		List<Tuple> butacasYTarifas = butacasDAO.getButacas(sesionId);
 		
 		List<InformeModelReport> compras = new ArrayList<InformeModelReport>();
-		for (Object[] butacaYTarifa: butacasYTarifas) {
-			ButacaDTO butacaDTO = (ButacaDTO) butacaYTarifa[0];
-			String nombreTarifa = String.valueOf(butacaYTarifa[1]);
+		for (Tuple butacaYTarifa: butacasYTarifas) {
+			ButacaDTO butacaDTO = butacaYTarifa.get(0, ButacaDTO.class);
+			String nombreTarifa = butacaYTarifa.get(1, String.class);
 			InformeModelReport informeModel = InformeModelReport.fromButaca(butacaDTO);
 			informeModel.setTipoEntrada(nombreTarifa);
 			compras.add(informeModel);
@@ -404,19 +398,5 @@ public class ReportService {
 
 		service.getPdfEventos("2013-10-01", "2013-10-30", new FileOutputStream(
 				"/tmp/informe.pdf"));
-	}
-
-	public void silentPrint(ByteArrayOutputStream bos) throws PrintException, IOException {
-		DocFlavor flavor = DocFlavor.BYTE_ARRAY.POSTSCRIPT;
-		PrintService service = PrintServiceLookup.lookupDefaultPrintService();
-		DocPrintJob printJob = service.createPrintJob();
-		PrintJobWatcher pjDone = new PrintJobWatcher(printJob);
-
-		Doc doc = new SimpleDoc(bos.toByteArray(), flavor, null);
-
-		printJob.print(doc, null);
-		pjDone.waitForDone();
-
-		bos.close();
 	}
 }

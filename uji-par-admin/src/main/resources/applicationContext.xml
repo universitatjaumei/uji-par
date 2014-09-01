@@ -18,6 +18,8 @@
       <value>file:/etc/uji/par/app.properties</value>
     </property>
   </bean>
+  
+  <bean id="authentication-filter" class="${uji.deploy.authFilter}" />
 
   <tx:annotation-driven mode="aspectj" transaction-manager="transactionManager" />
   

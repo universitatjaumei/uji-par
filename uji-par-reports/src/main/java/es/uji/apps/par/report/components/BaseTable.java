@@ -1,6 +1,7 @@
 package es.uji.apps.par.report.components;
 
 import es.uji.apps.fopreports.fop.Block;
+import es.uji.apps.fopreports.fop.BlockContainer;
 import es.uji.apps.fopreports.fop.ExternalGraphic;
 import es.uji.apps.fopreports.fop.Table;
 import es.uji.apps.fopreports.fop.TableBody;
@@ -127,6 +128,11 @@ public class BaseTable extends Table
 
         return getNewTableCell(block);
     }
+    
+    public TableCell withNewCell(BlockContainer bc)
+    {
+        return getNewTableCell(bc);
+    }
 
 	private Block addToBlock(Object object) {
 		Block block = new Block();
@@ -140,6 +146,10 @@ public class BaseTable extends Table
 		return getNewTableCell(block, style, SIN_COLSPAN);
 	}
 	
+	private TableCell getNewTableCell(BlockContainer bc) {
+		return getNewTableCell(bc, style, SIN_COLSPAN);
+	}
+	
 	/*private TableCell getNewTableCell(Block block, String colspan) {
 		return getNewTableCell(block, style, colspan);
 	}*/
@@ -151,6 +161,25 @@ public class BaseTable extends Table
 	public TableCell getNewTableCell(Block block, ParanimfBaseReportStyle estilo, String colspan) {
 		TableCell tableCell = createNewTableCell(estilo);
 		tableCell.getMarkerOrBlockOrBlockContainer().add(block);
+		
+		if (!colspan.equals(SIN_COLSPAN))
+			tableCell.setNumberColumnsSpanned(colspan);
+		
+		if (estilo.getTableCellBorder() != null && !estilo.getTableCellBorder().equals(""))
+			tableCell.setBorder(estilo.getTableCellBorder());
+		
+		if (estilo.getTableCellBorderBottom() != null && !estilo.getTableCellBorderBottom().equals(""))
+			tableCell.setBorderBottom(estilo.getTableCellBorderBottom());
+		
+		if (estilo.getTableCellBorderTop() != null && !estilo.getTableCellBorderTop().equals(""))
+			tableCell.setBorderTop(estilo.getTableCellBorderTop());
+		
+		return tableCell;
+	}
+	
+	public TableCell getNewTableCell(BlockContainer bc, ParanimfBaseReportStyle estilo, String colspan) {
+		TableCell tableCell = createNewTableCell(estilo);
+		tableCell.getMarkerOrBlockOrBlockContainer().add(bc);
 		
 		if (!colspan.equals(SIN_COLSPAN))
 			tableCell.setNumberColumnsSpanned(colspan);

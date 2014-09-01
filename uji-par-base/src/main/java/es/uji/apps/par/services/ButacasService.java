@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.mysema.query.Tuple;
+
 import es.uji.apps.par.dao.ButacasDAO;
 import es.uji.apps.par.dao.LocalizacionesDAO;
 import es.uji.apps.par.db.ButacaDTO;
@@ -77,11 +79,11 @@ public class ButacasService
     }
 
 	public List<Butaca> getButacasCompra(Long idCompra, String sort, int start, int limit) {
-		List<Object[]> listaButacasDTO = butacasDAO.getButacasCompra(idCompra, sort, start, limit);
+		List<Tuple> listaButacasDTO = butacasDAO.getButacasCompra(idCompra, sort, start, limit);
 		List<Butaca> listaButacas = new ArrayList<Butaca>();
-		for (Object[] objButacaTarifa: listaButacasDTO) {
-			ButacaDTO butacaDTO = (ButacaDTO) objButacaTarifa[0];
-			TarifaDTO tarifaDTO = (TarifaDTO) objButacaTarifa[1];
+		for (Tuple objButacaTarifa: listaButacasDTO) {
+			ButacaDTO butacaDTO = objButacaTarifa.get(0, ButacaDTO.class);
+			TarifaDTO tarifaDTO = objButacaTarifa.get(1, TarifaDTO.class);
 			Butaca butaca = new Butaca(butacaDTO);
 			butaca.setTipo(tarifaDTO.getNombre());
 			listaButacas.add(butaca);

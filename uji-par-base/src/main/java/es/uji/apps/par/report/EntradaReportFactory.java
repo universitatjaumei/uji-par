@@ -61,7 +61,7 @@ public class EntradaReportFactory
     		return (InformeInterface) Class.forName(Configuration.getInformeSesionReport()).newInstance();
     	} catch(Exception e) {
     		throw new RuntimeException("Imposible instanciar la clase del pdf de informe de sesión: " + 
-    				Configuration.getInformeEventosReport());
+    				Configuration.getInformeSesionReport());
     	}
 	}
 }

@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mysema.query.Tuple;
+
 import es.uji.apps.par.CampoRequeridoException;
 import es.uji.apps.par.FechasInvalidasException;
 import es.uji.apps.par.dao.EventosDAO;
@@ -50,13 +52,13 @@ public class SesionesService
     {
         List<Sesion> listaSesiones = new ArrayList<Sesion>();
         
-        List<Object[]> sesiones = sesionDAO.getSesionesConButacasVendidas(eventoId, activas, sortParameter, start, limit);
+        List<Tuple> sesiones = sesionDAO.getSesionesConButacasVendidas(eventoId, activas, sortParameter, start, limit);
         
-        for (Object[] fila: sesiones) {
+        for (Tuple fila: sesiones) {
             
-            SesionDTO sesionDTO = (SesionDTO) fila[0];
-            Long butacasVendidas = (Long)fila[1];
-            Long butacasReservadas = (Long)fila[2];
+            SesionDTO sesionDTO = fila.get(0, SesionDTO.class);
+            Long butacasVendidas = fila.get(1, Long.class);
+            Long butacasReservadas = fila.get(2, Long.class);
             
             Sesion sesion = new Sesion(sesionDTO);
             sesion.setButacasVendidas(butacasVendidas);

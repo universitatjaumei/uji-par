@@ -8,6 +8,7 @@ import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mysema.query.Tuple;
 import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.jpa.impl.JPAUpdateClause;
@@ -59,7 +60,7 @@ public class ButacasDAO extends BaseDAO
     }
     
     @Transactional
-    public List<Object[]> getButacas(long idSesion)
+    public List<Tuple> getButacas(long idSesion)
     {
         QLocalizacionDTO qLocalizacionDTO = QLocalizacionDTO.localizacionDTO;
         QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
@@ -68,7 +69,7 @@ public class ButacasDAO extends BaseDAO
         
         JPAQuery query = new JPAQuery(entityManager);
 
-        List<Object[]> list = query
+        List<Tuple> list = query
                 .from(qButacaDTO, qTarifaDTO)
                 .join(qButacaDTO.parSesion, qSesionDTO)
                 .join(qButacaDTO.parLocalizacion, qLocalizacionDTO).fetch()
@@ -211,7 +212,7 @@ public class ButacasDAO extends BaseDAO
                 .innerJoin(qButacaDTO.parLocalizacion, qLocalizacionDTO)
                 .where(qSesionDTO.id.eq(sesionId)
                         .and(qButacaDTO.anulada.eq(false))
-                        .and(qLocalizacionDTO.codigo.eq(codigoLocalizacion))).listDistinct(qButacaDTO);
+                        .and(qLocalizacionDTO.codigo.eq(codigoLocalizacion))).distinct().list(qButacaDTO);
         
         long ocupadas = list.size();
         
@@ -219,7 +220,7 @@ public class ButacasDAO extends BaseDAO
     }
 
     @Transactional
-	public List<Object[]> getButacasCompra(Long idCompra, String sortParameter, int start, int limit) {
+	public List<Tuple> getButacasCompra(Long idCompra, String sortParameter, int start, int limit) {
     	QTarifaDTO qTarifaDTO = QTarifaDTO.tarifaDTO;
 		return getQueryButacasCompra(idCompra).orderBy(getSort(qButacaDTO, sortParameter)).offset(start).limit(limit).list(qButacaDTO, qTarifaDTO);
 	}

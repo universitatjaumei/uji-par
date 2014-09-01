@@ -1,122 +1,160 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	version="2.5">
 
-  <!--
-  <filter>
-    <filter-name>authentication-filter</filter-name>
-    <filter-class>es.uji.apps.par.auth.AuthFilter</filter-class>
-  </filter>
-  -->
+	<context-param>
+		<param-name>log4jConfigLocation</param-name>
+		<param-value>/WEB-INF/log4j.properties</param-value>
+	</context-param>
 
-  <context-param>
-    <param-name>log4jConfigLocation</param-name>
-    <param-value>/WEB-INF/log4j.properties</param-value>
-  </context-param>
+	<context-param>
+		<param-name>webAppRootKey</param-name>
+		<param-value>paranimf-fw-uji.root</param-value>
+	</context-param>
 
-  <context-param>
-    <param-name>webAppRootKey</param-name>
-    <param-value>paranimf-fw-uji.root</param-value>
-  </context-param>
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:applicationContext-db.xml classpath:applicationContext.xml</param-value>
+	</context-param>
 
-  <context-param>
-    <param-name>contextConfigLocation</param-name>
-    <param-value>classpath:applicationContext-db.xml classpath:applicationContext.xml</param-value>
-  </context-param>
+	<listener>
+		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+	</listener>
 
-  <listener>
-    <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
-  </listener>
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
 
-  <listener>
-    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-  </listener>
+	<listener>
+		<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+	</listener>
 
-  <listener>
-    <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
-  </listener>
+	<listener>
+		<listener-class>es.uji.commons.rest.listeners.CleanUpOracleMBeansListener</listener-class>
+	</listener>
 
-  <listener>
-    <listener-class>es.uji.commons.rest.listeners.CleanUpOracleMBeansListener</listener-class>
-  </listener>
+	<distributable />
+	<filter>
+		<filter-name>sso-filter</filter-name>
+		<filter-class>es.uji.si.SSO.filter.LsmFilter</filter-class>
+		<init-param>
+			<param-name>ssoAuthentication</param-name>
+			<param-value>true</param-value>
+		</init-param>
+		<init-param>
+			<param-name>dontFilterIfLocalhost</param-name>
+			<param-value>true</param-value>
+		</init-param>
+		<init-param>
+			<param-name>returnScheme</param-name>
+			<param-value>${uji.deploy.returnScheme}</param-value>
+		</init-param>
+		<init-param>
+			<param-name>returnHost</param-name>
+			<param-value>${uji.deploy.returnHost}</param-value>
+		</init-param>
+		<init-param>
+			<param-name>returnPort</param-name>
+			<param-value>${uji.deploy.returnPort}</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>sso-filter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<filter>
+		<filter-name>ujiapps-filter</filter-name>
+		<filter-class>es.uji.commons.sso.filters.UjiAppsFilter</filter-class>
+		<init-param>
+			<param-name>returnScheme</param-name>
+			<param-value>${uji.deploy.returnScheme}</param-value>
+		</init-param>
+		<init-param>
+			<param-name>returnHost</param-name>
+			<param-value>${uji.deploy.returnHost}</param-value>
+		</init-param>
+		<init-param>
+			<param-name>returnPort</param-name>
+			<param-value>${uji.deploy.returnPort}</param-value>
+		</init-param>
+		<init-param>
+			<param-name>defaultUserId</param-name>
+			<param-value>${uji.deploy.defaultUserId}</param-value>
+		</init-param>
+		<init-param>
+			<param-name>defaultUserName</param-name>
+			<param-value>${uji.deploy.defaultUserName}</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>ujiapps-filter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 
-  <filter>
-    <filter-name>authentication-filter</filter-name>
-    <filter-class>es.uji.commons.sso.AuthFilter</filter-class>
-    <init-param>
-      <param-name>goto</param-name>
-      <param-value>${uji.deploy.goto}</param-value>
-    </init-param>
-    <init-param>
-      <param-name>domainCookie</param-name>
-      <param-value>${uji.deploy.domainCookie}</param-value>
-    </init-param>
-    <init-param>
-      <param-name>defaultUserId</param-name>
-      <param-value>${uji.deploy.defaultUserId}</param-value>
-    </init-param>
-    <init-param>
-      <param-name>defaultUserName</param-name>
-      <param-value>${uji.deploy.defaultUserName}</param-value>
-    </init-param>
-    <init-param>
-      <param-name>exclude</param-name>
-      <param-value>.*/login|.*/logout|.*/.*\\.png|.*\\.jpg|.*\\.js|.*\\.css</param-value>
-    </init-param>
-    <init-param>
-      <param-name>authToken</param-name>
-      <param-value>${uji.deploy.authToken}</param-value>
-    </init-param>
-  </filter>
+	<filter>
+		<filter-name>authentication-filter</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+		<init-param>
+			<param-name>returnScheme</param-name>
+			<param-value>${uji.deploy.returnScheme}</param-value>
+		</init-param>
+		<init-param>
+			<param-name>returnHost</param-name>
+			<param-value>${uji.deploy.returnHost}</param-value>
+		</init-param>
+		<init-param>
+			<param-name>returnPort</param-name>
+			<param-value>${uji.deploy.returnPort}</param-value>
+		</init-param>
+		<init-param>
+			<param-name>defaultUserId</param-name>
+			<param-value>${uji.deploy.defaultUserId}</param-value>
+		</init-param>
+		<init-param>
+			<param-name>defaultUserName</param-name>
+			<param-value>${uji.deploy.defaultUserName}</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>authentication-filter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 
-  <filter-mapping>
-    <filter-name>authentication-filter</filter-name>
-    <url-pattern>/*</url-pattern>
-  </filter-mapping>
+	<servlet>
+		<servlet-name>rest-api</servlet-name>
+		<servlet-class>com.sun.jersey.spi.spring.container.servlet.SpringServlet</servlet-class>
+		<init-param>
+			<param-name>com.sun.jersey.config.property.packages</param-name>
+			<param-value>com.fasterxml.jackson.jaxrs.json; es.uji.apps.par.services.rest; es.uji.apps.par; es.uji.commons.rest.shared; es.uji.commons.rest.json; es.uji.commons.rest.html</param-value>
+		</init-param>
+		<init-param>
+			<param-name>com.sun.jersey.spi.container.ContainerRequestFilters</param-name>
+			<param-value>com.sun.jersey.api.container.filter.LoggingFilter</param-value>
+		</init-param>
+		<init-param>
+			<param-name>com.sun.jersey.spi.container.ContainerResponseFilters</param-name>
+			<param-value>com.sun.jersey.api.container.filter.LoggingFilter</param-value>
+		</init-param>
+		<init-param>
+			<param-name>com.sun.jersey.config.feature.logging.DisableEntitylogging</param-name>
+			<param-value>true</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
 
-  <servlet>
-    <servlet-name>rest-api</servlet-name>
-    <servlet-class>com.sun.jersey.spi.spring.container.servlet.SpringServlet</servlet-class>
-    <init-param>
-      <param-name>com.sun.jersey.config.property.packages</param-name>
-          <param-value>com.fasterxml.jackson.jaxrs.json; es.uji.apps.par.services.rest; es.uji.apps.par; es.uji.commons.rest.shared; es.uji.commons.rest.json; es.uji.commons.rest.html</param-value>
-    </init-param>
-    <init-param>
-      <param-name>com.sun.jersey.spi.container.ContainerRequestFilters</param-name>
-      <param-value>com.sun.jersey.api.container.filter.LoggingFilter</param-value>
-    </init-param>
-    <init-param>
-      <param-name>com.sun.jersey.spi.container.ContainerResponseFilters</param-name>
-      <param-value>com.sun.jersey.api.container.filter.LoggingFilter</param-value>
-    </init-param>
-    <init-param>
-      <param-name>com.sun.jersey.config.feature.logging.DisableEntitylogging</param-name>
-      <param-value>true</param-value>
-    </init-param>
-    <load-on-startup>1</load-on-startup>
-  </servlet>
+	<!-- Habilitar el jetty para leer enlaces simbolicos -->
+	<!-- <servlet> <servlet-name>default</servlet-name> <servlet-class>org.mortbay.jetty.servlet.DefaultServlet</servlet-class> 
+		<init-param> <param-name>aliases</param-name> <param-value>true</param-value> 
+		</init-param> </servlet> -->
 
-  <!--  Habilitar el jetty para leer enlaces simbolicos-->
-  <!--
-  <servlet>
-    <servlet-name>default</servlet-name>
-      <servlet-class>org.mortbay.jetty.servlet.DefaultServlet</servlet-class>
-    <init-param>
-      <param-name>aliases</param-name>
-      <param-value>true</param-value>
-    </init-param>
-  </servlet>
-  -->
+	<!-- <filter-mapping> <filter-name>authentication-filter</filter-name> <url-pattern>/*</url-pattern> 
+		</filter-mapping> -->
 
-  <!--
-  <filter-mapping>
-       <filter-name>authentication-filter</filter-name>
-      <url-pattern>/*</url-pattern>
-  </filter-mapping>
-  -->
-
-  <servlet-mapping>
-    <servlet-name>rest-api</servlet-name>
-    <url-pattern>/rest/*</url-pattern>
-  </servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>rest-api</servlet-name>
+		<url-pattern>/rest/*</url-pattern>
+	</servlet-mapping>
 
 </web-app>
