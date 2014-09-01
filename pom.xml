@@ -11,36 +11,11 @@
     <name>uji-par</name>
 
     <modules>
-	<!--<module>uji-par-reports</module>-->
         <module>uji-par-base</module>
         <module>uji-par-admin</module>
         <module>uji-par-web</module>
-        <!--<module>uji-par-sync</module>-->
+	<module>uji-par-reports</module>
     </modules>
-
-    <profiles>
-    	<profile>
-      		<id>uji</id>
-      		<modules>
-        	    	<module>uji-par-reports</module>
-		</modules>
-    	</profile>
-
-    	<profile>
-      		<id>benicassim</id>
-      		<modules>
-        		<module>uji-par-reports-benicassim</module>
-			<module>uji-par-web-benicassim</module>
-      		</modules>
-    	</profile>
-	<profile>
-		<id>vila-real</id>
-		<modules>
-			<module>uji-par-reports-vila-real</module>
-                        <module>uji-par-web-vila-real</module>
-		</modules>
-	</profile>
-  	</profiles>
 
     <build>
         <pluginManagement>
