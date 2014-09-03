@@ -219,7 +219,7 @@
         </configuration>
       </plugin>
 
-      <!-- Weaving AspectJ -->
+      <!-- Weaving AspectJ 
 
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -273,7 +273,7 @@
             </aspectLibrary>
           </aspectLibraries>
         </configuration>
-      </plugin>
+      </plugin>-->
 
       <!-- QueryDSL -->
 
