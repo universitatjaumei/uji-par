@@ -13,13 +13,9 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
-
-import com.sun.jersey.api.core.InjectParam;
 
 import es.uji.apps.par.services.UJIPerfilesService;
 import es.uji.commons.sso.AccessManager;
@@ -27,7 +23,7 @@ import es.uji.commons.sso.User;
 
 public class AuthFilterSSOUji implements Filter
 {
-    private static final Logger log = Logger.getLogger(AuthFilterSSOUji.class);
+	private static final Logger log = LoggerFactory.getLogger(AuthFilterSSOUji.class);
     private static final Pattern excluded =  Pattern.compile(".*/login|.*/logout|.*/.*\\.png|.*\\.jpg|.*\\.js|.*\\.css|.*/sync");
 
     private FilterConfig filterConfig;
@@ -87,6 +83,7 @@ public class AuthFilterSSOUji implements Filter
         else
         {
         	log.info("Autenticamos " + sRequest.getRequestURI());
+        	chain.doFilter(request, response);
         	//chain.doFilter(request, response);
             /* 
             HttpServletResponse sResponse = (HttpServletResponse) response;

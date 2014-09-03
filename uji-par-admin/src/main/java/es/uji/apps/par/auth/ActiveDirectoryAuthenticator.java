@@ -12,7 +12,8 @@ import javax.naming.directory.SearchResult;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import es.uji.apps.par.config.Configuration;
 
@@ -20,7 +21,7 @@ public class ActiveDirectoryAuthenticator implements Authenticator {
 	private static final String LOGIN_PARAM = "login";
 	private static final String PASSWORD_PARAM = "password";
 
-	public static Logger log = Logger.getLogger(ActiveDirectoryAuthenticator.class);
+	private static final Logger log = LoggerFactory.getLogger(ActiveDirectoryAuthenticator.class);
 
 	public ActiveDirectoryAuthenticator() {
 

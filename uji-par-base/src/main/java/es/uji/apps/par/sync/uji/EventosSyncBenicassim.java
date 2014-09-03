@@ -11,7 +11,8 @@ import java.util.List;
 
 import javax.xml.bind.JAXBException;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +39,7 @@ import es.uji.apps.par.utils.Utils;
 @Service("syncBenicassim")
 public class EventosSyncBenicassim implements EventosSync
 {
-    public static Logger log = Logger.getLogger(EventosSyncBenicassim.class);
+	private static final Logger log = LoggerFactory.getLogger(EventosSyncBenicassim.class);
 
     @Autowired
     EventosDAO eventosDAO;

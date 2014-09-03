@@ -12,8 +12,6 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
-import org.apache.log4j.Logger;
-
 import com.sun.jersey.api.core.InjectParam;
 
 import es.uji.apps.par.auth.AuthChecker;
@@ -25,8 +23,6 @@ import es.uji.apps.par.services.PagoTarjetaService;
 @Path("pago")
 public class PagoResource extends BaseResource
 {
-    public static Logger log = Logger.getLogger(PagoResource.class);
-
     @InjectParam
     PagoTarjetaService pagoTarjeta;
 

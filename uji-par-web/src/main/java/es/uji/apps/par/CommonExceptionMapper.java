@@ -11,7 +11,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import es.uji.apps.par.config.Configuration;
 import es.uji.commons.web.template.HTMLTemplate;
@@ -20,7 +21,7 @@ import es.uji.commons.web.template.Template;
 @Provider
 public class CommonExceptionMapper implements ExceptionMapper<Exception>
 {
-    public static Logger log = Logger.getLogger(CommonExceptionMapper.class);
+	private static final Logger log = LoggerFactory.getLogger(CommonExceptionMapper.class);
     
     @Context
     HttpServletRequest currentRequest;

@@ -13,13 +13,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import es.uji.apps.par.config.Configuration;
 
 public class AuthFilter implements Filter
 {
-    private static final Logger log = Logger.getLogger(AuthFilter.class);
+	private static final Logger log = LoggerFactory.getLogger(AuthFilter.class);
     private static final Pattern excluded =  Pattern.compile(".*/login|.*/logout|.*/.*\\.png|.*\\.jpg|.*\\.js|.*\\.css|.*/sync");
 
     private Authenticator authClass;

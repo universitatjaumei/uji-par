@@ -5,10 +5,12 @@ import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.ws.rs.core.MediaType;
 
-import org.apache.log4j.Layout;
-import org.apache.log4j.helpers.LogLog;
-import org.apache.log4j.net.SMTPAppender;
-import org.apache.log4j.spi.LoggingEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import ch.qos.logback.classic.net.SMTPAppender;
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.helpers.CyclicBuffer;
 
 import com.sun.mail.smtp.SMTPTransport;
 
@@ -18,6 +20,7 @@ import es.uji.commons.messaging.client.model.MailMessage;
 
 public class UjiMailAppender extends SMTPAppender
 {
+	private static final Logger log = LoggerFactory.getLogger(UjiMailAppender.class);
     protected Session session;
 
     private MessagingClient client;
@@ -44,45 +47,50 @@ public class UjiMailAppender extends SMTPAppender
             mensaje.setTitle(getSubject() + " (" + Configuration.getEntorno() + ")");
             mensaje.setContentType(MediaType.TEXT_PLAIN);
             mensaje.setSender(getFrom());
-            mensaje.addToRecipient(getTo());
+            String mails = "";
+            for (String to: getToAsListOfString()) {
+            	mails += (mails.equals(""))?to:","+to;
+            }
+            mensaje.addToRecipient(mails);
             mensaje.setContent(body);
 
             client.send(mensaje);
         }
         catch (Exception e)
         {
-            LogLog.error("Error occured while sending e-mail notification.", e);
+            log.error("Error occured while sending e-mail notification.", e);
         }
     }
 
     private String getMailContent()
     {
         StringBuffer sbuf = new StringBuffer();
-        String t = layout.getHeader();
+        String t = layout.getFileHeader();
 
         if (t != null)
             sbuf.append(t);
 
-        int len = cb.length();
+        //int len = getCyclicBufferTracker().getBufferSize();
 
-        for (int i = 0; i < len; i++)
+        for (CyclicBuffer<ILoggingEvent> mm: getCyclicBufferTracker().allComponents())
+        //for (int i = 0; i < len; i++)
         {
-            LoggingEvent event = cb.get();
-            sbuf.append(layout.format(event));
-            if (layout.ignoresThrowable())
+            ILoggingEvent event = mm.get();
+            sbuf.append(layout.doLayout(event));
+            /*if (layout.ignoresThrowable())
             {
-                String[] s = event.getThrowableStrRep();
+                StackTraceElementProxy[] s = event.getThrowableProxy().getStackTraceElementProxyArray();
                 if (s != null)
                 {
                     for (int j = 0; j < s.length; j++)
                     {
                         sbuf.append(s[j]);
-                        sbuf.append(Layout.LINE_SEP);
+                        sbuf.append(CoreConstants.LINE_SEPARATOR);
                     }
                 }
-            }
+            }*/
         }
-        t = layout.getFooter();
+        t = layout.getFileFooter();
 
         if (t != null)
             sbuf.append(t);
@@ -90,20 +98,12 @@ public class UjiMailAppender extends SMTPAppender
         return sbuf.toString();
     }
 
-    /**
-     * Pulled email send stuff i.e. Transport.send()/Transport.sendMessage(). So
-     * that on required this logic can be enhanced.
-     * 
-     * @param msg
-     *            Email Message
-     * @throws MessagingException
-     */
     protected void send(Message msg) throws MessagingException
     {
         SMTPTransport t = (SMTPTransport) session.getTransport("smtps");
         try
         {
-            t.connect(getSMTPHost(), getSMTPUsername(), getSMTPPassword());
+            t.connect(getSMTPHost(), getUsername(), getPassword());
             t.sendMessage(msg, msg.getAllRecipients());
         }
         finally

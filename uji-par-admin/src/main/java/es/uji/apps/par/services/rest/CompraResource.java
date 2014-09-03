@@ -19,8 +19,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.apache.log4j.Logger;
-
 import com.sun.jersey.api.core.InjectParam;
 
 import es.uji.apps.par.ButacaOcupadaAlActivarException;
@@ -34,13 +32,10 @@ import es.uji.apps.par.model.ResultadoCompra;
 import es.uji.apps.par.services.ButacasService;
 import es.uji.apps.par.services.ComprasService;
 import es.uji.apps.par.services.EntradasService;
-import es.uji.apps.par.services.ReportService;
 import es.uji.apps.par.services.SesionesService;
 
 @Path("compra")
 public class CompraResource extends BaseResource {
-	public static Logger log = Logger.getLogger(CompraResource.class);
-
 	@InjectParam
 	private ComprasService comprasService;
 
@@ -56,9 +51,6 @@ public class CompraResource extends BaseResource {
 	@Context
 	HttpServletResponse currentResponse;
 	
-	@InjectParam
-	private ReportService reportService;
-
 	@GET
 	@Path("{id}")
 	@Produces(MediaType.APPLICATION_JSON)

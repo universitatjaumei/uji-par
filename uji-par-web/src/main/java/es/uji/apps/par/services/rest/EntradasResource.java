@@ -24,7 +24,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.sun.jersey.api.core.InjectParam;
 
@@ -62,7 +63,7 @@ public class EntradasResource extends BaseResource
 	private static final String TPV_LANG_CA_CODE = "003";
 	private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
-	public static Logger log = Logger.getLogger(EntradasResource.class);
+	private static final Logger log = LoggerFactory.getLogger(EntradasResource.class);
 
     @InjectParam
     private SesionesService sesionesService;

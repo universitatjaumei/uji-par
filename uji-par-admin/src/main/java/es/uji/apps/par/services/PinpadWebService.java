@@ -4,7 +4,8 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.sun.jersey.api.client.Client;
@@ -17,7 +18,7 @@ import es.uji.apps.par.utils.Utils;
 @Service
 public class PinpadWebService implements PinpadDataService
 {
-    private static Logger log = Logger.getLogger(PinpadWebService.class);
+	private static final Logger log = LoggerFactory.getLogger(PinpadWebService.class);
 
     private static final int CONNECT_TIMEOUT = 5000;
     private static final int READ_TIMEOUT = 10000;

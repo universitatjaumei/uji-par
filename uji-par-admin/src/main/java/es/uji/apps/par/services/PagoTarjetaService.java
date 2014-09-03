@@ -3,7 +3,8 @@ package es.uji.apps.par.services;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.sun.jersey.api.core.InjectParam;
@@ -16,7 +17,7 @@ import es.uji.apps.par.pinpad.ResultadoPagoPinpad;
 @Service
 public class PagoTarjetaService
 {
-    public static Logger log = Logger.getLogger(ComprasService.class);
+	private static final Logger log = LoggerFactory.getLogger(PagoTarjetaService.class);
 
     private static final String PAGO_OK_TARJETA_MAGNETICA = "20";
     private static final String PAGO_OK_TARJETA_CHIP = "30";

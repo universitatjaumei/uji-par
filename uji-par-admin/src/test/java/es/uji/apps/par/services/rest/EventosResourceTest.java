@@ -18,7 +18,6 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.request.RequestContextListener;
-import org.springframework.web.util.Log4jConfigListener;
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 import com.sun.jersey.api.client.ClientResponse;
@@ -52,8 +51,9 @@ public class EventosResourceTest extends BaseResourceTest
         super(new WebAppDescriptor.Builder(
                 "es.uji.apps.par.services.rest;com.fasterxml.jackson.jaxrs.json;es.uji.apps.par")
                 .contextParam("contextConfigLocation", "classpath:applicationContext-db-test.xml")
-                .contextParam("log4jConfigLocation", "src/main/webapp/WEB-INF/log4j.properties")
-                .contextParam("webAppRootKey", "paranimf-fw-uji.root").contextListenerClass(Log4jConfigListener.class)
+                //.contextParam("log4jConfigLocation", "src/main/webapp/WEB-INF/log4j.properties")
+                .contextParam("webAppRootKey", "paranimf-fw-uji.root")
+                //.contextListenerClass(Log4jConfigListener.class)
                 .contextListenerClass(ContextLoaderListener.class).clientConfig(clientConfiguration())
                 .requestListenerClass(RequestContextListener.class).servletClass(SpringServlet.class).build());
 

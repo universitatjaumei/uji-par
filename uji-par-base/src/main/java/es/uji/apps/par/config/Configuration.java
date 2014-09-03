@@ -10,7 +10,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.thymeleaf.util.StringUtils;
 
 import es.uji.apps.par.i18n.ResourceProperties;
@@ -77,7 +78,7 @@ public class Configuration
 	private static final String IMAGEN_SUSTITUTIVA_CONTENT_TYPE = "uji.reports.imagenSustitutivaContentType";
 	private static final String PORCENTAJE_IVA_DEFECTO = "uji.par.porcentajeIvaDefecto";
 
-    public static Logger log = Logger.getLogger(Configuration.class);
+	private static final Logger log = LoggerFactory.getLogger(Configuration.class);
 
     private static String fileName = "/etc/uji/par/app.properties";
     private Properties properties;

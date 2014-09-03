@@ -18,7 +18,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.batik.transcoder.TranscoderException;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.sun.jersey.api.core.InjectParam;
 
@@ -32,7 +33,7 @@ import es.uji.apps.par.utils.DateUtils;
 @Path("report")
 public class ReportResource extends BaseResource
 {
-    public static Logger log = Logger.getLogger(ReportResource.class);
+	private static final Logger log = LoggerFactory.getLogger(ReportResource.class);
     
     @InjectParam
     private ReportService reportService;

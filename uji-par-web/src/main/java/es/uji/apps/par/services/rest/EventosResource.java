@@ -22,7 +22,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.commons.io.output.ByteArrayOutputStream;
-import org.apache.log4j.Logger;
+
 import org.apache.sanselan.ImageReadException;
 
 import com.sun.jersey.api.core.InjectParam;
@@ -47,8 +47,6 @@ import es.uji.commons.web.template.Template;
 public class EventosResource extends BaseResource
 {
 	
-    public static Logger log = Logger.getLogger(EventosResource.class);
-    
     @InjectParam
     private EventosService eventosService;
 

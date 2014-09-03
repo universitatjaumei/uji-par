@@ -8,7 +8,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.request.RequestContextListener;
-import org.springframework.web.util.Log4jConfigListener;
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 import com.sun.jersey.api.client.ClientResponse;
@@ -36,10 +35,9 @@ public class PlantillasPreciosResourceTest extends BaseResourceTest {
                         "es.uji.apps.par.services.rest;com.fasterxml.jackson.jaxrs.json;es.uji.apps.par")
                         .contextParam("contextConfigLocation",
                                 "classpath:applicationContext-db-test.xml")
-                        .contextParam("log4jConfigLocation",
-                                "src/main/webapp/WEB-INF/log4j.properties")
+                        //.contextParam("log4jConfigLocation", "src/main/webapp/WEB-INF/log4j.properties")
                         .contextParam("webAppRootKey", "paranimf-fw-uji.root")
-                        .contextListenerClass(Log4jConfigListener.class)
+                        //.contextListenerClass(Log4jConfigListener.class)
                         .contextListenerClass(ContextLoaderListener.class)
                         .clientConfig(clientConfiguration())
                         .requestListenerClass(RequestContextListener.class)

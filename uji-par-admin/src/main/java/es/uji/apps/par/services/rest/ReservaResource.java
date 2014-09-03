@@ -9,8 +9,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.apache.log4j.Logger;
-
 import com.sun.jersey.api.core.InjectParam;
 
 import es.uji.apps.par.ButacaOcupadaException;
@@ -24,8 +22,6 @@ import es.uji.apps.par.services.ComprasService;
 @Path("reserva")
 public class ReservaResource extends BaseResource
 {
-    public static Logger log = Logger.getLogger(ReservaResource.class);
-    
     @InjectParam
     private ComprasService comprasService;
     

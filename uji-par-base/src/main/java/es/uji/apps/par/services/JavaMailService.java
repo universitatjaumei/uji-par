@@ -18,7 +18,8 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,7 @@ import es.uji.commons.messaging.client.MessageNotSentException;
 @Service
 public class JavaMailService implements MailInterface
 {
-    public static Logger log = Logger.getLogger(MailService.class);
+	private static final Logger log = LoggerFactory.getLogger(JavaMailService.class);
     
     @Autowired
 	MailDAO mailDao;

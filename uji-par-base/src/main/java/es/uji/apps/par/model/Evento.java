@@ -8,7 +8,8 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import es.uji.apps.par.GeneralPARException;
 import es.uji.apps.par.RegistroSerializaException;
@@ -17,7 +18,7 @@ import es.uji.apps.par.db.EventoDTO;
 @XmlRootElement
 public class Evento
 {
-	private static Logger logger = Logger.getLogger(Evento.class);
+	private static final Logger logger = LoggerFactory.getLogger(Evento.class);
 	
     private long id;
     private String tituloEs;

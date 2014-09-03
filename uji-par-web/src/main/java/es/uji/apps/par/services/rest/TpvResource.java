@@ -13,7 +13,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.sun.jersey.api.core.InjectParam;
 
@@ -30,7 +31,7 @@ import es.uji.commons.web.template.Template;
 @Path("tpv")
 public class TpvResource extends BaseResource
 {
-    public static Logger log = Logger.getLogger(TpvResource.class);
+	private static final Logger log = LoggerFactory.getLogger(TpvResource.class);
 
     @InjectParam
     private ComprasService compras;

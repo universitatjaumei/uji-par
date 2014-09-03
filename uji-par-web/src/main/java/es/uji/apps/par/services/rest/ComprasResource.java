@@ -10,7 +10,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
-import org.apache.log4j.Logger;
 
 import com.sun.jersey.api.core.InjectParam;
 
@@ -19,8 +18,6 @@ import es.uji.apps.par.services.EntradasService;
 @Path("compra")
 public class ComprasResource extends BaseResource
 {
-    public static Logger log = Logger.getLogger(ComprasResource.class);
-
     @InjectParam
     private EntradasService entradasService;
 

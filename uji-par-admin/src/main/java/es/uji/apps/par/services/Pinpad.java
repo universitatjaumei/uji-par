@@ -2,7 +2,8 @@ package es.uji.apps.par.services;
 
 import java.math.BigDecimal;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +13,7 @@ import es.uji.apps.par.pinpad.ResultadoPagoPinpad;
 @Service
 public class Pinpad
 {
-    private static Logger log = Logger.getLogger(Pinpad.class);
+	private static final Logger log = LoggerFactory.getLogger(Pinpad.class);
 
     @Autowired
     PinpadDataService dataService;

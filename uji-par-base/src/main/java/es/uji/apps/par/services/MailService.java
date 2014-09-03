@@ -4,7 +4,8 @@ import java.util.List;
 
 import javax.ws.rs.core.MediaType;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -20,7 +21,7 @@ import es.uji.commons.messaging.client.model.MailMessage;
 @Service
 public class MailService implements MailInterface
 {
-    public static Logger log = Logger.getLogger(MailService.class);
+	private static final Logger log = LoggerFactory.getLogger(MailService.class);
 
     @Autowired
     MailDAO mailDao;

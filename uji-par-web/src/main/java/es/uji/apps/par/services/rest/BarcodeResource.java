@@ -12,7 +12,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.sun.jersey.api.core.InjectParam;
 
@@ -22,7 +23,7 @@ import es.uji.apps.par.utils.Utils;
 @Path("barcode")
 public class BarcodeResource extends BaseResource
 {
-    public static Logger log = Logger.getLogger(BarcodeResource.class);
+	private static final Logger log = LoggerFactory.getLogger(BarcodeResource.class);
 
     @InjectParam
     private BarcodeService barcodeService;

@@ -12,8 +12,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.apache.log4j.Logger;
-
 import com.sun.jersey.api.core.InjectParam;
 
 import es.uji.apps.par.model.Butaca;
@@ -22,8 +20,6 @@ import es.uji.apps.par.services.ButacasService;
 @Path("sesion")
 public class ButacasResource extends BaseResource
 {
-    public static Logger log = Logger.getLogger(ButacasResource.class);
-
     @InjectParam
     private ButacasService butacasService;
 
