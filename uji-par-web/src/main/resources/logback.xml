@@ -1,0 +1,46 @@
+<configuration scan="true" debug="true">
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%-4relative [%thread] %-5level %logger{35} - %msg %n
+			</pattern>
+		</encoder>
+	</appender>
+	<appender name="FILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>/var/log/uji/uji-par-web.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>/var/log/uji/uji-par-web.%d{yyyy-MM-dd}.log
+			</fileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+	<appender name="ASYNC_CONSOLE" class="ch.qos.logback.classic.AsyncAppender">
+		<appender-ref ref="CONSOLE" />
+		<includeCallerData>true</includeCallerData>
+	</appender>
+	<appender name="ASYNC_FILE" class="ch.qos.logback.classic.AsyncAppender">
+		<appender-ref ref="FILE" />
+		<includeCallerData>true</includeCallerData>
+	</appender>
+	<appender name="EMAIL" class="es.uji.apps.par.appender.UjiMailAppender">
+		<smtpHost>localhost</smtpHost>
+		<smtpPort>25</smtpPort>
+		<to>soporte@4tic.com</to>
+		<from>no_reply@uji.es</from>
+		<subject>Error en Paranimf UJI PUBLIC</subject>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%date %-5level %logger{35} - %message%n</pattern>
+		</layout>
+	</appender>
+	<root level="info">
+		<appender-ref ref="ASYNC_CONSOLE" />
+		<appender-ref ref="ASYNC_FILE" />
+	</root>
+	<root level="error">
+		<appender-ref ref="EMAIL" />
+	</root>
+</configuration>

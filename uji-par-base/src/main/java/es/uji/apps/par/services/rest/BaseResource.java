@@ -95,7 +95,9 @@ public class BaseResource
     //deberían arreglarlo ellos pero no lo quieren hacer
     protected String getBaseUrlPublicLimpio()
     {
-        return Configuration.getUrlPublicLimpio();
+    	String urlPublicLimpio = Configuration.getUrlPublicLimpio(); 
+        urlPublicLimpio = (urlPublicLimpio == null)?Configuration.getUrlPublic():urlPublicLimpio;
+        return urlPublicLimpio;
     }
 
     public Response errorResponse(String messageProperty, Object... values)

@@ -8,11 +8,10 @@
 	<name>uji-par-web</name>
 
 	<properties>
-		<jersey.version>1.13</jersey.version>
-		<spring.version>3.1.2.RELEASE</spring.version>
-		<!-- <aspectj.version>1.6.10.RC1</aspectj.version> -->
 		<aspectj.version>1.7.4</aspectj.version>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	    <jersey.version>1.17</jersey.version>
+	    <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
+	    <spring.version>3.2.8.RELEASE</spring.version>
 	</properties>
 
 	<parent>
@@ -23,6 +22,12 @@
 
 
 	<dependencies>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
+			<scope>provided</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>es.uji.apps.par</groupId>
@@ -36,7 +41,7 @@
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
-		<dependency>
+		<!--<dependency>
 			<groupId>es.uji.commons</groupId>
 			<artifactId>uji-commons-sso</artifactId>
 			<version>0.1.2</version>
@@ -78,6 +83,12 @@
 					<artifactId>uji-commons-sso</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>-->
+
+		<dependency>
+			<groupId>es.uji.commons</groupId>
+			<artifactId>uji-commons-testing</artifactId>
+			<version>0.2.2</version>
 		</dependency>
 
 		<!-- jUnit -->
@@ -120,7 +131,26 @@
 				</configuration>
 			</plugin>
 
-			<!-- Weaving AspectJ -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>properties-maven-plugin</artifactId>
+				<version>1.0-alpha-2</version>
+				<executions>
+					<execution>
+						<phase>initialize</phase>
+						<goals>
+							<goal>read-project-properties</goal>
+						</goals>
+						<configuration>
+							<files>
+								<file>/etc/uji/par/app.properties</file>
+							</files>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Weaving de dependencias -->
 
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
@@ -152,6 +182,20 @@
 					<source>1.7</source>
 					<target>1.7</target>
 					<complianceLevel>1.7</complianceLevel>
+					<weaveDependencies>
+						<weaveDependency>
+						  <groupId>es.uji.commons</groupId>
+						  <artifactId>uji-commons-db</artifactId>
+						</weaveDependency>
+						<weaveDependency>
+						  <groupId>es.uji.commons</groupId>
+						  <artifactId>uji-commons-sso</artifactId>
+						</weaveDependency>
+						<weaveDependency>
+						  <groupId>es.uji.commons</groupId>
+						  <artifactId>uji-commons-rest</artifactId>
+						</weaveDependency>
+					</weaveDependencies>
 					<outxml>true</outxml>
 					<aspectLibraries>
 						<aspectLibrary>
@@ -172,17 +216,13 @@
 				</configuration>
 			</plugin>
 
-			<!-- <plugin> <groupId>org.mortbay.jetty</groupId> <artifactId>maven-jetty-plugin</artifactId> 
-				<version>6.1.26</version> <configuration> <connectors> <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector"> 
-				<port>9003</port> </connector> </connectors> <webXml>target/web.xml</webXml> 
-				<contextPath>/par</contextPath> </configuration> </plugin> -->
 			<plugin>
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
 				<version>9.1.2.v20140210</version>
 				<configuration>
 					<stopKey>ujiapps</stopKey>
-					<stopPort>9905</stopPort>
+					<stopPort>9906</stopPort>
 					<systemProperties>
 						<systemProperty>
 							<name>jetty.port</name>
@@ -190,7 +230,7 @@
 						</systemProperty>
 					</systemProperties>
 					<webApp>
-						<contextPath>/par</contextPath>
+						<contextPath>/par-public</contextPath>
 						<descriptor>target/web.xml</descriptor>
 					</webApp>
 				</configuration>
@@ -209,25 +249,17 @@
 							<pluginExecutions>
 								<pluginExecution>
 									<pluginExecutionFilter>
-										<groupId>com.mysema.maven</groupId>
-										<artifactId>maven-apt-plugin</artifactId>
-										<versionRange>[0.3.2,)</versionRange>
-										<goals>
-											<goal>process</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore></ignore>
-									</action>
-								</pluginExecution>
-								<pluginExecution>
-									<pluginExecutionFilter>
 										<groupId>org.codehaus.mojo</groupId>
-										<artifactId>aspectj-maven-plugin</artifactId>
-										<versionRange>[1.3.1,)</versionRange>
+										<artifactId>
+											properties-maven-plugin
+										</artifactId>
+										<versionRange>
+											[1.0-alpha-2,)
+										</versionRange>
 										<goals>
-											<goal>compile</goal>
-											<goal>test-compile</goal>
+											<goal>
+												read-project-properties
+											</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>

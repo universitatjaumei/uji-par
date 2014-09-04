@@ -43,10 +43,7 @@ public class SesionesResourceTest extends BaseResourceTest
                         "es.uji.apps.par.services.rest;com.fasterxml.jackson.jaxrs.json;es.uji.apps.par")
                         .contextParam("contextConfigLocation",
                                 "classpath:applicationContext-db-test.xml")
-                        //.contextParam("log4jConfigLocation", "src/main/webapp/WEB-INF/log4j.properties")
                         .contextParam("webAppRootKey", "paranimf-fw-uji.root")
-                        //.contextListenerClass(Log4jConfigListener.class)
-                        .contextListenerClass(ContextLoaderListener.class)
                         .clientConfig(clientConfiguration())
                         .requestListenerClass(RequestContextListener.class)
                         .servletClass(SpringServlet.class).build());
