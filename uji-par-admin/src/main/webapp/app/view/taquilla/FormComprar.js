@@ -218,6 +218,7 @@ Ext.define('Paranimf.view.taquilla.FormComprar', {
 		       	        	        	items: [{
 		       	        	        		width: 170,
 					       	        		xtype: 'combobox',
+					       	        		forceSelection: true,
 					       	        		queryMode: 'local',
 					       	        		name: 'horaInicio',
 					       	        	    store: 'Horas',
@@ -231,6 +232,7 @@ Ext.define('Paranimf.view.taquilla.FormComprar', {
 					       	        	},{
 					       	        		width: 170,
 		       	        	        		xtype: 'combobox',
+		       	        	        		forceSelection: true,
 		       	        	        		queryMode: 'local',
 		       	        	        		name: 'minutoInicio',
 		       	        	        		allowBlank: false,
@@ -249,6 +251,7 @@ Ext.define('Paranimf.view.taquilla.FormComprar', {
        	        	        				width: 170,
 		       	        	        		xtype: 'combobox',
 		       	        	        		name: 'horaFin',
+		       	        	        		forceSelection: true,
 		       	        	        		allowBlank: false,
 		       	        	        		store: 'Horas',
 		       	        	        		displayField: 'label',
@@ -261,6 +264,7 @@ Ext.define('Paranimf.view.taquilla.FormComprar', {
 			       	        	        }, {
 			       	        	        	width: 170,
 		       	        	        		xtype: 'combobox',
+		       	        	        		forceSelection: true,
 		       	        	        		name: 'minutoFin',
 		       	        	        		queryMode: 'local',
 		       	        	        		allowBlank: false,

@@ -12,6 +12,7 @@ Ext.define('Paranimf.view.generarficheros.FormIncidencias', {
    items: [{
       xtype: 'combobox',
       queryMode: 'local',
+      forceSelection: true,
       name: 'incidencias',
       valueField: 'id',
       displayField: 'label',

@@ -24,6 +24,7 @@ Ext.define('Paranimf.view.plantillaprecios.FormPlantillas', {
         fieldLabel: UI.i18n.field.sala,
         name: 'sala',
         xtype: 'combobox',
+        forceSelection: true,
         displayField: 'nombre',
         valueField: 'id',
         store: 'Salas',
