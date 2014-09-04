@@ -30,6 +30,7 @@ public class Configuration
     private static final String URL_CONDICIONES_PRIVACIDAD = "uji.par.urlCondicionesPrivacidad";
     private static final String GASTOS_GESTION = "uji.par.gastosGestion";
     private static final String ENVIAR_MAILS_ERROR = "uji.par.enviarMailsError";
+    private static final String ENVIAR_MAILS_ENTRADAS = "uji.par.enviarMailsEntradas";
     private static final String URL_PIE_ENTRADA = "uji.par.urlPieEntrada";
     private static final String ENTORNO = "uji.par.entorno";
     private static final String INFORME_EFECTIVO_CARGO = "uji.par.informeEfectivo.cargo";
@@ -441,5 +442,9 @@ public class Configuration
 
 	public static String getPorcentajeIvaDefecto() {
 		return getProperty(PORCENTAJE_IVA_DEFECTO);
+	}
+	
+	public static String getEnviarMailsEntradas() {
+		return getNoObligatoryProperty(ENVIAR_MAILS_ENTRADAS);
 	}
 }
