@@ -18,13 +18,13 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table(name="PAR_SESIONES_FORMATO_IDIOMA_ICAA")
+@Table(name="PAR_SESIONES_FORMATO_IDI_ICAA")
 public class SesionFormatoIdiomaICAADTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="PAR_SESIONES_FORMATO_IDIOMA_ICAA_ID_GENERATOR", sequenceName="HIBERNATE_SEQUENCE")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PAR_SESIONES_FORMATO_IDIOMA_ICAA_ID_GENERATOR")
+	@SequenceGenerator(name="PAR_SESIONES_FORMATO_IDI_ICAA", sequenceName="HIBERNATE_SEQUENCE")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PAR_SESIONES_FORMATO_IDI_ICAA")
 	private long id;
     
     @Column(name="FORMATO")
