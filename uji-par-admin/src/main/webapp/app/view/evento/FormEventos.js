@@ -88,7 +88,7 @@ Ext
 								name : 'tipoEvento',
 								labelWidth : 120,
 								xtype : 'combobox',
-								forceSelection: true,
+								forceSelection: false,
 								displayField : 'nombreEs',
 								valueField : 'id',
 								store : 'TiposEventosSinPaginar',

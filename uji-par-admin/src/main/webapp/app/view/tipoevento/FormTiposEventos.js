@@ -24,7 +24,7 @@ Ext.define('Paranimf.view.tipoevento.FormTiposEventos', {
 	  name: 'nombreVa'
    }, {
       xtype: 'combobox',
-      forceSelection: true,
+      forceSelection: false,
       queryMode: 'local',
       name: 'exportarICAA',
       labelWidth: 280,

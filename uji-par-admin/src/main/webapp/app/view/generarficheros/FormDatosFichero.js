@@ -16,7 +16,7 @@ Ext.define('Paranimf.view.generarficheros.FormDatosFichero', {
       maxValue: new Date()
    }, {
       xtype: 'combobox',
-      forceSelection: true,
+      forceSelection: false,
       queryMode: 'local',
       name: 'tipoEnvio',
       valueField: 'id',
