@@ -72,7 +72,7 @@ public class EntradaReport extends Report implements EntradaReportOnlineInterfac
         creaSeccionEntrada(urlPublic);
         add(creaHorizontalLine());
 
-        creaSeccionCondiciones(entrada.getTipo());
+        creaSeccionCondiciones(entrada.getTarifaDefecto());
         creaSeccionPublicidad();
 
         Block pageBreak = withNewBlock();
@@ -91,8 +91,10 @@ public class EntradaReport extends Report implements EntradaReportOnlineInterfac
         publicidadBlock.getContent().add(externalGraphic);
     }
 
-    private void creaSeccionCondiciones(String tipoEntrada)
+    private void creaSeccionCondiciones(Boolean isTarifaDefecto)
     {
+    	if (isTarifaDefecto == null)
+    		isTarifaDefecto = false;
     	String puntos = "";
     	Block block = new Block();
         Block condicionesBlock = withNewBlock();
@@ -111,7 +113,7 @@ public class EntradaReport extends Report implements EntradaReportOnlineInterfac
         block.setColor(GRIS_OSCURO);
         block.setMarginBottom("0.2em");
         
-        if (tipoEntrada.equals("descuento")) {
+        if (!isTarifaDefecto) {
         	block.setBackgroundImage("/etc/uji/par/imagenes/entrada_descuento.png");
         	block.setBackgroundRepeat(BackgroundRepeatType.NO_REPEAT);
         	block.setBackgroundPositionVertical("35%");

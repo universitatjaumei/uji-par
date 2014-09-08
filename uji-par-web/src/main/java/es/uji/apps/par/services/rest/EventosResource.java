@@ -22,7 +22,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.commons.io.output.ByteArrayOutputStream;
-
 import org.apache.sanselan.ImageReadException;
 
 import com.sun.jersey.api.core.InjectParam;
