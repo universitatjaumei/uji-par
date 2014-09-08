@@ -59,8 +59,7 @@ public class AuthFilterSSOUji implements Filter
 
     private boolean isExcluded(String url)
     {
-        boolean matches = excluded.matcher(url).matches();
-        return matches;
+        return excluded.matcher(url).matches();
     }
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
@@ -69,13 +68,13 @@ public class AuthFilterSSOUji implements Filter
         HttpServletRequest sRequest = (HttpServletRequest) request;
         User user = AccessManager.getConnectedUser(sRequest);
         boolean isUserValid = false;
-        
+
         if (sRequest.getSession().getAttribute("user") == null) {
         	sRequest.getSession().setAttribute("user", user);
             isUserValid = ujiPerfilesService.hasPerfil("ADMIN", user.getId());
             sRequest.getSession().setAttribute("isUserValid", isUserValid);
         } else
-        	isUserValid = (Boolean) sRequest.getSession().getAttribute("isUserValid");
+            isUserValid = (Boolean) sRequest.getSession().getAttribute("isUserValid");
 
         if (isExcluded(sRequest.getRequestURI()))
         {
@@ -91,11 +90,11 @@ public class AuthFilterSSOUji implements Filter
         else
         {
         	HttpServletResponse sResponse = (HttpServletResponse) response;
-        	redirectToEmptyPage(request, sResponse);
+        	redirectToEmptyPage(sResponse);
         }
     }
 
-	private void redirectToEmptyPage(ServletRequest request, HttpServletResponse sResponse) throws IOException {
+	private void redirectToEmptyPage(HttpServletResponse sResponse) throws IOException {
 		//sResponse.sendRedirect(Configuration.getUrlAdmin() + "/rest/login");
 		sResponse.sendError(403);
 	}
