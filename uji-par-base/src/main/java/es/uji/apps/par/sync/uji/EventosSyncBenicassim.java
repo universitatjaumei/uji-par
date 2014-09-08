@@ -162,7 +162,10 @@ public class EventosSyncBenicassim implements EventosSync
         if (item.getEnclosures() != null && item.getEnclosures().size() > 0)
         {
             String urlImagen = item.getEnclosures().get(0).getUrl();
-            evento.setImagen(SyncUtils.getImageFromUrl(urlImagen));
+            byte[] imagen = SyncUtils.getImageFromUrl(urlImagen);
+
+            if (imagen != null)
+            	evento.setImagen(imagen);
             evento.setImagenSrc(urlImagen);
             evento.setImagenContentType(item.getEnclosures().get(0).getType());
         }
