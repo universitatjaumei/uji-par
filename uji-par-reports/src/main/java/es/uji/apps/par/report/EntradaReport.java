@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.OutputStream;
 import java.util.Locale;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import es.uji.apps.fopreports.Report;
 import es.uji.apps.fopreports.fop.BackgroundRepeatType;
 import es.uji.apps.fopreports.fop.Block;
@@ -26,9 +29,12 @@ import es.uji.apps.fopreports.style.ReportStyle;
 import es.uji.apps.par.i18n.ResourceProperties;
 import es.uji.apps.par.report.components.BaseTable;
 import es.uji.apps.par.report.components.EntradaReportStyle;
+import es.uji.apps.par.sync.utils.SyncUtils;
 
 public class EntradaReport extends Report implements EntradaReportOnlineInterface
 {
+	private static final Logger log = LoggerFactory.getLogger(EntradaReport.class);
+	
     private static final String GRIS_OSCURO = "#666666";
     private static final String FONDO_GRIS = "#EEEEEE";
     private static final String FONDO_BLANCO = "#FFFFFF";
@@ -78,17 +84,32 @@ public class EntradaReport extends Report implements EntradaReportOnlineInterfac
         Block pageBreak = withNewBlock();
         pageBreak.setPageBreakAfter(PageBreakAfterType.ALWAYS);
     }
+    
+    private boolean existeImagen(String url) {
+		try {
+			byte[] imagen = SyncUtils.getImageFromUrl(url);
+			if (imagen != null)
+				return true;
+		} catch (Exception e) {
+			log.error("Error al comprobar si existe la imagen " + url, e);
+			return false;
+		}
+		
+		return false;
+    }
 
 	private void creaSeccionPublicidad()
     {
-        Block publicidadBlock = withNewBlock();
-        
-        publicidadBlock.setMarginTop("0.3cm");
-
-        ExternalGraphic externalGraphic = new ExternalGraphic();
-        externalGraphic.setSrc(this.urlPublicidad);
-
-        publicidadBlock.getContent().add(externalGraphic);
+		if (existeImagen(this.urlPublicidad)) {
+	        Block publicidadBlock = withNewBlock();
+	        
+	        publicidadBlock.setMarginTop("0.3cm");
+	
+	        ExternalGraphic externalGraphic = new ExternalGraphic();
+	        externalGraphic.setSrc(this.urlPublicidad);
+	
+	        publicidadBlock.getContent().add(externalGraphic);
+		}
     }
 
     private void creaSeccionCondiciones(Boolean isTarifaDefecto)
@@ -217,11 +238,12 @@ public class EntradaReport extends Report implements EntradaReportOnlineInterfac
         Block block = new Block();
 
         ExternalGraphic externalGraphic = new ExternalGraphic();
-        externalGraphic.setSrc(this.urlPortada);
+        
+        if (existeImagen(this.urlPortada)) 
+        	externalGraphic.setSrc(this.urlPortada);
+        
         externalGraphic.setMaxWidth("2.5cm");
-
         block.getContent().add(externalGraphic);
-
         return block;
     }
 
