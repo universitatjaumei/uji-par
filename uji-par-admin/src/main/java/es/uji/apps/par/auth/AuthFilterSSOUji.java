@@ -11,6 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.Context;
 
 import org.slf4j.Logger;
@@ -67,7 +68,14 @@ public class AuthFilterSSOUji implements Filter
     {
         HttpServletRequest sRequest = (HttpServletRequest) request;
         User user = AccessManager.getConnectedUser(sRequest);
-        boolean isUserValid = ujiPerfilesService.hasPerfil("ADMIN", user.getId());
+        boolean isUserValid = false;
+        
+        if (sRequest.getSession().getAttribute("user") == null) {
+        	sRequest.getSession().setAttribute("user", user);
+            isUserValid = ujiPerfilesService.hasPerfil("ADMIN", user.getId());
+            sRequest.getSession().setAttribute("isUserValid", isUserValid);
+        } else
+        	isUserValid = (Boolean) sRequest.getSession().getAttribute("isUserValid");
 
         if (isExcluded(sRequest.getRequestURI()))
         {
@@ -82,27 +90,13 @@ public class AuthFilterSSOUji implements Filter
         }
         else
         {
-        	log.info("Autenticamos " + sRequest.getRequestURI());
-        	chain.doFilter(request, response);
-        	//chain.doFilter(request, response);
-            /* 
-            HttpServletResponse sResponse = (HttpServletResponse) response;
-            int authResult = this.authClass.authenticate(sRequest);
-
-            if (authResult == Authenticator.AUTH_OK)
-            {
-            	log.info("Autenticamos " + sRequest.getRequestURI() + " OK");
-                chain.doFilter(request, response);
-            }
-            else
-            {
-            	String url = ((HttpServletRequest)request).getRequestURL().toString();
-            	log.info("Autenticamos " + url + " KO");
-            	if (url.toLowerCase().contains("par/rest/index"))
-            		sResponse.sendRedirect(Configuration.getUrlAdmin() + "/rest/login");
-            	else
-            		sResponse.sendError(403);
-            }*/
+        	HttpServletResponse sResponse = (HttpServletResponse) response;
+        	redirectToEmptyPage(request, sResponse);
         }
     }
+
+	private void redirectToEmptyPage(ServletRequest request, HttpServletResponse sResponse) throws IOException {
+		//sResponse.sendRedirect(Configuration.getUrlAdmin() + "/rest/login");
+		sResponse.sendError(403);
+	}
 }
