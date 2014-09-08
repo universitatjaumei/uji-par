@@ -87,9 +87,13 @@ public class EventosSyncUji implements EventosSync
         if (item.getEnclosures() != null && item.getEnclosures().size() > 0)
         {
             String urlImagen = item.getEnclosures().get(0).getUrl();
-            evento.setImagen(SyncUtils.getImageFromUrl(urlImagen));
-            evento.setImagenSrc(urlImagen);
-            evento.setImagenContentType(item.getEnclosures().get(0).getType());
+            byte[] imagen = SyncUtils.getImageFromUrl(urlImagen);
+            
+            if (imagen != null && imagen.length > 0) {
+            	evento.setImagen(imagen);
+            	evento.setImagenSrc(urlImagen);
+            	evento.setImagenContentType(item.getEnclosures().get(0).getType());
+            }
         }
 
         if (item.getIdioma().equals("ca"))

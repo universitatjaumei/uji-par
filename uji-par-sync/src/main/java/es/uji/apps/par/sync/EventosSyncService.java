@@ -22,10 +22,6 @@ public class EventosSyncService
     @Qualifier("syncUji")
     EventosSync syncUji;
 
-    @Autowired
-    @Qualifier("syncBenicassim")
-    EventosSync syncBenicassim;
-
     private String tipo;
 
     public EventosSyncService()
@@ -43,8 +39,6 @@ public class EventosSyncService
     {
         if (tipo.equals("uji"))
             syncUji.sync(rssInputStream);
-        else if (tipo.equals("benicassim"))
-            syncBenicassim.sync(rssInputStream);
         else
             throw new RuntimeException(
                     "No se ha encontrado sincronizador para el tipo definido en la config uji.sync.lugar="
