@@ -1,0 +1,1 @@
+ALTER TABLE "par_sesiones_formato_idioma_icaa" RENAME TO "PAR_SESIONES_FORMATO_IDI_ICAA";

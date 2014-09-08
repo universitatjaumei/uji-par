@@ -36,3 +36,25 @@ CREATE TABLE par_compras_borradas
 WITH (
   OIDS=FALSE
 );
+
+
+CREATE TABLE par_butacas_borradas
+(
+  id serial NOT NULL,
+  butaca_id integer,
+  sesion_id integer,
+  localizacion_id integer,
+  compra_id integer NOT NULL,
+  fila character varying(255),
+  numero character varying(255),
+  tipo character varying(255),
+  precio integer NOT NULL,
+  anulada boolean DEFAULT false,
+  presentada timestamp without time zone,
+  fecha_borrada timestamp without time zone DEFAULT now(),
+  CONSTRAINT par_butacas_borradas_pkey PRIMARY KEY (id ),
+  CONSTRAINT par_butacas_borradas_id_key UNIQUE (id )
+)
+WITH (
+  OIDS=FALSE
+);
