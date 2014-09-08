@@ -30,7 +30,7 @@ public class MailService implements MailInterface
 
     public MailService()
     {
-        
+    	client = new MessagingClient();
     }
 
     public void anyadeEnvio(String to, String titulo, String texto)
@@ -65,7 +65,8 @@ public class MailService implements MailInterface
         }
     }
 
-    public static void main(String[] args) throws MessageNotSentException
+    @SuppressWarnings("resource")
+	public static void main(String[] args) throws MessageNotSentException
     {
         ApplicationContext ctx = new ClassPathXmlApplicationContext("/applicationContext-db.xml");
 
