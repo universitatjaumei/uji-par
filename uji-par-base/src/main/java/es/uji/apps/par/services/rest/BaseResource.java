@@ -120,8 +120,7 @@ public class BaseResource
         grupo.addItem(new ItemMenu("Investigació", "http://www.uji.es/"));
         menu.addGrupo(grupo);
 
-        Pagina pagina = new Pagina(urlBase, url, idioma);
-        pagina.setTitulo(Configuration.getHtmlTitle());
+        Pagina pagina = new Pagina(urlBase, url, idioma, Configuration.getHtmlTitle());
         pagina.setSubTitulo("");
         pagina.setMenu(menu);
 
