@@ -440,7 +440,6 @@ public class EntradasResource extends BaseResource
         return Response.ok(template).build();
     }
 
-    //TODO -> Verificar que funciona con el tpv de la uji
     @POST
     @Path("{uuidCompra}/datosComprador")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)

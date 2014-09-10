@@ -150,7 +150,7 @@ UI =
             "error527": "La recaudació de la sessió és obligatòria",
             "error528": "És obligatori indicar les incidències de la sessió. Si no en té, ha de tenir el valor corresponent a SENSE INCIDÈNCIES",
             "error529": "El codi de pel·lícula és obligatori",
-            "error530": "El codi d'expedient és obligatori",
+            "error530": "El número d'expedient de classificació de la película és obligatori",
             "error531": "El títol de la pel·lícula és obligatori",
             "error532": "El codi de la distribuïdora de la pel·lícula és obligatori",
             "error533": "El nom de la distribuïdora de la pel·lícula és obligatori",

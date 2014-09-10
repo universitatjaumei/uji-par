@@ -16,6 +16,8 @@ import org.thymeleaf.util.StringUtils;
 
 import es.uji.apps.par.i18n.ResourceProperties;
 
+import javax.validation.constraints.Null;
+
 public class Configuration
 {
     private static final String PROPERTIES_SEPARATOR = ",";
@@ -137,6 +139,10 @@ public class Configuration
         {
             throw new RuntimeException(e);
         }
+		catch (NullPointerException e) {
+			log.error("Propiedad " + propertyName + " nula", e);
+			throw e;
+		}
         
         return value.trim();
     }

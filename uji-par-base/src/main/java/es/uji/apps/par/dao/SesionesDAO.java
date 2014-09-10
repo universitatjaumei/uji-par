@@ -306,7 +306,7 @@ public class SesionesDAO extends BaseDAO
             .and(qCompraDTO.anulada.isNull().or(qCompraDTO.anulada.eq(false))
             .and(qButacaDTO.anulada.isNull().or(qButacaDTO.anulada.eq(false)))))
             .distinct()
-            .groupBy(qSesionDTO.id, qSalaDTO.codigo, qSesionDTO.fechaCelebracion)
+            .groupBy(qSesionDTO.id, qSalaDTO.codigo, qSesionDTO.fechaCelebracion, qSesionDTO.incidenciaId)
             .list(qSesionDTO.id, qSalaDTO.codigo, qSesionDTO.fechaCelebracion, qButacaDTO.precio.sum(), qSesionDTO.incidenciaId);
         
         List<RegistroSesion> registros = new ArrayList<RegistroSesion>();
@@ -383,7 +383,7 @@ public class SesionesDAO extends BaseDAO
             }
             RegistroSesionPelicula registro = new RegistroSesionPelicula();
             registro.setCodigoSala(sesionDTO.getParSala().getCodigo());
-            registro.setCodigoPelicula((int) sesionesFormatoIdiomaIcaa.get(0).getId());
+            registro.setCodigoPelicula((int) sesionDTO.getParEvento().getId());
             registro.setFecha(sesionDTO.getFechaCelebracion());
             registro.setHora(HOUR_FORMAT.format(sesionDTO.getFechaCelebracion()));
             
