@@ -13,6 +13,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import es.uji.apps.par.tpv.TpvInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,9 +28,11 @@ import es.uji.apps.par.services.EntradasService;
 import es.uji.apps.par.services.MailService;
 import es.uji.commons.web.template.HTMLTemplate;
 import es.uji.commons.web.template.Template;
+import org.springframework.stereotype.Component;
 
+@Component
 @Path("tpv")
-public class TpvResource extends BaseResource
+public class TpvResource extends BaseResource implements TpvInterface
 {
 	private static final Logger log = LoggerFactory.getLogger(TpvResource.class);
 
@@ -56,7 +59,7 @@ public class TpvResource extends BaseResource
             @FormParam("tpv_identificador") String identificador, @FormParam("tpv_importe") String importe,
             @FormParam("tpv_firma") String firma) throws Exception
     {
-        Template template;
+
 
         String msg = String.format(
                 "Resultado pago TPV: tpv_estado=%s, tpv_recibo=%s, tpv_identificador=%s, tpv_importe=%s, tpv_firma=%s",
@@ -64,34 +67,39 @@ public class TpvResource extends BaseResource
         log.info(msg);
 
         CompraDTO compra = compras.getCompraById(Long.parseLong(identificador));
-        
-        if (compra.getCaducada())
-        {
-            // Guardamos código pago de pasarela para luego saber que pago anular
-            compras.rellenaCodigoPagoPasarela(compra.getId(), recibo);
-            
-            template = paginaError(compra);
-            
-            template.put("descripcionError", ResourceProperties.getProperty(getLocale(), "error.datosComprador.compraCaducadaTrasPagar"));
-            
-            eliminaCompraDeSesion();
-        }
-        else if (estado != null && estado.equals("OK"))
-        {
-            compras.marcaPagadaPasarela(compra.getId(), recibo);
-            enviaMail(compra.getEmail(), compra.getUuid());
-
-            eliminaCompraDeSesion();
-
-            template = paginaExito(compra, recibo);
-        }
-        else
-        {
-            template = paginaError(compra);
-        }
-
+		Template template = checkCompra(compra, recibo, estado);
         return Response.ok(template).build();
     }
+
+	private Template checkCompra(CompraDTO compraDTO, String recibo, String estado) throws Exception {
+		Template template;
+
+		if (compraDTO.getCaducada())
+		{
+			// Guardamos código pago de pasarela para luego saber que pago anular
+			compras.rellenaCodigoPagoPasarela(compraDTO.getId(), recibo);
+
+			template = paginaError(compraDTO);
+
+			template.put("descripcionError", ResourceProperties.getProperty(getLocale(), "error.datosComprador.compraCaducadaTrasPagar"));
+
+			eliminaCompraDeSesion();
+		}
+		else if (estado != null && estado.equals("OK"))
+		{
+			compras.marcaPagadaPasarela(compraDTO.getId(), recibo);
+			enviaMail(compraDTO.getEmail(), compraDTO.getUuid());
+
+			eliminaCompraDeSesion();
+
+			template = paginaExito(compraDTO, recibo);
+		}
+		else
+		{
+			template = paginaError(compraDTO);
+		}
+		return template;
+	}
 
     private void eliminaCompraDeSesion()
     {
@@ -145,4 +153,11 @@ public class TpvResource extends BaseResource
 
         mailService.anyadeEnvio(email, titulo, texto);
     }
+
+	@Override
+	public Response testTPV(long identificador) throws Exception {
+		CompraDTO compra = compras.getCompraById(identificador);
+		Template template = checkCompra(compra, "RECIBO_TEST", "OK");
+		return Response.ok(template).build();
+	}
 }

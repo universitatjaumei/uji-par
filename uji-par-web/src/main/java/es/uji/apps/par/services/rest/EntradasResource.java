@@ -23,6 +23,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
+import es.uji.apps.par.tpv.TpvInterface;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,6 +55,9 @@ import es.uji.apps.par.utils.DateUtils;
 import es.uji.apps.par.utils.Utils;
 import es.uji.commons.web.template.HTMLTemplate;
 import es.uji.commons.web.template.Template;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 @Path("entrada")
 public class EntradasResource extends BaseResource
@@ -82,6 +86,9 @@ public class EntradasResource extends BaseResource
     
     @Context
     private HttpServletRequest request;
+
+	@InjectParam
+	private TpvInterface tpvInterface;
 
     @GET
     @Path("{id}")
@@ -507,55 +514,59 @@ public class EntradasResource extends BaseResource
 
         Locale locale = getLocale();
         String language = locale.getLanguage();
-        
-        Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "tpv", locale, APP);
-        
-        template.put("idioma", language);
-        template.put("lang", language);
-        template.put("baseUrl", getBaseUrlPublic());
 
-        String secret = Configuration.getSecret();
-        
-        String importe = Utils.monedaToCents(compra.getImporte());
-        String url = Configuration.getWSDLURL();
-        String urlOk = getBaseUrlPublic() + "/rest/tpv/ok";
-        String urlKo = getBaseUrlPublic() + "/rest/tpv/ko";
+		if (Configuration.isDebug())
+			return tpvInterface.testTPV(compra.getId());
+		else {
+			Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "tpv", locale, APP);
 
-        template.put("identificador", compra.getId());
-        String concepto = StringUtils.stripAccents(compra.getParSesion().getParEvento().getTituloVa().toUpperCase());
-        template.put("concepto", concepto);
-        template.put("importe", importe);
-        template.put("correo", email);
-        template.put("url", url);
-        template.put("hash", Utils.sha1(compra.getId() + importe + email + url + secret));
-        
-        if (language.equals("ca"))
-        	template.put("langCode", TPV_LANG_CA_CODE);
-        else
-        	template.put("langCode", TPV_LANG_ES_CODE);
+			template.put("idioma", language);
+			template.put("lang", language);
+			template.put("baseUrl", getBaseUrlPublic());
 
-        String tpvCode = Configuration.getTpvCode();
-        String tpvCurrency = Configuration.getTpvCurrency();
-        String tpvTransaction = Configuration.getTpvTransaction();
-        String tpvTerminal = Configuration.getTpvTerminal();
-        String tpvNombre = Configuration.getTpvNombre();
-        
-        template.put("order", TPV_ORDER_PREFIX_CODE_CAJAMAR + compra.getId());
-        if (tpvCode != null && tpvCurrency != null && tpvTransaction != null && tpvTerminal != null && tpvNombre != null)
-        {
-	        template.put("currency", tpvCurrency);
-	        template.put("code", tpvCode);
-	        template.put("terminal", tpvTerminal);
-	        template.put("transaction", tpvTransaction);
-	        template.put("nombre", tpvNombre);
-	        String shaEnvio = Utils.sha1(importe + TPV_ORDER_PREFIX_CODE_CAJAMAR + compra.getId() + tpvCode + tpvCurrency + tpvTransaction + url + secret);
-	        template.put("hashcajamar", shaEnvio);
-	        log.info("Sha1 para envio generado " + shaEnvio);
-        }
-        template.put("urlOk", urlOk);
-        template.put("urlKo", urlKo);
+			String secret = Configuration.getSecret();
 
-        return Response.ok(template).build();
+			String importe = Utils.monedaToCents(compra.getImporte());
+			String url = Configuration.getWSDLURL();
+			String urlOk = getBaseUrlPublic() + "/rest/tpv/ok";
+			String urlKo = getBaseUrlPublic() + "/rest/tpv/ko";
+
+			template.put("identificador", compra.getId());
+			String concepto = StringUtils.stripAccents(compra.getParSesion().getParEvento().getTituloVa().toUpperCase());
+			template.put("concepto", concepto);
+			template.put("importe", importe);
+			template.put("correo", email);
+			template.put("url", url);
+			template.put("hash", Utils.sha1(compra.getId() + importe + email + url + secret));
+
+			if (language.equals("ca"))
+				template.put("langCode", TPV_LANG_CA_CODE);
+			else
+				template.put("langCode", TPV_LANG_ES_CODE);
+
+			String tpvCode = Configuration.getTpvCode();
+			String tpvCurrency = Configuration.getTpvCurrency();
+			String tpvTransaction = Configuration.getTpvTransaction();
+			String tpvTerminal = Configuration.getTpvTerminal();
+			String tpvNombre = Configuration.getTpvNombre();
+
+			template.put("order", TPV_ORDER_PREFIX_CODE_CAJAMAR + compra.getId());
+			if (tpvCode != null && tpvCurrency != null && tpvTransaction != null && tpvTerminal != null && tpvNombre != null)
+			{
+				template.put("currency", tpvCurrency);
+				template.put("code", tpvCode);
+				template.put("terminal", tpvTerminal);
+				template.put("transaction", tpvTransaction);
+				template.put("nombre", tpvNombre);
+				String shaEnvio = Utils.sha1(importe + TPV_ORDER_PREFIX_CODE_CAJAMAR + compra.getId() + tpvCode + tpvCurrency + tpvTransaction + url + secret);
+				template.put("hashcajamar", shaEnvio);
+				log.info("Sha1 para envio generado " + shaEnvio);
+			}
+			template.put("urlOk", urlOk);
+			template.put("urlKo", urlKo);
+
+			return Response.ok(template).build();
+		}
     }
 
     private Response paginaFueraDePlazo() throws Exception

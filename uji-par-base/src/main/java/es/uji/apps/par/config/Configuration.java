@@ -80,6 +80,8 @@ public class Configuration
 	private static final String IMAGEN_SUSTITUTIVA = "uji.reports.imagenSustitutiva";
 	private static final String IMAGEN_SUSTITUTIVA_CONTENT_TYPE = "uji.reports.imagenSustitutivaContentType";
 	private static final String PORCENTAJE_IVA_DEFECTO = "uji.par.porcentajeIvaDefecto";
+	private static final String TPV_TARGETCLASS = "uji.tpv.target.class";
+	private static final String DEBUG = "uji.par.isDebug";
 
 	private static final Logger log = LoggerFactory.getLogger(Configuration.class);
 
@@ -140,7 +142,7 @@ public class Configuration
             throw new RuntimeException(e);
         }
 		catch (NullPointerException e) {
-			log.error("Propiedad " + propertyName + " nula", e);
+			log.error("Propiedad " + propertyName + " nula");
 			throw e;
 		}
         
@@ -452,5 +454,17 @@ public class Configuration
 	
 	public static String getEnviarMailsEntradas() {
 		return getNoObligatoryProperty(ENVIAR_MAILS_ENTRADAS);
+	}
+
+	public static boolean isDebug() {
+		String debug = getNoObligatoryProperty(DEBUG);
+		if (debug != null && debug.toLowerCase().equals("true"))
+			return true;
+
+		return false;
+	}
+
+	public static String getTpvClass() {
+		return getProperty(TPV_TARGETCLASS);
 	}
 }
