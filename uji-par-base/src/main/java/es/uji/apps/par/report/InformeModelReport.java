@@ -1,22 +1,26 @@
 package es.uji.apps.par.report;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-
+import es.uji.apps.par.AnticipadaFormatException;
 import es.uji.apps.par.db.ButacaDTO;
+import es.uji.apps.par.enums.TipoVenta;
 import es.uji.apps.par.utils.DateUtils;
 
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.Calendar;
+
 public class InformeModelReport {
-	private String evento;
+    private String evento;
     private String sesion;
     private String fechaCompra;
     private String tipoEntrada;
     private int numeroEntradas;
     private BigDecimal total;
     private String tipoCompra;
+    private TipoVenta tipoVenta;
     private BigDecimal iva;
     private String localizacion;
+    private BigDecimal aforo;
     private long eventoId;
     private long sesionId;
     private Integer vendidasTPV;
@@ -25,43 +29,58 @@ public class InformeModelReport {
     private Integer vendidasTaquilla;
     private Boolean anulada;
 
-    public InformeModelReport()
-    {
+    public InformeModelReport() {
     }
 
-	public String getEvento() {
-		return evento;
-	}
+    public BigDecimal getAforo() {
+        return aforo;
+    }
 
-	public void setEvento(String evento) {
-		this.evento = evento;
-	}
+    public TipoVenta getTipoVenta() {
+        return tipoVenta;
+    }
 
-	public String getSesion() {
-		return sesion;
-	}
+    public void setTipoVenta(TipoVenta tipoVenta) {
+        this.tipoVenta = tipoVenta;
+    }
 
-	public void setSesion(String sesion) {
-		this.sesion = sesion;
-	}
+    public void setAforo(BigDecimal aforo) {
+        this.aforo = aforo;
+    }
 
-	public String getTipoEntrada() {
-		return tipoEntrada;
-	}
+    public String getEvento() {
+        return evento;
+    }
 
-	public void setTipoEntrada(String tipoEntrada) {
-		this.tipoEntrada = tipoEntrada;
-	}
+    public void setEvento(String evento) {
+        this.evento = evento;
+    }
 
-	public int getNumeroEntradas() {
-		return numeroEntradas;
-	}
+    public String getSesion() {
+        return sesion;
+    }
 
-	public void setNumeroEntradas(int numeroEntradas) {
-		this.numeroEntradas = numeroEntradas;
-	}
+    public void setSesion(String sesion) {
+        this.sesion = sesion;
+    }
 
-	public BigDecimal getTotal() {
+    public String getTipoEntrada() {
+        return tipoEntrada;
+    }
+
+    public void setTipoEntrada(String tipoEntrada) {
+        this.tipoEntrada = tipoEntrada;
+    }
+
+    public int getNumeroEntradas() {
+        return numeroEntradas;
+    }
+
+    public void setNumeroEntradas(int numeroEntradas) {
+        this.numeroEntradas = numeroEntradas;
+    }
+
+    public BigDecimal getTotal() {
         return total;
     }
 
@@ -70,12 +89,12 @@ public class InformeModelReport {
     }
 
     public String getTipoCompra() {
-		return tipoCompra;
-	}
+        return tipoCompra;
+    }
 
-	public void setTipoCompra(String tipoCompra) {
-		this.tipoCompra = tipoCompra;
-	}
+    public void setTipoCompra(String tipoCompra) {
+        this.tipoCompra = tipoCompra;
+    }
 
     public BigDecimal getIva() {
         return iva;
@@ -117,55 +136,123 @@ public class InformeModelReport {
         this.sesionId = sesionId;
     }
 
-	public Integer getVendidasTPV() {
-		return vendidasTPV;
-	}
+    public Integer getVendidasTPV() {
+        return vendidasTPV;
+    }
 
-	public void setVendidasTPV(Integer vendidasTPV) {
-		this.vendidasTPV = vendidasTPV;
-	}
+    public void setVendidasTPV(Integer vendidasTPV) {
+        this.vendidasTPV = vendidasTPV;
+    }
 
-	public Integer getVendidasMetalico() {
-		return vendidasMetalico;
-	}
+    public Integer getVendidasMetalico() {
+        return vendidasMetalico;
+    }
 
-	public void setVendidasMetalico(Integer vendidasMetalico) {
-		this.vendidasMetalico = vendidasMetalico;
-	}
+    public void setVendidasMetalico(Integer vendidasMetalico) {
+        this.vendidasMetalico = vendidasMetalico;
+    }
 
-	public Integer getCanceladasTaquilla() {
-		return canceladasTaquilla;
-	}
+    public Integer getCanceladasTaquilla() {
+        return canceladasTaquilla;
+    }
 
-	public void setCanceladasTaquilla(Integer canceladasTaquilla) {
-		this.canceladasTaquilla = canceladasTaquilla;
-	}
+    public void setCanceladasTaquilla(Integer canceladasTaquilla) {
+        this.canceladasTaquilla = canceladasTaquilla;
+    }
 
-	public Integer getVendidasTaquilla() {
-		return vendidasTaquilla;
-	}
+    public Integer getVendidasTaquilla() {
+        return vendidasTaquilla;
+    }
 
-	public void setVendidasTaquilla(Integer vendidasTaquilla) {
-		this.vendidasTaquilla = vendidasTaquilla;
-	}
+    public void setVendidasTaquilla(Integer vendidasTaquilla) {
+        this.vendidasTaquilla = vendidasTaquilla;
+    }
 
-	public static InformeModelReport fromButaca(ButacaDTO butaca) {
-		InformeModelReport informeModel = new InformeModelReport();
-		informeModel.setSesion(DateUtils.dateToSpanishStringWithHour(butaca.getParSesion().getFechaCelebracion()).toString());
-		informeModel.setTipoEntrada(butaca.getTipo());
-		informeModel.setNumeroEntradas(1);
-		informeModel.setFechaCompra(DateUtils.dateToSpanishString(butaca.getParCompra().getFecha()));
-		informeModel.setTotal(butaca.getPrecio());
-		informeModel.setLocalizacion(butaca.getParLocalizacion().getNombreVa());
-		informeModel.setAnulada(butaca.getAnulada());
-		return informeModel;
-	}
+    public static TipoVenta getTipoVentaPorDia(Timestamp fechaInicioSesion, Timestamp fechaCompraSesion, Integer dias) {
+        Calendar fechaInicioSesionCalendar = Calendar.getInstance();
+        fechaInicioSesionCalendar.setTimeInMillis(fechaInicioSesion.getTime());
 
-	public Boolean getAnulada() {
-		return anulada;
-	}
+        Calendar fechaCompraSesionCalendar = Calendar.getInstance();
+        fechaCompraSesionCalendar.setTimeInMillis(fechaCompraSesion.getTime());
 
-	public void setAnulada(Boolean anulada) {
-		this.anulada = anulada;
-	}
+        fechaInicioSesionCalendar.set(Calendar.HOUR_OF_DAY, 0);
+        fechaInicioSesionCalendar.set(Calendar.MINUTE, 0);
+        fechaInicioSesionCalendar.set(Calendar.SECOND, 0);
+        fechaInicioSesionCalendar.set(Calendar.MILLISECOND, 0);
+
+        fechaCompraSesionCalendar.set(Calendar.HOUR_OF_DAY, 0);
+        fechaCompraSesionCalendar.set(Calendar.MINUTE, 0);
+        fechaCompraSesionCalendar.set(Calendar.SECOND, 0);
+        fechaCompraSesionCalendar.set(Calendar.MILLISECOND, 0);
+
+        long diferenciaMilis = fechaInicioSesionCalendar.getTimeInMillis() - fechaCompraSesionCalendar.getTimeInMillis();
+        long diferenciaDias = diferenciaMilis / (24 * 60 * 60 * 1000);
+
+        if (diferenciaDias >= dias) {
+            return TipoVenta.FISICA_ANTICIPADA;
+        } else {
+            return TipoVenta.FISICA_TAQUILLA;
+        }
+    }
+
+    public static TipoVenta getTipoVentaPorHoras(Timestamp fechaInicioSesion, Timestamp fechaCompraSesion, Integer horas) {
+        Calendar fechaInicioSesionCalendar = Calendar.getInstance();
+        fechaInicioSesionCalendar.setTimeInMillis(fechaInicioSesion.getTime());
+
+        Calendar fechaCompraSesionCalendar = Calendar.getInstance();
+        fechaCompraSesionCalendar.setTimeInMillis(fechaCompraSesion.getTime());
+
+        long diferenciaMilis = fechaInicioSesionCalendar.getTimeInMillis() - fechaCompraSesionCalendar.getTimeInMillis();
+        long diferenciaHoras = diferenciaMilis / (60 * 60 * 1000);
+
+        if (diferenciaHoras >= horas) {
+            return TipoVenta.FISICA_ANTICIPADA;
+        } else {
+            return TipoVenta.FISICA_TAQUILLA;
+        }
+    }
+
+    public static TipoVenta getTipoVenta(Boolean taquilla, Timestamp fechaInicioSesion, Timestamp fechaCompra, String anticipada) {
+        if (!taquilla) {
+            return TipoVenta.TPV;
+        } else {
+            if (anticipada != null) {
+                if (anticipada.matches("\\d+d")) {
+                    int dias = Integer.parseInt(anticipada.substring(0, anticipada.length() - 1));
+                    return getTipoVentaPorDia(fechaInicioSesion, fechaCompra, dias);
+                } else if (anticipada.matches("\\d+")) {
+                    return getTipoVentaPorHoras(fechaInicioSesion, fechaCompra, Integer.parseInt(anticipada));
+                } else {
+                    throw new AnticipadaFormatException(anticipada);
+                }
+            } else {
+                throw new AnticipadaFormatException(anticipada);
+            }
+        }
+    }
+
+    public static InformeModelReport fromButaca(ButacaDTO butaca, String anticipada) {
+        InformeModelReport informeModel = new InformeModelReport();
+        informeModel.setSesion(DateUtils.dateToSpanishStringWithHour(butaca.getParSesion().getFechaCelebracion()).toString());
+        informeModel.setTipoEntrada(butaca.getTipo());
+        informeModel.setNumeroEntradas(1);
+        informeModel.setFechaCompra(DateUtils.dateToSpanishString(butaca.getParCompra().getFecha()));
+        informeModel.setTotal(butaca.getPrecio());
+        informeModel.setLocalizacion(butaca.getParLocalizacion().getNombreVa());
+        informeModel.setAnulada(butaca.getAnulada());
+        informeModel.setAforo(butaca.getParLocalizacion().getTotalEntradas());
+
+        if (anticipada != null)
+            informeModel.setTipoVenta(getTipoVenta(butaca.getParCompra().getTaquilla(), butaca.getParSesion().getFechaCelebracion(), butaca.getParCompra().getFecha(), anticipada));
+
+        return informeModel;
+    }
+
+    public Boolean getAnulada() {
+        return anulada;
+    }
+
+    public void setAnulada(Boolean anulada) {
+        this.anulada = anulada;
+    }
 }

@@ -80,6 +80,7 @@ public class Configuration
 	private static final String IMAGEN_SUSTITUTIVA = "uji.reports.imagenSustitutiva";
 	private static final String IMAGEN_SUSTITUTIVA_CONTENT_TYPE = "uji.reports.imagenSustitutivaContentType";
 	private static final String PORCENTAJE_IVA_DEFECTO = "uji.par.porcentajeIvaDefecto";
+    public static final String HORAS_VENTA_ANTICIPADA = "uji.reports.horaVentaAnticipada";
 
 	private static final Logger log = LoggerFactory.getLogger(Configuration.class);
 
@@ -453,6 +454,10 @@ public class Configuration
 	public static String getEnviarMailsEntradas() {
 		return getNoObligatoryProperty(ENVIAR_MAILS_ENTRADAS);
 	}
+
+    public static String getHorasVentaAnticipada() {
+        return getNoObligatoryProperty(HORAS_VENTA_ANTICIPADA);
+    }
 
 	public static boolean isDebug() {
 		String debug = getNoObligatoryProperty(ENTORNO);
