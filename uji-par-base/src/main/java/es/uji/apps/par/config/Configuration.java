@@ -80,8 +80,6 @@ public class Configuration
 	private static final String IMAGEN_SUSTITUTIVA = "uji.reports.imagenSustitutiva";
 	private static final String IMAGEN_SUSTITUTIVA_CONTENT_TYPE = "uji.reports.imagenSustitutivaContentType";
 	private static final String PORCENTAJE_IVA_DEFECTO = "uji.par.porcentajeIvaDefecto";
-	private static final String TPV_TARGETCLASS = "uji.tpv.target.class";
-	private static final String DEBUG = "uji.par.isDebug";
 
 	private static final Logger log = LoggerFactory.getLogger(Configuration.class);
 
@@ -457,14 +455,10 @@ public class Configuration
 	}
 
 	public static boolean isDebug() {
-		String debug = getNoObligatoryProperty(DEBUG);
-		if (debug != null && debug.toLowerCase().equals("true"))
+		String debug = getNoObligatoryProperty(ENTORNO);
+		if (debug != null && debug.toLowerCase().equals("devel"))
 			return true;
 
 		return false;
-	}
-
-	public static String getTpvClass() {
-		return getProperty(TPV_TARGETCLASS);
 	}
 }
