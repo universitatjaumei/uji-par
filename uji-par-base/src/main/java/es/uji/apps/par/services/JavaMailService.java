@@ -102,23 +102,29 @@ public class JavaMailService implements MailInterface
     private void enviaMailMultipart(String de, String para, String titulo, String texto, String uuid, 
     		EntradasService entradasService) throws MessageNotSentException {
     	try {
-    		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    		entradasService.generaEntrada(uuid, baos);
-    		Message message = createMailMessage(de, para, titulo);
-            Multipart multipart = new MimeMultipart();
-            BodyPart messageBodyPart = new MimeBodyPart();
-            messageBodyPart.setText(texto);
-            multipart.addBodyPart(messageBodyPart);
+			if (uuid == null) {
+				log.error("UUID nulo en el método enviaMailMultipart");
+				throw new NullPointerException();
+			}
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			entradasService.generaEntrada(uuid, baos);
+			Message message = createMailMessage(de, para, titulo);
+			Multipart multipart = new MimeMultipart();
+			BodyPart messageBodyPart = new MimeBodyPart();
+			messageBodyPart.setText(texto);
+			multipart.addBodyPart(messageBodyPart);
 
-            byte[] pdf = baos.toByteArray();
-            MimeBodyPart attachment = new MimeBodyPart();
-            attachment.setFileName("entrada.pdf");
-            attachment.setContent(pdf, "application/pdf");
-            multipart.addBodyPart(attachment);
+			byte[] pdf = baos.toByteArray();
+			MimeBodyPart attachment = new MimeBodyPart();
+			attachment.setFileName("entrada.pdf");
+			attachment.setContent(pdf, "application/pdf");
+			multipart.addBodyPart(attachment);
 
-            message.setContent(multipart);
-            Transport.send(message);
-        } catch (Exception me) {
+			message.setContent(multipart);
+			Transport.send(message);
+        } catch (NullPointerException e) {
+			throw new MessageNotSentException();
+		} catch (Exception me) {
         	if (!para.contains("4tic"))
         		log.error("Error enviando mail multipart", me);
         	
