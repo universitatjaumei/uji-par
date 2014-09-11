@@ -15,6 +15,9 @@ public class InformeModelReport {
     private String fechaCompra;
     private String tipoEntrada;
     private int numeroEntradas;
+    private BigDecimal numeroEntradasTPV;
+    private BigDecimal numeroEntradasEfectivo;
+    private BigDecimal numeroEntradasOnline;
     private BigDecimal total;
     private String tipoCompra;
     private TipoVenta tipoVenta;
@@ -30,6 +33,30 @@ public class InformeModelReport {
     private Boolean anulada;
 
     public InformeModelReport() {
+    }
+
+    public BigDecimal getNumeroEntradasTPV() {
+        return numeroEntradasTPV;
+    }
+
+    public void setNumeroEntradasTPV(BigDecimal numeroEntradasTPV) {
+        this.numeroEntradasTPV = numeroEntradasTPV;
+    }
+
+    public BigDecimal getNumeroEntradasEfectivo() {
+        return numeroEntradasEfectivo;
+    }
+
+    public void setNumeroEntradasEfectivo(BigDecimal numeroEntradasEfectivo) {
+        this.numeroEntradasEfectivo = numeroEntradasEfectivo;
+    }
+
+    public BigDecimal getNumeroEntradasOnline() {
+        return numeroEntradasOnline;
+    }
+
+    public void setNumeroEntradasOnline(BigDecimal numeroEntradasOnline) {
+        this.numeroEntradasOnline = numeroEntradasOnline;
     }
 
     public BigDecimal getAforo() {

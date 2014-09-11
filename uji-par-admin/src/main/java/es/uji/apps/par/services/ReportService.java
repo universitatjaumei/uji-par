@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -233,9 +234,49 @@ public class ReportService {
 
 		List<InformeModelReport> compras = objectsToInformes(comprasDAO.getComprasPorEventoInFechas(fechaInicio, fechaFin));
 
-		BigDecimal totalTaquillaTpv = comprasDAO.getTotalTaquillaTpv(fechaInicio, fechaFin);
-		BigDecimal totalTaquillaEfectivo = comprasDAO.getTotalTaquillaEfectivo(fechaInicio, fechaFin);
-		BigDecimal totalOnline = comprasDAO.getTotalOnline(fechaInicio, fechaFin);
+        Object[] taquillaTpv = comprasDAO.getTotalTaquillaTpv(fechaInicio, fechaFin);
+		Object[] taquillaEfectivo = comprasDAO.getTotalTaquillaEfectivo(fechaInicio, fechaFin);
+        Object[] online = comprasDAO.getTotalOnline(fechaInicio, fechaFin);
+
+        BigDecimal totalTaquillaTpv = new BigDecimal(0);
+        BigDecimal countTaquillaTpv = new BigDecimal(0);
+        if (taquillaTpv != null) {
+            if (taquillaTpv.length > 0 && taquillaTpv[0] != null) {
+                totalTaquillaTpv = (BigDecimal) taquillaTpv[0];
+            }
+            if (taquillaTpv.length > 1 && taquillaTpv[1] != null) {
+                countTaquillaTpv = (BigDecimal) taquillaTpv[1];
+            }
+        }
+
+        BigDecimal totalTaquillaEfectivo = new BigDecimal(0);
+        BigDecimal countTaquillaEfectivo = new BigDecimal(0);
+        if (taquillaEfectivo != null) {
+            if (taquillaEfectivo.length > 0 && taquillaEfectivo[0] != null) {
+                totalTaquillaEfectivo = (BigDecimal) taquillaEfectivo[0];
+            }
+            if (taquillaEfectivo.length > 1 && taquillaEfectivo[1] != null) {
+                countTaquillaEfectivo = (BigDecimal) taquillaEfectivo[1];
+            }
+        }
+
+        BigDecimal totalOnline = new BigDecimal(0);
+        BigDecimal countOnline = new BigDecimal(0);
+        if (online != null) {
+            if (online.length > 0 && online[0] != null) {
+                totalOnline = (BigDecimal) online[0];
+            }
+            if (online.length > 1 && online[1] != null) {
+                countOnline = (BigDecimal) online[1];
+            }
+        }
+
+        // TODO: Esto hay que pasarlo como parámetro y no meterlo duplicado en todas las compras
+        for (InformeModelReport compra: compras) {
+            compra.setNumeroEntradasTPV(countTaquillaTpv);
+            compra.setNumeroEntradasEfectivo(countTaquillaEfectivo);
+            compra.setNumeroEntradasOnline(countOnline);
+        }
 
 		informe.genera(getSpanishStringDateFromBBDDString(fechaInicio), getSpanishStringDateFromBBDDString(fechaFin), compras,
 				totalTaquillaTpv, totalTaquillaEfectivo, totalOnline);

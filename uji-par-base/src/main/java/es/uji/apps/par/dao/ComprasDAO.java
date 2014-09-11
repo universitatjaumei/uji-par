@@ -610,8 +610,8 @@ public class ComprasDAO extends BaseDAO {
 	}
 
 	@Transactional
-	public BigDecimal getTotalTaquillaTpv(String fechaInicio, String fechaFin) {
-		String sql = "select sum(b.precio) "
+	public Object[] getTotalTaquillaTpv(String fechaInicio, String fechaFin) {
+		String sql = "select sum(b.precio), count(b.precio) "
 				+ "from par_butacas b, par_compras c, par_sesiones s, par_eventos e "
 				+ "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id "
 				+ "and TO_CHAR(c.fecha, 'YYYY-MM-DD HH24:MI') >= '"
@@ -630,18 +630,18 @@ public class ComprasDAO extends BaseDAO {
 				+ dbHelper.trueString() + " "
 				+ "and c.codigo_pago_tarjeta is not null";
 
-		Object result = entityManager.createNativeQuery(sql).getSingleResult();
+        List<Object[]> result = entityManager.createNativeQuery(sql).getResultList();
 
-		if (result == null)
-			return BigDecimal.ZERO;
-		else
-			return (BigDecimal) result;
+        if (result.size() > 0)
+            return result.get(0);
+        else
+            return null;
 	}
 
 	@Transactional
-	public BigDecimal getTotalTaquillaEfectivo(String fechaInicio,
+	public Object[] getTotalTaquillaEfectivo(String fechaInicio,
 			String fechaFin) {
-		String sql = "select sum(b.precio) "
+		String sql = "select sum(b.precio), count(b.precio) "
 				+ "from par_butacas b, par_compras c, par_sesiones s, par_eventos e "
 				+ "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id "
 				+ "and TO_CHAR(c.fecha, 'YYYY-MM-DD HH24:MI') >= '"
@@ -660,17 +660,17 @@ public class ComprasDAO extends BaseDAO {
 				+ dbHelper.trueString() + " "
 				+ "and c.codigo_pago_tarjeta is null";
 
-		Object result = entityManager.createNativeQuery(sql).getSingleResult();
+		List<Object[]> result = entityManager.createNativeQuery(sql).getResultList();
 
-		if (result == null)
-			return BigDecimal.ZERO;
-		else
-			return dbHelper.castBigDecimal(result);
+        if (result.size() > 0)
+            return result.get(0);
+        else
+            return null;
 	}
 
 	@Transactional
-	public BigDecimal getTotalOnline(String fechaInicio, String fechaFin) {
-		String sql = "select sum(b.precio) "
+	public Object[] getTotalOnline(String fechaInicio, String fechaFin) {
+		String sql = "select sum(b.precio), count(b.precio) "
 				+ "from par_butacas b, par_compras c, par_sesiones s, par_eventos e "
 				+ "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id "
 				+ "and TO_CHAR(c.fecha, 'YYYY-MM-DD HH24:MI') >= '"
@@ -688,12 +688,12 @@ public class ComprasDAO extends BaseDAO {
 				+ dbHelper.falseString() + " " + "and c.taquilla = "
 				+ dbHelper.falseString() + " ";
 
-		Object result = entityManager.createNativeQuery(sql).getSingleResult();
+        List<Object[]> result = entityManager.createNativeQuery(sql).getResultList();
 
-		if (result == null)
-			return BigDecimal.ZERO;
-		else
-			return dbHelper.castBigDecimal(result);
+        if (result.size() > 0)
+            return result.get(0);
+        else
+            return null;
 	}
 
 	@Transactional
