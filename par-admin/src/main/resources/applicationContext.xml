@@ -18,8 +18,6 @@
       <value>file:/etc/uji/par/app.properties</value>
     </property>
   </bean>
-  
-  
 
   <tx:annotation-driven mode="aspectj" transaction-manager="transactionManager" />
   
