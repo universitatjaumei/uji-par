@@ -7,6 +7,8 @@ import java.io.OutputStream;
 import java.util.List;
 import java.util.Locale;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -33,6 +35,7 @@ public class EntradasService
     public static final String BUTACAS_COMPRA = "butacasCompra";
     public static final String UUID_COMPRA = "uuidCompra";
     public static final String ID_SESION = "idSesion";
+	private static final Logger log = LoggerFactory.getLogger(EntradasService.class);
     
     @Autowired
     private ComprasDAO comprasDAO;
@@ -53,9 +56,12 @@ public class EntradasService
     {
     	EntradaReportOnlineInterface entrada = entradaOnlineReport.create(new Locale("ca"));
 
-        rellenaEntrada(uuidCompra, entrada);
-
-        entrada.serialize(outputStream);
+		try {
+        	rellenaEntrada(uuidCompra, entrada);
+	        entrada.serialize(outputStream);
+		} catch (NullPointerException e) {
+			log.error("La compra con uuid " + uuidCompra + " no existe");
+		}
     }
     
     public void generaEntradaTaquilla(String uuidCompra, OutputStream outputStream) throws ReportSerializationException, SAXException, IOException {
@@ -113,9 +119,11 @@ public class EntradasService
         }
 	}
 
-	private void rellenaEntrada(String uuidCompra, EntradaReportOnlineInterface entrada)
+	private void rellenaEntrada(String uuidCompra, EntradaReportOnlineInterface entrada) throws NullPointerException
     {
         CompraDTO compra = comprasDAO.getCompraByUuid(uuidCompra);
+		if (compra == null)
+			throw new NullPointerException();
 
         String tituloCa = compra.getParSesion().getParEvento().getTituloVa();
         String fecha = DateUtils.dateToSpanishString(compra.getParSesion().getFechaCelebracion());

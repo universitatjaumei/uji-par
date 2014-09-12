@@ -1,23 +1,16 @@
 package es.uji.apps.par.services.rest;
 
-import java.text.ParseException;
-import java.util.Locale;
+import com.sun.jersey.api.client.ClientResponse.Status;
+import es.uji.apps.par.ResponseMessage;
+import es.uji.apps.par.config.Configuration;
+import es.uji.apps.par.i18n.ResourceProperties;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
-
-import com.sun.jersey.api.client.ClientResponse.Status;
-
-import es.uji.apps.par.ResponseMessage;
-import es.uji.apps.par.config.Configuration;
-import es.uji.apps.par.i18n.ResourceProperties;
-import es.uji.commons.web.template.model.GrupoMenu;
-import es.uji.commons.web.template.model.ItemMenu;
-import es.uji.commons.web.template.model.Menu;
-import es.uji.commons.web.template.model.Pagina;
+import java.util.Locale;
 
 public class BaseResource
 {
@@ -109,22 +102,6 @@ public class BaseResource
     public String getProperty(String messageProperty, Object... values)
     {
         return ResourceProperties.getProperty(getLocale(), messageProperty, values);
-    }
-
-    protected Pagina buildPublicPageInfo(String urlBase, String url, String idioma) throws ParseException
-    {
-        Menu menu = new Menu();
-
-        GrupoMenu grupo = new GrupoMenu("Comunicació");
-        grupo.addItem(new ItemMenu("Noticies", "http://www.uji.es/"));
-        grupo.addItem(new ItemMenu("Investigació", "http://www.uji.es/"));
-        menu.addGrupo(grupo);
-
-        Pagina pagina = new Pagina(urlBase, url, idioma, Configuration.getHtmlTitle());
-        pagina.setSubTitulo("");
-        pagina.setMenu(menu);
-
-        return pagina;
     }
 
     protected boolean correctApiKey(HttpServletRequest request)

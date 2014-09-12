@@ -1,10 +1,10 @@
 package es.uji.apps.par.services;
 
 import es.uji.apps.par.dao.MailDAO;
-import es.uji.commons.messaging.client.MessageNotSentException;
 
+import javax.mail.MessagingException;
 
 public interface MailInterface {
-	public void enviaPendientes(MailDAO mailDAO, EntradasService entradasService) throws MessageNotSentException;
+	public void enviaPendientes(MailDAO mailDAO, EntradasService entradasService) throws MessagingException;
 	public void anyadeEnvio(String to, String titulo, String texto);
 }
