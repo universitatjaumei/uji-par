@@ -464,6 +464,6 @@ public class Configuration
 		if (debug != null && debug.toLowerCase().equals("devel"))
 			return true;
 
-		return false;
+			return false;
 	}
 }
