@@ -50,6 +50,19 @@ public class CompraResource extends BaseResource {
 
 	@Context
 	HttpServletResponse currentResponse;
+
+	@POST
+	@Path("{idCompra}/pagada")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void marcaPagada(@PathParam("idCompra") Long idCompra, @QueryParam("referencia") String referenciaDePago)
+	{
+		AuthChecker.canWrite(currentRequest);
+
+		if (referenciaDePago != null)
+			comprasService.marcarPagadaConReferenciaDePago(idCompra, referenciaDePago);
+		else
+			comprasService.marcaPagada(idCompra);
+	}
 	
 	@GET
 	@Path("{id}")

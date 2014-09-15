@@ -59,17 +59,4 @@ public class PagoResource extends BaseResource
         
         pagoTarjeta.borraCompraPendiente(idCompra);
     }
-
-    @POST
-    @Path("{idCompra}/pagada")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public void marcaPagada(@PathParam("idCompra") Long idCompra, @QueryParam("referencia") String referenciaDePago)
-    {
-        AuthChecker.canWrite(currentRequest);
-        
-        if (referenciaDePago != null)
-        	compras.marcarPagadaConReferenciaDePago(idCompra, referenciaDePago);
-        else
-        	compras.marcaPagada(idCompra);
-    }
 }

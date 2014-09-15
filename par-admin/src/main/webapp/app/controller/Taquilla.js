@@ -1051,11 +1051,12 @@ Ext.define('Paranimf.controller.Taquilla', {
 	   var me = this;
 	   
 	   Ext.Ajax.request({
-	    	  url : urlPrefix + 'pago/' + idCompra + '/pagada' + (referenciaDePago != undefined ? "?referencia=" + referenciaDePago : ""),
+	    	  url : urlPrefix + 'compra/' + idCompra + '/pagada' + (referenciaDePago != undefined ? "?referencia=" +
+	    	  referenciaDePago : ""),
 	    	  method: 'POST',
 	    	  success: function (response) {
 	   
-	    		  console.log('Compra marcada como pagada:', response);
+	    		  //console.log('Compra marcada como pagada:', response);
 	    		  
    			      me.muestraMensajePagoTarjeta(UI.i18n.message.compraRegistradaOk);
    			      me.desahiblitaEstadoBotonesComprar();
