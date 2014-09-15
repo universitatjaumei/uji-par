@@ -1,5 +1,6 @@
 package es.uji.apps.par;
 
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -11,6 +12,11 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
+import es.uji.apps.par.utils.DateUtils;
+import es.uji.commons.web.template.model.GrupoMenu;
+import es.uji.commons.web.template.model.ItemMenu;
+import es.uji.commons.web.template.model.Menu;
+import es.uji.commons.web.template.model.Pagina;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -91,14 +97,28 @@ public class CommonExceptionMapper implements ExceptionMapper<Exception>
         log.error(exception.getMessage(), exception);
         Locale locale = getLocale();
         String language = locale.getLanguage();
-        
-		Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "error", locale, APP);
 
-		HashMap<String, String> titulo = new HashMap<String, String>();
-		titulo.put("titulo", "Error");
-		template.put("pagina", titulo);
+		Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "error", locale, APP);
+		Pagina pagina = null;
+
+		try {
+			pagina = new Pagina(Configuration.getUrlPublic(), Configuration.getUrlPublic(), language, Configuration.getHtmlTitle());
+			pagina.setTitulo(Configuration.getHtmlTitle());
+			pagina.setSubTitulo("");
+		} catch (ParseException e) {
+
+		}
+		template.put("idioma", language);
 		template.put("baseUrl", Configuration.getUrlPublic());
-		template.put("lang", language);
+		template.put("pagina", pagina);
+
+		Menu menu = new Menu();
+
+		GrupoMenu grupo = new GrupoMenu("Comunicació");
+		grupo.addItem(new ItemMenu("Noticies", "http://www.uji.es/"));
+		grupo.addItem(new ItemMenu("Investigació", "http://www.uji.es/"));
+		menu.addGrupo(grupo);
+		pagina.setMenu(menu);
 
 		return Response.ok(template).build();
     }

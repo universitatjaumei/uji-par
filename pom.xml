@@ -13,8 +13,8 @@
     <modules>
         <module>uji-par-base</module>
         <module>par-admin</module>
-        <module>uji-par-web</module>
-	<module>uji-par-reports</module>
+        <module>par-web</module>
+	    <module>uji-par-reports</module>
     </modules>
 
     <build>

@@ -19,16 +19,18 @@
 		<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
 	</listener>
 
-	<listener>
+	<!--<listener>
 		<listener-class>es.uji.commons.rest.listeners.CleanUpOracleMBeansListener</listener-class>
-	</listener>	
+	</listener>-->
 
 	<servlet>
 		<servlet-name>rest-api</servlet-name>
 		<servlet-class>com.sun.jersey.spi.spring.container.servlet.SpringServlet</servlet-class>
 		<init-param>
 			<param-name>com.sun.jersey.config.property.packages</param-name>
-      		<param-value>com.fasterxml.jackson.jaxrs.json; es.uji.apps.par.services.rest; es.uji.apps.par; es.uji.commons.rest.shared; es.uji.commons.rest.json; es.uji.commons.rest.html</param-value>
+      		<!--<param-value>com.fasterxml.jackson.jaxrs.json; es.uji.apps.par.services.rest; es.uji.apps.par;
+                es.uji.commons.rest; es.uji.commons.rest.shared; es.uji.commons.rest.json; es.uji.commons.rest.html</param-value>-->
+            <param-value>com.fasterxml.jackson.jaxrs.json; es.uji.apps.par.services.rest; es.uji.apps.par; es.uji.commons.rest;</param-value>
 		</init-param>
 		<init-param>
 			<param-name>com.sun.jersey.spi.container.ContainerRequestFilters</param-name>
@@ -44,20 +46,6 @@
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
-
-  <!--  Habilitar el jetty para leer enlaces simbolicos-->
-  <!--
-  <servlet>
-	  <servlet-name>default</servlet-name>
-  	  <servlet-class>org.mortbay.jetty.servlet.DefaultServlet</servlet-class>
-  	<init-param>
-    	<param-name>aliases</param-name>
-    	<param-value>true</param-value>
-  	</init-param>
-  </servlet>
-  -->
-  
-  
 	<servlet-mapping>
 		<servlet-name>rest-api</servlet-name>
     	<url-pattern>/rest/*</url-pattern>

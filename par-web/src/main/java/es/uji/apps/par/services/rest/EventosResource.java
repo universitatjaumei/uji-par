@@ -21,6 +21,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import es.uji.apps.par.builders.PublicPageBuilderInterface;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.sanselan.ImageReadException;
 
@@ -54,6 +55,9 @@ public class EventosResource extends BaseResource
 
     @Context
     private HttpServletRequest request;
+
+	@InjectParam
+	private PublicPageBuilderInterface publicPageBuilderInterface;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -122,7 +126,7 @@ public class EventosResource extends BaseResource
         
         String url = request.getRequestURL().toString();
 
-        template.put("pagina", buildPublicPageInfo(getBaseUrlPublic(), url, language.toString()));
+        template.put("pagina", publicPageBuilderInterface.buildPublicPageInfo(getBaseUrlPublic(), url, language.toString()));
         template.put("baseUrl", getBaseUrlPublic());
         template.put("lang", language);
         
@@ -162,7 +166,7 @@ public class EventosResource extends BaseResource
 
         String url = request.getRequestURL().toString();
 
-        template.put("pagina", buildPublicPageInfo(getBaseUrlPublic(), url, language.toString()));
+        template.put("pagina", publicPageBuilderInterface.buildPublicPageInfo(getBaseUrlPublic(), url, language.toString()));
         template.put("baseUrl", getBaseUrlPublic());
         
         template.put("tipoEvento", tipoEvento);

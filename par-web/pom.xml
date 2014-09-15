@@ -2,10 +2,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>es.uji.apps.par</groupId>
-	<artifactId>uji-par-web</artifactId>
+	<artifactId>par-web</artifactId>
 	<version>0.0.12-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>uji-par-web</name>
+	<name>par-web</name>
 
 	<properties>
 		<aspectj.version>1.7.4</aspectj.version>
@@ -35,61 +35,17 @@
 			<version>0.0.12-SNAPSHOT</version>
 		</dependency>
 
-		<dependency>
-			<groupId>es.uji.apps.par</groupId>
-			<artifactId>uji-par-reports</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-
 		<!--<dependency>
-			<groupId>es.uji.commons</groupId>
-			<artifactId>uji-commons-sso</artifactId>
-			<version>0.1.2</version>
-			<exclusions>
-				<exclusion>
-					<groupId>hsqldb</groupId>
-					<artifactId>hsqldb</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>log4j</groupId>
-					<artifactId>log4j</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.slf4j</groupId>
-					<artifactId>slf4j-api</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>commons-logging</groupId>
-					<artifactId>commons-logging</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-
-		<dependency>
-			<groupId>es.uji.commons</groupId>
-			<artifactId>uji-commons-rest</artifactId>
-			<version>0.1.15</version>
-			<exclusions>
-				<exclusion>
-					<groupId>hsqldb</groupId>
-					<artifactId>hsqldb</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>com.sun.jersey</groupId>
-					<artifactId>jersey-core</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>es.uji.commons</groupId>
-					<artifactId>uji-commons-sso</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>-->
-
-		<dependency>
 			<groupId>es.uji.commons</groupId>
 			<artifactId>uji-commons-testing</artifactId>
 			<version>0.2.2</version>
-		</dependency>
+		</dependency>-->
+
+        <dependency>
+            <groupId>es.uji.commons</groupId>
+            <artifactId>uji-commons-web-template-model</artifactId>
+            <version>0.0.6</version>
+        </dependency>
 
 		<!-- jUnit -->
 
@@ -182,20 +138,6 @@
 					<source>1.7</source>
 					<target>1.7</target>
 					<complianceLevel>1.7</complianceLevel>
-					<weaveDependencies>
-						<weaveDependency>
-						  <groupId>es.uji.commons</groupId>
-						  <artifactId>uji-commons-db</artifactId>
-						</weaveDependency>
-						<weaveDependency>
-						  <groupId>es.uji.commons</groupId>
-						  <artifactId>uji-commons-sso</artifactId>
-						</weaveDependency>
-						<weaveDependency>
-						  <groupId>es.uji.commons</groupId>
-						  <artifactId>uji-commons-rest</artifactId>
-						</weaveDependency>
-					</weaveDependencies>
 					<outxml>true</outxml>
 					<aspectLibraries>
 						<aspectLibrary>
@@ -236,41 +178,5 @@
 				</configuration>
 			</plugin>
 		</plugins>
-		<pluginManagement>
-			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings 
-					only. It has no influence on the Maven build itself. -->
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.codehaus.mojo</groupId>
-										<artifactId>
-											properties-maven-plugin
-										</artifactId>
-										<versionRange>
-											[1.0-alpha-2,)
-										</versionRange>
-										<goals>
-											<goal>
-												read-project-properties
-											</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore></ignore>
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 	</build>
 </project>

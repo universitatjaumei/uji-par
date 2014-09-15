@@ -1,34 +1,27 @@
 package es.uji.apps.par.services.rest;
 
-import java.util.Locale;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
-import es.uji.apps.par.tpv.TpvInterface;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.sun.jersey.api.core.InjectParam;
-
 import es.uji.apps.par.Constantes;
+import es.uji.apps.par.builders.PublicPageBuilderInterface;
 import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.db.CompraDTO;
 import es.uji.apps.par.i18n.ResourceProperties;
 import es.uji.apps.par.services.ComprasService;
 import es.uji.apps.par.services.EntradasService;
-import es.uji.apps.par.services.MailService;
+import es.uji.apps.par.tpv.TpvInterface;
 import es.uji.commons.web.template.HTMLTemplate;
 import es.uji.commons.web.template.Template;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.util.Locale;
 
 @Component
 @Path("tpv")
@@ -39,8 +32,8 @@ public class TpvResource extends BaseResource implements TpvInterface
     @InjectParam
     private ComprasService compras;
 
-    @InjectParam
-    private MailService mailService;
+   /* @InjectParam
+    private MailInteface mailService;*/
 
     @Context
     HttpServletResponse currentResponse;
@@ -50,6 +43,9 @@ public class TpvResource extends BaseResource implements TpvInterface
     
     @Context
     private HttpServletRequest request;
+
+	@InjectParam
+	private PublicPageBuilderInterface publicPageBuilderInterface;
 
     @POST
     @Path("resultado")
@@ -115,7 +111,8 @@ public class TpvResource extends BaseResource implements TpvInterface
         Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "compraValida", locale, APP);
         String url = request.getRequestURL().toString();
 
-        template.put("pagina", buildPublicPageInfo(Configuration.getUrlPublic(), url, language.toString()));
+        template.put("pagina", publicPageBuilderInterface.buildPublicPageInfo(Configuration.getUrlPublic(), url,
+				language.toString()));
         template.put("baseUrl", getBaseUrlPublic());
 
         template.put("referencia", recibo);
@@ -135,7 +132,7 @@ public class TpvResource extends BaseResource implements TpvInterface
         HTMLTemplate template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "compraIncorrecta", locale, APP);
         String url = request.getRequestURL().toString();
 
-        template.put("pagina", buildPublicPageInfo(getBaseUrlPublic(), url, language.toString()));
+        template.put("pagina", publicPageBuilderInterface.buildPublicPageInfo(getBaseUrlPublic(), url, language.toString()));
         template.put("baseUrl", getBaseUrlPublic());
 
         template.put("urlReintentar", getBaseUrlPublic() + "/rest/entrada/" + compra.getParSesion().getId());
@@ -151,7 +148,7 @@ public class TpvResource extends BaseResource implements TpvInterface
         String titulo = ResourceProperties.getProperty(new Locale("ca"), "mail.entradas.titulo");
         String texto = ResourceProperties.getProperty(new Locale("ca"), "mail.entradas.texto", urlEntradas);
 
-        mailService.anyadeEnvio(email, titulo, texto);
+        //mailService.anyadeEnvio(email, titulo, texto);
     }
 
 	@Override

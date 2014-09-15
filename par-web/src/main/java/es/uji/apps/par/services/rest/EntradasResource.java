@@ -1,63 +1,37 @@
 package es.uji.apps.par.services.rest;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.ResponseBuilder;
-
-import es.uji.apps.par.tpv.TpvInterface;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.sun.jersey.api.core.InjectParam;
-
-import es.uji.apps.par.ButacaOcupadaException;
-import es.uji.apps.par.CompraButacaDescuentoNoDisponible;
-import es.uji.apps.par.CompraInvitacionPorInternetException;
-import es.uji.apps.par.CompraSinButacasException;
-import es.uji.apps.par.Constantes;
-import es.uji.apps.par.FueraDePlazoVentaInternetException;
-import es.uji.apps.par.NoHayButacasLibresException;
+import es.uji.apps.par.*;
+import es.uji.apps.par.builders.PublicPageBuilderInterface;
 import es.uji.apps.par.butacas.EstadoButacasRequest;
 import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.db.CompraDTO;
 import es.uji.apps.par.i18n.ResourceProperties;
-import es.uji.apps.par.model.Butaca;
-import es.uji.apps.par.model.Evento;
-import es.uji.apps.par.model.PreciosSesion;
-import es.uji.apps.par.model.ResultadoCompra;
-import es.uji.apps.par.model.Sesion;
-import es.uji.apps.par.model.Tarifa;
+import es.uji.apps.par.model.*;
 import es.uji.apps.par.services.ButacasService;
 import es.uji.apps.par.services.ComprasService;
 import es.uji.apps.par.services.EntradasService;
 import es.uji.apps.par.services.SesionesService;
+import es.uji.apps.par.tpv.TpvInterface;
 import es.uji.apps.par.utils.DateUtils;
 import es.uji.apps.par.utils.Utils;
 import es.uji.commons.web.template.HTMLTemplate;
 import es.uji.commons.web.template.Template;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
+import java.text.ParseException;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Path("entrada")
 public class EntradasResource extends BaseResource
@@ -89,6 +63,9 @@ public class EntradasResource extends BaseResource
 
 	@InjectParam
 	private TpvInterface tpvInterface;
+
+	@InjectParam
+	private PublicPageBuilderInterface publicPageBuilderInterface;
 
     @GET
     @Path("{id}")
@@ -129,7 +106,7 @@ public class EntradasResource extends BaseResource
         template.put("baseUrl", getBaseUrlPublic());
         template.put("fecha", DateUtils.dateToSpanishString(sesion.getFechaCelebracion()));
         template.put("hora", sesion.getHoraCelebracion());
-        template.put("pagina", buildPublicPageInfo(urlBase, url, language.toString()));
+        template.put("pagina", publicPageBuilderInterface.buildPublicPageInfo(urlBase, url, language.toString()));
         template.put("tipoEventoEs", sesion.getEvento().getParTiposEvento().getNombreEs());
         //template.put("tarifas", sesionesService)
 
@@ -203,7 +180,7 @@ public class EntradasResource extends BaseResource
         template.put("baseUrl", getBaseUrlPublic());
         template.put("fecha", DateUtils.dateToSpanishString(sesion.getFechaCelebracion()));
         template.put("hora", sesion.getHoraCelebracion());
-        template.put("pagina", buildPublicPageInfo(urlBase, urlBase, language.toString()));
+        template.put("pagina", publicPageBuilderInterface.buildPublicPageInfo(urlBase, urlBase, language.toString()));
         Calendar cal = Calendar.getInstance();
         template.put("millis", cal.getTime().getTime());
         List<Tarifa> tarifas = new ArrayList<Tarifa>();
@@ -405,7 +382,7 @@ public class EntradasResource extends BaseResource
         Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "datosComprador", locale, APP);
         String urlBase = getBaseUrlPublic();
         String url = request.getRequestURL().toString();
-        template.put("pagina", buildPublicPageInfo(urlBase, url, language.toString()));
+        template.put("pagina", publicPageBuilderInterface.buildPublicPageInfo(urlBase, url, language.toString()));
         template.put("baseUrl", getBaseUrlPublic());
         
         template.put("idioma", language);
@@ -577,7 +554,7 @@ public class EntradasResource extends BaseResource
     	Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "compraFinalizada", locale, APP);
     	String urlBase = getBaseUrlPublic();
         String url = request.getRequestURL().toString();
-        template.put("pagina", buildPublicPageInfo(urlBase, url, language.toString()));
+        template.put("pagina", publicPageBuilderInterface.buildPublicPageInfo(urlBase, url, language.toString()));
         template.put("baseUrl", getBaseUrlPublic());
         
         template.put("idioma", language);
