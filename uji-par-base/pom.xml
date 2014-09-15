@@ -71,11 +71,11 @@
             </exclusions>
         </dependency>
 
-        <!--<dependency>
+        <dependency>
           <groupId>es.uji.commons</groupId>
           <artifactId>uji-commons-web-template-model</artifactId>
           <version>0.0.6</version>
-        </dependency>-->
+        </dependency>
 
         <dependency>
             <groupId>org.apache.commons</groupId>
