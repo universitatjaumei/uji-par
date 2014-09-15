@@ -300,11 +300,9 @@ public class SesionesDAO extends BaseDAO
         List<Tuple> resultado = query
         	.from(qSesionDTO)
         	.join(qSesionDTO.parSala, qSalaDTO)
-        	.leftJoin(qSesionDTO.parCompras, qCompraDTO)
-        	.leftJoin(qCompraDTO.parButacas, qButacaDTO)
-            .where(qSesionDTO.id.in(idsSesiones)
-            .and(qCompraDTO.anulada.isNull().or(qCompraDTO.anulada.eq(false))
-            .and(qButacaDTO.anulada.isNull().or(qButacaDTO.anulada.eq(false)))))
+        	.leftJoin(qSesionDTO.parCompras, qCompraDTO).on(qCompraDTO.anulada.isNull().or(qCompraDTO.anulada.eq(false)))
+        	.leftJoin(qCompraDTO.parButacas, qButacaDTO).on(qButacaDTO.anulada.isNull().or(qButacaDTO.anulada.eq(false)))
+            .where(qSesionDTO.id.in(idsSesiones))
             .distinct()
             .groupBy(qSesionDTO.id, qSalaDTO.codigo, qSesionDTO.fechaCelebracion, qSesionDTO.incidenciaId)
             .list(qSesionDTO.id, qSalaDTO.codigo, qSesionDTO.fechaCelebracion, qButacaDTO.precio.sum(), qSesionDTO.incidenciaId);
