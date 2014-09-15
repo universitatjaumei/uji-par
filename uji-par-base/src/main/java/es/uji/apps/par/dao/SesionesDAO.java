@@ -313,28 +313,32 @@ public class SesionesDAO extends BaseDAO
         
         for (Tuple row: resultado)
         {
-        	long idSesion = row.get(0, Long.class);
-        	String codigoSala = (String) row.get(1, String.class);
-        	Date fechaCelebracion = row.get(2, Date.class);
-            BigDecimal recaudacion = row.get(3, BigDecimal.class);
-            Long espectadores = getEspectadores(idSesion);
-            
-            RegistroSesion registro = new RegistroSesion();
-            
-            registro.setCodigoSala(codigoSala);
-            registro.setEspectadores(espectadores.intValue());
-            registro.setPeliculas(1);
-            registro.setFecha(fechaCelebracion);
-            registro.setHora(HOUR_FORMAT.format(fechaCelebracion));
-            registro.setIncidencia(TipoIncidencia.intToTipoIncidencia(Utils.safeObjectToInt(row.get(4, BigDecimal.class))));
+			int idIncidencia = Utils.safeObjectToInt(row.get(4, BigDecimal.class));
 
-            if (recaudacion == null)
-                registro.setRecaudacion(BigDecimal.ZERO);
-            else
-                registro.setRecaudacion(recaudacion);
-            
-            registros.add(registro);
-        }
+			if (!isIncidenciaCancelacionEvento(idIncidencia)) {
+				long idSesion = row.get(0, Long.class);
+				String codigoSala = (String) row.get(1, String.class);
+				Date fechaCelebracion = row.get(2, Date.class);
+				BigDecimal recaudacion = row.get(3, BigDecimal.class);
+				Long espectadores = getEspectadores(idSesion);
+
+				RegistroSesion registro = new RegistroSesion();
+
+				registro.setCodigoSala(codigoSala);
+				registro.setEspectadores(espectadores.intValue());
+				registro.setPeliculas(1);
+				registro.setFecha(fechaCelebracion);
+				registro.setHora(HOUR_FORMAT.format(fechaCelebracion));
+				registro.setIncidencia(TipoIncidencia.intToTipoIncidencia(idIncidencia));
+
+				if (recaudacion == null)
+					registro.setRecaudacion(BigDecimal.ZERO);
+				else
+					registro.setRecaudacion(recaudacion);
+
+				registros.add(registro);
+			}
+		}
 
         return registros;
     }
@@ -350,8 +354,7 @@ public class SesionesDAO extends BaseDAO
 	}
 
 	@Transactional(rollbackFor=SesionSinFormatoIdiomaIcaaException.class)
-    public List<RegistroSesionPelicula> getRegistrosSesionesPeliculas(List<Sesion> sesiones) throws SesionSinFormatoIdiomaIcaaException
-    {
+    public List<RegistroSesionPelicula> getRegistrosSesionesPeliculas(List<Sesion> sesiones) throws SesionSinFormatoIdiomaIcaaException, IncidenciaNotFoundException {
         QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
         QEventoDTO qEventoDTO = QEventoDTO.eventoDTO;
         
@@ -373,29 +376,39 @@ public class SesionesDAO extends BaseDAO
         {
         	if (sesionDTO.getFormato() == null)
         		throw new SesionSinFormatoIdiomaIcaaException(sesionDTO.getParEvento().getTituloVa());
-        	
-            List<SesionFormatoIdiomaICAADTO> sesionesFormatoIdiomaIcaa = 
-            		getSesionFormatoIdiomaIcaa(sesionDTO.getFormato(), sesionDTO.getVersionLinguistica(), sesionDTO.getParEvento().getId());
-            
-            if (sesionesFormatoIdiomaIcaa.size() == 0) {
-            	throw new SesionSinFormatoIdiomaIcaaException(sesionDTO.getParEvento().getId(), 
-            			sesionDTO.getFormato(), sesionDTO.getVersionLinguistica());
-            }
-            RegistroSesionPelicula registro = new RegistroSesionPelicula();
-            registro.setCodigoSala(sesionDTO.getParSala().getCodigo());
-            registro.setCodigoPelicula((int) sesionDTO.getParEvento().getId());
-            registro.setFecha(sesionDTO.getFechaCelebracion());
-            registro.setHora(HOUR_FORMAT.format(sesionDTO.getFechaCelebracion()));
-            
-            registros.add(registro);
+
+			if (!isIncidenciaCancelacionEvento(sesionDTO.getIncidenciaId())) {
+				List<SesionFormatoIdiomaICAADTO> sesionesFormatoIdiomaIcaa =
+						getSesionFormatoIdiomaIcaa(sesionDTO.getFormato(), sesionDTO.getVersionLinguistica(), sesionDTO.getParEvento().getId());
+
+				if (sesionesFormatoIdiomaIcaa.size() == 0) {
+					throw new SesionSinFormatoIdiomaIcaaException(sesionDTO.getParEvento().getId(),
+							sesionDTO.getFormato(), sesionDTO.getVersionLinguistica());
+				}
+				RegistroSesionPelicula registro = new RegistroSesionPelicula();
+				registro.setCodigoSala(sesionDTO.getParSala().getCodigo());
+				registro.setCodigoPelicula((int) sesionDTO.getParEvento().getId());
+				registro.setFecha(sesionDTO.getFechaCelebracion());
+				registro.setHora(HOUR_FORMAT.format(sesionDTO.getFechaCelebracion()));
+
+				registros.add(registro);
+			}
         }
         
         return registros;
     }
 
+	public boolean isIncidenciaCancelacionEvento(Integer incidenciaId) throws IncidenciaNotFoundException {
+		TipoIncidencia incidenciaOcurrida = TipoIncidencia.intToTipoIncidencia(Utils.safeObjectToInt(incidenciaId));
+
+		if (incidenciaOcurrida != TipoIncidencia.ANULACIO_COMPLETA && incidenciaOcurrida != TipoIncidencia
+				.ANULACIO_PROGRAMACIO)
+			return false;
+		return true;
+	}
+
     @Transactional
-    public List<RegistroPelicula> getRegistrosPeliculas(List<Sesion> sesiones)
-    {
+    public List<RegistroPelicula> getRegistrosPeliculas(List<Sesion> sesiones) throws IncidenciaNotFoundException {
         QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
         QEventoDTO qEventoDTO = QEventoDTO.eventoDTO;
         
@@ -417,20 +430,22 @@ public class SesionesDAO extends BaseDAO
         {
             SesionDTO sesion = row.get(0, SesionDTO.class);
             Long idEvento = row.get(1, Long.class);
-            
-            RegistroPelicula registro = new RegistroPelicula();
-            registro.setCodigoSala(sesion.getParSala().getCodigo());
-            registro.setCodigoPelicula(idEvento.intValue());
-            registro.setCodigoExpediente(sesion.getParEvento().getExpediente());
-            registro.setTitulo(Utils.stripAccents(sesion.getParEvento().getTituloEs()));
-            registro.setCodigoDistribuidora(sesion.getParEvento().getCodigoDistribuidora());
-            registro.setNombreDistribuidora(Utils.stripAccents(sesion.getParEvento().getNombreDistribuidora()));
-            registro.setVersionOriginal(sesion.getParEvento().getVo());
-            registro.setVersionLinguistica(sesion.getVersionLinguistica());
-            registro.setIdiomaSubtitulos(sesion.getParEvento().getSubtitulos());
-            registro.setFormatoProyeccion(sesion.getFormato());
-            
-            registros.add(registro);
+
+			if (!isIncidenciaCancelacionEvento(sesion.getIncidenciaId())) {
+				RegistroPelicula registro = new RegistroPelicula();
+				registro.setCodigoSala(sesion.getParSala().getCodigo());
+				registro.setCodigoPelicula(idEvento.intValue());
+				registro.setCodigoExpediente(sesion.getParEvento().getExpediente());
+				registro.setTitulo(Utils.stripAccents(sesion.getParEvento().getTituloEs()));
+				registro.setCodigoDistribuidora(sesion.getParEvento().getCodigoDistribuidora());
+				registro.setNombreDistribuidora(Utils.stripAccents(sesion.getParEvento().getNombreDistribuidora()));
+				registro.setVersionOriginal(sesion.getParEvento().getVo());
+				registro.setVersionLinguistica(sesion.getVersionLinguistica());
+				registro.setIdiomaSubtitulos(sesion.getParEvento().getSubtitulos());
+				registro.setFormatoProyeccion(sesion.getFormato());
+
+				registros.add(registro);
+			}
         }
         
         return registros;
