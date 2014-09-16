@@ -298,7 +298,12 @@ public class InformeTaquillaReport extends Report implements InformeInterface
 		
 	}
 
-	public void genera(String cargo, String firmante, List<InformeSesion> informesSesion, Cine cine, boolean printSesion) throws SinIvaException {
+    public void genera(long sesionId) throws SinIvaException {
+        // TODO Auto-generated method stub
+
+    }
+
+    public void genera(String cargo, String firmante, List<InformeSesion> informesSesion, Cine cine, boolean printSesion) throws SinIvaException {
 		// TODO Auto-generated method stub
 		
 	}

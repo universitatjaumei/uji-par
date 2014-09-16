@@ -2,8 +2,8 @@ Ext.define('Paranimf.controller.Informes', {
    extend: 'Ext.app.Controller',
 
    views: ['EditModalWindow', 'EditBaseForm', 'EditBaseGrid', 'informes.PanelInformes', 'informes.GridSesionesInformes'],
-   stores: ['SesionesInformes'],
-   models: ['Sesion'],
+   stores: ['SesionesInformes', 'TipoInformes'],
+   models: ['Sesion', 'Informe'],
 
    refs: [{
       ref: 'fechaInicio',
@@ -14,6 +14,9 @@ Ext.define('Paranimf.controller.Informes', {
    }, {
       ref: 'gridSesionesInformes',
       selector: 'gridSesionesInformes'
+   }, {
+      ref: 'panelInformesCombo',
+      selector: 'panelInformes combo'
    }],
 
    init: function() {
@@ -47,12 +50,8 @@ Ext.define('Paranimf.controller.Informes', {
             click: this.filtraSesiones
          },
 
-         'panelInformes button[action=generarInformeSesion]': {
-            click: this.generarInformeSesion
-         },
-
-         'panelInformes button[action=generarInformeEvento]': {
-            click: this.generarInformeEvento
+         'panelInformes button[action=generarInforme]': {
+            click: this.generarInforme
          }
       });
    },
@@ -71,6 +70,31 @@ Ext.define('Paranimf.controller.Informes', {
          this.generatePdfEvento(idsSelected[0].id);
       } else
          alert(UI.i18n.message.selectRow);
+   },
+
+   generarInformeTipo: function(idSelected) {
+      var sesionSelected = this.getGridSesionesInformes().getSelectedColumnValues("id");
+      var eventoSelected = this.getGridSesionesInformes().getSelectedColumnValues("evento");
+      if (sesionSelected && sesionSelected.length == 1 && eventoSelected && eventoSelected.length == 1) {
+         this.generatePdf(eventoSelected[0].id, sesionSelected[0], idSelected);
+      } else
+         alert(UI.i18n.message.selectRow);
+   },
+
+   generarInforme: function() {
+      var idSelected = this.getPanelInformesCombo().getValue();
+      if (idSelected) {
+         if (idSelected === 'informeSesion') {
+            this.generarInformeSesion();
+         }
+         else if (idSelected === 'informeEventos') {
+            this.generarInformeEvento();
+         }
+         else {
+            this.generarInformeTipo(idSelected);
+         }
+      } else
+         alert(UI.i18n.message.selectInforme);
    },
 
    filtraSesiones: function() {
@@ -118,6 +142,16 @@ Ext.define('Paranimf.controller.Informes', {
       var form = document.createElement("form");
       form.setAttribute("method", "post");
       form.setAttribute("action", urlPrefix + 'report/evento/' + idEvento + '/pdf');
+      form.setAttribute("target", "_blank");
+
+      document.body.appendChild(form);
+      form.submit();      
+   },
+
+   generatePdf: function(idEvento, idSesion, idSelected) {
+      var form = document.createElement("form");
+      form.setAttribute("method", "post");
+      form.setAttribute("action", urlPrefix + 'report/evento/' + idEvento + '/sesion/' + idSesion + '/pdf/' + idSelected);
       form.setAttribute("target", "_blank");
 
       document.body.appendChild(form);

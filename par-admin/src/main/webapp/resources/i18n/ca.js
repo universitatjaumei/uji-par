@@ -18,6 +18,7 @@ UI =
             "sureDeleteMessage": "Està segur/a d'esborrar el missatge seleccionat?",
             "activitySelect": "És obligatori seleccionar una activitat",
             "selectRow": "És necessari seleccionar una fila",
+            "selectInforme": "És necessari seleccionar el tipus d'informe a generar",
             "minHour": "S'ha de triar almenys un horari i un espai",
             "dateAvailable": "Les dates triades per a l'espai no estan lliures",
             "minDate": "La data inicial ha de ser anterior a la data final",
@@ -211,6 +212,8 @@ UI =
             "filtrarSessions": "Veure sessions d'aquestes dates",
             "generarInformeSesion": "Generar informe de la sessió",
             "generarInformeEvento": "Generar informe de l'event",
+            "selectInforme": "Seleccioneu l'informe a generar",
+            "generarInforme": "Generar informe",
             "passToCompra": "Passar reserva a compra"
         },
         "calendar": {

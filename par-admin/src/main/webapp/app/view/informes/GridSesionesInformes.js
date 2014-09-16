@@ -6,13 +6,18 @@ Ext.define('Paranimf.view.informes.GridSesionesInformes', {
 
   title: UI.i18n.gridTitle.informeSessions,
   tbar: [{
-    action: 'generarInformeSesion',
+    xtype: 'combo',
+    labelWidth: 200,
+    fieldLabel: UI.i18n.button.selectInforme,
+    store: 'TipoInformes',
+    queryMode : 'remote',
+    forceSelection: true,
+    displayField: 'nombre',
+    valueField: 'id'
+  }, { 
+    action: 'generarInforme',
     xtype: 'button',
-    text: UI.i18n.button.generarInformeSesion
-  },{ 
-    action: 'generarInformeEvento',
-    xtype: 'button',
-    text: UI.i18n.button.generarInformeEvento
+    text: UI.i18n.button.generarInforme
   }],
 
   dockedItems: [{

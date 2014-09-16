@@ -80,6 +80,7 @@ public class Configuration
 	private static final String IMAGEN_SUSTITUTIVA = "uji.reports.imagenSustitutiva";
 	private static final String IMAGEN_SUSTITUTIVA_CONTENT_TYPE = "uji.reports.imagenSustitutivaContentType";
 	private static final String PORCENTAJE_IVA_DEFECTO = "uji.par.porcentajeIvaDefecto";
+    private static final String TIPOS_INFORME = "uji.reports.tipos";
     public static final String HORAS_VENTA_ANTICIPADA = "uji.reports.horaVentaAnticipada";
 
 	private static final Logger log = LoggerFactory.getLogger(Configuration.class);
@@ -382,6 +383,14 @@ public class Configuration
 	public static String getInformeSesionReport() {
 		return getProperty(INFORME_SESION_REPORT); 
 	}
+
+    public static String getInformeReport(String tipo) {
+        return getProperty("uji.reports." + tipo + ".class");
+    }
+
+    public static String getTiposInforme() {
+        return getProperty(TIPOS_INFORME);
+    }
 	
 	public static String getURLTPV() {
 		return getProperty(URL_TPV);

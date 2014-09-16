@@ -71,12 +71,12 @@ public class InformeEventosReport extends Report implements InformeInterface
     private void generaPdfCompras(String inicio, String fin, List<InformeModelReport> compras) throws SinIvaException
     {
         List<List<InformeModelReport>> separadosPorSesion = separaPorSesion(compras);
-        
+
         for (List<InformeModelReport> datosSesion:separadosPorSesion)
         {
             creaInicioPagina(inicio, fin);
             creaTabla(datosSesion);
-            
+
             createPageBreak();
         }
     }
@@ -85,9 +85,9 @@ public class InformeEventosReport extends Report implements InformeInterface
     {
         List<List<InformeModelReport>> result = new ArrayList<List<InformeModelReport>>();
         List<InformeModelReport> sesionActual = new ArrayList<InformeModelReport>();
-        
+
         long sesionAnterior = -1;
-        
+
         for (InformeModelReport dato:datos)
         {
             if (sesionAnterior!=-1 && dato.getSesionId()!=sesionAnterior)
@@ -95,14 +95,14 @@ public class InformeEventosReport extends Report implements InformeInterface
                 result.add(sesionActual);
                 sesionActual = new ArrayList<InformeModelReport>();
             }
-            
+
             sesionActual.add(dato);
             sesionAnterior = dato.getSesionId();
         }
-        
+
         if (sesionActual.size() > 0)
             result.add(sesionActual);
-        
+
         return result;
     }
 
@@ -244,12 +244,12 @@ public class InformeEventosReport extends Report implements InformeInterface
         BigDecimal sumaSesionBase = BigDecimal.ZERO;
         BigDecimal sumaSesionIva = BigDecimal.ZERO;
         BigDecimal sumaSesionTotal = BigDecimal.ZERO;
-        
+
         BigDecimal sumaEventoEntradas = BigDecimal.ZERO;
         BigDecimal sumaEventoBase = BigDecimal.ZERO;
         BigDecimal sumaEventoIva = BigDecimal.ZERO;
         BigDecimal sumaEventoTotal = BigDecimal.ZERO;
-        
+
         BigDecimal sumaTotalEntradas = BigDecimal.ZERO;
         BigDecimal sumaTotalBase = BigDecimal.ZERO;
         BigDecimal sumaTotalIva = BigDecimal.ZERO;
@@ -257,7 +257,7 @@ public class InformeEventosReport extends Report implements InformeInterface
 
         long sesionAnterior = -1;
         long eventoAnterior = -1;
-        
+
         for (InformeModelReport dato : compras)
         {
             if (dato.getIva() == null)
@@ -272,7 +272,7 @@ public class InformeEventosReport extends Report implements InformeInterface
                 sumaSesionIva = BigDecimal.ZERO;
                 sumaSesionTotal = BigDecimal.ZERO;
             }
-            
+
             if (cambioEvento(dato, eventoAnterior))
             {
                 creaSubtotalesEvento(table, sumaEventoEntradas, sumaEventoBase, sumaEventoIva, sumaEventoTotal);
@@ -300,23 +300,23 @@ public class InformeEventosReport extends Report implements InformeInterface
             sumaSesionBase = sumaSesionBase.add(base);
             sumaSesionIva = sumaSesionIva.add(iva);
             sumaSesionTotal = sumaSesionTotal.add(dato.getTotal());
-            
+
             sumaEventoEntradas = sumaEventoEntradas.add(new BigDecimal(dato.getNumeroEntradas()));
             sumaEventoBase = sumaEventoBase.add(base);
             sumaEventoIva = sumaEventoIva.add(iva);
             sumaEventoTotal = sumaEventoTotal.add(dato.getTotal());
-            
+
             sumaTotalEntradas = sumaTotalEntradas.add(new BigDecimal(dato.getNumeroEntradas()));
             sumaTotalBase = sumaTotalBase.add(base);
             sumaTotalIva = sumaTotalIva.add(iva);
             sumaTotalTotal = sumaTotalTotal.add(dato.getTotal());
-            
+
             sesionAnterior = dato.getSesionId();
             eventoAnterior = dato.getEventoId();
         }
-        
+
         creaSubtotalesSesion(table, sumaSesionEntradas, sumaSesionBase, sumaSesionIva, sumaSesionTotal);
-        
+
         //creaSubtotalesEvento(table, sumaEventoEntradas, sumaEventoBase, sumaEventoIva, sumaEventoTotal);
 
         Block block = withNewBlock();
@@ -329,14 +329,14 @@ public class InformeEventosReport extends Report implements InformeInterface
     private void creaSubtotalesSesion(BaseTable table, BigDecimal subEntradas, BigDecimal subBase, BigDecimal subIva, BigDecimal subTotal)
     {
         String titulo = ResourceProperties.getProperty(locale, "informeEventos.subtotalSesion");
-        
+
         creaLineaTotales(table, subEntradas, subBase, subIva, subTotal, titulo);
     }
-    
+
     private void creaSubtotalesEvento(BaseTable table, BigDecimal subEntradas, BigDecimal subBase, BigDecimal subIva, BigDecimal subTotal)
     {
         String titulo = ResourceProperties.getProperty(locale, "informeEventos.subtotalEvento");
-        
+
         creaLineaTotales(table, subEntradas, subBase, subIva, subTotal, titulo);
     }
 
@@ -346,7 +346,7 @@ public class InformeEventosReport extends Report implements InformeInterface
         table.withNewRow();
 
         table.withNewCell("");
-        
+
         TableCell cell = table.withNewCell(createBoldBlock(titulo));
         setBorders(cell);
 
@@ -372,12 +372,12 @@ public class InformeEventosReport extends Report implements InformeInterface
         totalBlock.setTextAlign(TextAlignType.RIGHT);
         cell = table.withNewCell(totalBlock);
         setBorders(cell);
-        
+
         table.withNewRow();
-        
+
         Block block = new Block();
         block.setMarginTop("0.5cm");
-        
+
         table.withNewCell("");
         table.withNewCell("");
         table.withNewCell("");
@@ -390,7 +390,7 @@ public class InformeEventosReport extends Report implements InformeInterface
     {
         return sesionAnterior!=-1 && dato.getSesionId()!=sesionAnterior;
     }
-    
+
     private boolean cambioEvento(InformeModelReport dato, long eventoAnterior)
     {
         return eventoAnterior!=-1 && dato.getEventoId()!=eventoAnterior;
@@ -514,22 +514,27 @@ public class InformeEventosReport extends Report implements InformeInterface
     {
         super.serialize(output);
     }
-	public void genera(String inicio, String fin,
+
+    public void genera(String inicio, String fin,
 			List<InformeModelReport> compras, BigDecimal totalTaquillaTPV,
 			BigDecimal totalTaquillaEfectivo, BigDecimal totalOnline) {
 		// TODO Auto-generated method stub
-		
-	}
 
+	}
 	public void genera(String inicio, String fin,
 			List<InformeModelReport> compras, String cargoInformeEfectivo,
 			String firmanteInformeEfectivo) throws SinIvaException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void genera(String cargo, String firmante, List<InformeSesion> informesSesion, Cine cine, boolean printSesion) throws SinIvaException {
 		// TODO Auto-generated method stub
-		
+
 	}
+
+    public void genera(long sesionId) throws SinIvaException {
+        // TODO Auto-generated method stub
+
+    }
 }

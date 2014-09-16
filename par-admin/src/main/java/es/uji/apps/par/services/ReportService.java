@@ -65,6 +65,7 @@ public class ReportService {
 	private InformeInterface informeTaquillaTpvSubtotalesReport;
 	private InformeInterface informeEventosReport;
 	private InformeInterface informeSesionReport;
+    private InformeInterface informeReport;
 
 	/*
 	 * static { entradaTaquillaReport =
@@ -401,6 +402,14 @@ public class ReportService {
 
 		informe.serialize(bos);
 	}
+
+    public void getPdf(long sesionId, ByteArrayOutputStream bos, String tipo) throws SinIvaException, ReportSerializationException, IOException {
+        informeReport = EntradaReportFactory.newInstanceInformeReport(tipo);
+        InformeInterface informe = informeReport.create(new Locale("ca"));
+        informe.genera(sesionId);
+
+        informe.serialize(bos);
+    }
 
 	private InformeSesion getInformeSesion(long sesionId) {
 		SesionDTO sesionDTO = sesionesDAO.getSesion(sesionId);

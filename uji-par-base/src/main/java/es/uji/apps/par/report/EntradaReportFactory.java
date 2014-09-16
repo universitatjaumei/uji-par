@@ -64,4 +64,12 @@ public class EntradaReportFactory
     				Configuration.getInformeSesionReport());
     	}
 	}
+
+    public static InformeInterface newInstanceInformeReport(String tipo) {
+        try {
+            return (InformeInterface) Class.forName(Configuration.getInformeReport(tipo)).newInstance();
+        } catch(Exception e) {
+            throw new RuntimeException("Imposible instanciar la clase del pdf de informe: " + tipo);
+        }
+    }
 }
