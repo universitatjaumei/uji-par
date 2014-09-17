@@ -449,7 +449,7 @@ public class Configuration
 	}
 
 	public static String getPathImagenSustitutiva() {
-		return getProperty(IMAGEN_SUSTITUTIVA);
+		return getNoObligatoryProperty(IMAGEN_SUSTITUTIVA);
 	}
 
 	public static String getImagenSustitutivaContentType() {
