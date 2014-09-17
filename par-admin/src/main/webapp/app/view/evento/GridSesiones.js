@@ -36,15 +36,19 @@ Ext.define('Paranimf.view.evento.GridSesiones', {
     }, {
       dataIndex: 'fechaInicioVentaOnline',
       text: UI.i18n.field.startOnlineSelling,
-      format:'d/m/Y',
       xtype: 'datecolumn',
-      flex: 1
+      flex: 1,
+      renderer: function (val, p, rec) {
+        return (!rec.data.canalInternet)?'-':Ext.util.Format.date(val, 'd/m/Y');
+      }
     }, {
       dataIndex: 'fechaFinVentaOnline',
       text: UI.i18n.field.endOnlineSelling,
-      format:'d/m/Y',
       xtype: 'datecolumn',
-      flex: 1
+      flex: 1,
+      renderer: function (val, p, rec) {
+        return (!rec.data.canalInternet)?'-':Ext.util.Format.date(val, 'd/m/Y');
+      }
     }, {
       dataIndex: 'plantillaPrecios_nombre',
       text: UI.i18n.field.plantillaprecios,
