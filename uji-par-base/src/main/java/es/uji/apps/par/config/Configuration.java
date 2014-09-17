@@ -449,7 +449,7 @@ public class Configuration
 	}
 
 	public static String getImagenSustitutivaContentType() {
-		return getProperty(IMAGEN_SUSTITUTIVA_CONTENT_TYPE);
+		return getNoObligatoryProperty(IMAGEN_SUSTITUTIVA_CONTENT_TYPE);
 	}
 
 	public static String getPorcentajeIvaDefecto() {
