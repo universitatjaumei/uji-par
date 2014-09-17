@@ -425,11 +425,7 @@ public class Configuration
 	}
 
 	public static String getUrlPublicLimpio() {
-		try {
-			return getProperty(URL_PUBLIC_LIMPIO);
-		} catch (NullPointerException e) {
-			return null;
-		}
+		return getNoObligatoryProperty(URL_PUBLIC_LIMPIO);
 	}
 	
 	public static String getActiveDirectoryIP() {
