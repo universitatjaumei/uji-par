@@ -9,6 +9,7 @@ import es.uji.apps.par.i18n.ResourceProperties;
 import es.uji.apps.par.services.ComprasService;
 import es.uji.apps.par.services.EntradasService;
 import es.uji.apps.par.tpv.TpvInterface;
+import es.uji.apps.par.services.MailService;
 import es.uji.commons.web.template.HTMLTemplate;
 import es.uji.commons.web.template.Template;
 import org.slf4j.Logger;
@@ -32,8 +33,8 @@ public class TpvResource extends BaseResource implements TpvInterface
     @InjectParam
     private ComprasService compras;
 
-   /* @InjectParam
-    private MailInteface mailService;*/
+    @InjectParam
+    private MailService mailService;
 
     @Context
     HttpServletResponse currentResponse;
@@ -148,7 +149,7 @@ public class TpvResource extends BaseResource implements TpvInterface
         String titulo = ResourceProperties.getProperty(new Locale("ca"), "mail.entradas.titulo");
         String texto = ResourceProperties.getProperty(new Locale("ca"), "mail.entradas.texto", urlEntradas);
 
-        //mailService.anyadeEnvio(email, titulo, texto);
+        mailService.anyadeEnvio(email, titulo, texto);
     }
 
 	@Override
