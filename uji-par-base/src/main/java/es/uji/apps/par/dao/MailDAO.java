@@ -24,7 +24,7 @@ public class MailDAO
     private QMailDTO qMailDTO = QMailDTO.mailDTO;
 
     @Transactional
-    public void insertaMail(String de, String para, String titulo, String texto)
+    public void insertaMail(String de, String para, String titulo, String texto, String uuid)
     {
         MailDTO mailDTO = new MailDTO();
 
@@ -33,6 +33,7 @@ public class MailDAO
         mailDTO.setTitulo(titulo);
         mailDTO.setTexto(texto);
         mailDTO.setFechaCreado(new Timestamp(DateUtils.getCurrentDate().getTime()));
+		mailDTO.setUuid(uuid);
         entityManager.persist(mailDTO);
     }
 

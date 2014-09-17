@@ -40,9 +40,9 @@ public class JavaMailService implements MailInterface
         
     }
 
-    public void anyadeEnvio(String to, String titulo, String texto)
+    public void anyadeEnvio(String to, String titulo, String texto, String uuid)
     {
-        mailDao.insertaMail(Configuration.getMailFrom(), to, titulo, texto);
+        mailDao.insertaMail(Configuration.getMailFrom(), to, titulo, texto, uuid);
     }
     
     private Address[] getMailAddressList(String path) throws AddressException

@@ -6,5 +6,5 @@ import javax.mail.MessagingException;
 
 public interface MailInterface {
 	public void enviaPendientes(MailDAO mailDAO, EntradasService entradasService) throws MessagingException;
-	public void anyadeEnvio(String to, String titulo, String texto);
+	public void anyadeEnvio(String to, String titulo, String texto, String uuid);
 }
