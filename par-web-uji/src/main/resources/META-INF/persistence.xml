@@ -11,6 +11,7 @@
 	<class>es.uji.apps.par.db.EnvioDTO</class>
 	<class>es.uji.apps.par.db.EnviosSesionDTO</class>
     <class>es.uji.apps.par.db.EventoDTO</class>
+    <class>es.uji.apps.par.db.EventoMultisesionDTO</class>
     <class>es.uji.apps.par.db.LocalizacionDTO</class>
     <class>es.uji.apps.par.db.MailDTO</class>
     <class>es.uji.apps.par.db.PlantaSalaDTO</class>

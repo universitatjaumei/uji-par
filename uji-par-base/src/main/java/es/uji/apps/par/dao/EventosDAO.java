@@ -12,6 +12,7 @@ import java.util.Set;
 
 import javax.persistence.Query;
 
+import es.uji.apps.par.db.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,12 +27,6 @@ import com.mysema.query.types.path.StringPath;
 
 import es.uji.apps.par.database.DatabaseHelper;
 import es.uji.apps.par.database.DatabaseHelperFactory;
-import es.uji.apps.par.db.EventoDTO;
-import es.uji.apps.par.db.QEventoDTO;
-import es.uji.apps.par.db.QSesionDTO;
-import es.uji.apps.par.db.QTipoEventoDTO;
-import es.uji.apps.par.db.SesionDTO;
-import es.uji.apps.par.db.TipoEventoDTO;
 import es.uji.apps.par.model.Evento;
 import es.uji.apps.par.model.Sesion;
 import es.uji.apps.par.model.TipoEvento;
@@ -41,6 +36,7 @@ import es.uji.apps.par.utils.DateUtils;
 public class EventosDAO extends BaseDAO
 {
     private QEventoDTO qEventoDTO = QEventoDTO.eventoDTO;
+    private QEventoMultisesionDTO qEventoMultisesionDTO = QEventoMultisesionDTO.eventoMultisesionDTO;
     
     private DatabaseHelper databaseHelper;
 

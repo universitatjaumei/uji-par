@@ -1,13 +1,16 @@
 Ext.define('Paranimf.controller.Eventos', {
    extend: 'Ext.app.Controller',
 
-   views: ['EditModalWindow', 'EditBaseForm', 'EditBaseGrid', 'evento.GridEventos', 'evento.FormEventos', 'evento.PanelEventos', 'evento.GridSesiones', 'evento.FormSesiones', 'evento.GridPreciosSesion', 'evento.FormPreciosSesion'],
-   stores: ['Eventos', 'TiposEventosSinPaginar', 'Sesiones', 'PlantillasPrecios', 'PreciosSesion', 'Salas', 'Nacionalidades'],
+   views: ['EditModalWindow', 'EditBaseForm', 'EditBaseGrid', 'evento.GridEventos', 'evento.GridEventosMultisesion', 'evento.FormEventos', 'evento.PanelEventos', 'evento.GridSesiones', 'evento.FormSesiones', 'evento.GridPreciosSesion', 'evento.FormPreciosSesion'],
+   stores: ['Eventos', 'EventosMultisesion', 'TiposEventosSinPaginar', 'Sesiones', 'PlantillasPrecios', 'PreciosSesion', 'Salas', 'Nacionalidades'],
    models: ['Evento', 'Sesion', 'PrecioSesion', 'Sala', 'HoraMinuto'],
 
    refs: [{
       ref: 'gridEventos',
       selector: 'gridEventos'
+   },{
+      ref: 'gridEventosMultisesion',
+      selector: 'gridEventosMultisesion'
    }, {
       ref: 'formEventos',
       selector: 'formEventos'
@@ -23,6 +26,15 @@ Ext.define('Paranimf.controller.Eventos', {
    }, {
       ref: 'botonDeleteImagen',
       selector: 'formEventos button[action=deleteImage]'
+   }, {
+      ref: 'checkMultisesion',
+      selector: 'formEventos checkboxfield[name=multisesion]'
+   }, {
+      ref: 'icaaMultisesionGridFieldset',
+      selector: 'formEventos fieldset[name=icaaGrid]'
+   }, {
+      ref: 'icaaFieldset',
+      selector: 'formEventos fieldset[name=icaa]'
    }, {
       ref: 'gridPreciosSesion',
       selector: 'gridPreciosSesion'
@@ -108,6 +120,10 @@ Ext.define('Paranimf.controller.Eventos', {
          
          'formEventos': {
         	   beforerender: this.showImagenIfExists
+         },
+
+         'formEventos checkboxfield[name=multisesion]': {
+            change: this.showMultisesion
          },
          
          'gridEventos': {
@@ -367,6 +383,19 @@ Ext.define('Paranimf.controller.Eventos', {
       }
    },
 
+   showMultisesion: function(comp, newValue, oldValue, eOpts ) {
+      if (newValue)
+      {
+         this.getIcaaFieldset().hide();
+         this.getIcaaMultisesionGridFieldset().show();
+      }
+      else
+      {
+         this.getIcaaMultisesionGridFieldset().hide();
+         this.getIcaaFieldset().show();
+      }
+   },
+
    deleteImage: function(button, event, opts) {
       if (confirm(UI.i18n.message.sureDeleteImage)) {
          var record = button.up('form').getRecord();
@@ -395,10 +424,12 @@ Ext.define('Paranimf.controller.Eventos', {
 
    addEvento: function(button, event, opts) {
       this.getGridEventos().showAddEventoWindow();
+      this.showMultisesion(null, this.getCheckMultisesion().getValue());
    },
 
    editEvento: function(button, event, opts) {
       this.getGridEventos().edit('formEventos', undefined, undefined, 0.8);
+      this.showMultisesion(null, this.getCheckMultisesion().getValue());
    },
 
    removeEvento: function(button, event, opts) {

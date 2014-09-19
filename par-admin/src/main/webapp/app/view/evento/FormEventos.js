@@ -158,7 +158,36 @@ Ext
 							},
 
 							{
+						    	fieldLabel: 'Es multisesión?',
+						    	name: 'multisesion',
+						    	xtype: 'checkboxfield',
+						    	checked: false,
+						        allowBlank: true
+						    },
+
+						    {
 								xtype : 'fieldset',
+								name: 'icaaGrid',
+								flex : 1,
+								title : UI.i18n.field.icaa,
+								defaults : {
+									xtype : 'textfield',
+									anchor : '100%',
+									labelWidth : 120
+								},
+								items : [
+								    {
+									    flex: 1,
+									    //region: 'north',
+									    autoScroll: true,
+									    xtype: 'gridEventosMultisesion'
+									}
+								]
+							},
+
+							{
+								xtype : 'fieldset',
+								name: 'icaa',
 								flex : 1,
 								title : UI.i18n.field.icaa,
 								defaults : {
