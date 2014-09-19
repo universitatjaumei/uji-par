@@ -1,13 +1,17 @@
 package es.uji.apps.par.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.math.BigDecimal;
 import java.util.Calendar;
 
 public class ReportUtils {
+	private static final Logger log = LoggerFactory.getLogger(ReportUtils.class);
 	
 	public static String formatEuros(BigDecimal importe)
     {
-        return importe.setScale(2).toString().replace('.', ',');
+        return importe.setScale(2, BigDecimal.ROUND_HALF_UP).toString().replace('.', ',');
     }
 	
 	public static String getMesValenciaConDe(Calendar fecha)
