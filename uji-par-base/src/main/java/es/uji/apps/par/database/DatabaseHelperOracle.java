@@ -65,10 +65,13 @@ public class DatabaseHelperOracle implements DatabaseHelper
 	public int booleanToNumber(Object valor) {
 		if (valor == null)
 			return 0;
-		if (valor instanceof Boolean)
+		if (valor instanceof Boolean) {
 			if (((Boolean) valor))
 				return 1;
-		
+			else
+				return 0;
+		}
+
 		return (Integer) valor;
 	}
 	
