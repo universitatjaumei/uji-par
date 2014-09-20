@@ -17,6 +17,7 @@ public class CommonExceptionMapper implements ExceptionMapper<Exception>
     @Override
     public Response toResponse(Exception exception)
     {
+		log.error("CommonExceptionMapper", exception);
     	String message = "";
 		if (exception instanceof GeneralPARException) {
 			message = ((exception.getMessage() != null && !exception.getMessage().equals("")) ? exception.getMessage()
