@@ -10,7 +10,8 @@ UI =
             "reservar": "Realitzar reserva",
             "anularPrevia": "Anul·lar compra prèvia",
             "datosFichero": "Dades necessàries per a generar el fitxer per a l'ICAA",
-            "incidencias": "Selecció de la incidència ocorreguda en la sessió seleccionada"
+            "incidencias": "Selecció de la incidència ocorreguda en la sessió seleccionada",
+            "peliculas": "Selecció de la pel·lícula a afegir a la multisessió"
         },
         "message": {
         	"event": "És obligatori seleccionar un event",
@@ -71,6 +72,7 @@ UI =
             "mon": "Dilluns"
         },
         "error": {
+            "peliculaJaAfegida": "Pel·lícula ja afegida",
             "element": "Error esborrant l'element",
             "calendar": "Error carregant el calendari",
             "form": "Formulari no vàlid",
@@ -242,15 +244,18 @@ UI =
             "comprasReservasHechas": "Compres i reserves realitzades",
             "sesionesICAA": "Sessions realitzades entre les dates seleccionades",
             "tarifas": "Gestió de les tarifes de preus",
-            "informeSessions": "Informes de sessió"
+            "informeSessions": "Informes de sessió",
+            "multisesion": "Pel·lícules de la multisessió"
         },
         
         "field": {
+            "multisesion": "És multisessió?",
         	"codigo":"Codi",
         	"name":"Nombre",
 			"name_va": "Nom",
 			"title":"Título",
 			"title_va":"Títol",
+                  "titolNeutreLabel": "Títol",
 			"description":"Descripción",
 			"description_va":"Descripció",
 			"company": "Compañía",
@@ -316,7 +321,7 @@ UI =
 			"imagenInsertada": "Veure la imatge inserida",
 			"uploadImagen": "Inserir imatge",
             "retenciones": "Retencions",
-            "icaa": "Dades per a enviament ICAA (únicament per a cinema)",
+            "icaa": "Dades de la pel·lícula (únicament per a cinema)",
             "porcentajeIVA": "Percentatge IVA",
             "expediente": "Num expedient calificació",
             "codigoDistribuidora": "Codi distribuidora",

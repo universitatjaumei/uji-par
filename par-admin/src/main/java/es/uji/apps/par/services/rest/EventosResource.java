@@ -5,6 +5,7 @@ import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.management.Query;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -183,7 +184,9 @@ public class EventosResource
             @FormDataParam("nacionalidad") String nacionalidad,
             @FormDataParam("vo") String vo,
             @FormDataParam("metraje") String metraje,
-            @FormDataParam("subtitulos") String subtitulos) throws GeneralPARException
+            @FormDataParam("subtitulos") String subtitulos,
+			@FormDataParam("multisesion") String checkMultisesion,
+			@FormDataParam("jsonEventosMultisesion") String jsonEventosMultisesion) throws GeneralPARException
     {
         String nombreArchivo = (dataBinaryDetail != null) ? dataBinaryDetail.getFileName() : "";
         String mediaType = (imagenBodyPart != null) ? imagenBodyPart.getMediaType().toString() : "";
@@ -193,6 +196,10 @@ public class EventosResource
                 interpretesVa, duracionVa, premiosVa, caracteristicasVa, comentariosVa, dataBinary,
                 nombreArchivo, mediaType, tipoEventoId, porcentajeIVA, retencionSGAE, ivaSGAE, asientosNumerados, 
                 expediente, codigoDistribuidora, nombreDistribuidora, nacionalidad, vo, metraje, subtitulos);
+
+		if (checkMultisesion != null && checkMultisesion.equalsIgnoreCase("on"))
+			evento.setEventosMultisesion(jsonEventosMultisesion);
+
         Evento newEvento = eventosService.addEvento(evento);
 
         // TODO -> crear URL
@@ -247,7 +254,9 @@ public class EventosResource
             @FormDataParam("nacionalidad") String nacionalidad,
             @FormDataParam("vo") String vo,
             @FormDataParam("metraje") String metraje,
-            @FormDataParam("subtitulos") String subtitulos) throws GeneralPARException
+            @FormDataParam("subtitulos") String subtitulos,
+			@FormDataParam("multisesion") String checkMultisesion,
+			@FormDataParam("jsonEventosMultisesion") String jsonEventosMultisesion) throws GeneralPARException
     {
         AuthChecker.canWrite(currentRequest);
         
@@ -259,7 +268,10 @@ public class EventosResource
                 interpretesVa, duracionVa, premiosVa, caracteristicasVa, comentariosVa, dataBinary,
                 nombreArchivo, mediaType, tipoEventoId, porcentajeIVA, retencionSGAE, ivaSGAE, asientosNumerados, 
                 expediente, codigoDistribuidora, nombreDistribuidora, nacionalidad, vo, metraje, subtitulos);
-        
+
+		if (checkMultisesion != null && checkMultisesion.equalsIgnoreCase("on"))
+			evento.setEventosMultisesion(jsonEventosMultisesion);
+
         evento.setId(id);
         eventosService.updateEvento(evento);
 
@@ -326,4 +338,20 @@ public class EventosResource
         	localizacionesService.getLocalizacionesSesion(sesionId)
         ).build();
     }
+
+	@GET
+	@Path("peliculas")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getPeliculas()
+	{
+		return Response.ok().entity(eventosService.getPeliculas()).build();
+	}
+
+	@GET
+	@Path("{id}/peliculas")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getPeliculasEvento(@PathParam("id") long eventoId)
+	{
+		return Response.ok().entity(eventosService.getPeliculas(eventoId)).build();
+	}
 }

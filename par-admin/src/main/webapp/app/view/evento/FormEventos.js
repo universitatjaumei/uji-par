@@ -158,30 +158,33 @@ Ext
 							},
 
 							{
-						    	fieldLabel: 'Es multisesión?',
+								labelWidth: 120,
+						    	fieldLabel: UI.i18n.field.multisesion,
 						    	name: 'multisesion',
-						    	xtype: 'checkboxfield',
+						    	xtype: 'checkbox',
 						    	checked: false,
-						        allowBlank: true
+						        allowBlank: true,
+						        hidden: (allowMultisession != undefined)?!allowMultisession:false
 						    },
 
 						    {
 								xtype : 'fieldset',
 								name: 'icaaGrid',
 								flex : 1,
-								title : UI.i18n.field.icaa,
+								padding: '5px 5px 5px 5px',
 								defaults : {
-									xtype : 'textfield',
-									anchor : '100%',
-									labelWidth : 120
+									anchor : '100%'
 								},
 								items : [
 								    {
 									    flex: 1,
-									    //region: 'north',
 									    autoScroll: true,
 									    xtype: 'gridEventosMultisesion'
+									}, {
+										xtype: 'hiddenfield',
+										name: 'jsonEventosMultisesion'
 									}
+
 								]
 							},
 

@@ -82,10 +82,12 @@ public class Configuration
 	private static final String PORCENTAJE_IVA_DEFECTO = "uji.par.porcentajeIvaDefecto";
     private static final String TIPOS_INFORME = "uji.reports.tipos";
     public static final String HORAS_VENTA_ANTICIPADA = "uji.reports.horaVentaAnticipada";
+	private static final String ALLOW_MULTISESION = "uji.par.allowMultisesion";
 
 	private static final Logger log = LoggerFactory.getLogger(Configuration.class);
 
-    private static String fileName = "/etc/uji/par/app.properties";
+
+	private static String fileName = "/etc/uji/par/app.properties";
     private Properties properties;
     private static Configuration instance;
 
@@ -142,7 +144,8 @@ public class Configuration
             throw new RuntimeException(e);
         }
 		catch (NullPointerException e) {
-			log.error("Propiedad " + propertyName + " nula");
+			//mejor info, ya que puede ser que mire properties no obligatorias, y así no envia mail
+			log.info("Propiedad " + propertyName + " nula");
 			throw e;
 		}
         
@@ -470,5 +473,13 @@ public class Configuration
 			return true;
 
 			return false;
+	}
+
+	public static boolean getAllowMultisesion() {
+		String allowMultisesion = getNoObligatoryProperty(ALLOW_MULTISESION);
+
+		if (allowMultisesion != null && allowMultisesion.equalsIgnoreCase("true"))
+			return true;
+		return false;
 	}
 }

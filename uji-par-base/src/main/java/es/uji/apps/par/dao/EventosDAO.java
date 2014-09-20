@@ -1,6 +1,7 @@
 package es.uji.apps.par.dao;
 
 import java.lang.reflect.Type;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -12,6 +13,8 @@ import java.util.Set;
 
 import javax.persistence.Query;
 
+import com.mysema.query.jpa.JPASubQuery;
+import com.mysema.query.jpa.sql.JPASQLQuery;
 import es.uji.apps.par.db.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -131,7 +134,8 @@ public class EventosDAO extends BaseDAO
         		" e.PREMIOS_VA, e.TITULO_ES as tituloes, e.TITULO_VA as titulova, e.IMAGEN_SRC as imagensrc, e.IMAGEN_CONTENT_TYPE, e.ID, e.ASIENTOS_NUMERADOS as asientosnumerados, " +
         		" e.RETENCION_SGAE as retencionsgae, e.IVA_SGAE as ivasgae, e.PORCENTAJE_IVA as porcentajeiva, " +
         		" e.RSS_ID as rssid, (select min(s.FECHA_CELEBRACION) from PAR_SESIONES s where e.id=s.EVENTO_ID) as fechaPrimeraSesion, " +
-        		" e.EXPEDIENTE, e.COD_DISTRI, e.NOM_DISTRI, e.NACIONALIDAD, e.VO, e.METRAJE, e.SUBTITULOS, t.exportar_icaa " +
+        		" e.EXPEDIENTE, e.COD_DISTRI, e.NOM_DISTRI, e.NACIONALIDAD, e.VO, e.METRAJE, e.SUBTITULOS, t.exportar_icaa, " +
+				" (select count(*) from par_eventos_multisesion pem where pem.evento_id = e.id) " +
         		" from PAR_EVENTOS e left outer join PAR_SESIONES s on e.id=s.EVENTO_ID inner join PAR_TIPOS_EVENTO t on e.TIPO_EVENTO_ID=t.id " +
         		(activos?getWhereActivos():getWhereTodos()) +
         		" order by ";
@@ -224,6 +228,11 @@ public class EventosDAO extends BaseDAO
         evento.setMetraje((String) array[31]);
         evento.setSubtitulos((String) array[32]);
 
+		if (array.length >= 35) {
+			BigDecimal numeroEventosHijos = databaseHelper.castBigDecimal(array[34]);
+			evento.setMultisesion((numeroEventosHijos.compareTo(BigDecimal.ZERO)==0)?"":"on");
+		}
+
         return evento;
     }    
     
@@ -258,18 +267,6 @@ public class EventosDAO extends BaseDAO
 		}
 		return listadoEventos;
 	}
-    
-    @Transactional
-    public List<EventoDTO> getEventoDTO(Long id)
-    {
-        QTipoEventoDTO qTipoEventoDTO = QTipoEventoDTO.tipoEventoDTO;
-        JPAQuery query = new JPAQuery(entityManager);
-
-        return query
-                .from(qEventoDTO, qTipoEventoDTO)
-                .where(qEventoDTO.parTiposEvento.id.eq(qTipoEventoDTO.id).and(qEventoDTO.id.eq(id)))
-                .list(qEventoDTO);
-    }
 
     @Transactional
     public long removeEvento(long id)
@@ -287,6 +284,7 @@ public class EventosDAO extends BaseDAO
         entityManager.persist(eventoDTO);
 
         evento.setId(eventoDTO.getId());
+		updateEventosMultisesion(eventoDTO.getId(), evento.getEventosMultisesion());
         return evento;
     }
 
@@ -353,58 +351,69 @@ public class EventosDAO extends BaseDAO
     @Transactional
     public Evento updateEvento(Evento evento)
     {
-        List<EventoDTO> listaEventos = getEventoDTO(evento.getId());
+		EventoDTO eventoDTO = getEventoById(evento.getId());
 
-        if (listaEventos.size() > 0)
-        {
-            EventoDTO eventoDTO = listaEventos.get(0);
-            
-            eventoDTO.setRssId(evento.getRssId());
-            eventoDTO.setTituloEs(evento.getTituloEs());
-            eventoDTO.setTituloVa(evento.getTituloVa());
-            eventoDTO.setDescripcionEs(evento.getDescripcionEs());
-            eventoDTO.setDescripcionVa(evento.getDescripcionVa());
-            eventoDTO.setComentariosEs(evento.getComentariosEs());
-            eventoDTO.setComentariosVa(evento.getComentariosVa());
-            eventoDTO.setInterpretesEs(evento.getInterpretesEs());
-            eventoDTO.setInterpretesVa(evento.getInterpretesVa());
-            eventoDTO.setDuracionEs(evento.getDuracionEs());
-            eventoDTO.setDuracionVa(evento.getDuracionVa());
-            eventoDTO.setPremiosEs(evento.getPremiosEs());
-            eventoDTO.setPremiosVa(evento.getPremiosVa());
-            eventoDTO.setCaracteristicasEs(evento.getCaracteristicasEs());
-            eventoDTO.setCaracteristicasVa(evento.getCaracteristicasVa());
-            eventoDTO.setComentariosEs(evento.getComentariosEs());
-            eventoDTO.setComentariosVa(evento.getComentariosVa());
-            
-            eventoDTO.setRetencionSgae(evento.getRetencionSGAE());
-            eventoDTO.setIvaSgae(evento.getIvaSGAE());
-            eventoDTO.setPorcentajeIva(evento.getPorcentajeIVA());
-            
-            eventoDTO.setAsientosNumerados(evento.getAsientosNumerados());
-            eventoDTO.setExpediente(evento.getExpediente());
-            eventoDTO.setCodigoDistribuidora(evento.getCodigoDistribuidora());
-            eventoDTO.setNombreDistribuidora(evento.getNombreDistribuidora());
-            eventoDTO.setNacionalidad(evento.getNacionalidad());
-            eventoDTO.setVo(evento.getVo());
-            eventoDTO.setMetraje(evento.getMetraje());
-            eventoDTO.setSubtitulos(evento.getSubtitulos());
-            
-            eventoDTO.setParTiposEvento(TipoEvento.tipoEventoToTipoEventoDTO(evento.getParTiposEvento()));
-            
-            if (evento.getImagenSrc() != null && !evento.getImagenSrc().equals("")) {
-            	eventoDTO.setImagen(evento.getImagen());
-            	eventoDTO.setImagenSrc(evento.getImagenSrc());
-            	eventoDTO.setImagenContentType(evento.getImagenContentType());
-            }
+		eventoDTO.setRssId(evento.getRssId());
+		eventoDTO.setTituloEs(evento.getTituloEs());
+		eventoDTO.setTituloVa(evento.getTituloVa());
+		eventoDTO.setDescripcionEs(evento.getDescripcionEs());
+		eventoDTO.setDescripcionVa(evento.getDescripcionVa());
+		eventoDTO.setComentariosEs(evento.getComentariosEs());
+		eventoDTO.setComentariosVa(evento.getComentariosVa());
+		eventoDTO.setInterpretesEs(evento.getInterpretesEs());
+		eventoDTO.setInterpretesVa(evento.getInterpretesVa());
+		eventoDTO.setDuracionEs(evento.getDuracionEs());
+		eventoDTO.setDuracionVa(evento.getDuracionVa());
+		eventoDTO.setPremiosEs(evento.getPremiosEs());
+		eventoDTO.setPremiosVa(evento.getPremiosVa());
+		eventoDTO.setCaracteristicasEs(evento.getCaracteristicasEs());
+		eventoDTO.setCaracteristicasVa(evento.getCaracteristicasVa());
+		eventoDTO.setComentariosEs(evento.getComentariosEs());
+		eventoDTO.setComentariosVa(evento.getComentariosVa());
 
-            entityManager.persist(eventoDTO);
-        }
+		eventoDTO.setRetencionSgae(evento.getRetencionSGAE());
+		eventoDTO.setIvaSgae(evento.getIvaSGAE());
+		eventoDTO.setPorcentajeIva(evento.getPorcentajeIVA());
 
+		eventoDTO.setAsientosNumerados(evento.getAsientosNumerados());
+		eventoDTO.setExpediente(evento.getExpediente());
+		eventoDTO.setCodigoDistribuidora(evento.getCodigoDistribuidora());
+		eventoDTO.setNombreDistribuidora(evento.getNombreDistribuidora());
+		eventoDTO.setNacionalidad(evento.getNacionalidad());
+		eventoDTO.setVo(evento.getVo());
+		eventoDTO.setMetraje(evento.getMetraje());
+		eventoDTO.setSubtitulos(evento.getSubtitulos());
+
+		eventoDTO.setParTiposEvento(TipoEvento.tipoEventoToTipoEventoDTO(evento.getParTiposEvento()));
+
+		if (evento.getImagenSrc() != null && !evento.getImagenSrc().equals("")) {
+			eventoDTO.setImagen(evento.getImagen());
+			eventoDTO.setImagenSrc(evento.getImagenSrc());
+			eventoDTO.setImagenContentType(evento.getImagenContentType());
+		}
+
+		entityManager.persist(eventoDTO);
+
+		updateEventosMultisesion(evento.getId(), evento.getEventosMultisesion());
         return evento;
     }
-    
-    @Transactional
+
+	@Transactional
+	private void updateEventosMultisesion(long idEvento, List<Evento> eventosMultisesion) {
+		JPADeleteClause del = new JPADeleteClause(entityManager, qEventoMultisesionDTO);
+		del.where(qEventoMultisesionDTO.parEvento.id.eq(idEvento)).execute();
+
+		if (eventosMultisesion != null) {
+			for (Evento eventoHijo: eventosMultisesion) {
+				EventoMultisesionDTO eventoMultisesionDTO = new EventoMultisesionDTO();
+				eventoMultisesionDTO.setParEvento(new EventoDTO(idEvento));
+				eventoMultisesionDTO.setParEventoHijo(new EventoDTO(eventoHijo.getId()));
+				entityManager.persist(eventoMultisesionDTO);
+			}
+		}
+	}
+
+	@Transactional
     public EventoDTO updateEventoDTO(EventoDTO eventoDTO)
     {
        return entityManager.merge(eventoDTO);
@@ -466,5 +475,25 @@ public class EventosDAO extends BaseDAO
 			qSesionDTO.canalInternet.eq(true).and(
 			qSesionDTO.fechaInicioVentaOnline.before(currentTime).and(
 			qSesionDTO.fechaFinVentaOnline.after(currentTime)))).list(qEventoDTO);
+	}
+
+	@Transactional
+	public List<EventoDTO> getPeliculas() {
+		JPAQuery query = new JPAQuery(entityManager);
+		QTipoEventoDTO tiposICAA = new QTipoEventoDTO("tiposICAA");
+
+		return query.from(qEventoDTO).where(
+				qEventoDTO.parTiposEvento.id.in(
+						new JPASubQuery().from(tiposICAA).where(tiposICAA.exportarICAA.eq(true)).list(tiposICAA.id)
+				)
+		).orderBy(qEventoDTO.tituloEs.asc()).orderBy(qEventoDTO.tituloVa.asc()).list(qEventoDTO);
+	}
+
+	@Transactional
+	public List<EventoDTO> getPeliculas(long eventoId) {
+		JPAQuery query = new JPAQuery(entityManager);
+
+		return query.from(qEventoMultisesionDTO).where(qEventoMultisesionDTO.parEvento.id.eq(eventoId)).orderBy
+				(qEventoMultisesionDTO.id.asc()).list(qEventoMultisesionDTO.parEventoHijo);
 	}
 }

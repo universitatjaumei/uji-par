@@ -1,13 +1,17 @@
 package es.uji.apps.par.model;
 
+import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,13 +61,19 @@ public class Evento
     private String vo;
     private String metraje;  
     private String subtitulos;
+	private String multisesion; //representa al checkbox
+	private List<Evento> eventosMultisesion;
 
     public Evento()
     {
         sesiones = new ArrayList<Sesion>();
     }
-    
-    public static Evento eventoDTOtoEvento(EventoDTO eventoDTO) {
+
+	public Evento(Integer idEvento) {
+		this.id = idEvento;
+	}
+
+	public static Evento eventoDTOtoEvento(EventoDTO eventoDTO) {
     	Evento evento = new Evento();
     	
     	evento.setId(eventoDTO.getId());
@@ -700,6 +710,29 @@ public class Evento
         if (formatoProyeccion.length() != 1)
         	throw new RegistroSerializaException(GeneralPARException.DIGITOS_FORMATO_PROYECCION_CODE);
 	}
-    
-    
+
+
+	public List<Evento> getEventosMultisesion() {
+		return eventosMultisesion;
+	}
+
+	public void setEventosMultisesion(String jsonEventosMultisesion) {
+		Gson gson = new Gson();
+		Type collectionType = new TypeToken<List<Integer>>(){}.getType();
+		List<Integer> list = gson.fromJson(jsonEventosMultisesion, collectionType);
+		List<Evento> eventos = new ArrayList<Evento>();
+		for (Integer idEvento: list) {
+			Evento e = new Evento(idEvento);
+			eventos.add(e);
+		}
+		this.eventosMultisesion = eventos;
+	}
+
+	public String getMultisesion() {
+		return multisesion;
+	}
+
+	public void setMultisesion(String multisesion) {
+		this.multisesion = multisesion;
+	}
 }

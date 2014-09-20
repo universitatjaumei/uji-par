@@ -15,6 +15,10 @@ public class EventoMultisesionDTO {
     @JoinColumn(name="EVENTO_ID")
     private EventoDTO parEvento;
 
+	@ManyToOne
+	@JoinColumn(name="EVENTO_HIJO_ID")
+	private EventoDTO parEventoHijo;
+
     public long getId() {
         return id;
     }
@@ -30,4 +34,12 @@ public class EventoMultisesionDTO {
     public void setParEvento(EventoDTO parEvento) {
         this.parEvento = parEvento;
     }
+
+	public EventoDTO getParEventoHijo() {
+		return parEventoHijo;
+	}
+
+	public void setParEventoHijo(EventoDTO parEventoHijo) {
+		this.parEventoHijo = parEventoHijo;
+	}
 }

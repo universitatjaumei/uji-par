@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import es.uji.apps.par.db.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,22 +22,6 @@ import com.mysema.query.types.expr.BooleanExpression;
 
 import es.uji.apps.par.IncidenciaNotFoundException;
 import es.uji.apps.par.SesionSinFormatoIdiomaIcaaException;
-import es.uji.apps.par.db.EventoDTO;
-import es.uji.apps.par.db.PreciosSesionDTO;
-import es.uji.apps.par.db.QButacaDTO;
-import es.uji.apps.par.db.QCompraDTO;
-import es.uji.apps.par.db.QEnvioDTO;
-import es.uji.apps.par.db.QEnviosSesionDTO;
-import es.uji.apps.par.db.QEventoDTO;
-import es.uji.apps.par.db.QPreciosPlantillaDTO;
-import es.uji.apps.par.db.QPreciosSesionDTO;
-import es.uji.apps.par.db.QSalaDTO;
-import es.uji.apps.par.db.QSesionDTO;
-import es.uji.apps.par.db.QSesionFormatoIdiomaICAADTO;
-import es.uji.apps.par.db.QTarifaDTO;
-import es.uji.apps.par.db.SesionDTO;
-import es.uji.apps.par.db.SesionFormatoIdiomaICAADTO;
-import es.uji.apps.par.db.TarifaDTO;
 import es.uji.apps.par.ficheros.registros.RegistroPelicula;
 import es.uji.apps.par.ficheros.registros.RegistroSesion;
 import es.uji.apps.par.ficheros.registros.RegistroSesionPelicula;
@@ -293,6 +278,7 @@ public class SesionesDAO extends BaseDAO
         QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
         QSalaDTO qSalaDTO = QSalaDTO.salaDTO;
         QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
+		QEventoMultisesionDTO eventoMultisesionDTO = new QEventoMultisesionDTO("eventoMultisesionDTO");
 
         List<Long> idsSesiones = Sesion.getIdsSesiones(sesiones);
         JPAQuery query = new JPAQuery(entityManager);
@@ -305,7 +291,9 @@ public class SesionesDAO extends BaseDAO
             .where(qSesionDTO.id.in(idsSesiones))
             .distinct()
             .groupBy(qSesionDTO.id, qSalaDTO.codigo, qSesionDTO.fechaCelebracion, qSesionDTO.incidenciaId)
-            .list(qSesionDTO.id, qSalaDTO.codigo, qSesionDTO.fechaCelebracion, qButacaDTO.precio.sum(), qSesionDTO.incidenciaId);
+            .list(qSesionDTO.id, qSalaDTO.codigo, qSesionDTO.fechaCelebracion, qButacaDTO.precio.sum(), qSesionDTO.incidenciaId,
+					new JPASubQuery().from(eventoMultisesionDTO).where(eventoMultisesionDTO.parEvento.id.eq(qSesionDTO.parEvento
+							.id)).count());
         
         List<RegistroSesion> registros = new ArrayList<RegistroSesion>();
         
@@ -318,13 +306,14 @@ public class SesionesDAO extends BaseDAO
 				String codigoSala = (String) row.get(1, String.class);
 				Date fechaCelebracion = row.get(2, Date.class);
 				BigDecimal recaudacion = row.get(3, BigDecimal.class);
+				Long peliculasMultisesion = row.get(5, Long.class);
 				Long espectadores = getEspectadores(idSesion);
 
 				RegistroSesion registro = new RegistroSesion();
 
 				registro.setCodigoSala(codigoSala);
 				registro.setEspectadores(espectadores.intValue());
-				registro.setPeliculas(1);
+				registro.setPeliculas((peliculasMultisesion == 0L)?1:peliculasMultisesion.intValue());
 				registro.setFecha(fechaCelebracion);
 				registro.setHora(HOUR_FORMAT.format(fechaCelebracion));
 				registro.setIncidencia(TipoIncidencia.intToTipoIncidencia(idIncidencia));
@@ -355,6 +344,7 @@ public class SesionesDAO extends BaseDAO
     public List<RegistroSesionPelicula> getRegistrosSesionesPeliculas(List<Sesion> sesiones) throws SesionSinFormatoIdiomaIcaaException, IncidenciaNotFoundException {
         QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
         QEventoDTO qEventoDTO = QEventoDTO.eventoDTO;
+		QEventoMultisesionDTO qEventoMultisesionDTO = new QEventoMultisesionDTO("qEventoMultisesionDTO");
         
         List<Long> idsSesiones = Sesion.getIdsSesiones(sesiones);
         
@@ -383,13 +373,24 @@ public class SesionesDAO extends BaseDAO
 					throw new SesionSinFormatoIdiomaIcaaException(sesionDTO.getParEvento().getId(),
 							sesionDTO.getFormato(), sesionDTO.getVersionLinguistica());
 				}
-				RegistroSesionPelicula registro = new RegistroSesionPelicula();
-				registro.setCodigoSala(sesionDTO.getParSala().getCodigo());
-				registro.setCodigoPelicula((int) sesionDTO.getParEvento().getId());
-				registro.setFecha(sesionDTO.getFechaCelebracion());
-				registro.setHora(HOUR_FORMAT.format(sesionDTO.getFechaCelebracion()));
-
-				registros.add(registro);
+				List<EventoDTO> eventosMultisesion = eventosDAO.getPeliculas(sesionDTO.getParEvento().getId());
+				if (eventosMultisesion.size() > 0) {
+					for (EventoDTO eventoMultisesion: eventosMultisesion) {
+						RegistroSesionPelicula registro = new RegistroSesionPelicula();
+						registro.setCodigoSala(sesionDTO.getParSala().getCodigo());
+						registro.setCodigoPelicula((int) eventoMultisesion.getId());
+						registro.setFecha(sesionDTO.getFechaCelebracion());
+						registro.setHora(HOUR_FORMAT.format(sesionDTO.getFechaCelebracion()));
+						registros.add(registro);
+					}
+				} else {
+					RegistroSesionPelicula registro = new RegistroSesionPelicula();
+					registro.setCodigoSala(sesionDTO.getParSala().getCodigo());
+					registro.setCodigoPelicula((int) sesionDTO.getParEvento().getId());
+					registro.setFecha(sesionDTO.getFechaCelebracion());
+					registro.setHora(HOUR_FORMAT.format(sesionDTO.getFechaCelebracion()));
+					registros.add(registro);
+				}
 			}
         }
         
@@ -430,19 +431,36 @@ public class SesionesDAO extends BaseDAO
             Long idEvento = row.get(1, Long.class);
 
 			if (!isIncidenciaCancelacionEvento(sesion.getIncidenciaId())) {
-				RegistroPelicula registro = new RegistroPelicula();
-				registro.setCodigoSala(sesion.getParSala().getCodigo());
-				registro.setCodigoPelicula(idEvento.intValue());
-				registro.setCodigoExpediente(sesion.getParEvento().getExpediente());
-				registro.setTitulo(Utils.stripAccents(sesion.getParEvento().getTituloEs()));
-				registro.setCodigoDistribuidora(sesion.getParEvento().getCodigoDistribuidora());
-				registro.setNombreDistribuidora(Utils.stripAccents(sesion.getParEvento().getNombreDistribuidora()));
-				registro.setVersionOriginal(sesion.getParEvento().getVo());
-				registro.setVersionLinguistica(sesion.getVersionLinguistica());
-				registro.setIdiomaSubtitulos(sesion.getParEvento().getSubtitulos());
-				registro.setFormatoProyeccion(sesion.getFormato());
-
-				registros.add(registro);
+				List<EventoDTO> peliculasMultisesion = eventosDAO.getPeliculas(idEvento);
+				if (peliculasMultisesion.size() > 0) {
+					for (EventoDTO peliculaMultisesion: peliculasMultisesion) {
+						RegistroPelicula registro = new RegistroPelicula();
+						registro.setCodigoSala(sesion.getParSala().getCodigo());
+						registro.setCodigoPelicula((int) peliculaMultisesion.getId());
+						registro.setCodigoExpediente(peliculaMultisesion.getExpediente());
+						registro.setTitulo(Utils.stripAccents(peliculaMultisesion.getTituloEs()));
+						registro.setCodigoDistribuidora(peliculaMultisesion.getCodigoDistribuidora());
+						registro.setNombreDistribuidora(Utils.stripAccents(peliculaMultisesion.getNombreDistribuidora()));
+						registro.setVersionOriginal(peliculaMultisesion.getVo());
+						registro.setVersionLinguistica(sesion.getVersionLinguistica());
+						registro.setIdiomaSubtitulos(peliculaMultisesion.getSubtitulos());
+						registro.setFormatoProyeccion(sesion.getFormato());
+						registros.add(registro);
+					}
+				} else {
+					RegistroPelicula registro = new RegistroPelicula();
+					registro.setCodigoSala(sesion.getParSala().getCodigo());
+					registro.setCodigoPelicula(idEvento.intValue());
+					registro.setCodigoExpediente(sesion.getParEvento().getExpediente());
+					registro.setTitulo(Utils.stripAccents(sesion.getParEvento().getTituloEs()));
+					registro.setCodigoDistribuidora(sesion.getParEvento().getCodigoDistribuidora());
+					registro.setNombreDistribuidora(Utils.stripAccents(sesion.getParEvento().getNombreDistribuidora()));
+					registro.setVersionOriginal(sesion.getParEvento().getVo());
+					registro.setVersionLinguistica(sesion.getVersionLinguistica());
+					registro.setIdiomaSubtitulos(sesion.getParEvento().getSubtitulos());
+					registro.setFormatoProyeccion(sesion.getFormato());
+					registros.add(registro);
+				}
 			}
         }
         

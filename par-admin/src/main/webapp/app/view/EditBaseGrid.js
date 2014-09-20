@@ -84,6 +84,19 @@ Ext.define('Paranimf.view.EditBaseGrid', {
       return jsonFilas;
    },
 
+   onlyIdsToJSON: function() {
+      var jsonFilas = "";
+
+      for (var i=0;i<this.store.getCount();i++) {
+         if (jsonFilas != "")
+            jsonFilas += ",";
+         jsonFilas += Ext.JSON.encode(this.store.getRange()[i].getData().id);
+      }
+      jsonFilas = "[" + jsonFilas + "]";
+
+      return jsonFilas;
+   },
+
    edit: function(xtype, arrayComboClearFilter, percentageWidth, percentageHeight) {
       var selectedRows = this.getSelectionModel().getSelection();
       if (selectedRows.length == 0)
@@ -205,5 +218,14 @@ Ext.define('Paranimf.view.EditBaseGrid', {
    deseleccionar: function() {
       if (this.hasRowSelected())
          this.getSelectionModel().deselectAll();
-   }
+   },
+
+   containsId: function(id) {
+        for (var i=0;i<this.store.count();i++) {
+            var record = this.store.getAt(i);
+            if (record.data.id == id)
+                return true;
+        }
+        return false;
+    }
 });

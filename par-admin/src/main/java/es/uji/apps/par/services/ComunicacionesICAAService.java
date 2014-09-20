@@ -7,6 +7,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import es.uji.apps.par.dao.EventosDAO;
+import es.uji.apps.par.db.EventoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +43,9 @@ public class ComunicacionesICAAService {
 	
 	@Autowired
 	SesionesDAO sesionesDAO;
+
+	@Autowired
+	EventosDAO eventosDAO;
 	
 	@Autowired
 	CinesDAO cinesDAO;
@@ -101,11 +106,22 @@ public class ComunicacionesICAAService {
 		List<SesionDTO> sesiones = sesionesDAO.getSesiones(Utils.listIntegerToListLong(ids));
 		for (SesionDTO sesion: sesiones) {
 			Sala.checkValidity(sesion.getParSala().getNombre(), sesion.getParSala().getCodigo());
-			Evento.checkValidity(new Long(sesion.getParEvento().getId()).intValue(), sesion.getParEvento().getExpediente(), 
-					sesion.getParEvento().getTituloEs(), sesion.getParEvento().getCodigoDistribuidora(), 
-					sesion.getParEvento().getNombreDistribuidora(), sesion.getParEvento().getVo(), 
-					sesion.getVersionLinguistica(), sesion.getParEvento().getSubtitulos(), 
-					sesion.getFormato());
+			List<EventoDTO> peliculasMultisesion = eventosDAO.getPeliculas(sesion.getParEvento().getId());
+
+			if (peliculasMultisesion.size() > 0) {
+				for (EventoDTO peliculaMultisesion: peliculasMultisesion) {
+					Evento.checkValidity(new Long(peliculaMultisesion.getId()).intValue(), peliculaMultisesion.getExpediente(),
+							peliculaMultisesion.getTituloEs(), peliculaMultisesion.getCodigoDistribuidora(),
+							peliculaMultisesion.getNombreDistribuidora(), peliculaMultisesion.getVo(),
+							sesion.getVersionLinguistica(), peliculaMultisesion.getSubtitulos(), sesion.getFormato());
+				}
+			} else {
+				Evento.checkValidity(new Long(sesion.getParEvento().getId()).intValue(), sesion.getParEvento().getExpediente(),
+						sesion.getParEvento().getTituloEs(), sesion.getParEvento().getCodigoDistribuidora(),
+						sesion.getParEvento().getNombreDistribuidora(), sesion.getParEvento().getVo(),
+						sesion.getVersionLinguistica(), sesion.getParEvento().getSubtitulos(),
+						sesion.getFormato());
+			}
 			Sesion.checkSesion(sesion.getFechaCelebracion(), tipoEnvio, sesion.getIncidenciaId());
 			
 			List<SesionFormatoIdiomaICAADTO> sesionesFormatoIdiomaIcaa = 

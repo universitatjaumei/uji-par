@@ -91,12 +91,11 @@ public class EventosService
 
     public Evento getEvento(Long eventoId) throws EventoNoEncontradoException
     {
-        List<EventoDTO> listaEventosDTO = eventosDAO.getEventoDTO(eventoId.longValue());
+        EventoDTO eventoDTO = eventosDAO.getEventoById(eventoId.longValue());
+		if (eventoDTO != null)
+        	return new Evento(eventoDTO, true);
 
-        if (listaEventosDTO.size() > 0)
-            return new Evento(listaEventosDTO.get(0), true);
-        else
-            throw new EventoNoEncontradoException(eventoId);
+        throw new EventoNoEncontradoException(eventoId);
     }
     
     public Evento getEventoByRssId(Long contenidoId) throws EventoNoEncontradoException
@@ -147,5 +146,24 @@ public class EventosService
 
 	public String getImagenSustitutivaContentType() {
 		return Configuration.getImagenSustitutivaContentType();
+	}
+
+	public List<Evento> getPeliculas() {
+		List<EventoDTO> listPeliculasDTO = eventosDAO.getPeliculas();
+		return getEventos(listPeliculasDTO);
+	}
+
+	private List<Evento> getEventos(List<EventoDTO> listPeliculasDTO) {
+		List<Evento> listPeliculas = new ArrayList<Evento>();
+		for (EventoDTO pelicula: listPeliculasDTO) {
+			Evento evento = Evento.eventoDTOtoEvento(pelicula);
+			listPeliculas.add(evento);
+		}
+		return listPeliculas;
+	}
+
+	public List<Evento> getPeliculas(long eventoId) {
+		List<EventoDTO> listPeliculasDTO = eventosDAO.getPeliculas(eventoId);
+		return getEventos(listPeliculasDTO);
 	}
 }

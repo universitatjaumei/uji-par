@@ -46,6 +46,7 @@ Ext.define('Paranimf.model.Evento', {
       'nacionalidad',
       'vo',
       'metraje',
-      'subtitulos'
+      'subtitulos',
+      'multisesion'
    ]
 });

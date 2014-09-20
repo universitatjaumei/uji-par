@@ -1,8 +1,8 @@
 Ext.define('Paranimf.controller.Eventos', {
    extend: 'Ext.app.Controller',
 
-   views: ['EditModalWindow', 'EditBaseForm', 'EditBaseGrid', 'evento.GridEventos', 'evento.GridEventosMultisesion', 'evento.FormEventos', 'evento.PanelEventos', 'evento.GridSesiones', 'evento.FormSesiones', 'evento.GridPreciosSesion', 'evento.FormPreciosSesion'],
-   stores: ['Eventos', 'EventosMultisesion', 'TiposEventosSinPaginar', 'Sesiones', 'PlantillasPrecios', 'PreciosSesion', 'Salas', 'Nacionalidades'],
+   views: ['EditModalWindow', 'EditBaseForm', 'EditBaseGrid', 'evento.GridEventos', 'evento.GridEventosMultisesion', 'evento.FormEventos', 'evento.PanelEventos', 'evento.GridSesiones', 'evento.FormSesiones', 'evento.GridPreciosSesion', 'evento.FormPreciosSesion', 'evento.FormPeliculaMultisesion'],
+   stores: ['Eventos', 'EventosMultisesion', 'TiposEventosSinPaginar', 'Sesiones', 'PlantillasPrecios', 'PreciosSesion', 'Salas', 'Nacionalidades', 'Peliculas'],
    models: ['Evento', 'Sesion', 'PrecioSesion', 'Sala', 'HoraMinuto'],
 
    refs: [{
@@ -28,7 +28,7 @@ Ext.define('Paranimf.controller.Eventos', {
       selector: 'formEventos button[action=deleteImage]'
    }, {
       ref: 'checkMultisesion',
-      selector: 'formEventos checkboxfield[name=multisesion]'
+      selector: 'formEventos checkbox[name=multisesion]'
    }, {
       ref: 'icaaMultisesionGridFieldset',
       selector: 'formEventos fieldset[name=icaaGrid]'
@@ -89,6 +89,15 @@ Ext.define('Paranimf.controller.Eventos', {
    }, {
       ref: 'comboVersionLinguistica',
       selector: 'formSesiones combobox[name=versionLinguistica]'
+   }, {
+      ref: 'comboPeliculas',
+      selector: 'formPeliculaMultisesion combobox[name=peliculas]'
+   }, {
+      ref: 'formPeliculaMultisesion',
+      selector: 'formPeliculaMultisesion'
+   }, {
+      ref: 'jsonEventosMultisesion',
+      selector: 'formEventos hiddenfield[name=jsonEventosMultisesion]'
    }],
 
    init: function() {
@@ -122,7 +131,7 @@ Ext.define('Paranimf.controller.Eventos', {
         	   beforerender: this.showImagenIfExists
          },
 
-         'formEventos checkboxfield[name=multisesion]': {
+         'formEventos checkbox[name=multisesion]': {
             change: this.showMultisesion
          },
          
@@ -183,6 +192,18 @@ Ext.define('Paranimf.controller.Eventos', {
 
          'formSesiones timefield[name=horaCelebracion]': {
             change: this.actualizaHoraApertura
+         },
+
+         'formEventos gridEventosMultisesion button[action=add]': {
+            click: this.showAddEventoMultisesion
+         },
+
+         'formEventos gridEventosMultisesion button[action=del]': {
+            click: this.deleteEventoMultisesion
+         },
+
+         'formPeliculaMultisesion button[action=save]': {
+            click: this.addPeliculaMultisesion
          }
       });
    },
@@ -384,6 +405,9 @@ Ext.define('Paranimf.controller.Eventos', {
    },
 
    showMultisesion: function(comp, newValue, oldValue, eOpts ) {
+      if (!allowMultisession)
+         newValue = false;
+
       if (newValue)
       {
          this.getIcaaFieldset().hide();
@@ -391,6 +415,7 @@ Ext.define('Paranimf.controller.Eventos', {
       }
       else
       {
+         this.getGridEventosMultisesion().store.removeAll();
          this.getIcaaMultisesionGridFieldset().hide();
          this.getIcaaFieldset().show();
       }
@@ -424,12 +449,30 @@ Ext.define('Paranimf.controller.Eventos', {
 
    addEvento: function(button, event, opts) {
       this.getGridEventos().showAddEventoWindow();
-      this.showMultisesion(null, this.getCheckMultisesion().getValue());
+      this.showMultisesion(null, false);
    },
 
    editEvento: function(button, event, opts) {
+      var isMultisesion = false;
+      if (allowMultisession) {
+         if (this.getGridEventos().hasRowSelected()) {
+            var rec = this.getGridEventos().getSelectedRecord();
+            if (rec && rec.data && rec.data.multisesion)
+               isMultisesion = (rec.data.multisesion != undefined && rec.data.multisesion == 'on')?true:false;
+         }
+      }
       this.getGridEventos().edit('formEventos', undefined, undefined, 0.8);
-      this.showMultisesion(null, this.getCheckMultisesion().getValue());
+      this.showMultisesion(null, isMultisesion);
+
+      if (isMultisesion)
+         this.recargaGridMultisesion(this.getGridEventos().getSelectedColumnId());
+   },
+
+   recargaGridMultisesion: function(idEventoPadre) {
+      var url = urlPrefix + 'evento/' + idEventoPadre + '/peliculas';
+      this.getGridEventosMultisesion().store.removeAll();
+      this.getGridEventosMultisesion().store.proxy.url = url;
+      this.getGridEventosMultisesion().store.load();
    },
 
    removeEvento: function(button, event, opts) {
@@ -443,6 +486,7 @@ Ext.define('Paranimf.controller.Eventos', {
    saveEventoFormData: function(button, event, opts) {
       var grid = this.getGridEventos();
       var form = this.getFormEventos();
+      this.getJsonEventosMultisesion().setValue(this.getGridEventosMultisesion().onlyIdsToJSON());
       form.saveFormData(grid, urlPrefix + 'evento', undefined, 'multipart/form-data', function(form, action) {
          if (action != undefined && action.response != undefined && action.response.responseText != undefined) {
             var respuesta = Ext.JSON.decode(action.response.responseText, true);
@@ -531,5 +575,31 @@ Ext.define('Paranimf.controller.Eventos', {
          this.getGridSesiones().edit('formSesiones', undefined, undefined, 0.8);
       else
          alert(UI.i18n.error.eventSelected);
+   },
+
+   deleteEventoMultisesion: function() {
+      console.log("del");
+      this.getGridEventosMultisesion().remove();
+   },
+
+   showAddEventoMultisesion: function() {
+      console.log("add");
+      this.getGridEventosMultisesion().showAddPelicula();
+   },
+
+   addPeliculaMultisesion: function() {
+      if (this.getComboPeliculas().value != undefined) {
+         if (this.getFormPeliculaMultisesion().isValid()) {
+            if (!this.getGridEventosMultisesion().containsId(this.getComboPeliculas().value)) {
+               var record = {
+                  id: this.getComboPeliculas().value,
+                  tituloEs: this.getComboPeliculas().rawValue
+               };
+               this.getGridEventosMultisesion().addItemToStore(record);
+               this.getFormPeliculaMultisesion().up("window").close();
+            } else
+               alert(UI.i18n.error.peliculaJaAfegida);
+         }
+      }
    }
 });
