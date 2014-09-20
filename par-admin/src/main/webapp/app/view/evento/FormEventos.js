@@ -21,7 +21,8 @@ Ext
 					buttons : [ {
 						xtype : 'button',
 						text : UI.i18n.button.save,
-						action : 'save'
+						action : 'save',
+						hidden: (readOnlyUser == undefined)?false:readOnlyUser
 					}, {
 						xtype : 'button',
 						text : UI.i18n.button.cancel,
@@ -31,7 +32,8 @@ Ext
 					}, {
 						xtype : 'button',
 						text : UI.i18n.button.eliminarImagen,
-						action : 'deleteImage'
+						action : 'deleteImage',
+						hidden: (readOnlyUser == undefined)?false:readOnlyUser
 					} ],
 
 					items : [

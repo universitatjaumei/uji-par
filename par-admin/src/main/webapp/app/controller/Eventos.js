@@ -398,7 +398,9 @@ Ext.define('Paranimf.controller.Eventos', {
          var imagen = comp.down("#imagenInsertada");
          var idEvento = record.data["id"]; 
 		   imagen.html = '<a href="' + urlPrefix + 'evento/' + idEvento + '/imagen" target="blank">' + UI.i18n.field.imagenInsertada + '</a>';
-         this.getBotonDeleteImagen().show();
+
+         if (!readOnlyUser)
+            this.getBotonDeleteImagen().show();
       } else {
          this.getBotonDeleteImagen().hide();
       }

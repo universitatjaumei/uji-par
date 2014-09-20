@@ -25,6 +25,10 @@ public class IndexResource extends BaseResource
         template.put("urlPublic", Configuration.getUrlPublic());
 		template.put("allowMultisesion", Configuration.getAllowMultisesion());
         template.put("payModes", Configuration.getPayModes());
+
+		Boolean b = (Boolean) currentRequest.getSession().getAttribute(Authenticator.READONLY_ATTRIBUTE);
+		boolean readOnlyUser = (b == null || !b)?false:true;
+		template.put("readOnlyUser", readOnlyUser);
         
         return template;
     }

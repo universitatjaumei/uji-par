@@ -8,15 +8,18 @@ Ext.define('Paranimf.view.generarficheros.GridSesionesCompleto', {
    tbar: [{
       xtype: 'button',
       text: UI.i18n.button.saveFileICAA,
-      action: 'saveFileICAA'
+      action: 'saveFileICAA',
+      hidden: (readOnlyUser == undefined)?false:readOnlyUser
    }, {
     xtype: 'button',
     text: UI.i18n.button.marcarComoEnviados,
-    action: 'markAsSent'
+    action: 'markAsSent',
+    hidden: (readOnlyUser == undefined)?false:readOnlyUser
    }, {
     xtype: 'button',
     text: UI.i18n.button.setIncidencia,
-    action: 'setIncidencia'
+    action: 'setIncidencia',
+    hidden: (readOnlyUser == undefined)?false:readOnlyUser
    }],
 
    dockedItems: [],

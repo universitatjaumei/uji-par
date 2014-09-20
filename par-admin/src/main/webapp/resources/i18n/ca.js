@@ -184,6 +184,7 @@ UI =
             "cancel": "Cancel·lar",
             "close": "Tancar",
             "edit": "Editar",
+            "ver": "Veure detall",
             "activateBooking":"Permetre reserves",
             "deactivateBooking":"Bloquejar per a reserves",
             "eliminarImagen": "Esborrar imatge - NO ES POT CANCEL·LAR",

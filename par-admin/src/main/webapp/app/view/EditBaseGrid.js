@@ -12,15 +12,17 @@ Ext.define('Paranimf.view.EditBaseGrid', {
    tbar: [{
       xtype: 'button',
       text: UI.i18n.button.add,
-      action: 'add'
+      action: 'add',
+      hidden: (readOnlyUser == undefined)?false:readOnlyUser
    }, {
       xtype: 'button',
-      text: UI.i18n.button.edit,
+      text: (readOnlyUser == undefined || readOnlyUser == false)?UI.i18n.button.edit:UI.i18n.button.ver,
       action: 'edit'
    }, {
       xtype: 'button',
       text: UI.i18n.button.del,
-      action: 'del'
+      action: 'del',
+      hidden: (readOnlyUser == undefined)?false:readOnlyUser
    }],
 
    getSelectedRecord: function(grid) {
