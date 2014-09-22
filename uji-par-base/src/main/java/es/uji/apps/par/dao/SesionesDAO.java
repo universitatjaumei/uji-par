@@ -271,6 +271,30 @@ public class SesionesDAO extends BaseDAO
         return (int) getQueryPreciosSesion(sesionId).count();
     }
 
+	@Transactional
+	public int getNumeroSesionesValidasParaFicheroICAA(List<Sesion> sesionesAValidar) throws IncidenciaNotFoundException {
+		QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
+		QEventoMultisesionDTO eventoMultisesionDTO = new QEventoMultisesionDTO("eventoMultisesionDTO");
+
+		List<Long> idsSesionesAValidar = Sesion.getIdsSesiones(sesionesAValidar);
+		JPAQuery query = new JPAQuery(entityManager);
+
+		List<Tuple> resultado = query
+				.from(qSesionDTO)
+				.where(qSesionDTO.id.in(idsSesionesAValidar))
+				.distinct()
+				.list(qSesionDTO.id, qSesionDTO.incidenciaId);
+
+		int numeroSesiones = 0;
+		for (Tuple row: resultado)
+		{
+			Integer idIncidencia = row.get(1, Integer.class);
+			if (!isIncidenciaCancelacionEvento(idIncidencia))
+				numeroSesiones++;
+		}
+		return numeroSesiones;
+	}
+
     @Transactional
     public List<RegistroSesion> getRegistrosSesiones(List<Sesion> sesiones) throws IncidenciaNotFoundException
     {
