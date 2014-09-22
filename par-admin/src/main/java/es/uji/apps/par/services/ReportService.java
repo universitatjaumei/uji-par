@@ -243,10 +243,10 @@ public class ReportService {
         BigDecimal countTaquillaTpv = new BigDecimal(0);
         if (taquillaTpv != null) {
             if (taquillaTpv.length > 0 && taquillaTpv[0] != null) {
-                totalTaquillaTpv = (BigDecimal) taquillaTpv[0];
+                totalTaquillaTpv = dbHelper.castBigDecimal(taquillaTpv[0]);
             }
             if (taquillaTpv.length > 1 && taquillaTpv[1] != null) {
-                countTaquillaTpv = (BigDecimal) taquillaTpv[1];
+                countTaquillaTpv = dbHelper.castBigDecimal(taquillaTpv[1]);
             }
         }
 
@@ -254,10 +254,10 @@ public class ReportService {
         BigDecimal countTaquillaEfectivo = new BigDecimal(0);
         if (taquillaEfectivo != null) {
             if (taquillaEfectivo.length > 0 && taquillaEfectivo[0] != null) {
-                totalTaquillaEfectivo = (BigDecimal) taquillaEfectivo[0];
+                totalTaquillaEfectivo = dbHelper.castBigDecimal(taquillaEfectivo[0]);
             }
             if (taquillaEfectivo.length > 1 && taquillaEfectivo[1] != null) {
-                countTaquillaEfectivo = (BigDecimal) taquillaEfectivo[1];
+                countTaquillaEfectivo = dbHelper.castBigDecimal(taquillaEfectivo[1]);
             }
         }
 
@@ -265,10 +265,10 @@ public class ReportService {
         BigDecimal countOnline = new BigDecimal(0);
         if (online != null) {
             if (online.length > 0 && online[0] != null) {
-                totalOnline = (BigDecimal) online[0];
+                totalOnline = dbHelper.castBigDecimal(online[0]);
             }
             if (online.length > 1 && online[1] != null) {
-                countOnline = (BigDecimal) online[1];
+                countOnline = dbHelper.castBigDecimal(online[1]);
             }
         }
 
