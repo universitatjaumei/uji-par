@@ -70,8 +70,7 @@ public class FicherosService
         return ficheroRegistros;
     }
 
-    private RegistroBuzon generaRegistroBuzon(Date fechaEnvioAnterior, String tipo, List<Sesion> sesiones)
-    {
+    private RegistroBuzon generaRegistroBuzon(Date fechaEnvioAnterior, String tipo, List<Sesion> sesiones) throws IncidenciaNotFoundException {
         List<CineDTO> cines = cinesDao.getCines();
         CineDTO cine = cines.get(0);
 
@@ -82,14 +81,24 @@ public class FicherosService
         Calendar cal = Calendar.getInstance();
         registroBuzon.setFechaEnvio(cal.getTime());
         registroBuzon.setTipo(tipo);
-        registroBuzon.setSesiones(sesiones.size());
+        registroBuzon.setSesiones(getNumeroSesionesValidasParaFichero(sesiones));
         registroBuzon.setRecaudacion(comprasDAO.getRecaudacionSesiones(sesiones));
         registroBuzon.setEspectadores(comprasDAO.getEspectadores(sesiones));
 
         return registroBuzon;
     }
 
-    private List<RegistroSala> generaRegistrosSala(List<Sesion> sesiones) throws UnsupportedEncodingException
+	private int getNumeroSesionesValidasParaFichero(List<Sesion> sesiones) throws IncidenciaNotFoundException {
+		int numeroSesiones = 0;
+		for (Sesion sesion: sesiones) {
+			if (!sesionesDAO.isIncidenciaCancelacionEvento(sesion.getIncidenciaId())) {
+				numeroSesiones++;
+			}
+		}
+		return numeroSesiones;
+	}
+
+	private List<RegistroSala> generaRegistrosSala(List<Sesion> sesiones) throws UnsupportedEncodingException
     {
         List<RegistroSala> registrosSala = new ArrayList<RegistroSala>();
 
