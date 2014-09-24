@@ -70,6 +70,10 @@ Ext.application({
                   style: 'float: right;margin-right:2em',
                   action: 'logout'
                },{
+                  id: 'langs',
+                  xtype: 'label',
+                  style: 'float: right;margin-right:1em;margin-top:6px'
+               },{
                   xtype: 'label',
                   text: botonLogout,
                   style: 'float: right;margin-right:1em;font-weight:bold;margin-top:5px'
@@ -92,6 +96,15 @@ Ext.application({
             }]
          }]
       });
+
+      if (langsAllowed && langsAllowed.length > 1)
+      {
+        var langsHtml = "";
+        for (var i = 0; i < langsAllowed.length; i++) {
+          langsHtml += '<label class="idioma" style="margin-right:1em;"><a alt="' + langsAllowed[i].alias + '" title="' + langsAllowed[i].alias + '" href="javascript:cambiaIdioma(\'' + langsAllowed[i].locale + '\');">' + langsAllowed[i].alias.substring(0, 3) + '</a></label>'
+        }
+        Ext.getCmp('langs').update(langsHtml);
+      }
 
       Ext.History.init(this.initDispatch, this);
       Ext.History.on('change', this.historyChange, this);

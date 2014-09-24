@@ -12,7 +12,7 @@ import javax.ws.rs.core.Response;
 import java.util.List;
 
 @Path("informe")
-public class InformesResource
+public class InformesResource extends BaseResource
 {
     @InjectParam
     private InformesService informesService;
@@ -21,7 +21,7 @@ public class InformesResource
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAll()
     {
-        List<TipoInforme> tiposInforme = informesService.getTiposInforme();
+        List<TipoInforme> tiposInforme = informesService.getTiposInforme(getLocale().getLanguage());
                 
         return Response.ok().entity(new RestResponse(true, tiposInforme, tiposInforme.size())).build();
     }

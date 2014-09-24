@@ -1,25 +1,6 @@
 package es.uji.apps.par.services;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-
-import org.apache.poi.ss.usermodel.Row;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.stereotype.Service;
-
 import com.mysema.query.Tuple;
-
 import es.uji.apps.fopreports.serialization.ReportSerializationException;
 import es.uji.apps.par.SinIvaException;
 import es.uji.apps.par.config.Configuration;
@@ -31,17 +12,29 @@ import es.uji.apps.par.database.DatabaseHelper;
 import es.uji.apps.par.database.DatabaseHelperFactory;
 import es.uji.apps.par.db.ButacaDTO;
 import es.uji.apps.par.db.SesionDTO;
-import es.uji.apps.par.model.Cine;
-import es.uji.apps.par.model.Evento;
-import es.uji.apps.par.model.Informe;
-import es.uji.apps.par.model.InformeSesion;
-import es.uji.apps.par.model.Sala;
-import es.uji.apps.par.model.Sesion;
+import es.uji.apps.par.i18n.ResourceProperties;
+import es.uji.apps.par.model.*;
 import es.uji.apps.par.report.EntradaReportFactory;
 import es.uji.apps.par.report.InformeInterface;
 import es.uji.apps.par.report.InformeModelReport;
 import es.uji.apps.par.utils.DateUtils;
 import es.uji.apps.par.utils.Utils;
+import org.apache.poi.ss.usermodel.Row;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.stereotype.Service;
+
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 @Service
 public class ReportService {
@@ -83,18 +76,19 @@ public class ReportService {
 	}
 
 	public ByteArrayOutputStream getExcelTaquilla(String fechaInicio,
-			String fechaFin) throws IOException {
+			String fechaFin, Locale locale) throws IOException {
 		List<Object[]> files = comprasDAO.getComprasInFechas(fechaInicio,
 				fechaFin);
 		ExcelService excelService = new ExcelService();
 		int rownum = 0;
 
 		if (files != null && files.size() > 0) {
-			excelService.addFulla("Informe taquilla " + fechaInicio + " - "
+			excelService.addFulla(ResourceProperties.getProperty(locale, "excelTaquilla.titulo") + " " + fechaInicio + " - "
 					+ fechaFin);
+
 			excelService.generaCeldes(excelService.getEstilNegreta(), 0,
-					"Event", "Sessió", "Tipus d'entrada", "Localització",
-					"Nombre d'entrades", "Total");
+                    ResourceProperties.getProperty(locale, "excelTaquilla.evento"), ResourceProperties.getProperty(locale, "excelTaquilla.sesion"), ResourceProperties.getProperty(locale, "excelTaquilla.tipoEntrada"), ResourceProperties.getProperty(locale, "excelTaquilla.localizacion"),
+                    ResourceProperties.getProperty(locale, "excelTaquilla.numeroEntradas"), ResourceProperties.getProperty(locale, "excelTaquilla.total"));
 
 			for (Object[] fila : files) {
 				rownum++;
@@ -207,18 +201,18 @@ public class ReportService {
 	}
 
 	public ByteArrayOutputStream getExcelEventos(String fechaInicio,
-			String fechaFin) throws IOException {
+			String fechaFin, Locale locale) throws IOException {
 		List<Object[]> files = comprasDAO.getComprasPorEventoInFechas(
 				fechaInicio, fechaFin);
 		ExcelService excelService = new ExcelService();
 		int rownum = 0;
 
 		if (files != null && files.size() > 0) {
-			excelService.addFulla("Informe taquilla " + fechaInicio + " - "
+			excelService.addFulla(ResourceProperties.getProperty(locale, "excelEventos.titulo") + " " + fechaInicio + " - "
 					+ fechaFin);
 			excelService.generaCeldes(excelService.getEstilNegreta(), 0,
-					"Event", "Tipus d'entrada", "Online o taquilla",
-					"Nombre d'entrades", "Total");
+                    ResourceProperties.getProperty(locale, "excelEventos.evento"), ResourceProperties.getProperty(locale, "excelEventos.tipoEntrada"), ResourceProperties.getProperty(locale, "excelEventos.tipo"),
+                    ResourceProperties.getProperty(locale, "excelEventos.numeroEntradas"), ResourceProperties.getProperty(locale, "excelEventos.total"));
 
 			for (Object[] fila : files) {
 				rownum++;
@@ -229,9 +223,9 @@ public class ReportService {
 		return excelService.getExcel();
 	}
 
-	public void getPdfTaquilla(String fechaInicio, String fechaFin, OutputStream bos) throws ReportSerializationException,
+	public void getPdfTaquilla(String fechaInicio, String fechaFin, OutputStream bos, Locale locale) throws ReportSerializationException,
 			ParseException {
-		InformeInterface informe = informeTaquillaReport.create(new Locale("ca"));
+		InformeInterface informe = informeTaquillaReport.create(locale);
 
 		List<InformeModelReport> compras = objectsToInformes(comprasDAO.getComprasPorEventoInFechas(fechaInicio, fechaFin));
 
@@ -290,9 +284,9 @@ public class ReportService {
 		return DateUtils.dateToSpanishString(dt);
 	}
 
-	public void getPdfEfectivo(String fechaInicio, String fechaFin,	OutputStream bos) throws ReportSerializationException,
+	public void getPdfEfectivo(String fechaInicio, String fechaFin,	OutputStream bos, Locale locale) throws ReportSerializationException,
 			ParseException, SinIvaException {
-		InformeInterface informe = informeEfectivoReport.create(new Locale("ca"));
+		InformeInterface informe = informeEfectivoReport.create(locale);
 		List<InformeModelReport> compras = objectsSesionesToInformesIva(comprasDAO.getComprasEfectivo(fechaInicio, fechaFin));
 
 		informe.genera(getSpanishStringDateFromBBDDString(fechaInicio),
@@ -304,10 +298,10 @@ public class ReportService {
 	}
 
 	public void getPdfTpvSubtotales(String fechaInicio, String fechaFin,
-			OutputStream bos) throws ReportSerializationException,
+			OutputStream bos, Locale locale) throws ReportSerializationException,
 			ParseException, SinIvaException {
 		InformeInterface informe = informeTaquillaTpvSubtotalesReport
-				.create(new Locale("ca"));
+				.create(locale);
 
 		List<InformeModelReport> compras = objectsSesionesToInformesTpv(comprasDAO
 				.getComprasTpv(fechaInicio, fechaFin));
@@ -321,10 +315,10 @@ public class ReportService {
 	}
 
 	public void getPdfEventos(String fechaInicio, String fechaFin,
-			OutputStream bos) throws ReportSerializationException,
+			OutputStream bos, Locale locale) throws ReportSerializationException,
 			ParseException, SinIvaException {
 		InformeInterface informe = informeEventosReport
-				.create(new Locale("ca"));
+				.create(locale);
 
 		List<InformeModelReport> compras = objectsSesionesToInformesEventos(comprasDAO
 				.getComprasEventos(fechaInicio, fechaFin));
@@ -378,8 +372,8 @@ public class ReportService {
 		return result;
 	}
 	
-	public void getPdfSesion(long sesionId, ByteArrayOutputStream bos) throws SinIvaException, ReportSerializationException, IOException {
-		InformeInterface informe = informeSesionReport.create(new Locale("ca"));
+	public void getPdfSesion(long sesionId, ByteArrayOutputStream bos, Locale locale) throws SinIvaException, ReportSerializationException, IOException {
+		InformeInterface informe = informeSesionReport.create(locale);
 		Cine cine = Cine.cineDTOToCine(cinesDAO.getCines().get(0));
 		List<InformeSesion> informesSesion = new ArrayList<InformeSesion>();
 		informesSesion.add(getInformeSesion(sesionId));
@@ -388,8 +382,8 @@ public class ReportService {
 		informe.serialize(bos);
 	}
 	
-	public void getPdfSesiones(List<Sesion> sesiones, ByteArrayOutputStream bos) throws SinIvaException, ReportSerializationException, IOException {
-		InformeInterface informe = informeSesionReport.create(new Locale("ca"));
+	public void getPdfSesiones(List<Sesion> sesiones, ByteArrayOutputStream bos, Locale locale) throws SinIvaException, ReportSerializationException, IOException {
+		InformeInterface informe = informeSesionReport.create(locale);
 		List<InformeSesion> informesSesion = new ArrayList<InformeSesion>();
 		Cine cine = Cine.cineDTOToCine(cinesDAO.getCines().get(0));
 		for (Sesion sesion: sesiones)
@@ -403,9 +397,9 @@ public class ReportService {
 		informe.serialize(bos);
 	}
 
-    public void getPdf(long sesionId, ByteArrayOutputStream bos, String tipo) throws SinIvaException, ReportSerializationException, IOException {
+    public void getPdf(long sesionId, ByteArrayOutputStream bos, String tipo, Locale locale) throws SinIvaException, ReportSerializationException, IOException {
         informeReport = EntradaReportFactory.newInstanceInformeReport(tipo);
-        InformeInterface informe = informeReport.create(new Locale("ca"));
+        InformeInterface informe = informeReport.create(locale);
         informe.genera(sesionId);
 
         informe.serialize(bos);
@@ -447,6 +441,6 @@ public class ReportService {
 		ReportService service = ctx.getBean(ReportService.class);
 
 		service.getPdfEventos("2013-10-01", "2013-10-30", new FileOutputStream(
-				"/tmp/informe.pdf"));
+				"/tmp/informe.pdf"), new Locale(Configuration.getIdiomaPorDefecto()));
 	}
 }

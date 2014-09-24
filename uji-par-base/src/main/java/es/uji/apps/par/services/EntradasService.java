@@ -54,7 +54,7 @@ public class EntradasService
 
     public void generaEntrada(String uuidCompra, OutputStream outputStream) throws ReportSerializationException
     {
-    	EntradaReportOnlineInterface entrada = entradaOnlineReport.create(new Locale("ca"));
+    	EntradaReportOnlineInterface entrada = entradaOnlineReport.create(new Locale(Configuration.getIdiomaPorDefecto()));
 
 		try {
         	rellenaEntrada(uuidCompra, entrada);
@@ -65,7 +65,7 @@ public class EntradasService
     }
     
     public void generaEntradaTaquilla(String uuidCompra, OutputStream outputStream) throws ReportSerializationException, SAXException, IOException {
-    	EntradaReportTaquillaInterface entrada = entradaTaquillaReport.create(new Locale("ca"));
+    	EntradaReportTaquillaInterface entrada = entradaTaquillaReport.create(new Locale(Configuration.getIdiomaPorDefecto()));
 
         rellenaEntradaTaquilla(uuidCompra, entrada);
         entrada.serialize(outputStream);

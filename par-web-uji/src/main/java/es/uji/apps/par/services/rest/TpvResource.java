@@ -146,8 +146,8 @@ public class TpvResource extends BaseResource implements TpvInterface
     {
         String urlEntradas = String.format("%s/rest/compra/%s/pdf", getBaseUrlPublic(), uuid);
 
-        String titulo = ResourceProperties.getProperty(new Locale("ca"), "mail.entradas.titulo");
-        String texto = ResourceProperties.getProperty(new Locale("ca"), "mail.entradas.texto", urlEntradas);
+        String titulo = ResourceProperties.getProperty(getLocale(), "mail.entradas.titulo");
+        String texto = ResourceProperties.getProperty(getLocale(), "mail.entradas.texto", urlEntradas);
 
         mailService.anyadeEnvio(email, titulo, texto, uuid);
     }

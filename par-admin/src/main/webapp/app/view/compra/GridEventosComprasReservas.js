@@ -49,7 +49,7 @@ Ext.define('Paranimf.view.compra.GridEventosComprasReservas', {
       }
     }, {
       dataIndex: 'tituloVa',
-      text: UI.i18n.field.title_va,
+      text: UI.i18n.field.title,
       flex: 5
     }];
 

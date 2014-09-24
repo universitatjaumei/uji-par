@@ -83,6 +83,8 @@ public class Configuration
     private static final String TIPOS_INFORME = "uji.reports.tipos";
     public static final String HORAS_VENTA_ANTICIPADA = "uji.reports.horaVentaAnticipada";
 	private static final String ALLOW_MULTISESION = "uji.par.allowMultisesion";
+    private static final String IDIOMA_POR_DEFECTO = "uji.par.defaultLang";
+    private static final String LANGS_ALLOWED = "uji.par.langsAllowed";
 
 	private static final Logger log = LoggerFactory.getLogger(Configuration.class);
 
@@ -151,12 +153,23 @@ public class Configuration
         
         return value.trim();
     }
-    
-    public static String getPayModes()
+
+    public static String getIdiomaPorDefecto()
     {
-    	List<String> payModesJs = new ArrayList<String>(Arrays.asList("['metalico', '" + ResourceProperties.getProperty(new Locale("ca"), "paymode.metalico") + "']",
-    	         "['tarjeta', '" + ResourceProperties.getProperty(new Locale("ca"), "paymode.tarjeta") + "']",
-    	         "['tarjetaOffline', '" + ResourceProperties.getProperty(new Locale("ca"), "paymode.tarjetaOffline") + "']"));
+        String lang = getNoObligatoryProperty(IDIOMA_POR_DEFECTO);
+        if (lang != null && lang.length() > 0) {
+            return lang;
+        }
+        else {
+            return "ca";
+        }
+    }
+    
+    public static String getPayModes(Locale locale)
+    {
+    	List<String> payModesJs = new ArrayList<String>(Arrays.asList("['metalico', '" + ResourceProperties.getProperty(locale, "paymode.metalico") + "']",
+    	         "['tarjeta', '" + ResourceProperties.getProperty(locale, "paymode.tarjeta") + "']",
+    	         "['tarjetaOffline', '" + ResourceProperties.getProperty(locale, "paymode.tarjetaOffline") + "']"));
     	
     	List<String> modes = Arrays.asList(getProperty(PAY_MODES).split(PROPERTIES_SEPARATOR));
     	List<String> payModes = new ArrayList<String>();
@@ -482,4 +495,12 @@ public class Configuration
 			return true;
 		return false;
 	}
+
+    public static String getLangsAllowed() {
+        String langsAllowed = getNoObligatoryProperty(LANGS_ALLOWED);
+
+        if (langsAllowed != null && langsAllowed.length() > 0)
+            return langsAllowed;
+        return "[{'locale':'ca', 'alias': 'Valencià'}]";
+    }
 }

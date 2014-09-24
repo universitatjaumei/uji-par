@@ -22,5 +22,5 @@ function muestraMenu(menuACambiar) {
 }
 
 function cambiaIdioma(lang) {
-   window.location = urlPrefix + '?lang=' + lang + window.location.hash;
+   window.location = urlPrefix + 'index?lang=' + lang + window.location.hash;
 }

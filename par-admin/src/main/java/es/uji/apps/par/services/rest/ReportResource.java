@@ -44,7 +44,7 @@ public class ReportResource extends BaseResource {
     @Path("taquilla/{fechaInicio}/{fechaFin}")
     @Produces("application/vnd.ms-excel")
     public Response generateExcelTaquilla(@PathParam("fechaInicio") String fechaInicio, @PathParam("fechaFin") String fechaFin) throws TranscoderException, IOException {
-        ByteArrayOutputStream ostream = reportService.getExcelTaquilla(fechaInicio, fechaFin);
+        ByteArrayOutputStream ostream = reportService.getExcelTaquilla(fechaInicio, fechaFin, getLocale());
         return Response.ok(ostream.toByteArray())
                 .header("Content-Disposition", "attachment; filename =\"informeTaquilla " + fechaInicio + "-" + fechaFin + ".xls\"")
                 .build();
@@ -54,7 +54,7 @@ public class ReportResource extends BaseResource {
     @Path("eventos/{fechaInicio}/{fechaFin}")
     @Produces("application/vnd.ms-excel")
     public Response generateExcelEventos(@PathParam("fechaInicio") String fechaInicio, @PathParam("fechaFin") String fechaFin) throws TranscoderException, IOException {
-        ByteArrayOutputStream ostream = reportService.getExcelEventos(fechaInicio, fechaFin);
+        ByteArrayOutputStream ostream = reportService.getExcelEventos(fechaInicio, fechaFin, getLocale());
         return Response.ok(ostream.toByteArray())
                 .header("Content-Disposition", "attachment; filename =\"informeEvents " + fechaInicio + "-" + fechaFin + ".xls\"")
                 .build();
@@ -66,7 +66,7 @@ public class ReportResource extends BaseResource {
     public Response generatePdfTaquilla(@PathParam("fechaInicio") String fechaInicio, @PathParam("fechaFin") String fechaFin) throws TranscoderException, IOException, ReportSerializationException, ParseException {
         ByteArrayOutputStream ostream = new ByteArrayOutputStream();
 
-        reportService.getPdfTaquilla(fechaInicio, fechaFin, ostream);
+        reportService.getPdfTaquilla(fechaInicio, fechaFin, ostream, getLocale());
 
         return Response.ok(ostream.toByteArray())
                 .header("Content-Disposition", "attachment; filename =\"informeTaquilla " + fechaInicio + "-" + fechaFin + ".pdf\"")
@@ -83,7 +83,7 @@ public class ReportResource extends BaseResource {
         Sesion sesion = sesionesService.getSesion(idSesion);
         String fileName = "informeSesion " + DateUtils.dateToSpanishStringWithHour(sesion.getFechaCelebracion()) + ".pdf";
 
-        reportService.getPdfSesion(idSesion, ostream);
+        reportService.getPdfSesion(idSesion, ostream, getLocale());
 
         return Response.ok(ostream.toByteArray())
                 .header("Content-Disposition", "attachment; filename =\"" + fileName + "\"")
@@ -106,7 +106,7 @@ public class ReportResource extends BaseResource {
         });
         String fileName = "informeEvento-" + idEvento + ".pdf";
 
-        reportService.getPdfSesiones(sesiones, ostream);
+        reportService.getPdfSesiones(sesiones, ostream, getLocale());
 
         return Response.ok(ostream.toByteArray())
                 .header("Content-Disposition", "attachment; filename =\"" + fileName + "\"")
@@ -123,7 +123,7 @@ public class ReportResource extends BaseResource {
         Sesion sesion = sesionesService.getSesion(idSesion);
         String fileName = tipo + "_" + DateUtils.dateToSpanishStringWithHour(sesion.getFechaCelebracion()) + ".pdf";
 
-        reportService.getPdf(idSesion, ostream, tipo);
+        reportService.getPdf(idSesion, ostream, tipo, getLocale());
 
         return Response.ok(ostream.toByteArray())
                 .header("Content-Disposition", "attachment; filename =\"" + fileName + "\"")
@@ -137,7 +137,7 @@ public class ReportResource extends BaseResource {
         ByteArrayOutputStream ostream = new ByteArrayOutputStream();
 
         try {
-            reportService.getPdfEfectivo(fechaInicio, fechaFin, ostream);
+            reportService.getPdfEfectivo(fechaInicio, fechaFin, ostream, getLocale());
         } catch (SinIvaException e) {
             log.error("Error", e);
 
@@ -157,7 +157,7 @@ public class ReportResource extends BaseResource {
         ByteArrayOutputStream ostream = new ByteArrayOutputStream();
 
         try {
-            reportService.getPdfTpvSubtotales(fechaInicio, fechaFin, ostream);
+            reportService.getPdfTpvSubtotales(fechaInicio, fechaFin, ostream, getLocale());
         } catch (SinIvaException e) {
             log.error("Error", e);
 
@@ -177,7 +177,7 @@ public class ReportResource extends BaseResource {
         ByteArrayOutputStream ostream = new ByteArrayOutputStream();
 
         try {
-            reportService.getPdfEventos(fechaInicio, fechaFin, ostream);
+            reportService.getPdfEventos(fechaInicio, fechaFin, ostream, getLocale());
         } catch (SinIvaException e) {
             log.error("Error", e);
 

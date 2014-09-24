@@ -13,14 +13,19 @@ import java.util.List;
 @Service
 public class InformesService
 {
-    public List<TipoInforme> getTiposInforme()
+    public List<TipoInforme> getTiposInforme(String lang)
     {
         String tiposInforme = Configuration.getTiposInforme();
         Type listType = new TypeToken<ArrayList<TipoInforme>>() {}.getType();
         List<TipoInforme> tiposInformeDisponibles = new Gson().fromJson(tiposInforme, listType);
 
         for (TipoInforme tipoInformeDisponible:tiposInformeDisponibles) {
-            tipoInformeDisponible.setNombre(tipoInformeDisponible.getNombreCA());
+            if (lang != null) {
+                if (lang.equals("es"))
+                    tipoInformeDisponible.setNombre(tipoInformeDisponible.getNombreES());
+                else
+                    tipoInformeDisponible.setNombre(tipoInformeDisponible.getNombreCA());
+            }
         }
 
         return tiposInformeDisponibles;

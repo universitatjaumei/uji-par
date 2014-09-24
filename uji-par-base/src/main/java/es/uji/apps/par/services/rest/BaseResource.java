@@ -29,10 +29,18 @@ public class BaseResource
     	
     	return getLocale(lang);
     }
+
+    protected void setLocale(String lang)
+    {
+        if (lang != null && lang.length() > 0 && (lang.equals("es") || lang.equals("ca"))) {
+            HttpSession session = currentRequest.getSession();
+            session.setAttribute(LANG, lang);
+        }
+    }
     
     protected Locale getLocale(String lang)
     {
-        String idiomaFinal = "ca";
+        String idiomaFinal = Configuration.getIdiomaPorDefecto();
 
         if (lang != null && lang.length() > 0)
         {
