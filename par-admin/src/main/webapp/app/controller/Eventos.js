@@ -84,9 +84,6 @@ Ext.define('Paranimf.controller.Eventos', {
       ref: 'comboPlantillaPrecios',
       selector: 'formSesiones combobox[name=plantillaPrecios]'
    }, {
-      ref: 'comboFormato',
-      selector: 'formSesiones combobox[name=formato]'
-   }, {
       ref: 'comboVersionLinguistica',
       selector: 'formSesiones combobox[name=versionLinguistica]'
    }, {
@@ -360,15 +357,11 @@ Ext.define('Paranimf.controller.Eventos', {
 
       if (!this.getGridEventos().getSelectedRecord().data.parTiposEvento.exportarICAA) {
          this.getSesionCine().hide();
-         this.getComboFormato().allowBlank = true;
          this.getComboVersionLinguistica().allowBlank = true;
-         this.getComboFormato().setFieldLabel(UI.i18n.field.formato);
          this.getComboVersionLinguistica().setFieldLabel(UI.i18n.field.versionLinguistica);
       } else {
          this.getSesionCine().show();
-         this.getComboFormato().allowBlank = false;
          this.getComboVersionLinguistica().allowBlank = false;
-         this.getComboFormato().setFieldLabel(UI.i18n.field.formato + ' <span class="req" style="color:red">*</span>');
          this.getComboVersionLinguistica().setFieldLabel(UI.i18n.field.versionLinguistica + ' <span class="req" style="color:red">*</span>');
       }
    },
