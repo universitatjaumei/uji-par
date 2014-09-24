@@ -366,6 +366,12 @@ Ext.define('Paranimf.controller.Eventos', {
          this.getSesionCine().show();
          this.getComboVersionLinguistica().allowBlank = false;
          this.getComboVersionLinguistica().setFieldLabel(UI.i18n.field.versionLinguistica + ' <span class="req" style="color:red">*</span>');
+
+         var isMultisesion = false;
+         if (this.getGridEventos().getSelectedRecord().data.multisesion) {
+            this.getComboVersionLinguistica().allowBlank = true;
+            this.getComboVersionLinguistica().hide();
+         }
       }
    },
 
