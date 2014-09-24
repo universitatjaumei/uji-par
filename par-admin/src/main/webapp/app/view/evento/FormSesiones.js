@@ -27,7 +27,7 @@ Ext.define('Paranimf.view.evento.FormSesiones', {
       title: UI.i18n.field.dadesGenerals,
       defaults: {
          anchor: '100%',
-         labelWidth: 190,
+         labelWidth: 200,
          allowBlank: false
       },
       items: [{
@@ -70,7 +70,7 @@ Ext.define('Paranimf.view.evento.FormSesiones', {
       title: UI.i18n.field.reservesOnline,
       defaults: {
          anchor: '100%',
-         labelWidth: 190,
+         labelWidth: 200,
          allowBlank: false
       },
       items: [ {
@@ -117,7 +117,7 @@ Ext.define('Paranimf.view.evento.FormSesiones', {
         name: 'sesionCine',
 	      defaults: {
 	         anchor: '100%',
-	         labelWidth: 190
+	         labelWidth: 200
 	      },
 	      items: [{
 	          fieldLabel: UI.i18n.field.name,

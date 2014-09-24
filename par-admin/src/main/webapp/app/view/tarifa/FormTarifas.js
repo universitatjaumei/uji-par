@@ -18,7 +18,7 @@ Ext.define('Paranimf.view.tarifa.FormTarifas', {
       hidden: true,
       allowBlank: true
    }, {
-		fieldLabel: UI.i18n.field.name_va,
+		fieldLabel: UI.i18n.field.nameMulti,
 		name: 'nombre'
 	}, {
       fieldLabel: UI.i18n.field.isPublico,

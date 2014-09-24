@@ -22,7 +22,7 @@ Ext.define('Paranimf.view.tarifa.GridTarifas', {
          text: UI.i18n.field.idIntern
       }, {
           dataIndex: 'nombre',
-          text: UI.i18n.field.name_va,
+          text: UI.i18n.field.nameMulti,
           flex: 5
       }, {
         dataIndex: 'isPublico',
