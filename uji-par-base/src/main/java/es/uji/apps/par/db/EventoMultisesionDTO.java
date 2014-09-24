@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name="PAR_EVENTOS_MULTISESION", uniqueConstraints={@UniqueConstraint(columnNames={"ID", "EVENTO_ID"})})
+@Table(name="PAR_EVENTOS_MULTISESION", uniqueConstraints={@UniqueConstraint(columnNames={"EVENTO_ID", "EVENTO_HIJO_ID"})})
 public class EventoMultisesionDTO {
     @Id
     @SequenceGenerator(name="PAR_EVENTOS_MULTISESION_ID_GENERATOR", sequenceName="HIBERNATE_SEQUENCE")
@@ -18,6 +18,9 @@ public class EventoMultisesionDTO {
 	@ManyToOne
 	@JoinColumn(name="EVENTO_HIJO_ID")
 	private EventoDTO parEventoHijo;
+
+    @Column(name="VER_LING")
+    private String versionLinguistica;
 
     public long getId() {
         return id;
@@ -42,4 +45,12 @@ public class EventoMultisesionDTO {
 	public void setParEventoHijo(EventoDTO parEventoHijo) {
 		this.parEventoHijo = parEventoHijo;
 	}
+
+    public String getVersionLinguistica() {
+        return versionLinguistica;
+    }
+
+    public void setVersionLinguistica(String versionLinguistica) {
+        this.versionLinguistica = versionLinguistica;
+    }
 }

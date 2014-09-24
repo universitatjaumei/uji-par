@@ -16,6 +16,7 @@ import javax.persistence.Query;
 import com.mysema.query.jpa.JPASubQuery;
 import com.mysema.query.jpa.sql.JPASQLQuery;
 import es.uji.apps.par.db.*;
+import es.uji.apps.par.model.EventoMultisesion;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,7 +41,7 @@ public class EventosDAO extends BaseDAO
 {
     private QEventoDTO qEventoDTO = QEventoDTO.eventoDTO;
     private QEventoMultisesionDTO qEventoMultisesionDTO = QEventoMultisesionDTO.eventoMultisesionDTO;
-    
+
     private DatabaseHelper databaseHelper;
 
     public EventosDAO()
@@ -53,104 +54,104 @@ public class EventosDAO extends BaseDAO
     {
         return getEventosConPrimeraFechaCelebracion(false, sortParameter, start, limit);
     }
-    
+
     @Transactional
     public List<Evento> getEventosActivos(String sortParameter, int start, int limit)
     {
         return getEventosConPrimeraFechaCelebracion(true, sortParameter, start, limit);
     }
-    
-    @SuppressWarnings({ "rawtypes" })
-	protected OrderSpecifier<String> getSort(EntityPath entity, String sortParameter, EntityPath entityOpcional) {
-    	if (hasSort(sortParameter) && !sortParameter.contains("fechaPrimeraSesion"))
-    		return super.getSort(entity, sortParameter);
 
-		StringPath strPath = new StringPath(entityOpcional, "fechaCelebracion");
-		return strPath.desc();
+    @SuppressWarnings({ "rawtypes" })
+    protected OrderSpecifier<String> getSort(EntityPath entity, String sortParameter, EntityPath entityOpcional) {
+        if (hasSort(sortParameter) && !sortParameter.contains("fechaPrimeraSesion"))
+            return super.getSort(entity, sortParameter);
+
+        StringPath strPath = new StringPath(entityOpcional, "fechaCelebracion");
+        return strPath.desc();
     }
-    
+
     @Transactional
     public List<Evento> getEventosConSesiones()
     {
         QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
         JPAQuery query = new JPAQuery(entityManager);
         List<EventoDTO> eventos = query.from(qEventoDTO).leftJoin(qEventoDTO.parSesiones, qSesionDTO).fetch().list(qEventoDTO);
-        
+
         // En la consulta no podemos usar el distinct por culpa del BLOB
         eventos = eliminaRepetidos(eventos);
-        
+
         return toEventosConSesiones(eventos);
     }
-    
-	private List<EventoDTO> eliminaRepetidos(List<EventoDTO> eventos)
+
+    private List<EventoDTO> eliminaRepetidos(List<EventoDTO> eventos)
     {
-	    List<EventoDTO> result = new ArrayList<EventoDTO>();
-	    Set<Long> idsProcesados = new HashSet<Long>();
-	    
-	    for (EventoDTO eventoDTO : eventos)
+        List<EventoDTO> result = new ArrayList<EventoDTO>();
+        Set<Long> idsProcesados = new HashSet<Long>();
+
+        for (EventoDTO eventoDTO : eventos)
         {
-	        if (!idsProcesados.contains(eventoDTO.getId()))
-	        {
-	            result.add(eventoDTO);
-	            idsProcesados.add(eventoDTO.getId());
-	        }
-            
+            if (!idsProcesados.contains(eventoDTO.getId()))
+            {
+                result.add(eventoDTO);
+                idsProcesados.add(eventoDTO.getId());
+            }
+
         }
-	    
+
         return result;
     }
 
     private List<Evento> toEventosConSesiones(List<EventoDTO> eventosDTO)
     {
-	    List<Evento> eventos = new ArrayList<Evento>();
-	    
-	    for (EventoDTO eventoDTO: eventosDTO)
-	    {
-	        Evento evento = Evento.eventoDTOtoEvento(eventoDTO);
-	        
-	        List<Sesion> sesiones = new ArrayList<Sesion>();
-	        
-	        if (eventoDTO.getParSesiones() != null)
-	        {
+        List<Evento> eventos = new ArrayList<Evento>();
+
+        for (EventoDTO eventoDTO: eventosDTO)
+        {
+            Evento evento = Evento.eventoDTOtoEvento(eventoDTO);
+
+            List<Sesion> sesiones = new ArrayList<Sesion>();
+
+            if (eventoDTO.getParSesiones() != null)
+            {
                 for (SesionDTO sesionDTO:eventoDTO.getParSesiones())
                 {
                     sesiones.add(Sesion.SesionDTOToSesionSinEvento(sesionDTO));
                 }
-	        }
-	        
-	        evento.setSesiones(sesiones);
-	        
-	        eventos.add(evento);
-	    }
+            }
 
-	    return eventos;
+            evento.setSesiones(sesiones);
+
+            eventos.add(evento);
+        }
+
+        return eventos;
     }
 
     @Transactional
     private List<Evento> getEventosConPrimeraFechaCelebracion(boolean activos, String sortParameter, int start, int limit)
     {
         String sql = "select distinct e.CARACTERISTICAS_ES, e.CARACTERISTICAS_VA, e.COMENTARIOS_ES, e.COMENTARIOS_VA, e.COMPANYIA_ES, e.COMPANYIA_VA, " +
-        		" e.DESCRIPCION_ES, e.DESCRIPCION_VA, e.DURACION_ES, e.DURACION_VA, t.ID as tipoId, t.NOMBRE_ES as parTiposEvento, t.NOMBRE_VA , e.PREMIOS_ES, " +
-        		" e.PREMIOS_VA, e.TITULO_ES as tituloes, e.TITULO_VA as titulova, e.IMAGEN_SRC as imagensrc, e.IMAGEN_CONTENT_TYPE, e.ID, e.ASIENTOS_NUMERADOS as asientosnumerados, " +
-        		" e.RETENCION_SGAE as retencionsgae, e.IVA_SGAE as ivasgae, e.PORCENTAJE_IVA as porcentajeiva, " +
-        		" e.RSS_ID as rssid, (select min(s.FECHA_CELEBRACION) from PAR_SESIONES s where e.id=s.EVENTO_ID) as fechaPrimeraSesion, " +
-        		" e.EXPEDIENTE, e.COD_DISTRI, e.NOM_DISTRI, e.NACIONALIDAD, e.VO, e.METRAJE, e.SUBTITULOS, t.exportar_icaa, e.formato, " +
-				" (select count(*) from par_eventos_multisesion pem where pem.evento_id = e.id) " +
-        		" from PAR_EVENTOS e left outer join PAR_SESIONES s on e.id=s.EVENTO_ID inner join PAR_TIPOS_EVENTO t on e.TIPO_EVENTO_ID=t.id " +
-        		(activos?getWhereActivos():getWhereTodos()) +
-        		" order by ";
-        
+                " e.DESCRIPCION_ES, e.DESCRIPCION_VA, e.DURACION_ES, e.DURACION_VA, t.ID as tipoId, t.NOMBRE_ES as parTiposEvento, t.NOMBRE_VA , e.PREMIOS_ES, " +
+                " e.PREMIOS_VA, e.TITULO_ES as tituloes, e.TITULO_VA as titulova, e.IMAGEN_SRC as imagensrc, e.IMAGEN_CONTENT_TYPE, e.ID, e.ASIENTOS_NUMERADOS as asientosnumerados, " +
+                " e.RETENCION_SGAE as retencionsgae, e.IVA_SGAE as ivasgae, e.PORCENTAJE_IVA as porcentajeiva, " +
+                " e.RSS_ID as rssid, (select min(s.FECHA_CELEBRACION) from PAR_SESIONES s where e.id=s.EVENTO_ID) as fechaPrimeraSesion, " +
+                " e.EXPEDIENTE, e.COD_DISTRI, e.NOM_DISTRI, e.NACIONALIDAD, e.VO, e.METRAJE, e.SUBTITULOS, t.exportar_icaa, e.formato, " +
+                " (select count(*) from par_eventos_multisesion pem where pem.evento_id = e.id) " +
+                " from PAR_EVENTOS e left outer join PAR_SESIONES s on e.id=s.EVENTO_ID inner join PAR_TIPOS_EVENTO t on e.TIPO_EVENTO_ID=t.id " +
+                (activos?getWhereActivos():getWhereTodos()) +
+                " order by ";
+
         Type type = new TypeToken<List<Map<String,String>>>(){}.getType();
         List<Map<String,String>> order = new Gson().fromJson(sortParameter, type);
-        
+
         sql += order.get(0).get("property") + " " + order.get(0).get("direction");
-        
+
         String sqlPaginado = paginaConsulta(start, limit, sql);
-        
+
         Query query = entityManager.createNativeQuery(sqlPaginado);
-        
+
         List<Object[]> result = query.getResultList();
-        
+
         return listadoTuplasConFechaAListadoEventos(result);
     }
 
@@ -158,7 +159,7 @@ public class EventosDAO extends BaseDAO
     {
         return databaseHelper.paginate(start, limit, sql);
     }
-    
+
     private String getWhereTodos()
     {
         return "";
@@ -168,7 +169,7 @@ public class EventosDAO extends BaseDAO
     {
         return " where s.FECHA_CELEBRACION >= TO_DATE('" + DateUtils.dateToSpanishStringWithHour(DateUtils.dateConMargenTrasVenta()) + "','DD/MM/YYYY HH24:MI') ";
     }
-    
+
     @Transactional
     private Evento objectArrayToEvento(Object [] array) {
         Evento evento = new Evento();
@@ -208,18 +209,18 @@ public class EventosDAO extends BaseDAO
         evento.setImagenContentType((String) array[18]);
 
         evento.setId(databaseHelper.castId(array[19]));
-        
+
         evento.setAsientosNumerados(databaseHelper.castBoolean(array[20]));
         evento.setRetencionSGAE(databaseHelper.castBigDecimal(array[21]));
         evento.setIvaSGAE(databaseHelper.castBigDecimal(array[22]));
         evento.setPorcentajeIVA(databaseHelper.castBigDecimal(array[23]));
-        
+
         evento.setRssId((String) array[24]);
-        
+
         Timestamp ts = (Timestamp) array[25];
         if (ts != null)
             evento.setFechaPrimeraSesion(new Date(ts.getTime()));
-        
+
         evento.setExpediente((String) array[26]);
         evento.setCodigoDistribuidora((String) array[27]);
         evento.setNombreDistribuidora((String) array[28]);
@@ -229,45 +230,45 @@ public class EventosDAO extends BaseDAO
         evento.setSubtitulos((String) array[32]);
         evento.setFormato((String) array[34]);
 
-		if (array.length >= 36) {
-			BigDecimal numeroEventosHijos = databaseHelper.castBigDecimal(array[35]);
-			evento.setMultisesion((numeroEventosHijos.compareTo(BigDecimal.ZERO)==0)?"":"on");
-		}
+        if (array.length >= 36) {
+            BigDecimal numeroEventosHijos = databaseHelper.castBigDecimal(array[35]);
+            evento.setMultisesion((numeroEventosHijos.compareTo(BigDecimal.ZERO)==0)?"":"on");
+        }
 
         return evento;
-    }    
-    
-	@Transactional
-	private JPAQuery getQueryEventos() {
-    	QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
-		JPAQuery query = new JPAQuery(entityManager);
-		return query.from(qEventoDTO).leftJoin(qEventoDTO.parSesiones, qSesionDTO).distinct();
-	}
+    }
 
     @Transactional
-	private JPAQuery getQueryEventosActivos() {
-		QTipoEventoDTO qTipoEventoDTO = QTipoEventoDTO.tipoEventoDTO;
+    private JPAQuery getQueryEventos() {
         QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
-		JPAQuery query = new JPAQuery(entityManager);
-		
-		Timestamp now = new Timestamp(DateUtils.dateConMargenTrasVenta().getTime());
-		
-		return query
-		    .from(qEventoDTO, qTipoEventoDTO)
-		    .innerJoin(qEventoDTO.parSesiones, qSesionDTO)
-		    .distinct()
-		    .where(qEventoDTO.parTiposEvento.id.eq(qTipoEventoDTO.id).and(qSesionDTO.fechaCelebracion.after(now)));
-	}
-	@Transactional
-	private List<Evento> listadoTuplasConFechaAListadoEventos(List<Object[]> listEventoFechaSesion) {
-		List<Evento> listadoEventos = new ArrayList<Evento>();
-		for (Object[] eventoConFecha : listEventoFechaSesion) {
-			
-			Evento evento = objectArrayToEvento(eventoConFecha);
-			listadoEventos.add(evento);
-		}
-		return listadoEventos;
-	}
+        JPAQuery query = new JPAQuery(entityManager);
+        return query.from(qEventoDTO).leftJoin(qEventoDTO.parSesiones, qSesionDTO).distinct();
+    }
+
+    @Transactional
+    private JPAQuery getQueryEventosActivos() {
+        QTipoEventoDTO qTipoEventoDTO = QTipoEventoDTO.tipoEventoDTO;
+        QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
+        JPAQuery query = new JPAQuery(entityManager);
+
+        Timestamp now = new Timestamp(DateUtils.dateConMargenTrasVenta().getTime());
+
+        return query
+                .from(qEventoDTO, qTipoEventoDTO)
+                .innerJoin(qEventoDTO.parSesiones, qSesionDTO)
+                .distinct()
+                .where(qEventoDTO.parTiposEvento.id.eq(qTipoEventoDTO.id).and(qSesionDTO.fechaCelebracion.after(now)));
+    }
+    @Transactional
+    private List<Evento> listadoTuplasConFechaAListadoEventos(List<Object[]> listEventoFechaSesion) {
+        List<Evento> listadoEventos = new ArrayList<Evento>();
+        for (Object[] eventoConFecha : listEventoFechaSesion) {
+
+            Evento evento = objectArrayToEvento(eventoConFecha);
+            listadoEventos.add(evento);
+        }
+        return listadoEventos;
+    }
 
     @Transactional
     public long removeEvento(long id)
@@ -285,7 +286,7 @@ public class EventosDAO extends BaseDAO
         entityManager.persist(eventoDTO);
 
         evento.setId(eventoDTO.getId());
-		updateEventosMultisesion(eventoDTO.getId(), evento.getEventosMultisesion());
+        updateEventosMultisesion(eventoDTO.getId(), evento.getEventosMultisesion());
         return evento;
     }
 
@@ -329,7 +330,7 @@ public class EventosDAO extends BaseDAO
         eventoDTO.setRssId(evento.getRssId());
         eventoDTO.setTituloEs(evento.getTituloEs());
         eventoDTO.setTituloVa(evento.getTituloVa());
-        
+
         eventoDTO.setPorcentajeIva(evento.getPorcentajeIVA());
         eventoDTO.setAsientosNumerados(evento.getAsientosNumerados());
         eventoDTO.setRetencionSgae(evento.getRetencionSGAE());
@@ -343,7 +344,7 @@ public class EventosDAO extends BaseDAO
         eventoDTO.setVo(evento.getVo());
         eventoDTO.setMetraje(evento.getMetraje());
         eventoDTO.setSubtitulos(evento.getSubtitulos());
-        
+
         if (evento.getId() != 0)
             eventoDTO.setId(evento.getId());
 
@@ -353,75 +354,76 @@ public class EventosDAO extends BaseDAO
     @Transactional
     public Evento updateEvento(Evento evento)
     {
-		EventoDTO eventoDTO = getEventoById(evento.getId());
+        EventoDTO eventoDTO = getEventoById(evento.getId());
 
-		eventoDTO.setRssId(evento.getRssId());
-		eventoDTO.setTituloEs(evento.getTituloEs());
-		eventoDTO.setTituloVa(evento.getTituloVa());
-		eventoDTO.setDescripcionEs(evento.getDescripcionEs());
-		eventoDTO.setDescripcionVa(evento.getDescripcionVa());
-		eventoDTO.setComentariosEs(evento.getComentariosEs());
-		eventoDTO.setComentariosVa(evento.getComentariosVa());
-		eventoDTO.setInterpretesEs(evento.getInterpretesEs());
-		eventoDTO.setInterpretesVa(evento.getInterpretesVa());
-		eventoDTO.setDuracionEs(evento.getDuracionEs());
-		eventoDTO.setDuracionVa(evento.getDuracionVa());
-		eventoDTO.setPremiosEs(evento.getPremiosEs());
-		eventoDTO.setPremiosVa(evento.getPremiosVa());
-		eventoDTO.setCaracteristicasEs(evento.getCaracteristicasEs());
-		eventoDTO.setCaracteristicasVa(evento.getCaracteristicasVa());
-		eventoDTO.setComentariosEs(evento.getComentariosEs());
-		eventoDTO.setComentariosVa(evento.getComentariosVa());
+        eventoDTO.setRssId(evento.getRssId());
+        eventoDTO.setTituloEs(evento.getTituloEs());
+        eventoDTO.setTituloVa(evento.getTituloVa());
+        eventoDTO.setDescripcionEs(evento.getDescripcionEs());
+        eventoDTO.setDescripcionVa(evento.getDescripcionVa());
+        eventoDTO.setComentariosEs(evento.getComentariosEs());
+        eventoDTO.setComentariosVa(evento.getComentariosVa());
+        eventoDTO.setInterpretesEs(evento.getInterpretesEs());
+        eventoDTO.setInterpretesVa(evento.getInterpretesVa());
+        eventoDTO.setDuracionEs(evento.getDuracionEs());
+        eventoDTO.setDuracionVa(evento.getDuracionVa());
+        eventoDTO.setPremiosEs(evento.getPremiosEs());
+        eventoDTO.setPremiosVa(evento.getPremiosVa());
+        eventoDTO.setCaracteristicasEs(evento.getCaracteristicasEs());
+        eventoDTO.setCaracteristicasVa(evento.getCaracteristicasVa());
+        eventoDTO.setComentariosEs(evento.getComentariosEs());
+        eventoDTO.setComentariosVa(evento.getComentariosVa());
 
-		eventoDTO.setRetencionSgae(evento.getRetencionSGAE());
-		eventoDTO.setIvaSgae(evento.getIvaSGAE());
-		eventoDTO.setPorcentajeIva(evento.getPorcentajeIVA());
+        eventoDTO.setRetencionSgae(evento.getRetencionSGAE());
+        eventoDTO.setIvaSgae(evento.getIvaSGAE());
+        eventoDTO.setPorcentajeIva(evento.getPorcentajeIVA());
 
-		eventoDTO.setAsientosNumerados(evento.getAsientosNumerados());
-		eventoDTO.setExpediente(evento.getExpediente());
+        eventoDTO.setAsientosNumerados(evento.getAsientosNumerados());
+        eventoDTO.setExpediente(evento.getExpediente());
         eventoDTO.setFormato(evento.getFormato());
-		eventoDTO.setCodigoDistribuidora(evento.getCodigoDistribuidora());
-		eventoDTO.setNombreDistribuidora(evento.getNombreDistribuidora());
-		eventoDTO.setNacionalidad(evento.getNacionalidad());
-		eventoDTO.setVo(evento.getVo());
-		eventoDTO.setMetraje(evento.getMetraje());
-		eventoDTO.setSubtitulos(evento.getSubtitulos());
+        eventoDTO.setCodigoDistribuidora(evento.getCodigoDistribuidora());
+        eventoDTO.setNombreDistribuidora(evento.getNombreDistribuidora());
+        eventoDTO.setNacionalidad(evento.getNacionalidad());
+        eventoDTO.setVo(evento.getVo());
+        eventoDTO.setMetraje(evento.getMetraje());
+        eventoDTO.setSubtitulos(evento.getSubtitulos());
 
-		eventoDTO.setParTiposEvento(TipoEvento.tipoEventoToTipoEventoDTO(evento.getParTiposEvento()));
+        eventoDTO.setParTiposEvento(TipoEvento.tipoEventoToTipoEventoDTO(evento.getParTiposEvento()));
 
-		if (evento.getImagenSrc() != null && !evento.getImagenSrc().equals("")) {
-			eventoDTO.setImagen(evento.getImagen());
-			eventoDTO.setImagenSrc(evento.getImagenSrc());
-			eventoDTO.setImagenContentType(evento.getImagenContentType());
-		}
+        if (evento.getImagenSrc() != null && !evento.getImagenSrc().equals("")) {
+            eventoDTO.setImagen(evento.getImagen());
+            eventoDTO.setImagenSrc(evento.getImagenSrc());
+            eventoDTO.setImagenContentType(evento.getImagenContentType());
+        }
 
-		entityManager.persist(eventoDTO);
+        entityManager.persist(eventoDTO);
 
-		updateEventosMultisesion(evento.getId(), evento.getEventosMultisesion());
+        updateEventosMultisesion(evento.getId(), evento.getEventosMultisesion());
         return evento;
     }
 
-	@Transactional
-	private void updateEventosMultisesion(long idEvento, List<Evento> eventosMultisesion) {
-		JPADeleteClause del = new JPADeleteClause(entityManager, qEventoMultisesionDTO);
-		del.where(qEventoMultisesionDTO.parEvento.id.eq(idEvento)).execute();
+    @Transactional
+    private void updateEventosMultisesion(long idEvento, List<EventoMultisesion> eventosMultisesion) {
+        JPADeleteClause del = new JPADeleteClause(entityManager, qEventoMultisesionDTO);
+        del.where(qEventoMultisesionDTO.parEvento.id.eq(idEvento)).execute();
 
-		if (eventosMultisesion != null) {
-			for (Evento eventoHijo: eventosMultisesion) {
-				EventoMultisesionDTO eventoMultisesionDTO = new EventoMultisesionDTO();
-				eventoMultisesionDTO.setParEvento(new EventoDTO(idEvento));
-				eventoMultisesionDTO.setParEventoHijo(new EventoDTO(eventoHijo.getId()));
-				entityManager.persist(eventoMultisesionDTO);
-			}
-		}
-	}
+        if (eventosMultisesion != null) {
+            for (EventoMultisesion eventoHijo: eventosMultisesion) {
+                EventoMultisesionDTO eventoMultisesionDTO = new EventoMultisesionDTO();
+                eventoMultisesionDTO.setParEvento(new EventoDTO(idEvento));
+                eventoMultisesionDTO.setParEventoHijo(new EventoDTO(eventoHijo.getId()));
+                eventoMultisesionDTO.setVersionLinguistica(eventoHijo.getVersionLinguistica());
+                entityManager.persist(eventoMultisesionDTO);
+            }
+        }
+    }
 
-	@Transactional
+    @Transactional
     public EventoDTO updateEventoDTO(EventoDTO eventoDTO)
     {
-       return entityManager.merge(eventoDTO);
+        return entityManager.merge(eventoDTO);
     }
-    
+
     @Transactional
     public void deleteImagen(long eventoId)
     {
@@ -432,56 +434,56 @@ public class EventosDAO extends BaseDAO
     }
 
     @Transactional
-	public EventoDTO getEventoById(long eventoId) {
-		return entityManager.find(EventoDTO.class, eventoId);
-	}
-    
+    public EventoDTO getEventoById(long eventoId) {
+        return entityManager.find(EventoDTO.class, eventoId);
+    }
+
     @Transactional
     public EventoDTO getEventoByRssId(String rssId) {
-        
+
         QTipoEventoDTO qTipoEvento = QTipoEventoDTO.tipoEventoDTO;
-        
+
         JPAQuery query = new JPAQuery(entityManager);
 
-         List<EventoDTO> eventos = query
+        List<EventoDTO> eventos = query
                 .from(qEventoDTO)
                 .leftJoin(qEventoDTO.parTiposEvento, qTipoEvento).fetch()
                 .where(qEventoDTO.rssId.eq(rssId))
                 .list(qEventoDTO);
-         
-         if (eventos.size() == 0)
-             return null;
-         else if (eventos.size() == 1)
-             return eventos.get(0);
-         else
-             throw new RuntimeException("Hay varios eventos con el mismo RSS_ID");
+
+        if (eventos.size() == 0)
+            return null;
+        else if (eventos.size() == 1)
+            return eventos.get(0);
+        else
+            throw new RuntimeException("Hay varios eventos con el mismo RSS_ID");
     }
 
     @Transactional
-	public int getTotalEventosActivos() {
-		return (int) getQueryEventosActivos().count();
-	}
+    public int getTotalEventosActivos() {
+        return (int) getQueryEventosActivos().count();
+    }
 
     @Transactional
-	public int getTotalEventos() {
-		return (int) getQueryEventos().count();
-	}
+    public int getTotalEventos() {
+        return (int) getQueryEventos().count();
+    }
 
     @Transactional
-	public List<EventoDTO> getEventosActivosParaVentaOnline() {
-		JPAQuery query = new JPAQuery(entityManager);
-		QSesionDTO qSesionDTO = new QSesionDTO("qSesionDTO");
-		Calendar cal = Calendar.getInstance();
-		Timestamp currentTime = new Timestamp(cal.getTime().getTime());
-		
-		return query.from(qEventoDTO).join(qEventoDTO.parSesiones, qSesionDTO).where(
-			qSesionDTO.canalInternet.eq(true).and(
-			qSesionDTO.fechaInicioVentaOnline.before(currentTime).and(
-			qSesionDTO.fechaFinVentaOnline.after(currentTime)))).list(qEventoDTO);
-	}
+    public List<EventoDTO> getEventosActivosParaVentaOnline() {
+        JPAQuery query = new JPAQuery(entityManager);
+        QSesionDTO qSesionDTO = new QSesionDTO("qSesionDTO");
+        Calendar cal = Calendar.getInstance();
+        Timestamp currentTime = new Timestamp(cal.getTime().getTime());
 
-	@Transactional
-	public List<EventoDTO> getPeliculas() {
+        return query.from(qEventoDTO).join(qEventoDTO.parSesiones, qSesionDTO).where(
+                qSesionDTO.canalInternet.eq(true).and(
+                        qSesionDTO.fechaInicioVentaOnline.before(currentTime).and(
+                                qSesionDTO.fechaFinVentaOnline.after(currentTime)))).list(qEventoDTO);
+    }
+
+    @Transactional
+    public List<EventoDTO> getPeliculas() {
 		JPAQuery query = new JPAQuery(entityManager);
 		QTipoEventoDTO tiposICAA = new QTipoEventoDTO("tiposICAA");
 
@@ -490,13 +492,22 @@ public class EventosDAO extends BaseDAO
 						new JPASubQuery().from(tiposICAA).where(tiposICAA.exportarICAA.eq(true)).list(tiposICAA.id)
 				)
 		).orderBy(qEventoDTO.tituloEs.asc()).orderBy(qEventoDTO.tituloVa.asc()).list(qEventoDTO);
-	}
+    }
 
-	@Transactional
-	public List<EventoDTO> getPeliculas(long eventoId) {
-		JPAQuery query = new JPAQuery(entityManager);
+    @Transactional
+    public List<EventoDTO> getPeliculas(long eventoId) {
+        JPAQuery query = new JPAQuery(entityManager);
 
-		return query.from(qEventoMultisesionDTO).where(qEventoMultisesionDTO.parEvento.id.eq(eventoId)).orderBy
-				(qEventoMultisesionDTO.id.asc()).list(qEventoMultisesionDTO.parEventoHijo);
-	}
+        return query.from(qEventoMultisesionDTO).where(qEventoMultisesionDTO.parEvento.id.eq(eventoId)).orderBy
+                (qEventoMultisesionDTO.id.asc()).list(qEventoMultisesionDTO.parEventoHijo);
+    }
+
+    @Transactional
+    public List<Object[]> getPeliculasMultisesion(long eventoId) {
+        String sql = "select e.id, e.titulo_es, e.titulo_va, em.ver_ling from par_eventos_multisesion em left join par_eventos e on e.id = em.evento_hijo_id where em.evento_id = " + eventoId;
+
+        Query query = entityManager.createNativeQuery(sql);
+
+        return query.getResultList();
+    }
 }

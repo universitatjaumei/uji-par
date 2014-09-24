@@ -165,6 +165,7 @@ UI =
             "formato": "Formato",
             "imagen": "Imagen",
             "codigoDistribuidora": "Código distribuidora",
+            "selectPelicula": "Película",
             "versionLinguistica": "Versión lingüística",
             "staffMulti": "Intérpretes",
             "duration": "Duración",

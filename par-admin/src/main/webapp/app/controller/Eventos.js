@@ -87,6 +87,9 @@ Ext.define('Paranimf.controller.Eventos', {
       ref: 'comboVersionLinguistica',
       selector: 'formSesiones combobox[name=versionLinguistica]'
    }, {
+      ref: 'comboVersionLinguisticaMultisesion',
+      selector: 'formPeliculaMultisesion combobox[name=versionLinguistica]'
+   }, {
       ref: 'comboPeliculas',
       selector: 'formPeliculaMultisesion combobox[name=peliculas]'
    }, {
@@ -481,7 +484,7 @@ Ext.define('Paranimf.controller.Eventos', {
    saveEventoFormData: function(button, event, opts) {
       var grid = this.getGridEventos();
       var form = this.getFormEventos();
-      this.getJsonEventosMultisesion().setValue(this.getGridEventosMultisesion().onlyIdsToJSON());
+      this.getJsonEventosMultisesion().setValue(this.getGridEventosMultisesion().toJSON());
       form.saveFormData(grid, urlPrefix + 'evento', undefined, 'multipart/form-data', function(form, action) {
          if (action != undefined && action.response != undefined && action.response.responseText != undefined) {
             var respuesta = Ext.JSON.decode(action.response.responseText, true);
@@ -588,7 +591,8 @@ Ext.define('Paranimf.controller.Eventos', {
             if (!this.getGridEventosMultisesion().containsId(this.getComboPeliculas().value)) {
                var record = {
                   id: this.getComboPeliculas().value,
-                  tituloEs: this.getComboPeliculas().rawValue
+                  tituloEs: this.getComboPeliculas().rawValue,
+                  versionLinguistica: this.getComboVersionLinguisticaMultisesion().value
                };
                this.getGridEventosMultisesion().addItemToStore(record);
                this.getFormPeliculaMultisesion().up("window").close();

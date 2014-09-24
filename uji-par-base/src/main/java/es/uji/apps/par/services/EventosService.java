@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.uji.apps.par.model.EventoMultisesion;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -162,8 +163,17 @@ public class EventosService
 		return listPeliculas;
 	}
 
-	public List<Evento> getPeliculas(long eventoId) {
-		List<EventoDTO> listPeliculasDTO = eventosDAO.getPeliculas(eventoId);
-		return getEventos(listPeliculasDTO);
+    private List<EventoMultisesion> getEventosMultisesion(List<Object[]> list) {
+        List<EventoMultisesion> listPeliculas = new ArrayList<>();
+        for (Object[] pelicula: list) {
+            EventoMultisesion evento = EventoMultisesion.objetToEventoMultisesion(pelicula);
+            listPeliculas.add(evento);
+        }
+        return listPeliculas;
+    }
+
+	public List<EventoMultisesion> getPeliculas(long eventoId) {
+		List<Object[]> listPeliculasDTO = eventosDAO.getPeliculasMultisesion(eventoId);
+		return getEventosMultisesion(listPeliculasDTO);
 	}
 }

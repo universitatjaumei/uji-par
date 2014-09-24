@@ -346,6 +346,7 @@ UI =
             "dadesGenerals": "Dades generals",
             "sesionCine": "Dades per a cinema",
             "formato": "Format",
+            "selectPelicula": "Pel·lícula",
             "versionLinguistica": "Versió lingüística",
             "sala": "Sala",
             "tipoPago": "Pagament",

@@ -48,6 +48,9 @@ Ext.define('Paranimf.model.Evento', {
       'formato',
       'metraje',
       'subtitulos',
-      'multisesion'
+      'multisesion',
+
+      //Multisesión
+      'versionLinguistica'
    ]
 });

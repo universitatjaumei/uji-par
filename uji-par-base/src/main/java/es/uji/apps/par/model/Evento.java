@@ -63,7 +63,7 @@ public class Evento
     private String metraje;  
     private String subtitulos;
 	private String multisesion; //representa al checkbox
-	private List<Evento> eventosMultisesion;
+	private List<EventoMultisesion> eventosMultisesion;
 
     public Evento()
     {
@@ -724,20 +724,14 @@ public class Evento
 	}
 
 
-	public List<Evento> getEventosMultisesion() {
+	public List<EventoMultisesion> getEventosMultisesion() {
 		return eventosMultisesion;
 	}
 
 	public void setEventosMultisesion(String jsonEventosMultisesion) {
-		Gson gson = new Gson();
-		Type collectionType = new TypeToken<List<Integer>>(){}.getType();
-		List<Integer> list = gson.fromJson(jsonEventosMultisesion, collectionType);
-		List<Evento> eventos = new ArrayList<Evento>();
-		for (Integer idEvento: list) {
-			Evento e = new Evento(idEvento);
-			eventos.add(e);
-		}
-		this.eventosMultisesion = eventos;
+        Gson gson = new Gson();
+        List<EventoMultisesion> eventos = gson.fromJson(jsonEventosMultisesion, new TypeToken<List<EventoMultisesion>>(){}.getType());
+        this.eventosMultisesion = eventos;
 	}
 
 	public String getMultisesion() {
