@@ -81,22 +81,12 @@ public class FicherosService
         Calendar cal = Calendar.getInstance();
         registroBuzon.setFechaEnvio(cal.getTime());
         registroBuzon.setTipo(tipo);
-        registroBuzon.setSesiones(getNumeroSesionesValidasParaFichero(sesiones));
+        registroBuzon.setSesiones(sesionesDAO.getNumeroSesionesValidasParaFicheroICAA(sesiones));
         registroBuzon.setRecaudacion(comprasDAO.getRecaudacionSesiones(sesiones));
         registroBuzon.setEspectadores(comprasDAO.getEspectadores(sesiones));
 
         return registroBuzon;
     }
-
-	private int getNumeroSesionesValidasParaFichero(List<Sesion> sesiones) throws IncidenciaNotFoundException {
-		int numeroSesiones = 0;
-		for (Sesion sesion: sesiones) {
-			if (!sesionesDAO.isIncidenciaCancelacionEvento(sesion.getIncidenciaId())) {
-				numeroSesiones++;
-			}
-		}
-		return numeroSesiones;
-	}
 
 	private List<RegistroSala> generaRegistrosSala(List<Sesion> sesiones) throws UnsupportedEncodingException
     {
