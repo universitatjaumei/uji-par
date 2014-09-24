@@ -15,7 +15,9 @@ import com.google.gson.reflect.TypeToken;
 
 import es.uji.apps.par.GeneralPARException;
 import es.uji.apps.par.RegistroSerializaException;
+import es.uji.apps.par.SesionSinFormatoIdiomaIcaaException;
 import es.uji.apps.par.TipoEnvioInvalidoException;
+import es.uji.apps.par.db.EventoDTO;
 import es.uji.apps.par.db.SesionDTO;
 import es.uji.apps.par.ficheros.registros.TipoIncidencia;
 import es.uji.apps.par.utils.DateUtils;
@@ -490,5 +492,17 @@ public class Sesion
 		Sesion.checkHoraCelebracion(HOUR_FORMAT.format(fechaCelebracion));
 		Sesion.checkIncidencia(incidenciaId);
 		//Sesion.checkRecaudacion(recaudacion);
+	}
+
+	public static void checkSesionValoresIcaa(String formato, long eventoId, String versionLinguistica, List<EventoDTO> peliculasMultisesion) {
+		if (formato == null || formato.equals(""))
+			throw new SesionSinFormatoIdiomaIcaaException(eventoId, formato, versionLinguistica);
+
+		if ((peliculasMultisesion == null || peliculasMultisesion.size() == 0) && (versionLinguistica == null ||
+				versionLinguistica.equals("")))
+			throw new SesionSinFormatoIdiomaIcaaException(eventoId, formato, versionLinguistica);
+
+		//TODO -se podria mejorar mirando en el caso que sea multisesion, si existe version linguistica en la tabla adjunta
+		//en teoria se valida en cliente
 	}
  }

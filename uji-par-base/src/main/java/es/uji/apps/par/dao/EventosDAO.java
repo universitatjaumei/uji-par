@@ -504,7 +504,9 @@ public class EventosDAO extends BaseDAO
 
     @Transactional
     public List<Object[]> getPeliculasMultisesion(long eventoId) {
-        String sql = "select e.id, e.titulo_es, e.titulo_va, em.ver_ling from par_eventos_multisesion em left join par_eventos e on e.id = em.evento_hijo_id where em.evento_id = " + eventoId;
+        String sql = "select e.id, e.titulo_es, e.titulo_va, em.ver_ling " +
+				"from par_eventos_multisesion em left join par_eventos e on e.id = em.evento_hijo_id where em.evento_id = " +
+				eventoId;
 
         Query query = entityManager.createNativeQuery(sql);
 

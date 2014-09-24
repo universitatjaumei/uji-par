@@ -123,14 +123,14 @@ public class ComunicacionesICAAService {
 						sesion.getParEvento().getFormato());
 			}
 			Sesion.checkSesion(sesion.getFechaCelebracion(), tipoEnvio, sesion.getIncidenciaId());
-			
-			List<SesionFormatoIdiomaICAADTO> sesionesFormatoIdiomaIcaa = 
-					sesionesDAO.getSesionFormatoIdiomaIcaa(sesion.getParEvento().getFormato(), sesion.getVersionLinguistica(), sesion.getParEvento().getId());
-            
-            if (sesionesFormatoIdiomaIcaa.size() == 0) {
-            	throw new SesionSinFormatoIdiomaIcaaException(sesion.getParEvento().getId(), 
-            			sesion.getParEvento().getFormato(), sesion.getVersionLinguistica());
-            }
+
+			try {
+				Sesion.checkSesionValoresIcaa(sesion.getParEvento().getFormato(), sesion.getParEvento().getId(),
+						sesion.getVersionLinguistica(), peliculasMultisesion);
+			} catch (Exception e) {
+				throw new SesionSinFormatoIdiomaIcaaException(sesion.getParEvento().getId(),
+						sesion.getParEvento().getFormato(), sesion.getVersionLinguistica());
+			}
 		}
 	}
 

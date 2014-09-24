@@ -144,11 +144,15 @@ public class SesionesDAO extends BaseDAO
         SesionDTO sesionDTO = Sesion.SesionToSesionDTO(sesion);
         persistSesion(sesionDTO);
         sesion.setId(sesionDTO.getId());
-        addSesionFormatoIdiomaIfNeeded(sesion.getEvento().getId(), sesion.getEvento().getFormato(), sesion.getVersionLinguistica());
+		//TODO -> Esta sesion.getVersionLingustica sera erronea cuando sea multisesion, mejor hacer un insert en la tabla hija
+		// por cada pelicula de la multisesion (evento.getFormato, evento.getId, evento.getPeliculasMultisesion()
+		// .getversionLingusitca())
+        ////addSesionFormatoIdiomaIfNeeded(sesion.getEvento().getId(), sesion.getEvento().getFormato(),	sesion.getVersionLinguistica());
         return sesion;
     }
     
-    @Transactional
+    /*@Transactional
+	//TODO ajustar a que le puedan entrar n versiones linguisticas
     private void addSesionFormatoIdiomaIfNeeded(long eventoId, String formato, String versionLinguistica) {
 		EventoDTO eventoDTO = eventosDAO.getEventoById(eventoId);
         if (eventoDTO.getParTiposEvento().getExportarICAA()) {
@@ -160,8 +164,9 @@ public class SesionesDAO extends BaseDAO
 		        	addSesionFormatoIdiomaICAA(formato, versionLinguistica, eventoId);
         	}
         }
-	}
+	}*/
 
+	//TODO - aparentemente esta mal, ya que deberia ser con sesion y no con evento
     @Transactional
 	private void addSesionFormatoIdiomaICAA(String formato,	String versionLinguistica, long eventoId) {
 		SesionFormatoIdiomaICAADTO sesionFormatoIdiomaICAA = new SesionFormatoIdiomaICAADTO();
@@ -171,7 +176,7 @@ public class SesionesDAO extends BaseDAO
 		entityManager.persist(sesionFormatoIdiomaICAA);
 	}
 
-    @Transactional
+    /*@Transactional
 	public List<SesionFormatoIdiomaICAADTO> getSesionFormatoIdiomaIcaa(String formato, String versionLinguistica, long eventoId) {
 		QSesionFormatoIdiomaICAADTO qSesionFormatoIdiomaICAA = QSesionFormatoIdiomaICAADTO.sesionFormatoIdiomaICAADTO;
         JPAQuery query = new JPAQuery(entityManager);
@@ -180,7 +185,7 @@ public class SesionesDAO extends BaseDAO
         	.and(qSesionFormatoIdiomaICAA.versionLinguistica.eq(versionLinguistica))
         	.and(qSesionFormatoIdiomaICAA.parEvento.id.eq(eventoId))
         ).list(qSesionFormatoIdiomaICAA);
-	}
+	}*/
 
     @Transactional
     public void updateSesion(Sesion sesion)
@@ -204,7 +209,10 @@ public class SesionesDAO extends BaseDAO
             update.set(qSesionDTO.parSala, Sala.salaToSalaDTO(sesion.getSala()));
 
         update.where(qSesionDTO.id.eq(sesion.getId())).execute();
-        addSesionFormatoIdiomaIfNeeded(sesion.getEvento().getId(), sesion.getEvento().getFormato(), sesion.getVersionLinguistica());
+		//TODO -> Esta sesion.getVersionLingustica sera erronea cuando sea multisesion, mejor hacer un insert en la tabla hija
+		// por cada pelicula de la multisesion (evento.getFormato, evento.getId, evento.getPeliculasMultisesion()
+		// .getversionLingusitca())
+        ////addSesionFormatoIdiomaIfNeeded(sesion.getEvento().getId(), sesion.getEvento().getFormato(),	sesion.getVersionLinguistica());
     }
 
     @Transactional
@@ -389,14 +397,16 @@ public class SesionesDAO extends BaseDAO
         		throw new SesionSinFormatoIdiomaIcaaException(sesionDTO.getParEvento().getTituloVa());
 
 			if (!isIncidenciaCancelacionEvento(sesionDTO.getIncidenciaId())) {
-				List<SesionFormatoIdiomaICAADTO> sesionesFormatoIdiomaIcaa =
-						getSesionFormatoIdiomaIcaa(sesionDTO.getParEvento().getFormato(), sesionDTO.getVersionLinguistica(), sesionDTO.getParEvento().getId());
-
-				if (sesionesFormatoIdiomaIcaa.size() == 0) {
-					throw new SesionSinFormatoIdiomaIcaaException(sesionDTO.getParEvento().getId(),
-                            sesionDTO.getParEvento().getFormato(), sesionDTO.getVersionLinguistica());
-				}
 				List<EventoDTO> eventosMultisesion = eventosDAO.getPeliculas(sesionDTO.getParEvento().getId());
+
+				try {
+					Sesion.checkSesionValoresIcaa(sesionDTO.getParEvento().getFormato(), sesionDTO.getParEvento().getId(),
+							sesionDTO.getVersionLinguistica(), eventosMultisesion);
+				} catch (Exception e) {
+					throw new SesionSinFormatoIdiomaIcaaException(sesionDTO.getParEvento().getId(),
+							sesionDTO.getParEvento().getFormato(), sesionDTO.getVersionLinguistica());
+				}
+
 				if (eventosMultisesion.size() > 0) {
 					for (EventoDTO eventoMultisesion: eventosMultisesion) {
 						RegistroSesionPelicula registro = new RegistroSesionPelicula();
@@ -465,9 +475,11 @@ public class SesionesDAO extends BaseDAO
 						registro.setCodigoDistribuidora(peliculaMultisesion.getCodigoDistribuidora());
 						registro.setNombreDistribuidora(Utils.stripAccents(peliculaMultisesion.getNombreDistribuidora()));
 						registro.setVersionOriginal(peliculaMultisesion.getVo());
+
+						//TODO hay que pintar la version linguistica de la peliculaMultisesion, no de la sesion
 						registro.setVersionLinguistica(sesion.getVersionLinguistica());
 						registro.setIdiomaSubtitulos(peliculaMultisesion.getSubtitulos());
-						registro.setFormatoProyeccion(sesion.getParEvento().getFormato());
+						registro.setFormatoProyeccion(peliculaMultisesion.getFormato());
 						registros.add(registro);
 					}
 				} else {
