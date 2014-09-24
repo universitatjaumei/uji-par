@@ -113,23 +113,23 @@ public class ComunicacionesICAAService {
 					Evento.checkValidity(new Long(peliculaMultisesion.getId()).intValue(), peliculaMultisesion.getExpediente(),
 							peliculaMultisesion.getTituloEs(), peliculaMultisesion.getCodigoDistribuidora(),
 							peliculaMultisesion.getNombreDistribuidora(), peliculaMultisesion.getVo(),
-							sesion.getVersionLinguistica(), peliculaMultisesion.getSubtitulos(), sesion.getFormato());
+							sesion.getVersionLinguistica(), peliculaMultisesion.getSubtitulos(), sesion.getParEvento().getFormato());
 				}
 			} else {
 				Evento.checkValidity(new Long(sesion.getParEvento().getId()).intValue(), sesion.getParEvento().getExpediente(),
 						sesion.getParEvento().getTituloEs(), sesion.getParEvento().getCodigoDistribuidora(),
 						sesion.getParEvento().getNombreDistribuidora(), sesion.getParEvento().getVo(),
 						sesion.getVersionLinguistica(), sesion.getParEvento().getSubtitulos(),
-						sesion.getFormato());
+						sesion.getParEvento().getFormato());
 			}
 			Sesion.checkSesion(sesion.getFechaCelebracion(), tipoEnvio, sesion.getIncidenciaId());
 			
 			List<SesionFormatoIdiomaICAADTO> sesionesFormatoIdiomaIcaa = 
-					sesionesDAO.getSesionFormatoIdiomaIcaa(sesion.getFormato(), sesion.getVersionLinguistica(), sesion.getParEvento().getId());
+					sesionesDAO.getSesionFormatoIdiomaIcaa(sesion.getParEvento().getFormato(), sesion.getVersionLinguistica(), sesion.getParEvento().getId());
             
             if (sesionesFormatoIdiomaIcaa.size() == 0) {
             	throw new SesionSinFormatoIdiomaIcaaException(sesion.getParEvento().getId(), 
-            			sesion.getFormato(), sesion.getVersionLinguistica());
+            			sesion.getParEvento().getFormato(), sesion.getVersionLinguistica());
             }
 		}
 	}

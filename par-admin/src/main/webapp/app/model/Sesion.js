@@ -20,7 +20,6 @@ Ext.define('Paranimf.model.Sesion', {
       'butacasVendidas',
       'butacasReservadas',
       'nombre',
-      'formato',
       'versionLinguistica',
       'rssId',
       {name: 'sala', mapping: 'sala.id'},

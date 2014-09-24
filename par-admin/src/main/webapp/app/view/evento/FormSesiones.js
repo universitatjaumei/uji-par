@@ -124,29 +124,6 @@ Ext.define('Paranimf.view.evento.FormSesiones', {
 	          name: 'nombre',
 	          xtype: 'textfield'
 	         },{
-	          fieldLabel: UI.i18n.field.formato,
-	          name: 'formato',
-	          xtype: 'combobox',
-	          displayField: 'name',
-	          valueField : 'value',
-	          queryMode: 'local',
-	          forceSelection:true,
-	          store: new Ext.data.SimpleStore({
-	            fields: ['value', 'name'],
-	            data: [
-	              ['0', UI.i18n.formatosProyeccion._35m],
-	              ['1', UI.i18n.formatosProyeccion._2d],
-	              ['2', UI.i18n.formatosProyeccion._3d],
-                ['3', UI.i18n.formatosProyeccion.dvd],
-                ['4', UI.i18n.formatosProyeccion.blueray],
-                ['5', UI.i18n.formatosProyeccion.beta],
-                ['6', UI.i18n.formatosProyeccion.vhs],
-                ['7', UI.i18n.formatosProyeccion.imax],
-                ['8', UI.i18n.formatosProyeccion.omnimax],
-                ['9', UI.i18n.formatosProyeccion.betamax]
-	            ]
-	          })
-	         },{
 	          fieldLabel: UI.i18n.field.versionLinguistica,
 	          name: 'versionLinguistica',
 	          xtype: 'combobox',

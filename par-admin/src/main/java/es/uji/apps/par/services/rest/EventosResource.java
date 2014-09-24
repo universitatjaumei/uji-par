@@ -186,7 +186,8 @@ public class EventosResource
             @FormDataParam("metraje") String metraje,
             @FormDataParam("subtitulos") String subtitulos,
 			@FormDataParam("multisesion") String checkMultisesion,
-			@FormDataParam("jsonEventosMultisesion") String jsonEventosMultisesion) throws GeneralPARException
+			@FormDataParam("jsonEventosMultisesion") String jsonEventosMultisesion,
+            @FormDataParam("formato") String formato) throws GeneralPARException
     {
         String nombreArchivo = (dataBinaryDetail != null) ? dataBinaryDetail.getFileName() : "";
         String mediaType = (imagenBodyPart != null) ? imagenBodyPart.getMediaType().toString() : "";
@@ -195,7 +196,7 @@ public class EventosResource
                 premiosEs, caracteristicasEs, comentariosEs, tituloVa, descripcionVa, companyiaVa,
                 interpretesVa, duracionVa, premiosVa, caracteristicasVa, comentariosVa, dataBinary,
                 nombreArchivo, mediaType, tipoEventoId, porcentajeIVA, retencionSGAE, ivaSGAE, asientosNumerados, 
-                expediente, codigoDistribuidora, nombreDistribuidora, nacionalidad, vo, metraje, subtitulos);
+                expediente, codigoDistribuidora, nombreDistribuidora, nacionalidad, vo, metraje, subtitulos, formato);
 
 		if (checkMultisesion != null && checkMultisesion.equalsIgnoreCase("on"))
 			evento.setEventosMultisesion(jsonEventosMultisesion);
@@ -256,7 +257,8 @@ public class EventosResource
             @FormDataParam("metraje") String metraje,
             @FormDataParam("subtitulos") String subtitulos,
 			@FormDataParam("multisesion") String checkMultisesion,
-			@FormDataParam("jsonEventosMultisesion") String jsonEventosMultisesion) throws GeneralPARException
+			@FormDataParam("jsonEventosMultisesion") String jsonEventosMultisesion,
+            @FormDataParam("formato") String formato) throws GeneralPARException
     {
         AuthChecker.canWrite(currentRequest);
         
@@ -267,7 +269,7 @@ public class EventosResource
                 premiosEs, caracteristicasEs, comentariosEs, tituloVa, descripcionVa, companyiaVa,
                 interpretesVa, duracionVa, premiosVa, caracteristicasVa, comentariosVa, dataBinary,
                 nombreArchivo, mediaType, tipoEventoId, porcentajeIVA, retencionSGAE, ivaSGAE, asientosNumerados, 
-                expediente, codigoDistribuidora, nombreDistribuidora, nacionalidad, vo, metraje, subtitulos);
+                expediente, codigoDistribuidora, nombreDistribuidora, nacionalidad, vo, metraje, subtitulos, formato);
 
 		if (checkMultisesion != null && checkMultisesion.equalsIgnoreCase("on"))
 			evento.setEventosMultisesion(jsonEventosMultisesion);

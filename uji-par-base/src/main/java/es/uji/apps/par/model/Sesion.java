@@ -43,7 +43,6 @@ public class Sesion
     private long butacasVendidas;
     private long butacasReservadas;
     private String nombre;
-    private String formato;
     private Sala sala;
     private String versionLinguistica;
     private String rssId;
@@ -74,7 +73,6 @@ public class Sesion
         this.horaFinVentaOnline = DateUtils.getHourAndMinutesWithLeadingZeros(sesionDTO.getFechaFinVentaOnline());
         
         this.nombre = sesionDTO.getNombre();
-        this.formato = sesionDTO.getFormato();
         this.versionLinguistica = sesionDTO.getVersionLinguistica();
         this.rssId = sesionDTO.getRssId();
         this.incidenciaId = sesionDTO.getIncidenciaId();
@@ -228,7 +226,6 @@ public class Sesion
 		sesion.setPlantillaPrecios(Plantilla.plantillaPreciosDTOtoPlantillaPrecios(sesionDTO.getParPlantilla()));
 		
 		sesion.setNombre(sesionDTO.getNombre());
-		sesion.setFormato(sesionDTO.getFormato());
 		sesion.setVersionLinguistica(sesionDTO.getVersionLinguistica());
 		sesion.setRssId(sesionDTO.getRssId());
 		
@@ -270,7 +267,6 @@ public class Sesion
 		    sesionDTO.setParSala(Sala.salaToSalaDTO(sesion.getSala()));
 		
 		sesionDTO.setNombre(sesion.getNombre());
-		sesionDTO.setFormato(sesion.getFormato());
 		sesionDTO.setVersionLinguistica(sesion.getVersionLinguistica());
 		sesionDTO.setRssId(sesion.getRssId());
 		sesionDTO.setIncidenciaId((sesion.getIncidenciaId()==null)?0:sesion.getIncidenciaId());
@@ -368,16 +364,6 @@ public class Sesion
     public void setNombre(String nombre)
     {
         this.nombre = nombre;
-    }
-
-    public String getFormato()
-    {
-        return formato;
-    }
-
-    public void setFormato(String formato)
-    {
-        this.formato = formato;
     }
 
     public Sala getSala()

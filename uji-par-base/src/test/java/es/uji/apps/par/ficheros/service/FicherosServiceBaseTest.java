@@ -99,7 +99,7 @@ public class FicherosServiceBaseTest
         sesion.setPlantillaPrecios(plantilla);
         sesion.setPreciosSesion(Arrays.asList(precioSesion));
         sesion.setVersionLinguistica("1");
-        sesion.setFormato("3");
+        sesion.getEvento().setFormato("3");
 
         sesionesDAO.addSesion(sesion);
         return sesion;

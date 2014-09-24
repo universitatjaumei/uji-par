@@ -144,7 +144,7 @@ public class SesionesDAO extends BaseDAO
         SesionDTO sesionDTO = Sesion.SesionToSesionDTO(sesion);
         persistSesion(sesionDTO);
         sesion.setId(sesionDTO.getId());
-        addSesionFormatoIdiomaIfNeeded(sesion.getEvento().getId(), sesion.getFormato(), sesion.getVersionLinguistica());
+        addSesionFormatoIdiomaIfNeeded(sesion.getEvento().getId(), sesion.getEvento().getFormato(), sesion.getVersionLinguistica());
         return sesion;
     }
     
@@ -197,7 +197,6 @@ public class SesionesDAO extends BaseDAO
                 .set(qSesionDTO.parPlantilla,
                         Plantilla.plantillaPreciosToPlantillaPreciosDTO(sesion.getPlantillaPrecios()))
                 .set(qSesionDTO.nombre, sesion.getNombre())
-                .set(qSesionDTO.formato, sesion.getFormato())
                 .set(qSesionDTO.versionLinguistica, sesion.getVersionLinguistica())
                 .set(qSesionDTO.rssId, sesion.getRssId());
 
@@ -205,7 +204,7 @@ public class SesionesDAO extends BaseDAO
             update.set(qSesionDTO.parSala, Sala.salaToSalaDTO(sesion.getSala()));
 
         update.where(qSesionDTO.id.eq(sesion.getId())).execute();
-        addSesionFormatoIdiomaIfNeeded(sesion.getEvento().getId(), sesion.getFormato(), sesion.getVersionLinguistica());
+        addSesionFormatoIdiomaIfNeeded(sesion.getEvento().getId(), sesion.getEvento().getFormato(), sesion.getVersionLinguistica());
     }
 
     @Transactional
@@ -386,16 +385,16 @@ public class SesionesDAO extends BaseDAO
         
         for (SesionDTO sesionDTO : resultado)
         {
-        	if (sesionDTO.getFormato() == null)
+        	if (sesionDTO.getParEvento().getFormato() == null)
         		throw new SesionSinFormatoIdiomaIcaaException(sesionDTO.getParEvento().getTituloVa());
 
 			if (!isIncidenciaCancelacionEvento(sesionDTO.getIncidenciaId())) {
 				List<SesionFormatoIdiomaICAADTO> sesionesFormatoIdiomaIcaa =
-						getSesionFormatoIdiomaIcaa(sesionDTO.getFormato(), sesionDTO.getVersionLinguistica(), sesionDTO.getParEvento().getId());
+						getSesionFormatoIdiomaIcaa(sesionDTO.getParEvento().getFormato(), sesionDTO.getVersionLinguistica(), sesionDTO.getParEvento().getId());
 
 				if (sesionesFormatoIdiomaIcaa.size() == 0) {
 					throw new SesionSinFormatoIdiomaIcaaException(sesionDTO.getParEvento().getId(),
-							sesionDTO.getFormato(), sesionDTO.getVersionLinguistica());
+                            sesionDTO.getParEvento().getFormato(), sesionDTO.getVersionLinguistica());
 				}
 				List<EventoDTO> eventosMultisesion = eventosDAO.getPeliculas(sesionDTO.getParEvento().getId());
 				if (eventosMultisesion.size() > 0) {
@@ -468,7 +467,7 @@ public class SesionesDAO extends BaseDAO
 						registro.setVersionOriginal(peliculaMultisesion.getVo());
 						registro.setVersionLinguistica(sesion.getVersionLinguistica());
 						registro.setIdiomaSubtitulos(peliculaMultisesion.getSubtitulos());
-						registro.setFormatoProyeccion(sesion.getFormato());
+						registro.setFormatoProyeccion(sesion.getParEvento().getFormato());
 						registros.add(registro);
 					}
 				} else {
@@ -482,7 +481,7 @@ public class SesionesDAO extends BaseDAO
 					registro.setVersionOriginal(sesion.getParEvento().getVo());
 					registro.setVersionLinguistica(sesion.getVersionLinguistica());
 					registro.setIdiomaSubtitulos(sesion.getParEvento().getSubtitulos());
-					registro.setFormatoProyeccion(sesion.getFormato());
+					registro.setFormatoProyeccion(sesion.getParEvento().getFormato());
 					registros.add(registro);
 				}
 			}

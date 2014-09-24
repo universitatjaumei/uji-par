@@ -54,6 +54,7 @@ public class Evento
     private List<Sesion> sesiones;
     private String rssId;
 
+    private String formato;
     private String expediente;
     private String codigoDistribuidora;
     private String nombreDistribuidora;
@@ -114,7 +115,8 @@ public class Evento
         evento.setPorcentajeIVA(eventoDTO.getPorcentajeIva());
         
         evento.setRssId(eventoDTO.getRssId());
-        
+
+        evento.setFormato(eventoDTO.getFormato());
         evento.setExpediente(eventoDTO.getExpediente());
         evento.setCodigoDistribuidora(eventoDTO.getCodigoDistribuidora());
         evento.setNombreDistribuidora(eventoDTO.getNombreDistribuidora());
@@ -165,7 +167,8 @@ public class Evento
         eventoDTO.setIvaSgae(evento.getIvaSGAE());
         eventoDTO.setRetencionSgae(evento.getRetencionSGAE());
         eventoDTO.setPorcentajeIva(evento.getPorcentajeIVA());
-        
+
+        eventoDTO.setFormato(evento.getFormato());
         eventoDTO.setExpediente(evento.getExpediente());
         eventoDTO.setCodigoDistribuidora(evento.getCodigoDistribuidora());
         eventoDTO.setNombreDistribuidora(evento.getNombreDistribuidora());
@@ -244,7 +247,7 @@ public class Evento
             String duracionVa, String premiosVa, String caracteristicasVa, String comentariosVa,
             byte[] dataBinary, String nombreArchivo, String mediaType, Integer tipoEventoId,
             BigDecimal porcentajeIVA, BigDecimal retencionSGAE, BigDecimal ivaSGAE, Boolean asientosNumerados, 
-            String expediente, String codigoDistribuidora, String nombreDistribuidora, String nacionalidad, String vo, String metraje, String subtitulos)
+            String expediente, String codigoDistribuidora, String nombreDistribuidora, String nacionalidad, String vo, String metraje, String subtitulos, String formato)
     {
         this.sesiones = new ArrayList<Sesion>();
         this.rssId = rssId;
@@ -281,7 +284,8 @@ public class Evento
         this.retencionSGAE = retencionSGAE;
         this.ivaSGAE = ivaSGAE;
         this.asientosNumerados = asientosNumerados;
-        
+
+        this.formato = formato;
         this.expediente = expediente;
         this.codigoDistribuidora = codigoDistribuidora;
         this.nombreDistribuidora = nombreDistribuidora;
@@ -648,7 +652,15 @@ public class Evento
         this.subtitulos = subtitulos;
     }
 
-	public static void checkValidity(int codigoPelicula, String codigoExpediente, String titulo, String codigoDistribuidora2, 
+    public String getFormato() {
+        return formato;
+    }
+
+    public void setFormato(String formato) {
+        this.formato = formato;
+    }
+
+    public static void checkValidity(int codigoPelicula, String codigoExpediente, String titulo, String codigoDistribuidora2,
 			String nombreDistribuidora2, String versionOriginal, String versionLinguistica, String idiomaSubtitulos, 
 			String formatoProyeccion) throws RegistroSerializaException {
 		if (codigoPelicula == 0)

@@ -52,9 +52,6 @@ public class SesionDTO implements Serializable {
 	
     @Column(name="NOMBRE")
     private String nombre;
-    
-    @Column(name="FORMATO")
-    private String formato;
 
     @Column(name="VER_LING")
     private String versionLinguistica;
@@ -209,16 +206,6 @@ public class SesionDTO implements Serializable {
     public void setNombre(String nombre)
     {
         this.nombre = nombre;
-    }
-
-    public String getFormato()
-    {
-        return formato;
-    }
-
-    public void setFormato(String formato)
-    {
-        this.formato = formato;
     }
 
     public SalaDTO getParSala()

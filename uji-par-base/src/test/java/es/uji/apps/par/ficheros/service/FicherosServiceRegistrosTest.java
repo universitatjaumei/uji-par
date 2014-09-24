@@ -263,7 +263,7 @@ public class FicherosServiceRegistrosTest extends FicherosServiceBaseTest
         Assert.assertEquals(evento.getVo(), registros.get(0).getVersionOriginal());
         Assert.assertEquals(sesion1.getVersionLinguistica(), registros.get(0).getVersionLinguistica());
         Assert.assertEquals(evento.getSubtitulos(), registros.get(0).getIdiomaSubtitulos());
-        Assert.assertEquals(sesion1.getFormato(), registros.get(0).getFormatoProyeccion());
+        Assert.assertEquals(sesion1.getEvento().getFormato(), registros.get(0).getFormatoProyeccion());
     }
 
     @Test
@@ -290,7 +290,7 @@ public class FicherosServiceRegistrosTest extends FicherosServiceBaseTest
         Assert.assertEquals(evento.getVo(), registro0.getVersionOriginal());
         Assert.assertEquals(evento.getSubtitulos(), registro0.getIdiomaSubtitulos());
         Assert.assertEquals(sesion1.getVersionLinguistica(), registro0.getVersionLinguistica());
-        Assert.assertEquals(sesion1.getFormato(), registro0.getFormatoProyeccion());
+        Assert.assertEquals(sesion1.getEvento().getFormato(), registro0.getFormatoProyeccion());
 
         RegistroPelicula registro1 = registros.get(1);
         Assert.assertEquals(sala.getCodigo(), registro1.getCodigoSala());
@@ -302,7 +302,7 @@ public class FicherosServiceRegistrosTest extends FicherosServiceBaseTest
         Assert.assertEquals(evento2.getVo(), registro1.getVersionOriginal());
         Assert.assertEquals(evento2.getSubtitulos(), registro1.getIdiomaSubtitulos());
         Assert.assertEquals(sesion2.getVersionLinguistica(), registro1.getVersionLinguistica());
-        Assert.assertEquals(sesion2.getFormato(), registro1.getFormatoProyeccion());
+        Assert.assertEquals(sesion2.getEvento().getFormato(), registro1.getFormatoProyeccion());
     }
 
     @Test

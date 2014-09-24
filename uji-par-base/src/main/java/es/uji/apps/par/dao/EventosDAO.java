@@ -134,7 +134,7 @@ public class EventosDAO extends BaseDAO
         		" e.PREMIOS_VA, e.TITULO_ES as tituloes, e.TITULO_VA as titulova, e.IMAGEN_SRC as imagensrc, e.IMAGEN_CONTENT_TYPE, e.ID, e.ASIENTOS_NUMERADOS as asientosnumerados, " +
         		" e.RETENCION_SGAE as retencionsgae, e.IVA_SGAE as ivasgae, e.PORCENTAJE_IVA as porcentajeiva, " +
         		" e.RSS_ID as rssid, (select min(s.FECHA_CELEBRACION) from PAR_SESIONES s where e.id=s.EVENTO_ID) as fechaPrimeraSesion, " +
-        		" e.EXPEDIENTE, e.COD_DISTRI, e.NOM_DISTRI, e.NACIONALIDAD, e.VO, e.METRAJE, e.SUBTITULOS, t.exportar_icaa, " +
+        		" e.EXPEDIENTE, e.COD_DISTRI, e.NOM_DISTRI, e.NACIONALIDAD, e.VO, e.METRAJE, e.SUBTITULOS, t.exportar_icaa, e.formato, " +
 				" (select count(*) from par_eventos_multisesion pem where pem.evento_id = e.id) " +
         		" from PAR_EVENTOS e left outer join PAR_SESIONES s on e.id=s.EVENTO_ID inner join PAR_TIPOS_EVENTO t on e.TIPO_EVENTO_ID=t.id " +
         		(activos?getWhereActivos():getWhereTodos()) +
@@ -227,9 +227,10 @@ public class EventosDAO extends BaseDAO
         evento.setVo((String) array[30]);
         evento.setMetraje((String) array[31]);
         evento.setSubtitulos((String) array[32]);
+        evento.setFormato((String) array[34]);
 
-		if (array.length >= 35) {
-			BigDecimal numeroEventosHijos = databaseHelper.castBigDecimal(array[34]);
+		if (array.length >= 36) {
+			BigDecimal numeroEventosHijos = databaseHelper.castBigDecimal(array[35]);
 			evento.setMultisesion((numeroEventosHijos.compareTo(BigDecimal.ZERO)==0)?"":"on");
 		}
 
@@ -335,6 +336,7 @@ public class EventosDAO extends BaseDAO
         eventoDTO.setIvaSgae(evento.getIvaSGAE());
 
         eventoDTO.setExpediente(evento.getExpediente());
+        eventoDTO.setFormato(evento.getFormato());
         eventoDTO.setCodigoDistribuidora(evento.getCodigoDistribuidora());
         eventoDTO.setNombreDistribuidora(evento.getNombreDistribuidora());
         eventoDTO.setNacionalidad(evento.getNacionalidad());
@@ -377,6 +379,7 @@ public class EventosDAO extends BaseDAO
 
 		eventoDTO.setAsientosNumerados(evento.getAsientosNumerados());
 		eventoDTO.setExpediente(evento.getExpediente());
+        eventoDTO.setFormato(evento.getFormato());
 		eventoDTO.setCodigoDistribuidora(evento.getCodigoDistribuidora());
 		eventoDTO.setNombreDistribuidora(evento.getNombreDistribuidora());
 		eventoDTO.setNacionalidad(evento.getNacionalidad());

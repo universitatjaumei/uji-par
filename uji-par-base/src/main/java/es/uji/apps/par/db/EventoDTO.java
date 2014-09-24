@@ -102,6 +102,9 @@ public class EventoDTO implements Serializable {
 
 	@Column(name="RSS_ID")
 	private String rssId;
+
+    @Column(name="FORMATO")
+    private String formato;
 	
 	//bi-directional many-to-one association to TipoEventoDTO
 	@ManyToOne
@@ -433,6 +436,16 @@ public class EventoDTO implements Serializable {
     public void setSubtitulos(String subtitulos)
     {
         this.subtitulos = subtitulos;
+    }
+
+    public String getFormato()
+    {
+        return formato;
+    }
+
+    public void setFormato(String formato)
+    {
+        this.formato = formato;
     }
 
     public List<EventoMultisesionDTO> getParEventosMultisesion() {
