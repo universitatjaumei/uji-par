@@ -41,6 +41,18 @@ Ext.define('Paranimf.controller.ComprasReservas', {
     }, {
       ref: 'buscadorCompras',
       selector: 'panelCompras textfield[name=buscadorCompras]'
+    }, {
+      ref: 'btAnular',
+      selector: 'gridCompras button[action=anular]'
+    }, {
+      ref: 'btDesanular',
+      selector: 'gridCompras button[action=desanular]'
+    }, {
+      ref: 'btPassToCompra',
+      selector: 'gridCompras button[action=passToCompra]'
+    }, {
+      ref: 'btAnularDetalle',
+      selector: 'gridDetalleCompras button[action=anular]'
     }
   ],
 
@@ -270,11 +282,26 @@ Ext.define('Paranimf.controller.ComprasReservas', {
     }
   },
 
+  muestraBotonesGrid: function(readOnlyUser) {
+    if (readOnlyUser == undefined || !readOnlyUser) {
+      this.getBtAnular().show();
+      this.getBtAnularDetalle().show();
+      this.getBtDesanular().show();
+      this.getBtPassToCompra().show();
+    } else {
+      this.getBtAnular().hide();
+      this.getBtAnularDetalle().hide();
+      this.getBtDesanular().hide();
+      this.getBtPassToCompra().hide();
+    }
+  },
+
   verCompras: function(button, event, opts) {
     if (this.getGridEventosComprasReservas().hasRowSelected() && this.getGridSesionesComprasReservas().hasRowSelected()) {
       var evento = this.getGridEventosComprasReservas().getSelectedRecord();
       var sesion = this.getGridSesionesComprasReservas().getSelectedRecord();
       this.getGridSesionesComprasReservas().showVerComprasWindow();
+      this.muestraBotonesGrid(readOnlyUser);
     } else
       alert(UI.i18n.message.selectRow);
   },
