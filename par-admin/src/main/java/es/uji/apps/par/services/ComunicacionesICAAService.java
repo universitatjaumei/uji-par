@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.dao.EventosDAO;
 import es.uji.apps.par.db.EventoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,8 +65,10 @@ public class ComunicacionesICAAService {
 		
 		comunicacionesICAADAO.addNewEnvio(ids, ficheroRegistros.getRegistroBuzon().getFechaEnvio(), tipoEnvio);
 		
-		//TODO
-		return contenido;
+		if (Configuration.getGenerarCifrado())
+			return contenidoCifrado;
+		else
+			return contenido;
 	}
 
 	private List<Sesion> getSesionesFromIDs(List<Integer> ids) {

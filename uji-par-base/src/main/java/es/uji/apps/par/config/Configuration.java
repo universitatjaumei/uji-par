@@ -85,6 +85,7 @@ public class Configuration
 	private static final String ALLOW_MULTISESION = "uji.par.allowMultisesion";
     private static final String IDIOMA_POR_DEFECTO = "uji.par.defaultLang";
     private static final String LANGS_ALLOWED = "uji.par.langsAllowed";
+	private static final String GENERAR_CIFRADO = "uji.pgp.generateCifrado";
 
 	private static final Logger log = LoggerFactory.getLogger(Configuration.class);
 
@@ -503,4 +504,12 @@ public class Configuration
             return langsAllowed;
         return "[{'locale':'ca', 'alias': 'Valencià'}]";
     }
+
+	public static boolean getGenerarCifrado() {
+		String generarCifrado = getNoObligatoryProperty(GENERAR_CIFRADO);
+		if (generarCifrado == null || generarCifrado.equalsIgnoreCase("true"))
+			return true;
+		else
+			return false;
+	}
 }
