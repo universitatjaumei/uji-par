@@ -73,16 +73,19 @@ public class EntradasResource extends BaseResource
     public Response datosEntrada(@PathParam("id") Long sesionId) throws Exception
     {
         Sesion sesion = sesionesService.getSesion(sesionId);
-        currentRequest.getSession().setAttribute(EntradasService.ID_SESION, sesionId);
+		if (sesion.getCanalInternet()) {
+			currentRequest.getSession().setAttribute(EntradasService.ID_SESION, sesionId);
 
-        if (Utils.isAsientosNumerados(sesion.getEvento()))
-        {
-            return paginaSeleccionEntradasNumeradas(sesionId, null, null, null);
-        }
-        else
-        {
-            return paginaSeleccionEntradasNoNumeradas(sesionId, null);
-        }
+			if (Utils.isAsientosNumerados(sesion.getEvento()))
+			{
+				return paginaSeleccionEntradasNumeradas(sesionId, null, null, null);
+			}
+			else
+			{
+				return paginaSeleccionEntradasNoNumeradas(sesionId, null);
+			}
+		} else
+			return paginaFueraDePlazo();
     }
 
     private Response paginaSeleccionEntradasNumeradas(long sesionId, List<Butaca> butacasSeleccionadas,
