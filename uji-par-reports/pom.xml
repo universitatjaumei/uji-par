@@ -2,27 +2,26 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>es.uji.apps.par</groupId>
   <artifactId>uji-par-reports</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
   <name>uji-par-reports</name>
-	<packaging>jar</packaging>
-  
+  <packaging>jar</packaging>
+
   <parent>
     <groupId>es.uji.apps.par</groupId>
     <artifactId>uji-par</artifactId>
     <version>0.0.12-SNAPSHOT</version>
   </parent>
-  
+
   <dependencies>
-  	<dependency>
+    <dependency>
       <groupId>es.uji.apps.par</groupId>
       <artifactId>uji-par-base</artifactId>
       <version>0.0.12-SNAPSHOT</version>
     </dependency>
-    
-  	<dependency>
-	    <groupId>es.uji.apps</groupId>
-	    <artifactId>uji-fopreports</artifactId>
-	    <version>0.0.4</version>
+
+    <dependency>
+      <groupId>es.uji.apps</groupId>
+      <artifactId>uji-fopreports</artifactId>
+      <version>0.0.4</version>
     </dependency>
-   </dependencies>
+  </dependencies>
 </project>
