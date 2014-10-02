@@ -7,18 +7,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import es.uji.apps.par.*;
+import es.uji.apps.par.dao.SesionesDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mysema.query.Tuple;
 
-import es.uji.apps.par.ButacaOcupadaAlActivarException;
-import es.uji.apps.par.ButacaOcupadaException;
-import es.uji.apps.par.CompraButacaDescuentoNoDisponible;
-import es.uji.apps.par.CompraSinButacasException;
-import es.uji.apps.par.FueraDePlazoVentaInternetException;
-import es.uji.apps.par.NoHayButacasLibresException;
 import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.dao.ButacasDAO;
 import es.uji.apps.par.dao.ComprasDAO;
@@ -41,6 +37,9 @@ public class ComprasService
 
     @Autowired
     private SesionesService sesionesService;
+
+	@Autowired
+	private SesionesDAO sesionesDAO;
 
     public ResultadoCompra registraCompraTaquilla(Long sesionId, List<Butaca> butacasSeleccionadas)
             throws NoHayButacasLibresException, ButacaOcupadaException, CompraSinButacasException
@@ -158,8 +157,7 @@ public class ComprasService
 		comprasDAO.marcarPagadaConReferenciaDePago(idCompra, referenciaDePago);		
 	}
 
-    public void eliminaPendientes()
-    {
+    public void eliminaPendientes() throws IncidenciaNotFoundException {
         comprasDAO.eliminaComprasPendientes();
     }
 
@@ -256,25 +254,32 @@ public class ComprasService
 		return comprasDAO.getTotalComprasBySesion(sesionId, showAnuladas, showOnline, search);
 	}
 
-	public void anularCompraReserva(Long idCompraReserva) {
-		comprasDAO.anularCompraReserva(idCompraReserva);
+	public void anularCompraReserva(Long idCompraReserva) throws IncidenciaNotFoundException {
+		comprasDAO.anularCompraReserva(idCompraReserva, true);
 	}
-	
+
+	@Transactional
     public void desanularCompraReserva(Long idCompraReserva) throws ButacaOcupadaAlActivarException {
         comprasDAO.desanularCompraReserva(idCompraReserva);
-    }	
+
+		CompraDTO compraDTO = getCompraById(idCompraReserva);
+		if (compraDTO.getReserva() == null || compraDTO.getReserva() == false) {
+			long totalAnuladas = sesionesDAO.getButacasAnuladasTotal(compraDTO.getParSesion().getId());
+			if (totalAnuladas == 0L) {
+				sesionesDAO.removeIncidencia(compraDTO.getParSesion().getId());
+			}
+		}
+	}
 	
-    public void anulaReservasCaducadas()
-    {
+    public void anulaReservasCaducadas() throws IncidenciaNotFoundException {
         List<CompraDTO> aCaducar = comprasDAO.getReservasACaducar(new Date());
         
-        for (CompraDTO compraDTO:aCaducar) {
-            anularCompraReserva(compraDTO.getId());
-        }
+        for (CompraDTO compraDTO:aCaducar)
+			comprasDAO.anularCompraReserva(compraDTO.getId(), false);
     }
 	
 	@Transactional
-    public void anularButacas(List<Long> idsButacas) {
+    public void anularButacas(List<Long> idsButacas) throws IncidenciaNotFoundException {
 	    for (Long idButaca: idsButacas)
 	    	butacasDAO.anularButaca(idButaca);
 	}
@@ -287,5 +292,3 @@ public class ComprasService
 		comprasDAO.passarACompra(sesionId, idCompraReserva);
 	}
 }
-
-

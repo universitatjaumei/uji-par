@@ -42,4 +42,25 @@ public enum TipoIncidencia
 		throw new IncidenciaNotFoundException(incidenciaId);
 	}
 
+	public static int tipoIncidenciaToInt(TipoIncidencia tipoIncidencia) throws IncidenciaNotFoundException {
+		if (tipoIncidencia == SIN_INCIDENCIAS)
+			return 0;
+		else if (tipoIncidencia == VENDA_MANUAL_DEGRADADA)
+			return 5;
+		else if (tipoIncidencia == VENDA_MANUAL_ANULACIO)
+			return 6;
+		else if (tipoIncidencia == VENDA_MANUAL_ANULACIO_PROGRAMACIO)
+			return 7;
+		else if (tipoIncidencia == VENDA_MANUAL_ANULACIO_COMPLETA)
+			return 8;
+		else if (tipoIncidencia == ANULACIO_VENDES)
+			return 9;
+		else if (tipoIncidencia == ANULACIO_PROGRAMACIO)
+			return 10;
+		else if (tipoIncidencia == ANULACIO_COMPLETA)
+			return 11;
+
+		throw new IncidenciaNotFoundException();
+	}
+
 }

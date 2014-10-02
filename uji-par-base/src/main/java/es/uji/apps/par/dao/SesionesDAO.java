@@ -635,4 +635,19 @@ public class SesionesDAO extends BaseDAO
 		JPAUpdateClause jpaUpdate = new JPAUpdateClause(entityManager, qSesionDTO);
 		jpaUpdate.set(qSesionDTO.incidenciaId, incidenciaId).where(qSesionDTO.id.eq(sesionId)).execute();
 	}
+
+	@Transactional
+	public void removeIncidencia(long sesionId) {
+		JPAUpdateClause jpaUpdate = new JPAUpdateClause(entityManager, qSesionDTO);
+		jpaUpdate.set(qSesionDTO.incidenciaId, 0).where(qSesionDTO.id.eq(sesionId)).execute();
+	}
+
+	@Transactional
+	public long getButacasAnuladasTotal(long idSesion) {
+		QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
+		QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
+		JPAQuery query = new JPAQuery(entityManager);
+		return query.from(qSesionDTO).join(qSesionDTO.parCompras, qCompraDTO).join(qCompraDTO.parButacas,
+				qButacaDTO).on(qButacaDTO.anulada.eq(true)).where(qSesionDTO.id.eq(idSesion)).count();
+	}
 }

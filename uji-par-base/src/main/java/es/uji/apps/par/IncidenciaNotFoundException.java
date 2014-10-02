@@ -7,4 +7,9 @@ public class IncidenciaNotFoundException extends Exception
     {
         super("Incidencia no encontrada: " + incidenciaId);
     }
+
+	public IncidenciaNotFoundException()
+	{
+		super("Incidencia no encontrada");
+	}
 }

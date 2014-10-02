@@ -8,6 +8,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import es.uji.apps.par.IncidenciaNotFoundException;
+import es.uji.apps.par.ficheros.registros.TipoIncidencia;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -204,7 +206,7 @@ public class ComprasDAO extends BaseDAO {
 	}
 
 	@Transactional
-	public void eliminaComprasPendientes() {
+	public void eliminaComprasPendientes() throws IncidenciaNotFoundException {
 		QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
 
 		Calendar calendar = Calendar.getInstance();
@@ -226,7 +228,7 @@ public class ComprasDAO extends BaseDAO {
 			compra.setCaducada(true);
 			entityManager.persist(compra);
 
-			anularCompraReserva(compra.getId());
+			anularCompraReserva(compra.getId(), false);
 		}
 	}
 
@@ -343,9 +345,21 @@ public class ComprasDAO extends BaseDAO {
 	}
 
 	@Transactional
-	public void anularCompraReserva(Long idCompraReserva) {
+	private Long getSesionId(Long idCompra) {
+		QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
+		QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
+		JPAQuery query = new JPAQuery(entityManager);
+		return query.from(qCompraDTO).join(qCompraDTO.parSesion, qSesionDTO).where(qCompraDTO.id.eq(idCompra)).uniqueResult
+				(qSesionDTO.id);
+	}
+
+	@Transactional(rollbackForClassName = {"IncidenciaNotFoundException"})
+	public void anularCompraReserva(Long idCompraReserva, boolean manual) throws IncidenciaNotFoundException {
 		QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
 		QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
+		QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
+		int ANULACION_VENTAS = 9;
+
 		JPAUpdateClause updateCompra = new JPAUpdateClause(entityManager,
 				qCompraDTO);
 		updateCompra.set(qCompraDTO.anulada, true)
@@ -355,6 +369,13 @@ public class ComprasDAO extends BaseDAO {
 				qButacaDTO);
 		updateButacas.set(qButacaDTO.anulada, true)
 				.where(qButacaDTO.parCompra.id.eq(idCompraReserva)).execute();
+
+		CompraDTO compra = getCompraById(idCompraReserva);
+
+		if (manual && (compra.getReserva() == null || compra.getReserva() != true)) {
+			Long idSesion = getSesionId(idCompraReserva);
+			sesionDAO.setIncidencia(idSesion, TipoIncidencia.tipoIncidenciaToInt(TipoIncidencia.ANULACIO_VENDES));
+		}
 	}
 
 	@Transactional

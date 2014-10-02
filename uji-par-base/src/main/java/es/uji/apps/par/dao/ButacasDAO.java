@@ -2,6 +2,9 @@ package es.uji.apps.par.dao;
 
 import java.util.List;
 
+import es.uji.apps.par.IncidenciaNotFoundException;
+import es.uji.apps.par.SesionSinFormatoIdiomaIcaaException;
+import es.uji.apps.par.ficheros.registros.TipoIncidencia;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.jpa.JpaSystemException;
@@ -35,6 +38,9 @@ public class ButacasDAO extends BaseDAO
     
     @Autowired
     private SesionesDAO sesionesDAO;
+
+	@Autowired
+	private ComprasDAO comprasDAO;
 
     private QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
 
@@ -263,19 +269,42 @@ public class ButacasDAO extends BaseDAO
                 .set(qButacaDTO.presentada, butaca.getPresentada()).execute();
         }
     }
+
+	@Transactional
+	private Long getSesionId(Long idButaca) {
+		QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
+		QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
+		QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
+		JPAQuery query = new JPAQuery(entityManager);
+		return query.from(qButacaDTO).join(qButacaDTO.parCompra, qCompraDTO).join(qCompraDTO.parSesion,
+				qSesionDTO).where(qButacaDTO.id.eq(idButaca)).uniqueResult(qSesionDTO.id);
+	}
     
-    @Transactional
-	public void anularButaca(Long idButaca) {
+    @Transactional(rollbackFor=SesionSinFormatoIdiomaIcaaException.class)
+	public void anularButaca(Long idButaca) throws IncidenciaNotFoundException {
     	QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
+		QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
 		
 		JPAUpdateClause updateButacas = new JPAUpdateClause(entityManager, qButacaDTO);
 		updateButacas.set(qButacaDTO.anulada, true).
 			where(qButacaDTO.id.eq(idButaca)).execute();
+
+		if (!isButacaFromReserva(idButaca)) {
+			Long idSesion = getSesionId(idButaca);
+			sesionesDAO.setIncidencia(idSesion, TipoIncidencia.tipoIncidenciaToInt(TipoIncidencia.ANULACIO_VENDES));
+		}
 	}
 
-    @Transactional
-	public ButacaDTO getButaca(Long idButaca) {
-        JPAQuery query = new JPAQuery(entityManager);
-        return query.from(qButacaDTO).where(qButacaDTO.id.eq(idButaca)).singleResult(qButacaDTO);
+	@Transactional
+	private boolean isButacaFromReserva(Long idButaca) {
+		QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
+		QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
+
+		JPAQuery query = new JPAQuery(entityManager);
+		CompraDTO compra = query.from(qButacaDTO).join(qButacaDTO.parCompra, qCompraDTO).where(qButacaDTO.id.eq(idButaca)).uniqueResult(qCompraDTO);
+		if (compra.getReserva() == null || compra.getReserva() == false)
+			return false;
+		else
+			return true;
 	}
 }

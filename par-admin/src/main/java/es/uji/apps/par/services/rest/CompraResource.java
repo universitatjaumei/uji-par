@@ -21,10 +21,7 @@ import javax.ws.rs.core.Response;
 
 import com.sun.jersey.api.core.InjectParam;
 
-import es.uji.apps.par.ButacaOcupadaAlActivarException;
-import es.uji.apps.par.ButacaOcupadaException;
-import es.uji.apps.par.CompraSinButacasException;
-import es.uji.apps.par.NoHayButacasLibresException;
+import es.uji.apps.par.*;
 import es.uji.apps.par.auth.AuthChecker;
 import es.uji.apps.par.model.Butaca;
 import es.uji.apps.par.model.DisponiblesLocalizacion;
@@ -87,7 +84,7 @@ public class CompraResource extends BaseResource {
 	@Path("{idSesion}/{idCompraReserva}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response anularCompraOReserva(@PathParam("idSesion") Long sesionId,
-			@PathParam("idCompraReserva") Long idCompraReserva) {
+			@PathParam("idCompraReserva") Long idCompraReserva) throws IncidenciaNotFoundException {
 		AuthChecker.canWrite(currentRequest);
 
 		comprasService.anularCompraReserva(idCompraReserva);
@@ -128,7 +125,7 @@ public class CompraResource extends BaseResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response anularButaca(@PathParam("idSesion") Long sesionId,
 			@PathParam("idCompraReserva") Long idCompraReserva,
-			@PathParam("idButaca") Long idButaca) {
+			@PathParam("idButaca") Long idButaca) throws IncidenciaNotFoundException {
 		AuthChecker.canWrite(currentRequest);
 
 		comprasService.anularButacas(Arrays.asList(idButaca));
@@ -139,7 +136,7 @@ public class CompraResource extends BaseResource {
 	@Path("{idSesion}/butacas/anuladas")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response anularButacas(@PathParam("idSesion") Long sesionId,
-			List<Long> idsButacas) {
+			List<Long> idsButacas) throws IncidenciaNotFoundException {
 		AuthChecker.canWrite(currentRequest);
 
 		comprasService.anularButacas(idsButacas);

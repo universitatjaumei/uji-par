@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import es.uji.apps.par.IncidenciaNotFoundException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -169,8 +170,7 @@ public class ButacasDAOTest extends BaseDAOTest
     }
     
     @Test
-    public void cuentaButacasOcupadasNoContarAnuladas()
-    {
+    public void cuentaButacasOcupadasNoContarAnuladas() throws IncidenciaNotFoundException {
         ButacaDTO butaca = preparaButaca(sesion, Localizacion.localizacionToLocalizacionDTO(localizacion), "1", "2",
                 BigDecimal.ONE);
     
@@ -180,5 +180,11 @@ public class ButacasDAOTest extends BaseDAOTest
         butacasDao.anularButaca(butaca.getId());
         
         Assert.assertEquals(0, butacasDao.getOcupadas(sesion.getId(), localizacion.getCodigo()));
-    }    
+    }
+
+	//TODO Anular butacas y ver que marca la sesion con incidencias del ICAA
+
+	//TODO Desanular butacas y ver que si no queda ninguna anulada, que elimina la incidencia de la sesion
+
+	//TODO Desanular butacas y ver que si aun queda alguna anulada, NO elimina la incidencia de la sesion
 }

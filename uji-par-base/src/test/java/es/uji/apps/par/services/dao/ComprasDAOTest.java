@@ -87,4 +87,10 @@ public class ComprasDAOTest extends BaseDAOTest
 
         assertEquals(new BigDecimal(8).doubleValue(), comprasDAO.getRecaudacionSesiones(Arrays.asList(sesion1, sesion2)).doubleValue(), 0.00001);
     }
+
+	//TODO Anular compras y ver que marca la sesion con incidencias del ICAA
+
+	//TODO Desanular compras y ver que si no queda ninguna butaca anulada en la sesion, que elimina la incidencia de la sesion
+
+	//TODO Desanular compras y ver que si aun queda alguna butaca anulada en la sesion, NO elimina la incidencia de la sesion
 }
