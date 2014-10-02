@@ -34,12 +34,6 @@
             <version>3.9</version>
         </dependency>
 
-        <dependency>
-            <groupId>es.uji.apps.par</groupId>
-            <artifactId>uji-par-base</artifactId>
-            <version>0.0.12-SNAPSHOT</version>
-        </dependency>
-
         <!-- jUnit -->
 
         <dependency>
