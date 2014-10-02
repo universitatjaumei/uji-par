@@ -177,8 +177,10 @@ public class FicherosService
     
     private String doPGP(String filePath) throws IOException, InterruptedException {
     	String pathFicheroSalida = filePath + "_cifrado";
-    	String comando = "gpg --compress-algo 1 --cipher-algo cast5 --no-armor --output " 
-    		+ pathFicheroSalida + " --symmetric --passphrase " + Configuration.getPassphrase() + " " + filePath;
+    	/*String comando = "gpg --compress-algo 1 --cipher-algo cast5 --no-armor --output "
+    		+ pathFicheroSalida + " --symmetric --passphrase " + Configuration.getPassphrase() + " " + filePath;*/
+		String comando = "gpg --compress-algo 1 --cipher-algo cast5 --no-armor --encrypt --trust-model always --recipient " +
+				Configuration.getPassphrase() + " --output " + pathFicheroSalida + " " + filePath;
     	Process process = Runtime.getRuntime().exec(comando);
     	process.waitFor();
     	return pathFicheroSalida;
