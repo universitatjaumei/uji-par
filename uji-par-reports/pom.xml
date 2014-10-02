@@ -22,15 +22,7 @@
   	<dependency>
 	    <groupId>es.uji.apps</groupId>
 	    <artifactId>uji-fopreports</artifactId>
-	    <version>0.0.2-SNAPSHOT</version>
+	    <version>0.0.4</version>
     </dependency>
-    
-    <!-- 
-    <dependency>
-  		<groupId>es.uji.apps</groupId>
-  		<artifactId>uji-fopreports</artifactId>
-  		<version>0.0.2</version>
-	</dependency>
-     -->
    </dependencies>
 </project>
