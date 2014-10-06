@@ -41,10 +41,8 @@ Ext.define('Paranimf.view.compra.GridDetalleCompras', {
     }, {
       dataIndex: 'localizacionNombre',
       text: UI.i18n.field.localizacion,
-      flex: 1/*,
-      renderer: function(val) {
-        return (!val)?'':eval("UI.i18n.tipos." + val);
-      }*/
+      flex: 1,
+      sortable: false
     }, {
       dataIndex: 'fila',
       text: UI.i18n.field.fila,
