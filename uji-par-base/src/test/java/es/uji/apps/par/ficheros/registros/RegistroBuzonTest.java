@@ -3,6 +3,7 @@ package es.uji.apps.par.ficheros.registros;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import es.uji.apps.par.TipoEnvioInvalidoException;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -57,7 +58,7 @@ public class RegistroBuzonTest
         registro.serializa();
     }
 
-    @Test(expected = RegistroSerializaException.class)
+    @Test(expected = TipoEnvioInvalidoException.class)
     public void testTipoTamanyo() throws RegistroSerializaException
     {
         RegistroBuzon registro = new RegistroBuzon();

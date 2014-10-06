@@ -33,7 +33,6 @@ public class FicherosServiceCompletoTest extends FicherosServiceBaseTest
 
     @Test
     @Transactional
-    @SuppressWarnings("deprecation")
     public void testGeneraRegistroBuzonSinEspectadores() throws Exception
     {
         Sesion sesion = creaSesion(sala, evento);

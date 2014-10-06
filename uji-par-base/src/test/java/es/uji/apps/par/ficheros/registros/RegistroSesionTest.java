@@ -23,8 +23,9 @@ public class RegistroSesionTest
         registro.setEspectadores(5);
         registro.setRecaudacion(new BigDecimal(6.07));
         registro.setIncidencia(TipoIncidencia.SIN_INCIDENCIAS);
+        String serializado = registro.serializa();
 
-        Assert.assertEquals("21234        0403132230040000500006.07001", registro.serializa());
+        Assert.assertEquals("21234        0403132230040000500006.07000", serializado);
     }
 
     @Test(expected = RegistroSerializaException.class)

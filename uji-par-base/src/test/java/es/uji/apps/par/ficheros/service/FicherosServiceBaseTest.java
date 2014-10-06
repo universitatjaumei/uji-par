@@ -4,12 +4,9 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.Arrays;
 
-import es.uji.apps.par.PrecioRepetidoException;
+import es.uji.apps.par.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import es.uji.apps.par.ButacaOcupadaException;
-import es.uji.apps.par.CompraSinButacasException;
-import es.uji.apps.par.NoHayButacasLibresException;
 import es.uji.apps.par.dao.CinesDAO;
 import es.uji.apps.par.dao.EventosDAO;
 import es.uji.apps.par.dao.LocalizacionesDAO;
@@ -82,8 +79,7 @@ public class FicherosServiceBaseTest
     }
 
     protected void registraCompra(Sesion sesion1, Butaca... butacas) throws NoHayButacasLibresException,
-            ButacaOcupadaException, CompraSinButacasException
-    {
+            ButacaOcupadaException, CompraSinButacasException, IncidenciaNotFoundException {
         ResultadoCompra resultado1 = comprasService.registraCompraTaquilla(sesion1.getId(), Arrays.asList(butacas));
         comprasService.marcaPagada(resultado1.getId());
     }

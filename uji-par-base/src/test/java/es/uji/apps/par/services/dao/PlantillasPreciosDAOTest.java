@@ -1,5 +1,8 @@
 package es.uji.apps.par.services.dao;
 
+import es.uji.apps.par.dao.SalasDAO;
+import es.uji.apps.par.db.SalaDTO;
+import es.uji.apps.par.model.Sala;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,6 +25,9 @@ public class PlantillasPreciosDAOTest {
 
 	@Autowired
 	PlantillasDAO plantillasPreciosDAO;
+
+    @Autowired
+    SalasDAO salasDAO;
 	
 	@Test
     @Transactional
@@ -42,7 +48,12 @@ public class PlantillasPreciosDAOTest {
 
     private Plantilla preparaPlantilla()
     {
-        return new Plantilla("Nombre Localizacion");
+        SalaDTO salaDTO = new SalaDTO();
+        salaDTO.setNombre("Sala1");
+        salasDAO.persistSala(salaDTO);
+        Plantilla plantilla = new Plantilla("Nombre Localizacion");
+        plantilla.setSala(Sala.salaDTOtoSala(salaDTO));
+        return plantilla;
     }
 
     @Test

@@ -1,21 +1,15 @@
 package es.uji.apps.par.services.dao;
 
+import es.uji.apps.par.dao.*;
+import es.uji.apps.par.db.*;
+import es.uji.apps.par.model.Evento;
+import es.uji.apps.par.model.Localizacion;
+import es.uji.apps.par.model.TipoEvento;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Arrays;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
-import es.uji.apps.par.dao.EventosDAO;
-import es.uji.apps.par.dao.LocalizacionesDAO;
-import es.uji.apps.par.dao.SesionesDAO;
-import es.uji.apps.par.db.ButacaDTO;
-import es.uji.apps.par.db.EventoDTO;
-import es.uji.apps.par.db.LocalizacionDTO;
-import es.uji.apps.par.db.PreciosSesionDTO;
-import es.uji.apps.par.db.SesionDTO;
-import es.uji.apps.par.model.Evento;
-import es.uji.apps.par.model.Localizacion;
 
 public class BaseDAOTest
 {
@@ -28,10 +22,23 @@ public class BaseDAOTest
     @Autowired
     LocalizacionesDAO localizacionesDao;
 
+    @Autowired
+    TarifasDAO tarifasDAO;
+
+    @Autowired
+    TiposEventosDAO tiposEventosDAO;
+
     protected SesionDTO preparaSesion(LocalizacionDTO localizacion)
     {
+        TipoEvento tipoEvento = new TipoEvento();
+        tipoEvento.setNombreEs("Tipo Es");
+        tipoEvento.setNombreVa("Tipo Va");
+
+        tiposEventosDAO.addTipoEvento(tipoEvento);
+
         Evento evento = new Evento();
         evento.setAsientosNumerados(true);
+        evento.setParTipoEvento(tipoEvento);
         evento = eventosDao.addEvento(evento);
         
         SesionDTO sesionDTO = new SesionDTO();
@@ -45,6 +52,12 @@ public class BaseDAOTest
         PreciosSesionDTO precioSesion = new PreciosSesionDTO(BigDecimal.valueOf(1), BigDecimal.valueOf(5),
                 BigDecimal.valueOf(10), localizacion);
 
+        TarifaDTO tarifaDTO = new TarifaDTO();
+        tarifaDTO.setNombre("tarifa1");
+        tarifaDTO.setIsPublica(false);
+        tarifasDAO.persistTarifa(tarifaDTO);
+
+        precioSesion.setParTarifa(tarifaDTO);
         sesion.setParPreciosSesions(Arrays.asList(precioSesion));
 
         return sesion;

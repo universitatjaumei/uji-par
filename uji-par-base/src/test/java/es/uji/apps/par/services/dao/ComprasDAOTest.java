@@ -7,6 +7,8 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Date;
 
+import es.uji.apps.par.dao.ButacasDAO;
+import es.uji.apps.par.db.ButacaDTO;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,6 +31,9 @@ public class ComprasDAOTest extends BaseDAOTest
 {
     @Autowired
     ComprasDAO comprasDAO;
+
+    @Autowired
+    ButacasDAO butacasDAO;
 
     private Localizacion localizacion;
     private SesionDTO sesion;
@@ -68,8 +73,20 @@ public class ComprasDAOTest extends BaseDAOTest
     public void testGetRecaudacion()
     {
         Sesion sesion1 = preparaSesion();
-        comprasDAO.insertaCompra(sesion1.getId(), new Date(), true, new BigDecimal(2));
-        comprasDAO.insertaCompra(sesion1.getId(), new Date(), true, new BigDecimal(3));
+        CompraDTO compra1 = comprasDAO.insertaCompra(sesion1.getId(), new Date(), true, new BigDecimal(2));
+        ButacaDTO butaca1 = preparaButaca(Sesion.SesionToSesionDTO(sesion1),
+                Localizacion.localizacionToLocalizacionDTO(localizacion),
+                "1", "2",
+                new BigDecimal(2));
+        butaca1.setParCompra(compra1);
+        butacasDAO.addButaca(butaca1);
+        CompraDTO compra2 = comprasDAO.insertaCompra(sesion1.getId(), new Date(), true, new BigDecimal(3));
+        ButacaDTO butaca2 = preparaButaca(Sesion.SesionToSesionDTO(sesion1),
+                Localizacion.localizacionToLocalizacionDTO(localizacion),
+                "3", "4",
+                new BigDecimal(3));
+        butaca2.setParCompra(compra2);
+        butacasDAO.addButaca(butaca2);
 
         assertEquals(new BigDecimal(5).doubleValue(), comprasDAO.getRecaudacionSesiones(Arrays.asList(sesion1)).doubleValue(), 0.00001);
     }
@@ -79,11 +96,29 @@ public class ComprasDAOTest extends BaseDAOTest
     public void testGetRecaudacionVariasSesiones()
     {
         Sesion sesion1 = preparaSesion();
-        comprasDAO.insertaCompra(sesion1.getId(), new Date(), true, new BigDecimal(2));
+        CompraDTO compra1 = comprasDAO.insertaCompra(sesion1.getId(), new Date(), true, new BigDecimal(2));
+
+        ButacaDTO butaca1 = preparaButaca(sesion, Localizacion.localizacionToLocalizacionDTO(localizacion), "1", "2",
+                new BigDecimal(2));
+        butaca1.setParCompra(compra1);
+        butacasDAO.addButaca(butaca1);
         
         Sesion sesion2 = preparaSesion();
-        comprasDAO.insertaCompra(sesion2.getId(), new Date(), true, new BigDecimal(1));
-        comprasDAO.insertaCompra(sesion2.getId(), new Date(), true, new BigDecimal(5));
+        CompraDTO compra2 = comprasDAO.insertaCompra(sesion2.getId(), new Date(), true, new BigDecimal(1));
+        ButacaDTO butaca2 = preparaButaca(Sesion.SesionToSesionDTO(sesion2),
+                Localizacion.localizacionToLocalizacionDTO(localizacion),
+                "1", "2",
+                new BigDecimal(1));
+        butaca2.setParCompra(compra2);
+        butacasDAO.addButaca(butaca2);
+
+        CompraDTO compra3 = comprasDAO.insertaCompra(sesion2.getId(), new Date(), true, new BigDecimal(5));
+        ButacaDTO butaca3 = preparaButaca(Sesion.SesionToSesionDTO(sesion2),
+                Localizacion.localizacionToLocalizacionDTO(localizacion),
+                "3", "4",
+                new BigDecimal(5));
+        butaca3.setParCompra(compra3);
+        butacasDAO.addButaca(butaca3);
 
         assertEquals(new BigDecimal(8).doubleValue(), comprasDAO.getRecaudacionSesiones(Arrays.asList(sesion1, sesion2)).doubleValue(), 0.00001);
     }
