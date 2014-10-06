@@ -59,6 +59,7 @@ public class GeneralPARException extends WebApplicationException
     public static final String DIGITOS_FORMATO_PROYECCION = "El campo formatoProyeccion de la película tiene que ser 1 dígito";
     public static final String CODIGO_SALA_LARGO = "El código de sala es un string de tamaño mayor de 6 carácteres";
     public static final String ANTICIPADA_FORMAT_ERROR = "Formato incorrecto de la propiedad " + Configuration.HORAS_VENTA_ANTICIPADA;
+    public static final String NOT_FOUND_INCIDENCIA = "Incidencia no encontrada";
     
     
     public static final Integer ERROR_GENERAL_CODE = 500;
@@ -109,6 +110,7 @@ public class GeneralPARException extends WebApplicationException
     public static final Integer DIGITOS_FORMATO_PROYECCION_CODE = 545;
     public static final Integer CODIGO_SALA_LARGO_CODE = 546;
     public static final Integer ANTICIPADA_FORMAT_ERROR_CODE = 547;
+    public static final Integer NOT_FOUND_INCIDENCIA_CODE = 548;
     
     static {
 		messages = new HashMap<Integer,String>();

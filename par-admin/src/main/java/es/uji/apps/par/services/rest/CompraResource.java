@@ -148,7 +148,7 @@ public class CompraResource extends BaseResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response compraEntrada(@PathParam("id") Long sesionId,
 			List<Butaca> butacasSeleccionadas)
-			throws NoHayButacasLibresException, ButacaOcupadaException {
+            throws IncidenciaNotFoundException {
 		AuthChecker.canWrite(currentRequest);
 
 		try {

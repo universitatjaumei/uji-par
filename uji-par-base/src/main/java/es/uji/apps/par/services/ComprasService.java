@@ -1,30 +1,22 @@
 package es.uji.apps.par.services;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
+import com.mysema.query.Tuple;
 import es.uji.apps.par.*;
+import es.uji.apps.par.config.Configuration;
+import es.uji.apps.par.dao.ButacasDAO;
+import es.uji.apps.par.dao.ComprasDAO;
 import es.uji.apps.par.dao.SesionesDAO;
+import es.uji.apps.par.db.CompraDTO;
+import es.uji.apps.par.db.SesionDTO;
+import es.uji.apps.par.model.*;
+import es.uji.apps.par.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mysema.query.Tuple;
-
-import es.uji.apps.par.config.Configuration;
-import es.uji.apps.par.dao.ButacasDAO;
-import es.uji.apps.par.dao.ComprasDAO;
-import es.uji.apps.par.db.CompraDTO;
-import es.uji.apps.par.model.Butaca;
-import es.uji.apps.par.model.Compra;
-import es.uji.apps.par.model.Evento;
-import es.uji.apps.par.model.PreciosSesion;
-import es.uji.apps.par.model.ResultadoCompra;
-import es.uji.apps.par.model.Sesion;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.*;
 
 @Service
 public class ComprasService
@@ -42,16 +34,16 @@ public class ComprasService
 	private SesionesDAO sesionesDAO;
 
     public ResultadoCompra registraCompraTaquilla(Long sesionId, List<Butaca> butacasSeleccionadas)
+            throws NoHayButacasLibresException, ButacaOcupadaException, CompraSinButacasException, IncidenciaNotFoundException {
+        return registraCompra(sesionId, butacasSeleccionadas, true);
+    }
+
+    /*public ResultadoCompra reservaCompraTaquilla(Long sesionId, Date desde, Date hasta,
+                                                  List<Butaca> butacasSeleccionadas)
             throws NoHayButacasLibresException, ButacaOcupadaException, CompraSinButacasException
     {
         return registraCompra(sesionId, butacasSeleccionadas, true);
-    }
-    
-    public ResultadoCompra reservaCompraTaquilla(Long sesionId, Date desde, Date hasta, List<Butaca> butacasSeleccionadas)
-            throws NoHayButacasLibresException, ButacaOcupadaException, CompraSinButacasException
-    {
-        return registraCompra(sesionId, butacasSeleccionadas, true);
-    }
+    }*/
 
     @Transactional(rollbackForClassName={"CompraButacaDescuentoNoDisponible","FueraDePlazoVentaInternetException",
     		"NoHayButacasLibresException","ButacaOcupadaException","CompraSinButacasException"})
@@ -102,26 +94,31 @@ public class ComprasService
     }
 
     @Transactional(rollbackForClassName={"NoHayButacasLibresException","ButacaOcupadaException",
-    		"CompraSinButacasException"})
+    		"CompraSinButacasException","IncidenciaNotFoundException"})
     private synchronized ResultadoCompra registraCompra(Long sesionId, List<Butaca> butacasSeleccionadas, boolean taquilla)
-            throws NoHayButacasLibresException, ButacaOcupadaException, CompraSinButacasException
-    {
+            throws NoHayButacasLibresException, ButacaOcupadaException, CompraSinButacasException, IncidenciaNotFoundException {
         if (butacasSeleccionadas.size() == 0)
             throw new CompraSinButacasException();
 
         ResultadoCompra resultadoCompra = new ResultadoCompra();
-
         BigDecimal importe = calculaImporteButacas(sesionId, butacasSeleccionadas, taquilla);
-
-        CompraDTO compraDTO;
-
-        compraDTO = comprasDAO.insertaCompra(sesionId, new Date(), taquilla, importe);
-
+        CompraDTO compraDTO = comprasDAO.insertaCompra(sesionId, new Date(), taquilla, importe);
         butacasDAO.reservaButacas(sesionId, compraDTO, butacasSeleccionadas);
 
         resultadoCompra.setCorrecta(true);
         resultadoCompra.setId(compraDTO.getId());
         resultadoCompra.setUuid(compraDTO.getUuid());
+
+        if (taquilla) {
+            SesionDTO sesionDTO = sesionesDAO.getSesion(sesionId);
+            long totalAnuladas = sesionesDAO.getButacasAnuladasTotal(sesionId);
+            boolean isVentaDegradada = DateUtils.isDataDegradada(sesionDTO.getFechaCelebracion());
+            boolean isReprogramada = sesionesDAO.isSesionReprogramada(sesionDTO.getFechaCelebracion(),
+                    sesionDTO.getParSala().getId(), sesionId);
+
+            int tipoIncidenciaId = sesionesDAO.getTipoIncidenciaSesion(totalAnuladas, isVentaDegradada, isReprogramada);
+            sesionesDAO.setIncidencia(sesionId, tipoIncidenciaId);
+        }
 
         return resultadoCompra;
     }

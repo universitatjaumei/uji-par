@@ -6,6 +6,14 @@ Ext.define('Paranimf.view.taquilla.GridEventosTaquilla', {
 
    title: UI.i18n.gridTitle.eventos,
 
+   tbar: [{
+      xtype: 'checkbox',
+      fieldLabel: UI.i18n.field.ventaRetrasada,
+      name: 'mostrarTodos',
+      labelWidth: 380,
+      labelAlign: 'right'
+   }],
+
    dockedItems: [{
      xtype: 'pagingtoolbar',
      store: 'EventosTaquilla',
@@ -47,8 +55,6 @@ Ext.define('Paranimf.view.taquilla.GridEventosTaquilla', {
       }];
 
       this.callParent(arguments);
-      
-      this.getDockedItems('toolbar[dock=top]')[0].hide();
-   },
+   }
 
 });

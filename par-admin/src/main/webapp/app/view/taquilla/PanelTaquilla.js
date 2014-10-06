@@ -17,6 +17,6 @@ Ext.define('Paranimf.view.taquilla.PanelTaquilla', {
     region: 'center',
     autoScroll: true,
     xtype: 'gridSesionesTaquilla',
-    style : 'margin-top: 1em;'
+    style : 'margin-top: 0em;'
   }]
 });

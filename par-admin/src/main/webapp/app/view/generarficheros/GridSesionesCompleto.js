@@ -19,7 +19,8 @@ Ext.define('Paranimf.view.generarficheros.GridSesionesCompleto', {
     xtype: 'button',
     text: UI.i18n.button.setIncidencia,
     action: 'setIncidencia',
-    hidden: (readOnlyUser == undefined)?false:readOnlyUser
+    //hidden: (readOnlyUser == undefined)?false:readOnlyUser
+    hidden: true
    }],
 
    dockedItems: [],

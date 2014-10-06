@@ -168,4 +168,15 @@ public class DateUtils
 		int week = cal.get(Calendar.WEEK_OF_YEAR);
 		return String.format("%03d", week);
 	}
+
+    public static boolean isDataDegradada(Timestamp data) {
+        long aux = data.getTime() + (Configuration.getMargenVentaTaquillaMinutos() * 60 * 1000);
+        Timestamp timeAux = new Timestamp(aux);
+        return (DateUtils.getCurrentDate().after(timeAux));
+    }
+
+    public static Timestamp getDataTopePerASaberSiEsDegradada(Timestamp data) {
+        long aux = data.getTime() + (Configuration.getMargenVentaTaquillaMinutos() * 60 * 1000);
+        return new Timestamp(aux);
+    }
 }

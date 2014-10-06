@@ -78,4 +78,9 @@ public class SalasDAO extends BaseDAO
         
         return Sala.salasDTOtoSalas(salasDTO);
     }
+
+    @Transactional
+    public void persistSala(SalaDTO salaDTO) {
+        entityManager.persist(salaDTO);
+    }
 }

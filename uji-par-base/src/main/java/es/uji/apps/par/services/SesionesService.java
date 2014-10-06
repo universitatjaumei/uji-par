@@ -1,11 +1,14 @@
 package es.uji.apps.par.services;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import es.uji.apps.par.IncidenciaNotFoundException;
+import es.uji.apps.par.config.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -120,8 +123,10 @@ public class SesionesService
         for (Sesion sesion : sesiones)
         {
             sesion.setFechaCelebracionWithDate(new Date(sesion.getFechaCelebracion().getTime()/1000));
-            sesion.setFechaInicioVentaOnlineWithDate(new Date(sesion.getFechaInicioVentaOnline().getTime()/1000));
-            sesion.setFechaFinVentaOnlineWithDate(new Date(sesion.getFechaFinVentaOnline().getTime()/1000));
+            if (sesion.getFechaInicioVentaOnline() != null)
+                sesion.setFechaInicioVentaOnlineWithDate(new Date(sesion.getFechaInicioVentaOnline().getTime()/1000));
+            if (sesion.getFechaFinVentaOnline() != null)
+                sesion.setFechaFinVentaOnlineWithDate(new Date(sesion.getFechaFinVentaOnline().getTime()/1000));
         }
         
         return sesiones;
@@ -144,8 +149,10 @@ public class SesionesService
         for (Sesion sesion : sesiones)
         {
             sesion.setFechaCelebracionWithDate(new Date(sesion.getFechaCelebracion().getTime()/1000));
-            sesion.setFechaInicioVentaOnlineWithDate(new Date(sesion.getFechaInicioVentaOnline().getTime()/1000));
-            sesion.setFechaFinVentaOnlineWithDate(new Date(sesion.getFechaFinVentaOnline().getTime()/1000));
+            if (sesion.getFechaInicioVentaOnline() != null)
+                sesion.setFechaInicioVentaOnlineWithDate(new Date(sesion.getFechaInicioVentaOnline().getTime()/1000));
+            if (sesion.getFechaFinVentaOnline() != null)
+                sesion.setFechaFinVentaOnlineWithDate(new Date(sesion.getFechaFinVentaOnline().getTime()/1000));
         }
         
         return sesiones;
@@ -156,9 +163,10 @@ public class SesionesService
         sesionDAO.removeSesion(id);
     }
 
-    public Sesion addSesion(long eventoId, Sesion sesion) throws CampoRequeridoException, FechasInvalidasException
-    {
-    	checkSesionAndSetTimesToDates(sesion);
+    @Transactional(rollbackForClassName={"CampoRequeridoException","FechasInvalidasException",
+            "IncidenciaNotFoundException"})
+    public Sesion addSesion(long eventoId, Sesion sesion) throws CampoRequeridoException, FechasInvalidasException, IncidenciaNotFoundException {
+    	checkSesionAndDates(sesion);
 
     	sesion.setEvento(Evento.eventoDTOtoEvento(eventosDAO.getEventoById(eventoId)));
     	List<PreciosSesion> listaPreciosSesion = new ArrayList<PreciosSesion>();
@@ -172,12 +180,10 @@ public class SesionesService
         }
     	
     	sesionDAO.addSesion(sesion);
-    	//SesionDTO sesionDTO = sesionDAO.persistSesion(Sesion.SesionToSesionDTO(sesion));
-    	//sesion.setId(sesionDTO.getId());
         return sesion;
     }
 
-	private void addPreciosSesion(SesionDTO sesionDTO) {
+    private void addPreciosSesion(SesionDTO sesionDTO) {
 		if (sesionDTO.getParPreciosSesions() != null) {
 			for (PreciosSesionDTO precioSesionDTO : sesionDTO.getParPreciosSesions()) {
     			precioSesionDTO.setParSesione(sesionDTO);
@@ -193,43 +199,43 @@ public class SesionesService
         return evento;
     }
 
-	private void checkSesionAndSetTimesToDates(Sesion sesion) throws CampoRequeridoException, FechasInvalidasException {
+	private void checkSesionAndDates(Sesion sesion) throws CampoRequeridoException, FechasInvalidasException {
 		checkRequiredFields(sesion);
-        
-    	sesion.setFechaCelebracionWithDate(DateUtils.addTimeToDate(sesion.getFechaCelebracion(),
-                sesion.getHoraCelebracion()));
-        
+
+        Date fechaCelebracion = DateUtils.addTimeToDate(sesion.getFechaCelebracion(), sesion.getHoraCelebracion());
+
     	if (sesion.getCanalInternet()) {
-    		sesion.setFechaInicioVentaOnlineWithDate(DateUtils.addTimeToDate(sesion.getFechaInicioVentaOnline(), 
-    				sesion.getHoraInicioVentaOnline()));
-    		sesion.setFechaFinVentaOnlineWithDate(DateUtils.addTimeToDate(sesion.getFechaFinVentaOnline(), 
-    				sesion.getHoraFinVentaOnline()));
+            Date fechaInicioVentaOnline = DateUtils.addTimeToDate(sesion.getFechaInicioVentaOnline(),
+                    sesion.getHoraInicioVentaOnline());
+            Date fechaFinVentaOnline = DateUtils.addTimeToDate(sesion.getFechaFinVentaOnline(),
+                    sesion.getHoraFinVentaOnline());
         
-        	checkIfDatesAreValid(sesion);
+        	checkIfDatesAreValid(fechaInicioVentaOnline, fechaFinVentaOnline, fechaCelebracion);
     	}
 	}
     
-	@Transactional
-    public void updateSesion(long eventoId, Sesion sesion) throws CampoRequeridoException, FechasInvalidasException
-    {
-		checkSesionAndSetTimesToDates(sesion);
+	@Transactional(rollbackForClassName={"CampoRequeridoException","FechasInvalidasException",
+            "IncidenciaNotFoundException"})
+    public void updateSesion(long eventoId, Sesion sesion) throws CampoRequeridoException, FechasInvalidasException, IncidenciaNotFoundException {
+		checkSesionAndDates(sesion);
 		sesion.setEvento(createParEventoWithId(eventoId));
-        
+
         sesionDAO.deleteExistingPreciosSesion(sesion.getId());
         sesionDAO.updateSesion(sesion);
         addPreciosSesion(Sesion.SesionToSesionDTO(sesion));
     }
 
-    private void checkIfDatesAreValid(Sesion sesion) throws FechasInvalidasException {
-		if (DateUtils.millisecondsToSeconds(sesion.getFechaFinVentaOnline().getTime()) < 
-				DateUtils.millisecondsToSeconds(sesion.getFechaInicioVentaOnline().getTime()))
+    private void checkIfDatesAreValid(Date fechaInicio, Date fechaFin, Date fechaCelebracion) throws
+            FechasInvalidasException {
+		if (DateUtils.millisecondsToSeconds(fechaFin.getTime()) <
+				DateUtils.millisecondsToSeconds(fechaInicio.getTime()))
 			throw new FechasInvalidasException(FechasInvalidasException.FECHA_INICIO_VENTA_POSTERIOR_FECHA_FIN_VENTA, 
-			        sesion.getFechaInicioVentaOnline(), sesion.getFechaFinVentaOnline());
+			        fechaInicio, fechaFin);
 		
-		if (DateUtils.millisecondsToSeconds(sesion.getFechaFinVentaOnline().getTime()) > 
-				DateUtils.millisecondsToSeconds(sesion.getFechaCelebracion().getTime()))
+		if (DateUtils.millisecondsToSeconds(fechaFin.getTime()) >
+				DateUtils.millisecondsToSeconds(fechaCelebracion.getTime()))
 			throw new FechasInvalidasException(FechasInvalidasException.FECHA_FIN_VENTA_POSTERIOR_FECHA_CELEBRACION,
-			        sesion.getFechaCelebracion(), sesion.getFechaFinVentaOnline());
+			        fechaCelebracion, fechaFin);
 	}
 
 	private void checkRequiredFields(Sesion sesion) throws CampoRequeridoException {
@@ -453,4 +459,9 @@ public class SesionesService
 	public List<Tarifa> getTarifasPublicasConPrecioSinPlantilla(long sesionId) {
 		return _getTarifasConPrecioSinPlantilla(sesionId, false);
 	}
+
+    public long getNumeroSesionesMismaHoraYSala(Long sesionId, long salaId, Date fechaCelebracion) {
+        return sesionDAO.getCantidadSesionesMismaFechaYLocalizacion(DateUtils.dateToTimestampSafe(fechaCelebracion),
+                salaId, sesionId);
+    }
 }

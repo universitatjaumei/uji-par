@@ -1,15 +1,15 @@
 package es.uji.apps.par;
 
 @SuppressWarnings("serial")
-public class IncidenciaNotFoundException extends Exception
+public class IncidenciaNotFoundException extends GeneralPARException
 {
     public IncidenciaNotFoundException(Integer incidenciaId)
     {
-        super("Incidencia no encontrada: " + incidenciaId);
+        super(GeneralPARException.NOT_FOUND_INCIDENCIA_CODE, "Codigo incidencia: " + incidenciaId);
     }
 
 	public IncidenciaNotFoundException()
 	{
-		super("Incidencia no encontrada");
+		super(GeneralPARException.NOT_FOUND_INCIDENCIA_CODE);
 	}
 }

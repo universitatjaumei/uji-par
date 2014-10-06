@@ -1,5 +1,6 @@
 package es.uji.apps.par.dao;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 import es.uji.apps.par.IncidenciaNotFoundException;
@@ -148,8 +149,8 @@ public class ButacasDAO extends BaseDAO
     }
 
     @Transactional(rollbackForClassName={"NoHayButacasLibresException","ButacaOcupadaException"})
-    public void reservaButacas(Long sesionId, CompraDTO compraDTO, List<Butaca> butacas) throws ButacaOcupadaException, NoHayButacasLibresException
-    {
+    public void reservaButacas(Long sesionId, CompraDTO compraDTO, List<Butaca> butacas) throws
+            ButacaOcupadaException, NoHayButacasLibresException {
         Butaca butacaActual = null;
         
         try
@@ -189,9 +190,9 @@ public class ButacasDAO extends BaseDAO
                 entityManager.flush();
             }
         }
-        catch (JpaSystemException e)
+        catch (Exception e)
         {
-            if (butacaActual != null && e.getCause().getCause() instanceof ConstraintViolationException)
+            if (butacaActual != null && e.getCause() instanceof ConstraintViolationException)
                 throw new ButacaOcupadaException(sesionId, butacaActual.getLocalizacion(), butacaActual.getFila(), butacaActual.getNumero());
             else
                 throw e;
@@ -296,7 +297,7 @@ public class ButacasDAO extends BaseDAO
 	}
 
 	@Transactional
-	private boolean isButacaFromReserva(Long idButaca) {
+	protected boolean isButacaFromReserva(Long idButaca) {
 		QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
 		QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
 

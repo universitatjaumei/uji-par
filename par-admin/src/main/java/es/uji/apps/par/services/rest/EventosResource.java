@@ -2,7 +2,9 @@ package es.uji.apps.par.services.rest;
 
 import java.math.BigDecimal;
 import java.net.URI;
+import java.text.ParseException;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import javax.management.Query;
@@ -34,6 +36,7 @@ import es.uji.apps.par.model.Sesion;
 import es.uji.apps.par.services.EventosService;
 import es.uji.apps.par.services.LocalizacionesService;
 import es.uji.apps.par.services.SesionesService;
+import es.uji.apps.par.utils.DateUtils;
 
 @Path("evento")
 public class EventosResource
@@ -293,8 +296,7 @@ public class EventosResource
         
         sesion.setId(sesionId);
         sesionesService.updateSesion(eventoId, sesion);
-        return Response.ok().entity(new RestResponse(true, Arrays.asList(sesion), 1))
-                .build();
+        return Response.ok().entity(new RestResponse(true, Arrays.asList(sesion), 1)).build();
     }
     
     @DELETE
@@ -356,4 +358,13 @@ public class EventosResource
 	{
 		return Response.ok().entity(eventosService.getPeliculas(eventoId)).build();
 	}
+
+    @GET
+    @Path("{eventoId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getNumeroSesionesMismaHoraYSala(@QueryParam("sesionid") Long sesionId,
+          @QueryParam("sala") long salaId, @QueryParam("fecha") String fechaCelebracion) throws ParseException {
+        return Response.ok().entity(sesionesService.getNumeroSesionesMismaHoraYSala(sesionId, salaId,
+                DateUtils.spanishStringWithHourstoDate(fechaCelebracion))).build();
+    }
 }

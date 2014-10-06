@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.db.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -143,6 +144,7 @@ public class SesionesDAO extends BaseDAO
     {
         SesionDTO sesionDTO = Sesion.SesionToSesionDTO(sesion);
         persistSesion(sesionDTO);
+        setIncidenciaSesion(sesionDTO.getFechaCelebracion(), sesionDTO.getParSala().getId());
         sesion.setId(sesionDTO.getId());
 		//TODO -> Esta sesion.getVersionLingustica sera erronea cuando sea multisesion, mejor hacer un insert en la tabla hija
 		// por cada pelicula de la multisesion (evento.getFormato, evento.getId, evento.getPeliculasMultisesion()
@@ -176,43 +178,72 @@ public class SesionesDAO extends BaseDAO
 		entityManager.persist(sesionFormatoIdiomaICAA);
 	}
 
-    /*@Transactional
-	public List<SesionFormatoIdiomaICAADTO> getSesionFormatoIdiomaIcaa(String formato, String versionLinguistica, long eventoId) {
-		QSesionFormatoIdiomaICAADTO qSesionFormatoIdiomaICAA = QSesionFormatoIdiomaICAADTO.sesionFormatoIdiomaICAADTO;
-        JPAQuery query = new JPAQuery(entityManager);
-        return query.from(qSesionFormatoIdiomaICAA).where(
-        	qSesionFormatoIdiomaICAA.formato.eq(formato)
-        	.and(qSesionFormatoIdiomaICAA.versionLinguistica.eq(versionLinguistica))
-        	.and(qSesionFormatoIdiomaICAA.parEvento.id.eq(eventoId))
-        ).list(qSesionFormatoIdiomaICAA);
-	}*/
-
     @Transactional
-    public void updateSesion(Sesion sesion)
-    {
+    public void updateSesion(Sesion sesion) {
+        Timestamp fechaCelebracion = DateUtils.dateToTimestampSafe(DateUtils.addTimeToDate(sesion.getFechaCelebracion
+                (), sesion.getHoraCelebracion()));
         JPAUpdateClause update = new JPAUpdateClause(entityManager, qSesionDTO);
+
         update.set(qSesionDTO.canalInternet, sesion.getCanalInternet())
                 .set(qSesionDTO.canalTaquilla, sesion.getCanalTaquilla())
-                .set(qSesionDTO.fechaCelebracion, DateUtils.dateToTimestampSafe(DateUtils.addTimeToDate(sesion.getFechaCelebracion(), sesion.getHoraCelebracion())))
-                .set(qSesionDTO.fechaFinVentaOnline, DateUtils.dateToTimestampSafe(DateUtils.addTimeToDate(sesion.getFechaFinVentaOnline(), sesion.getHoraFinVentaOnline())))
-                .set(qSesionDTO.fechaInicioVentaOnline,
-                		DateUtils.dateToTimestampSafe(DateUtils.addTimeToDate(sesion.getFechaInicioVentaOnline(), sesion.getHoraInicioVentaOnline())))
-                .set(qSesionDTO.horaApertura, sesion.getHoraApertura())
+                .set(qSesionDTO.fechaCelebracion, fechaCelebracion);
+
+        if (sesion.getFechaInicioVentaOnline() != null)
+            update.set(qSesionDTO.fechaInicioVentaOnline, DateUtils.dateToTimestampSafe(DateUtils.addTimeToDate(sesion
+                .getFechaInicioVentaOnline(), sesion.getHoraInicioVentaOnline())));
+        else
+            update.setNull(qSesionDTO.fechaInicioVentaOnline);
+
+        if (sesion.getFechaFinVentaOnline() != null)
+            update.set(qSesionDTO.fechaFinVentaOnline, DateUtils.dateToTimestampSafe(DateUtils.addTimeToDate(sesion
+                    .getFechaFinVentaOnline(), sesion.getHoraFinVentaOnline())));
+        else
+            update.setNull(qSesionDTO.fechaFinVentaOnline);
+
+        update.set(qSesionDTO.horaApertura, sesion.getHoraApertura())
                 .set(qSesionDTO.parEvento, Evento.eventoToEventoDTO(sesion.getEvento()))
                 .set(qSesionDTO.parPlantilla,
                         Plantilla.plantillaPreciosToPlantillaPreciosDTO(sesion.getPlantillaPrecios()))
                 .set(qSesionDTO.nombre, sesion.getNombre())
                 .set(qSesionDTO.versionLinguistica, sesion.getVersionLinguistica())
-                .set(qSesionDTO.rssId, sesion.getRssId());
-
-        if (sesion.getSala() != null && sesion.getSala().getId() != 0)
-            update.set(qSesionDTO.parSala, Sala.salaToSalaDTO(sesion.getSala()));
-
-        update.where(qSesionDTO.id.eq(sesion.getId())).execute();
+                 .set(qSesionDTO.rssId, sesion.getRssId())
+                .set(qSesionDTO.parSala, Sala.salaToSalaDTO(sesion.getSala()))
+                .where(qSesionDTO.id.eq(sesion.getId())).execute();
 		//TODO -> Esta sesion.getVersionLingustica sera erronea cuando sea multisesion, mejor hacer un insert en la tabla hija
 		// por cada pelicula de la multisesion (evento.getFormato, evento.getId, evento.getPeliculasMultisesion()
 		// .getversionLingusitca())
         ////addSesionFormatoIdiomaIfNeeded(sesion.getEvento().getId(), sesion.getEvento().getFormato(),	sesion.getVersionLinguistica());
+        setIncidenciaSesion(fechaCelebracion, sesion.getSala().getId());
+    }
+
+    @Transactional
+    private void setIncidenciaSesion(Timestamp fechaCelebracion, Long salaId) {
+        List<SesionDTO> sesionesMismaHoraYSala = getSesionesMismaFechaYLocalizacion(fechaCelebracion, salaId);
+        for (SesionDTO sesionMismaHoraYSalaIncluidaLaPropia: sesionesMismaHoraYSala) {
+            long totalAnuladas = getButacasAnuladasTotal(sesionMismaHoraYSalaIncluidaLaPropia.getId());
+            boolean hasVentasDegradadas = hasVentasDegradadas(sesionMismaHoraYSalaIncluidaLaPropia.getId(),
+                    sesionMismaHoraYSalaIncluidaLaPropia.getFechaCelebracion());
+            boolean isSesionReprogramada = isSesionReprogramada(sesionMismaHoraYSalaIncluidaLaPropia.getFechaCelebracion
+                 (), sesionMismaHoraYSalaIncluidaLaPropia.getParSala().getId(),
+                        sesionMismaHoraYSalaIncluidaLaPropia.getId());
+            int tipoIncidenciaId = getTipoIncidenciaSesion(totalAnuladas, hasVentasDegradadas, isSesionReprogramada);
+            setIncidencia(sesionMismaHoraYSalaIncluidaLaPropia.getId(), tipoIncidenciaId);
+        }
+    }
+
+    private boolean hasVentasDegradadas(long sesionId, Timestamp fechaCelebracion) {
+        Timestamp fechaTopeParaSaberSiEsDegradada = DateUtils.getDataTopePerASaberSiEsDegradada(fechaCelebracion);
+        JPAQuery query = new JPAQuery(entityManager);
+        QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
+
+        query.from(qCompraDTO).where(qCompraDTO.parSesion.id.eq(sesionId).and(qCompraDTO.fecha.gt
+                (fechaTopeParaSaberSiEsDegradada)));
+        return (query.count() > 0L);
+    }
+
+    public boolean isSesionReprogramada(Timestamp fechaCelebracion, Long salaId, Long sesionId) {
+        return (getCantidadSesionesMismaFechaYLocalizacion(fechaCelebracion,
+                salaId, sesionId) > 0);
     }
 
     @Transactional
@@ -433,8 +464,8 @@ public class SesionesDAO extends BaseDAO
 	public boolean isIncidenciaCancelacionEvento(Integer incidenciaId) throws IncidenciaNotFoundException {
 		TipoIncidencia incidenciaOcurrida = TipoIncidencia.intToTipoIncidencia(Utils.safeObjectToInt(incidenciaId));
 
-		if (incidenciaOcurrida != TipoIncidencia.ANULACIO_COMPLETA && incidenciaOcurrida != TipoIncidencia
-				.ANULACIO_PROGRAMACIO)
+		if (incidenciaOcurrida != TipoIncidencia.ANULACIO_VENTES_I_REPROGRAMACIO && incidenciaOcurrida != TipoIncidencia
+				.REPROGRAMACIO)
 			return false;
 		return true;
 	}
@@ -650,4 +681,50 @@ public class SesionesDAO extends BaseDAO
 		return query.from(qSesionDTO).join(qSesionDTO.parCompras, qCompraDTO).join(qCompraDTO.parButacas,
 				qButacaDTO).on(qButacaDTO.anulada.eq(true)).where(qSesionDTO.id.eq(idSesion)).count();
 	}
+
+    @Transactional(rollbackFor = IncidenciaNotFoundException.class)
+    public int getTipoIncidenciaSesion(long totalAnuladas, boolean isVentaDegradada,
+                                       boolean isSesionReprogramada) throws IncidenciaNotFoundException {
+        int tipoIncidenciaId = TipoIncidencia.tipoIncidenciaToInt(TipoIncidencia.SIN_INCIDENCIAS);
+
+        if (totalAnuladas > 0) {
+            if (!isVentaDegradada && !isSesionReprogramada)
+                tipoIncidenciaId = TipoIncidencia.tipoIncidenciaToInt(TipoIncidencia.ANULACIO_VENDES);
+            else if (isVentaDegradada && !isSesionReprogramada)
+                tipoIncidenciaId = TipoIncidencia.tipoIncidenciaToInt(TipoIncidencia.VENDA_MANUAL_I_ANULACIO_VENTES);
+            else if (isVentaDegradada && isSesionReprogramada)
+                tipoIncidenciaId = TipoIncidencia.tipoIncidenciaToInt(TipoIncidencia.VENDA_MANUAL_I_ANULACIO_VENTES_I_REPROGRAMACIO);
+            else if (!isVentaDegradada && isSesionReprogramada)
+                tipoIncidenciaId = TipoIncidencia.tipoIncidenciaToInt(TipoIncidencia.ANULACIO_VENTES_I_REPROGRAMACIO);
+        } else if (isVentaDegradada) {
+            if (isSesionReprogramada)
+                tipoIncidenciaId = TipoIncidencia.tipoIncidenciaToInt(TipoIncidencia.VENDA_MANUAL_I_REPROGRAMACIO);
+            else
+                tipoIncidenciaId = TipoIncidencia.tipoIncidenciaToInt(TipoIncidencia.VENDA_MANUAL_DEGRADADA);
+        } else if (isSesionReprogramada)
+            tipoIncidenciaId = TipoIncidencia.tipoIncidenciaToInt(TipoIncidencia.REPROGRAMACIO);
+
+        return tipoIncidenciaId;
+    }
+
+    @Transactional
+    public long getCantidadSesionesMismaFechaYLocalizacion(Timestamp fechaCelebracion, long salaId,
+        Long sesionId) {
+        JPAQuery query = new JPAQuery(entityManager);
+
+        if (sesionId != null)
+            return query.from(qSesionDTO).where(qSesionDTO.fechaCelebracion.eq(fechaCelebracion).and(qSesionDTO.parSala
+                .id.eq(salaId)).and(qSesionDTO.id.ne(sesionId))).count();
+        else
+            return query.from(qSesionDTO).where(qSesionDTO.fechaCelebracion.eq(fechaCelebracion).and(qSesionDTO.parSala
+                    .id.eq(salaId))).count();
+    }
+
+    @Transactional
+    public List<SesionDTO> getSesionesMismaFechaYLocalizacion(Timestamp fechaCelebracion, long salaId) {
+        JPAQuery query = new JPAQuery(entityManager);
+
+        return query.from(qSesionDTO).where(qSesionDTO.fechaCelebracion.eq(fechaCelebracion).and(qSesionDTO.parSala
+                    .id.eq(salaId))).list(qSesionDTO);
+    }
 }

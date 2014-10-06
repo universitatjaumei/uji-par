@@ -526,11 +526,11 @@ Ext.define('Paranimf.controller.Eventos', {
    
    saveSesionFormData: function(button, event, opts) {
       var form = this.getFormSesiones();
-      if (form.isValid()) {
-   	   var eventoId = this.getGridEventos().getSelectedColumnId();
+      var eventoId = this.getGridEventos().getSelectedColumnId();
 
-   	   var grid = this.getGridSesiones();
-   	   
+      if (form.isValid()) {
+         var sala = this.getFormSesiones().getForm().findField('sala');
+         var grid = this.getGridSesiones();
 
          if (this.getCheckboxVentaOnline().value) {
             var dataInicialVentaOnline = this.getFechaInicioVentaOnline().value;
@@ -545,28 +545,46 @@ Ext.define('Paranimf.controller.Eventos', {
                alert(UI.i18n.error.dataIniciPosterior);
                return;
             }
-
-            var dataSessio = this.getFechaCelebracion().value;
-            h = this.getHoraCelebracion().rawValue.split(":");
-            dataSessio.setHours(h[0], h[1]);
-            console.log(dataSessio);
-            if (dataSessio < dataFinalVentaOnline) {
-               alert(UI.i18n.error.dataEventAnterior);
-               return;
-            }
          }
+         var dataSessio = this.getFechaCelebracion().value;
+         h = this.getHoraCelebracion().rawValue.split(":");
+         dataSessio.setHours(h[0], h[1]);
+         
+         if (dataSessio < dataFinalVentaOnline) {
+            alert(UI.i18n.error.dataEventAnterior);
+            return;
+         }
+         var strDataSessio = Ext.Date.format(dataSessio, 'd/m/Y H:i');
+         var me = this;
+         var sesionId = '&sesionid=' + this.getFormSesiones().getForm().findField('id').value;
+         Ext.Ajax.request({
+           url : urlPrefix + 'evento/' + eventoId + '?sala=' + sala.getValue() + '&fecha=' + strDataSessio + sesionId,
+           method: 'GET',
+           success: function (response) {
+               var numeroSesionesMismaHora = Ext.JSON.decode(response.responseText, true);
+               console.log(numeroSesionesMismaHora);
 
-         if (this.getComboPlantillaPrecios().value == -1)
-            this.getFormSesiones().getForm().findField('preciosSesion').setValue(this.getGridPreciosSesion().toJSON());
-         else
-            this.getFormSesiones().getForm().findField('preciosSesion').setValue(undefined);
-         
-         var sala = this.getFormSesiones().getForm().findField('sala');
-         
-         if (sala.getValue() == '')
-       	  sala.setValue(null);
-         
-         form.saveFormData(grid, urlPrefix + 'evento/' + eventoId + '/sesiones');
+               var guardar = true;
+               if (numeroSesionesMismaHora > 0) {
+                  if (!confirm(UI.i18n.message.confirmReprogramacio))
+                     guardar = false;
+               }
+               
+               if (guardar) {
+                  if (me.getComboPlantillaPrecios().value == -1)
+                     me.getFormSesiones().getForm().findField('preciosSesion').setValue(me.getGridPreciosSesion().toJSON());
+                  else
+                     me.getFormSesiones().getForm().findField('preciosSesion').setValue(undefined);
+
+                  if (sala.getValue() == '')
+                     sala.setValue(null);
+               
+                  form.saveFormData(grid, urlPrefix + 'evento/' + eventoId + '/sesiones');
+               }
+           }, failure: function (response) {
+              alert(UI.i18n.error.comprobandoSesionesMismaHora);
+           }
+         });
       }
    },
    

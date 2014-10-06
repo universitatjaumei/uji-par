@@ -45,10 +45,10 @@ public class EventosSyncBenicassim implements EventosSync
     EventosDAO eventosDAO;
     
     @Autowired
-    SesionesDAO sesionesDao;
+    SesionesDAO sesionesDAO;
     
     @Autowired
-    PlantillasDAO plantillasDao;
+    PlantillasDAO plantillasDAO;
 
     @Autowired
     TiposEventosDAO tipoEventosDAO;
@@ -102,7 +102,7 @@ public class EventosSyncBenicassim implements EventosSync
     {
         for (Sesion sesionRss : item.getSesiones().getSesiones())
         {
-            es.uji.apps.par.model.Sesion sesion = sesionesDao.getSesionByRssId(sesionRss.getId());
+            es.uji.apps.par.model.Sesion sesion = sesionesDAO.getSesionByRssId(sesionRss.getId());
             
             if (sesion == null)
             {
@@ -112,8 +112,9 @@ public class EventosSyncBenicassim implements EventosSync
                 sesion.setPlantillaPrecios(getPlantillaParaItem(item));
                 sesion.setRssId(sesionRss.getId());
                 
-                // Por ahora los metemos en la primera sala que exista (CAMBIAR)
+                // TODO - Por ahora los metemos en la primera sala que exista (CAMBIAR)
                 sesion.setSala(salasDAO.getSalas().get(0));
+                sesion.setCanalInternet("true");
                 
                 // Inicio venta online sumando X horas (según config) a las 00:00 del día en el que se crea la sesión
                 Calendar inicioVentaOnline = Calendar.getInstance();
@@ -139,15 +140,15 @@ public class EventosSyncBenicassim implements EventosSync
             sesion.setHoraFinVentaOnline(DateUtils.getHourAndMinutesWithLeadingZeros(finVentaOnline.getTime()));
             
             if (sesion.getId() == 0)
-                sesionesDao.addSesion(sesion);
+                sesionesDAO.addSesion(sesion);
             else
-                sesionesDao.updateSesion(sesion);
+                sesionesDAO.updateSesion(sesion);
         }
     }
 
     private Plantilla getPlantillaParaItem(Item item)
     {
-        List<PlantillaDTO> plantillas = plantillasDao.get(false, "", 0, 100);
+        List<PlantillaDTO> plantillas = plantillasDAO.get(false, "", 0, 100);
         
         return Plantilla.plantillaPreciosDTOtoPlantillaPrecios(plantillas.get(0));
     }

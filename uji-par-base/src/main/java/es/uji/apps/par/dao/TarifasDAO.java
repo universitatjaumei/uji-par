@@ -1,19 +1,17 @@
 package es.uji.apps.par.dao;
 
-import java.util.List;
-
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.jpa.impl.JPAUpdateClause;
-
 import es.uji.apps.par.database.DatabaseHelper;
 import es.uji.apps.par.database.DatabaseHelperFactory;
 import es.uji.apps.par.db.QTarifaDTO;
 import es.uji.apps.par.db.TarifaDTO;
 import es.uji.apps.par.model.Tarifa;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Repository
 public class TarifasDAO extends BaseDAO
@@ -26,6 +24,13 @@ public class TarifasDAO extends BaseDAO
     public TarifasDAO()
     {
         databaseHelper = DatabaseHelperFactory.newInstance();
+    }
+
+    @Transactional
+    public TarifaDTO persistTarifa(TarifaDTO tarifaDTO)
+    {
+        entityManager.persist(tarifaDTO);
+        return tarifaDTO;
     }
 
     @Transactional

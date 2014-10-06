@@ -23,6 +23,7 @@ import javax.ws.rs.core.Response;
 import com.sun.jersey.api.core.InjectParam;
 
 import es.uji.apps.par.GeneralPARException;
+import es.uji.apps.par.auth.AuthChecker;
 import es.uji.apps.par.model.Tarifa;
 import es.uji.apps.par.services.TarifasService;
 
@@ -62,9 +63,7 @@ public class TarifasResource
     @Produces(MediaType.APPLICATION_JSON)
     public Response update(Tarifa tarifa) throws GeneralPARException
     {
-    	//TODO
-        //AuthChecker.canWrite(currentRequest);
-
+        AuthChecker.canWrite(currentRequest);
         tarifa = tarifasService.update(tarifa);
 
         return Response.ok()
@@ -76,9 +75,7 @@ public class TarifasResource
     @Produces(MediaType.APPLICATION_JSON)
     public Response remove(@PathParam("id") Integer id)
     {
-    	//TODO
-        //AuthChecker.canWrite(currentRequest);
-        
+    	AuthChecker.canWrite(currentRequest);
         tarifasService.removeTarifa(id);
         return Response.ok().entity(new RestResponse(true)).build();
     }

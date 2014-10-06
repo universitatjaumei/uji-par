@@ -122,11 +122,17 @@ Ext.define('Paranimf.controller.Taquilla', {
       }, {
         ref: 'minutoFin',
         selector: 'formComprar combobox[name=minutoFin]'
+      }, {
+        ref: 'checkMostrarTodosEventos',
+        selector: 'gridEventosTaquilla checkbox[name=mostrarTodos]'
+      }, {
+        ref: 'btReservar',
+        selector: 'gridSesionesTaquilla button[action=reservar]'
       }
    ],
 
    init: function() {
-	   
+	   this._allEventosShown = false;
       this.control({
     	  
     	   'panelTaquilla': {
@@ -184,11 +190,36 @@ Ext.define('Paranimf.controller.Taquilla', {
 
          'formComprar panel[name=panelReservar]': {
             beforerender: this.setFechaHoraFinalReserva
+         },
+
+         'gridEventosTaquilla checkbox[name=mostrarTodos]': {
+            change: this.showHideTodosEventos
          }
       });
       
 	  this.intervalEstadoPago = {};
    },
+
+  showHideTodosEventos: function() {
+    var doRecargar = true;
+    if (this.getCheckMostrarTodosEventos().checked) {
+      if (!confirm(UI.i18n.message.confirmVentaDegradada)) {
+        doRecargar = false;
+        this.getCheckMostrarTodosEventos().setValue('');
+        this._allEventosShown = false;
+      } else {
+        this.getBtReservar().hide();
+        this._allEventosShown = true;
+      }
+    } else
+      this.getBtReservar().show();
+
+    if (doRecargar) {
+      var url = (this.getCheckMostrarTodosEventos().checked) ? urlPrefix + 'evento': urlPrefix + 'evento?activos=true';
+      this.getGridEventosTaquilla().store.proxy.url = url;
+      this.recargaStore();
+    }
+  },
 
     setFechaHoraFinalReserva: function(panel) {
       //console.log("setFechaHoraFinalReserva");
@@ -992,7 +1023,7 @@ Ext.define('Paranimf.controller.Taquilla', {
    },   
 
    recargaStore: function(comp, opts) {
-      console.log('RECARGA STORE EVENTOS TAQUILLA');
+      //console.log('RECARGA STORE EVENTOS TAQUILLA');
       this.getGridEventosTaquilla().recargaStore();
    },
 
@@ -1003,7 +1034,10 @@ Ext.define('Paranimf.controller.Taquilla', {
          
          this.getGridSesionesTaquilla().setTitle(UI.i18n.gridTitle.sesionesCompras + ': ' + record[0].get('tituloVa'));
 
-         storeSesiones.getProxy().url = urlPrefix + 'evento/' + eventoId + '/sesiones?activos=true';
+         var url = urlPrefix + 'evento/' + eventoId + '/sesiones';
+         if (!this._allEventosShown)
+          url += '?activos=true';
+         storeSesiones.getProxy().url = url;
          storeSesiones.load();
       }
    },   

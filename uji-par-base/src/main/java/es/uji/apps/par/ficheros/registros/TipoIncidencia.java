@@ -4,9 +4,9 @@ import es.uji.apps.par.IncidenciaNotFoundException;
 
 public enum TipoIncidencia
 {
-    SIN_INCIDENCIAS("000"), VENDA_MANUAL_DEGRADADA("005"), VENDA_MANUAL_ANULACIO("006"),
-    VENDA_MANUAL_ANULACIO_PROGRAMACIO("007"), VENDA_MANUAL_ANULACIO_COMPLETA("008"), ANULACIO_VENDES("009"),
-    ANULACIO_PROGRAMACIO("010"), ANULACIO_COMPLETA("011");
+    SIN_INCIDENCIAS("000"), VENDA_MANUAL_DEGRADADA("005"), VENDA_MANUAL_I_ANULACIO_VENTES("006"),
+    VENDA_MANUAL_I_REPROGRAMACIO("007"), VENDA_MANUAL_I_ANULACIO_VENTES_I_REPROGRAMACIO("008"),
+    ANULACIO_VENDES("009"), REPROGRAMACIO("010"), ANULACIO_VENTES_I_REPROGRAMACIO("011");
 
     private String codigo;
 
@@ -27,17 +27,17 @@ public enum TipoIncidencia
 			case 5:
 				return VENDA_MANUAL_DEGRADADA;
 			case 6:
-				return VENDA_MANUAL_ANULACIO;
+				return VENDA_MANUAL_I_ANULACIO_VENTES;
 			case 7:
-				return VENDA_MANUAL_ANULACIO_PROGRAMACIO; 
+				return VENDA_MANUAL_I_REPROGRAMACIO;
 			case 8:
-				return VENDA_MANUAL_ANULACIO_COMPLETA;
+				return VENDA_MANUAL_I_ANULACIO_VENTES_I_REPROGRAMACIO;
 			case 9:
 				return ANULACIO_VENDES;
 			case 10:
-				return ANULACIO_PROGRAMACIO;
+				return REPROGRAMACIO;
 			case 11:
-				return ANULACIO_COMPLETA;
+				return ANULACIO_VENTES_I_REPROGRAMACIO;
 		}
 		throw new IncidenciaNotFoundException(incidenciaId);
 	}
@@ -47,17 +47,17 @@ public enum TipoIncidencia
 			return 0;
 		else if (tipoIncidencia == VENDA_MANUAL_DEGRADADA)
 			return 5;
-		else if (tipoIncidencia == VENDA_MANUAL_ANULACIO)
+		else if (tipoIncidencia == VENDA_MANUAL_I_ANULACIO_VENTES)
 			return 6;
-		else if (tipoIncidencia == VENDA_MANUAL_ANULACIO_PROGRAMACIO)
+		else if (tipoIncidencia == VENDA_MANUAL_I_REPROGRAMACIO)
 			return 7;
-		else if (tipoIncidencia == VENDA_MANUAL_ANULACIO_COMPLETA)
+		else if (tipoIncidencia == VENDA_MANUAL_I_ANULACIO_VENTES_I_REPROGRAMACIO)
 			return 8;
 		else if (tipoIncidencia == ANULACIO_VENDES)
 			return 9;
-		else if (tipoIncidencia == ANULACIO_PROGRAMACIO)
+		else if (tipoIncidencia == REPROGRAMACIO)
 			return 10;
-		else if (tipoIncidencia == ANULACIO_COMPLETA)
+		else if (tipoIncidencia == ANULACIO_VENTES_I_REPROGRAMACIO)
 			return 11;
 
 		throw new IncidenciaNotFoundException();

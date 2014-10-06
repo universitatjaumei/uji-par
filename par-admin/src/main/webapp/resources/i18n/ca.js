@@ -60,7 +60,9 @@ UI =
             "evento": "Event",
             "sessio": "Sessió",
             "onlyOneRowSelected": "És obligatori seleccionar una única sessió",
-            "informesGenerals": "Informes generals per a totes les sessions"
+            "informesGenerals": "Informes generals per a totes les sessions",
+            "confirmVentaDegradada": "Activar la venda per a events acabats es recomana únicament per a introduir vendes que no es van poder fer en el moment en el que estava la taquilla oberta. Està segur de continuar?",
+            "confirmReprogramacio": "Hi han sessions ja definides per a aquesta hora en aquesta sala. Vols reprogramar la sessió i mantindre aquesta com la vàlida?"
         },
         "storeWeekDay": {
             "wed": "Dimecres",
@@ -169,7 +171,8 @@ UI =
             "error543": "La versió lingüística de la pel·lícula no és vàlida",
             "error544": "L'idioma dels subtítols de la pel·lícula no és vàlid",
             "error545": "El format de projecció de la pel·lícula no és vàlid",
-            "error546": "El codi de la sala té més de 6 caràcters"
+            "error546": "El codi de la sala té més de 6 caràcters",
+            "comprobandoSesionesMismaHora": "Error revisant si hi havia més sessions a la mateixa hora en la mateixa sala"
         },
         "button": {
             "closeSession": "Tancar sessió",
@@ -248,7 +251,6 @@ UI =
             "informeSessions": "Informes de sessió",
             "multisesion": "Pel·lícules de la multisessió"
         },
-
         "field": {
             "multisesion": "És multisessió?",
         	"codigo":"Codi",
@@ -400,9 +402,9 @@ UI =
             "defecto": "Tarifa per defecte",
             "incidenciaCodigo": "Codi d'incidència",
             "incidencia": "Incidència",
-            "selectIncidencia": "Seleccione la incidència"
+            "selectIncidencia": "Seleccione la incidència",
+            "ventaRetrasada": "Mostrar events acabats per a introduir vendes manuals retrasades"
         },
-
         "legends": {
             "entradesAmfiteatre": "Entrades AMFITEATRE",
             "entradesPlatea1": "Entrades PLATEA NIVELL 1",
@@ -412,7 +414,6 @@ UI =
             "entradesDiscapacitados3": "Entrades DISCAPACITATS AMFITEATRE",
             "entrades": "Entrades"
         },
-
         "tipos": {
             "anfiteatro": "Amfiteatre",
             "platea1": "Platea 1",
@@ -422,14 +423,6 @@ UI =
             "discapacitados2": "Discapacitats Platea nivell 2",
             "discapacitados3": "Discapacitats Amfiteatre"
         },
-
-        /*"tipoEntrada": {
-            "normal": "Tarifa general",
-            "invitacion": "Invitació",
-            "aulaTeatro": "Platea - Carnet jove",
-            "descuento": "Jubilats - Boninstitut - Anem al teatre"
-        },*/
-
         "versionOriginal": {
             "castella": "Castellà",
             "catala": "Català",
@@ -443,7 +436,6 @@ UI =
             "italia": "Italià",
             "altres": "Altres llengües"
         },
-
         "subtitulos": {
             "castella": "Castellà",
             "catala": "Català",
@@ -453,7 +445,6 @@ UI =
             "altres": "Altres llengües",
             "sense": "Sense subtítols"
         },
-
         "formatosProyeccion": {
             "_35m": "35 m.m.",
             "_2d": "Digital 2D",
@@ -466,7 +457,6 @@ UI =
             "omnimax": "Omnimax",
             "betamax": "Betamax"
         },
-
         "versionLinguistica": {
             "S": "Original Castellano",
             "B": "Original Valenciano",
@@ -482,7 +472,6 @@ UI =
             "F": "Doblada Otras Lenguas",
             "X": "Sin diálogos"
         },
-
         "nacionalidades": {
             "ES": 'Espanyola',
             "US": "Americana",
@@ -493,7 +482,6 @@ UI =
             "IT": "Italiana",
             "altra": "Altra nacionalitat"
         },
-
         "incidencias": {
             "i0": "Sense incidències",
             "i5": "Venda manual (degradada)",

@@ -61,9 +61,10 @@ public class Sesion
         this.id = sesionDTO.getId();
         this.evento = Evento.eventoDTOtoEvento(sesionDTO.getParEvento());
         this.fechaCelebracion = new Date(sesionDTO.getFechaCelebracion().getTime());
-        this.fechaInicioVentaOnline = new Date(
-                sesionDTO.getFechaInicioVentaOnline().getTime());
-        this.fechaFinVentaOnline = new Date(sesionDTO.getFechaFinVentaOnline().getTime());
+        if (sesionDTO.getFechaInicioVentaOnline() != null)
+            this.fechaInicioVentaOnline = new Date(sesionDTO.getFechaInicioVentaOnline().getTime());
+        if (sesionDTO.getFechaFinVentaOnline() != null)
+            this.fechaFinVentaOnline = new Date(sesionDTO.getFechaFinVentaOnline().getTime());
         this.horaApertura = sesionDTO.getHoraApertura();
         this.canalInternet = sesionDTO.getCanalInternet();
         this.canalTaquilla = sesionDTO.getCanalTaquilla();
@@ -71,8 +72,11 @@ public class Sesion
         //this.preciosSesion = PreciosSesion.listaPreciosSesionDTOToListaPreciosSesion(sesionDTO.getParPreciosSesions());
 
         this.horaCelebracion = DateUtils.getHourAndMinutesWithLeadingZeros(sesionDTO.getFechaCelebracion());
-        this.horaInicioVentaOnline = DateUtils.getHourAndMinutesWithLeadingZeros(sesionDTO.getFechaInicioVentaOnline());
-        this.horaFinVentaOnline = DateUtils.getHourAndMinutesWithLeadingZeros(sesionDTO.getFechaFinVentaOnline());
+
+        if (sesionDTO.getFechaInicioVentaOnline() != null)
+            this.horaInicioVentaOnline = DateUtils.getHourAndMinutesWithLeadingZeros(sesionDTO.getFechaInicioVentaOnline());
+        if (sesionDTO.getFechaFinVentaOnline() != null)
+            this.horaFinVentaOnline = DateUtils.getHourAndMinutesWithLeadingZeros(sesionDTO.getFechaFinVentaOnline());
         
         this.nombre = sesionDTO.getNombre();
         this.versionLinguistica = sesionDTO.getVersionLinguistica();
@@ -216,12 +220,16 @@ public class Sesion
 		
 		sesion.setEvento(Evento.eventoDTOtoEvento(sesionDTO.getParEvento()));
 		sesion.setFechaCelebracionWithDate(sesionDTO.getFechaCelebracion());
-		sesion.setFechaFinVentaOnline(DateUtils.dateToSpanishString(sesionDTO.getFechaFinVentaOnline()));
-		sesion.setFechaInicioVentaOnline(DateUtils.dateToSpanishString(sesionDTO.getFechaInicioVentaOnline()));
+        if (sesionDTO.getFechaFinVentaOnline() != null)
+		    sesion.setFechaFinVentaOnline(DateUtils.dateToSpanishString(sesionDTO.getFechaFinVentaOnline()));
+        if (sesionDTO.getFechaInicioVentaOnline() != null)
+		    sesion.setFechaInicioVentaOnline(DateUtils.dateToSpanishString(sesionDTO.getFechaInicioVentaOnline()));
 		
 		sesion.setHoraApertura(sesionDTO.getHoraApertura());
-		sesion.setHoraInicioVentaOnline(DateUtils.getHourAndMinutesWithLeadingZeros(sesionDTO.getFechaInicioVentaOnline()));
-		sesion.setHoraFinVentaOnline(DateUtils.getHourAndMinutesWithLeadingZeros(sesionDTO.getFechaFinVentaOnline()));
+        if (sesionDTO.getFechaInicioVentaOnline() != null)
+		    sesion.setHoraInicioVentaOnline(DateUtils.getHourAndMinutesWithLeadingZeros(sesionDTO.getFechaInicioVentaOnline()));
+        if (sesionDTO.getFechaFinVentaOnline() != null)
+		    sesion.setHoraFinVentaOnline(DateUtils.getHourAndMinutesWithLeadingZeros(sesionDTO.getFechaFinVentaOnline()));
 		
 		sesion.setHoraCelebracion(DateUtils.getHourAndMinutesWithLeadingZeros(sesionDTO.getFechaCelebracion()));
 		sesion.setId(sesionDTO.getId());
@@ -246,14 +254,18 @@ public class Sesion
 	
 	public static SesionDTO SesionToSesionDTO(Sesion sesion) {
 		SesionDTO sesionDTO = new SesionDTO();
-		sesionDTO.setCanalInternet(true);
+		sesionDTO.setCanalInternet(sesion.getCanalInternet());
         sesionDTO.setCanalTaquilla(true);
-		/*sesionDTO.setCanalInternet(sesion.getCanalInternet());
-		sesionDTO.setCanalTaquilla(sesion.getCanalTaquilla());*/
 		sesionDTO.setParEvento(Evento.eventoToEventoDTO(sesion.getEvento()));
 		sesionDTO.setFechaCelebracion(DateUtils.dateToTimestampSafe(DateUtils.addTimeToDate(sesion.getFechaCelebracion(), sesion.getHoraCelebracion())));
-		sesionDTO.setFechaFinVentaOnline(DateUtils.dateToTimestampSafe(DateUtils.addTimeToDate(sesion.getFechaFinVentaOnline(), sesion.getHoraFinVentaOnline())));
-		sesionDTO.setFechaInicioVentaOnline(DateUtils.dateToTimestampSafe(DateUtils.addTimeToDate(sesion.getFechaInicioVentaOnline(), sesion.getHoraInicioVentaOnline())));
+
+        if (sesion.getCanalInternet()) {
+            sesionDTO.setFechaFinVentaOnline(DateUtils.dateToTimestampSafe(DateUtils.addTimeToDate(sesion.getFechaFinVentaOnline(), sesion.getHoraFinVentaOnline())));
+            sesionDTO.setFechaInicioVentaOnline(DateUtils.dateToTimestampSafe(DateUtils.addTimeToDate(sesion.getFechaInicioVentaOnline(), sesion.getHoraInicioVentaOnline())));
+        } else {
+            sesionDTO.setFechaFinVentaOnline(null);
+            sesionDTO.setFechaInicioVentaOnline(null);
+        }
 		
 		sesionDTO.setHoraApertura(sesion.getHoraApertura());
 		sesionDTO.setId(sesion.getId());

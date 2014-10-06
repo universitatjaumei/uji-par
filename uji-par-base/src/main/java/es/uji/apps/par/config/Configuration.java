@@ -470,7 +470,7 @@ public class Configuration
 	}
 
 	public static String getPorcentajeIvaDefecto() {
-		return getProperty(PORCENTAJE_IVA_DEFECTO);
+		return getNoObligatoryProperty(PORCENTAJE_IVA_DEFECTO);
 	}
 	
 	public static String getEnviarMailsEntradas() {

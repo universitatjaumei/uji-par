@@ -162,6 +162,8 @@ public class Evento
 
         if (eventoDTO.getParTiposEvento() != null)
         	eventoDTO.setParTiposEvento(TipoEvento.tipoEventoToTipoEventoDTO(evento.getParTiposEvento()));
+        else if (evento.getParTiposEvento() != null)
+            eventoDTO.setParTiposEvento(TipoEvento.tipoEventoToTipoEventoDTO(evento.getParTiposEvento()));
         
         eventoDTO.setAsientosNumerados(evento.getAsientosNumerados());
         eventoDTO.setIvaSgae(evento.getIvaSGAE());
