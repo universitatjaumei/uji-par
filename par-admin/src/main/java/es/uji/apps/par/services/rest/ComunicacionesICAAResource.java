@@ -39,7 +39,7 @@ public class ComunicacionesICAAResource extends BaseResource
     {
         AuthChecker.canWrite(currentRequest);
         byte[] arr = comunicacionesICAAService.generaFicheroICAA(ids, fechaEnvioHabitualAnterior, tipoEnvio);
-        String fileName = Configuration.getCodigoBuzon() + tipoEnvio + DateUtils.getNumeroSemana();
+        String fileName = Configuration.getCodigoBuzon() + tipoEnvio + DateUtils.getNumeroSemana() + ".pgp";
 		return Response.ok(arr, 
 				MediaType.TEXT_PLAIN).
 				header("Content-Disposition","attachment; filename =\"" + fileName + "\"").build();
