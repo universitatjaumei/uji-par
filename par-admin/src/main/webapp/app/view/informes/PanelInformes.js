@@ -37,38 +37,21 @@ Ext.define('Paranimf.view.informes.PanelInformes', {
       }], 
     }, {
       items: [{
-        border: 0,
-        html: UI.i18n.message.informesGenerals,
-        margin: '0px 10px 0px 0px'
-      }, {
+        xtype: 'combo',
+        labelWidth: 270,
+        width: 500,
+        fieldLabel: UI.i18n.message.informesGenerals,
+        store: 'TiposInformesGenerales',
+        name: 'comboInformesGenerales',
+        queryMode : 'remote',
+        forceSelection: true,
+        displayField: 'nombre',
+        valueField: 'id'
+      }, { 
+        action: 'generarInformeGeneral',
         xtype: 'button',
-        action: 'generateExcelTaquilla',
-        text: UI.i18n.button.generateExcelTaquilla
-      }, {
-        style: 'margin-left: 10px',
-        xtype: 'button',
-        action: 'generateExcelEvento',
-        text: UI.i18n.button.generateExcelEvento
-      }, {
-        style: 'margin-left: 10px',
-        xtype: 'button',
-        action: 'generatePdfTaquilla',
-        text: UI.i18n.button.generatePdfTaquilla
-      }, {
-        style: 'margin-left: 10px',
-        xtype: 'button',
-        action: 'generatePdfEfectivo',
-        text: UI.i18n.button.generatePdfEfectivo
-      }, {
-        style: 'margin-left: 10px',
-        xtype: 'button',
-        action: 'generatePdfTpv',
-        text: UI.i18n.button.generatePdfTpv
-      }, {
-        style: 'margin-left: 10px',
-        xtype: 'button',
-        action: 'generatePdfEventos',
-        text: UI.i18n.button.generatePdfEventos
+        margin: '0px 0px 0px 10px',
+        text: UI.i18n.button.generarInforme
       }]
     }
   ]}, {

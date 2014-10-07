@@ -3,6 +3,8 @@ Ext.define('Paranimf.model.Informe', {
 
    fields: [
       'id',
-      'nombre'
+      'nombre',
+      'prefix',
+      'suffix'
    ]
 });

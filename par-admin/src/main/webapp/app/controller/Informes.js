@@ -2,7 +2,7 @@ Ext.define('Paranimf.controller.Informes', {
    extend: 'Ext.app.Controller',
 
    views: ['EditModalWindow', 'EditBaseForm', 'EditBaseGrid', 'informes.PanelInformes', 'informes.GridSesionesInformes'],
-   stores: ['SesionesInformes', 'TipoInformes'],
+   stores: ['SesionesInformes', 'TipoInformes', 'TiposInformesGenerales'],
    models: ['Sesion', 'Informe'],
 
    refs: [{
@@ -16,7 +16,10 @@ Ext.define('Paranimf.controller.Informes', {
       selector: 'gridSesionesInformes'
    }, {
       ref: 'panelInformesCombo',
-      selector: 'panelInformes combo'
+      selector: 'panelInformes combo[name=comboInformesSesiones]'
+   }, {
+      ref: 'comboInformesGenerales',
+      selector: 'panelInformes combo[name=comboInformesGenerales]'
    }],
 
    init: function() {
@@ -52,8 +55,27 @@ Ext.define('Paranimf.controller.Informes', {
 
          'panelInformes button[action=generarInforme]': {
             click: this.generarInforme
+         },
+
+         'panelInformes button[action=generarInformeGeneral]': {
+            click: this.generarInformeGeneral
          }
       });
+   },
+
+   generarInformeGeneral: function() {
+      if (!this.sonFechasValidas(this.getFechaInicio().value, this.getFechaFin().value))
+         return;
+
+      if (this.getComboInformesGenerales().value) {
+         var rec = this.getComboInformesGenerales().store.getById(this.getComboInformesGenerales().value);
+         var suffix = (rec.data.suffix != undefined && rec.data.suffix != '')?rec.data.suffix:'';
+         var prefix = (rec.data.prefix != undefined && rec.data.prefix != '')?rec.data.prefix:'';
+         var url = urlPrefix + 'report/' + prefix + this.getStrFecha(this.getFechaInicio().value) + '/' + 
+            this.getStrFecha(this.getFechaFin().value) + suffix;
+         this.generateInformeGeneral(url);
+      } else
+         console.log("no entra");
    },
 
    generarInformeSesion: function() {
@@ -146,6 +168,16 @@ Ext.define('Paranimf.controller.Informes', {
 
       document.body.appendChild(form);
       form.submit();      
+   },
+
+   generateInformeGeneral: function(url) {
+      var form = document.createElement("form");
+      form.setAttribute("method", "post");
+      form.setAttribute("action", url);
+      form.setAttribute("target", "_blank");
+
+      document.body.appendChild(form);
+      form.submit();
    },
 
    generatePdf: function(idEvento, idSesion, idSelected) {

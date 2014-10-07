@@ -25,4 +25,14 @@ public class InformesResource extends BaseResource
                 
         return Response.ok().entity(new RestResponse(true, tiposInforme, tiposInforme.size())).build();
     }
+
+	@GET
+	@Path("generales")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getGenerales()
+	{
+		List<TipoInforme> tiposInforme = informesService.getTiposInformeGenerales(getLocale().getLanguage());
+
+		return Response.ok().entity(new RestResponse(true, tiposInforme, tiposInforme.size())).build();
+	}
 }

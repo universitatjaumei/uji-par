@@ -10,6 +10,7 @@ Ext.define('Paranimf.view.informes.GridSesionesInformes', {
     labelWidth: 200,
     fieldLabel: UI.i18n.button.selectInforme,
     store: 'TipoInformes',
+    name: 'comboInformesSesiones',
     queryMode : 'remote',
     forceSelection: true,
     displayField: 'nombre',

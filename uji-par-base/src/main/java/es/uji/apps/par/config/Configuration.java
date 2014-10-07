@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
 
+import es.uji.apps.par.model.TipoInforme;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.thymeleaf.util.StringUtils;
@@ -81,6 +82,7 @@ public class Configuration
 	private static final String IMAGEN_SUSTITUTIVA_CONTENT_TYPE = "uji.reports.imagenSustitutivaContentType";
 	private static final String PORCENTAJE_IVA_DEFECTO = "uji.par.porcentajeIvaDefecto";
     private static final String TIPOS_INFORME = "uji.reports.tipos";
+	private static final String TIPOS_INFORME_GENERALES = "uji.reports.tiposGenerales";
     public static final String HORAS_VENTA_ANTICIPADA = "uji.reports.horaVentaAnticipada";
 	private static final String ALLOW_MULTISESION = "uji.par.allowMultisesion";
     private static final String IDIOMA_POR_DEFECTO = "uji.par.defaultLang";
@@ -88,6 +90,7 @@ public class Configuration
 	private static final String GENERAR_CIFRADO = "uji.pgp.generateCifrado";
 
 	private static final Logger log = LoggerFactory.getLogger(Configuration.class);
+
 
 
 	private static String fileName = "/etc/uji/par/app.properties";
@@ -511,5 +514,12 @@ public class Configuration
 			return true;
 		else
 			return false;
+	}
+
+	public static String getTiposInformeGenerales() {
+		String tiposInformeGenerales = getNoObligatoryProperty(TIPOS_INFORME_GENERALES);
+		if (tiposInformeGenerales == null)
+			tiposInformeGenerales = TipoInforme.getDefaultGenerales();
+		return tiposInformeGenerales;
 	}
 }

@@ -13,21 +13,29 @@ import java.util.List;
 @Service
 public class InformesService
 {
-    public List<TipoInforme> getTiposInforme(String lang)
+    public List<TipoInforme> getTiposInforme(String language)
     {
         String tiposInforme = Configuration.getTiposInforme();
-        Type listType = new TypeToken<ArrayList<TipoInforme>>() {}.getType();
-        List<TipoInforme> tiposInformeDisponibles = new Gson().fromJson(tiposInforme, listType);
-
-        for (TipoInforme tipoInformeDisponible:tiposInformeDisponibles) {
-            if (lang != null) {
-                if (lang.equals("es"))
-                    tipoInformeDisponible.setNombre(tipoInformeDisponible.getNombreES());
-                else
-                    tipoInformeDisponible.setNombre(tipoInformeDisponible.getNombreCA());
-            }
-        }
-
-        return tiposInformeDisponibles;
+        return parseInformes(tiposInforme, language);
     }
+
+	public List<TipoInforme> getTiposInformeGenerales(String language) {
+		String tiposInforme = Configuration.getTiposInformeGenerales();
+		return parseInformes(tiposInforme, language);
+	}
+
+	private List<TipoInforme> parseInformes(String tiposInforme, String language) {
+		Type listType = new TypeToken<ArrayList<TipoInforme>>() {}.getType();
+		List<TipoInforme> tiposInformeDisponibles = new Gson().fromJson(tiposInforme, listType);
+
+		for (TipoInforme tipoInformeDisponible:tiposInformeDisponibles) {
+			if (language != null) {
+				if (language.equals("es"))
+					tipoInformeDisponible.setNombre(tipoInformeDisponible.getNombreES());
+				else
+					tipoInformeDisponible.setNombre(tipoInformeDisponible.getNombreCA());
+			}
+		}
+		return tiposInformeDisponibles;
+	}
 }
