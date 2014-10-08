@@ -102,47 +102,51 @@ public class EventosSyncBenicassim implements EventosSync
     {
         for (Sesion sesionRss : item.getSesiones().getSesiones())
         {
-            es.uji.apps.par.model.Sesion sesion = sesionesDAO.getSesionByRssId(sesionRss.getId());
-            
-            if (sesion == null)
-            {
-                sesion = new es.uji.apps.par.model.Sesion();
-                sesion.setEvento(Evento.eventoDTOtoEvento(evento));
-                
-                sesion.setPlantillaPrecios(getPlantillaParaItem(item));
-                sesion.setRssId(sesionRss.getId());
-                
-                // TODO - Por ahora los metemos en la primera sala que exista (CAMBIAR)
-                sesion.setSala(salasDAO.getSalas().get(0));
-                sesion.setCanalInternet("true");
-                
-                // Inicio venta online sumando X horas (según config) a las 00:00 del día en el que se crea la sesión
-                Calendar inicioVentaOnline = Calendar.getInstance();
-                inicioVentaOnline.set(Calendar.HOUR_OF_DAY, 0);
-                inicioVentaOnline.set(Calendar.MINUTE, 0);
-                inicioVentaOnline.set(Calendar.SECOND, 0);
-                inicioVentaOnline.set(Calendar.MILLISECOND, 0);
-                
-                inicioVentaOnline.add(Calendar.HOUR_OF_DAY, Configuration.getSyncHorasInicioVentaOnline());
-                
-                sesion.setFechaInicioVentaOnlineWithDate(inicioVentaOnline.getTime());
-            }
-            
-            Date fechaCelebracion = DateUtils.databaseWithSecondsToDate(sesionRss.getFecha());
-            sesion.setFechaCelebracion(DateUtils.dateToSpanishString(fechaCelebracion));
-            sesion.setHoraCelebracion(sesionRss.getFecha().split(" ")[1]);
+			try {
+				es.uji.apps.par.model.Sesion sesion = sesionesDAO.getSesionByRssId(sesionRss.getId());
 
-            // Fin venta online 1 hora antes
-            Calendar finVentaOnline = Calendar.getInstance();
-            finVentaOnline.setTime(fechaCelebracion);
-            finVentaOnline.add(Calendar.HOUR, -1);
-            sesion.setFechaFinVentaOnline(DateUtils.dateToSpanishString(finVentaOnline.getTime()));
-            sesion.setHoraFinVentaOnline(DateUtils.getHourAndMinutesWithLeadingZeros(finVentaOnline.getTime()));
-            
-            if (sesion.getId() == 0)
-                sesionesDAO.addSesion(sesion);
-            else
-                sesionesDAO.updateSesion(sesion);
+				if (sesion == null)
+				{
+					sesion = new es.uji.apps.par.model.Sesion();
+					sesion.setEvento(Evento.eventoDTOtoEvento(evento));
+
+					sesion.setPlantillaPrecios(getPlantillaParaItem(item));
+					sesion.setRssId(sesionRss.getId());
+
+					// TODO - Por ahora los metemos en la primera sala que exista (CAMBIAR)
+					sesion.setSala(salasDAO.getSalas().get(0));
+					sesion.setCanalInternet("true");
+
+					// Inicio venta online sumando X horas (según config) a las 00:00 del día en el que se crea la sesión
+					Calendar inicioVentaOnline = Calendar.getInstance();
+					inicioVentaOnline.set(Calendar.HOUR_OF_DAY, 0);
+					inicioVentaOnline.set(Calendar.MINUTE, 0);
+					inicioVentaOnline.set(Calendar.SECOND, 0);
+					inicioVentaOnline.set(Calendar.MILLISECOND, 0);
+
+					inicioVentaOnline.add(Calendar.HOUR_OF_DAY, Configuration.getSyncHorasInicioVentaOnline());
+
+					sesion.setFechaInicioVentaOnlineWithDate(inicioVentaOnline.getTime());
+				}
+
+				Date fechaCelebracion = DateUtils.databaseWithSecondsToDate(sesionRss.getFecha());
+				sesion.setFechaCelebracion(DateUtils.dateToSpanishString(fechaCelebracion));
+				sesion.setHoraCelebracion(sesionRss.getFecha().split(" ")[1]);
+
+				// Fin venta online 1 hora antes
+				Calendar finVentaOnline = Calendar.getInstance();
+				finVentaOnline.setTime(fechaCelebracion);
+				finVentaOnline.add(Calendar.HOUR, -1);
+				sesion.setFechaFinVentaOnline(DateUtils.dateToSpanishString(finVentaOnline.getTime()));
+				sesion.setHoraFinVentaOnline(DateUtils.getHourAndMinutesWithLeadingZeros(finVentaOnline.getTime()));
+
+				if (sesion.getId() == 0)
+					sesionesDAO.addSesion(sesion);
+				else
+					sesionesDAO.updateSesion(sesion);
+			} catch (Exception e) {
+				log.error("Error en la sincronizacion del evento o sus sesiones", e);
+			}
         }
     }
 
