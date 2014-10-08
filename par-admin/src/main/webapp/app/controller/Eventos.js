@@ -593,8 +593,13 @@ Ext.define('Paranimf.controller.Eventos', {
    },
    
    editSesion: function(button, event, opts) {
-      if (this.getGridEventos().hasRowSelected() && this.getGridSesiones().hasRowSelected())
-         this.getGridSesiones().edit('formSesiones', undefined, undefined, 0.8);
+      if (this.getGridEventos().hasRowSelected() && this.getGridSesiones().hasRowSelected()) {
+         var rec = this.getGridSesiones().getSelectedRecord();
+         if (!rec.data.anulada)
+            this.getGridSesiones().edit('formSesiones', undefined, undefined, 0.8);
+         else
+            alert(UI.i18n.error.editSesionAnulada);
+      }
       else
          alert(UI.i18n.error.eventSelected);
    },

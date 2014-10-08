@@ -172,7 +172,8 @@ UI =
             "anularEntrada": "Se ha producido un error anulando la entrada",
             "deletedImage": "Se ha producido un error al borrar la imagen",
             "error546": "El código de la sala tiene más de 6 caracteres",
-            "comprobandoSesionesMismaHora": "Error revisando si hay más sesiones a la misma hora en la misma sala"
+            "comprobandoSesionesMismaHora": "Error revisando si hay más sesiones a la misma hora en la misma sala",
+            "editSesionAnulada": "No se puede editar una sesión anulada, ya que es una sesión reprogramada"
         },
         "button": {
             "ver": "Ver detalle",

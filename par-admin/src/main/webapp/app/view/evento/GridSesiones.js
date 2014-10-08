@@ -13,6 +13,14 @@ Ext.define('Paranimf.view.evento.GridSesiones', {
      displayInfo: true
    }],
 
+   viewConfig: {
+    enableTextSelection: true,
+    getRowClass: function(record) {
+      if (record && record.data.anulada)
+        return 'gridAnulada'
+    }
+  },
+
    initComponent: function() {
 
     this.columns = [{

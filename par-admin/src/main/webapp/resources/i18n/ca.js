@@ -172,7 +172,8 @@ UI =
             "error544": "L'idioma dels subtítols de la pel·lícula no és vàlid",
             "error545": "El format de projecció de la pel·lícula no és vàlid",
             "error546": "El codi de la sala té més de 6 caràcters",
-            "comprobandoSesionesMismaHora": "Error revisant si hi havia més sessions a la mateixa hora en la mateixa sala"
+            "comprobandoSesionesMismaHora": "Error revisant si hi havia més sessions a la mateixa hora en la mateixa sala",
+            "editSesionAnulada": "No es pot editar una sessió anulada, ja que es una sessió reprogramada"
         },
         "button": {
             "closeSession": "Tancar sessió",
