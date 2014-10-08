@@ -1,10 +1,8 @@
 package es.uji.apps.par.model;
 
-import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -15,8 +13,8 @@ import com.google.gson.reflect.TypeToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import es.uji.apps.par.GeneralPARException;
-import es.uji.apps.par.RegistroSerializaException;
+import es.uji.apps.par.exceptions.GeneralPARException;
+import es.uji.apps.par.exceptions.RegistroSerializaException;
 import es.uji.apps.par.db.EventoDTO;
 
 @XmlRootElement

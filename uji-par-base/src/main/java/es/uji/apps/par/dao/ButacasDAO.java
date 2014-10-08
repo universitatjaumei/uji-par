@@ -1,14 +1,12 @@
 package es.uji.apps.par.dao;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
-import es.uji.apps.par.IncidenciaNotFoundException;
-import es.uji.apps.par.SesionSinFormatoIdiomaIcaaException;
+import es.uji.apps.par.exceptions.IncidenciaNotFoundException;
+import es.uji.apps.par.exceptions.SesionSinFormatoIdiomaIcaaException;
 import es.uji.apps.par.ficheros.registros.TipoIncidencia;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,8 +15,8 @@ import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.jpa.impl.JPAUpdateClause;
 
-import es.uji.apps.par.ButacaOcupadaException;
-import es.uji.apps.par.NoHayButacasLibresException;
+import es.uji.apps.par.exceptions.ButacaOcupadaException;
+import es.uji.apps.par.exceptions.NoHayButacasLibresException;
 import es.uji.apps.par.db.ButacaDTO;
 import es.uji.apps.par.db.CompraDTO;
 import es.uji.apps.par.db.LocalizacionDTO;
@@ -272,13 +270,13 @@ public class ButacasDAO extends BaseDAO
     }
 
 	@Transactional
-	private Long getSesionId(Long idButaca) {
+	private SesionDTO getSesion(Long idButaca) {
 		QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
 		QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
 		QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
 		JPAQuery query = new JPAQuery(entityManager);
 		return query.from(qButacaDTO).join(qButacaDTO.parCompra, qCompraDTO).join(qCompraDTO.parSesion,
-				qSesionDTO).where(qButacaDTO.id.eq(idButaca)).uniqueResult(qSesionDTO.id);
+				qSesionDTO).where(qButacaDTO.id.eq(idButaca)).uniqueResult(qSesionDTO);
 	}
     
     @Transactional(rollbackFor=SesionSinFormatoIdiomaIcaaException.class)
@@ -291,8 +289,8 @@ public class ButacasDAO extends BaseDAO
 			where(qButacaDTO.id.eq(idButaca)).execute();
 
 		if (!isButacaFromReserva(idButaca)) {
-			Long idSesion = getSesionId(idButaca);
-			sesionesDAO.setIncidencia(idSesion, TipoIncidencia.tipoIncidenciaToInt(TipoIncidencia.ANULACIO_VENDES));
+			SesionDTO sesionDTO = getSesion(idButaca);
+			sesionesDAO.setIncidencia(sesionDTO.getId(), TipoIncidencia.addAnulacionVentasToIncidenciaActual(sesionDTO.getIncidenciaId()));
 		}
 	}
 

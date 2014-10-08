@@ -9,7 +9,7 @@ import javax.ws.rs.core.Response;
 
 import org.jasypt.util.password.BasicPasswordEncryptor;
 
-import es.uji.apps.par.Constantes;
+import es.uji.apps.par.exceptions.Constantes;
 import es.uji.apps.par.config.Configuration;
 import es.uji.commons.web.template.HTMLTemplate;
 import es.uji.commons.web.template.Template;

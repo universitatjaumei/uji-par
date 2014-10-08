@@ -1,8 +1,8 @@
 package es.uji.apps.par.services.dao;
 
-import es.uji.apps.par.ButacaOcupadaException;
-import es.uji.apps.par.IncidenciaNotFoundException;
-import es.uji.apps.par.NoHayButacasLibresException;
+import es.uji.apps.par.exceptions.ButacaOcupadaException;
+import es.uji.apps.par.exceptions.IncidenciaNotFoundException;
+import es.uji.apps.par.exceptions.NoHayButacasLibresException;
 import es.uji.apps.par.dao.ButacasDAO;
 import es.uji.apps.par.dao.ComprasDAO;
 import es.uji.apps.par.db.ButacaDTO;

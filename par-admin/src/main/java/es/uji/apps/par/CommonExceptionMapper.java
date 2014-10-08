@@ -4,6 +4,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
+import es.uji.apps.par.exceptions.GeneralPARException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

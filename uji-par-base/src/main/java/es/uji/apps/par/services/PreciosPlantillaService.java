@@ -3,12 +3,12 @@ package es.uji.apps.par.services;
 import java.util.ArrayList;
 import java.util.List;
 
-import es.uji.apps.par.PrecioRepetidoException;
+import es.uji.apps.par.exceptions.PrecioRepetidoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import es.uji.apps.par.CampoRequeridoException;
+import es.uji.apps.par.exceptions.CampoRequeridoException;
 import es.uji.apps.par.dao.PreciosPlantillaDAO;
 import es.uji.apps.par.db.PreciosPlantillaDTO;
 import es.uji.apps.par.model.PreciosPlantilla;

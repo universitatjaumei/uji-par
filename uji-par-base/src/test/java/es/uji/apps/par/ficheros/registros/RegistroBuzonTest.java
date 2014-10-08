@@ -3,11 +3,11 @@ package es.uji.apps.par.ficheros.registros;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import es.uji.apps.par.TipoEnvioInvalidoException;
+import es.uji.apps.par.exceptions.TipoEnvioInvalidoException;
 import org.junit.Assert;
 import org.junit.Test;
 
-import es.uji.apps.par.RegistroSerializaException;
+import es.uji.apps.par.exceptions.RegistroSerializaException;
 
 public class RegistroBuzonTest
 {

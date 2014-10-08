@@ -1,6 +1,6 @@
 package es.uji.apps.par.report;
 
-import es.uji.apps.par.AnticipadaFormatException;
+import es.uji.apps.par.exceptions.AnticipadaFormatException;
 import es.uji.apps.par.db.ButacaDTO;
 import es.uji.apps.par.enums.TipoVenta;
 import es.uji.apps.par.utils.DateUtils;

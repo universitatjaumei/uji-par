@@ -4,10 +4,8 @@ import java.math.BigDecimal;
 import java.net.URI;
 import java.text.ParseException;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
-import javax.management.Query;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -28,8 +26,8 @@ import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataBodyPart;
 import com.sun.jersey.multipart.FormDataParam;
 
-import es.uji.apps.par.EventoNoEncontradoException;
-import es.uji.apps.par.GeneralPARException;
+import es.uji.apps.par.exceptions.EventoNoEncontradoException;
+import es.uji.apps.par.exceptions.GeneralPARException;
 import es.uji.apps.par.auth.AuthChecker;
 import es.uji.apps.par.model.Evento;
 import es.uji.apps.par.model.Sesion;

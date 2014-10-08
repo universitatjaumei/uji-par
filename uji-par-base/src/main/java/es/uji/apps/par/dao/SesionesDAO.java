@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.db.*;
+import es.uji.apps.par.exceptions.EdicionSesionAnuladaException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,8 +21,8 @@ import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.jpa.impl.JPAUpdateClause;
 import com.mysema.query.types.expr.BooleanExpression;
 
-import es.uji.apps.par.IncidenciaNotFoundException;
-import es.uji.apps.par.SesionSinFormatoIdiomaIcaaException;
+import es.uji.apps.par.exceptions.IncidenciaNotFoundException;
+import es.uji.apps.par.exceptions.SesionSinFormatoIdiomaIcaaException;
 import es.uji.apps.par.ficheros.registros.RegistroPelicula;
 import es.uji.apps.par.ficheros.registros.RegistroSesion;
 import es.uji.apps.par.ficheros.registros.RegistroSesionPelicula;
@@ -145,6 +145,7 @@ public class SesionesDAO extends BaseDAO
         SesionDTO sesionDTO = Sesion.SesionToSesionDTO(sesion);
         persistSesion(sesionDTO);
         setIncidenciaSesion(sesionDTO.getFechaCelebracion(), sesionDTO.getParSala().getId());
+		anulaSesionesConLaMismaHoraYSala(sesionDTO.getFechaCelebracion(), sesionDTO.getParSala().getId(), sesionDTO.getId());
         sesion.setId(sesionDTO.getId());
 		//TODO -> Esta sesion.getVersionLingustica sera erronea cuando sea multisesion, mejor hacer un insert en la tabla hija
 		// por cada pelicula de la multisesion (evento.getFormato, evento.getId, evento.getPeliculasMultisesion()
@@ -152,6 +153,29 @@ public class SesionesDAO extends BaseDAO
         ////addSesionFormatoIdiomaIfNeeded(sesion.getEvento().getId(), sesion.getEvento().getFormato(),	sesion.getVersionLinguistica());
         return sesion;
     }
+
+	@Transactional
+	private void anulaSesionesConLaMismaHoraYSala(Timestamp fechaCelebracion, long salaId, long sesionId) {
+		List<SesionDTO> sesionesMismaHoraYSala = getSesionesMismaFechaYLocalizacion(fechaCelebracion, salaId);
+		for (SesionDTO sesionMismaHoraYSala: sesionesMismaHoraYSala) {
+			if (sonDistintaSesion(sesionMismaHoraYSala.getId(), sesionId) && !isSesionAnulada(sesionMismaHoraYSala)) {
+				sesionMismaHoraYSala.setCanalInternet(false);
+				sesionMismaHoraYSala.setAnulada(true);
+				entityManager.merge(sesionMismaHoraYSala);
+			}
+		}
+	}
+
+	private boolean isSesionAnulada(SesionDTO sesionDTO) {
+		if (sesionDTO.getCanalInternet() != null && !sesionDTO.getCanalInternet() &&
+				sesionDTO.getAnulada() != null && sesionDTO.getAnulada())
+			return true;
+		return false;
+	}
+
+	private boolean sonDistintaSesion(long sesionId1, long sesionId2) {
+		return (sesionId1 != sesionId2);
+	}
     
     /*@Transactional
 	//TODO ajustar a que le puedan entrar n versiones linguisticas
@@ -178,8 +202,13 @@ public class SesionesDAO extends BaseDAO
 		entityManager.persist(sesionFormatoIdiomaICAA);
 	}
 
-    @Transactional
+    @Transactional(rollbackForClassName={"EdicionSesionAnuladaException"})
     public void updateSesion(Sesion sesion) {
+		SesionDTO sesionDTO = getSesion(sesion.getId());
+
+		if (!isSesionAnulada(sesionDTO))
+			throw new EdicionSesionAnuladaException();
+
         Timestamp fechaCelebracion = DateUtils.dateToTimestampSafe(DateUtils.addTimeToDate(sesion.getFechaCelebracion
                 (), sesion.getHoraCelebracion()));
         JPAUpdateClause update = new JPAUpdateClause(entityManager, qSesionDTO);
@@ -214,12 +243,14 @@ public class SesionesDAO extends BaseDAO
 		// .getversionLingusitca())
         ////addSesionFormatoIdiomaIfNeeded(sesion.getEvento().getId(), sesion.getEvento().getFormato(),	sesion.getVersionLinguistica());
         setIncidenciaSesion(fechaCelebracion, sesion.getSala().getId());
+		anulaSesionesConLaMismaHoraYSala(fechaCelebracion, sesion.getSala().getId(), sesion.getId());
     }
 
     @Transactional
     private void setIncidenciaSesion(Timestamp fechaCelebracion, Long salaId) {
         List<SesionDTO> sesionesMismaHoraYSala = getSesionesMismaFechaYLocalizacion(fechaCelebracion, salaId);
-        for (SesionDTO sesionMismaHoraYSalaIncluidaLaPropia: sesionesMismaHoraYSala) {
+
+		for (SesionDTO sesionMismaHoraYSalaIncluidaLaPropia: sesionesMismaHoraYSala) {
             long totalAnuladas = getButacasAnuladasTotal(sesionMismaHoraYSalaIncluidaLaPropia.getId());
             boolean hasVentasDegradadas = hasVentasDegradadas(sesionMismaHoraYSalaIncluidaLaPropia.getId(),
                     sesionMismaHoraYSalaIncluidaLaPropia.getFechaCelebracion());
@@ -309,7 +340,7 @@ public class SesionesDAO extends BaseDAO
         return (int) getQueryPreciosSesion(sesionId).count();
     }
 
-	@Transactional
+	@Transactional(rollbackForClassName={"IncidenciaNotFoundException"})
 	public int getNumeroSesionesValidasParaFicheroICAA(List<Sesion> sesionesAValidar) throws IncidenciaNotFoundException {
 		QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
 		QEventoMultisesionDTO eventoMultisesionDTO = new QEventoMultisesionDTO("eventoMultisesionDTO");
@@ -333,7 +364,7 @@ public class SesionesDAO extends BaseDAO
 		return numeroSesiones;
 	}
 
-    @Transactional
+    @Transactional(rollbackForClassName={"IncidenciaNotFoundException"})
     public List<RegistroSesion> getRegistrosSesiones(List<Sesion> sesiones) throws IncidenciaNotFoundException
     {
         QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
@@ -402,7 +433,7 @@ public class SesionesDAO extends BaseDAO
     	).count();
 	}
 
-	@Transactional(rollbackFor=SesionSinFormatoIdiomaIcaaException.class)
+	@Transactional(rollbackForClassName={"SesionSinFormatoIdiomaIcaaException","IncidenciaNotFoundException"})
     public List<RegistroSesionPelicula> getRegistrosSesionesPeliculas(List<Sesion> sesiones) throws SesionSinFormatoIdiomaIcaaException, IncidenciaNotFoundException {
         QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
         QEventoDTO qEventoDTO = QEventoDTO.eventoDTO;
@@ -461,6 +492,7 @@ public class SesionesDAO extends BaseDAO
         return registros;
     }
 
+	@Transactional(rollbackForClassName={"IncidenciaNotFoundException"})
 	public boolean isIncidenciaCancelacionEvento(Integer incidenciaId) throws IncidenciaNotFoundException {
 		TipoIncidencia incidenciaOcurrida = TipoIncidencia.intToTipoIncidencia(Utils.safeObjectToInt(incidenciaId));
 
@@ -470,7 +502,7 @@ public class SesionesDAO extends BaseDAO
 		return true;
 	}
 
-    @Transactional
+    @Transactional(rollbackForClassName={"IncidenciaNotFoundException"})
     public List<RegistroPelicula> getRegistrosPeliculas(List<Sesion> sesiones) throws IncidenciaNotFoundException {
         QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
         QEventoDTO qEventoDTO = QEventoDTO.eventoDTO;
@@ -727,4 +759,11 @@ public class SesionesDAO extends BaseDAO
         return query.from(qSesionDTO).where(qSesionDTO.fechaCelebracion.eq(fechaCelebracion).and(qSesionDTO.parSala
                     .id.eq(salaId))).list(qSesionDTO);
     }
+
+	@Transactional
+	public void removeAnulacionVentasFromSesion(long sesionId) {
+		SesionDTO sesionDTO = getSesion(sesionId);
+		sesionDTO.setIncidenciaId(TipoIncidencia.removeAnulacionVentasFromIncidenciaActual(sesionDTO.getIncidenciaId()));
+		entityManager.merge(sesionDTO);
+	}
 }

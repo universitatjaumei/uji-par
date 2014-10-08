@@ -2,7 +2,7 @@ package es.uji.apps.par.ficheros.registros;
 
 import java.util.Locale;
 
-import es.uji.apps.par.RegistroSerializaException;
+import es.uji.apps.par.exceptions.RegistroSerializaException;
 import es.uji.apps.par.model.Evento;
 import es.uji.apps.par.model.Sala;
 

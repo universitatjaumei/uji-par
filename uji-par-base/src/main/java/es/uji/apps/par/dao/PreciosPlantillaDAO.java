@@ -3,8 +3,6 @@ package es.uji.apps.par.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-import es.uji.apps.par.PrecioRepetidoException;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 

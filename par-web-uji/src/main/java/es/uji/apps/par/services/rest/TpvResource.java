@@ -1,7 +1,7 @@
 package es.uji.apps.par.services.rest;
 
 import com.sun.jersey.api.core.InjectParam;
-import es.uji.apps.par.Constantes;
+import es.uji.apps.par.exceptions.Constantes;
 import es.uji.apps.par.builders.PublicPageBuilderInterface;
 import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.db.CompraDTO;

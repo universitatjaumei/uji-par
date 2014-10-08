@@ -1,7 +1,6 @@
 package es.uji.apps.par;
 
 import java.text.ParseException;
-import java.util.HashMap;
 import java.util.Locale;
 
 import javax.servlet.http.Cookie;
@@ -12,7 +11,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-import es.uji.apps.par.utils.DateUtils;
+import es.uji.apps.par.exceptions.Constantes;
 import es.uji.commons.web.template.model.GrupoMenu;
 import es.uji.commons.web.template.model.ItemMenu;
 import es.uji.commons.web.template.model.Menu;

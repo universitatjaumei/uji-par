@@ -50,7 +50,7 @@ public class EventosResourceTest extends BaseResourceTest
     {
         super(new WebAppDescriptor.Builder(
                 "es.uji.apps.par.services.rest;com.fasterxml.jackson.jaxrs.json;es.uji.apps.par")
-                .contextParam("contextConfigLocation", "classpath:applicationContext-db-test.xml")
+                .contextParam("contextConfigLocation", "classpath:applicationContext-test.xml")
                 .contextParam("webAppRootKey", "paranimf-fw-uji.root")
                 .contextListenerClass(ContextLoaderListener.class).clientConfig(clientConfiguration())
                 .requestListenerClass(RequestContextListener.class).servletClass(SpringServlet.class).build());

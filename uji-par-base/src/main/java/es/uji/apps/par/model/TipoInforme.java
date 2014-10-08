@@ -48,7 +48,14 @@ public class TipoInforme {
     }
 
 	public static String getDefaultGenerales() {
-		return "[{\"id\":\"excelTaquilla\",\"nombreCA\":\"Excel de taquilla\",\"nombreES\":\"Excel de taquilla\", \"prefix\": \"taquilla/\", \"suffix\": \"\"},{\"id\":\"excelEventos\",\"nombreCA\":\"Excel dels events\",\"nombreES\":\"Excel de los eventos\", \"prefix\": \"eventos/\", \"suffix\": \"\"},{\"id\":\"pdfTaquilla\",\"nombreCA\":\"PDF de taquilla\",\"nombreES\":\"PDF de taquilla\", \"prefix\": \"taquilla/\", \"suffix\": \"/pdf\"},{\"id\":\"pdfEfectiu\",\"nombreCA\":\"PDF de taquilla en efectiu\",\"nombreES\":\"PDF de taquilla en efectivo\", \"prefix\": \"taquilla/\", \"suffix\": \"/efectivo/pdf\"},{\"id\":\"pdfTpv\",\"nombreCA\":\"PDF de taquilla en tpv\",\"nombreES\":\"PDF de taquilla en tpv\", \"prefix\": \"taquilla/\", \"suffix\": \"/tpv/pdf\"},{\"id\":\"pdfSGAE\",\"nombreCA\":\"PDF SGAE\",\"nombreES\":\"PDF SGAE\", \"prefix\": \"taquilla/\", \"suffix\": \"/eventos/pdf\"}]";
+		return "[{\"id\":\"excelTaquilla\",\"nombreCA\":\"Excel de taquilla\",\"nombreES\":\"Excel de taquilla\", " +
+				"\"prefix\": \"taquilla/\", \"suffix\": \"\"},{\"id\":\"excelEventos\",\"nombreCA\":\"Excel dels events\"," +
+				"\"nombreES\":\"Excel de los eventos\", \"prefix\": \"eventos/\", \"suffix\": \"\"},{\"id\":\"pdfTaquilla\"," +
+				"\"nombreCA\":\"PDF de taquilla\",\"nombreES\":\"PDF de taquilla\", \"prefix\": \"taquilla/\", " +
+				"\"suffix\": \"/pdf\"},{\"id\":\"pdfEfectiu\",\"nombreCA\":\"PDF de taquilla en efectiu\"," +
+				"\"nombreES\":\"PDF de taquilla en efectivo\", \"prefix\": \"taquilla/\", \"suffix\": \"/efectivo/pdf\"}," +
+				"{\"id\":\"pdfTpv\",\"nombreCA\":\"PDF de TPVs\",\"nombreES\":\"PDF de TPVs\", " +
+				"\"prefix\": \"taquilla/\", \"suffix\": \"/tpv/pdf\"},{\"id\":\"pdfSGAE\",\"nombreCA\":\"PDF SGAE\",\"nombreES\":\"PDF SGAE\", \"prefix\": \"taquilla/\", \"suffix\": \"/eventos/pdf\"}]";
 	}
 
 	public String getPrefix() {

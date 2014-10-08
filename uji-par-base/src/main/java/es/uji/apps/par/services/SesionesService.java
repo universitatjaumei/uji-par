@@ -1,22 +1,20 @@
 package es.uji.apps.par.services;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import es.uji.apps.par.IncidenciaNotFoundException;
-import es.uji.apps.par.config.Configuration;
+import es.uji.apps.par.exceptions.IncidenciaNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mysema.query.Tuple;
 
-import es.uji.apps.par.CampoRequeridoException;
-import es.uji.apps.par.FechasInvalidasException;
+import es.uji.apps.par.exceptions.CampoRequeridoException;
+import es.uji.apps.par.exceptions.FechasInvalidasException;
 import es.uji.apps.par.dao.EventosDAO;
 import es.uji.apps.par.dao.LocalizacionesDAO;
 import es.uji.apps.par.dao.SesionesDAO;

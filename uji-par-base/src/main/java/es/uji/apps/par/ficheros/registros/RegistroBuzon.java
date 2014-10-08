@@ -5,7 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import es.uji.apps.par.RegistroSerializaException;
+import es.uji.apps.par.exceptions.RegistroSerializaException;
 import es.uji.apps.par.model.Cine;
 import es.uji.apps.par.model.Sesion;
 

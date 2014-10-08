@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import es.uji.apps.par.CampoRequeridoException;
+import es.uji.apps.par.exceptions.CampoRequeridoException;
 import es.uji.apps.par.dao.PlantillasDAO;
 import es.uji.apps.par.db.PlantillaDTO;
 import es.uji.apps.par.model.Plantilla;

@@ -2,7 +2,7 @@ package es.uji.apps.par.services;
 
 import com.mysema.query.Tuple;
 import es.uji.apps.fopreports.serialization.ReportSerializationException;
-import es.uji.apps.par.SinIvaException;
+import es.uji.apps.par.exceptions.SinIvaException;
 import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.dao.ButacasDAO;
 import es.uji.apps.par.dao.CinesDAO;

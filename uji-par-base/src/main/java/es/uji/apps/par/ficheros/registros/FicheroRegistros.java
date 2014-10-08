@@ -4,7 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
 import java.util.List;
 
-import es.uji.apps.par.RegistroSerializaException;
+import es.uji.apps.par.exceptions.RegistroSerializaException;
 
 public class FicheroRegistros
 {

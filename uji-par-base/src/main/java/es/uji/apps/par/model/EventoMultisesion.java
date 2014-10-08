@@ -1,20 +1,10 @@
 package es.uji.apps.par.model;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import es.uji.apps.par.GeneralPARException;
-import es.uji.apps.par.RegistroSerializaException;
-import es.uji.apps.par.db.EventoDTO;
 import es.uji.apps.par.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 @XmlRootElement
 public class EventoMultisesion

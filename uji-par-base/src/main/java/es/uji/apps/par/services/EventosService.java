@@ -10,9 +10,9 @@ import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import es.uji.apps.par.CampoRequeridoException;
-import es.uji.apps.par.EventoConCompras;
-import es.uji.apps.par.EventoNoEncontradoException;
+import es.uji.apps.par.exceptions.CampoRequeridoException;
+import es.uji.apps.par.exceptions.EventoConCompras;
+import es.uji.apps.par.exceptions.EventoNoEncontradoException;
 import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.dao.ComprasDAO;
 import es.uji.apps.par.dao.EventosDAO;

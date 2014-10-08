@@ -1,4 +1,4 @@
-package es.uji.apps.par;
+package es.uji.apps.par.exceptions;
 
 import es.uji.apps.par.config.Configuration;
 
@@ -60,6 +60,7 @@ public class GeneralPARException extends WebApplicationException
     public static final String CODIGO_SALA_LARGO = "El código de sala es un string de tamaño mayor de 6 carácteres";
     public static final String ANTICIPADA_FORMAT_ERROR = "Formato incorrecto de la propiedad " + Configuration.HORAS_VENTA_ANTICIPADA;
     public static final String NOT_FOUND_INCIDENCIA = "Incidencia no encontrada";
+	public static final String EDICION_ANULADA_EXCEPTION = "No se puede editar una sesión anulada";
     
     
     public static final Integer ERROR_GENERAL_CODE = 500;
@@ -111,6 +112,7 @@ public class GeneralPARException extends WebApplicationException
     public static final Integer CODIGO_SALA_LARGO_CODE = 546;
     public static final Integer ANTICIPADA_FORMAT_ERROR_CODE = 547;
     public static final Integer NOT_FOUND_INCIDENCIA_CODE = 548;
+	public static final Integer EDICION_ANULADA_EXCEPTION_CODE = 549;
     
     static {
 		messages = new HashMap<Integer,String>();
@@ -161,6 +163,9 @@ public class GeneralPARException extends WebApplicationException
 		messages.put(DIGITOS_IDIOMA_SUBTITULOS_CODE, DIGITOS_IDIOMA_SUBTITULOS);
 		messages.put(DIGITOS_FORMATO_PROYECCION_CODE, DIGITOS_FORMATO_PROYECCION);
 		messages.put(CODIGO_SALA_LARGO_CODE, CODIGO_SALA_LARGO);
+		messages.put(ANTICIPADA_FORMAT_ERROR_CODE, ANTICIPADA_FORMAT_ERROR);
+		messages.put(NOT_FOUND_INCIDENCIA_CODE, NOT_FOUND_INCIDENCIA);
+		messages.put(EDICION_ANULADA_EXCEPTION_CODE, EDICION_ANULADA_EXCEPTION);
     }
 
     public GeneralPARException(int errorCode) {

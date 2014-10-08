@@ -1,7 +1,7 @@
 package es.uji.apps.par.services.rest;
 
 import com.sun.jersey.api.client.ClientResponse.Status;
-import es.uji.apps.par.ResponseMessage;
+import es.uji.apps.par.exceptions.ResponseMessage;
 import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.i18n.ResourceProperties;
 

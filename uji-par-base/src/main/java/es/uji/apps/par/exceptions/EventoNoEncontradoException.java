@@ -1,4 +1,4 @@
-package es.uji.apps.par;
+package es.uji.apps.par.exceptions;
 
 @SuppressWarnings("serial")
 public class EventoNoEncontradoException extends GeneralPARException

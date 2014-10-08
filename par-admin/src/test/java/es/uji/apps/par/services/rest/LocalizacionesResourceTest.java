@@ -21,8 +21,8 @@ import com.sun.jersey.test.framework.WebAppDescriptor;
 import com.sun.jersey.test.framework.spi.container.TestContainerFactory;
 import com.sun.jersey.test.framework.spi.container.grizzly.web.GrizzlyWebTestContainerFactory;
 
-import es.uji.apps.par.CampoRequeridoException;
-import es.uji.apps.par.ResponseMessage;
+import es.uji.apps.par.exceptions.CampoRequeridoException;
+import es.uji.apps.par.exceptions.ResponseMessage;
 import es.uji.apps.par.model.Localizacion;
 
 public class LocalizacionesResourceTest extends BaseResourceTest

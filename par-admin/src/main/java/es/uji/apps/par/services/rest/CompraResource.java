@@ -21,8 +21,8 @@ import javax.ws.rs.core.Response;
 
 import com.sun.jersey.api.core.InjectParam;
 
-import es.uji.apps.par.*;
 import es.uji.apps.par.auth.AuthChecker;
+import es.uji.apps.par.exceptions.*;
 import es.uji.apps.par.model.Butaca;
 import es.uji.apps.par.model.DisponiblesLocalizacion;
 import es.uji.apps.par.model.ResultadoCompra;

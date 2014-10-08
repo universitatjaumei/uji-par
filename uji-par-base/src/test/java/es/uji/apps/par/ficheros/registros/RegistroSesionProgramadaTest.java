@@ -3,7 +3,7 @@ package es.uji.apps.par.ficheros.registros;
 import org.junit.Assert;
 import org.junit.Test;
 
-import es.uji.apps.par.RegistroSerializaException;
+import es.uji.apps.par.exceptions.RegistroSerializaException;
 
 public class RegistroSesionProgramadaTest
 {

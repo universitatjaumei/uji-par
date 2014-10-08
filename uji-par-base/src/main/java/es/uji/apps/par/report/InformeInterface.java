@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Locale;
 
 import es.uji.apps.fopreports.serialization.ReportSerializationException;
-import es.uji.apps.par.SinIvaException;
+import es.uji.apps.par.exceptions.SinIvaException;
 import es.uji.apps.par.model.Cine;
 import es.uji.apps.par.model.InformeSesion;
 

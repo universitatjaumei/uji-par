@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.Arrays;
 
-import es.uji.apps.par.*;
+import es.uji.apps.par.exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import es.uji.apps.par.dao.CinesDAO;
@@ -79,7 +79,7 @@ public class FicherosServiceBaseTest
     }
 
     protected void registraCompra(Sesion sesion1, Butaca... butacas) throws NoHayButacasLibresException,
-            ButacaOcupadaException, CompraSinButacasException, IncidenciaNotFoundException {
+			ButacaOcupadaException, CompraSinButacasException, IncidenciaNotFoundException {
         ResultadoCompra resultado1 = comprasService.registraCompraTaquilla(sesion1.getId(), Arrays.asList(butacas));
         comprasService.marcaPagada(resultado1.getId());
     }

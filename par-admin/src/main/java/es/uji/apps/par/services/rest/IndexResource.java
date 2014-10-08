@@ -3,7 +3,7 @@ package es.uji.apps.par.services.rest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
-import es.uji.apps.par.Constantes;
+import es.uji.apps.par.exceptions.Constantes;
 import es.uji.apps.par.auth.Authenticator;
 import es.uji.apps.par.config.Configuration;
 import es.uji.commons.web.template.HTMLTemplate;

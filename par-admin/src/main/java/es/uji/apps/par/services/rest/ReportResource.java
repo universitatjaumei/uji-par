@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 import com.sun.jersey.api.core.InjectParam;
 
 import es.uji.apps.fopreports.serialization.ReportSerializationException;
-import es.uji.apps.par.SinIvaException;
+import es.uji.apps.par.exceptions.SinIvaException;
 import es.uji.apps.par.model.Sesion;
 import es.uji.apps.par.services.ReportService;
 import es.uji.apps.par.services.SesionesService;

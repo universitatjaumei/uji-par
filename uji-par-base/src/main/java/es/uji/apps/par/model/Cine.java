@@ -5,8 +5,8 @@ import java.math.BigDecimal;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import es.uji.apps.par.GeneralPARException;
-import es.uji.apps.par.RegistroSerializaException;
+import es.uji.apps.par.exceptions.GeneralPARException;
+import es.uji.apps.par.exceptions.RegistroSerializaException;
 import es.uji.apps.par.db.CineDTO;
 
 @XmlRootElement

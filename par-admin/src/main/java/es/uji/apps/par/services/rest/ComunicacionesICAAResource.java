@@ -15,9 +15,9 @@ import javax.ws.rs.core.Response;
 
 import com.sun.jersey.api.core.InjectParam;
 
-import es.uji.apps.par.GeneralPARException;
-import es.uji.apps.par.IncidenciaNotFoundException;
-import es.uji.apps.par.RegistroSerializaException;
+import es.uji.apps.par.exceptions.GeneralPARException;
+import es.uji.apps.par.exceptions.IncidenciaNotFoundException;
+import es.uji.apps.par.exceptions.RegistroSerializaException;
 import es.uji.apps.par.auth.AuthChecker;
 import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.services.ComunicacionesICAAService;

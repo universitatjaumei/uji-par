@@ -1,6 +1,6 @@
 package es.uji.apps.par.ficheros.registros;
 
-import es.uji.apps.par.IncidenciaNotFoundException;
+import es.uji.apps.par.exceptions.IncidenciaNotFoundException;
 
 public enum TipoIncidencia
 {
@@ -63,4 +63,41 @@ public enum TipoIncidencia
 		throw new IncidenciaNotFoundException();
 	}
 
+	public static int addAnulacionVentasToIncidenciaActual(Integer incidenciaId) {
+		if (incidenciaId == null)
+			return TipoIncidencia.tipoIncidenciaToInt(ANULACIO_VENDES);
+
+		TipoIncidencia tipoIncidenciaActual = TipoIncidencia.intToTipoIncidencia(incidenciaId);
+		TipoIncidencia nuevaIncidencia = tipoIncidenciaActual;
+
+		if (tipoIncidenciaActual == SIN_INCIDENCIAS)
+			nuevaIncidencia = ANULACIO_VENDES;
+		else if (tipoIncidenciaActual == VENDA_MANUAL_DEGRADADA)
+			nuevaIncidencia = VENDA_MANUAL_I_ANULACIO_VENTES;
+		else if (tipoIncidenciaActual == VENDA_MANUAL_I_REPROGRAMACIO)
+			nuevaIncidencia = VENDA_MANUAL_I_ANULACIO_VENTES_I_REPROGRAMACIO;
+		else if (tipoIncidenciaActual == REPROGRAMACIO)
+			nuevaIncidencia = ANULACIO_VENTES_I_REPROGRAMACIO;
+
+		return TipoIncidencia.tipoIncidenciaToInt(nuevaIncidencia);
+	}
+
+	public static Integer removeAnulacionVentasFromIncidenciaActual(Integer incidenciaId) {
+		if (incidenciaId == null)
+			return TipoIncidencia.tipoIncidenciaToInt(SIN_INCIDENCIAS);
+
+		TipoIncidencia tipoIncidenciaActual = TipoIncidencia.intToTipoIncidencia(incidenciaId);
+		TipoIncidencia nuevaIncidencia = tipoIncidenciaActual;
+
+		if (tipoIncidenciaActual == VENDA_MANUAL_I_ANULACIO_VENTES)
+			nuevaIncidencia = VENDA_MANUAL_DEGRADADA;
+		else if (tipoIncidenciaActual == VENDA_MANUAL_I_ANULACIO_VENTES_I_REPROGRAMACIO)
+			nuevaIncidencia = VENDA_MANUAL_I_REPROGRAMACIO;
+		else if (tipoIncidenciaActual == ANULACIO_VENDES)
+			nuevaIncidencia = SIN_INCIDENCIAS;
+		else if (tipoIncidenciaActual == ANULACIO_VENTES_I_REPROGRAMACIO)
+			nuevaIncidencia = REPROGRAMACIO;
+
+		return TipoIncidencia.tipoIncidenciaToInt(nuevaIncidencia);
+	}
 }

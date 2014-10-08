@@ -1,7 +1,7 @@
 package es.uji.apps.par.report;
 
-import es.uji.apps.par.AnticipadaFormatException;
-import es.uji.apps.par.RegistroSerializaException;
+import es.uji.apps.par.exceptions.AnticipadaFormatException;
+import es.uji.apps.par.exceptions.RegistroSerializaException;
 import es.uji.apps.par.enums.TipoVenta;
 import org.junit.Assert;
 import org.junit.Test;

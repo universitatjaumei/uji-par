@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import es.uji.apps.par.IncidenciaNotFoundException;
+import es.uji.apps.par.exceptions.IncidenciaNotFoundException;
 import es.uji.apps.par.ficheros.registros.TipoIncidencia;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -21,7 +21,7 @@ import com.mysema.query.jpa.impl.JPAUpdateClause;
 import com.mysema.query.types.QTuple;
 import com.sun.istack.logging.Logger;
 
-import es.uji.apps.par.ButacaOcupadaAlActivarException;
+import es.uji.apps.par.exceptions.ButacaOcupadaAlActivarException;
 import es.uji.apps.par.database.DatabaseHelper;
 import es.uji.apps.par.database.DatabaseHelperFactory;
 import es.uji.apps.par.db.ButacaDTO;
@@ -345,12 +345,12 @@ public class ComprasDAO extends BaseDAO {
 	}
 
 	@Transactional
-	private Long getSesionId(Long idCompra) {
+	private SesionDTO getSesion(Long idCompra) {
 		QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
 		QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
 		JPAQuery query = new JPAQuery(entityManager);
 		return query.from(qCompraDTO).join(qCompraDTO.parSesion, qSesionDTO).where(qCompraDTO.id.eq(idCompra)).uniqueResult
-				(qSesionDTO.id);
+				(qSesionDTO);
 	}
 
 	@Transactional(rollbackForClassName = {"IncidenciaNotFoundException"})
@@ -373,8 +373,8 @@ public class ComprasDAO extends BaseDAO {
 		CompraDTO compra = getCompraById(idCompraReserva);
 
 		if (manual && (compra.getReserva() == null || compra.getReserva() != true)) {
-			Long idSesion = getSesionId(idCompraReserva);
-			sesionDAO.setIncidencia(idSesion, TipoIncidencia.tipoIncidenciaToInt(TipoIncidencia.ANULACIO_VENDES));
+			SesionDTO sesionDTO = getSesion(idCompraReserva);
+			sesionDAO.setIncidencia(sesionDTO.getId(), TipoIncidencia.addAnulacionVentasToIncidenciaActual(sesionDTO.getIncidenciaId()));
 		}
 	}
 
@@ -388,6 +388,7 @@ public class ComprasDAO extends BaseDAO {
 			JPAUpdateClause updateCompra = new JPAUpdateClause(entityManager,
 					qCompraDTO);
 			updateCompra.set(qCompraDTO.anulada, false)
+					.set(qCompraDTO.caducada, false)
 					.set(qCompraDTO.pagada, true)
 					.where(qCompraDTO.id.eq(idCompraReserva)).execute();
 
@@ -560,10 +561,10 @@ public class ComprasDAO extends BaseDAO {
 		String formato = "DD";
 		String sql = "select e.titulo_va, s.fecha_celebracion, b.tipo, count(b.id) as cantidad, sum(b.precio) as total, c.sesion_id, "
 				+ "e.porcentaje_iva, "
-				+ dbHelper.caseString("b.tipo", new String[] { "'normal'", "1",
+				/*+ dbHelper.caseString("b.tipo", new String[] { "'normal'", "1",
 						"'descuento'", "2", "'aulaTeatro'", "3",
 						"'invitacion'", "4" })
-				+ " as tipoOrden, "
+				+ " as tipoOrden, "*/
 				+ dbHelper.trunc("c.fecha", formato)
 				+ ", f.nombre "
 				+ "from par_butacas b, par_compras c, par_sesiones s, par_eventos e, par_tarifas f "
@@ -577,7 +578,10 @@ public class ComprasDAO extends BaseDAO {
 				+ "and c.reserva = "
 				+ dbHelper.falseString()
 				+ " "
-				+ "and (c.codigo_pago_tarjeta is not null or c.codigo_pago_pasarela is not null) "
+				+ "and (c.codigo_pago_tarjeta is not null or c.codigo_pago_pasarela is not null or c.taquilla = " + dbHelper.falseString() + ") "
+				+ "and c.anulada = " + dbHelper.falseString() + " "
+				+ "and c.caducada = " + dbHelper.falseString() + " "
+				+ "and b.anulada = " + dbHelper.falseString() + " "
 				+ "and f.id = "
 				+ dbHelper.toInteger("b.tipo")
 				+ " "
@@ -586,7 +590,7 @@ public class ComprasDAO extends BaseDAO {
 				+ ", f.nombre "
 				+ "order by "
 				+ dbHelper.trunc("c.fecha", formato)
-				+ ", s.fecha_celebracion, tipoOrden";
+				+ ", s.fecha_celebracion, f.nombre";
 
 		return entityManager.createNativeQuery(sql).getResultList();
 	}

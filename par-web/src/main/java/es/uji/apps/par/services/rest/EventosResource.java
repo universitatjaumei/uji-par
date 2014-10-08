@@ -27,8 +27,8 @@ import org.apache.sanselan.ImageReadException;
 
 import com.sun.jersey.api.core.InjectParam;
 
-import es.uji.apps.par.Constantes;
-import es.uji.apps.par.EventoNoEncontradoException;
+import es.uji.apps.par.exceptions.Constantes;
+import es.uji.apps.par.exceptions.EventoNoEncontradoException;
 import es.uji.apps.par.database.DatabaseHelper;
 import es.uji.apps.par.database.DatabaseHelperFactory;
 import es.uji.apps.par.i18n.ResourceProperties;

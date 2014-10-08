@@ -1,13 +1,13 @@
 package es.uji.apps.par.services;
 
 import com.mysema.query.Tuple;
-import es.uji.apps.par.*;
 import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.dao.ButacasDAO;
 import es.uji.apps.par.dao.ComprasDAO;
 import es.uji.apps.par.dao.SesionesDAO;
 import es.uji.apps.par.db.CompraDTO;
 import es.uji.apps.par.db.SesionDTO;
+import es.uji.apps.par.exceptions.*;
 import es.uji.apps.par.model.*;
 import es.uji.apps.par.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.util.*;
 
 @Service
@@ -263,7 +262,7 @@ public class ComprasService
 		if (compraDTO.getReserva() == null || compraDTO.getReserva() == false) {
 			long totalAnuladas = sesionesDAO.getButacasAnuladasTotal(compraDTO.getParSesion().getId());
 			if (totalAnuladas == 0L) {
-				sesionesDAO.removeIncidencia(compraDTO.getParSesion().getId());
+				sesionesDAO.removeAnulacionVentasFromSesion(compraDTO.getParSesion().getId());
 			}
 		}
 	}

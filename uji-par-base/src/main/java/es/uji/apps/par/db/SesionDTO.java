@@ -32,6 +32,9 @@ public class SesionDTO implements Serializable {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PAR_SESIONES_ID_GENERATOR")
 	private long id;
 
+	@Column(name="ANULADA")
+	private Boolean anulada;
+
 	@Column(name="CANAL_INTERNET")
 	private Boolean canalInternet;
 
@@ -262,5 +265,13 @@ public class SesionDTO implements Serializable {
 
 	public void setIncidenciaId(Integer incidenciaId) {
 		this.incidenciaId = incidenciaId;
+	}
+
+	public Boolean getAnulada() {
+		return anulada;
+	}
+
+	public void setAnulada(Boolean anulada) {
+		this.anulada = anulada;
 	}
 }

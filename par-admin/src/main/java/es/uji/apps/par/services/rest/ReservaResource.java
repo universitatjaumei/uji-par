@@ -11,9 +11,9 @@ import javax.ws.rs.core.Response;
 
 import com.sun.jersey.api.core.InjectParam;
 
-import es.uji.apps.par.ButacaOcupadaException;
-import es.uji.apps.par.CompraSinButacasException;
-import es.uji.apps.par.NoHayButacasLibresException;
+import es.uji.apps.par.exceptions.ButacaOcupadaException;
+import es.uji.apps.par.exceptions.CompraSinButacasException;
+import es.uji.apps.par.exceptions.NoHayButacasLibresException;
 import es.uji.apps.par.auth.AuthChecker;
 import es.uji.apps.par.model.ReservaRequest;
 import es.uji.apps.par.model.ResultadoCompra;

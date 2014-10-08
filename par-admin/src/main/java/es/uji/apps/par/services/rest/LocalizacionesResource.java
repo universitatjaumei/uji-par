@@ -20,7 +20,7 @@ import javax.ws.rs.core.Response;
 
 import com.sun.jersey.api.core.InjectParam;
 
-import es.uji.apps.par.GeneralPARException;
+import es.uji.apps.par.exceptions.GeneralPARException;
 import es.uji.apps.par.auth.AuthChecker;
 import es.uji.apps.par.model.Localizacion;
 import es.uji.apps.par.services.LocalizacionesService;

@@ -13,10 +13,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import es.uji.apps.par.GeneralPARException;
-import es.uji.apps.par.RegistroSerializaException;
-import es.uji.apps.par.SesionSinFormatoIdiomaIcaaException;
-import es.uji.apps.par.TipoEnvioInvalidoException;
+import es.uji.apps.par.exceptions.GeneralPARException;
+import es.uji.apps.par.exceptions.RegistroSerializaException;
+import es.uji.apps.par.exceptions.SesionSinFormatoIdiomaIcaaException;
+import es.uji.apps.par.exceptions.TipoEnvioInvalidoException;
 import es.uji.apps.par.db.EventoDTO;
 import es.uji.apps.par.db.SesionDTO;
 import es.uji.apps.par.ficheros.registros.TipoIncidencia;
@@ -51,6 +51,7 @@ public class Sesion
     private String tipoEnvio;
     private Long idEnvioFichero;
     private Integer incidenciaId;
+	private Boolean anulada;
 
     public Sesion()
     {
@@ -85,6 +86,7 @@ public class Sesion
         
         if (sesionDTO.getParSala() != null)
             this.sala = new Sala(sesionDTO.getParSala());
+		this.anulada = sesionDTO.getAnulada();
     }
     
     public Sesion(Integer id) {
@@ -241,6 +243,7 @@ public class Sesion
 		
 		sesion.setSala(new Sala(sesionDTO.getParSala()));
 		sesion.setIncidenciaId(sesionDTO.getIncidenciaId());
+		sesion.setAnulada(sesionDTO.getAnulada());
 		
 		return sesion;
 	}
@@ -284,7 +287,8 @@ public class Sesion
 		sesionDTO.setVersionLinguistica(sesion.getVersionLinguistica());
 		sesionDTO.setRssId(sesion.getRssId());
 		sesionDTO.setIncidenciaId((sesion.getIncidenciaId()==null)?0:sesion.getIncidenciaId());
-		
+		sesionDTO.setAnulada(sesion.getAnulada());
+
 		return sesionDTO;
 	}
 	
@@ -517,4 +521,12 @@ public class Sesion
 		//TODO -se podria mejorar mirando en el caso que sea multisesion, si existe version linguistica en la tabla adjunta
 		//en teoria se valida en cliente
 	}
- }
+
+	public Boolean getAnulada() {
+		return anulada;
+	}
+
+	public void setAnulada(Boolean anulada) {
+		this.anulada = anulada;
+	}
+}

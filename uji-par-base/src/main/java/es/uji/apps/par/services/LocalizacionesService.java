@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import es.uji.apps.par.CampoRequeridoException;
+import es.uji.apps.par.exceptions.CampoRequeridoException;
 import es.uji.apps.par.dao.LocalizacionesDAO;
 import es.uji.apps.par.db.LocalizacionDTO;
 import es.uji.apps.par.model.Localizacion;

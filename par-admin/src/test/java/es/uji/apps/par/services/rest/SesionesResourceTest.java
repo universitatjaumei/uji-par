@@ -6,9 +6,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response.Status;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.request.RequestContextListener;
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
@@ -24,9 +22,9 @@ import com.sun.jersey.test.framework.WebAppDescriptor;
 import com.sun.jersey.test.framework.spi.container.TestContainerFactory;
 import com.sun.jersey.test.framework.spi.container.grizzly.web.GrizzlyWebTestContainerFactory;
 
-import es.uji.apps.par.CampoRequeridoException;
-import es.uji.apps.par.FechasInvalidasException;
-import es.uji.apps.par.ResponseMessage;
+import es.uji.apps.par.exceptions.CampoRequeridoException;
+import es.uji.apps.par.exceptions.FechasInvalidasException;
+import es.uji.apps.par.exceptions.ResponseMessage;
 import es.uji.apps.par.model.Plantilla;
 import es.uji.apps.par.model.Sesion;
 import es.uji.apps.par.model.TipoEvento;
@@ -197,8 +195,7 @@ public class SesionesResourceTest extends BaseResourceTest
     	                resultatOperacio.getMessage());
     }
     
-    @Test 
-    @Ignore
+    @Test
     public void addSesion() {
     	TipoEvento parTipoEvento = addTipoEvento();
     	String eventoId = addEvento(parTipoEvento);

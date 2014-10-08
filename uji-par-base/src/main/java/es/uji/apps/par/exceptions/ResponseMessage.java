@@ -1,4 +1,4 @@
-package es.uji.apps.par;
+package es.uji.apps.par.exceptions;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
