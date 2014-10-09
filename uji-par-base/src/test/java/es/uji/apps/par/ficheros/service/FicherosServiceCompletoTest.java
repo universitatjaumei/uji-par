@@ -36,26 +36,26 @@ public class FicherosServiceCompletoTest extends FicherosServiceBaseTest
     public void testGeneraRegistroBuzonSinEspectadores() throws Exception
     {
         Sesion sesion = creaSesion(sala, evento);
-
-        Date fechaEnvio = new Date(22, 4, 2013);
-
-        String fichero = service.generaFicheroRegistros(fechaEnvio, "FL", Arrays.asList(sesion)).serializa();
-        
+        String fichero = service.generaFicheroRegistros(generaFechaEnvio().getTime(), "FL", Arrays.asList(sesion)).serializa();
         String idInternoPelicula = String.format("%05d", evento.getId());
-
-        String expected = "0123FL30730700000000006000000000010000000000000000000.00\n" +
+        String expected = String.format("0123FL%03d%03d00000000006000000000010000000000000000000.00\n" +
                           "1567         Sala 1                        \n" +
-                          "2567         1112132200010000000000.00001\n" +
+                          "2567         1112132200010000000000.00000\n" +
                           "3567         1112132200" + idInternoPelicula + "\n" +
                           "4567         " + idInternoPelicula + "1a          2a                                                3a          4a                                                5163\n" +
-                          "5567         11121301\n";
+                          "5567         11121301\n", generaFechaEnvio().get(Calendar.DAY_OF_YEAR), getDiaAnyoActual());
         Assert.assertEquals(expected, fichero);
     }
+
+	private int getDiaAnyoActual() {
+		Calendar cal = Calendar.getInstance();
+		return cal.get(Calendar.DAY_OF_YEAR);
+	}
     
-    private Date generaFechaEnvio() {
+    private Calendar generaFechaEnvio() {
     	Calendar cal = Calendar.getInstance();
     	cal.set(2013, 4, 22);
-    	return cal.getTime();
+    	return cal;
     }
     
     @Test
@@ -63,24 +63,17 @@ public class FicherosServiceCompletoTest extends FicherosServiceBaseTest
     public void testGeneraRegistroBuzonConEspectadores() throws Exception
     {
         Sesion sesion = creaSesion(sala, evento, "05/06/2013", "15:30");
-        
-        Butaca butaca1 = creaButaca("1", "1", "normal");
-        Butaca butaca2 = creaButaca("1", "2", "normal");
-
+        Butaca butaca1 = creaButaca("1", "1");
+        Butaca butaca2 = creaButaca("1", "2");
         registraCompra(sesion, butaca1, butaca2);
-        
-        Date fechaEnvio = generaFechaEnvio();
-
-        String fichero = service.generaFicheroRegistros(fechaEnvio, "FL", Arrays.asList(sesion)).serializa();
-        
+        String fichero = service.generaFicheroRegistros(generaFechaEnvio().getTime(), "FL", Arrays.asList(sesion)).serializa();
         String idInternoPelicula = String.format("%05d", evento.getId());
-
-        String expected = "0123FL30730700000000006000000000010000000000200000002.20\n" +
+        String expected = String.format("0123FL%03d%03d00000000006000000000010000000000200000002.20\n" +
                           "1567         Sala 1                        \n" +
-                          "2567         0506131530010000200002.20001\n" +
+                          "2567         0506131530010000200002.20005\n" +
                           "3567         0506131530" + idInternoPelicula + "\n" +
                           "4567         " + idInternoPelicula + "1a          2a                                                3a          4a                                                5163\n" +
-                          "5567         05061301\n";
+                          "5567         05061301\n", generaFechaEnvio().get(Calendar.DAY_OF_YEAR), getDiaAnyoActual());
         Assert.assertEquals(expected, fichero);
     }
     
@@ -90,41 +83,32 @@ public class FicherosServiceCompletoTest extends FicherosServiceBaseTest
     public void testGeneraRegistroBuzonConEspectadoresVariasSesionesVariasSalas() throws Exception
     {
         Sesion sesion1 = creaSesion(sala, evento, "05/06/2013", "15:30");
-        
-        Butaca butaca1 = creaButaca("1", "1", "normal");
-        Butaca butaca2 = creaButaca("1", "2", "normal");
-
+        Butaca butaca1 = creaButaca("1", "1");
+        Butaca butaca2 = creaButaca("1", "2");
         registraCompra(sesion1, butaca1, butaca2);
-        
         Evento evento2 = creaEvento(tipoEvento, "exp1", "El Hobbit", "555", "Distribuidora 4", "1", "2");
         Sala sala2 = creaSala("789", "Sala 2");
         Sesion sesion2 = creaSesion(sala2, evento2, "06/07/2013", "20:30");
-        
-        Butaca butaca3 = creaButaca("1", "1", "normal");
-        Butaca butaca4 = creaButaca("1", "2", "normal");
-        
+        Butaca butaca3 = creaButaca("1", "1");
+        Butaca butaca4 = creaButaca("1", "2");
         registraCompra(sesion2, butaca3, butaca4);
-        
         Sesion sesion3 = creaSesion(sala2, evento2, "06/07/2013", "22:00");
-        
-        Butaca butaca5 = creaButaca("1", "1", "normal");
-        Butaca butaca6 = creaButaca("1", "2", "normal");
+        Butaca butaca5 = creaButaca("1", "1");
+        Butaca butaca6 = creaButaca("1", "2");
+	    registraCompra(sesion3, butaca5, butaca6);
 
-        registraCompra(sesion3, butaca5, butaca6);
-        
-        Date fechaEnvio = generaFechaEnvio();
-
-        String fichero = service.generaFicheroRegistros(fechaEnvio, "FL", Arrays.asList(sesion1, sesion2, sesion3)).serializa();
+        String fichero = service.generaFicheroRegistros(generaFechaEnvio().getTime(), "FL", Arrays.asList(sesion1, sesion2,
+				sesion3)).serializa();
         
         String idInternoPelicula1 = String.format("%05d", evento.getId());
         String idInternoPelicula2 = String.format("%05d", evento2.getId());
 
-        String expected =   "0123FL30730700000000014000000000030000000000600000006.60\n" +
+        String expected =   String.format("0123FL%03d%03d00000000014000000000030000000000600000006.60\n" +
                             "1567         Sala 1                        \n" +
                             "1789         Sala 2                        \n" +
-                            "2567         0506131530010000200002.20001\n" +
-                            "2789         0607132030010000200002.20001\n" +
-                            "2789         0607132200010000200002.20001\n" +
+                            "2567         0506131530010000200002.20005\n" +
+                            "2789         0607132030010000200002.20005\n" +
+                            "2789         0607132200010000200002.20005\n" +
                             "3567         0506131530" + idInternoPelicula1 + "\n" +
                             "3789         0607132030" + idInternoPelicula2 + "\n" +
                             "3789         0607132200" + idInternoPelicula2 + "\n" +
@@ -132,7 +116,7 @@ public class FicherosServiceCompletoTest extends FicherosServiceBaseTest
                             "4789         " + idInternoPelicula2 + "exp1        El Hobbit                                         555         Distribuidora 4                                   1123\n" +
                             "4789         " + idInternoPelicula2 + "exp1        El Hobbit                                         555         Distribuidora 4                                   1123\n" +
                             "5567         05061301\n" +
-                            "5789         06071302\n";
+                            "5789         06071302\n", generaFechaEnvio().get(Calendar.DAY_OF_YEAR), getDiaAnyoActual());
         Assert.assertEquals(expected, fichero);
     }
 }

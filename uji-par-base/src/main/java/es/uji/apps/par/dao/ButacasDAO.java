@@ -151,25 +151,19 @@ public class ButacasDAO extends BaseDAO
             ButacaOcupadaException, NoHayButacasLibresException {
         Butaca butacaActual = null;
         
-        try
-        {
+        try {
             deleteButacas(compraDTO);
             
             SesionDTO sesionDTO = sesionesDAO.getSesion(sesionId);
             List<PreciosSesionDTO> parPreciosSesions = sesionDTO.getParPreciosSesions();
             
-            for (Butaca butaca : butacas)
-            {
+            for (Butaca butaca : butacas) {
                 butacaActual = butaca;
-                
                 LocalizacionDTO localizacionDTO = localizacionesDAO.getLocalizacionByCodigo(butaca.getLocalizacion());
                 
-                if (butaca.getFila()==null && butaca.getNumero()==null && 
-                    noHayButacasLibres(sesionDTO, localizacionDTO))
-                {
+                if (butaca.getFila()==null && butaca.getNumero()==null && noHayButacasLibres(sesionDTO, localizacionDTO))
                     throw new NoHayButacasLibresException(sesionId, butaca.getLocalizacion());
-                }
-    
+
                 ButacaDTO butacaDTO = Butaca.butacaToButacaDTO(butaca);
                 butacaDTO.setParSesion(sesionDTO);
                 butacaDTO.setParCompra(compraDTO);

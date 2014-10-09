@@ -1,6 +1,7 @@
 package es.uji.apps.par.ficheros.service;
 
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -43,23 +44,16 @@ public class FicherosServiceRegistrosTest extends FicherosServiceBaseTest
     public void testGeneraRegistroBuzonSinEspectadores() throws Exception
     {
         Sesion sesion = creaSesion(sala, evento);
-
-        Date fechaEnvio = new Date();
-
-        RegistroBuzon registro = service.generaFicheroRegistros(fechaEnvio, "FL", Arrays.asList(sesion))
-                .getRegistroBuzon();
+        Date fechaEnvioHabitualAnterior = Calendar.getInstance().getTime();
+        RegistroBuzon registro = service.generaFicheroRegistros(fechaEnvioHabitualAnterior, "FL", Arrays.asList(sesion)).getRegistroBuzon();
 
         Assert.assertEquals(cine.getCodigo(), registro.getCodigo());
-        Assert.assertEquals(fechaEnvio, registro.getFechaEnvio());
+        Assert.assertEquals(fechaEnvioHabitualAnterior, registro.getFechaEnvioHabitualAnterior());
         Assert.assertEquals("FL", registro.getTipo());
-        Assert.assertEquals(null, registro.getFechaEnvioHabitualAnterior());
-
         Assert.assertEquals(1, registro.getSesiones());
         Assert.assertEquals(0, registro.getEspectadores());
         Assert.assertEquals(0.0, registro.getRecaudacion().doubleValue(), 0.00001);
-
-        // TODO: Falta comprobar el número de líneas
-        //Assert.assertEquals(1 + 1 + 1 + 1 + , registro.getLineas());
+        Assert.assertEquals(6, registro.getLineas());
     }
 
     @Test
@@ -67,20 +61,16 @@ public class FicherosServiceRegistrosTest extends FicherosServiceBaseTest
     public void testGeneraRegistroBuzonConEspectadores() throws Exception
     {
         Sesion sesion = creaSesion(sala, evento);
-
-        Butaca butaca1 = creaButaca("1", "1", "normal");
-        Butaca butaca2 = creaButaca("1", "2", "normal");
-
+        Butaca butaca1 = creaButaca("1", "1");
+        Butaca butaca2 = creaButaca("1", "2");
         registraCompra(sesion, butaca1, butaca2);
-
         RegistroBuzon registro = service.generaFicheroRegistros(new Date(), "FL", Arrays.asList(sesion))
                 .getRegistroBuzon();
 
         Assert.assertEquals(1, registro.getSesiones());
         Assert.assertEquals(2, registro.getEspectadores());
         Assert.assertEquals(2.20, registro.getRecaudacion().doubleValue(), 0.00001);
-
-        // TODO: Falta comprobar el número de líneas
+		Assert.assertEquals(6, registro.getLineas());
     }
 
     @Test
@@ -89,24 +79,18 @@ public class FicherosServiceRegistrosTest extends FicherosServiceBaseTest
     {
         Sesion sesion1 = creaSesion(sala, evento);
         Sesion sesion2 = creaSesion(sala, evento);
-
-        Butaca butaca1 = creaButaca("1", "1", "normal");
-        Butaca butaca2 = creaButaca("1", "2", "normal");
-
+        Butaca butaca1 = creaButaca("1", "1");
+        Butaca butaca2 = creaButaca("1", "2");
         registraCompra(sesion1, butaca1, butaca2);
-
-        Butaca butaca3 = creaButaca("1", "4", "descuento");
-
+        Butaca butaca3 = creaButaca("1", "4");
         registraCompra(sesion2, butaca3);
-
         RegistroBuzon registro = service.generaFicheroRegistros(new Date(), "FL", Arrays.asList(sesion1, sesion2))
                 .getRegistroBuzon();
 
         Assert.assertEquals(2, registro.getSesiones());
         Assert.assertEquals(3, registro.getEspectadores());
-        Assert.assertEquals(2.70, registro.getRecaudacion().doubleValue(), 0.00001);
-
-        // TODO: Falta comprobar el número de líneas
+        Assert.assertEquals(3.30, registro.getRecaudacion().doubleValue(), 0.00001);
+		Assert.assertEquals(9, registro.getLineas());
     }
 
     @Test
@@ -163,15 +147,15 @@ public class FicherosServiceRegistrosTest extends FicherosServiceBaseTest
     public void testGeneraRegistroSesionVariasSesiones() throws Exception
     {
         Sesion sesion1 = creaSesion(sala, evento, "1/2/2013", "16:00");
-        Butaca butaca1 = creaButaca("1", "1", "normal");
-        Butaca butaca2 = creaButaca("1", "2", "normal");
+        Butaca butaca1 = creaButaca("1", "1");
+        Butaca butaca2 = creaButaca("1", "2");
 
         registraCompra(sesion1, butaca1, butaca2);
 
         Sesion sesion2 = creaSesion(sala, evento, "3/4/2013", "20:30");
-        Butaca butaca3 = creaButaca("1", "3", "descuento");
-        Butaca butaca4 = creaButaca("1", "4", "descuento");
-        Butaca butaca5 = creaButaca("2", "5", "normal");
+        Butaca butaca3 = creaButaca("1", "3");
+        Butaca butaca4 = creaButaca("1", "4");
+        Butaca butaca5 = creaButaca("2", "5");
 
         registraCompra(sesion2, butaca3, butaca4, butaca5);
 
@@ -190,7 +174,7 @@ public class FicherosServiceRegistrosTest extends FicherosServiceBaseTest
         Assert.assertEquals(DateUtils.spanishStringWithHourstoDate("3/4/2013 20:30"), registros.get(1).getFecha());
         Assert.assertEquals(1, registros.get(1).getPeliculas());
         Assert.assertEquals(3, registros.get(1).getEspectadores());
-        Assert.assertEquals(2.10, registros.get(1).getRecaudacion().floatValue(), 0.000001);
+        Assert.assertEquals(3.3, registros.get(1).getRecaudacion().floatValue(), 0.000001);
 
         //TODO: Falta incidencia por sesión
     }

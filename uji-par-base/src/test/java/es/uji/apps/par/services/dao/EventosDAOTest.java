@@ -32,7 +32,6 @@ public class EventosDAOTest
 
     @Test
     @Transactional
-    @Ignore() //Ignorado porque tiene SQL Oracle
     public void getEventos()
     {
         Assert.assertNotNull(eventosDAO.getEventos(EventosDAOTest.SORT, EventosDAOTest.START, EventosDAOTest.LIMIT));

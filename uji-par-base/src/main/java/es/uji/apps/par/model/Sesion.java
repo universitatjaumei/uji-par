@@ -150,7 +150,7 @@ public class Sesion
 
     public Boolean getCanalInternet()
     {
-        return canalInternet;
+		return (canalInternet == null)?false:canalInternet;
     }
 
     public void setCanalInternet(String canalInternet)
@@ -160,7 +160,7 @@ public class Sesion
 
     public Boolean getCanalTaquilla()
     {
-        return canalTaquilla;
+        return (canalTaquilla == null)?false:canalTaquilla;
     }
 
     public void setCanalTaquilla(String canalTaquilla)
@@ -523,7 +523,7 @@ public class Sesion
 	}
 
 	public Boolean getAnulada() {
-		return anulada;
+		return (anulada == null)?false:anulada;
 	}
 
 	public void setAnulada(Boolean anulada) {

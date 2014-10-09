@@ -10,7 +10,7 @@
                            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
   <context:spring-configured />
-  <context:component-scan base-package="es.uji.apps.par.dao" />
+  <context:component-scan base-package="es.uji.apps.par" />
 
   <bean id="propertyConfigurer"
     class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">

@@ -4,28 +4,12 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.Arrays;
 
+import es.uji.apps.par.dao.*;
+import es.uji.apps.par.db.TarifaDTO;
 import es.uji.apps.par.exceptions.*;
+import es.uji.apps.par.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import es.uji.apps.par.dao.CinesDAO;
-import es.uji.apps.par.dao.EventosDAO;
-import es.uji.apps.par.dao.LocalizacionesDAO;
-import es.uji.apps.par.dao.PlantillasDAO;
-import es.uji.apps.par.dao.PreciosPlantillaDAO;
-import es.uji.apps.par.dao.SalasDAO;
-import es.uji.apps.par.dao.SesionesDAO;
-import es.uji.apps.par.dao.TiposEventosDAO;
-import es.uji.apps.par.model.Butaca;
-import es.uji.apps.par.model.Cine;
-import es.uji.apps.par.model.Evento;
-import es.uji.apps.par.model.Localizacion;
-import es.uji.apps.par.model.Plantilla;
-import es.uji.apps.par.model.PreciosPlantilla;
-import es.uji.apps.par.model.PreciosSesion;
-import es.uji.apps.par.model.ResultadoCompra;
-import es.uji.apps.par.model.Sala;
-import es.uji.apps.par.model.Sesion;
-import es.uji.apps.par.model.TipoEvento;
 import es.uji.apps.par.services.ComprasService;
 import es.uji.apps.par.utils.DateUtils;
 
@@ -55,6 +39,9 @@ public class FicherosServiceBaseTest
     @Autowired
     private PreciosPlantillaDAO preciosPlantillaDAO;
 
+	@Autowired
+	private TarifasDAO tarifasDAO;
+
     @Autowired
     private ComprasService comprasService;
 
@@ -65,6 +52,7 @@ public class FicherosServiceBaseTest
     protected Sala sala;
     protected TipoEvento tipoEvento;
     protected Evento evento;
+	protected Tarifa tarifa;
 
 
     protected void setup() throws PrecioRepetidoException {
@@ -73,12 +61,23 @@ public class FicherosServiceBaseTest
         sala = creaSala("567", "Sala 1");
         tipoEvento = creaTipoEvento();
         plantilla = creaPlantilla();
-        PreciosPlantilla precioPlantilla = creaPrecioPlantilla(1.10, 0.5, 0.0);
+		tarifa = creaTarifa();
+        PreciosPlantilla precioPlantilla = creaPrecioPlantilla(1.10);
         precioSesion = creaPrecioSesion(precioPlantilla);
         evento = creaEvento(tipoEvento);
     }
 
-    protected void registraCompra(Sesion sesion1, Butaca... butacas) throws NoHayButacasLibresException,
+	private Tarifa creaTarifa() {
+		Tarifa tarifa = new Tarifa();
+		tarifa.setNombre("tarifa1");
+		tarifa.setDefecto("true");
+		TarifaDTO tarifaDTO = Tarifa.toDTO(tarifa);
+		tarifasDAO.add(tarifaDTO);
+		tarifa.setId(tarifaDTO.getId());
+		return tarifa;
+	}
+
+	protected void registraCompra(Sesion sesion1, Butaca... butacas) throws NoHayButacasLibresException,
 			ButacaOcupadaException, CompraSinButacasException, IncidenciaNotFoundException {
         ResultadoCompra resultado1 = comprasService.registraCompraTaquilla(sesion1.getId(), Arrays.asList(butacas));
         comprasService.marcaPagada(resultado1.getId());
@@ -118,6 +117,7 @@ public class FicherosServiceBaseTest
     protected Plantilla creaPlantilla()
     {
         Plantilla plantilla = new Plantilla("test");
+		plantilla.setSala(sala);
         plantillasDAO.add(plantilla);
 
         return plantilla;
@@ -182,27 +182,23 @@ public class FicherosServiceBaseTest
         return localizacion;
     }
 
-    protected Butaca creaButaca(String fila, String numero, String tipo)
+    protected Butaca creaButaca(String fila, String numero)
     {
         Butaca butaca = new Butaca();
 
         butaca.setLocalizacion("Platea");
         butaca.setFila(fila);
         butaca.setNumero(numero);
-        butaca.setTipo(tipo);
+        butaca.setTipo(String.valueOf(tarifa.getId()));
 
         return butaca;
     }
 
-    protected PreciosPlantilla creaPrecioPlantilla(double normal, double descuento, double invitacion) throws PrecioRepetidoException {
+    protected PreciosPlantilla creaPrecioPlantilla(double normal) throws PrecioRepetidoException {
         PreciosPlantilla preciosPlantilla = new PreciosPlantilla(localizacion, plantilla);
-
         preciosPlantilla.setPrecio(new BigDecimal(normal));
-        preciosPlantilla.setDescuento(new BigDecimal(descuento));
-        preciosPlantilla.setInvitacion(new BigDecimal(invitacion));
-
+		preciosPlantilla.setTarifa(tarifa);
         preciosPlantillaDAO.add(preciosPlantilla);
-
         return preciosPlantilla;
     }
 }

@@ -45,17 +45,12 @@ public class EntradasService
     
     private static EntradaReportTaquillaInterface entradaTaquillaReport;
     private static EntradaReportOnlineInterface entradaOnlineReport;
-    
-    static
-    {
-       	entradaTaquillaReport = EntradaReportFactory.newInstanceTaquilla();
-       	entradaOnlineReport = EntradaReportFactory.newInstanceOnline();
-    }
 
-    public void generaEntrada(String uuidCompra, OutputStream outputStream) throws ReportSerializationException
-    {
+    public void generaEntrada(String uuidCompra, OutputStream outputStream) throws ReportSerializationException {
+		if (entradaOnlineReport == null)
+			entradaOnlineReport = EntradaReportFactory.newInstanceOnline();
+
     	EntradaReportOnlineInterface entrada = entradaOnlineReport.create(new Locale(Configuration.getIdiomaPorDefecto()));
-
 		try {
         	rellenaEntrada(uuidCompra, entrada);
 	        entrada.serialize(outputStream);
@@ -65,6 +60,8 @@ public class EntradasService
     }
     
     public void generaEntradaTaquilla(String uuidCompra, OutputStream outputStream) throws ReportSerializationException, SAXException, IOException {
+		if (entradaTaquillaReport == null)
+			entradaTaquillaReport = EntradaReportFactory.newInstanceTaquilla();
     	EntradaReportTaquillaInterface entrada = entradaTaquillaReport.create(new Locale(Configuration.getIdiomaPorDefecto()));
 
         rellenaEntradaTaquilla(uuidCompra, entrada);
