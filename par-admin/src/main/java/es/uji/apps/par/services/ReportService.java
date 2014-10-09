@@ -41,13 +41,13 @@ public class ReportService {
 
 	@Autowired
 	ComprasDAO comprasDAO;
-	
+
 	@Autowired
 	ButacasDAO butacasDAO;
-	
+
 	@Autowired
 	SesionesDAO sesionesDAO;
-	
+
 	@Autowired
 	CinesDAO cinesDAO;
 
@@ -77,8 +77,7 @@ public class ReportService {
 
 	public ByteArrayOutputStream getExcelTaquilla(String fechaInicio,
 			String fechaFin, Locale locale) throws IOException {
-		List<Object[]> files = comprasDAO.getComprasInFechas(fechaInicio,
-				fechaFin);
+		List<Object[]> files = comprasDAO.getComprasInFechas(fechaInicio, fechaFin);
 		ExcelService excelService = new ExcelService();
 		int rownum = 0;
 
@@ -118,7 +117,7 @@ public class ReportService {
 		informe.setEvento(Utils.safeObjectToString(fila[0]));
 		informe.setSesion(DateUtils.dateToSpanishStringWithHour(
 				Utils.objectToDate(fila[1])).toString());
-		String tipoEntrada = Utils.safeObjectToString(fila[8]);
+		String tipoEntrada = Utils.safeObjectToString(fila[7]);
 		informe.setTipoEntrada(tipoEntrada);
 		informe.setNumeroEntradas(Utils.safeObjectBigDecimalToInt(dbHelper
 				.castBigDecimal(fila[3])));
@@ -202,8 +201,7 @@ public class ReportService {
 
 	public ByteArrayOutputStream getExcelEventos(String fechaInicio,
 			String fechaFin, Locale locale) throws IOException {
-		List<Object[]> files = comprasDAO.getComprasPorEventoInFechas(
-				fechaInicio, fechaFin);
+		List<Object[]> files = comprasDAO.getComprasPorEventoInFechas(fechaInicio, fechaFin);
 		ExcelService excelService = new ExcelService();
 		int rownum = 0;
 
@@ -303,8 +301,7 @@ public class ReportService {
 		InformeInterface informe = informeTaquillaTpvSubtotalesReport
 				.create(locale);
 
-		List<InformeModelReport> compras = objectsSesionesToInformesTpv(comprasDAO
-				.getComprasTpv(fechaInicio, fechaFin));
+		List<InformeModelReport> compras = objectsSesionesToInformesTpv(comprasDAO.getComprasTpv(fechaInicio, fechaFin));
 
 		informe.genera(getSpanishStringDateFromBBDDString(fechaInicio),
 				getSpanishStringDateFromBBDDString(fechaFin), compras,
@@ -320,8 +317,7 @@ public class ReportService {
 		InformeInterface informe = informeEventosReport
 				.create(locale);
 
-		List<InformeModelReport> compras = objectsSesionesToInformesEventos(comprasDAO
-				.getComprasEventos(fechaInicio, fechaFin));
+		List<InformeModelReport> compras = objectsSesionesToInformesEventos(comprasDAO.getComprasEventos(fechaInicio, fechaFin));
 
 		informe.genera(getSpanishStringDateFromBBDDString(fechaInicio),
 				getSpanishStringDateFromBBDDString(fechaFin), compras);
@@ -371,7 +367,7 @@ public class ReportService {
 
 		return result;
 	}
-	
+
 	public void getPdfSesion(long sesionId, ByteArrayOutputStream bos, Locale locale) throws SinIvaException, ReportSerializationException, IOException {
 		InformeInterface informe = informeSesionReport.create(locale);
 		Cine cine = Cine.cineDTOToCine(cinesDAO.getCines().get(0));
@@ -381,7 +377,7 @@ public class ReportService {
 
 		informe.serialize(bos);
 	}
-	
+
 	public void getPdfSesiones(List<Sesion> sesiones, ByteArrayOutputStream bos, Locale locale) throws SinIvaException, ReportSerializationException, IOException {
 		InformeInterface informe = informeSesionReport.create(locale);
 		List<InformeSesion> informesSesion = new ArrayList<InformeSesion>();
@@ -391,7 +387,7 @@ public class ReportService {
 			long sesionId = sesion.getId();
 			informesSesion.add(getInformeSesion(sesionId));
 		}
-		
+
 		informe.genera(Configuration.getCargoInformeEfectivo(), Configuration.getFirmanteInformeEfectivo(), informesSesion, cine, false);
 
 		informe.serialize(bos);
@@ -412,7 +408,7 @@ public class ReportService {
 		Evento evento = Evento.eventoDTOtoEvento(sesionDTO.getParEvento());
 		InformeModelReport resumen = comprasDAO.getResumenSesion(sesionId);
 		List<Tuple> butacasYTarifas = butacasDAO.getButacas(sesionId);
-		
+
 		List<InformeModelReport> compras = new ArrayList<InformeModelReport>();
 		for (Tuple butacaYTarifa: butacasYTarifas) {
 			ButacaDTO butacaDTO = butacaYTarifa.get(0, ButacaDTO.class);
@@ -421,7 +417,7 @@ public class ReportService {
 			informeModel.setTipoEntrada(nombreTarifa);
 			compras.add(informeModel);
 		}
-		
+
 		InformeSesion informeSesion = new InformeSesion();
 		informeSesion.setSala(sala);
 		informeSesion.setSesion(sesion);
@@ -430,10 +426,10 @@ public class ReportService {
 		informeSesion.setAnuladas(resumen.getCanceladasTaquilla());
 		informeSesion.setTotal(resumen.getTotal());
 		informeSesion.setCompras(compras);
-		
+
 		return informeSesion;
 	}
-	
+
 	public static void main(String[] args) throws Exception {
 		ApplicationContext ctx = new ClassPathXmlApplicationContext(
 				"/applicationContext-db.xml");

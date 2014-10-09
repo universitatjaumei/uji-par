@@ -562,12 +562,13 @@ Ext.define('Paranimf.controller.Eventos', {
            method: 'GET',
            success: function (response) {
                var numeroSesionesMismaHora = Ext.JSON.decode(response.responseText, true);
-               console.log(numeroSesionesMismaHora);
-
                var guardar = true;
+               
                if (numeroSesionesMismaHora > 0) {
                   if (!confirm(UI.i18n.message.confirmReprogramacio))
                      guardar = false;
+                  else
+                     alert(UI.i18n.message.recordatorioDevolverEntradas);
                }
                
                if (guardar) {
