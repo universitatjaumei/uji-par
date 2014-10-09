@@ -222,7 +222,6 @@ Ext.define('Paranimf.controller.Taquilla', {
   },
 
     setFechaHoraFinalReserva: function(panel) {
-      //console.log("setFechaHoraFinalReserva");
       var seccionSeleccionada = this.getGridSesionesTaquilla().getSelectedRecord();
       this.getReservarHasta().setValue(seccionSeleccionada.data.fechaFinVentaOnline);
       var fecha = new Date();
@@ -238,27 +237,21 @@ Ext.define('Paranimf.controller.Taquilla', {
 
     muestraOcultaDevolucionImporte: function(combo, records, eOpts) {
       var newvalue = combo.getValue();
-
       this.getBotonPagar().setText(UI.i18n.button.pagar);
-
       this.getImportePagado().hide();
       this.getImporteADevolver().hide();
       this.getReferenciaDePago().hide();
 
-      if (newvalue == 'metalico')
-      {
+      if (newvalue == 'metalico') {
         this.getImportePagado().show();
         this.getImporteADevolver().show();
-      }
-      else if (newvalue == 'tarjetaOffline')
-      {
+      } else if (newvalue == 'tarjetaOffline') {
         this.getBotonPagar().setText(UI.i18n.button.registrarPago);
         this.getReferenciaDePago().show(); 
       }
     },
 
    	actualizaPrecio: function() {
-      //console.log("actualizaPrecio");
    		var precio = 0;
    		var EURO = '€';
    		for (var key in this.precios) {
@@ -277,14 +270,11 @@ Ext.define('Paranimf.controller.Taquilla', {
    	},
    
    iniciaFormComprar: function() {
-	   
 	   this.idCompra = null;
 	   this.idPagoTarjeta = null;
 	   this.butacasSeleccionadas = [];  
-	   
 	   var layout = this.getFormComprarCards().getLayout();
 	   layout.setActiveItem(0);
-	  
 	   this.cambiarEstadoBotonesComprar();
    },
    
@@ -307,7 +297,6 @@ Ext.define('Paranimf.controller.Taquilla', {
 
    			if (butaca['fila']!=null && butaca['numero']!=null)
    				filaNum = " fila: " + butaca['fila'] + ", núm: " + butaca['numero'];
-   			//textoButacas += UI.i18n.tipos[butaca['localizacion']]  + filaNum + ' (' + UI.i18n.tipoEntrada[butaca['tipo']] + ')<br>';  			
         textoButacas += filaNum;
    		}
    		
@@ -316,10 +305,8 @@ Ext.define('Paranimf.controller.Taquilla', {
    		
    		Ext.Msg.confirm(UI.i18n.formTitle.anularPrevia, textoConfirm, function (id, value) {
    			if (id == 'yes')
-   			{
    				this.llamaAnularPrevia();
-   			}
-   	    }, this);
+   	  }, this);
    	},
    	
    	llamaAnularPrevia: function() {
@@ -329,16 +316,12 @@ Ext.define('Paranimf.controller.Taquilla', {
             url : urlPrefix + 'compra/' + this.idSesionPrevia + '/' + this.idCompraPrevia,
             method: 'PUT',
             success: function (response) {
-        	  
               me.butacasSeleccionadasPrevia = null;
               me.idCompraPrevia = null;
               me.cambiaVisibilidadBotonAnularPrevia();
-            	
               me.getFormComprar().up('window').close();
               me.comprar();
-              
-              alert('Compra anul·lada correctament');
-              
+              alert(UI.i18n.message.compraAnuladaOk);
             }, failure: function (response) {
               alert(UI.i18n.error.anularCompraReserva);
             }
@@ -377,29 +360,23 @@ Ext.define('Paranimf.controller.Taquilla', {
    	muestraPrecios: function() {
    		var PRECIOS = UI.i18n.field.precioPorEntrada;
    		var EURO = ' &euro;';
-      //console.log("muestraPrecios", this.precios);
    		for (var key in this.precios) {
    			var panel = Ext.ComponentQuery.query('panelSeleccionarNoNumeradas panelNumeroEntradas[name=' + key + ']');
 
    			if (panel != undefined && panel.length >= 1) {
-          for (var tarifa in this.precios[key]) {
+          for (var tarifa in this.precios[key])
             panel[0].down('panel[name=preu' + tarifa + ']').update(PRECIOS + this.precios[key][tarifa] + EURO);
-          }
    			}
    		}
    	},
 
    	activaCamposCompra: function() {
-      //console.log("activaCamposCompra", this.disponibles);
-
    		for (var key in this.disponibles) {
    			var hayDisponibles = (this.disponibles[key]==0)?false:true;
    			
    			if (this.precios[key] != undefined && this.precios[key] != '' && this.precios[key] != 0) {
           for (var tarifa in this.precios[key]) {
             var numberfield = Ext.ComponentQuery.query('panelSeleccionarNoNumeradas panelNumeroEntradas[name=' + key + '] panel[name=panelTarifas] numberfield[name=' + tarifa + ']')[0];
-            //console.log(numberfield);
-   			
             if (hayDisponibles) {
               if (numberfield)
                 numberfield.setDisabled(false);
@@ -419,20 +396,16 @@ Ext.define('Paranimf.controller.Taquilla', {
             me.muestraDisponibles();
             me.muestraPrecios();
             me.activaCamposCompra();
-            //me.ocultaDescuentosNoDisponiblesNoNumeradas();
 		      });
         });
       });
    	},
    
    avanzarAPasoDePago: function (butacas) {
-	   
 	   var layout = this.getFormComprarCards().getLayout();
 	   layout.setActiveItem(layout.getNext());
-	   
 	   this.consultaImportes(butacas);
-
-	   this.cambiarEstadoBotonesComprar();
+     this.cambiarEstadoBotonesComprar();
    },
    
    consultaImportes: function(butacas) {
@@ -451,11 +424,9 @@ Ext.define('Paranimf.controller.Taquilla', {
 	    		  var importe = Ext.JSON.decode(response.responseText, true);
             me.getHiddenTotalPrecio().setValue(importe);
 	    		  me.rellenaDatosPasoPagar(importe.toFixed(2));
-	    		   
 	    	  }, failure: function (response) {
             me.getFormComprar().setLoading(false);
 	    		  var respuesta = Ext.JSON.decode(response.responseText, true);
-	    		  //console.log(respuesta);
 	    		  
 	    		  if (respuesta['message']!=null)
 	    			  alert(respuesta['message']);
@@ -474,7 +445,6 @@ Ext.define('Paranimf.controller.Taquilla', {
         var panel = Ext.ComponentQuery.query('panelSeleccionarNoNumeradas panelNumeroEntradas[name=' + key + ']');
 
         if (panel != undefined && panel.length >= 1) {
-          
           for (var tarifa in this.precios[key]) {
             var valueNumberField = panel[0].down('numberfield[name=' + tarifa + ']').value;
             
@@ -526,24 +496,18 @@ Ext.define('Paranimf.controller.Taquilla', {
    },
    
    registraCompra: function() {
-	   
 	   var tipoPago = Ext.getCmp('tipoPago').value;
      
-     if (tipoPago == 'tarjetaOffline')
-     {
+     if (tipoPago == 'tarjetaOffline') {
         var referenciaDePago = this.getReferenciaDePago().getValue().trim();
-        if (referenciaDePago == undefined || !referenciaDePago || referenciaDePago == "")
-        {
+        if (referenciaDePago == undefined || !referenciaDePago || referenciaDePago == "") {
          alert(UI.i18n.error.errorReferenciaDePago);
          return false;
         }
      }
-	   
 	   this.deshabilitaBotonPagar();
-	   
 	   var idSesion = this.getGridSesionesTaquilla().getSelectedRecord().data['id'];
-
-	   var me = this;
+     var me = this;
      me.getFormComprar().setLoading(UI.i18n.message.loading);
 	   
 	   Ext.Ajax.request({
@@ -558,27 +522,18 @@ Ext.define('Paranimf.controller.Taquilla', {
 	    		   me.uuidCompra = respuesta['uuid'];
 	    		  
 	    		   if (tipoPago == 'metalico')
-	    		   {
 	    			   me.marcaPagada(me.idCompra);
-	    		   }   
-	    		   else if (tipoPago == 'tarjeta')
-	    		   {
+	    		   else if (tipoPago == 'tarjeta') {
 	    			   var tituloEvento = me.getGridEventosTaquilla().getSelectedRecord().data['tituloVa'];
 	    			   me.pagarConTarjeta(respuesta['id'], tituloEvento);
 	    		   }
              else if (tipoPago == 'tarjetaOffline')
-             {
                 me.marcaPagada(me.idCompra, me.getReferenciaDePago().getValue().trim());
-             }
 	    		   
 	    	  }, failure: function (response) {
 	    		  me.getFormComprar().setLoading(false);
-	    		  //console.log(respuesta);
-	    		  
 	    		  me.habilitaBotonPagar();
-
 	    		  me.muestraMensajePagoTarjeta(UI.i18n.error.errorRegistrandoCompra);
-	    		  
 	    		  var respuesta = Ext.JSON.decode(response.responseText, true);
 	    		  
 	    		  if (respuesta['message']!=null)
@@ -590,93 +545,80 @@ Ext.define('Paranimf.controller.Taquilla', {
    },
    
    registraReserva: function() {
-	   
-	   this.deshabilitaBotonReservar();
-	   
-	   var idSesion = this.getGridSesionesTaquilla().getSelectedRecord().data['id'];
-
-	   var me = this;
-	   me.getFormComprar().setLoading(UI.i18n.message.loading);
-	   Ext.Ajax.request({
-	    	  url : urlPrefix + 'reserva/' + idSesion,
-	    	  method: 'POST',
-	    	  jsonData: {butacasSeleccionadas:this.butacasSeleccionadas, desde:this.getReservarDesde().getValue(), hasta:this.getReservarHasta().getValue()
-	    		  		 , observaciones: this.getObservacionesReserva().getValue(), horaInicial: this.getHoraInicio().value, horaFinal: this.getHoraFin().value,
-                 minutoInicial: this.getMinutoInicio().value, minutoFinal: this.getMinutoFin().value},
-	    	  success: function (response) {
-            me.getFormComprar().setLoading(false);
-            me.habilitaBotonReservar();
-            me.cerrarComprar();
-	    		  
-	    	  }, failure: function (response) {
-            me.getFormComprar().setLoading(false); 
-            //console.log(respuesta);
-	    		  
-	    		  me.habilitaBotonReservar();
-	    		  
-	    		  var respuesta = Ext.JSON.decode(response.responseText, true);
-	    		  
-	    		  if (respuesta['message']!=null)
-	    			  alert(respuesta['message']);
-	    		  else
-	    			  alert(UI.i18n.error.formSave);
-	    	  }
-	   	  });  
+      this.deshabilitaBotonReservar();
+      var idSesion = this.getGridSesionesTaquilla().getSelectedRecord().data['id'];
+      var me = this;
+      me.getFormComprar().setLoading(UI.i18n.message.loading);
+      Ext.Ajax.request({
+        url : urlPrefix + 'reserva/' + idSesion,
+        method: 'POST',
+        jsonData: {butacasSeleccionadas:this.butacasSeleccionadas, desde:this.getReservarDesde().getValue(), hasta:this.getReservarHasta().getValue()
+          		 , observaciones: this.getObservacionesReserva().getValue(), horaInicial: this.getHoraInicio().value, horaFinal: this.getHoraFin().value,
+               minutoInicial: this.getMinutoInicio().value, minutoFinal: this.getMinutoFin().value},
+        success: function (response) {
+          me.getFormComprar().setLoading(false);
+          me.habilitaBotonReservar();
+          me.cerrarComprar();
+          
+        }, failure: function (response) {
+          me.getFormComprar().setLoading(false); 
+          me.habilitaBotonReservar();
+          var respuesta = Ext.JSON.decode(response.responseText, true);
+          
+          if (respuesta['message']!=null)
+        	  alert(respuesta['message']);
+          else
+        	  alert(UI.i18n.error.formSave);
+        }
+      });  
    },
    
    pagarConTarjeta: function(id, concepto) {
-	   
 	   var me = this;
 	   me.getFormComprar().setLoading(UI.i18n.message.loading);
 	   me.muestraMensajePagoTarjeta(UI.i18n.message.pagoTarjetaEnviando);
 	   
-	   Ext.Ajax.request({
-	    	  url : urlPrefix + 'pago/' + id,
-	    	  method: 'POST',
-	    	  jsonData: concepto,
-	    	  success: function (response) {
-	           me.getFormComprar().setLoading(false);
-	    		  //console.log('Pago con tarjeta aceptado:', response);
-	    		  
-    			  var respuesta = Ext.JSON.decode(response.responseText, true);
+      Ext.Ajax.request({
+    	  url : urlPrefix + 'pago/' + id,
+    	  method: 'POST',
+    	  jsonData: concepto,
+    	  success: function (response) {
+           me.getFormComprar().setLoading(false);
+  			  var respuesta = Ext.JSON.decode(response.responseText, true);
+  			  
+    		  if (respuesta==null || respuesta.error) {
+    			  var msj = UI.i18n.error.errorRealizaPago;
     			  
-	    		  if (respuesta==null || respuesta.error)
-	    		  {
-	    			  var msj = UI.i18n.error.errorRealizaPago;
-	    			  
-	    			  if (respuesta['mensajeExcepcion'])
-	    				  msj += ' (' + respuesta['mensajeExcepcion']  + ')';
-	    			  
-	    			  alert(msj);
-	    			  me.muestraMensajePagoTarjeta(UI.i18n.error.errorRealizaPago);
-		    		  me.habilitaBotonPagar();
-	    		  }
-	    		  else
-	    		  {
-	    			  me.idPagoTarjeta = respuesta.codigo;
-	    			  me.muestraMensajePagoTarjeta(UI.i18n.message.pagoTarjetaEnviadoLector);
-	    			  
-	    			  me.lanzaComprobacionEstadoPago(id);
-	    		  }
+    			  if (respuesta['mensajeExcepcion'])
+    				  msj += ' (' + respuesta['mensajeExcepcion']  + ')';
     			  
-	    	  }, failure: function (response) {
-	    		 me.getFormComprar().setLoading(false);
+    			  alert(msj);
+    			  me.muestraMensajePagoTarjeta(UI.i18n.error.errorRealizaPago);
 	    		  me.habilitaBotonPagar();
-	    		  me.muestraMensajePagoTarjeta(UI.i18n.error.errorRealizaPago);
-
-	    		  var respuesta = Ext.JSON.decode(response.responseText, true);
-	    		  
-	    		  if (respuesta!=null && respuesta['message']!=null)
-	    			  alert(respuesta['message']);
-	    		  else
-	    			  alert(UI.i18n.error.errorRealizaPago);
-	    	  }
-	   	  });
+    		  }
+    		  else {
+    			  me.idPagoTarjeta = respuesta.codigo;
+    			  me.muestraMensajePagoTarjeta(UI.i18n.message.pagoTarjetaEnviadoLector);
+    			  me.lanzaComprobacionEstadoPago(id);
+    		  }
+  			  
+    	  }, 
+        failure: function (response) {
+          me.getFormComprar().setLoading(false);
+    		  me.habilitaBotonPagar();
+    		  me.muestraMensajePagoTarjeta(UI.i18n.error.errorRealizaPago);
+    		  var respuesta = Ext.JSON.decode(response.responseText, true);
+    		  
+    		  if (respuesta!=null && respuesta['message']!=null)
+    			  alert(respuesta['message']);
+    		  else
+    			  alert(UI.i18n.error.errorRealizaPago);
+    	  }
+   	  });
    },
 
    lanzaComprobacionEstadoPago: function(idPago) {
 	   var me = this;
-	   
 	   this.intervalEstadoPago[idPago] = window.setInterval(function(){me.compruebaEstadoPago(idPago);}, 1000);
    },
    
@@ -686,58 +628,45 @@ Ext.define('Paranimf.controller.Taquilla', {
    },
    
    compruebaEstadoPago: function(idPago) {
-	   
 	   var me = this;
 	   me.getFormComprar().setLoading(UI.i18n.message.loading);
 	   Ext.Ajax.request({
 	    	  url : urlPrefix + 'pago/' + idPago,
 	    	  method: 'GET',
 	    	  success: function (response) {
-	         me.getFormComprar().setLoading(false);
-	    		  //habilitaBotonPagar();
-	    		  
-	    		  console.log('Estado del pago con tarjeta:', response);
-	    		  
+            me.getFormComprar().setLoading(false);
 	    		  var respuesta = Ext.JSON.decode(response.responseText, true);
  			  
-	    		  if (respuesta==null || respuesta.error)
-	    		  {
+	    		  if (respuesta==null || respuesta.error) {
 	    			  me.paraComprobacionEstadoPago(idPago);
-
 	    			  var msj = UI.i18n.error.errorRealizaPago;
 	    			  
 	    			  if (respuesta!=null && respuesta['mensajeExcepcion'])
 	    				  msj += ' (' + respuesta['mensajeExcepcion']  + ')';
-	    			  
-	    			  //alert(msj);
 	    			  me.muestraMensajePagoTarjeta(msj);
 	    		  }
-	    		  else
-	    		  {
+	    		  else {
 	    			  if (respuesta['codigoAccion'] == '')
 	    			  {
 	    				  // El pago está en proceso
 	    			  }
-	    			  else if (respuesta['codigoAccion'] == '20' || respuesta['codigoAccion'] == '30' )
-	    			  {
+	    			  else if (respuesta['codigoAccion'] == '20' || respuesta['codigoAccion'] == '30' ) {
 	    				  me.paraComprobacionEstadoPago(idPago);
 	    				  me.muestraMensajePagoTarjeta(UI.i18n.message.pagoTarjetaCorrecto);
 	    				  me.desahiblitaEstadoBotonesComprar();
 	    				  me.muestraEnlacePdf();
 	    			  }
-	    			  else
-	    			  {
+	    			  else {
 	    				  me.paraComprobacionEstadoPago(idPago);
 	    				  me.muestraMensajePagoTarjeta(UI.i18n.error.errorRealizaPago + '<br/>(' + respuesta['codigoAccion'] + ': ' + UI.i18n.error.pinpad[respuesta['codigoAccion']] + ')');
 	    				  me.habilitaBotonPagar();
-	    		      }
+              }
 	    		  }
- 			  
-	    	  }, failure: function (response) {
+	    	  }, 
+          failure: function (response) {
 	    		  me.getFormComprar().setLoading(false);
 	    		  me.habilitaBotonPagar();
 	    		  me.muestraMensajePagoTarjeta(UI.i18n.error.errorRealizaPago);
-
 	    		  var respuesta = Ext.JSON.decode(response.responseText, true);
 	    		  
 	    		  if (respuesta!=null && respuesta['message']!=null)
@@ -753,62 +682,36 @@ Ext.define('Paranimf.controller.Taquilla', {
    },
    
    verEntrada: function() {
-	   
 	   this.getFormComprar().up('window').close();
 	   this.comprar();
 
 	   if (this.windowEntrada != null)
-	   {
-		   // Cerramos para evitar imprimir las entradas anteriores
 		   this.windowEntrada.close();
-	   }
-	   
 	   var href = urlPrefix + 'compra/' + this.uuidCompra + '/pdftaquilla';
 	   this.windowEntrada = window.open(href, 'Imprimir entrada');
-	   //this.windowEntrada.print();
    },
 
-   guardarDatosCompraPrevia: function() {
-      console.log("guardarDatosCompraPrevia");
-	   this.butacasSeleccionadasPrevia = this.butacasSeleccionadas;
-      console.log("guardarDatosCompraPrevia- ", this.butacasSeleccionadasPrevia);
-	   this.idCompraPrevia = this.idCompra;
-	   this.idSesionPrevia = this.getGridSesionesTaquilla().getSelectedRecord().data['id'];
-	   this.tituloEventoPrevio = this.getGridEventosTaquilla().getSelectedRecord().data['tituloVa'];
-	   this.sesionPrevia = Ext.Date.format(this.getGridSesionesTaquilla().getSelectedRecord().data['fechaCelebracion'], 'd/m/Y H:i');
+    guardarDatosCompraPrevia: function() {
+      this.butacasSeleccionadasPrevia = this.butacasSeleccionadas;
+      this.idCompraPrevia = this.idCompra;
+      this.idSesionPrevia = this.getGridSesionesTaquilla().getSelectedRecord().data['id'];
+      this.tituloEventoPrevio = this.getGridEventosTaquilla().getSelectedRecord().data['tituloVa'];
+      this.sesionPrevia = Ext.Date.format(this.getGridSesionesTaquilla().getSelectedRecord().data['fechaCelebracion'], 'd/m/Y H:i');
    },
 
   cargaLocalizaciones: function(sesionId, callback) {
-    /*--get localizaciones de la sesion
-      --para cada localizacion
-        --añadir en el panel "localizaciones" del panel "panelSeleccionarNoNumeradas"
-          --un fieldset con
-            {
-              columnWidth: 1/2,
-              title: nombre de la localización,
-              items: [{
-                name: 'codigo_localizacion',
-                xtype: 'panelNumeroEntradas'
-              }]
-            }
-    */
-    console.log("cargaLocalizaciones");
     var me = this;
     this.getFormComprar().setLoading(UI.i18n.message.loading);
     
     Ext.Ajax.request({
       url : urlPrefix + 'evento/sesion/' + sesionId + '/localizacion',
       method: 'GET',
-      
       success: function (response) {
         me.getFormComprar().setLoading(false);
         var jsonLocalizaciones = Ext.decode(response.responseText);
-        //console.log(jsonLocalizaciones);
 
         for (var i=0; i<jsonLocalizaciones.length; i++) {
           var localizacion = jsonLocalizaciones[i];
-          //console.log(localizacion);
-          
           var field = new Ext.form.Panel({
             columnWidth: 1/2,
             name: localizacion.codigo,
@@ -819,12 +722,10 @@ Ext.define('Paranimf.controller.Taquilla', {
               xtype: 'panelNumeroEntradas'
             }]
           });
-
           me.getLocalizacionesNoNumeradas().add(field);
         }
         callback();
       },
-
       failure: function (response) {
         me.getFormComprar().setLoading(false);
         alert(UI.i18n.error.loadingLocalizaciones);
@@ -833,34 +734,9 @@ Ext.define('Paranimf.controller.Taquilla', {
   },
    
   cargaPrecios: function(sesionId, callback) {
-    /*TODO
-      --obtener tarifas y precios
-      --para cada panel "panelNumeroEntradas" "tarifas"
-        --añadir 
-        {
-          columnWidth: 2/3,
-          name: 'tarifa.id',
-          fieldLabel: tarifa.nombre,
-          labelWidth: 200,
-          labelAlign: 'right',
-          xtype: 'numberfield',
-          allowDecimals: false,
-          value: 0,
-          minValue: 0,
-          disabled: true
-        }, {
-          columnWidth: 1/3,
-          xtype: 'panel',
-          name: 'preuNormal',
-          html: UI.i18n.field.precioPorEntrada + "...",
-          border: false,
-          minHeight: 30,
-          padding: '5 0 0 5'
-        }
-    */
-    //console.log("cargaPrecios");
     var me = this;
     this.getFormComprar().setLoading(UI.i18n.message.loading);
+
     Ext.Ajax.request({
   	  url : urlPrefix + 'compra/' + sesionId + '/precios',
    	  method: 'GET',
@@ -905,7 +781,8 @@ Ext.define('Paranimf.controller.Taquilla', {
           panelConNombreDeLocalizacionDeTarifa.setHeight(panelConNombreDeLocalizacionDeTarifa.height+25);
 	    	}
         callback();
-	    }, failure: function (response) {
+	    }, 
+      failure: function (response) {
         me.getFormComprar().setLoading(false);
 	      alert(UI.i18n.error.loadingPreciosNoNumeradas);
 	   	}
@@ -929,7 +806,8 @@ Ext.define('Paranimf.controller.Taquilla', {
           me.disponibles[disponible.localizacion] = disponible.disponibles;
 	      }
         callback();
-	    }, failure: function (response) {
+	    }, 
+      failure: function (response) {
         me.getFormComprar().setLoading(false);
 	      alert(UI.i18n.error.loadingDisponiblesNoNumeradas);
 	    }
@@ -949,70 +827,49 @@ Ext.define('Paranimf.controller.Taquilla', {
    },
    
    comprarAnterior: function() {
-	   //console.log('Anterior');
-	   
 	   var layout = this.getFormComprarCards().getLayout();
 	   var pasoActual = layout.activeItem.id;
-	   
-	   //console.log(pasoActual);
-	   
+
 	   if (pasoActual != 'pasoSeleccionar')
-	   {
 		   layout.setActiveItem(layout.getActiveItem()-1);
-	   }
-	
 	   this.cambiarEstadoBotonesComprar();
    },
 
    comprarSiguiente: function() {
-	   //console.log('Siguiente');
-	   
 	   var layout = this.getFormComprarCards().getLayout();
 	   var pasoActual = layout.activeItem.id;
-	   
-	   //console.log(pasoActual);
-	   
-	   if (pasoActual == 'pasoSeleccionar')
-	   {
+  
+	   if (pasoActual == 'pasoSeleccionar') {
 		   if (this.entradasNumeradas())
 			   this.comprarSiguienteNumeradas();
 		   else
 			   this.comprarSiguienteSinNumerar();
 	   }
-	   
 	   this.cambiarEstadoBotonesComprar();
    },
    
    comprarSiguienteNumeradas: function() {
-	   //console.log('Siguiente numeradas');
-
-	   
 	   var me = this;
 	   
 	   // Llamamos al iframe de butacas para que nos pase las butacas seleccionadas
-	   pm({
-		   target: window.frames[1],
-		   type: 'butacas',
-		   data: {},
-		   success: function(butacas){
-			  //console.log('Respuesta:', butacas);
+      pm({
+        target: window.frames[1],
+        type: 'butacas',
+        data: {},
+        success: function(butacas){
 			   me.butacasSeleccionadas = butacas;
-			   
 			   me.avanzarAPasoDePago(butacas);
-		  }
+		    }
 	   });
    },   
    
    comprarSiguienteSinNumerar: function() {
-	   
 	   this.butacasSeleccionadas = this.getButacasNoNumeradas(); 
-	   
 	   this.avanzarAPasoDePago(this.butacasSeleccionadas);
    }, 
    
    cambiarEstadoBotonesComprar: function () {
 	   var layout = this.getFormComprarCards().getLayout();
-	   
 	   Ext.getCmp('comprarAnterior').setDisabled(!layout.getPrev());
 	   Ext.getCmp('comprarSiguiente').setDisabled(!layout.getNext());	
    },
@@ -1023,18 +880,19 @@ Ext.define('Paranimf.controller.Taquilla', {
    },   
 
    recargaStore: function(comp, opts) {
-      //console.log('RECARGA STORE EVENTOS TAQUILLA');
-      this.getGridEventosTaquilla().recargaStore();
+    this.getGridEventosTaquilla().deseleccionar();
+    this.getGridSesionesTaquilla().store.proxy.url = urlPrefix + 'evento/-1/sesiones';
+    this.getGridSesionesTaquilla().recargaStore();
+    this.getGridEventosTaquilla().recargaStore();
    },
 
    loadSesiones: function(selectionModel, record) {
       if (record[0]) {
          var storeSesiones = this.getGridSesionesTaquilla().getStore();
          var eventoId = record[0].get('id');
-         
          this.getGridSesionesTaquilla().setTitle(UI.i18n.gridTitle.sesionesCompras + ': ' + record[0].get('tituloVa'));
-
          var url = urlPrefix + 'evento/' + eventoId + '/sesiones';
+
          if (!this._allEventosShown)
           url += '?activos=true';
          storeSesiones.getProxy().url = url;
@@ -1046,15 +904,16 @@ Ext.define('Paranimf.controller.Taquilla', {
    		if (this.getGridEventosTaquilla().hasRowSelected() && this.getGridSesionesTaquilla().hasRowSelected()) {
   			var evento = this.getGridEventosTaquilla().getSelectedRecord();
   			var sesion = this.getGridSesionesTaquilla().getSelectedRecord();
-        //console.log(evento, sesion);
-
-        var title = UI.i18n.formTitle.comprar + " -> " + UI.i18n.message.evento + ": " + evento.data.tituloVa + " - " + UI.i18n.message.sessio + ": " + Ext.Date.format(sesion.data.fechaCelebracion, 'd/m/Y H:i');
-  			this.getGridSesionesTaquilla().showComprarWindow(sesion.data['id'], evento.data['asientosNumerados'], title, false);
-  			
-  			this.getPanelComprar().show();
-  			this.getPanelReservar().hide();
-  			
-  			this.cambiaVisibilidadBotonAnularPrevia();
+        
+        if (sesion.data.anulada == true)
+          alert (UI.i18n.error.venderSesionAnulada);
+        else {
+          var title = UI.i18n.formTitle.comprar + " -> " + UI.i18n.message.evento + ": " + evento.data.tituloVa + " - " + UI.i18n.message.sessio + ": " + Ext.Date.format(sesion.data.fechaCelebracion, 'd/m/Y H:i');
+  			  this.getGridSesionesTaquilla().showComprarWindow(sesion.data['id'], evento.data['asientosNumerados'], title, false);
+  				this.getPanelComprar().show();
+          this.getPanelReservar().hide();
+    			this.cambiaVisibilidadBotonAnularPrevia();
+        }
   		} else
   			alert(UI.i18n.message.selectRow);
    	},
@@ -1068,48 +927,45 @@ Ext.define('Paranimf.controller.Taquilla', {
    
    	reservar: function(button, event, opts) {
    		if (this.getGridEventosTaquilla().hasRowSelected() && this.getGridSesionesTaquilla().hasRowSelected()) {
-			var evento = this.getGridEventosTaquilla().getSelectedRecord();
-			var sesion = this.getGridSesionesTaquilla().getSelectedRecord();
-      var title = UI.i18n.formTitle.reservar + " -> " + UI.i18n.message.evento + ": " + evento.data.tituloVa + " - " + UI.i18n.message.sessio + ": " + Ext.Date.format(sesion.data.fechaCelebracion, 'd/m/Y H:i');
+        var evento = this.getGridEventosTaquilla().getSelectedRecord();
+        var sesion = this.getGridSesionesTaquilla().getSelectedRecord();
 
-			this.getGridSesionesTaquilla().showComprarWindow(sesion.data['id'], evento.data['asientosNumerados'], title, true);
-
-			this.getPanelReservar().show();
-			this.getPanelComprar().hide();
+        if (sesion.data.anulada == true)
+          alert (UI.i18n.error.reservarSesionAnulada);
+        else {
+          var title = UI.i18n.formTitle.reservar + " -> " + UI.i18n.message.evento + ": " + evento.data.tituloVa + " - " + UI.i18n.message.sessio + ": " + Ext.Date.format(sesion.data.fechaCelebracion, 'd/m/Y H:i');
+          this.getGridSesionesTaquilla().showComprarWindow(sesion.data['id'], evento.data['asientosNumerados'], title, true);
+          this.getPanelReservar().show();
+          this.getPanelComprar().hide();
+        }
 		} else
 			alert(UI.i18n.message.selectRow);
    	},
    
    marcaPagada: function(idCompra, referenciaDePago) {
+	  var me = this;
 	   
-	   var me = this;
-	   
-	   Ext.Ajax.request({
-	    	  url : urlPrefix + 'compra/' + idCompra + '/pagada' + (referenciaDePago != undefined ? "?referencia=" +
-	    	  referenciaDePago : ""),
-	    	  method: 'POST',
-	    	  success: function (response) {
-	   
-	    		  //console.log('Compra marcada como pagada:', response);
-	    		  
-   			      me.muestraMensajePagoTarjeta(UI.i18n.message.compraRegistradaOk);
-   			      me.desahiblitaEstadoBotonesComprar();
-			      me.muestraEnlacePdf();
-				  me.guardarDatosCompraPrevia();
-				  me.cambiaVisibilidadBotonAnularPrevia();
-    			  
-	    	  }, failure: function (response) {
-	    		  
-	    		  me.habilitaBotonPagar();
-	    		  me.muestraMensajePagoTarjeta(UI.i18n.error.errorRealizaPago);
-
-	    		  var respuesta = Ext.JSON.decode(response.responseText, true);
-	    		  
-	    		  if (respuesta!=null && respuesta['message']!=null)
-	    			  alert(respuesta['message']);
-	    		  else
-	    			  alert(UI.i18n.error.errorRealizaPago);
-	    	  }
-	   	  });
+    Ext.Ajax.request({
+  	  url : urlPrefix + 'compra/' + idCompra + '/pagada' + (referenciaDePago != undefined ? "?referencia=" +
+  	  referenciaDePago : ""),
+  	  method: 'POST',
+  	  success: function (response) {
+		      me.muestraMensajePagoTarjeta(UI.i18n.message.compraRegistradaOk);
+		      me.desahiblitaEstadoBotonesComprar();
+	      me.muestraEnlacePdf();
+			  me.guardarDatosCompraPrevia();
+ 			  me.cambiaVisibilidadBotonAnularPrevia();
+  	  }, 
+      failure: function (response) {
+  		  me.habilitaBotonPagar();
+  		  me.muestraMensajePagoTarjeta(UI.i18n.error.errorRealizaPago);
+  		  var respuesta = Ext.JSON.decode(response.responseText, true);
+  		  
+  		  if (respuesta!=null && respuesta['message']!=null)
+  			  alert(respuesta['message']);
+  		  else
+  			  alert(UI.i18n.error.errorRealizaPago);
+  	  }
+ 	  });
    }
 });

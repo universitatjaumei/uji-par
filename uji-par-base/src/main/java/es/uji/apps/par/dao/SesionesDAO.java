@@ -113,7 +113,8 @@ public class SesionesDAO extends BaseDAO
         Timestamp now = new Timestamp(DateUtils.dateConMargenTrasVenta().getTime());
 
         return query.from(qSesionDTO).leftJoin(qSesionDTO.parSala, qSalaDTO).fetch()
-                .where(qSesionDTO.parEvento.id.eq(eventoId).and(qSesionDTO.fechaCelebracion.after(now)));
+                .where(qSesionDTO.parEvento.id.eq(eventoId).and(qSesionDTO.fechaCelebracion.after(now)).and(qSesionDTO.anulada
+						.isNull().or(qSesionDTO.anulada.eq(false))));
     }
 
     @Transactional
@@ -206,7 +207,7 @@ public class SesionesDAO extends BaseDAO
     public void updateSesion(Sesion sesion) {
 		SesionDTO sesionDTO = getSesion(sesion.getId());
 
-		if (!isSesionAnulada(sesionDTO))
+		if (isSesionAnulada(sesionDTO))
 			throw new EdicionSesionAnuladaException();
 
         Timestamp fechaCelebracion = DateUtils.dateToTimestampSafe(DateUtils.addTimeToDate(sesion.getFechaCelebracion

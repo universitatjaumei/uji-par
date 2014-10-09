@@ -62,7 +62,8 @@ UI =
             "onlyOneRowSelected": "És obligatori seleccionar una única sessió",
             "informesGenerals": "Informes generals per a totes les sessions",
             "confirmVentaDegradada": "Activar la venda per a events acabats es recomana únicament per a introduir vendes que no es van poder fer en el moment en el que estava la taquilla oberta. Està segur de continuar?",
-            "confirmReprogramacio": "Hi han sessions ja definides per a aquesta hora en aquesta sala. Vols reprogramar la sessió i mantindre aquesta com la vàlida?"
+            "confirmReprogramacio": "Hi han sessions ja definides per a aquesta hora en aquesta sala. Vols reprogramar la sessió i mantindre aquesta com la vàlida?",
+            "compraAnuladaOk": "Compra anul·lada correctament"
         },
         "storeWeekDay": {
             "wed": "Dimecres",
@@ -173,7 +174,9 @@ UI =
             "error545": "El format de projecció de la pel·lícula no és vàlid",
             "error546": "El codi de la sala té més de 6 caràcters",
             "comprobandoSesionesMismaHora": "Error revisant si hi havia més sessions a la mateixa hora en la mateixa sala",
-            "editSesionAnulada": "No es pot editar una sessió anulada, ja que es una sessió reprogramada"
+            "editSesionAnulada": "No es pot editar una sessió anul·lada, ja que es una sessió reprogramada",
+            "venderSesionAnulada": "No es poden vendre entrades d'una sessió anul·lada",
+            "reservarSesionAnulada": "No es poden reservar entrades d'una sessió anul·lada"
         },
         "button": {
             "closeSession": "Tancar sessió",

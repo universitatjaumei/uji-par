@@ -62,7 +62,8 @@ UI =
             "compraRegistradaOk": "Compra registrada correctamente",
             "ctrlCCopiar": "Ctrl+C para copiar el código",
             "confirmVentaDegradada": "Activar la venta para eventos acabados se recomienda únicamente para introducir ventas que no se pudieron hacer en el momento en el que estaba la taquilla abierta. ¿Està seguro de continuar?",
-            "confirmReprogramacio": "Hay sesiones ya definidas para esta hora en esta sala. ¿Quieres reprogramar la sesión y mantener esta como la válida?"
+            "confirmReprogramacio": "Hay sesiones ya definidas para esta hora en esta sala. ¿Quieres reprogramar la sesión y mantener esta como la válida?",
+            "compraAnuladaOk": "Compra anulada correctamente"
         },
         "storeWeekDay": {
             "wed": "Miércoles",
@@ -173,7 +174,9 @@ UI =
             "deletedImage": "Se ha producido un error al borrar la imagen",
             "error546": "El código de la sala tiene más de 6 caracteres",
             "comprobandoSesionesMismaHora": "Error revisando si hay más sesiones a la misma hora en la misma sala",
-            "editSesionAnulada": "No se puede editar una sesión anulada, ya que es una sesión reprogramada"
+            "editSesionAnulada": "No se puede editar una sesión anulada, ya que es una sesión reprogramada",
+            "venderSesionAnulada": "No se puede vender entradas de una sesión anulada",
+            "reservarSesionAnulada": "No se puede reservar entradas de una sesión anulada"
         },
         "button": {
             "ver": "Ver detalle",

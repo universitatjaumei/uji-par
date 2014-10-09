@@ -72,7 +72,7 @@ public class EntradasResource extends BaseResource
     public Response datosEntrada(@PathParam("id") Long sesionId) throws Exception
     {
         Sesion sesion = sesionesService.getSesion(sesionId);
-		if (sesion.getCanalInternet()) {
+		if (sesion.getCanalInternet() && (sesion.getAnulada() == null || sesion.getAnulada() == false)) {
 			currentRequest.getSession().setAttribute(EntradasService.ID_SESION, sesionId);
 
 			if (Utils.isAsientosNumerados(sesion.getEvento()))
