@@ -29,7 +29,7 @@
       			<dependency>
       				<groupId>es.uji.apps.par</groupId>
       				<artifactId>uji-par-reports</artifactId>
-      				<version>0.0.1-SNAPSHOT</version>
+      				<version>0.0.12-SNAPSHOT</version>
 				</dependency>
 
     <!-- jUnit -->
