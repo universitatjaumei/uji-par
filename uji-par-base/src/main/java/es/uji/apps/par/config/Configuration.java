@@ -265,12 +265,10 @@ public class Configuration
     
     public static int getMargenVentaTaquillaMinutos()
     {
-        try
-        {
+        try {
             return Integer.parseInt(getProperty(MARGEN_VENTA_TAQUILLA_MINUTOS));
         }
-        catch (NumberFormatException e)
-        {
+        catch (NumberFormatException e) {
             return 0;
         }
     }
