@@ -1,6 +1,11 @@
 package es.uji.apps.par.ficheros.registros;
 
 import es.uji.apps.par.exceptions.IncidenciaNotFoundException;
+import es.uji.apps.par.i18n.ResourceProperties;
+import es.uji.apps.par.utils.ReportUtils;
+
+import java.util.Calendar;
+import java.util.Locale;
 
 public enum TipoIncidencia
 {
@@ -99,5 +104,9 @@ public enum TipoIncidencia
 			nuevaIncidencia = REPROGRAMACIO;
 
 		return TipoIncidencia.tipoIncidenciaToInt(nuevaIncidencia);
+	}
+
+	public static String getNombreTraducido(Integer incidenciaId, Locale locale) {
+		return ResourceProperties.getProperty(locale, "tipoIncidencia." + TipoIncidencia.intToTipoIncidencia(incidenciaId).getCodigo());
 	}
 }

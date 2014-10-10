@@ -439,4 +439,11 @@ public class ReportService {
 		service.getPdfEventos("2013-10-01", "2013-10-30", new FileOutputStream(
 				"/tmp/informe.pdf"), new Locale(Configuration.getIdiomaPorDefecto()));
 	}
+
+	public void getPdfPorFechas(String fechaInicio, String fechaFin, String tipo, ByteArrayOutputStream ostream, Locale locale) throws ReportSerializationException, ParseException {
+		informeReport = EntradaReportFactory.newInstanceInformeReport(tipo);
+		InformeInterface informe = informeReport.create(locale);
+		informe.genera(fechaInicio, fechaFin);
+		informe.serialize(ostream);
+	}
 }

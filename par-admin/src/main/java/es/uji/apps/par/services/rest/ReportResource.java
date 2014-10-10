@@ -130,6 +130,20 @@ public class ReportResource extends BaseResource {
                 .type("application/pdf").build();
     }
 
+	@POST
+	@Path("{fechaInicio}/{fechaFin}/{tipo}")
+	@Produces("application/pdf")
+	public Response generatePdfPorFechas(@PathParam("fechaInicio") String fechaInicio, @PathParam("fechaFin") String fechaFin,
+			@PathParam("tipo") String tipo) throws TranscoderException, IOException,
+			ReportSerializationException, ParseException, SinIvaException {
+		ByteArrayOutputStream ostream = new ByteArrayOutputStream();
+		String fileName = tipo + "_" + fechaInicio + "-" + fechaFin + ".pdf";
+		reportService.getPdfPorFechas(fechaInicio, fechaFin, tipo, ostream, getLocale());
+
+		return Response.ok(ostream.toByteArray())
+				.header("Content-Disposition", "attachment; filename =\"" + fileName + "\"").type("application/pdf").build();
+	}
+
     @POST
     @Path("taquilla/{fechaInicio}/{fechaFin}/efectivo/pdf")
     @Produces("application/pdf")

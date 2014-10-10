@@ -537,4 +537,9 @@ public class InformeEventosReport extends Report implements InformeInterface
         // TODO Auto-generated method stub
 
     }
+
+	@Override
+	public void genera(String fechaInicio, String fechaFin) {
+
+	}
 }

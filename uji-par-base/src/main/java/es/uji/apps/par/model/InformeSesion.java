@@ -12,6 +12,7 @@ public class InformeSesion {
 	private Integer vendidas;
 	private Integer anuladas;
 	private BigDecimal total;
+	private Integer tipoIncidenciaId;
 	private List<InformeModelReport> compras;
 
 	public Sala getSala() {
@@ -68,5 +69,13 @@ public class InformeSesion {
 
 	public void setCompras(List<InformeModelReport> compras) {
 		this.compras = compras;
+	}
+
+	public Integer getTipoIncidenciaId() {
+		return tipoIncidenciaId;
+	}
+
+	public void setTipoIncidenciaId(Integer tipoIncidenciaId) {
+		this.tipoIncidenciaId = tipoIncidenciaId;
 	}
 }

@@ -303,7 +303,12 @@ public class InformeTaquillaReport extends Report implements InformeInterface
 
     }
 
-    public void genera(String cargo, String firmante, List<InformeSesion> informesSesion, Cine cine, boolean printSesion) throws SinIvaException {
+	@Override
+	public void genera(String fechaInicio, String fechaFin) {
+
+	}
+
+	public void genera(String cargo, String firmante, List<InformeSesion> informesSesion, Cine cine, boolean printSesion) throws SinIvaException {
 		// TODO Auto-generated method stub
 		
 	}

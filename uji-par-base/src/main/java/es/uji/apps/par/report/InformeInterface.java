@@ -2,6 +2,7 @@ package es.uji.apps.par.report;
 
 import java.io.OutputStream;
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Locale;
 
@@ -20,4 +21,5 @@ public interface InformeInterface {
 	public void genera(String cargo, String firmante, List<InformeSesion> informesSesion, Cine cine, boolean printSesion) throws SinIvaException;
 	public void genera(String inicio, String fin, List<InformeModelReport> compras) throws SinIvaException;
     public void genera(long sesionId) throws SinIvaException;
+	public void genera(String fechaInicio, String fechaFin) throws ParseException;
 }

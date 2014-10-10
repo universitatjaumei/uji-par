@@ -442,7 +442,12 @@ public class InformeSesionReport extends Report implements InformeInterface
 
     }
 
-    public void genera(String inicio, String fin,
+	@Override
+	public void genera(String fechaInicio, String fechaFin) {
+
+	}
+
+	public void genera(String inicio, String fin,
 			List<InformeModelReport> compras, String cargoInformeEfectivo,
 			String firmanteInformeEfectivo) throws SinIvaException {
 		// TODO Auto-generated method stub
