@@ -177,12 +177,10 @@ public class Configuration
     	
     	List<String> modes = Arrays.asList(getProperty(PAY_MODES).split(PROPERTIES_SEPARATOR));
     	List<String> payModes = new ArrayList<String>();
-    	for (String mode : modes)
-    	{
-    		for (String payModeJs : payModesJs)
-    		{
-    			if (payModeJs.contains(mode))
-    			{
+
+		for (String mode : modes) {
+    		for (String payModeJs : payModesJs) {
+    			if (payModeJs.contains(mode)) {
     				payModes.add(payModeJs);
     				payModesJs.remove(payModeJs);
     				break;
