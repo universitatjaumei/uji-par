@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mysema.query.Tuple;
 import es.uji.apps.par.model.EventoMultisesion;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -163,17 +164,20 @@ public class EventosService
 		return listPeliculas;
 	}
 
-    private List<EventoMultisesion> getEventosMultisesion(List<Object[]> list) {
+    private List<EventoMultisesion> getEventosMultisesion(List<Tuple> list) {
         List<EventoMultisesion> listPeliculas = new ArrayList<>();
-        for (Object[] pelicula: list) {
-            EventoMultisesion evento = EventoMultisesion.objetToEventoMultisesion(pelicula);
+        for (Tuple pelicula: list) {
+			EventoDTO eventoDTO = pelicula.get(0, EventoDTO.class);
+			String versionLinguistica = pelicula.get(1, String.class);
+            EventoMultisesion evento = EventoMultisesion.tupleToEventoMultisesion(eventoDTO.getId(), eventoDTO.getTituloEs(),
+					eventoDTO.getTituloVa(), versionLinguistica);
             listPeliculas.add(evento);
         }
         return listPeliculas;
     }
 
 	public List<EventoMultisesion> getPeliculas(long eventoId) {
-		List<Object[]> listPeliculasDTO = eventosDAO.getPeliculasMultisesion(eventoId);
+		List<Tuple> listPeliculasDTO = eventosDAO.getPeliculasMultisesion(eventoId);
 		return getEventosMultisesion(listPeliculasDTO);
 	}
 }

@@ -4,6 +4,7 @@ import es.uji.apps.par.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.persistence.Tuple;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
@@ -60,12 +61,13 @@ public class EventoMultisesion
         this.tituloVa = tituloVa;
     }
 
-    public static EventoMultisesion objetToEventoMultisesion(Object[] pelicula) {
+    public static EventoMultisesion tupleToEventoMultisesion(long id, String tituloEs, String tituloVa,
+			String versionLinguistica) {
         EventoMultisesion eventoMultisesion = new EventoMultisesion();
-        eventoMultisesion.setId(Utils.safeObjectToInt(pelicula[0]));
-        eventoMultisesion.setTituloEs(Utils.safeObjectToString(pelicula[1]));
-        eventoMultisesion.setTituloVa(Utils.safeObjectToString(pelicula[2]));
-        eventoMultisesion.setVersionLinguistica(Utils.safeObjectToString(pelicula[3]));
+        eventoMultisesion.setId(id);
+        eventoMultisesion.setTituloEs(tituloEs);
+        eventoMultisesion.setTituloVa(tituloVa);
+        eventoMultisesion.setVersionLinguistica(versionLinguistica);
 
         return eventoMultisesion;
     }

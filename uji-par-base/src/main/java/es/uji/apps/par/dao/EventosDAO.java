@@ -13,8 +13,10 @@ import java.util.Set;
 
 import javax.persistence.Query;
 
+import com.mysema.query.Tuple;
 import com.mysema.query.jpa.JPASubQuery;
 import com.mysema.query.jpa.sql.JPASQLQuery;
+import com.mysema.query.types.QTuple;
 import es.uji.apps.par.db.*;
 import es.uji.apps.par.model.EventoMultisesion;
 import org.springframework.stereotype.Repository;
@@ -503,13 +505,18 @@ public class EventosDAO extends BaseDAO
     }
 
     @Transactional
-    public List<Object[]> getPeliculasMultisesion(long eventoId) {
-        String sql = "select e.id, e.titulo_es, e.titulo_va, em.ver_ling " +
+    public List<Tuple> getPeliculasMultisesion(long eventoId) {
+		JPAQuery query = new JPAQuery((entityManager));
+		QEventoDTO qEventoDTO1 = new QEventoDTO("qEventoDTO1");
+		return query.from(qEventoMultisesionDTO).leftJoin(qEventoMultisesionDTO.parEventoHijo,
+				qEventoDTO1).where(qEventoMultisesionDTO.parEvento.id.eq
+				(eventoId)).list(new QTuple(qEventoDTO1, qEventoMultisesionDTO.versionLinguistica));
+        /*String sql = "select e.id, e.titulo_es, e.titulo_va, em.ver_ling " +
 				"from par_eventos_multisesion em left join par_eventos e on e.id = em.evento_hijo_id where em.evento_id = " +
 				eventoId;
 
         Query query = entityManager.createNativeQuery(sql);
 
-        return query.getResultList();
+        return query.getResultList();*/
     }
 }
