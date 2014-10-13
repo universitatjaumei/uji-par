@@ -132,14 +132,14 @@ public class ReportService {
 		informe.setEvento(Utils.safeObjectToString(fila[0]));
 		informe.setSesion(DateUtils.dateToSpanishStringWithHour(
 				Utils.objectToDate(fila[1])).toString());
-		String tipoEntrada = Utils.safeObjectToString(fila[9]);
+		String tipoEntrada = Utils.safeObjectToString(fila[8]);
 		informe.setTipoEntrada(tipoEntrada);
 		informe.setNumeroEntradas(Utils.safeObjectBigDecimalToInt(dbHelper
 				.castBigDecimal(fila[3])));
 		informe.setTotal(dbHelper.castBigDecimal(fila[4]));
 		informe.setIva(dbHelper.castBigDecimal(fila[6]));
 		informe.setFechaCompra(DateUtils.dateToSpanishString(Utils
-				.objectToDate(fila[8])));
+				.objectToDate(fila[7])));
 
 		return informe;
 	}
