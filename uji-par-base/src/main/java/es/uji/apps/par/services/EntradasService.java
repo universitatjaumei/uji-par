@@ -7,6 +7,10 @@ import java.io.OutputStream;
 import java.util.List;
 import java.util.Locale;
 
+import com.sun.jersey.api.core.InjectParam;
+import es.uji.apps.par.db.EventoMultisesionDTO;
+import es.uji.apps.par.model.Evento;
+import es.uji.apps.par.model.EventoMultisesion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +40,10 @@ public class EntradasService
     public static final String UUID_COMPRA = "uuidCompra";
     public static final String ID_SESION = "idSesion";
 	private static final Logger log = LoggerFactory.getLogger(EntradasService.class);
-    
+
+    @Autowired
+    private EventosService eventosService;
+
     @Autowired
     private ComprasDAO comprasDAO;
     
@@ -73,6 +80,14 @@ public class EntradasService
     	List<TarifaDTO> tarifas = tarifasDAO.getAll("", 0, 100);
 
         String tituloVa = compra.getParSesion().getParEvento().getTituloVa();
+        List<EventoMultisesion> peliculas = eventosService.getPeliculas(compra.getParSesion().getParEvento().getId());
+        if (peliculas.size() > 0) {
+            tituloVa += ": ";
+            for (EventoMultisesion pelicula : peliculas) {
+                tituloVa += pelicula.getTituloVa() + ", ";
+            }
+            tituloVa = tituloVa.substring(0, tituloVa.length() - 2);
+        }
         String fecha = DateUtils.dateToSpanishString(compra.getParSesion().getFechaCelebracion());
         String hora = DateUtils.dateToHourString(compra.getParSesion().getFechaCelebracion());
         String horaApertura = compra.getParSesion().getHoraApertura();
@@ -128,6 +143,14 @@ public class EntradasService
 			throw new NullPointerException();
 
         String tituloCa = compra.getParSesion().getParEvento().getTituloVa();
+        List<EventoMultisesion> peliculas = eventosService.getPeliculas(compra.getParSesion().getParEvento().getId());
+        if (peliculas.size() > 0) {
+            tituloCa += ": ";
+            for (EventoMultisesion pelicula : peliculas) {
+                tituloCa += pelicula.getTituloVa() + ", ";
+            }
+            tituloCa = tituloCa.substring(0, tituloCa.length() - 2);
+        }
         String fecha = DateUtils.dateToSpanishString(compra.getParSesion().getFechaCelebracion());
         String hora = DateUtils.dateToHourString(compra.getParSesion().getFechaCelebracion());
         String horaApertura = compra.getParSesion().getHoraApertura();
