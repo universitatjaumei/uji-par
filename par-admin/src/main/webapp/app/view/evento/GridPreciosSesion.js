@@ -27,6 +27,9 @@ Ext.define('Paranimf.view.evento.GridPreciosSesion', {
         dataIndex: 'parLocalizacione.nombreVa',
         text: UI.i18n.field.localizacion,
         flex: 2,
+        renderer: function(value, metaData, record, row, col, store, gridView){
+          return value + " (" + record.data.totalEntradas + ")";
+        }
       }, {
         dataIndex: 'parTarifa.nombre',
         text: UI.i18n.field.tarifa,

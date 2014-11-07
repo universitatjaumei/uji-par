@@ -30,6 +30,7 @@ Ext.define('Paranimf.view.plantillaprecios.FormPrecios', {
     name: 'localizacion',
     xtype: 'combobox',
     forceSelection: false,
+    tpl: '<tpl for="."><div class="x-boundlist-item" >{nombreVa} ({totalEntradas})</div></tpl>',
     displayField: 'nombreVa',
     valueField: 'id',
     store: 'Localizaciones',
