@@ -300,4 +300,16 @@ public class ButacasDAO extends BaseDAO
 		else
 			return true;
 	}
+
+    @Transactional
+    public void asignarIdEntrada(Long idCompra) {
+        QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
+
+        JPAQuery query = new JPAQuery(entityManager);
+        Integer maxIdEntrada = query.from(qButacaDTO).uniqueResult(qButacaDTO.idEntrada.max().coalesce(0));
+
+        JPAUpdateClause updateButacas = new JPAUpdateClause(entityManager, qButacaDTO);
+        updateButacas.set(qButacaDTO.idEntrada, maxIdEntrada + 1).
+                where(qButacaDTO.parCompra.id.eq(idCompra)).execute();
+    }
 }

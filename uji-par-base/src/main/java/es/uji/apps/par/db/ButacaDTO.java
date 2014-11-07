@@ -63,6 +63,9 @@ public class ButacaDTO implements Serializable{
     
     @Column(name = "PRESENTADA")
     private Date presentada;
+
+    @Column(name = "ID_ENTRADA")
+    private Integer idEntrada;
     
 	public ButacaDTO() {
 	}
@@ -159,5 +162,13 @@ public class ButacaDTO implements Serializable{
 
     public void setPresentada(Date presentada) {
         this.presentada = presentada;
+    }
+
+    public Integer getIdEntrada() {
+        return idEntrada;
+    }
+
+    public void setIdEntrada(Integer idEntrada) {
+        this.idEntrada = idEntrada;
     }
 }

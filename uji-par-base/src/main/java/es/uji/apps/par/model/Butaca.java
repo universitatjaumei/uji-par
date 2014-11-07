@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.db.ButacaDTO;
 
 @XmlRootElement
@@ -77,8 +78,13 @@ public class Butaca
         if (butacaDTO.getAnulada() != null)
         	anulada = butacaDTO.getAnulada();
         
-        if (butacaDTO.getParCompra() != null)
-            uuid = butacaDTO.getParCompra().getUuid() + "-" + butacaDTO.getId();
+        if (butacaDTO.getParCompra() != null) {
+            if (Configuration.isIdEntrada()) {
+                uuid = butacaDTO.getParCompra().getUuid() + "-" + butacaDTO.getIdEntrada();
+            } else {
+                uuid = butacaDTO.getParCompra().getUuid() + "-" + butacaDTO.getId();
+            }
+        }
     }
 
     public static List<Butaca> parseaJSON(String jsonButacas)

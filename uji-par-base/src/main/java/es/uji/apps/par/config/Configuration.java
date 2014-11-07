@@ -59,6 +59,7 @@ public class Configuration
 	private static final String INFORME_SESION_REPORT = "uji.reports.informeSesion.class";	
 	private static final String BARCODE_WIDTH_HEIGHT = "uji.reports.barcodeWidthHeight";
 	private static final String LOGO_REPORT = "uji.reports.logo";
+    private static final String ENTRADA_ID = "uji.reports.entradaId";
 	private static final String API_KEY = "api.key";
 	private static final String HTML_TITLE = "uji.par.htmltitle";
 	private static final String URL_PUBLIC_SIN_HTTPS = "uji.par.urlPublicSinHTTPS";
@@ -166,6 +167,17 @@ public class Configuration
         }
         else {
             return "ca";
+        }
+    }
+
+    public static boolean isIdEntrada()
+    {
+        String entradaId = getNoObligatoryProperty(ENTRADA_ID);
+        if (entradaId != null && entradaId.length() > 0 && !entradaId.equals("false")) {
+            return true;
+        }
+        else {
+            return false;
         }
     }
     

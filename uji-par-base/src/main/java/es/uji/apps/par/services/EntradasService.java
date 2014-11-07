@@ -92,7 +92,12 @@ public class EntradasService
 	        	entradaModelReport.setNumero(butaca.getNumero());
 	            entradaModelReport.setZona(butaca.getParLocalizacion().getNombreVa());
 	            entradaModelReport.setTotal(ReportUtils.formatEuros(butaca.getPrecio()));
-	            entradaModelReport.setBarcode(compra.getUuid() + "-" + butaca.getId());
+                if (Configuration.isIdEntrada()) {
+                    entradaModelReport.setBarcode(compra.getUuid() + "-" + butaca.getIdEntrada());
+                }
+                else {
+                    entradaModelReport.setBarcode(compra.getUuid() + "-" + butaca.getId());
+                }
 	            entradaModelReport.setTipo(butaca.getTipo());
 	            entradaModelReport.setIniciales(butaca.getParLocalizacion().getIniciales());
 	            
@@ -144,7 +149,12 @@ public class EntradasService
 	        	entradaModelReport.setNumero(butaca.getNumero());
 	        	entradaModelReport.setZona(butaca.getParLocalizacion().getNombreVa());
 	        	entradaModelReport.setTotal(ReportUtils.formatEuros(butaca.getPrecio()));
-	        	entradaModelReport.setBarcode(compra.getUuid() + "-" + butaca.getId());
+                if (Configuration.isIdEntrada()) {
+                    entradaModelReport.setBarcode(compra.getUuid() + "-" + butaca.getIdEntrada());
+                }
+                else {
+                    entradaModelReport.setBarcode(compra.getUuid() + "-" + butaca.getId());
+                }
 	        	entradaModelReport.setTipo(tarifaCompra.getNombre());
 	        	entradaModelReport.setTarifaDefecto(tarifaCompra.getDefecto());
 	            entrada.generaPaginaButaca(entradaModelReport, Configuration.getUrlPublic());
