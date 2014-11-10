@@ -64,7 +64,7 @@ UI =
             "confirmVentaDegradada": "Activar la venda per a events acabats es recomana únicament per a introduir vendes que no es van poder fer en el moment en el que estava la taquilla oberta. Està segur de continuar?",
             "confirmReprogramacio": "Hi han sessions ja definides per a aquesta hora en aquesta sala. Vols reprogramar la sessió i mantindre aquesta com la vàlida?",
             "compraAnuladaOk": "Compra anul·lada correctament",
-            "recordatorioDevolverEntradas": "Recorde que ha de retornar totes les entrades de la sessió que s'anul·la"
+            "recordatorioDevolverEntradas": "Hi han entrades venudes: recorde que primer ha de retornar totes les entrades de la sessió que es vol anul·lar"
         },
         "storeWeekDay": {
             "wed": "Dimecres",

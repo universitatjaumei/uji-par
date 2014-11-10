@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import es.uji.apps.par.exceptions.IncidenciaNotFoundException;
+import es.uji.apps.par.utils.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -458,7 +459,7 @@ public class SesionesService
 		return _getTarifasConPrecioSinPlantilla(sesionId, false);
 	}
 
-    public long getNumeroSesionesMismaHoraYSala(Long sesionId, long salaId, Date fechaCelebracion) {
+    public Pair getNumeroSesionesMismaHoraYSala(Long sesionId, long salaId, Date fechaCelebracion) {
         return sesionDAO.getCantidadSesionesMismaFechaYLocalizacion(DateUtils.dateToTimestampSafe(fechaCelebracion),
                 salaId, sesionId);
     }

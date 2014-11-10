@@ -64,7 +64,7 @@ UI =
             "confirmVentaDegradada": "Activar la venta para eventos acabados se recomienda únicamente para introducir ventas que no se pudieron hacer en el momento en el que estaba la taquilla abierta. ¿Està seguro de continuar?",
             "confirmReprogramacio": "Hay sesiones ya definidas para esta hora en esta sala. ¿Quieres reprogramar la sesión y mantener esta como la válida?",
             "compraAnuladaOk": "Compra anulada correctamente",
-            "recordatorioDevolverEntradas": "Recuerde que hay que devolver todas las entradas de la sesión que se anula"
+            "recordatorioDevolverEntradas": "Hay entradas vendidas: recuerde que primero tiene que devolver todas las entradas de la sesión que se quiere anular"
         },
         "storeWeekDay": {
             "wed": "Miércoles",

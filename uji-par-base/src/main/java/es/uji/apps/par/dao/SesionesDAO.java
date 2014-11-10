@@ -1,18 +1,5 @@
 package es.uji.apps.par.dao;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import es.uji.apps.par.db.*;
-import es.uji.apps.par.exceptions.EdicionSesionAnuladaException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.mysema.query.BooleanBuilder;
 import com.mysema.query.Tuple;
 import com.mysema.query.jpa.JPASubQuery;
@@ -20,7 +7,8 @@ import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.jpa.impl.JPAUpdateClause;
 import com.mysema.query.types.expr.BooleanExpression;
-
+import es.uji.apps.par.db.*;
+import es.uji.apps.par.exceptions.EdicionSesionAnuladaException;
 import es.uji.apps.par.exceptions.IncidenciaNotFoundException;
 import es.uji.apps.par.exceptions.SesionSinFormatoIdiomaIcaaException;
 import es.uji.apps.par.ficheros.registros.RegistroPelicula;
@@ -32,34 +20,41 @@ import es.uji.apps.par.model.Plantilla;
 import es.uji.apps.par.model.Sala;
 import es.uji.apps.par.model.Sesion;
 import es.uji.apps.par.utils.DateUtils;
+import es.uji.apps.par.utils.Pair;
 import es.uji.apps.par.utils.Utils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Repository
-public class SesionesDAO extends BaseDAO
-{
+public class SesionesDAO extends BaseDAO {
     private static SimpleDateFormat HOUR_FORMAT = new SimpleDateFormat("HHmm");
-    
+
     private QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
     private QPreciosSesionDTO qPreciosSesionDTO = QPreciosSesionDTO.preciosSesionDTO;
-    
+
     @Autowired
     private EventosDAO eventosDAO;
 
     @Transactional
-    public List<SesionDTO> getSesiones(long eventoId, String sortParameter, int start, int limit)
-    {
+    public List<SesionDTO> getSesiones(long eventoId, String sortParameter, int start, int limit) {
         return getSesiones(eventoId, false, sortParameter, start, limit);
     }
 
     @Transactional
-    public List<SesionDTO> getSesionesActivas(long eventoId, String sortParameter, int start, int limit)
-    {
+    public List<SesionDTO> getSesionesActivas(long eventoId, String sortParameter, int start, int limit) {
         return getSesiones(eventoId, true, sortParameter, start, limit);
     }
 
     @Transactional
-    private List<SesionDTO> getSesiones(long eventoId, boolean activos, String sortParameter, int start, int limit)
-    {
+    private List<SesionDTO> getSesiones(long eventoId, boolean activos, String sortParameter, int start, int limit) {
         List<SesionDTO> sesion = new ArrayList<SesionDTO>();
 
         if (activos)
@@ -74,8 +69,7 @@ public class SesionesDAO extends BaseDAO
 
     @Transactional
     public List<Tuple> getSesionesConButacasVendidas(long eventoId, boolean activas, String sortParameter,
-            int start, int limit)
-    {
+                                                     int start, int limit) {
         QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
         QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
         QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
@@ -90,12 +84,12 @@ public class SesionesDAO extends BaseDAO
         JPASubQuery queryVendidas = new JPASubQuery();
         queryVendidas.from(qButacaDTO, qCompraDTO);
         queryVendidas.where(qSesionDTO.id.eq(qButacaDTO.parSesion.id).and(qButacaDTO.anulada.eq(false).or(qButacaDTO.anulada.isNull())).
-        		and(qButacaDTO.parCompra.id.eq(qCompraDTO.id).and(qCompraDTO.reserva.eq(false))));
-        
+                and(qButacaDTO.parCompra.id.eq(qCompraDTO.id).and(qCompraDTO.reserva.eq(false))));
+
         JPASubQuery queryReservadas = new JPASubQuery();
         queryReservadas.from(qButacaDTO, qCompraDTO);
         queryReservadas.where(qSesionDTO.id.eq(qButacaDTO.parSesion.id).and(qButacaDTO.anulada.eq(false).or(qButacaDTO.anulada.isNull())).
-        		and(qButacaDTO.parCompra.id.eq(qCompraDTO.id).and(qCompraDTO.reserva.eq(true))));
+                and(qButacaDTO.parCompra.id.eq(qCompraDTO.id).and(qCompraDTO.reserva.eq(true))));
 
         List<Tuple> sesiones = query.orderBy(getSort(qSesionDTO, sortParameter))/*.offset(start).limit(limit)*/
                 .list(qSesionDTO, queryVendidas.list(qButacaDTO).count(), queryReservadas.list(qButacaDTO).count());
@@ -104,8 +98,7 @@ public class SesionesDAO extends BaseDAO
     }
 
     @Transactional
-    private JPAQuery getQuerySesionesActivas(long eventoId)
-    {
+    private JPAQuery getQuerySesionesActivas(long eventoId) {
         QSalaDTO qSalaDTO = QSalaDTO.salaDTO;
 
         JPAQuery query = new JPAQuery(entityManager);
@@ -114,72 +107,68 @@ public class SesionesDAO extends BaseDAO
 
         return query.from(qSesionDTO).leftJoin(qSesionDTO.parSala, qSalaDTO).fetch()
                 .where(qSesionDTO.parEvento.id.eq(eventoId).and(qSesionDTO.fechaCelebracion.after(now)).and(qSesionDTO.anulada
-						.isNull().or(qSesionDTO.anulada.eq(false))));
+                        .isNull().or(qSesionDTO.anulada.eq(false))));
     }
 
     @Transactional
-    private JPAQuery getQuerySesiones(long eventoId)
-    {
-    	QSalaDTO qSalaDTO = QSalaDTO.salaDTO;
+    private JPAQuery getQuerySesiones(long eventoId) {
+        QSalaDTO qSalaDTO = QSalaDTO.salaDTO;
         JPAQuery query = new JPAQuery(entityManager);
         return query.from(qSesionDTO).leftJoin(qSesionDTO.parSala, qSalaDTO).fetch().
-        		where(qSesionDTO.parEvento.id.eq(eventoId));
+                where(qSesionDTO.parEvento.id.eq(eventoId));
     }
 
     @Transactional
-    public long removeSesion(long id)
-    {
+    public long removeSesion(long id) {
         JPADeleteClause delete = new JPADeleteClause(entityManager, qSesionDTO);
         return delete.where(qSesionDTO.id.eq(id)).execute();
     }
 
     @Transactional
-    public SesionDTO persistSesion(SesionDTO sesionDTO)
-    {
+    public SesionDTO persistSesion(SesionDTO sesionDTO) {
         entityManager.persist(sesionDTO);
         return sesionDTO;
     }
 
     @Transactional
-    public Sesion addSesion(Sesion sesion)
-    {
+    public Sesion addSesion(Sesion sesion) {
         SesionDTO sesionDTO = Sesion.SesionToSesionDTO(sesion);
         persistSesion(sesionDTO);
         setIncidenciaSesion(sesionDTO.getFechaCelebracion(), sesionDTO.getParSala().getId());
-		anulaSesionesConLaMismaHoraYSala(sesionDTO.getFechaCelebracion(), sesionDTO.getParSala().getId(), sesionDTO.getId());
+        anulaSesionesConLaMismaHoraYSala(sesionDTO.getFechaCelebracion(), sesionDTO.getParSala().getId(), sesionDTO.getId());
         sesion.setId(sesionDTO.getId());
-		//TODO -> Esta sesion.getVersionLingustica sera erronea cuando sea multisesion, mejor hacer un insert en la tabla hija
-		// por cada pelicula de la multisesion (evento.getFormato, evento.getId, evento.getPeliculasMultisesion()
-		// .getversionLingusitca())
+        //TODO -> Esta sesion.getVersionLingustica sera erronea cuando sea multisesion, mejor hacer un insert en la tabla hija
+        // por cada pelicula de la multisesion (evento.getFormato, evento.getId, evento.getPeliculasMultisesion()
+        // .getversionLingusitca())
         ////addSesionFormatoIdiomaIfNeeded(sesion.getEvento().getId(), sesion.getEvento().getFormato(),	sesion.getVersionLinguistica());
         return sesion;
     }
 
-	@Transactional
-	private void anulaSesionesConLaMismaHoraYSala(Timestamp fechaCelebracion, long salaId, long sesionId) {
-		List<SesionDTO> sesionesMismaHoraYSala = getSesionesMismaFechaYLocalizacion(fechaCelebracion, salaId);
-		for (SesionDTO sesionMismaHoraYSala: sesionesMismaHoraYSala) {
-			if (sonDistintaSesion(sesionMismaHoraYSala.getId(), sesionId) && !isSesionAnulada(sesionMismaHoraYSala)) {
-				sesionMismaHoraYSala.setCanalInternet(false);
-				sesionMismaHoraYSala.setAnulada(true);
-				entityManager.merge(sesionMismaHoraYSala);
-			}
-		}
-	}
+    @Transactional
+    private void anulaSesionesConLaMismaHoraYSala(Timestamp fechaCelebracion, long salaId, long sesionId) {
+        List<SesionDTO> sesionesMismaHoraYSala = getSesionesMismaFechaYLocalizacion(fechaCelebracion, salaId);
+        for (SesionDTO sesionMismaHoraYSala : sesionesMismaHoraYSala) {
+            if (sonDistintaSesion(sesionMismaHoraYSala.getId(), sesionId) && !isSesionAnulada(sesionMismaHoraYSala)) {
+                sesionMismaHoraYSala.setCanalInternet(false);
+                sesionMismaHoraYSala.setAnulada(true);
+                entityManager.merge(sesionMismaHoraYSala);
+            }
+        }
+    }
 
-	private boolean isSesionAnulada(SesionDTO sesionDTO) {
-		if (sesionDTO.getCanalInternet() != null && !sesionDTO.getCanalInternet() &&
-				sesionDTO.getAnulada() != null && sesionDTO.getAnulada())
-			return true;
-		return false;
-	}
+    private boolean isSesionAnulada(SesionDTO sesionDTO) {
+        if (sesionDTO.getCanalInternet() != null && !sesionDTO.getCanalInternet() &&
+                sesionDTO.getAnulada() != null && sesionDTO.getAnulada())
+            return true;
+        return false;
+    }
 
-	private boolean sonDistintaSesion(long sesionId1, long sesionId2) {
-		return (sesionId1 != sesionId2);
-	}
+    private boolean sonDistintaSesion(long sesionId1, long sesionId2) {
+        return (sesionId1 != sesionId2);
+    }
     
     /*@Transactional
-	//TODO ajustar a que le puedan entrar n versiones linguisticas
+    //TODO ajustar a que le puedan entrar n versiones linguisticas
     private void addSesionFormatoIdiomaIfNeeded(long eventoId, String formato, String versionLinguistica) {
 		EventoDTO eventoDTO = eventosDAO.getEventoById(eventoId);
         if (eventoDTO.getParTiposEvento().getExportarICAA()) {
@@ -193,22 +182,22 @@ public class SesionesDAO extends BaseDAO
         }
 	}*/
 
-	//TODO - aparentemente esta mal, ya que deberia ser con sesion y no con evento
+    //TODO - aparentemente esta mal, ya que deberia ser con sesion y no con evento
     @Transactional
-	private void addSesionFormatoIdiomaICAA(String formato,	String versionLinguistica, long eventoId) {
-		SesionFormatoIdiomaICAADTO sesionFormatoIdiomaICAA = new SesionFormatoIdiomaICAADTO();
-		sesionFormatoIdiomaICAA.setFormato(formato);
-		sesionFormatoIdiomaICAA.setVersionLinguistica(versionLinguistica);
-		sesionFormatoIdiomaICAA.setParEvento(new EventoDTO(eventoId));
-		entityManager.persist(sesionFormatoIdiomaICAA);
-	}
+    private void addSesionFormatoIdiomaICAA(String formato, String versionLinguistica, long eventoId) {
+        SesionFormatoIdiomaICAADTO sesionFormatoIdiomaICAA = new SesionFormatoIdiomaICAADTO();
+        sesionFormatoIdiomaICAA.setFormato(formato);
+        sesionFormatoIdiomaICAA.setVersionLinguistica(versionLinguistica);
+        sesionFormatoIdiomaICAA.setParEvento(new EventoDTO(eventoId));
+        entityManager.persist(sesionFormatoIdiomaICAA);
+    }
 
-    @Transactional(rollbackForClassName={"EdicionSesionAnuladaException"})
+    @Transactional(rollbackForClassName = {"EdicionSesionAnuladaException"})
     public void updateSesion(Sesion sesion) {
-		SesionDTO sesionDTO = getSesion(sesion.getId());
+        SesionDTO sesionDTO = getSesion(sesion.getId());
 
-		if (isSesionAnulada(sesionDTO))
-			throw new EdicionSesionAnuladaException();
+        if (isSesionAnulada(sesionDTO))
+            throw new EdicionSesionAnuladaException();
 
         Timestamp fechaCelebracion = DateUtils.dateToTimestampSafe(DateUtils.addTimeToDate(sesion.getFechaCelebracion
                 (), sesion.getHoraCelebracion()));
@@ -220,7 +209,7 @@ public class SesionesDAO extends BaseDAO
 
         if (sesion.getFechaInicioVentaOnline() != null)
             update.set(qSesionDTO.fechaInicioVentaOnline, DateUtils.dateToTimestampSafe(DateUtils.addTimeToDate(sesion
-                .getFechaInicioVentaOnline(), sesion.getHoraInicioVentaOnline())));
+                    .getFechaInicioVentaOnline(), sesion.getHoraInicioVentaOnline())));
         else
             update.setNull(qSesionDTO.fechaInicioVentaOnline);
 
@@ -236,28 +225,28 @@ public class SesionesDAO extends BaseDAO
                         Plantilla.plantillaPreciosToPlantillaPreciosDTO(sesion.getPlantillaPrecios()))
                 .set(qSesionDTO.nombre, sesion.getNombre())
                 .set(qSesionDTO.versionLinguistica, sesion.getVersionLinguistica())
-                 .set(qSesionDTO.rssId, sesion.getRssId())
+                .set(qSesionDTO.rssId, sesion.getRssId())
                 .set(qSesionDTO.parSala, Sala.salaToSalaDTO(sesion.getSala()))
                 .where(qSesionDTO.id.eq(sesion.getId())).execute();
-		//TODO -> Esta sesion.getVersionLingustica sera erronea cuando sea multisesion, mejor hacer un insert en la tabla hija
-		// por cada pelicula de la multisesion (evento.getFormato, evento.getId, evento.getPeliculasMultisesion()
-		// .getversionLingusitca())
+        //TODO -> Esta sesion.getVersionLingustica sera erronea cuando sea multisesion, mejor hacer un insert en la tabla hija
+        // por cada pelicula de la multisesion (evento.getFormato, evento.getId, evento.getPeliculasMultisesion()
+        // .getversionLingusitca())
         ////addSesionFormatoIdiomaIfNeeded(sesion.getEvento().getId(), sesion.getEvento().getFormato(),	sesion.getVersionLinguistica());
         setIncidenciaSesion(fechaCelebracion, sesion.getSala().getId());
-		anulaSesionesConLaMismaHoraYSala(fechaCelebracion, sesion.getSala().getId(), sesion.getId());
+        anulaSesionesConLaMismaHoraYSala(fechaCelebracion, sesion.getSala().getId(), sesion.getId());
     }
 
     @Transactional
     private void setIncidenciaSesion(Timestamp fechaCelebracion, Long salaId) {
         List<SesionDTO> sesionesMismaHoraYSala = getSesionesMismaFechaYLocalizacion(fechaCelebracion, salaId);
 
-		for (SesionDTO sesionMismaHoraYSalaIncluidaLaPropia: sesionesMismaHoraYSala) {
+        for (SesionDTO sesionMismaHoraYSalaIncluidaLaPropia : sesionesMismaHoraYSala) {
             long totalAnuladas = getButacasAnuladasTotal(sesionMismaHoraYSalaIncluidaLaPropia.getId());
             boolean hasVentasDegradadas = hasVentasDegradadas(sesionMismaHoraYSalaIncluidaLaPropia.getId(),
                     sesionMismaHoraYSalaIncluidaLaPropia.getFechaCelebracion());
             boolean isSesionReprogramada = isSesionReprogramada(sesionMismaHoraYSalaIncluidaLaPropia.getFechaCelebracion
-                 (), sesionMismaHoraYSalaIncluidaLaPropia.getParSala().getId(),
-                        sesionMismaHoraYSalaIncluidaLaPropia.getId());
+                            (), sesionMismaHoraYSalaIncluidaLaPropia.getParSala().getId(),
+                    sesionMismaHoraYSalaIncluidaLaPropia.getId());
             int tipoIncidenciaId = getTipoIncidenciaSesion(totalAnuladas, hasVentasDegradadas, isSesionReprogramada);
             setIncidencia(sesionMismaHoraYSalaIncluidaLaPropia.getId(), tipoIncidenciaId);
         }
@@ -275,173 +264,161 @@ public class SesionesDAO extends BaseDAO
 
     public boolean isSesionReprogramada(Timestamp fechaCelebracion, Long salaId, Long sesionId) {
         return (getCantidadSesionesMismaFechaYLocalizacion(fechaCelebracion,
-                salaId, sesionId) > 0);
+                salaId, sesionId).getFirst() > 0);
     }
 
     @Transactional
-    public void addPrecioSesion(PreciosSesionDTO precioSesionDTO)
-    {
+    public void addPrecioSesion(PreciosSesionDTO precioSesionDTO) {
         entityManager.persist(precioSesionDTO);
     }
 
     @Transactional
-    public void deleteExistingPreciosSesion(long sesionId)
-    {
-   		JPADeleteClause delete = new JPADeleteClause(entityManager, qPreciosSesionDTO);
-   		delete.where(qPreciosSesionDTO.parSesione.id.eq(sesionId)).execute();
+    public void deleteExistingPreciosSesion(long sesionId) {
+        JPADeleteClause delete = new JPADeleteClause(entityManager, qPreciosSesionDTO);
+        delete.where(qPreciosSesionDTO.parSesione.id.eq(sesionId)).execute();
     }
 
     @Transactional
-    public List<PreciosSesionDTO> getPreciosSesion(long sesionId, String sortParameter, int start, int limit)
-    {
+    public List<PreciosSesionDTO> getPreciosSesion(long sesionId, String sortParameter, int start, int limit) {
         return getQueryPreciosSesion(sesionId).orderBy(getSort(qPreciosSesionDTO, sortParameter)).offset(start)
                 .limit(limit).list(qPreciosSesionDTO);
     }
 
     @Transactional
-    private JPAQuery getQueryPreciosSesion(long sesionId)
-    {
-    	QTarifaDTO qTarifa = QTarifaDTO.tarifaDTO;
+    private JPAQuery getQueryPreciosSesion(long sesionId) {
+        QTarifaDTO qTarifa = QTarifaDTO.tarifaDTO;
         JPAQuery query = new JPAQuery(entityManager);
         return query.from(qPreciosSesionDTO, qTarifa).where(qPreciosSesionDTO.parSesione.id.eq(sesionId).
-        		and(qTarifa.id.eq(qPreciosSesionDTO.parTarifa.id)));
+                and(qTarifa.id.eq(qPreciosSesionDTO.parTarifa.id)));
     }
 
     @Transactional
-    public PreciosSesionDTO persistPreciosSesion(PreciosSesionDTO precioSesionDTO)
-    {
+    public PreciosSesionDTO persistPreciosSesion(PreciosSesionDTO precioSesionDTO) {
         entityManager.persist(precioSesionDTO);
         return precioSesionDTO;
     }
 
     @Transactional
-    public SesionDTO getSesion(long sesionId)
-    {
+    public SesionDTO getSesion(long sesionId) {
         JPAQuery query = new JPAQuery(entityManager);
         return query.from(qSesionDTO).
-        		leftJoin(qSesionDTO.parPreciosSesions, qPreciosSesionDTO).fetch()
+                leftJoin(qSesionDTO.parPreciosSesions, qPreciosSesionDTO).fetch()
                 .where(qSesionDTO.id.eq(sesionId)).uniqueResult(qSesionDTO);
     }
 
     @Transactional
-    public int getTotalSesionesActivas(Long eventoId)
-    {
+    public int getTotalSesionesActivas(Long eventoId) {
         return (int) getQuerySesionesActivas(eventoId).count();
     }
 
     @Transactional
-    public int getTotalSesiones(Long eventoId)
-    {
+    public int getTotalSesiones(Long eventoId) {
         return (int) getQuerySesiones(eventoId).count();
     }
 
     @Transactional
-    public int getTotalPreciosSesion(Long sesionId)
-    {
+    public int getTotalPreciosSesion(Long sesionId) {
         return (int) getQueryPreciosSesion(sesionId).count();
     }
 
-	@Transactional(rollbackForClassName={"IncidenciaNotFoundException"})
-	public int getNumeroSesionesValidasParaFicheroICAA(List<Sesion> sesionesAValidar) throws IncidenciaNotFoundException {
-		QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
-		QEventoMultisesionDTO eventoMultisesionDTO = new QEventoMultisesionDTO("eventoMultisesionDTO");
+    @Transactional(rollbackForClassName = {"IncidenciaNotFoundException"})
+    public int getNumeroSesionesValidasParaFicheroICAA(List<Sesion> sesionesAValidar) throws IncidenciaNotFoundException {
+        QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
+        QEventoMultisesionDTO eventoMultisesionDTO = new QEventoMultisesionDTO("eventoMultisesionDTO");
 
-		List<Long> idsSesionesAValidar = Sesion.getIdsSesiones(sesionesAValidar);
-		JPAQuery query = new JPAQuery(entityManager);
+        List<Long> idsSesionesAValidar = Sesion.getIdsSesiones(sesionesAValidar);
+        JPAQuery query = new JPAQuery(entityManager);
 
-		List<Tuple> resultado = query
-				.from(qSesionDTO)
-				.where(qSesionDTO.id.in(idsSesionesAValidar))
-				.distinct()
-				.list(qSesionDTO.id, qSesionDTO.incidenciaId);
+        List<Tuple> resultado = query
+                .from(qSesionDTO)
+                .where(qSesionDTO.id.in(idsSesionesAValidar))
+                .distinct()
+                .list(qSesionDTO.id, qSesionDTO.incidenciaId);
 
-		int numeroSesiones = 0;
-		for (Tuple row: resultado)
-		{
-			Integer idIncidencia = row.get(1, Integer.class);
-			if (!isIncidenciaCancelacionEvento(idIncidencia))
-				numeroSesiones++;
-		}
-		return numeroSesiones;
-	}
+        int numeroSesiones = 0;
+        for (Tuple row : resultado) {
+            Integer idIncidencia = row.get(1, Integer.class);
+            if (!isIncidenciaCancelacionEvento(idIncidencia))
+                numeroSesiones++;
+        }
+        return numeroSesiones;
+    }
 
-    @Transactional(rollbackForClassName={"IncidenciaNotFoundException"})
-    public List<RegistroSesion> getRegistrosSesiones(List<Sesion> sesiones) throws IncidenciaNotFoundException
-    {
+    @Transactional(rollbackForClassName = {"IncidenciaNotFoundException"})
+    public List<RegistroSesion> getRegistrosSesiones(List<Sesion> sesiones) throws IncidenciaNotFoundException {
         QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
         QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
         QSalaDTO qSalaDTO = QSalaDTO.salaDTO;
         QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
-		QEventoMultisesionDTO eventoMultisesionDTO = new QEventoMultisesionDTO("eventoMultisesionDTO");
+        QEventoMultisesionDTO eventoMultisesionDTO = new QEventoMultisesionDTO("eventoMultisesionDTO");
 
         List<Long> idsSesiones = Sesion.getIdsSesiones(sesiones);
         JPAQuery query = new JPAQuery(entityManager);
-        
+
         List<Tuple> resultado = query
-        	.from(qSesionDTO)
-        	.join(qSesionDTO.parSala, qSalaDTO)
-        	.leftJoin(qSesionDTO.parCompras, qCompraDTO).on(qCompraDTO.anulada.isNull().or(qCompraDTO.anulada.eq(false)))
-        	.leftJoin(qCompraDTO.parButacas, qButacaDTO).on(qButacaDTO.anulada.isNull().or(qButacaDTO.anulada.eq(false)))
-            .where(qSesionDTO.id.in(idsSesiones))
-            .distinct()
-            .groupBy(qSesionDTO.id, qSalaDTO.codigo, qSesionDTO.fechaCelebracion, qSesionDTO.incidenciaId)
-            .list(qSesionDTO.id, qSalaDTO.codigo, qSesionDTO.fechaCelebracion, qButacaDTO.precio.sum(), qSesionDTO.incidenciaId,
-					new JPASubQuery().from(eventoMultisesionDTO).where(eventoMultisesionDTO.parEvento.id.eq(qSesionDTO.parEvento
-							.id)).count());
-        
+                .from(qSesionDTO)
+                .join(qSesionDTO.parSala, qSalaDTO)
+                .leftJoin(qSesionDTO.parCompras, qCompraDTO).on(qCompraDTO.anulada.isNull().or(qCompraDTO.anulada.eq(false)))
+                .leftJoin(qCompraDTO.parButacas, qButacaDTO).on(qButacaDTO.anulada.isNull().or(qButacaDTO.anulada.eq(false)))
+                .where(qSesionDTO.id.in(idsSesiones))
+                .distinct()
+                .groupBy(qSesionDTO.id, qSalaDTO.codigo, qSesionDTO.fechaCelebracion, qSesionDTO.incidenciaId)
+                .list(qSesionDTO.id, qSalaDTO.codigo, qSesionDTO.fechaCelebracion, qButacaDTO.precio.sum(), qSesionDTO.incidenciaId,
+                        new JPASubQuery().from(eventoMultisesionDTO).where(eventoMultisesionDTO.parEvento.id.eq(qSesionDTO.parEvento
+                                .id)).count());
+
         List<RegistroSesion> registros = new ArrayList<RegistroSesion>();
-        
-        for (Tuple row: resultado)
-        {
-			int idIncidencia = Utils.safeObjectToInt(row.get(4, BigDecimal.class));
 
-			if (!isIncidenciaCancelacionEvento(idIncidencia)) {
-				long idSesion = row.get(0, Long.class);
-				String codigoSala = (String) row.get(1, String.class);
-				Date fechaCelebracion = row.get(2, Date.class);
-				BigDecimal recaudacion = row.get(3, BigDecimal.class);
-				Long peliculasMultisesion = row.get(5, Long.class);
-				Long espectadores = getEspectadores(idSesion);
+        for (Tuple row : resultado) {
+            int idIncidencia = Utils.safeObjectToInt(row.get(4, BigDecimal.class));
 
-				RegistroSesion registro = new RegistroSesion();
+            if (!isIncidenciaCancelacionEvento(idIncidencia)) {
+                long idSesion = row.get(0, Long.class);
+                String codigoSala = (String) row.get(1, String.class);
+                Date fechaCelebracion = row.get(2, Date.class);
+                BigDecimal recaudacion = row.get(3, BigDecimal.class);
+                Long peliculasMultisesion = row.get(5, Long.class);
+                Long espectadores = getEspectadores(idSesion);
 
-				registro.setCodigoSala(codigoSala);
-				registro.setEspectadores(espectadores.intValue());
-				registro.setPeliculas((peliculasMultisesion == 0L)?1:peliculasMultisesion.intValue());
-				registro.setFecha(fechaCelebracion);
-				registro.setHora(HOUR_FORMAT.format(fechaCelebracion));
-				registro.setIncidencia(TipoIncidencia.intToTipoIncidencia(idIncidencia));
+                RegistroSesion registro = new RegistroSesion();
 
-				if (recaudacion == null)
-					registro.setRecaudacion(BigDecimal.ZERO);
-				else
-					registro.setRecaudacion(recaudacion);
+                registro.setCodigoSala(codigoSala);
+                registro.setEspectadores(espectadores.intValue());
+                registro.setPeliculas((peliculasMultisesion == 0L) ? 1 : peliculasMultisesion.intValue());
+                registro.setFecha(fechaCelebracion);
+                registro.setHora(HOUR_FORMAT.format(fechaCelebracion));
+                registro.setIncidencia(TipoIncidencia.intToTipoIncidencia(idIncidencia));
 
-				registros.add(registro);
-			}
-		}
+                if (recaudacion == null)
+                    registro.setRecaudacion(BigDecimal.ZERO);
+                else
+                    registro.setRecaudacion(recaudacion);
+
+                registros.add(registro);
+            }
+        }
 
         return registros;
     }
 
     private Long getEspectadores(long sesionId) {
-    	QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
-    	JPAQuery query = new JPAQuery(entityManager);
-    	return query.from(qButacaDTO).
-    		where(qButacaDTO.parSesion.id.eq(sesionId).and(
-    			qButacaDTO.anulada.eq(false).or(qButacaDTO.anulada.isNull()
-    		))
-    	).count();
-	}
+        QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
+        JPAQuery query = new JPAQuery(entityManager);
+        return query.from(qButacaDTO).
+                where(qButacaDTO.parSesion.id.eq(sesionId).and(
+                                qButacaDTO.anulada.eq(false).or(qButacaDTO.anulada.isNull()
+                                ))
+                ).count();
+    }
 
-	@Transactional(rollbackForClassName={"SesionSinFormatoIdiomaIcaaException","IncidenciaNotFoundException"})
+    @Transactional(rollbackForClassName = {"SesionSinFormatoIdiomaIcaaException", "IncidenciaNotFoundException"})
     public List<RegistroSesionPelicula> getRegistrosSesionesPeliculas(List<Sesion> sesiones) throws SesionSinFormatoIdiomaIcaaException, IncidenciaNotFoundException {
         QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
         QEventoDTO qEventoDTO = QEventoDTO.eventoDTO;
-		QEventoMultisesionDTO qEventoMultisesionDTO = new QEventoMultisesionDTO("qEventoMultisesionDTO");
-        
+        QEventoMultisesionDTO qEventoMultisesionDTO = new QEventoMultisesionDTO("qEventoMultisesionDTO");
+
         List<Long> idsSesiones = Sesion.getIdsSesiones(sesiones);
-        
+
         JPAQuery query = new JPAQuery(entityManager);
 
         List<SesionDTO> resultado = query
@@ -451,65 +428,64 @@ public class SesionesDAO extends BaseDAO
                 .where(qSesionDTO.id.in(idsSesiones))
                 .distinct()
                 .list(qSesionDTO);
-        
+
         List<RegistroSesionPelicula> registros = new ArrayList<RegistroSesionPelicula>();
-        
-        for (SesionDTO sesionDTO : resultado)
-        {
-        	if (sesionDTO.getParEvento().getFormato() == null)
-        		throw new SesionSinFormatoIdiomaIcaaException(sesionDTO.getParEvento().getTituloVa());
 
-			if (!isIncidenciaCancelacionEvento(sesionDTO.getIncidenciaId())) {
-				List<EventoDTO> eventosMultisesion = eventosDAO.getPeliculas(sesionDTO.getParEvento().getId());
+        for (SesionDTO sesionDTO : resultado) {
+            if (sesionDTO.getParEvento().getFormato() == null)
+                throw new SesionSinFormatoIdiomaIcaaException(sesionDTO.getParEvento().getTituloVa());
 
-				try {
-					Sesion.checkSesionValoresIcaa(sesionDTO.getParEvento().getFormato(), sesionDTO.getParEvento().getId(),
-							sesionDTO.getVersionLinguistica(), eventosMultisesion);
-				} catch (Exception e) {
-					throw new SesionSinFormatoIdiomaIcaaException(sesionDTO.getParEvento().getId(),
-							sesionDTO.getParEvento().getFormato(), sesionDTO.getVersionLinguistica());
-				}
+            if (!isIncidenciaCancelacionEvento(sesionDTO.getIncidenciaId())) {
+                List<EventoDTO> eventosMultisesion = eventosDAO.getPeliculas(sesionDTO.getParEvento().getId());
 
-				if (eventosMultisesion.size() > 0) {
-					for (EventoDTO eventoMultisesion: eventosMultisesion) {
-						RegistroSesionPelicula registro = new RegistroSesionPelicula();
-						registro.setCodigoSala(sesionDTO.getParSala().getCodigo());
-						registro.setCodigoPelicula((int) eventoMultisesion.getId());
-						registro.setFecha(sesionDTO.getFechaCelebracion());
-						registro.setHora(HOUR_FORMAT.format(sesionDTO.getFechaCelebracion()));
-						registros.add(registro);
-					}
-				} else {
-					RegistroSesionPelicula registro = new RegistroSesionPelicula();
-					registro.setCodigoSala(sesionDTO.getParSala().getCodigo());
-					registro.setCodigoPelicula((int) sesionDTO.getParEvento().getId());
-					registro.setFecha(sesionDTO.getFechaCelebracion());
-					registro.setHora(HOUR_FORMAT.format(sesionDTO.getFechaCelebracion()));
-					registros.add(registro);
-				}
-			}
+                try {
+                    Sesion.checkSesionValoresIcaa(sesionDTO.getParEvento().getFormato(), sesionDTO.getParEvento().getId(),
+                            sesionDTO.getVersionLinguistica(), eventosMultisesion);
+                } catch (Exception e) {
+                    throw new SesionSinFormatoIdiomaIcaaException(sesionDTO.getParEvento().getId(),
+                            sesionDTO.getParEvento().getFormato(), sesionDTO.getVersionLinguistica());
+                }
+
+                if (eventosMultisesion.size() > 0) {
+                    for (EventoDTO eventoMultisesion : eventosMultisesion) {
+                        RegistroSesionPelicula registro = new RegistroSesionPelicula();
+                        registro.setCodigoSala(sesionDTO.getParSala().getCodigo());
+                        registro.setCodigoPelicula((int) eventoMultisesion.getId());
+                        registro.setFecha(sesionDTO.getFechaCelebracion());
+                        registro.setHora(HOUR_FORMAT.format(sesionDTO.getFechaCelebracion()));
+                        registros.add(registro);
+                    }
+                } else {
+                    RegistroSesionPelicula registro = new RegistroSesionPelicula();
+                    registro.setCodigoSala(sesionDTO.getParSala().getCodigo());
+                    registro.setCodigoPelicula((int) sesionDTO.getParEvento().getId());
+                    registro.setFecha(sesionDTO.getFechaCelebracion());
+                    registro.setHora(HOUR_FORMAT.format(sesionDTO.getFechaCelebracion()));
+                    registros.add(registro);
+                }
+            }
         }
-        
+
         return registros;
     }
 
-	@Transactional(rollbackForClassName={"IncidenciaNotFoundException"})
-	public boolean isIncidenciaCancelacionEvento(Integer incidenciaId) throws IncidenciaNotFoundException {
-		TipoIncidencia incidenciaOcurrida = TipoIncidencia.intToTipoIncidencia(Utils.safeObjectToInt(incidenciaId));
+    @Transactional(rollbackForClassName = {"IncidenciaNotFoundException"})
+    public boolean isIncidenciaCancelacionEvento(Integer incidenciaId) throws IncidenciaNotFoundException {
+        TipoIncidencia incidenciaOcurrida = TipoIncidencia.intToTipoIncidencia(Utils.safeObjectToInt(incidenciaId));
 
-		if (incidenciaOcurrida != TipoIncidencia.ANULACIO_VENTES_I_REPROGRAMACIO && incidenciaOcurrida != TipoIncidencia
-				.REPROGRAMACIO)
-			return false;
-		return true;
-	}
+        if (incidenciaOcurrida != TipoIncidencia.ANULACIO_VENTES_I_REPROGRAMACIO && incidenciaOcurrida != TipoIncidencia
+                .REPROGRAMACIO)
+            return false;
+        return true;
+    }
 
-    @Transactional(rollbackForClassName={"IncidenciaNotFoundException"})
+    @Transactional(rollbackForClassName = {"IncidenciaNotFoundException"})
     public List<RegistroPelicula> getRegistrosPeliculas(List<Sesion> sesiones) throws IncidenciaNotFoundException {
         QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
         QEventoDTO qEventoDTO = QEventoDTO.eventoDTO;
-        
+
         List<Long> idsSesiones = Sesion.getIdsSesiones(sesiones);
-        
+
         JPAQuery query = new JPAQuery(entityManager);
 
         List<Tuple> resultado = query
@@ -519,201 +495,198 @@ public class SesionesDAO extends BaseDAO
                 .where(qSesionDTO.id.in(idsSesiones))
                 .distinct()
                 .list(qSesionDTO, qEventoDTO.id);
-        
+
         List<RegistroPelicula> registros = new ArrayList<RegistroPelicula>();
-        
-        for (Tuple row: resultado)
-        {
+
+        for (Tuple row : resultado) {
             SesionDTO sesion = row.get(0, SesionDTO.class);
             Long idEvento = row.get(1, Long.class);
 
-			if (!isIncidenciaCancelacionEvento(sesion.getIncidenciaId())) {
-				List<EventoDTO> peliculasMultisesion = eventosDAO.getPeliculas(idEvento);
-				if (peliculasMultisesion.size() > 0) {
-					for (EventoDTO peliculaMultisesion: peliculasMultisesion) {
-						RegistroPelicula registro = new RegistroPelicula();
-						registro.setCodigoSala(sesion.getParSala().getCodigo());
-						registro.setCodigoPelicula((int) peliculaMultisesion.getId());
-						registro.setCodigoExpediente(peliculaMultisesion.getExpediente());
-						registro.setTitulo(Utils.stripAccents(peliculaMultisesion.getTituloEs()));
-						registro.setCodigoDistribuidora(peliculaMultisesion.getCodigoDistribuidora());
-						registro.setNombreDistribuidora(Utils.stripAccents(peliculaMultisesion.getNombreDistribuidora()));
-						registro.setVersionOriginal(peliculaMultisesion.getVo());
+            if (!isIncidenciaCancelacionEvento(sesion.getIncidenciaId())) {
+                List<EventoDTO> peliculasMultisesion = eventosDAO.getPeliculas(idEvento);
+                if (peliculasMultisesion.size() > 0) {
+                    for (EventoDTO peliculaMultisesion : peliculasMultisesion) {
+                        RegistroPelicula registro = new RegistroPelicula();
+                        registro.setCodigoSala(sesion.getParSala().getCodigo());
+                        registro.setCodigoPelicula((int) peliculaMultisesion.getId());
+                        registro.setCodigoExpediente(peliculaMultisesion.getExpediente());
+                        registro.setTitulo(Utils.stripAccents(peliculaMultisesion.getTituloEs()));
+                        registro.setCodigoDistribuidora(peliculaMultisesion.getCodigoDistribuidora());
+                        registro.setNombreDistribuidora(Utils.stripAccents(peliculaMultisesion.getNombreDistribuidora()));
+                        registro.setVersionOriginal(peliculaMultisesion.getVo());
 
-						//TODO hay que pintar la version linguistica de la peliculaMultisesion, no de la sesion
-						registro.setVersionLinguistica(sesion.getVersionLinguistica());
-						registro.setIdiomaSubtitulos(peliculaMultisesion.getSubtitulos());
-						registro.setFormatoProyeccion(peliculaMultisesion.getFormato());
-						registros.add(registro);
-					}
-				} else {
-					RegistroPelicula registro = new RegistroPelicula();
-					registro.setCodigoSala(sesion.getParSala().getCodigo());
-					registro.setCodigoPelicula(idEvento.intValue());
-					registro.setCodigoExpediente(sesion.getParEvento().getExpediente());
-					registro.setTitulo(Utils.stripAccents(sesion.getParEvento().getTituloEs()));
-					registro.setCodigoDistribuidora(sesion.getParEvento().getCodigoDistribuidora());
-					registro.setNombreDistribuidora(Utils.stripAccents(sesion.getParEvento().getNombreDistribuidora()));
-					registro.setVersionOriginal(sesion.getParEvento().getVo());
-					registro.setVersionLinguistica(sesion.getVersionLinguistica());
-					registro.setIdiomaSubtitulos(sesion.getParEvento().getSubtitulos());
-					registro.setFormatoProyeccion(sesion.getParEvento().getFormato());
-					registros.add(registro);
-				}
-			}
+                        //TODO hay que pintar la version linguistica de la peliculaMultisesion, no de la sesion
+                        registro.setVersionLinguistica(sesion.getVersionLinguistica());
+                        registro.setIdiomaSubtitulos(peliculaMultisesion.getSubtitulos());
+                        registro.setFormatoProyeccion(peliculaMultisesion.getFormato());
+                        registros.add(registro);
+                    }
+                } else {
+                    RegistroPelicula registro = new RegistroPelicula();
+                    registro.setCodigoSala(sesion.getParSala().getCodigo());
+                    registro.setCodigoPelicula(idEvento.intValue());
+                    registro.setCodigoExpediente(sesion.getParEvento().getExpediente());
+                    registro.setTitulo(Utils.stripAccents(sesion.getParEvento().getTituloEs()));
+                    registro.setCodigoDistribuidora(sesion.getParEvento().getCodigoDistribuidora());
+                    registro.setNombreDistribuidora(Utils.stripAccents(sesion.getParEvento().getNombreDistribuidora()));
+                    registro.setVersionOriginal(sesion.getParEvento().getVo());
+                    registro.setVersionLinguistica(sesion.getVersionLinguistica());
+                    registro.setIdiomaSubtitulos(sesion.getParEvento().getSubtitulos());
+                    registro.setFormatoProyeccion(sesion.getParEvento().getFormato());
+                    registros.add(registro);
+                }
+            }
         }
-        
+
         return registros;
     }
 
     @Transactional
-    public List<SesionDTO> getSesionesOrdenadas(List<Sesion> sesiones)
-    {
+    public List<SesionDTO> getSesionesOrdenadas(List<Sesion> sesiones) {
         QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
         QSalaDTO qSalaDTO = QSalaDTO.salaDTO;
-        
+
         List<Long> idsSesiones = Sesion.getIdsSesiones(sesiones);
-        
+
         JPAQuery query = new JPAQuery(entityManager);
-        
+
         List<SesionDTO> resultado = query
                 .from(qSesionDTO)
                 .join(qSesionDTO.parSala, qSalaDTO).fetch()
                 .where(qSesionDTO.id.in(idsSesiones))
                 .orderBy(qSalaDTO.id.asc(), qSesionDTO.fechaCelebracion.asc())
                 .list(qSesionDTO);
-        
+
         return resultado;
     }
 
     @Transactional
-    public Sesion getSesionByRssId(String rssId)
-    {
+    public Sesion getSesionByRssId(String rssId) {
         JPAQuery query = new JPAQuery(entityManager);
         SesionDTO uniqueResult = query.from(QSesionDTO.sesionDTO)
                 .where(QSesionDTO.sesionDTO.rssId.eq(rssId)).uniqueResult(QSesionDTO.sesionDTO);
-        
+
         if (uniqueResult == null)
             return null;
         else
-            return Sesion.SesionDTOToSesion(uniqueResult);    
+            return Sesion.SesionDTOToSesion(uniqueResult);
     }
-    
+
     @Transactional
-	public List<SesionDTO> getSesionesCinePorFechas(Date dtInicio, Date dtFin, String sort) {
-		QSalaDTO qSalaDTO = QSalaDTO.salaDTO;
-		QEventoDTO qEventoDTO = QEventoDTO.eventoDTO;
+    public List<SesionDTO> getSesionesCinePorFechas(Date dtInicio, Date dtFin, String sort) {
+        QSalaDTO qSalaDTO = QSalaDTO.salaDTO;
+        QEventoDTO qEventoDTO = QEventoDTO.eventoDTO;
 
         JPAQuery query = new JPAQuery(entityManager);
         query.from(qSesionDTO).join(qSesionDTO.parEvento, qEventoDTO).leftJoin(qSesionDTO.parSala, qSalaDTO).fetch();
-        
+
         if (dtInicio != null || dtFin != null) {
-        	BooleanBuilder condicion = new BooleanBuilder();
-	        
-        	if (dtInicio != null) 
-	        	condicion = condicion.and(qSesionDTO.fechaCelebracion.goe(new Timestamp(dtInicio.getTime())));
-	        
-	        if (dtFin != null)
-	        	condicion = condicion.and(qSesionDTO.fechaCelebracion.loe(new Timestamp(dtFin.getTime())));
-	       
-	       	query.where(condicion);
+            BooleanBuilder condicion = new BooleanBuilder();
+
+            if (dtInicio != null)
+                condicion = condicion.and(qSesionDTO.fechaCelebracion.goe(new Timestamp(dtInicio.getTime())));
+
+            if (dtFin != null)
+                condicion = condicion.and(qSesionDTO.fechaCelebracion.loe(new Timestamp(dtFin.getTime())));
+
+            query.where(condicion);
         }
-        
+
         return query.orderBy(getSort(qSesionDTO, sort)).distinct().list(qSesionDTO);
-	}
-    
+    }
+
     @Transactional
-	public List<SesionDTO> getSesiones(List<Long> ids) {
-		QSalaDTO qSalaDTO = QSalaDTO.salaDTO;
-		QEventoDTO qEventoDTO = QEventoDTO.eventoDTO;
+    public List<SesionDTO> getSesiones(List<Long> ids) {
+        QSalaDTO qSalaDTO = QSalaDTO.salaDTO;
+        QEventoDTO qEventoDTO = QEventoDTO.eventoDTO;
 
         JPAQuery query = new JPAQuery(entityManager);
         return query.from(qSesionDTO).join(qSesionDTO.parEvento, qEventoDTO).leftJoin(qSesionDTO.parSala, qSalaDTO).fetch()
-        .where(qSesionDTO.id.in(ids)).list(qSesionDTO);
-	}
-    
+                .where(qSesionDTO.id.in(ids)).list(qSesionDTO);
+    }
+
     @Transactional
-	public List<SesionDTO> getSesionesICAAPorFechas(Date dtInicio, Date dtFin, String sort) {
-		QSalaDTO qSalaDTO = QSalaDTO.salaDTO;
-		QEventoDTO qEventoDTO = QEventoDTO.eventoDTO;
-		QEnviosSesionDTO qEnviosSesion = QEnviosSesionDTO.enviosSesionDTO;
-		QEnvioDTO qEnvioDTO = QEnvioDTO.envioDTO;
+    public List<SesionDTO> getSesionesICAAPorFechas(Date dtInicio, Date dtFin, String sort) {
+        QSalaDTO qSalaDTO = QSalaDTO.salaDTO;
+        QEventoDTO qEventoDTO = QEventoDTO.eventoDTO;
+        QEnviosSesionDTO qEnviosSesion = QEnviosSesionDTO.enviosSesionDTO;
+        QEnvioDTO qEnvioDTO = QEnvioDTO.envioDTO;
 
         JPAQuery query = new JPAQuery(entityManager);
         query.from(qSesionDTO).join(qSesionDTO.parEvento, qEventoDTO).leftJoin(qSesionDTO.parSala, qSalaDTO).fetch().
-        	leftJoin(qSesionDTO.parEnviosSesion, qEnviosSesion).fetch().leftJoin(qEnviosSesion.parEnvio, qEnvioDTO).fetch();
+                leftJoin(qSesionDTO.parEnviosSesion, qEnviosSesion).fetch().leftJoin(qEnviosSesion.parEnvio, qEnvioDTO).fetch();
         BooleanExpression condicion = qEventoDTO.parTiposEvento.exportarICAA.eq(true);
-        
-        if (dtInicio != null) 
-        	condicion = condicion.and(qSesionDTO.fechaCelebracion.goe(new Timestamp(dtInicio.getTime())));
-        
+
+        if (dtInicio != null)
+            condicion = condicion.and(qSesionDTO.fechaCelebracion.goe(new Timestamp(dtInicio.getTime())));
+
         if (dtFin != null)
-        	condicion = condicion.and(qSesionDTO.fechaCelebracion.loe(new Timestamp(dtFin.getTime())));
-       
-       	query.where(condicion);
-        
+            condicion = condicion.and(qSesionDTO.fechaCelebracion.loe(new Timestamp(dtFin.getTime())));
+
+        query.where(condicion);
+
         return query.orderBy(getSort(qSesionDTO, sort)).distinct().list(qSesionDTO);
-	}
-    
+    }
+
     @Transactional
     public List<SesionDTO> getSesionesPorFechas(Date dtInicio, Date dtFin, String sort) {
-    	QSalaDTO qSalaDTO = QSalaDTO.salaDTO;
-		QEventoDTO qEventoDTO = QEventoDTO.eventoDTO;
+        QSalaDTO qSalaDTO = QSalaDTO.salaDTO;
+        QEventoDTO qEventoDTO = QEventoDTO.eventoDTO;
 
         JPAQuery query = new JPAQuery(entityManager);
         query.from(qSesionDTO).join(qSesionDTO.parEvento, qEventoDTO).leftJoin(qSesionDTO.parSala, qSalaDTO).fetch();
         BooleanBuilder condicion = new BooleanBuilder();
-        
-        if (dtInicio != null) 
-        	condicion = condicion.and(qSesionDTO.fechaCelebracion.goe(new Timestamp(dtInicio.getTime())));
-        
+
+        if (dtInicio != null)
+            condicion = condicion.and(qSesionDTO.fechaCelebracion.goe(new Timestamp(dtInicio.getTime())));
+
         if (dtFin != null)
-        	condicion = condicion.and(qSesionDTO.fechaCelebracion.loe(new Timestamp(dtFin.getTime())));
-       
-       	query.where(condicion);
-        
+            condicion = condicion.and(qSesionDTO.fechaCelebracion.loe(new Timestamp(dtFin.getTime())));
+
+        query.where(condicion);
+
         return query.orderBy(getSort(qSesionDTO, sort)).list(qSesionDTO);
-	}
+    }
 
     @Transactional
-	public List<TarifaDTO> getTarifasPreciosSesion(long sesionId) {
-    	QTarifaDTO qTarifa = QTarifaDTO.tarifaDTO;
+    public List<TarifaDTO> getTarifasPreciosSesion(long sesionId) {
+        QTarifaDTO qTarifa = QTarifaDTO.tarifaDTO;
         JPAQuery query = new JPAQuery(entityManager);
         return query.from(qPreciosSesionDTO, qTarifa).where(qPreciosSesionDTO.parSesione.id.eq(sesionId).
-        		and(qTarifa.id.eq(qPreciosSesionDTO.parTarifa.id))).distinct().list(qTarifa);
-	}
+                and(qTarifa.id.eq(qPreciosSesionDTO.parTarifa.id))).distinct().list(qTarifa);
+    }
 
     @Transactional
-	public List<TarifaDTO> getTarifasPreciosPlantilla(long sesionId) {
-		QTarifaDTO qTarifa = QTarifaDTO.tarifaDTO;
-		QPreciosPlantillaDTO qPreciosPlantilla = QPreciosPlantillaDTO.preciosPlantillaDTO;
-		
+    public List<TarifaDTO> getTarifasPreciosPlantilla(long sesionId) {
+        QTarifaDTO qTarifa = QTarifaDTO.tarifaDTO;
+        QPreciosPlantillaDTO qPreciosPlantilla = QPreciosPlantillaDTO.preciosPlantillaDTO;
+
         JPAQuery query = new JPAQuery(entityManager);
         return query.from(qPreciosPlantilla, qTarifa).where(qPreciosPlantilla.parPlantilla.id.eq(
-        		new JPASubQuery().from(qSesionDTO).where(qSesionDTO.id.eq(sesionId)).unique(qSesionDTO.parPlantilla.id)).
-       		and(qTarifa.id.eq(qPreciosPlantilla.parTarifa.id))).distinct().list(qTarifa);
-	}
+                new JPASubQuery().from(qSesionDTO).where(qSesionDTO.id.eq(sesionId)).unique(qSesionDTO.parPlantilla.id)).
+                and(qTarifa.id.eq(qPreciosPlantilla.parTarifa.id))).distinct().list(qTarifa);
+    }
 
     @Transactional
-	public void setIncidencia(long sesionId, int incidenciaId) {
-		JPAUpdateClause jpaUpdate = new JPAUpdateClause(entityManager, qSesionDTO);
-		jpaUpdate.set(qSesionDTO.incidenciaId, incidenciaId).where(qSesionDTO.id.eq(sesionId)).execute();
-	}
+    public void setIncidencia(long sesionId, int incidenciaId) {
+        JPAUpdateClause jpaUpdate = new JPAUpdateClause(entityManager, qSesionDTO);
+        jpaUpdate.set(qSesionDTO.incidenciaId, incidenciaId).where(qSesionDTO.id.eq(sesionId)).execute();
+    }
 
-	@Transactional
-	public void removeIncidencia(long sesionId) {
-		JPAUpdateClause jpaUpdate = new JPAUpdateClause(entityManager, qSesionDTO);
-		jpaUpdate.set(qSesionDTO.incidenciaId, 0).where(qSesionDTO.id.eq(sesionId)).execute();
-	}
+    @Transactional
+    public void removeIncidencia(long sesionId) {
+        JPAUpdateClause jpaUpdate = new JPAUpdateClause(entityManager, qSesionDTO);
+        jpaUpdate.set(qSesionDTO.incidenciaId, 0).where(qSesionDTO.id.eq(sesionId)).execute();
+    }
 
-	@Transactional
-	public long getButacasAnuladasTotal(long idSesion) {
-		QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
-		QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
-		JPAQuery query = new JPAQuery(entityManager);
-		return query.from(qSesionDTO).join(qSesionDTO.parCompras, qCompraDTO).join(qCompraDTO.parButacas,
-				qButacaDTO).on(qButacaDTO.anulada.eq(true)).where(qSesionDTO.id.eq(idSesion)).count();
-	}
+    @Transactional
+    public long getButacasAnuladasTotal(long idSesion) {
+        QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
+        QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
+        JPAQuery query = new JPAQuery(entityManager);
+        return query.from(qSesionDTO).join(qSesionDTO.parCompras, qCompraDTO).join(qCompraDTO.parButacas,
+                qButacaDTO).on(qButacaDTO.anulada.eq(true)).where(qSesionDTO.id.eq(idSesion)).count();
+    }
 
     @Transactional(rollbackFor = IncidenciaNotFoundException.class)
     public int getTipoIncidenciaSesion(long totalAnuladas, boolean isVentaDegradada,
@@ -741,16 +714,29 @@ public class SesionesDAO extends BaseDAO
     }
 
     @Transactional
-    public long getCantidadSesionesMismaFechaYLocalizacion(Timestamp fechaCelebracion, long salaId,
-        Long sesionId) {
+    public Pair getCantidadSesionesMismaFechaYLocalizacion(Timestamp fechaCelebracion, long salaId,
+                                                           Long sesionId) {
+        QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
+        QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
         JPAQuery query = new JPAQuery(entityManager);
+        JPAQuery queryCompras = new JPAQuery(entityManager);
 
-        if (sesionId != null)
-            return query.from(qSesionDTO).where(qSesionDTO.fechaCelebracion.eq(fechaCelebracion).and(qSesionDTO.parSala
-                .id.eq(salaId)).and(qSesionDTO.id.ne(sesionId))).count();
-        else
-            return query.from(qSesionDTO).where(qSesionDTO.fechaCelebracion.eq(fechaCelebracion).and(qSesionDTO.parSala
-                    .id.eq(salaId))).count();
+        Pair result;
+        if (sesionId != null) {
+            result = new Pair(query.from(qSesionDTO).where(qSesionDTO.fechaCelebracion.eq(fechaCelebracion).and(qSesionDTO.parSala
+                    .id.eq(salaId)).and(qSesionDTO.id.ne(sesionId).and(qSesionDTO.anulada.ne(true)))).count(),
+                    queryCompras.from(qSesionDTO).join(qSesionDTO.parCompras, qCompraDTO).join(qCompraDTO.parButacas,
+                            qButacaDTO).on(qButacaDTO.anulada.ne(true)).where(qSesionDTO.id.eq(sesionId).and(qSesionDTO.anulada.ne(true).and(qSesionDTO.fechaCelebracion.eq(fechaCelebracion).and(qSesionDTO.parSala
+                            .id.eq(salaId)).and(qSesionDTO.id.ne(sesionId))))).count());
+        } else {
+            result = new Pair(query.from(qSesionDTO).where(qSesionDTO.fechaCelebracion.eq(fechaCelebracion).and(qSesionDTO.parSala
+                    .id.eq(salaId).and(qSesionDTO.anulada.ne(true)))).count(),
+                    queryCompras.from(qSesionDTO).join(qSesionDTO.parCompras, qCompraDTO).join(qCompraDTO.parButacas,
+                            qButacaDTO).on(qButacaDTO.anulada.ne(true)).where(qSesionDTO.fechaCelebracion.eq(fechaCelebracion).and(qSesionDTO.parSala
+                            .id.eq(salaId).and(qSesionDTO.anulada.ne(true)))).count());
+        }
+
+        return result;
     }
 
     @Transactional
@@ -758,13 +744,13 @@ public class SesionesDAO extends BaseDAO
         JPAQuery query = new JPAQuery(entityManager);
 
         return query.from(qSesionDTO).where(qSesionDTO.fechaCelebracion.eq(fechaCelebracion).and(qSesionDTO.parSala
-                    .id.eq(salaId))).list(qSesionDTO);
+                .id.eq(salaId))).list(qSesionDTO);
     }
 
-	@Transactional
-	public void removeAnulacionVentasFromSesion(long sesionId) {
-		SesionDTO sesionDTO = getSesion(sesionId);
-		sesionDTO.setIncidenciaId(TipoIncidencia.removeAnulacionVentasFromIncidenciaActual(sesionDTO.getIncidenciaId()));
-		entityManager.merge(sesionDTO);
-	}
+    @Transactional
+    public void removeAnulacionVentasFromSesion(long sesionId) {
+        SesionDTO sesionDTO = getSesion(sesionId);
+        sesionDTO.setIncidenciaId(TipoIncidencia.removeAnulacionVentasFromIncidenciaActual(sesionDTO.getIncidenciaId()));
+        entityManager.merge(sesionDTO);
+    }
 }
