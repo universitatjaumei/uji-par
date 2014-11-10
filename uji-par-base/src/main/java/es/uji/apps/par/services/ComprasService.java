@@ -147,14 +147,18 @@ public class ComprasService
     public void marcaPagada(long idCompra)
     {
         comprasDAO.marcarPagada(idCompra);
-        butacasDAO.asignarIdEntrada(idCompra);
+        if (Configuration.isIdEntrada()) {
+            butacasDAO.asignarIdEntrada(idCompra);
+        }
     }
 
     @Transactional
 	public void marcarPagadaConReferenciaDePago(Long idCompra, String referenciaDePago) {
 		
 		comprasDAO.marcarPagadaConReferenciaDePago(idCompra, referenciaDePago);
-        butacasDAO.asignarIdEntrada(idCompra);
+        if (Configuration.isIdEntrada()) {
+            butacasDAO.asignarIdEntrada(idCompra);
+        }
 	}
 
     public void eliminaPendientes() throws IncidenciaNotFoundException {

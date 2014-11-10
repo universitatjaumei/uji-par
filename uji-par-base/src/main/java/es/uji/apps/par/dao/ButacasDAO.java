@@ -2,6 +2,7 @@ package es.uji.apps.par.dao;
 
 import java.util.List;
 
+import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.exceptions.IncidenciaNotFoundException;
 import es.uji.apps.par.exceptions.SesionSinFormatoIdiomaIcaaException;
 import es.uji.apps.par.ficheros.registros.TipoIncidencia;
@@ -306,7 +307,7 @@ public class ButacasDAO extends BaseDAO
         QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
 
         JPAQuery query = new JPAQuery(entityManager);
-        Integer maxIdEntrada = query.from(qButacaDTO).uniqueResult(qButacaDTO.idEntrada.max().coalesce(0));
+        Integer maxIdEntrada = query.from(qButacaDTO).uniqueResult(qButacaDTO.idEntrada.max().coalesce(Configuration.getIdEntrada()));
 
         JPAUpdateClause updateButacas = new JPAUpdateClause(entityManager, qButacaDTO);
         updateButacas.set(qButacaDTO.idEntrada, maxIdEntrada + 1).

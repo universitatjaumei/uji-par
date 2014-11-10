@@ -174,10 +174,36 @@ public class Configuration
     {
         String entradaId = getNoObligatoryProperty(ENTRADA_ID);
         if (entradaId != null && entradaId.length() > 0 && !entradaId.equals("false")) {
-            return true;
+            try
+            {
+                Integer.parseInt(entradaId);
+                return true;
+            }
+            catch (NumberFormatException e)
+            {
+                return false;
+            }
         }
         else {
             return false;
+        }
+    }
+
+    public static Integer getIdEntrada()
+    {
+        String entradaId = getNoObligatoryProperty(ENTRADA_ID);
+        if (entradaId != null && entradaId.length() > 0) {
+            try
+            {
+                return Integer.parseInt(entradaId);
+            }
+            catch (NumberFormatException e)
+            {
+                return 0;
+            }
+        }
+        else {
+            return 0;
         }
     }
     
