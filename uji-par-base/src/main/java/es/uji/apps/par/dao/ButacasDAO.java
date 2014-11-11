@@ -305,12 +305,26 @@ public class ButacasDAO extends BaseDAO
     @Transactional
     public void asignarIdEntrada(Long idCompra) {
         QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
+		Integer idEntradaConfiguracion = Configuration.getIdEntrada();
+	    JPAQuery query = new JPAQuery(entityManager);
+        Integer maxIdEntrada = query.from(qButacaDTO).uniqueResult(qButacaDTO.idEntrada.max().coalesce(idEntradaConfiguracion));
+		maxIdEntrada = (maxIdEntrada < idEntradaConfiguracion)?idEntradaConfiguracion:maxIdEntrada;
 
-        JPAQuery query = new JPAQuery(entityManager);
-        Integer maxIdEntrada = query.from(qButacaDTO).uniqueResult(qButacaDTO.idEntrada.max().coalesce(Configuration.getIdEntrada()));
-
-        JPAUpdateClause updateButacas = new JPAUpdateClause(entityManager, qButacaDTO);
-        updateButacas.set(qButacaDTO.idEntrada, maxIdEntrada + 1).
-                where(qButacaDTO.parCompra.id.eq(idCompra)).execute();
+		List<Long> idsButacasCompra = getIdsButacasCompra(idCompra);
+		if (idsButacasCompra != null) {
+			for (Long idButaca: idsButacasCompra) {
+				maxIdEntrada++;
+				JPAUpdateClause updateButacas = new JPAUpdateClause(entityManager, qButacaDTO);
+				updateButacas.set(qButacaDTO.idEntrada, maxIdEntrada).
+						where(qButacaDTO.id.eq(idButaca)).execute();
+			}
+		}
     }
+
+	@Transactional
+	private List<Long> getIdsButacasCompra(Long idCompra) {
+		QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
+		JPAQuery query = new JPAQuery(entityManager);
+		return query.from(qButacaDTO).where(qButacaDTO.parCompra.id.eq(idCompra)).list(qButacaDTO.id);
+	}
 }
