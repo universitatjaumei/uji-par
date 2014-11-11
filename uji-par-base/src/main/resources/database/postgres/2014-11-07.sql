@@ -5,12 +5,17 @@ UPDATE PAR_BUTACAS SET ID_ENTRADA = ID;
 CREATE OR REPLACE FUNCTION updateEntradaId(compraId integer, entradaId integer) RETURNS INTEGER AS $$
 DECLARE
     rec RECORD;
+    max INTEGER;
 BEGIN
+    SELECT coalesce(max(ID_ENTRADA), entradaId) INTO max FROM PAR_BUTACAS;
+    IF (max < entradaId) THEN
+    max:=entradaId;
+    END IF;
     FOR rec IN SELECT * FROM PAR_BUTACAS where COMPRA_ID = compraId LOOP
-        entradaId := entradaId + 1;
-        UPDATE PAR_BUTACAS SET ID_ENTRADA = entradaId WHERE id = rec.id;
+        max := max + 1;
+        UPDATE PAR_BUTACAS SET ID_ENTRADA = max WHERE id = rec.id;
     END LOOP;
-    RETURN entradaId;
+    RETURN max;
 END;
 $$ LANGUAGE plpgsql;
 
