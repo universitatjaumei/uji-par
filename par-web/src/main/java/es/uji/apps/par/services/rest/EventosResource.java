@@ -214,12 +214,13 @@ public class EventosResource extends BaseResource
             datos.put("canalInternet", databaseHelper.booleanToNumber(sesion.getCanalInternet()));
             datos.put("fechaInicioVentaOnline", sesion.getFechaInicioVentaOnline());
 
-            datos.put(
-                    "textoFechasInternet",
-                    	ResourceProperties.getProperty(getLocale(), "venta.plazoInternet",
-                            DateUtils.dateToSpanishStringWithHour(sesion.getFechaInicioVentaOnline()),
-                            DateUtils.dateToSpanishStringWithHour(sesion.getFechaFinVentaOnline())));
-            
+			if (sesion.getFechaInicioVentaOnline() != null && sesion.getFechaFinVentaOnline() != null)
+            	datos.put(
+                    	"textoFechasInternet",
+                    		ResourceProperties.getProperty(getLocale(), "venta.plazoInternet",
+                            	DateUtils.dateToSpanishStringWithHour(sesion.getFechaInicioVentaOnline()),
+                            	DateUtils.dateToSpanishStringWithHour(sesion.getFechaFinVentaOnline())));
+
             if (sesion.getEnPlazoVentaInternet())
                 datos.put("clase", "contieneBoton");
 
