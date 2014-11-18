@@ -359,9 +359,11 @@ public class Sesion
 	@JsonIgnore
 	public boolean getEnPlazoVentaInternet()
     {
-        Date ahora = new Date();
+		if (fechaInicioVentaOnline == null || fechaFinVentaOnline == null)
+			return false;
 
-        return ahora.before(getFechaFinVentaOnline()) && ahora.after(fechaInicioVentaOnline);
+		Date ahora = new Date();
+        return ahora.before(fechaFinVentaOnline) && ahora.after(fechaInicioVentaOnline);
     }
 
     public long getButacasVendidas()
