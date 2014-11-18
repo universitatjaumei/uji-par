@@ -91,7 +91,7 @@ public class Configuration
 	private static final String GENERAR_CIFRADO = "uji.pgp.generateCifrado";
 
 	private static final Logger log = LoggerFactory.getLogger(Configuration.class);
-
+	private static final String SHOW_SESIONES_SIN_VENTA_INTERNET = "uji.par.showSesionesSinVentaInternet";
 
 
 	private static String fileName = "/etc/uji/par/app.properties";
@@ -555,5 +555,15 @@ public class Configuration
 		if (tiposInformeGenerales == null)
 			tiposInformeGenerales = TipoInforme.getDefaultGenerales();
 		return tiposInformeGenerales;
+	}
+
+	public static boolean showSesionesSinVentaInternet() {
+		String showSesionesSinVentaInternet = getNoObligatoryProperty(SHOW_SESIONES_SIN_VENTA_INTERNET);
+		if (showSesionesSinVentaInternet == null)
+			return true;
+		else if (showSesionesSinVentaInternet != null && showSesionesSinVentaInternet.trim().equalsIgnoreCase("true"))
+			return true;
+
+		return false;
 	}
 }

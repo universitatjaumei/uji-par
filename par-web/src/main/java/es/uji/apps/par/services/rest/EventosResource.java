@@ -22,6 +22,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import es.uji.apps.par.builders.PublicPageBuilderInterface;
+import es.uji.apps.par.config.Configuration;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.sanselan.ImageReadException;
 
@@ -200,6 +201,9 @@ public class EventosResource extends BaseResource
         {
         	if (sesion.getFechaCelebracion().before(cal.getTime()))
         		continue;
+
+			if (!Configuration.showSesionesSinVentaInternet())
+				continue;
         	
             Map<String, Object> datos = new HashMap<String, Object>();
 
@@ -219,7 +223,8 @@ public class EventosResource extends BaseResource
             if (sesion.getEnPlazoVentaInternet())
                 datos.put("clase", "contieneBoton");
 
-            sesionesPlantilla.add(datos);
+
+	        sesionesPlantilla.add(datos);
         }
 
         return sesionesPlantilla;
