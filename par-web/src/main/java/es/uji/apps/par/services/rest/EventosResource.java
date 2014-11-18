@@ -202,7 +202,7 @@ public class EventosResource extends BaseResource
         	if (sesion.getFechaCelebracion().before(cal.getTime()))
         		continue;
 
-			if (!Configuration.showSesionesSinVentaInternet())
+			if (!Configuration.showSesionesSinVentaInternet() && !sesion.getCanalInternet())
 				continue;
         	
             Map<String, Object> datos = new HashMap<String, Object>();
