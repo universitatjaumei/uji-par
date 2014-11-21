@@ -1,19 +1,5 @@
 package es.uji.apps.par.services.rest;
 
-import java.util.HashMap;
-
-import javax.ws.rs.core.Response.Status;
-
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.web.context.ContextLoaderListener;
-import org.springframework.web.context.request.RequestContextListener;
-
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;
@@ -25,26 +11,34 @@ import com.sun.jersey.spi.spring.container.servlet.SpringServlet;
 import com.sun.jersey.test.framework.WebAppDescriptor;
 import com.sun.jersey.test.framework.spi.container.TestContainerFactory;
 import com.sun.jersey.test.framework.spi.container.grizzly.web.GrizzlyWebTestContainerFactory;
-
 import es.uji.apps.par.exceptions.CampoRequeridoException;
-import es.uji.apps.par.exceptions.ResponseMessage;
 import es.uji.apps.par.model.Localizacion;
+import es.uji.apps.par.model.ResultatOperacio;
+import org.junit.Assert;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.springframework.web.context.ContextLoaderListener;
+import org.springframework.web.context.request.RequestContextListener;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@TransactionConfiguration(transactionManager = "transactionManager")
-@ContextConfiguration(locations = { "/applicationContext-db-test.xml" })
+import javax.ws.rs.core.Response.Status;
+import java.util.HashMap;
+
 public class LocalizacionesResourceTest extends BaseResourceTest
 {
     private WebResource resource;
 
     public LocalizacionesResourceTest()
     {
-		super(new WebAppDescriptor.Builder(
-				"es.uji.apps.par.services.rest;com.fasterxml.jackson.jaxrs.json;es.uji.apps.par")
-				.contextParam("contextConfigLocation", "classpath:applicationContext-test.xml")
-				.contextParam("webAppRootKey", "paranimf-fw-uji.root")
-				.contextListenerClass(ContextLoaderListener.class).clientConfig(clientConfiguration())
-				.requestListenerClass(RequestContextListener.class).servletClass(SpringServlet.class).build());
+        super(
+                new WebAppDescriptor.Builder(
+                        "es.uji.apps.par.services.rest;com.fasterxml.jackson.jaxrs.json;es.uji.apps.par")
+                        .contextParam("contextConfigLocation",
+                                "classpath:applicationContext-db-test.xml")
+                        .contextParam("webAppRootKey", "paranimf-fw-uji.root")
+                        .contextListenerClass(ContextLoaderListener.class)
+                        .clientConfig(clientConfiguration())
+                        .requestListenerClass(RequestContextListener.class)
+                        .servletClass(SpringServlet.class).build());
 
         this.client().addFilter(new LoggingFilter());
         this.resource = resource().path("localizacion");
@@ -69,15 +63,13 @@ public class LocalizacionesResourceTest extends BaseResourceTest
     }
 
     @Test
-	@Ignore //sql de oracle
     public void getLocalizaciones()
     {
         ClientResponse response = resource.get(ClientResponse.class);
-        RestResponse serviceResponse = response.getEntity(RestResponse.class);
+        ResultatOperacio serviceResponse = response.getEntity(ResultatOperacio.class);
 
-        Assert.assertEquals(Status.OK.getStatusCode(), response.getStatus());
-        Assert.assertTrue(serviceResponse.getSuccess());
-        Assert.assertNotNull(serviceResponse.getData());
+        Assert.assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
+        Assert.assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), serviceResponse.getCodi());
     }
 
     @Test
@@ -86,14 +78,12 @@ public class LocalizacionesResourceTest extends BaseResourceTest
         Localizacion localizacion = preparaLocalizacion();
         localizacion.setNombreEs(null);
 
-        ClientResponse response = resource.post(ClientResponse.class, localizacion);
+        ClientResponse response = resource.type("application/json").post(ClientResponse.class, localizacion);
         Assert.assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
 
-        ResponseMessage resultatOperacio = response.getEntity(new GenericType<ResponseMessage>()
-        {
-        });
+        ResultatOperacio resultatOperacio = response.getEntity(ResultatOperacio.class);
         Assert.assertEquals(CampoRequeridoException.REQUIRED_FIELD + "Nombre",
-                resultatOperacio.getMessage());
+                resultatOperacio.getDescripcio());
     }
 
     @SuppressWarnings("rawtypes")
@@ -106,22 +96,33 @@ public class LocalizacionesResourceTest extends BaseResourceTest
     public void addLocalizacion()
     {
         Localizacion localizacion = preparaLocalizacion();
-        ClientResponse response = resource.post(ClientResponse.class, localizacion);
+        ClientResponse response = resource.type("application/json").post(ClientResponse.class, localizacion);
         Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
         RestResponse restResponse = response.getEntity(new GenericType<RestResponse>()
         {
         });
+
+        String localizacionId = getFieldFromRestResponse(restResponse, "id");
+
         Assert.assertTrue(restResponse.getSuccess());
-        Assert.assertNotNull(getFieldFromRestResponse(restResponse, "id"));
+        Assert.assertNotNull(localizacionId);
         Assert.assertEquals(localizacion.getNombreEs(),
                 getFieldFromRestResponse(restResponse, "nombreEs"));
+
+        response = resource.queryParam("sala", localizacionId).get(ClientResponse.class);
+        RestResponse serviceResponse = response.getEntity(RestResponse.class);
+
+        Assert.assertEquals(Status.OK.getStatusCode(), response.getStatus());
+        Assert.assertTrue(serviceResponse.getSuccess());
+        Assert.assertNotNull(serviceResponse.getData());
     }
 
     @Test
+    @Ignore
     public void updateLocalizacion()
     {
         Localizacion localizacion = preparaLocalizacion();
-        ClientResponse response = resource.post(ClientResponse.class, localizacion);
+        ClientResponse response = resource.type("application/json").post(ClientResponse.class, localizacion);
         Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
         RestResponse restResponse = response.getEntity(new GenericType<RestResponse>()
         {
@@ -132,7 +133,7 @@ public class LocalizacionesResourceTest extends BaseResourceTest
 
         localizacion.setNombreEs("Prueba2");
 
-        response = resource.path(id).put(ClientResponse.class, localizacion);
+        response = resource.path(id).type("application/json").put(ClientResponse.class, localizacion);
         Assert.assertEquals(Status.OK.getStatusCode(), response.getStatus());
         restResponse = response.getEntity(new GenericType<RestResponse>()
         {
@@ -146,7 +147,7 @@ public class LocalizacionesResourceTest extends BaseResourceTest
     public void updateLocalizacionAndRemoveNombre()
     {
         Localizacion localizacion = preparaLocalizacion();
-        ClientResponse response = resource.post(ClientResponse.class, localizacion);
+        ClientResponse response = resource.type("application/json").post(ClientResponse.class, localizacion);
         Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
         RestResponse restResponse = response.getEntity(new GenericType<RestResponse>()
         {
@@ -156,13 +157,11 @@ public class LocalizacionesResourceTest extends BaseResourceTest
         Assert.assertNotNull(id);
 
         localizacion.setNombreEs("");
-        response = resource.path(id).put(ClientResponse.class, localizacion);
+        response = resource.path(id).type("application/json").put(ClientResponse.class, localizacion);
         Assert.assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
-        ResponseMessage parResponseMessage = response.getEntity(new GenericType<ResponseMessage>()
-        {
-        });
+        ResultatOperacio parResponseMessage = response.getEntity(ResultatOperacio.class);
 
         Assert.assertEquals(CampoRequeridoException.REQUIRED_FIELD + "Nombre",
-                parResponseMessage.getMessage());
+                parResponseMessage.getDescripcio());
     }
 }
