@@ -92,9 +92,10 @@ public class Configuration
 
 	private static final Logger log = LoggerFactory.getLogger(Configuration.class);
 	private static final String SHOW_SESIONES_SIN_VENTA_INTERNET = "uji.par.showSesionesSinVentaInternet";
+    public static final String JSON_LOCALIZACIONES_PATH = "/etc/uji/par/butacas/";
 
 
-	private static String fileName = "/etc/uji/par/app.properties";
+    private static String fileName = "/etc/uji/par/app.properties";
     private Properties properties;
     private static Configuration instance;
 
@@ -566,4 +567,8 @@ public class Configuration
 
 		return false;
 	}
+
+    public static String getPathJson() {
+        return JSON_LOCALIZACIONES_PATH;
+    }
 }

@@ -1,8 +1,8 @@
 Ext.define('Paranimf.controller.ComprasReservas', {
   extend: 'Ext.app.Controller',
 
-  views: ['EditModalWindow', 'EditBaseForm', 'EditBaseGrid', 'compra.PanelComprasReservas', 'compra.GridEventosComprasReservas', 'compra.GridSesionesComprasReservas', 'compra.PanelCompras', 'compra.GridCompras', 'compra.GridDetalleCompras'],
-  stores: ['Compras', 'EventosTaquillaAll', 'SesionesTaquillaAll', 'ButacasCompra'],
+  views: ['EditModalWindow', 'EditBaseForm', 'EditBaseGrid', 'compra.PanelComprasReservas', 'compra.GridEventosComprasReservas', 'compra.GridSesionesComprasReservas', 'compra.PanelCompras', 'compra.FormCambiaButaca', 'compra.GridCompras', 'compra.GridDetalleCompras'],
+  stores: ['Compras', 'EventosTaquillaAll', 'SesionesTaquillaAll', 'ButacasCompra', 'ButacasLibres'],
   models: ['Compra', 'Evento', 'Sesion', 'Butaca'],
 
   refs: [
@@ -30,6 +30,15 @@ Ext.define('Paranimf.controller.ComprasReservas', {
       ref: 'gridSesionesComprasReservas',
       selector: 'gridSesionesComprasReservas'
     }, {
+      ref: 'formCambiaButaca',
+      selector: 'formCambiaButaca'
+    }, {
+      ref: 'idCambiaButaca',
+      selector: 'formCambiaButaca textfield[name=id]'
+    }, {
+      ref: 'comboButacasLibres',
+      selector: 'formCambiaButaca combo[name=butaca]'
+    }, {
       ref: 'checkboxAnuladas',
       selector: 'gridCompras checkbox[action=showAnuladas]'
     }, {
@@ -52,6 +61,9 @@ Ext.define('Paranimf.controller.ComprasReservas', {
       selector: 'gridCompras button[action=passToCompra]'
     }, {
       ref: 'btAnularDetalle',
+      selector: 'gridDetalleCompras button[action=anular]'
+    }, {
+      ref: 'btCambiarButacaDetalle',
       selector: 'gridDetalleCompras button[action=anular]'
     }
   ],
@@ -110,6 +122,10 @@ Ext.define('Paranimf.controller.ComprasReservas', {
         beforechange: this.doRefresh
       },
 
+      'gridDetalleCompras button[action=cambiar]': {
+        click: this.cambiaButaca
+      },
+
       'gridDetalleCompras button[action=anular]': {
         click: this.anularButacas
       },
@@ -120,7 +136,15 @@ Ext.define('Paranimf.controller.ComprasReservas', {
 
       'panelCompras textfield[name=buscadorCompras]': {
         specialkey: this.buscarCompraConEnter
-      }
+      },
+
+      'formCambiaButaca': {
+        afterrender: this.butacasDisponibles
+      },
+
+      'formCambiaButaca button[action=save]': {
+        click: this.saveCambiaButaca
+      }, 
     });     
   },
 
@@ -251,6 +275,69 @@ Ext.define('Paranimf.controller.ComprasReservas', {
         }
       } else
         alert(UI.i18n.error.compraNoReserva);
+    }
+  },
+
+  cambiaButaca: function() {
+    var sesion = this.getGridSesionesComprasReservas().getSelectedRecord();
+    var today = new Date();
+    if (sesion.data.fechaCelebracion > today)
+    {
+      if (!this.getGridDetalleCompras().hasRowSelected()) {
+        alert(UI.i18n.message.selectRow);
+      }
+      else {
+        var record = this.getGridDetalleCompras().getSelectedRecord();
+        if (record.data.fila && record.data.numero)
+        {
+          if (confirm(UI.i18n.message.cambiarButacaSoloLocalizacion)) {
+            this.getGridDetalleCompras().edit('formCambiaButaca');
+          }
+        }
+        else {
+          alert(UI.i18n.message.noNumerada);
+        }
+      }
+    }
+    else {
+      alert(UI.i18n.message.sesionCelebrada);
+    }
+  },
+
+  butacasDisponibles: function () {
+    var record = this.getGridDetalleCompras().getSelectedRecord();
+    if (record) {
+      this.getComboButacasLibres().getStore().getProxy().url = urlPrefix + 'butacas/' + record.data.id + '/libres/' + record.data.localizacion;
+    }
+  },
+
+  saveCambiaButaca: function() {
+    if (this.getComboButacasLibres().getValue()) {
+      var valorCambioFilaButaca = this.getComboButacasLibres().getValue().split('#');
+      if (valorCambioFilaButaca.length == 2)
+      {
+        var fila = valorCambioFilaButaca[0];
+        var numero = valorCambioFilaButaca[1];
+        var idCambiaButaca = this.getIdCambiaButaca().getValue();
+
+        var me = this;
+
+        if (idCambiaButaca && fila && numero) {
+          Ext.Ajax.request({
+            url : urlPrefix + 'butacas/' + idCambiaButaca + '/cambia/' + fila + '/' + numero,
+            method: 'POST',
+            success: function (response) {
+              me.getFormCambiaButaca().up("window").close();
+              me.getGridDetalleCompras().setLoading(false);
+              me.getGridDetalleCompras().deseleccionar();
+              me.getGridDetalleCompras().getStore().load();
+            }, failure: function (response) {
+              me.getGridDetalleCompras().setLoading(false);
+              alert(UI.i18n.error.cambiarButaca);
+            }
+          });
+        }
+      }
     }
   },
 

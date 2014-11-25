@@ -14,6 +14,8 @@ UI =
             "peliculas": "Selecció de la pel·lícula a afegir a la multisessió"
         },
         "message": {
+            "cambiarButacaSoloLocalizacion": "Només és possible canviar de butaca dins d'una mateixa localització i tarifa. Si vol canviar de localització cal anul·lar aquesta butaca i realitzar una nova compra. Voleu canviar la butaca seleccionada?",
+            "sesionCelebrada": "Ja s'ha celebrat la sessió",
         	"event": "És obligatori seleccionar un event",
             "selectListValues": "Ha de triar els valors dels llistats, i tots els camps són obligatoris",
             "sureDeleteMessage": "Està segur/a d'esborrar el missatge seleccionat?",
@@ -133,6 +135,7 @@ UI =
             "fechasObligatorias": "Les dates són obligatòries",
             "desanularCompraReserva": "S'ha produït un error activant la compra/reserva",
             "anularEntrada": "S'ha produït un error anul·lant l'entrada",
+            "cambiarButaca": "S'ha produït un error anul·lant la butaca",
             "errorGenerandoFicheroICAA": "S'ha produït un error generant el fitxer per a l'ICAA",
             "markAsSent": "S'ha produït un error marcant les sessions com a enviades",
             "salaObligatoria": "És necessari triar primer la sala",
@@ -208,6 +211,7 @@ UI =
             "anular": "Anul·lar compra o reserva",
             "desanular": "Activar compra o reserva anul·lada",
             "anularEntrada": "Anul·lar entrada individual",
+            "cambiarButaca": "Canviar butaca",
             "buscar": "Cercar",
             "comprarButacaReservada": "Comprar butaques reservades seleccionades",
             "generateExcelTaquilla": "Excel de taquilla",
@@ -257,6 +261,7 @@ UI =
             "multisesion": "Pel·lícules de la multisessió"
         },
         "field": {
+            "butacaLibre": "Butaca lliure",
             "multisesion": "És multisessió?",
         	"codigo":"Codi",
         	"name":"Nombre",

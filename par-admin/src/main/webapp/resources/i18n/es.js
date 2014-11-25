@@ -14,6 +14,8 @@ UI =
             "peliculas": "Selección de la película a añadir a la multisessión"
         },
         "message": {
+            "cambiarButacaSoloLocalizacion": "Solo es posible cambiar de butaca dentro de una misma localización y tarifa. Si quiere cambiar de localización es necesario anular esta butaca y realizar una nueva compra. ¿Desea cambiar la butaca seleccionada?",
+            "sesionCelebrada": "Esta sesión ya se ha celebrado",
             "sureDelete": "¿Está seguro/a de borrar el registro seleccionado?",
             "noNumerada": "Sesión no numerada",
             "surePassarACompra": "¿Está seguro de pasar a compra la reserva seleccionada?",
@@ -172,6 +174,7 @@ UI =
             "form": "Formulario no válido",
             "error520": "La sesión programada no tiene fecha de sesión, y es obligatoria",
             "anularEntrada": "Se ha producido un error anulando la entrada",
+            "cambiarButaca": "Se ha producido un error cambiando la butaca",
             "deletedImage": "Se ha producido un error al borrar la imagen",
             "error546": "El código de la sala tiene más de 6 caracteres",
             "comprobandoSesionesMismaHora": "Error revisando si hay más sesiones a la misma hora en la misma sala",
@@ -207,6 +210,7 @@ UI =
             "generateExcelEvento": "Excel de los eventos",
             "anularPrevia": "Anular compra previa",
             "anularEntrada": "Anular entrada individual",
+            "cambiarButaca": "Cambiar butaca",
             "generatePdfTpv": "PDF de TPV",
             "saveFileICAA": "Generar fichero para el ICAA",
             "reply": "Responder",
@@ -257,6 +261,7 @@ UI =
             "multisesion": "Películas de la multisessión"
         },
         "field": {
+            "butacaLibre": "Butaca libre",
             "multisesion": "¿Es multisesión?",
             "idSala": "Identificador interno de la sala",
             "code": "Código",

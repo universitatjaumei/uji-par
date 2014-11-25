@@ -9,6 +9,8 @@ Ext.define('Paranimf.model.Butaca', {
       'numero',
       'tipo',
       'precio',
-      'anulada'
+      'anulada',
+      'texto',
+      'uuid'
    ]
 });

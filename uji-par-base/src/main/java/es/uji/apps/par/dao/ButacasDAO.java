@@ -45,6 +45,41 @@ public class ButacasDAO extends BaseDAO
     private QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
 
     @Transactional
+    public ButacaDTO getButaca(long id)
+    {
+        QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
+
+        JPAQuery query = new JPAQuery(entityManager);
+
+        return query
+                .from(qButacaDTO)
+                .leftJoin(qButacaDTO.parSesion, qSesionDTO).fetch()
+                .where(qButacaDTO.id.eq(id))
+                .uniqueResult(qButacaDTO);
+    }
+
+    @Transactional
+    public List<ButacaDTO> getButacasOcupadasNoAnuladasPorLocalizacion(long idSesion, String codigoLocalizacion)
+    {
+        QLocalizacionDTO qLocalizacionDTO = QLocalizacionDTO.localizacionDTO;
+        QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
+        QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
+
+        JPAQuery query = new JPAQuery(entityManager);
+
+        List<ButacaDTO> list = query
+                .from(qButacaDTO)
+                .join(qButacaDTO.parSesion, qSesionDTO)
+                .join(qButacaDTO.parLocalizacion, qLocalizacionDTO)
+                .leftJoin(qButacaDTO.parCompra, qCompraDTO).fetch()
+                .where(qSesionDTO.id.eq(idSesion)
+                        .and(qLocalizacionDTO.codigo.eq(codigoLocalizacion)).and(qButacaDTO.anulada.eq(false)))
+                .list(qButacaDTO);
+
+        return list;
+    }
+
+    @Transactional
     public List<ButacaDTO> getButacas(long idSesion, String codigoLocalizacion)
     {
         QLocalizacionDTO qLocalizacionDTO = QLocalizacionDTO.localizacionDTO;
@@ -288,6 +323,15 @@ public class ButacasDAO extends BaseDAO
 			sesionesDAO.setIncidencia(sesionDTO.getId(), TipoIncidencia.addAnulacionVentasToIncidenciaActual(sesionDTO.getIncidenciaId()));
 		}
 	}
+
+    @Transactional(rollbackFor=SesionSinFormatoIdiomaIcaaException.class)
+    public void cambiaFilaNumero(Long idButaca, String fila, String numero) throws IncidenciaNotFoundException {
+        QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
+
+        JPAUpdateClause updateButacas = new JPAUpdateClause(entityManager, qButacaDTO);
+        updateButacas.set(qButacaDTO.fila, fila).set(qButacaDTO.numero, numero).
+                where(qButacaDTO.id.eq(idButaca)).execute();
+    }
 
 	@Transactional
 	protected boolean isButacaFromReserva(Long idButaca) {

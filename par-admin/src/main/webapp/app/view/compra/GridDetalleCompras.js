@@ -11,11 +11,10 @@ Ext.define('Paranimf.view.compra.GridDetalleCompras', {
   tbar:[{
     action: 'anular',
     text: UI.i18n.button.anularEntrada
-  }/*, {
-    xtype: 'checkbox',
-    fieldLabel: UI.i18n.field.mostrarAnuladas,
-    labelWidth: 120
-  }*/],
+  }, {
+    action: 'cambiar',
+    text: UI.i18n.button.cambiarButaca
+  }],
    
   dockedItems: [{
     xtype: 'pagingtoolbar',

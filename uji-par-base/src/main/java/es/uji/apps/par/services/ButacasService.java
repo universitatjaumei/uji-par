@@ -1,21 +1,25 @@
 package es.uji.apps.par.services;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.mysema.query.Tuple;
-
+import es.uji.apps.par.comparator.ButacaComparator;
+import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.dao.ButacasDAO;
 import es.uji.apps.par.dao.LocalizacionesDAO;
 import es.uji.apps.par.db.ButacaDTO;
 import es.uji.apps.par.db.CompraDTO;
 import es.uji.apps.par.db.LocalizacionDTO;
 import es.uji.apps.par.db.TarifaDTO;
+import es.uji.apps.par.exceptions.ButacaOcupadaException;
+import es.uji.apps.par.i18n.ResourceProperties;
 import es.uji.apps.par.model.Butaca;
 import es.uji.apps.par.model.DisponiblesLocalizacion;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.*;
 
 @Service
 public class ButacasService
@@ -25,6 +29,11 @@ public class ButacasService
     
     @Autowired
     private LocalizacionesDAO localizacionesDAO;
+
+    public ButacaDTO getButaca(long idButaca)
+    {
+        return butacasDAO.getButaca(idButaca);
+    }
 
     public List<ButacaDTO> getButacas(long idSesion, String codigoLocalizacion)
     {
@@ -106,4 +115,58 @@ public class ButacasService
         butacasDAO.updatePresentadas(sesionId, butacas); 
     }
 
+
+    public List<Butaca> getButacasDisponibles(Long butacaId, String tarifaId, Locale locale) throws IOException {
+        ButacaDTO butacaDTO = getButaca(butacaId);
+        List<ButacaDTO> butacasOcupadas = getButacasNoAnuladasPorLocalizacion(butacaDTO.getParSesion().getId(), tarifaId);
+
+        HashMap<String, List<String>> posicionesOcupadas = new HashMap<>();
+        for (ButacaDTO butacaOcupada:butacasOcupadas) {
+            if (!posicionesOcupadas.containsKey(butacaOcupada.getFila()))
+            {
+                posicionesOcupadas.put(butacaOcupada.getFila(), new ArrayList<String>());
+            }
+            posicionesOcupadas.get(butacaOcupada.getFila()).add(butacaOcupada.getNumero());
+        }
+
+        List<Butaca> butacasDisponibles = new ArrayList<>();
+
+
+        byte[] encoded = Files.readAllBytes(Paths.get(Configuration.getPathJson() + tarifaId + ".json"));
+        List<Butaca> butacasTotales = Butaca.parseaJSON(new String(encoded, "UTF-8"));
+
+        int i = 1;
+        for (Butaca butaca : butacasTotales) {
+            if (posicionesOcupadas.get(butaca.getFila()) == null || !posicionesOcupadas.get(butaca.getFila()).contains(butaca.getNumero())) {
+                butaca.setId(i);
+                butaca.setTexto(String.format(ResourceProperties.getProperty(locale, "entrada.butaca"), butaca.getFila(), butaca.getNumero()));
+                butaca.setUuid(butaca.getFila() + "#" + butaca.getNumero());
+
+                butacasDisponibles.add(butaca);
+                i++;
+            }
+        }
+
+        Collections.sort(butacasDisponibles, new ButacaComparator());
+
+        return butacasDisponibles;
+    }
+
+    public List<ButacaDTO> getButacasNoAnuladasPorLocalizacion(long id, String tarifaId) {
+        return butacasDAO.getButacasOcupadasNoAnuladasPorLocalizacion(id, tarifaId);
+    }
+
+    public void cambiaFilaNumero(Long butacaId, String fila, String numero) {
+        ButacaDTO butaca = getButaca(butacaId);
+        List<ButacaDTO> butacasOcupadasPorLocalizacion = getButacasNoAnuladasPorLocalizacion(butaca.getParSesion().getId(), butaca.getParLocalizacion().getCodigo());
+
+        for (ButacaDTO butacaDTO:butacasOcupadasPorLocalizacion) {
+            if (butacaDTO.getFila().equals(fila) && butacaDTO.getNumero().equals(numero))
+            {
+                throw new ButacaOcupadaException(butaca.getParSesion().getId(), butaca.getParLocalizacion().getCodigo(), fila, numero);
+            }
+        }
+
+        butacasDAO.cambiaFilaNumero(butacaId, fila, numero);
+    }
 }
