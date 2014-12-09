@@ -294,5 +294,8 @@ public class ComprasService
 
 	public void passarACompra(Long sesionId, Long idCompraReserva) {
 		comprasDAO.passarACompra(sesionId, idCompraReserva);
+        if (Configuration.isIdEntrada()) {
+            butacasDAO.asignarIdEntrada(idCompraReserva);
+        }
 	}
 }
