@@ -21,6 +21,7 @@ public class Sala
     private String tipo;
     private String formato;
     private String subtitulo;
+    private String htmlTemplateName;
     private Cine cine;
 
     public Sala()
@@ -62,6 +63,7 @@ public class Sala
         this.setTipo(salaDTO.getTipo());
         this.setFormato(salaDTO.getFormato());
         this.setSubtitulo(salaDTO.getSubtitulo());
+        this.setHtmlTemplateName(salaDTO.getHtmlTemplateName());
 
         if (salaDTO.getParCine() != null)
             this.setCine(Cine.cineDTOToCine(salaDTO.getParCine()));
@@ -85,6 +87,7 @@ public class Sala
         salaDTO.setTipo(sala.getTipo());
         salaDTO.setFormato(sala.getFormato());
         salaDTO.setSubtitulo(sala.getSubtitulo());
+        salaDTO.setHtmlTemplateName(sala.getHtmlTemplateName());
 
         if (sala.getCine() != null)
             salaDTO.setParCine(Cine.cineToCineDTO(sala.getCine()));
@@ -211,7 +214,15 @@ public class Sala
     {
         this.cine = cine;
     }
-    
+
+    public String getHtmlTemplateName() {
+        return htmlTemplateName;
+    }
+
+    public void setHtmlTemplateName(String htmlTemplateName) {
+        this.htmlTemplateName = htmlTemplateName;
+    }
+
     public static void checkValidity(String nombre, String codigo) throws RegistroSerializaException {
         if (nombre == null)
             throw new RegistroSerializaException(GeneralPARException.NOMBRE_SALA_NULO_CODE);

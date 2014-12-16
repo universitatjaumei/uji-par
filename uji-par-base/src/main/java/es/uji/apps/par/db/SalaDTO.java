@@ -55,6 +55,9 @@ public class SalaDTO implements Serializable
     @Column(name = "SUBTITULO")
     private String subtitulo;
 
+    @Column(name = "HTML_TEMPLATE_NAME")
+    private String htmlTemplateName;
+
     @ManyToOne
     @JoinColumn(name = "CINE_ID")
     private CineDTO parCine;
@@ -229,4 +232,12 @@ public class SalaDTO implements Serializable
 	public void setParPlantillas(List<PlantillaDTO> parPlantillas) {
 		this.parPlantillas = parPlantillas;
 	}
+
+    public String getHtmlTemplateName() {
+        return htmlTemplateName;
+    }
+
+    public void setHtmlTemplateName(String htmlTemplateName) {
+        this.htmlTemplateName = htmlTemplateName;
+    }
 }

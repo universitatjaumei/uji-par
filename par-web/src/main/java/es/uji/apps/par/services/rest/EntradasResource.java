@@ -591,9 +591,9 @@ public class EntradasResource extends BaseResource
     {
     	Locale locale = getLocale();
         String language = locale.getLanguage();
-        HTMLTemplate template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "butacasFragment", locale, APP);
 
         Sesion sesion = sesionesService.getSesion(sesionId);
+        HTMLTemplate template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + sesion.getSala().getHtmlTemplateName(), locale, APP);
 
         template.put("baseUrl", getBaseUrlPublic());
         template.put("idioma", language);
