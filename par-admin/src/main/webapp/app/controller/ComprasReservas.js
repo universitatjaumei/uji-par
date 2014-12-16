@@ -65,6 +65,9 @@ Ext.define('Paranimf.controller.ComprasReservas', {
     }, {
       ref: 'btCambiarButacaDetalle',
       selector: 'gridDetalleCompras button[action=anular]'
+    }, {
+      ref: 'pagingToolbarDetalle',
+      selector: 'gridDetalleCompras pagingtoolbar'
     }
   ],
 
@@ -430,6 +433,7 @@ Ext.define('Paranimf.controller.ComprasReservas', {
       var storeButacas = this.getGridDetalleCompras().getStore();
       var compraid = record[0].get('id');
 
+      this.getPagingToolbarDetalle().moveFirst();
       storeButacas.getProxy().url = urlPrefix + 'compra/' + compraid + '/butacas';
       storeButacas.load();
     }
