@@ -421,6 +421,7 @@ Ext.define('Paranimf.controller.ComprasReservas', {
   loadCompras: function() {
     this.getGridDetalleCompras().getStore().removeAll();
     this.setStoreCompras();
+    this.getPagingToolbar().moveFirst();
     this.getGridCompras().store.load();
   },
 
