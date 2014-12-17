@@ -229,7 +229,8 @@ UI =
             "generarInformeEvento": "Generar informe de l'event",
             "selectInforme": "Seleccioneu l'informe a generar",
             "generarInforme": "Generar informe",
-            "passToCompra": "Passar reserva a compra"
+            "passToCompra": "Passar reserva a compra",
+            "emails": "Copiar e-mails"
         },
         "calendar": {
             "calendar": "Calendari de reserves",
@@ -258,7 +259,8 @@ UI =
             "sesionesICAA": "Sessions realitzades entre les dates seleccionades",
             "tarifas": "Gestió de les tarifes de preus",
             "informeSessions": "Informes de sessió",
-            "multisesion": "Pel·lícules de la multisessió"
+            "multisesion": "Pel·lícules de la multisessió",
+            "client": "Clients"
         },
         "field": {
             "butacaLibre": "Butaca lliure",
@@ -308,6 +310,9 @@ UI =
 			"phone":"Telèfon",
 			"phoneMobile":"Telèfon mòbil",
 			"address":"Adreça",
+			"poblacion": "Població",
+      "cp": "C.P.",
+      "provincia": "Provincia",
 			"observations":"Observacions",
 			"day":"Dia",
 			"startHour":"Hora d'inici",

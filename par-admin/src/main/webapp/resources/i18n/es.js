@@ -229,7 +229,8 @@ UI =
             "del": "Eliminar",
             "marcarComoEnviados": "Marcar como enviadas al ICAA",
             "generatePdfEfectivo": "PDF de efectivo",
-            "generatePdfEventos": "PDF SGAE"
+            "generatePdfEventos": "PDF SGAE",
+            "emails": "Copiar e-mails"
         },
         "calendar": {
             "week": "Semana (espacio seleccionado)",
@@ -258,7 +259,8 @@ UI =
             "localizaciones": "Gestión de las localizaciones",
             "tarifas": "Gestión de las tarifas de precios",
             "user": "Gestión de usuarios",
-            "multisesion": "Películas de la multisessión"
+            "multisesion": "Películas de la multisessión",
+            "client": "Clientes"
         },
         "field": {
             "butacaLibre": "Butaca libre",
@@ -319,6 +321,9 @@ UI =
             "importePagado": "Importe pagado",
             "awards": "Premios",
             "address": "Dirección",
+            "poblacion": "Población",
+            "cp": "C.P.",
+            "provincia": "Provincia",
             "active": "Activo",
             "duration_va": "Duració",
             "companyMulti": "Compañía",
