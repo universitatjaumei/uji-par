@@ -46,7 +46,7 @@ Ext.define('Paranimf.view.cliente.GridClientes', {
          flex: 3
       }, {
          dataIndex: 'cp',
-         text: UI.i18n.field.cp,
+         text: UI.i18n.field.codigoPostal,
          flex: 3
       }, {
          dataIndex: 'provincia',

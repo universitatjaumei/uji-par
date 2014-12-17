@@ -1,11 +1,10 @@
 package es.uji.apps.par.butacas;
 
-import java.util.ArrayList;
-import java.util.List;
+import es.uji.apps.par.model.Butaca;
 
 import javax.xml.bind.annotation.XmlRootElement;
-
-import es.uji.apps.par.model.Butaca;
+import java.util.ArrayList;
+import java.util.List;
 
 @XmlRootElement
 public class EstadoButacasRequest

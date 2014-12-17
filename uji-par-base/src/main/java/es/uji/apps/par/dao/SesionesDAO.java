@@ -84,7 +84,7 @@ public class SesionesDAO extends BaseDAO {
         JPASubQuery queryVendidas = new JPASubQuery();
         queryVendidas.from(qButacaDTO, qCompraDTO);
         queryVendidas.where(qSesionDTO.id.eq(qButacaDTO.parSesion.id).and(qButacaDTO.anulada.eq(false).or(qButacaDTO.anulada.isNull())).
-                and(qButacaDTO.parCompra.id.eq(qCompraDTO.id).and(qCompraDTO.reserva.eq(false))));
+                and(qButacaDTO.parCompra.id.eq(qCompraDTO.id).and(qCompraDTO.reserva.eq(false).and(qCompraDTO.parAbonado.isNull()))));
 
         JPASubQuery queryReservadas = new JPASubQuery();
         queryReservadas.from(qButacaDTO, qCompraDTO);
@@ -116,6 +116,16 @@ public class SesionesDAO extends BaseDAO {
         JPAQuery query = new JPAQuery(entityManager);
         return query.from(qSesionDTO).leftJoin(qSesionDTO.parSala, qSalaDTO).fetch().
                 where(qSesionDTO.parEvento.id.eq(eventoId));
+    }
+
+    @Transactional
+    public List<SesionDTO> getSesionesPorSala(long eventoId, long salaId, String sortParameter) {
+        QSalaDTO qSalaDTO = QSalaDTO.salaDTO;
+        JPAQuery query = new JPAQuery(entityManager);
+        List<SesionDTO> sesiones = query.from(qSesionDTO).leftJoin(qSesionDTO.parSala, qSalaDTO).fetch().
+                where(qSesionDTO.parEvento.id.eq(eventoId).and(qSalaDTO.id.eq(salaId))).orderBy(getSort(qSesionDTO, sortParameter)).list(qSesionDTO);
+
+        return sesiones;
     }
 
     @Transactional

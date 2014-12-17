@@ -2,9 +2,11 @@ package es.uji.apps.par.services;
 
 import com.mysema.query.Tuple;
 import es.uji.apps.par.config.Configuration;
+import es.uji.apps.par.dao.AbonadosDAO;
 import es.uji.apps.par.dao.ButacasDAO;
 import es.uji.apps.par.dao.ComprasDAO;
 import es.uji.apps.par.dao.SesionesDAO;
+import es.uji.apps.par.db.AbonadoDTO;
 import es.uji.apps.par.db.CompraDTO;
 import es.uji.apps.par.db.SesionDTO;
 import es.uji.apps.par.exceptions.*;
@@ -24,6 +26,9 @@ public class ComprasService
     private ComprasDAO comprasDAO;
 
     @Autowired
+    private AbonadosDAO abonadosDAO;
+
+    @Autowired
     private ButacasDAO butacasDAO;
 
     @Autowired
@@ -31,6 +36,9 @@ public class ComprasService
 
 	@Autowired
 	private SesionesDAO sesionesDAO;
+
+    @Autowired
+    private AbonosService abonosService;
 
     public ResultadoCompra registraCompraTaquilla(Long sesionId, List<Butaca> butacasSeleccionadas)
             throws NoHayButacasLibresException, ButacaOcupadaException, CompraSinButacasException, IncidenciaNotFoundException {
@@ -122,6 +130,31 @@ public class ComprasService
         return resultadoCompra;
     }
 
+    @Transactional(rollbackForClassName={"NoHayButacasLibresException","ButacaOcupadaException",
+            "CompraSinButacasException","IncidenciaNotFoundException"})
+    public synchronized ResultadoCompra registraCompraAbonoTaquilla(Long abonoId, CompraAbonado compraAbonado)
+            throws NoHayButacasLibresException, ButacaOcupadaException, CompraSinButacasException, IncidenciaNotFoundException {
+        if (compraAbonado != null && compraAbonado.getButacasSeleccionadas() != null && compraAbonado.getButacasSeleccionadas().size() == 0)
+            throw new CompraSinButacasException();
+
+        ResultadoCompra resultadoCompra = new ResultadoCompra();
+        Abono abono = abonosService.getAbono(abonoId);
+
+        Abonado abonado = compraAbonado.getAbonado();
+        abonado.setImporte(calculaImporteButacasAbono(abonoId, compraAbonado.getButacasSeleccionadas()));
+        abonado.setAbono(abono);
+        abonado = abonadosDAO.addAbonado(abonado);
+
+        for (SesionAbono sesion : abono.getSesiones()) {
+            CompraDTO compraDTO = comprasDAO.insertaCompraAbono(sesion.getSesion().getId(), new Date(), true, abonado);
+            butacasDAO.reservaButacas(sesion.getSesion().getId(), compraDTO, compraAbonado.getButacasSeleccionadas());
+        }
+        resultadoCompra.setCorrecta(true);
+        resultadoCompra.setId(abonado.getId());
+
+        return resultadoCompra;
+    }
+
     public BigDecimal calculaImporteButacas(Long sesionId, List<Butaca> butacasSeleccionadas, boolean taquilla)
     {
         BigDecimal importe = new BigDecimal("0");
@@ -143,6 +176,33 @@ public class ComprasService
         return importe;
     }
 
+    public BigDecimal calculaImporteButacasAbono(Long abonoId, List<Butaca> butacasSeleccionadas)
+    {
+        BigDecimal importe = new BigDecimal("0");
+        List<PreciosSesion> preciosSesion = abonosService.getPreciosAbono(abonoId);
+
+        Map<String, Map<Long, PreciosSesion>> preciosLocalizacion = new HashMap<String, Map<Long, PreciosSesion>>();
+        for (PreciosSesion sesion : preciosSesion) {
+            if (preciosLocalizacion.get(sesion.getLocalizacion().getCodigo()) != null)
+            {
+                preciosLocalizacion.get(sesion.getLocalizacion().getCodigo()).put(sesion.getTarifa().getId(), sesion);
+            }
+            else {
+                Map<Long, PreciosSesion> precios = new HashMap<Long, PreciosSesion>();
+                precios.put(sesion.getTarifa().getId(), sesion);
+                preciosLocalizacion.put(sesion.getLocalizacion().getCodigo(), precios);
+            }
+        }
+
+        for (Butaca butaca : butacasSeleccionadas)
+        {
+            Map<Long, PreciosSesion> mapaTarsifasPrecios = preciosLocalizacion.get(butaca.getLocalizacion());
+            importe = importe.add(mapaTarsifasPrecios.get(Long.valueOf(butaca.getTipo())).getPrecio());
+        }
+
+        return importe;
+    }
+
     @Transactional
     public void marcaPagada(long idCompra)
     {
@@ -160,6 +220,30 @@ public class ComprasService
             butacasDAO.asignarIdEntrada(idCompra);
         }
 	}
+
+    @Transactional
+    public void marcaAbonadoPagado(long idAbonado)
+    {
+        AbonadoDTO abonado = abonadosDAO.getAbonado(idAbonado);
+        for (CompraDTO compra : abonado.getParCompras()) {
+            comprasDAO.marcarPagada(compra.getId());
+            if (Configuration.isIdEntrada()) {
+                butacasDAO.asignarIdEntrada(compra.getId());
+            }
+        }
+    }
+
+    @Transactional
+    public void marcarAbonadoPagadoConReferenciaDePago(Long idAbonado, String referenciaDePago)
+    {
+        AbonadoDTO abonado = abonadosDAO.getAbonado(idAbonado);
+        for (CompraDTO compra : abonado.getParCompras()) {
+            comprasDAO.marcarPagadaConReferenciaDePago(compra.getId(), referenciaDePago);
+            if (Configuration.isIdEntrada()) {
+                butacasDAO.asignarIdEntrada(compra.getId());
+            }
+        }
+    }
 
     public void eliminaPendientes() throws IncidenciaNotFoundException {
         comprasDAO.eliminaComprasPendientes();
@@ -262,6 +346,14 @@ public class ComprasService
 		comprasDAO.anularCompraReserva(idCompraReserva, true);
 	}
 
+    @Transactional
+    public void anularCompraAbonado(Long idAbonado) throws IncidenciaNotFoundException {
+        AbonadoDTO abonado = abonadosDAO.getAbonado(idAbonado);
+        for (CompraDTO compra : abonado.getParCompras()) {
+            comprasDAO.anularCompraReserva(compra.getId(), true);
+        }
+    }
+
 	@Transactional
     public void desanularCompraReserva(Long idCompraReserva) throws ButacaOcupadaAlActivarException {
         comprasDAO.desanularCompraReserva(idCompraReserva);
@@ -298,4 +390,9 @@ public class ComprasService
             butacasDAO.asignarIdEntrada(idCompraReserva);
         }
 	}
+
+    @Transactional
+    public void actualizaDatosAbonado(Abonado abonado) {
+        comprasDAO.updateDatosAbonadoCompra(abonado);
+    }
 }

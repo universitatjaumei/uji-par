@@ -5,6 +5,9 @@
   <persistence-unit name="persistenceUnit" transaction-type="RESOURCE_LOCAL">
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
 
+    <class>es.uji.apps.par.db.AbonadoDTO</class>
+    <class>es.uji.apps.par.db.SesionAbonoDTO</class>
+    <class>es.uji.apps.par.db.AbonoDTO</class>
 	<class>es.uji.apps.par.db.ButacaDTO</class>
 	<class>es.uji.apps.par.db.CineDTO</class>
 	<class>es.uji.apps.par.db.CompraDTO</class>

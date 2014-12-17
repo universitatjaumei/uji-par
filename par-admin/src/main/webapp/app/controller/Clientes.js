@@ -62,6 +62,8 @@ Ext.define('Paranimf.controller.Clientes', {
                }
             }
             me.getMailsText().setValue(emails);
+            var input = me.getMailsText().inputEl.dom;
+            input.selectionStart = 0;
         }, failure: function (response) {
            me.getFormMails().up("window").close();
            alert(UI.i18n.error.loadingPrecios);

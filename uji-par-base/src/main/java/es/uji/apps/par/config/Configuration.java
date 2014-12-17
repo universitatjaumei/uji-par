@@ -90,6 +90,9 @@ public class Configuration
     private static final String LANGS_ALLOWED = "uji.par.langsAllowed";
 	private static final String GENERAR_CIFRADO = "uji.pgp.generateCifrado";
 
+    private static final String MENU_ABONO = "uji.par.menuAbonos";
+    private static final String MENU_ICAA = "uji.par.menuICAA";
+
 	private static final Logger log = LoggerFactory.getLogger(Configuration.class);
 	private static final String SHOW_SESIONES_SIN_VENTA_INTERNET = "uji.par.showSesionesSinVentaInternet";
     public static final String JSON_LOCALIZACIONES_PATH = "/etc/uji/par/butacas/";
@@ -558,17 +561,33 @@ public class Configuration
 		return tiposInformeGenerales;
 	}
 
-	public static boolean showSesionesSinVentaInternet() {
-		String showSesionesSinVentaInternet = getNoObligatoryProperty(SHOW_SESIONES_SIN_VENTA_INTERNET);
-		if (showSesionesSinVentaInternet == null)
-			return true;
-		else if (showSesionesSinVentaInternet != null && showSesionesSinVentaInternet.trim().equalsIgnoreCase("true"))
-			return true;
+    public static boolean showSesionesSinVentaInternet() {
+        String showSesionesSinVentaInternet = getNoObligatoryProperty(SHOW_SESIONES_SIN_VENTA_INTERNET);
+        if (showSesionesSinVentaInternet == null)
+            return true;
+        else if (showSesionesSinVentaInternet != null && showSesionesSinVentaInternet.trim().equalsIgnoreCase("true"))
+            return true;
 
-		return false;
-	}
+        return false;
+    }
 
     public static String getPathJson() {
         return JSON_LOCALIZACIONES_PATH;
+    }
+
+    public static boolean isMenuAbono() {
+        String menuAbono = getNoObligatoryProperty(MENU_ABONO);
+        if (menuAbono == null || !menuAbono.equalsIgnoreCase("true"))
+            return false;
+        else
+            return true;
+    }
+
+    public static boolean isMenuICAA() {
+        String menuICAA = getNoObligatoryProperty(MENU_ICAA);
+        if (menuICAA == null || !menuICAA.equalsIgnoreCase("true"))
+            return false;
+        else
+            return true;
     }
 }

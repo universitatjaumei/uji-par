@@ -2,6 +2,7 @@ package es.uji.apps.par.services.rest;
 
 import java.net.URI;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -40,6 +41,22 @@ public class PlantillasPreciosResource extends BaseResource{
     {
         return Response.ok().entity(new RestResponse(true, plantillaPreciosService.getAll(sort, start, limit), 
         		plantillaPreciosService.getTotalPlantillaPrecios())).build();
+    }
+
+    @GET
+    @Path("abonos")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllPlatnillasAbonos(@QueryParam("sort") String sort)
+    {
+        List<Plantilla> plantillasPrecio = plantillaPreciosService.getAll(sort, 0, 10000);
+        for (int i = plantillasPrecio.size() - 1; i >= 0; i--) {
+            if (plantillasPrecio.get(i).getId() == -1) {
+                plantillasPrecio.remove(i);
+                break;
+            }
+        }
+
+        return Response.ok().entity(new RestResponse(true, plantillasPrecio, 0)).build();
     }
 
     @DELETE

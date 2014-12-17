@@ -1,34 +1,24 @@
 package es.uji.apps.par.services;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.mysema.query.Tuple;
+import es.uji.apps.par.dao.EventosDAO;
+import es.uji.apps.par.dao.LocalizacionesDAO;
+import es.uji.apps.par.dao.SesionesAbonosDAO;
+import es.uji.apps.par.dao.SesionesDAO;
+import es.uji.apps.par.db.PreciosSesionDTO;
+import es.uji.apps.par.db.SesionDTO;
+import es.uji.apps.par.db.TarifaDTO;
+import es.uji.apps.par.exceptions.CampoRequeridoException;
+import es.uji.apps.par.exceptions.FechasInvalidasException;
 import es.uji.apps.par.exceptions.IncidenciaNotFoundException;
+import es.uji.apps.par.model.*;
+import es.uji.apps.par.utils.DateUtils;
 import es.uji.apps.par.utils.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mysema.query.Tuple;
-
-import es.uji.apps.par.exceptions.CampoRequeridoException;
-import es.uji.apps.par.exceptions.FechasInvalidasException;
-import es.uji.apps.par.dao.EventosDAO;
-import es.uji.apps.par.dao.LocalizacionesDAO;
-import es.uji.apps.par.dao.SesionesDAO;
-import es.uji.apps.par.db.PreciosSesionDTO;
-import es.uji.apps.par.db.SesionDTO;
-import es.uji.apps.par.db.TarifaDTO;
-import es.uji.apps.par.model.Evento;
-import es.uji.apps.par.model.Localizacion;
-import es.uji.apps.par.model.PreciosPlantilla;
-import es.uji.apps.par.model.PreciosSesion;
-import es.uji.apps.par.model.Sesion;
-import es.uji.apps.par.model.Tarifa;
-import es.uji.apps.par.utils.DateUtils;
+import java.util.*;
 
 @Service
 public class SesionesService
@@ -38,12 +28,32 @@ public class SesionesService
     
     @Autowired
     private EventosDAO eventosDAO;
+
+    @Autowired
+    private SesionesAbonosDAO sesionAbonoDAO;
     
     @Autowired
     private LocalizacionesDAO localizacionesDAO;
     
     @Autowired
     private PreciosPlantillaService preciosPlantillaService;
+
+    public List<SesionAbono> getSesionesAbono(Long abonoId, String sortParameter, int start, int limit)
+    {
+        List<SesionAbono> sesionesAbonos = sesionAbonoDAO.getSesiones(abonoId, sortParameter, start, limit);
+
+        for (SesionAbono sesionAbono : sesionesAbonos)
+        {
+            Sesion sesion = sesionAbono.getSesion();
+            sesion.setFechaCelebracionWithDate(new Date(sesion.getFechaCelebracion().getTime()/1000));
+            if (sesion.getFechaInicioVentaOnline() != null)
+                sesion.setFechaInicioVentaOnlineWithDate(new Date(sesion.getFechaInicioVentaOnline().getTime()/1000));
+            if (sesion.getFechaFinVentaOnline() != null)
+                sesion.setFechaFinVentaOnlineWithDate(new Date(sesion.getFechaFinVentaOnline().getTime()/1000));
+        }
+
+        return sesionesAbonos;
+    }
     
     public List<Sesion> getSesiones(Long eventoId, String sortParameter, int start, int limit)
     {
@@ -69,6 +79,17 @@ public class SesionesService
             listaSesiones.add(sesion);
         }
         
+        return listaSesiones;
+    }
+
+    public List<Sesion> getSesionesPorSala(Long eventoId, Long salaId, String sortParameter) {
+
+        List<Sesion> listaSesiones = new ArrayList<Sesion>();
+        List<SesionDTO> sesiones = sesionDAO.getSesionesPorSala(eventoId, salaId, sortParameter);
+
+        for (SesionDTO sesionDB: sesiones) {
+            listaSesiones.add(new Sesion(sesionDB));
+        }
         return listaSesiones;
     }
     
@@ -160,6 +181,11 @@ public class SesionesService
     public void removeSesion(Integer id)
     {
         sesionDAO.removeSesion(id);
+    }
+
+    public void removeSesionAbono(Long id)
+    {
+        sesionAbonoDAO.removeSesionAbono(id);
     }
 
     @Transactional(rollbackForClassName={"CampoRequeridoException","FechasInvalidasException",
@@ -462,5 +488,9 @@ public class SesionesService
     public Pair getNumeroSesionesMismaHoraYSala(Long sesionId, long salaId, Date fechaCelebracion) {
         return sesionDAO.getCantidadSesionesMismaFechaYLocalizacion(DateUtils.dateToTimestampSafe(fechaCelebracion),
                 salaId, sesionId);
+    }
+
+    public int getTotalSesionesAbono(Long abonoId) {
+        return sesionAbonoDAO.getTotalSesionesAbono(abonoId);
     }
 }

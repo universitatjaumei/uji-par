@@ -115,7 +115,7 @@ public class ButacasDAO extends BaseDAO
                 .join(qButacaDTO.parSesion, qSesionDTO)
                 .join(qButacaDTO.parLocalizacion, qLocalizacionDTO).fetch()
                 .leftJoin(qButacaDTO.parCompra, qCompraDTO).fetch()
-                .where(qSesionDTO.id.eq(idSesion).and(qButacaDTO.tipo.castToNum(Long.class).eq(qTarifaDTO.id)).and(qCompraDTO.reserva.eq(false)))
+                .where(qSesionDTO.id.eq(idSesion).and(qButacaDTO.tipo.castToNum(Long.class).eq(qTarifaDTO.id)).and(qCompraDTO.reserva.eq(false)).and(qCompraDTO.parAbonado.isNull()))
             .list(qButacaDTO, qTarifaDTO.nombre, qTarifaDTO.id);
 
         return list;

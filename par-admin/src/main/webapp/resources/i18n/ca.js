@@ -66,7 +66,9 @@ UI =
             "confirmVentaDegradada": "Activar la venda per a events acabats es recomana únicament per a introduir vendes que no es van poder fer en el moment en el que estava la taquilla oberta. Està segur de continuar?",
             "confirmReprogramacio": "Hi han sessions ja definides per a aquesta hora en aquesta sala. Vols reprogramar la sessió i mantindre aquesta com la vàlida?",
             "compraAnuladaOk": "Compra anul·lada correctament",
-            "recordatorioDevolverEntradas": "Hi han entrades venudes: recorde que primer ha de retornar totes les entrades de la sessió que es vol anul·lar"
+            "recordatorioDevolverEntradas": "Hi han entrades venudes: recorde que primer ha de retornar totes les entrades de la sessió que es vol anul·lar",
+            "selectAbono": "És obligatori seleccionar un abonament",
+            "addAbonado": "Crear nou abonat"
         },
         "storeWeekDay": {
             "wed": "Dimecres",
@@ -78,6 +80,8 @@ UI =
             "mon": "Dilluns"
         },
         "error": {
+            "tieneAbonados": "Hi ha abonats associats a l'abonament, elimina'ls primer",
+            "noModificableTieneAbonados": "No és possible modificar aquest atribut de l'abonament ja que té abonats amb compres",
             "peliculaJaAfegida": "Pel·lícula ja afegida",
             "element": "Error esborrant l'element",
             "calendar": "Error carregant el calendari",
@@ -93,6 +97,7 @@ UI =
             "errorReservandoButacas": "S'ha produït un error registrant la reserva de butaques",
             "errorRealizaPago": "S'ha produït un error iniciant el pagament amb targeta",
             "errorReferenciaDePago": "Ha de realitzar el pagament des de la TPV, i després de l'operació, introduir la referència de pagament a la casella corresponent",
+            "selectSala": "Ha de seleccionar una sala per a l'abonament (sessions d'una única sala)",
             "pinpad": {
             	"-1":"Inicialització de pagaments incorrecta",
             	"-2":"Dades entrada incorrectes per a realitzar transacció",
@@ -242,6 +247,7 @@ UI =
             "aviso": "* Per poder veure la vista setmanal i mensual de reserves ha de seleccionar un espai del desplegable, en cas contrari només tindrà accés a la vista diària de tots els espais"
         },
         "gridTitle": {
+            "abonados": "Gestió dels abonats",
             "user": "Gestió d'usuaris",
             "tipoEvento": "Gestió de tipus d'events",
             "eventos": "Gestió dels events",
@@ -260,9 +266,14 @@ UI =
             "tarifas": "Gestió de les tarifes de preus",
             "informeSessions": "Informes de sessió",
             "multisesion": "Pel·lícules de la multisessió",
+            "abonos": "Gestió del abonaments",
             "client": "Clients"
         },
         "field": {
+            "poblacion": "Població",
+            "codigoPostal": "C.P.",
+            "provincia": "Província",
+            "infoPeriodica": "Rebre informació periódicament?",
             "butacaLibre": "Butaca lliure",
             "multisesion": "És multisessió?",
         	"codigo":"Codi",
@@ -310,9 +321,6 @@ UI =
 			"phone":"Telèfon",
 			"phoneMobile":"Telèfon mòbil",
 			"address":"Adreça",
-			"poblacion": "Població",
-      "cp": "C.P.",
-      "provincia": "Provincia",
 			"observations":"Observacions",
 			"day":"Dia",
 			"startHour":"Hora d'inici",
@@ -357,6 +365,7 @@ UI =
             //"aulaTeatro": "Platea - Carnet jove",
             "localizacion": "Localització",
             "plantillaprecios": "Plantilla de preus",
+            "plantillapreciosSala": "Plantilla de preus/Sala",
             "horaInicioVentaOnline": "Hora d'inici de la venda online",
             "horaFinVentaOnline": "Hora de fi de la venda online",
             "reservesOnline": "Reserves online",

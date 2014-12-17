@@ -105,9 +105,17 @@ public class EventosResource
             sesiones = sesionesService.getSesionesConVendidasDateEnSegundos(eventoId, sort, start, limit);
             total = sesionesService.getTotalSesiones(eventoId);
         }
-        
-        
+
         return Response.ok().entity(new RestResponse(true, sesiones, total)).build();
+    }
+
+    @GET
+    @Path("{id}/sesiones/sala/{idSala}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getSesionesPorSala(@PathParam("id") Long eventoId, @PathParam("idSala") Long salaId,
+                                @QueryParam("sort") String sort, @QueryParam("start") int start, @QueryParam("limit") @DefaultValue("1000") int limit)
+    {
+        return Response.ok().entity(sesionesService.getSesionesPorSala(eventoId, salaId, sort)).build();
     }
     
     @GET

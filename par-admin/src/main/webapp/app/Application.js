@@ -128,14 +128,9 @@ Ext.application({
    },
 
    loadMenuContent: function() {
-      Ext.Ajax.request({
-         url: menuUrl,
-         success: function(response, opts) {
-            var menuPanel = Ext.ComponentQuery.query('viewport > panel[region=west]')[0];
-            menuPanel.update(response.responseText, false, function() {
-               seleccionaMenu(menu);
-            });
-         }
+      var menuPanel = Ext.ComponentQuery.query('viewport > panel[region=west]')[0];
+      menuPanel.update(menuHtml, false, function() {
+         seleccionaMenu(menu);
       });
    }
 });

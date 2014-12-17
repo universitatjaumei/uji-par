@@ -1,8 +1,11 @@
 package es.uji.apps.par.services;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import es.uji.apps.par.dao.AbonadosDAO;
+import es.uji.apps.par.db.AbonadoDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -30,6 +33,9 @@ public class PagoTarjetaService
     @InjectParam
     private ComprasDAO compras;
 
+    @InjectParam
+    private AbonadosDAO abonados;
+
     public ResultadoPagoPinpad realizaPago(long idCompra, String concepto)
     {
         CompraDTO compra = compras.getCompraById(idCompra);
@@ -44,6 +50,27 @@ public class PagoTarjetaService
             log.info("guardandoCodigoPago: idCompra:" + idCompra);
             compras.guardarCodigoPagoTarjeta(compra.getId(), resultado.getCodigo());
             lanzaThreadConsultaEstado(compra.getId());
+        }
+
+        return resultado;
+    }
+
+    public ResultadoPagoPinpad realizaPagoAbonado(long idAbonado, String concepto)
+    {
+        AbonadoDTO abonado = abonados.getAbonado(idAbonado);
+        ResultadoPagoPinpad resultado = pinpad.realizaPago(Long.toString(idAbonado), abonado.getImporte(), concepto);
+        if (resultado.getError())
+        {
+            compras.borrarCompraAbonadoNoPagada(idAbonado);
+        }
+        else
+        {
+            log.info("guardandoCodigoPago (abonado): idAbonado:" + idAbonado);
+            for (CompraDTO compra : abonado.getParCompras())
+            {
+                compras.guardarCodigoPagoTarjeta(compra.getId(), resultado.getCodigo());
+            }
+            lanzaThreadConsultaEstadoAbonado(idAbonado);
         }
 
         return resultado;
@@ -92,6 +119,49 @@ public class PagoTarjetaService
         }.start();
     }
 
+    private void lanzaThreadConsultaEstadoAbonado(final long idAbonado)
+    {
+        new Thread()
+        {
+            @Override
+            public void run()
+            {
+                while (true)
+                {
+                    EstadoPinpad estado = pinpad.getEstadoPinpad(Long.toString(idAbonado));
+                    pagosPendientes.put(idAbonado, estado);
+
+                    if (tieneCodigoAccion(estado))
+                    {
+                        if (pagoCorrecto(estado))
+                        {
+                            log.info("marcarPagada (abonado): idAbonado:" + idAbonado);
+                            compras.marcarAbonadoPagadaConRecibo(idAbonado, estado.getRecibo());
+                        }
+                        else
+                        {
+                            compras.borrarCompraAbonadoNoPagada(idAbonado);
+                        }
+
+                        return;
+                    }
+                    else
+                    {
+                        try
+                        {
+                            Thread.sleep(1000);
+                        }
+                        catch (InterruptedException e)
+                        {
+                            log.error("Sleep en bucle de consulta estado (abonado): " + e);
+                        }
+                    }
+                }
+            }
+
+        }.start();
+    }
+
     private boolean pagoCorrecto(EstadoPinpad estado)
     {
         return estado.getCodigoAccion().equals(PAGO_OK_TARJETA_MAGNETICA)
@@ -103,13 +173,13 @@ public class PagoTarjetaService
         return estado != null && estado.getCodigoAccion()!=null && !estado.getCodigoAccion().equals("");
     }
 
-    public EstadoPinpad consultaEstadoPago(Long idCompra)
+    public EstadoPinpad consultaEstadoPago(Long id)
     {
-        EstadoPinpad estado = pagosPendientes.get(idCompra);
+        EstadoPinpad estado = pagosPendientes.get(id);
 
         if (tieneCodigoAccion(estado))
         {
-            pagosPendientes.remove(idCompra);
+            pagosPendientes.remove(id);
         }
 
         return estado;
@@ -119,5 +189,4 @@ public class PagoTarjetaService
     {
         compras.borrarCompraNoPagada(idCompra);
     }
-
 }

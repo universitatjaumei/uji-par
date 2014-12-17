@@ -8,8 +8,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import es.uji.apps.par.db.*;
 import es.uji.apps.par.exceptions.IncidenciaNotFoundException;
 import es.uji.apps.par.ficheros.registros.TipoIncidencia;
+import es.uji.apps.par.model.Abonado;
+import es.uji.apps.par.model.Abono;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,13 +27,6 @@ import com.sun.istack.logging.Logger;
 import es.uji.apps.par.exceptions.ButacaOcupadaAlActivarException;
 import es.uji.apps.par.database.DatabaseHelper;
 import es.uji.apps.par.database.DatabaseHelperFactory;
-import es.uji.apps.par.db.ButacaDTO;
-import es.uji.apps.par.db.CompraDTO;
-import es.uji.apps.par.db.QButacaDTO;
-import es.uji.apps.par.db.QCompraDTO;
-import es.uji.apps.par.db.QEventoDTO;
-import es.uji.apps.par.db.QSesionDTO;
-import es.uji.apps.par.db.SesionDTO;
 import es.uji.apps.par.model.Sesion;
 import es.uji.apps.par.report.InformeModelReport;
 import es.uji.apps.par.utils.DateUtils;
@@ -42,6 +38,9 @@ public class ComprasDAO extends BaseDAO {
 
 	@Autowired
 	private SesionesDAO sesionDAO;
+
+    @Autowired
+    private AbonadosDAO abonadoDAO;
 
 	private DatabaseHelper dbHelper;
 
@@ -62,6 +61,20 @@ public class ComprasDAO extends BaseDAO {
 
 		return compraDTO;
 	}
+
+    @Transactional
+    public CompraDTO insertaCompraAbono(Long sesionId, Date fecha, boolean taquilla,
+                                   Abonado abonado) {
+        SesionDTO sesion = sesionDAO.getSesion(sesionId);
+
+        CompraDTO compraDTO = new CompraDTO(sesion, new Timestamp(
+                fecha.getTime()), taquilla, new BigDecimal(0), UUID.randomUUID()
+                .toString(), abonado);
+
+        entityManager.persist(compraDTO);
+
+        return compraDTO;
+    }
 
 	@Transactional
 	public CompraDTO reserva(Long sesionId, Date fecha, Date desde, Date hasta,
@@ -160,6 +173,18 @@ public class ComprasDAO extends BaseDAO {
 		entityManager.persist(compra);
 	}
 
+    @Transactional
+    public void marcarAbonadoPagadaConRecibo(Long idAbonado, String reciboPinpad) {
+        AbonadoDTO abonado = abonadoDAO.getAbonado(idAbonado);
+
+        for (CompraDTO compra : abonado.getParCompras()) {
+            compra.setPagada(true);
+            compra.setReciboPinpad(reciboPinpad);
+
+            entityManager.persist(compra);
+        }
+    }
+
 	@Transactional
 	public void marcarPagadaPasarela(Long idCompra, String codigoPago) {
 		CompraDTO compra = getCompraById(idCompra);
@@ -178,6 +203,19 @@ public class ComprasDAO extends BaseDAO {
 			entityManager.remove(compra);
 		}
 	}
+
+    @Transactional
+    public void borrarCompraAbonadoNoPagada(Long idAbonado) {
+        AbonadoDTO abonado = abonadoDAO.getAbonado(idAbonado);
+
+        if (abonado != null) {
+            for (CompraDTO compra : abonado.getParCompras()) {
+                if (compra != null && !compra.getPagada()) {
+                    entityManager.remove(compra);
+                }
+            }
+        }
+    }
 
 	@Transactional
 	public void borrarCompraNoPagada(String uuidCompra) {
@@ -274,7 +312,7 @@ public class ComprasDAO extends BaseDAO {
 		QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
 		QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
 		BooleanBuilder builder = new BooleanBuilder();
-		builder.and(qCompraDTO.parSesion.id.eq(sesionId));
+		builder.and(qCompraDTO.parSesion.id.eq(sesionId).and(qCompraDTO.parAbonado.isNull()));
 
 		if (showAnuladas == 0) {
 			builder.and(qCompraDTO.anulada.isNull().or(
@@ -635,6 +673,7 @@ public class ComprasDAO extends BaseDAO {
 				.join(qCompraDTO.parSesion, qSesionDTO)
 				.join(qCompraDTO.parButacas, qButacaDTO)
 				.where(qSesionDTO.id.in(idsSesiones)
+                        .and(qCompraDTO.parAbonado.isNull())
 						.and(qCompraDTO.reserva.eq(false))
 						.and(qCompraDTO.anulada.eq(false))
 						.and(qButacaDTO.anulada.eq(false))).distinct()
@@ -692,14 +731,14 @@ public class ComprasDAO extends BaseDAO {
 		JPAQuery query = new JPAQuery(entityManager);
 		QButacaDTO qButaca = QButacaDTO.butacaDTO;
 		Long vendidas = query.from(qButaca)
-			.where(qButaca.parSesion.id.eq(sesionId).and(qButaca.anulada.eq(false).and(qButaca.parCompra.reserva.eq(false)).and
+			.where(qButaca.parSesion.id.eq(sesionId).and(qButaca.anulada.eq(false).and(qButaca.parCompra.reserva.eq(false)).and(qButaca.parCompra.parAbonado.isNull()).and
 					(qButaca.parSesion.anulada.isNull().or(qButaca.parSesion.anulada.eq(false))))).count();
 		r.setNumeroEntradas(vendidas.intValue());
 
 		query = new JPAQuery(entityManager);
 		Long canceladas = query
 				.from(qButaca)
-				.where(qButaca.parSesion.id.eq(sesionId)
+				.where(qButaca.parSesion.id.eq(sesionId).and(qButaca.parCompra.parAbonado.isNull())
 				.and(qButaca.parSesion.anulada.isNull().or(qButaca.parSesion.anulada.eq(false)))
 				.and(qButaca.parCompra.reserva.eq(false).and(qButaca.anulada.eq(true)))).count();
 		r.setCanceladasTaquilla(canceladas.intValue());
@@ -724,4 +763,20 @@ public class ComprasDAO extends BaseDAO {
 						qCompraDTO.parSesion.id.eq(sesionId).and(
 								qCompraDTO.reserva.eq(true)))).execute();
 	}
+
+    public void updateDatosAbonadoCompra(Abonado abonado) {
+        QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
+        JPAUpdateClause updateC = new JPAUpdateClause(entityManager, qCompraDTO);
+        updateC.set(qCompraDTO.nombre, abonado.getNombre())
+                .set(qCompraDTO.apellidos, abonado.getApellidos())
+                .set(qCompraDTO.direccion, abonado.getDireccion())
+                .set(qCompraDTO.poblacion, abonado.getPoblacion())
+                .set(qCompraDTO.cp, abonado.getCp())
+                .set(qCompraDTO.provincia, abonado.getProvincia())
+                .set(qCompraDTO.telefono, abonado.getTelefono())
+                .set(qCompraDTO.email, abonado.getEmail())
+                .set(qCompraDTO.infoPeriodica, abonado.getInfoPeriodica())
+                .where(qCompraDTO.parAbonado.id.eq(abonado.getId())).execute();
+
+    }
 }

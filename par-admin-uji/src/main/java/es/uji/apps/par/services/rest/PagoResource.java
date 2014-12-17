@@ -43,12 +43,23 @@ public class PagoResource extends BaseResource
         return pagoTarjeta.realizaPago(idCompra, concepto);
     }
 
-    @GET
-    @Path("{idCompra}")
+    @POST
+    @Path("abonado/{idAbonado}")
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public EstadoPinpad estadoPago(@PathParam("idCompra") Long idCompra)
+    public ResultadoPagoPinpad realizaPagoAbonado(@PathParam("idAbonado") Integer idAbonado, String concepto)
     {
-        return pagoTarjeta.consultaEstadoPago(idCompra);
+        AuthChecker.canWrite(currentRequest);
+
+        return pagoTarjeta.realizaPagoAbonado(idAbonado, concepto);
+    }
+
+    @GET
+    @Path("{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public EstadoPinpad estadoPago(@PathParam("id") Long id)
+    {
+        return pagoTarjeta.consultaEstadoPago(id);
     }
 
     @DELETE

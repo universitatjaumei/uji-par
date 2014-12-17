@@ -61,11 +61,11 @@ public class Sesion
     {
         this.id = sesionDTO.getId();
         this.evento = Evento.eventoDTOtoEvento(sesionDTO.getParEvento());
-        this.fechaCelebracion = new Date(sesionDTO.getFechaCelebracion().getTime());
+        this.fechaCelebracion = new Date(sesionDTO.getFechaCelebracion().getTime() / 1000);
         if (sesionDTO.getFechaInicioVentaOnline() != null)
-            this.fechaInicioVentaOnline = new Date(sesionDTO.getFechaInicioVentaOnline().getTime());
+            this.fechaInicioVentaOnline = new Date(sesionDTO.getFechaInicioVentaOnline().getTime() / 1000);
         if (sesionDTO.getFechaFinVentaOnline() != null)
-            this.fechaFinVentaOnline = new Date(sesionDTO.getFechaFinVentaOnline().getTime());
+            this.fechaFinVentaOnline = new Date(sesionDTO.getFechaFinVentaOnline().getTime() / 1000);
         this.horaApertura = sesionDTO.getHoraApertura();
         this.canalInternet = sesionDTO.getCanalInternet();
         this.canalTaquilla = sesionDTO.getCanalTaquilla();

@@ -75,7 +75,7 @@ public class PlantillasDAO extends BaseDAO {
 	
 	@Transactional
 	public Plantilla update(Plantilla plantillaPrecios) {
-		JPAUpdateClause update = new JPAUpdateClause(entityManager, qPlantillaDTO);
+        JPAUpdateClause update = new JPAUpdateClause(entityManager, qPlantillaDTO);
         update.set(qPlantillaDTO.nombre, plantillaPrecios.getNombre())
         	.set(qPlantillaDTO.sala, new SalaDTO(plantillaPrecios.getSala().getId()))
             .where(qPlantillaDTO.id.eq(plantillaPrecios.getId())).execute();

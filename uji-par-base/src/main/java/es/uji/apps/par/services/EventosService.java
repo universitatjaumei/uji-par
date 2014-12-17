@@ -165,7 +165,7 @@ public class EventosService
 	}
 
     private List<EventoMultisesion> getEventosMultisesion(List<Tuple> list) {
-        List<EventoMultisesion> listPeliculas = new ArrayList<>();
+        List<EventoMultisesion> listPeliculas = new ArrayList<EventoMultisesion>();
         for (Tuple pelicula: list) {
 			EventoDTO eventoDTO = pelicula.get(0, EventoDTO.class);
 			String versionLinguistica = pelicula.get(1, String.class);

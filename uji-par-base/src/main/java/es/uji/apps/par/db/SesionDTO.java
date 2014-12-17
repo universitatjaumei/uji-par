@@ -94,6 +94,9 @@ public class SesionDTO implements Serializable {
   	@OneToMany(mappedBy="parSesion")
   	private List<EnviosSesionDTO> parEnviosSesion;
 
+    @OneToMany(mappedBy="parSesion")
+    private List<SesionAbonoDTO> parAbonos;
+
 	public SesionDTO() {
 	}
 	
@@ -274,4 +277,12 @@ public class SesionDTO implements Serializable {
 	public void setAnulada(Boolean anulada) {
 		this.anulada = anulada;
 	}
+
+    public List<SesionAbonoDTO> getParAbonos() {
+        return parAbonos;
+    }
+
+    public void setParAbonos(List<SesionAbonoDTO> parAbonos) {
+        this.parAbonos = parAbonos;
+    }
 }

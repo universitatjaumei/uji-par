@@ -1,23 +1,14 @@
 package es.uji.apps.par.db;
 
+import es.uji.apps.par.model.Abonado;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
 
 /**
  * The persistent class for the PAR_COMPRAS database table.
@@ -112,6 +103,10 @@ public class CompraDTO implements Serializable {
     
     @Column(name = "CADUCADA")
     private Boolean caducada;
+
+    @ManyToOne
+    @JoinColumn(name="ABONADO_ID")
+    private AbonadoDTO parAbonado;
     
 	public CompraDTO()
     {
@@ -129,6 +124,29 @@ public class CompraDTO implements Serializable {
         this.anulada = false;
         this.caducada = false;
 	}
+
+    public CompraDTO(SesionDTO sesion, Timestamp fecha, Boolean taquilla, BigDecimal importe, String uuid, Abonado abonado) {
+        this.parSesion = sesion;
+        this.fecha = fecha;
+        this.taquilla = taquilla;
+        this.importe = importe;
+        this.pagada = false;
+        this.uuid = uuid;
+        this.reserva = false;
+        this.anulada = false;
+        this.caducada = false;
+
+        this.nombre = abonado.getNombre();
+        this.apellidos = abonado.getApellidos();
+        this.telefono = abonado.getTelefono();
+        this.email = abonado.getEmail();
+        this.direccion = abonado.getDireccion();
+        this.poblacion = abonado.getPoblacion();
+        this.cp = abonado.getCp();
+        this.provincia = abonado.getProvincia();
+        this.infoPeriodica = abonado.getInfoPeriodica();
+        this.parAbonado = new AbonadoDTO(abonado.getId());
+    }
 
 	public long getId() {
 		return this.id;
@@ -346,7 +364,16 @@ public class CompraDTO implements Serializable {
 		this.referenciaPago = referenciaPago;
 	}
 
-	public static CompraDTO resultsetToDTO(ResultSet res) throws SQLException {
+
+    public AbonadoDTO getParAbonado() {
+        return parAbonado;
+    }
+
+    public void setParAbonado(AbonadoDTO parAbonado) {
+        this.parAbonado = parAbonado;
+    }
+
+    public static CompraDTO resultsetToDTO(ResultSet res) throws SQLException {
 		CompraDTO compra = new CompraDTO();
 		compra.setCaducada(res.getBoolean("caducada"));
 		compra.setId(res.getLong("id"));

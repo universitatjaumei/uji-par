@@ -1,31 +1,26 @@
 package es.uji.apps.par.drawer;
 
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.reflect.Type;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.imageio.ImageIO;
-
-import org.springframework.stereotype.Service;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sun.jersey.api.core.InjectParam;
-
 import es.uji.apps.par.butacas.DatosButaca;
 import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.db.ButacaDTO;
+import es.uji.apps.par.model.Abono;
+import es.uji.apps.par.model.SesionAbono;
+import es.uji.apps.par.services.AbonosService;
 import es.uji.apps.par.services.ButacasService;
+import org.springframework.stereotype.Service;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class MapaDrawer
@@ -35,6 +30,9 @@ public class MapaDrawer
 
     @InjectParam
     ButacasService butacasService;
+
+    @InjectParam
+    private AbonosService abonosService;
 
     private BufferedImage butacaOcupada;
     private BufferedImage butacaReservada;
@@ -61,6 +59,19 @@ public class MapaDrawer
     public ByteArrayOutputStream generaImagen(long idSesion, String codigoLocalizacion, boolean mostrarReservadas) throws IOException
     {
         BufferedImage img = dibujaButacas(idSesion, codigoLocalizacion, mostrarReservadas);
+
+        return imagenToOutputStream(img);
+    }
+
+    public ByteArrayOutputStream generaImagenAbono(long abonoId, String codigoLocalizacion, boolean mostrarReservadas) throws IOException
+    {
+        Abono abono = abonosService.getAbono(abonoId);
+        List<Long> sesionIds = new ArrayList<Long>();
+        for (SesionAbono sesion : abono.getSesiones()) {
+            sesionIds.add(sesion.getSesion().getId());
+        }
+
+        BufferedImage img = dibujaButacas(sesionIds, codigoLocalizacion, mostrarReservadas);
 
         return imagenToOutputStream(img);
     }
@@ -114,6 +125,14 @@ public class MapaDrawer
 
     private BufferedImage dibujaButacas(long idSesion, String localizacionDeImagen, boolean mostrarReservadas)
     {
+        List<Long> sesionIds = new ArrayList<Long>();
+        sesionIds.add(idSesion);
+
+        return dibujaButacas(sesionIds, localizacionDeImagen, mostrarReservadas);
+    }
+
+    private BufferedImage dibujaButacas(List<Long> sesionIds, String localizacionDeImagen, boolean mostrarReservadas)
+    {
         BufferedImage imgButacas = imagenes.get(localizacionDeImagen);
         BufferedImage imgResult = new BufferedImage(imgButacas.getWidth(), imgButacas.getHeight(), imgButacas.getType());
         Graphics2D graphics = imgResult.createGraphics();
@@ -121,38 +140,35 @@ public class MapaDrawer
 
         for (String localizacion : getLocalizacionesEnImagen(localizacionDeImagen))
         {
-            List<ButacaDTO> butacas = butacasService.getButacas(idSesion, localizacion);
+            for (Long idSesion : sesionIds) {
+                List<ButacaDTO> butacas = butacasService.getButacas(idSesion, localizacion);
 
-            for (ButacaDTO butacaDTO : butacas)
-            {
-                if (butacaDTO.getAnulada()==null || !butacaDTO.getAnulada())
-                {
-                    String key = String.format("%s_%s_%s", butacaDTO.getParLocalizacion().getCodigo(),
-                            butacaDTO.getFila(), butacaDTO.getNumero());
-                    DatosButaca butaca = datosButacas.get(key);
+                for (ButacaDTO butacaDTO : butacas) {
+                    if (butacaDTO.getAnulada() == null || !butacaDTO.getAnulada()) {
+                        String key = String.format("%s_%s_%s", butacaDTO.getParLocalizacion().getCodigo(),
+                                butacaDTO.getFila(), butacaDTO.getNumero());
+                        DatosButaca butaca = datosButacas.get(key);
 
-                    BufferedImage imagenOcupada;
+                        BufferedImage imagenOcupada;
 
-                    if (esDiscapacitadoAnfiteatro(butaca))
-                        continue;
-                        
-                    if (esDiscapacitado(butaca))
-                    {
-                        if (mostrarReservadas && esReserva(butacaDTO))
-                            imagenOcupada = butacaReservadaDiscapacitado;
-                        else
-                            imagenOcupada = butacaOcupadaDiscapacitado;
+                        if (esDiscapacitadoAnfiteatro(butaca))
+                            continue;
+
+                        if (esDiscapacitado(butaca)) {
+                            if (mostrarReservadas && esReserva(butacaDTO))
+                                imagenOcupada = butacaReservadaDiscapacitado;
+                            else
+                                imagenOcupada = butacaOcupadaDiscapacitado;
+                        } else {
+                            if (mostrarReservadas && esReserva(butacaDTO))
+                                imagenOcupada = butacaReservada;
+                            else
+                                imagenOcupada = butacaOcupada;
+                        }
+
+                        if (butaca != null)
+                            graphics.drawImage(imagenOcupada, butaca.getxIni(), butaca.getyIni(), null);
                     }
-                    else
-                    {
-                        if (mostrarReservadas && esReserva(butacaDTO))
-                            imagenOcupada = butacaReservada;
-                        else
-                            imagenOcupada = butacaOcupada;
-                    }
-
-                    if (butaca != null)
-                    	graphics.drawImage(imagenOcupada, butaca.getxIni(), butaca.getyIni(), null);
                 }
             }
         }

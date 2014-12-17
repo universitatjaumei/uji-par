@@ -47,25 +47,31 @@ public class ButacasService
 
     public List<Butaca> estanOcupadas(long sesionId, List<Butaca> butacas, String uuidCompra)
     {
+        List<Long> sesionIds = new ArrayList<Long>();
+        sesionIds.add(sesionId);
+
+        return estanOcupadas(sesionIds, butacas, uuidCompra);
+    }
+
+    public List<Butaca> estanOcupadas(List<Long> sesionIds, List<Butaca> butacas, String uuidCompra)
+    {
         List<Butaca> ocupadas = new ArrayList<Butaca>();
 
         for (Butaca butaca : butacas)
         {
-            CompraDTO compra = butacasDAO.getCompra(sesionId, butaca.getLocalizacion(), butaca.getFila(), butaca.getNumero());
-            
-            if (compra!=null)
+            for (Long sesionId : sesionIds)
             {
-                if (compra.getPagada())
-                {
-                    ocupadas.add(butaca);
-                }
-                else
-                {
-                    if (!compra.getUuid().equals(uuidCompra))        
+                CompraDTO compra = butacasDAO.getCompra(sesionId, butaca.getLocalizacion(), butaca.getFila(), butaca.getNumero());
+
+                if (compra != null) {
+                    if (compra.getPagada()) {
                         ocupadas.add(butaca);
+                    } else {
+                        if (!compra.getUuid().equals(uuidCompra))
+                            ocupadas.add(butaca);
+                    }
                 }
             }
-            
         }
 
         return ocupadas;

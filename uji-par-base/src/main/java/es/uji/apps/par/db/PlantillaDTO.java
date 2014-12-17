@@ -37,6 +37,10 @@ public class PlantillaDTO implements Serializable {
 	//bi-directional many-to-one association to SesionDTO
 	@OneToMany(mappedBy="parPlantilla")
 	private List<SesionDTO> parSesiones;
+
+    //bi-directional many-to-one association to SesionDTO
+    @OneToMany(mappedBy="parPlantilla")
+    private List<AbonoDTO> parAbonos;
 	
 	@ManyToOne
 	@JoinColumn(name="SALA_ID")
@@ -77,7 +81,15 @@ public class PlantillaDTO implements Serializable {
 		this.parSesiones = parSesiones;
 	}
 
-	public SalaDTO getSala() {
+    public List<AbonoDTO> getParAbonos() {
+        return parAbonos;
+    }
+
+    public void setParAbonos(List<AbonoDTO> parAbonos) {
+        this.parAbonos = parAbonos;
+    }
+
+    public SalaDTO getSala() {
 		return sala;
 	}
 

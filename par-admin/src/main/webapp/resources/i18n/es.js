@@ -66,7 +66,9 @@ UI =
             "confirmVentaDegradada": "Activar la venta para eventos acabados se recomienda únicamente para introducir ventas que no se pudieron hacer en el momento en el que estaba la taquilla abierta. ¿Està seguro de continuar?",
             "confirmReprogramacio": "Hay sesiones ya definidas para esta hora en esta sala. ¿Quieres reprogramar la sesión y mantener esta como la válida?",
             "compraAnuladaOk": "Compra anulada correctamente",
-            "recordatorioDevolverEntradas": "Hay entradas vendidas: recuerde que primero tiene que devolver todas las entradas de la sesión que se quiere anular"
+            "recordatorioDevolverEntradas": "Hay entradas vendidas: recuerde que primero tiene que devolver todas las entradas de la sesión que se quiere anular",
+            "selectAbono": "Es obligatorio seleccionar un abono",
+            "addAbonado": "Crear nuevo abonado"
         },
         "storeWeekDay": {
             "wed": "Miércoles",
@@ -78,6 +80,8 @@ UI =
             "sat": "Sábado"
         },
         "error": {
+            "tieneAbonados": "Existen abonados asociados al abono, elimínalos primero",
+            "noModificableTieneAbonados": "No es posible modificar este atributo del abono ya que tiene abonados con compras",
             "peliculaJaAfegida": "Película ya añadida",
             "error522": "El formato de la hora es incorrecto, tienen que ser 4 caracteres HH:mm",
             "eventSelected": "Error, es necesario seleccionar un evento",
@@ -103,6 +107,7 @@ UI =
             "error535": "La versión lingüística de la película es obligatoria",
             "error532": "El código de la distribuidora de la película es obligatorio",
             "error533": "El nombre de la distribuidora de la película es obligatorio",
+            "selectSala": "Debe seleccionar una sala para el abono (sesiones de una única sala)",
             "pinpad": {
                 "1": "Tarjeta no válida",
                 "2": "Operación cancelada",
@@ -242,6 +247,7 @@ UI =
             "day": "Día (todos los espacios)"
         },
         "gridTitle": {
+            "abonados": "Gestión de los abonados",
             "detalleCompras": "Detalle compra/reserva seleccionada",
             "eventos": "Gestión de los eventos",
             "comprasReservasHechas": "Compras y reservas realizadas",
@@ -260,9 +266,14 @@ UI =
             "tarifas": "Gestión de las tarifas de precios",
             "user": "Gestión de usuarios",
             "multisesion": "Películas de la multisessión",
+            "abonos": "Gestión de los abonos",
             "client": "Clientes"
         },
         "field": {
+            "poblacion": "Población",
+            "codigoPostal": "C.P.",
+            "provincia": "Provincia",
+            "infoPeriodica": "¿Recibir información periódicamente?",
             "butacaLibre": "Butaca libre",
             "multisesion": "¿Es multisesión?",
             "idSala": "Identificador interno de la sala",
@@ -278,6 +289,7 @@ UI =
             "titolNeutreLabel": "Título",
             "sesionCine": "Datos para cine",
             "plantillaprecios": "Plantilla de precios",
+            "plantillapreciosSala": "Plantilla de precios/Sala",
             "idIntern": "Identificador interno",
             "comments_va": "Comentaris",
             "nombreDistribuidora": "Nombre distribuidora",
@@ -321,9 +333,6 @@ UI =
             "importePagado": "Importe pagado",
             "awards": "Premios",
             "address": "Dirección",
-            "poblacion": "Población",
-            "cp": "C.P.",
-            "provincia": "Provincia",
             "active": "Activo",
             "duration_va": "Duració",
             "companyMulti": "Compañía",

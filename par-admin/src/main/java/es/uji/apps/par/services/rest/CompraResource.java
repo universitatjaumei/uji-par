@@ -23,13 +23,8 @@ import com.sun.jersey.api.core.InjectParam;
 
 import es.uji.apps.par.auth.AuthChecker;
 import es.uji.apps.par.exceptions.*;
-import es.uji.apps.par.model.Butaca;
-import es.uji.apps.par.model.DisponiblesLocalizacion;
-import es.uji.apps.par.model.ResultadoCompra;
-import es.uji.apps.par.services.ButacasService;
-import es.uji.apps.par.services.ComprasService;
-import es.uji.apps.par.services.EntradasService;
-import es.uji.apps.par.services.SesionesService;
+import es.uji.apps.par.model.*;
+import es.uji.apps.par.services.*;
 
 @Path("compra")
 public class CompraResource extends BaseResource {
@@ -44,6 +39,9 @@ public class CompraResource extends BaseResource {
 
 	@InjectParam
 	private EntradasService entradasService;
+
+    @InjectParam
+    private AbonosService abonosService;
 
 	@Context
 	HttpServletResponse currentResponse;
@@ -60,6 +58,19 @@ public class CompraResource extends BaseResource {
 		else
 			comprasService.marcaPagada(idCompra);
 	}
+
+    @POST
+    @Path("{idAbonado}/pagada/abonado")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void marcaAbonadoPagada(@PathParam("idAbonado") Long idAbonado, @QueryParam("referencia") String referenciaDePago)
+    {
+        AuthChecker.canWrite(currentRequest);
+
+        if (referenciaDePago != null)
+            comprasService.marcarAbonadoPagadoConReferenciaDePago(idAbonado, referenciaDePago);
+        else
+            comprasService.marcaAbonadoPagado(idAbonado);
+    }
 	
 	@GET
 	@Path("{id}")
@@ -90,6 +101,16 @@ public class CompraResource extends BaseResource {
 		comprasService.anularCompraReserva(idCompraReserva);
 		return Response.ok().build();
 	}
+
+    @PUT
+    @Path("abonado/{idAbonado}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response anularCompraAbonado(@PathParam("idAbonado") Long abonadoId) throws IncidenciaNotFoundException {
+        AuthChecker.canWrite(currentRequest);
+
+        comprasService.anularCompraAbonado(abonadoId);
+        return Response.ok().build();
+    }
 
 	@PUT
 	@Path("{idSesion}/desanuladas/{idCompraReserva}")
@@ -167,6 +188,31 @@ public class CompraResource extends BaseResource {
 		}
 	}
 
+    @POST
+    @Path("{id}/abono")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response compraAbono(@PathParam("id") Long abonoId,
+                                  CompraAbonado compraAbonado)
+            throws IncidenciaNotFoundException {
+        AuthChecker.canWrite(currentRequest);
+
+        try {
+            ResultadoCompra resultadoCompra = comprasService
+                    .registraCompraAbonoTaquilla(abonoId, compraAbonado);
+            return Response.ok(resultadoCompra).build();
+        } catch (NoHayButacasLibresException e) {
+            return errorResponse("error.noHayButacas",
+                    getProperty("localizacion." + e.getLocalizacion()));
+        } catch (ButacaOcupadaException e) {
+            return errorResponse("error.butacaOcupada",
+                    getProperty("localizacion." + e.getLocalizacion()),
+                    e.getFila(), e.getNumero());
+        } catch (CompraSinButacasException e) {
+            return errorResponse("error.compraSinButacas");
+        }
+    }
+
 	@GET
 	@Path("{id}/precios")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -208,6 +254,19 @@ public class CompraResource extends BaseResource {
 
 		return Response.ok().entity(importe.setScale(2).toString()).build();
 	}
+
+    @POST
+    @Path("{id}/importe/abono")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getImportesAbonoButacas(@PathParam("id") Long abonoId,
+                                       List<Butaca> butacasSeleccionadas) {
+        AuthChecker.canWrite(currentRequest);
+
+        BigDecimal importe = comprasService.calculaImporteButacasAbono(abonoId, butacasSeleccionadas);
+
+        return Response.ok().entity(importe.setScale(2).toString()).build();
+    }
 
 	@GET
 	@Path("{idCompra}/butacas")

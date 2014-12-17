@@ -61,6 +61,7 @@ public class GeneralPARException extends WebApplicationException
     public static final String ANTICIPADA_FORMAT_ERROR = "Formato incorrecto de la propiedad " + Configuration.HORAS_VENTA_ANTICIPADA;
     public static final String NOT_FOUND_INCIDENCIA = "Incidencia no encontrada";
 	public static final String EDICION_ANULADA_EXCEPTION = "No se puede editar una sesión anulada";
+    public static final String ABONO_CON_ABONADOS = "Abono con abonados";
     
     
     public static final Integer ERROR_GENERAL_CODE = 500;
@@ -113,6 +114,7 @@ public class GeneralPARException extends WebApplicationException
     public static final Integer ANTICIPADA_FORMAT_ERROR_CODE = 547;
     public static final Integer NOT_FOUND_INCIDENCIA_CODE = 548;
 	public static final Integer EDICION_ANULADA_EXCEPTION_CODE = 549;
+    public static final Integer ABONO_CON_ABONADOS_CODE = 550;
     
     static {
 		messages = new HashMap<Integer,String>();
@@ -166,6 +168,7 @@ public class GeneralPARException extends WebApplicationException
 		messages.put(ANTICIPADA_FORMAT_ERROR_CODE, ANTICIPADA_FORMAT_ERROR);
 		messages.put(NOT_FOUND_INCIDENCIA_CODE, NOT_FOUND_INCIDENCIA);
 		messages.put(EDICION_ANULADA_EXCEPTION_CODE, EDICION_ANULADA_EXCEPTION);
+        messages.put(ABONO_CON_ABONADOS_CODE, ABONO_CON_ABONADOS);
     }
 
     public GeneralPARException(int errorCode) {
