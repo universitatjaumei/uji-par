@@ -73,6 +73,7 @@ public class SesionesDAO extends BaseDAO {
         QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
         QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
         QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
+        QAbonadoDTO qAbonadoDTO = QAbonadoDTO.abonadoDTO;
 
         JPAQuery query;
 
@@ -84,7 +85,7 @@ public class SesionesDAO extends BaseDAO {
         JPASubQuery queryVendidas = new JPASubQuery();
         queryVendidas.from(qButacaDTO, qCompraDTO);
         queryVendidas.where(qSesionDTO.id.eq(qButacaDTO.parSesion.id).and(qButacaDTO.anulada.eq(false).or(qButacaDTO.anulada.isNull())).
-                and(qButacaDTO.parCompra.id.eq(qCompraDTO.id).and(qCompraDTO.reserva.eq(false).and(qCompraDTO.parAbonado.isNull()))));
+                and(qButacaDTO.parCompra.id.eq(qCompraDTO.id).and(qCompraDTO.reserva.eq(false)))).leftJoin(qButacaDTO.parCompra.parAbonado, qAbonadoDTO).where(qAbonadoDTO.isNull());
 
         JPASubQuery queryReservadas = new JPASubQuery();
         queryReservadas.from(qButacaDTO, qCompraDTO);

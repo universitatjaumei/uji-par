@@ -37,7 +37,6 @@ public class ClientesDAO extends BaseDAO {
         JPAQuery subquery = new JPAQuery(entityManager);
 
         return query.from(qCompraDTO).where(qCompraDTO.id.in(subquery.from(qCompraDTO).where(qCompraDTO.infoPeriodica.isTrue()).groupBy(qCompraDTO.email).list(qCompraDTO.id.max())));
-        //return query.from(qCompraDTO).where(qCompraDTO.infoPeriodica.isTrue()).groupBy(qCompraDTO.email, qCompraDTO.id);
     }
 
 
