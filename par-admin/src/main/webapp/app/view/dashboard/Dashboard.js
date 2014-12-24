@@ -5,12 +5,12 @@ Ext.define('Paranimf.view.dashboard.Dashboard', {
 	initComponent: function() {
 		var me = this;
 
-		Ext.Ajax.request({
+		/*Ext.Ajax.request({
 			url: '../dashboard_' + lang + '.html',
 			success: function(response, opts) {
 				me.update(response.responseText);
 			}
-		});
+		});*/
 
 		this.callParent(arguments);
 	},
