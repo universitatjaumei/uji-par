@@ -43,6 +43,7 @@ public class Evento
     private String comentariosEs;
     private String comentariosVa;
     private TipoEvento parTiposEvento;
+    private Tpv parTpv;
     private long tipoEvento;
     private Boolean asientosNumerados;
     private BigDecimal porcentajeIVA;
@@ -51,7 +52,7 @@ public class Evento
     private Date fechaPrimeraSesion;
     private List<Sesion> sesiones;
     private String rssId;
-
+    private Boolean multipleTpv;
     private String formato;
     private String expediente;
     private String codigoDistribuidora;
@@ -106,6 +107,10 @@ public class Evento
 
         if (eventoDTO.getParTiposEvento() != null)
         	evento.setParTipoEvento(TipoEvento.tipoEventoDTOToTipoEvento(eventoDTO.getParTiposEvento()));
+
+        if (eventoDTO.getParTpv() != null) {
+            evento.setParTpv(new Tpv(eventoDTO.getParTpv()));
+        }
         
         evento.setAsientosNumerados(eventoDTO.getAsientosNumerados());
         evento.setIvaSGAE(eventoDTO.getIvaSgae());
@@ -162,6 +167,11 @@ public class Evento
         	eventoDTO.setParTiposEvento(TipoEvento.tipoEventoToTipoEventoDTO(evento.getParTiposEvento()));
         else if (evento.getParTiposEvento() != null)
             eventoDTO.setParTiposEvento(TipoEvento.tipoEventoToTipoEventoDTO(evento.getParTiposEvento()));
+
+        if (evento.getParTpv() != null)
+        {
+            eventoDTO.setParTpv(Tpv.tpvToTpvDTO(evento.getParTpv()));
+        }
         
         eventoDTO.setAsientosNumerados(evento.getAsientosNumerados());
         eventoDTO.setIvaSgae(evento.getIvaSGAE());
@@ -225,6 +235,11 @@ public class Evento
             this.parTiposEvento.setNombreVa(eventoDTO.getParTiposEvento().getNombreVa());
             this.tipoEvento = eventoDTO.getParTiposEvento().getId();
         }
+
+        if (eventoDTO.getParTpv() != null)
+        {
+            this.parTpv = new Tpv(eventoDTO.getParTpv());
+        }
         
         this.asientosNumerados = eventoDTO.getAsientosNumerados();
         this.ivaSGAE = eventoDTO.getIvaSgae();
@@ -245,7 +260,7 @@ public class Evento
             String duracionEs, String premiosEs, String caracteristicasEs, String comentariosEs,
             String tituloVa, String descripcionVa, String companyiaVa, String interpretesVa,
             String duracionVa, String premiosVa, String caracteristicasVa, String comentariosVa,
-            byte[] dataBinary, String nombreArchivo, String mediaType, Integer tipoEventoId,
+            byte[] dataBinary, String nombreArchivo, String mediaType, Integer tipoEventoId, Integer tpvId,
             BigDecimal porcentajeIVA, BigDecimal retencionSGAE, BigDecimal ivaSGAE, Boolean asientosNumerados, 
             String expediente, String codigoDistribuidora, String nombreDistribuidora, String nacionalidad, String vo, String metraje, String subtitulos, String formato)
     {
@@ -278,6 +293,12 @@ public class Evento
             this.parTiposEvento = new TipoEvento();
             this.parTiposEvento.setId(tipoEventoId);
             this.tipoEvento = tipoEventoId;
+        }
+
+        if (tpvId != null)
+        {
+            this.parTpv = new Tpv();
+            this.parTpv.setId(tpvId);
         }
         
         this.porcentajeIVA = porcentajeIVA;
@@ -347,6 +368,14 @@ public class Evento
             return parTiposEvento.getId();
         else
             return 0;
+    }
+
+    public Tpv getParTpv() {
+        return parTpv;
+    }
+
+    public void setParTpv(Tpv parTpv) {
+        this.parTpv = parTpv;
     }
 
     public void setTipoEvento(long tipoEvento)
@@ -741,4 +770,12 @@ public class Evento
 	public void setMultisesion(String multisesion) {
 		this.multisesion = multisesion;
 	}
+
+    public Boolean getMultipleTpv() {
+        return multipleTpv;
+    }
+
+    public void setMultipleTpv(Boolean multipleTpv) {
+        this.multipleTpv = multipleTpv;
+    }
 }

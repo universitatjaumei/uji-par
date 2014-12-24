@@ -2,8 +2,8 @@ Ext.define('Paranimf.controller.Eventos', {
    extend: 'Ext.app.Controller',
 
    views: ['EditModalWindow', 'EditBaseForm', 'EditBaseGrid', 'evento.GridEventos', 'evento.GridEventosMultisesion', 'evento.FormEventos', 'evento.PanelEventos', 'evento.GridSesiones', 'evento.FormSesiones', 'evento.GridPreciosSesion', 'evento.FormPreciosSesion', 'evento.FormPeliculaMultisesion'],
-   stores: ['Eventos', 'EventosMultisesion', 'TiposEventosSinPaginar', 'Sesiones', 'PlantillasPrecios', 'PreciosSesion', 'Salas', 'Nacionalidades', 'Peliculas'],
-   models: ['Evento', 'Sesion', 'PrecioSesion', 'Sala', 'HoraMinuto'],
+   stores: ['Eventos', 'EventosMultisesion', 'TiposEventosSinPaginar', 'Sesiones', 'PlantillasPrecios', 'PreciosSesion', 'Salas', 'Nacionalidades', 'Peliculas', 'Tpvs'],
+   models: ['Evento', 'Sesion', 'PrecioSesion', 'Sala', 'HoraMinuto', 'Tpv'],
 
    refs: [{
       ref: 'gridEventos',
@@ -35,6 +35,9 @@ Ext.define('Paranimf.controller.Eventos', {
    }, {
       ref: 'icaaFieldset',
       selector: 'formEventos fieldset[name=icaa]'
+   }, {
+      ref: 'comboTpv',
+      selector: 'formEventos combobox[name=tpv]'
    }, {
       ref: 'gridPreciosSesion',
       selector: 'gridPreciosSesion'
@@ -129,6 +132,10 @@ Ext.define('Paranimf.controller.Eventos', {
          
          'formEventos': {
         	   beforerender: this.showImagenIfExists
+         },
+
+         'formEventos': {
+            afterrender: this.preparaEvento
          },
 
          'formEventos checkbox[name=multisesion]': {
@@ -354,7 +361,6 @@ Ext.define('Paranimf.controller.Eventos', {
    },
    
    preparaStoresSesiones: function(comp, opts) {
-      //console.log(this.getGridEventos().getSelectedRecord());
 	   this.preparaStorePlantillaPrecios();
 	   this.preparaStoreSalas();
 
@@ -372,6 +378,14 @@ Ext.define('Paranimf.controller.Eventos', {
             this.getComboVersionLinguistica().allowBlank = true;
             this.getComboVersionLinguistica().hide();
          }
+      }
+   },
+
+   preparaEvento: function(comp, opts) {
+      if (this.getGridEventos().getSelectedRecord().data.multipleTpv) {
+         this.getComboTpv().show();
+         this.getComboTpv().allowBlank = false;
+         this.getComboTpv().setFieldLabel(UI.i18n.field.tpv + ' <span class="req" style="color:red">*</span>');
       }
    },
 

@@ -270,6 +270,7 @@ UI =
             "client": "Clients"
         },
         "field": {
+            "tpv": "TPV",
             "poblacion": "Població",
             "codigoPostal": "C.P.",
             "provincia": "Província",

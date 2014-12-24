@@ -22,6 +22,9 @@ Ext.define('Paranimf.model.Evento', {
       'tipoEvento',
       
       'parTiposEvento',
+      {name: 'tpv', mapping: 'parTpv.id'},
+      'parTpv',
+      {name: "multipleTpv", type:"boolean"},
       
       'dataBinary',
       'dataBinaryDetail',

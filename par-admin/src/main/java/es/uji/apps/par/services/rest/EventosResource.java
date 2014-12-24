@@ -174,6 +174,7 @@ public class EventosResource
             @FormDataParam("caracteristicasEs") String caracteristicasEs,
             @FormDataParam("comentariosEs") String comentariosEs,
             @FormDataParam("tipoEvento") Integer tipoEventoId,
+            @FormDataParam("tpv") Integer tpvId,
             @FormDataParam("tituloVa") String tituloVa,
             @FormDataParam("descripcionVa") String descripcionVa,
             @FormDataParam("companyiaVa") String companyiaVa,
@@ -204,7 +205,7 @@ public class EventosResource
         Evento evento = new Evento(rssId, tituloEs, descripcionEs, companyiaEs, interpretesEs, duracionEs,
                 premiosEs, caracteristicasEs, comentariosEs, tituloVa, descripcionVa, companyiaVa,
                 interpretesVa, duracionVa, premiosVa, caracteristicasVa, comentariosVa, dataBinary,
-                nombreArchivo, mediaType, tipoEventoId, porcentajeIVA, retencionSGAE, ivaSGAE, asientosNumerados, 
+                nombreArchivo, mediaType, tipoEventoId, tpvId, porcentajeIVA, retencionSGAE, ivaSGAE, asientosNumerados,
                 expediente, codigoDistribuidora, nombreDistribuidora, nacionalidad, vo, metraje, subtitulos, formato);
 
 		if (checkMultisesion != null && checkMultisesion.equalsIgnoreCase("on"))
@@ -245,6 +246,7 @@ public class EventosResource
             @FormDataParam("caracteristicasEs") String caracteristicasEs,
             @FormDataParam("comentariosEs") String comentariosEs,
             @FormDataParam("tipoEvento") Integer tipoEventoId,
+            @FormDataParam("tpv") Integer tpvId,
             @FormDataParam("tituloVa") String tituloVa,
             @FormDataParam("descripcionVa") String descripcionVa,
             @FormDataParam("companyiaVa") String companyiaVa,
@@ -277,7 +279,7 @@ public class EventosResource
         Evento evento = new Evento(rssId, tituloEs, descripcionEs, companyiaEs, interpretesEs, duracionEs,
                 premiosEs, caracteristicasEs, comentariosEs, tituloVa, descripcionVa, companyiaVa,
                 interpretesVa, duracionVa, premiosVa, caracteristicasVa, comentariosVa, dataBinary,
-                nombreArchivo, mediaType, tipoEventoId, porcentajeIVA, retencionSGAE, ivaSGAE, asientosNumerados, 
+                nombreArchivo, mediaType, tipoEventoId, tpvId, porcentajeIVA, retencionSGAE, ivaSGAE, asientosNumerados,
                 expediente, codigoDistribuidora, nombreDistribuidora, nacionalidad, vo, metraje, subtitulos, formato);
 
 		if (checkMultisesion != null && checkMultisesion.equalsIgnoreCase("on"))

@@ -83,6 +83,20 @@ Ext.define('Paranimf.view.evento.FormEventos', {
 			},
 
 			{
+				fieldLabel : UI.i18n.field.tpv,
+				hidden: true,
+				name : 'tpv',
+				labelWidth : 140,
+				xtype : 'combobox',
+				forceSelection: true,
+				allowBlank : true,
+				displayField : 'nombre',
+				valueField : 'id',
+				store : 'Tpvs',
+				queryMode : 'remote',
+				typeAhead : true
+			},
+			{
 				fieldLabel : UI.i18n.field.type,
 				name : 'tipoEvento',
 				labelWidth : 140,

@@ -5,6 +5,7 @@ import es.uji.apps.par.builders.PublicPageBuilderInterface;
 import es.uji.apps.par.butacas.EstadoButacasRequest;
 import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.db.CompraDTO;
+import es.uji.apps.par.db.TpvsDTO;
 import es.uji.apps.par.exceptions.*;
 import es.uji.apps.par.i18n.ResourceProperties;
 import es.uji.apps.par.model.*;
@@ -35,9 +36,6 @@ import java.util.regex.Pattern;
 @Path("entrada")
 public class EntradasResource extends BaseResource
 {
-    private static final String TPV_ORDER_PREFIX_CODE_CAJAMAR = "0000";
-	private static final String TPV_LANG_ES_CODE = "001";
-	private static final String TPV_LANG_CA_CODE = "003";
 	private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
 	private static final Logger log = LoggerFactory.getLogger(EntradasResource.class);
@@ -506,7 +504,8 @@ public class EntradasResource extends BaseResource
 			String secret = Configuration.getSecret();
 
 			String importe = Utils.monedaToCents(compra.getImporte());
-			String url = Configuration.getWSDLURL();
+            TpvsDTO parTpv = compra.getParSesion().getParEvento().getParTpv();
+			String url = parTpv.getWsdlUrl();
 			String urlOk = getBaseUrlPublic() + "/rest/tpv/ok";
 			String urlKo = getBaseUrlPublic() + "/rest/tpv/ko";
 
@@ -518,26 +517,28 @@ public class EntradasResource extends BaseResource
 			template.put("url", url);
 			template.put("hash", Utils.sha1(compra.getId() + importe + email + url + secret));
 
-			if (language.equals("ca"))
-				template.put("langCode", TPV_LANG_CA_CODE);
+            if (language.equals("ca"))
+				template.put("langCode", parTpv.getLangCaCode());
 			else
-				template.put("langCode", TPV_LANG_ES_CODE);
+				template.put("langCode", parTpv.getLangEsCode());
 
-			String tpvCode = Configuration.getTpvCode();
-			String tpvCurrency = Configuration.getTpvCurrency();
-			String tpvTransaction = Configuration.getTpvTransaction();
-			String tpvTerminal = Configuration.getTpvTerminal();
-			String tpvNombre = Configuration.getTpvNombre();
+			String tpvCode = parTpv.getCode();
+			String tpvCurrency = parTpv.getCurrency();
+			String tpvTransaction = parTpv.getTransactionCode();
+			String tpvTerminal = parTpv.getTerminal();
+			String tpvNombre = parTpv.getNombre();
+            String urlPago = parTpv.getUrl();
 
-			template.put("order", TPV_ORDER_PREFIX_CODE_CAJAMAR + compra.getId());
-			if (tpvCode != null && tpvCurrency != null && tpvTransaction != null && tpvTerminal != null && tpvNombre != null)
+			template.put("order", parTpv.getOrderPrefix() + compra.getId());
+			if (tpvCode != null && tpvCurrency != null && tpvTransaction != null && tpvTerminal != null && tpvNombre != null && urlPago != null)
 			{
 				template.put("currency", tpvCurrency);
 				template.put("code", tpvCode);
 				template.put("terminal", tpvTerminal);
 				template.put("transaction", tpvTransaction);
 				template.put("nombre", tpvNombre);
-				String shaEnvio = Utils.sha1(importe + TPV_ORDER_PREFIX_CODE_CAJAMAR + compra.getId() + tpvCode + tpvCurrency + tpvTransaction + url + secret);
+                template.put("urlPago", urlPago);
+				String shaEnvio = Utils.sha1(importe + parTpv.getOrderPrefix() + compra.getId() + tpvCode + tpvCurrency + tpvTransaction + url + secret);
 				template.put("hashcajamar", shaEnvio);
 				log.info("Sha1 para envio generado " + shaEnvio);
 			}

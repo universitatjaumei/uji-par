@@ -21,6 +21,10 @@ import javax.validation.constraints.Null;
 
 public class Configuration
 {
+    private static final String TPV_ORDER_PREFIX_CODE_CAJAMAR = "0000";
+    private static final String TPV_LANG_ES_CODE = "001";
+    private static final String TPV_LANG_CA_CODE = "003";
+
     private static final String PROPERTIES_SEPARATOR = ",";
 	private static final String SECRET = "uji.par.secret";
     private static final String URL_PUBLIC = "uji.par.urlPublic";
@@ -64,6 +68,7 @@ public class Configuration
 	private static final String HTML_TITLE = "uji.par.htmltitle";
 	private static final String URL_PUBLIC_SIN_HTTPS = "uji.par.urlPublicSinHTTPS";
 	private static final String URL_PUBLIC_LIMPIO = "uji.par.urlPublicLimpio";
+    private static final String TPV = "uji.tpv";
 	private static final String TPV_CURRENCY = "uji.tpv.currency";
 	private static final String TPV_CODE = "uji.tpv.code";
 	private static final String TPV_TERMINAL = "uji.tpv.terminal";
@@ -187,6 +192,17 @@ public class Configuration
             {
                 return false;
             }
+        }
+        else {
+            return false;
+        }
+    }
+
+    public static Boolean isMultipleTpvEnabled()
+    {
+        String tpv = getNoObligatoryProperty(TPV);
+        if (tpv != null && tpv.length() > 0 && !tpv.equals("false")) {
+                return true;
         }
         else {
             return false;
@@ -417,6 +433,18 @@ public class Configuration
 	public static String getUrlPublicSinHTTPS() {
 		return getProperty(URL_PUBLIC_SIN_HTTPS);
 	}
+
+    public static String getTpvLangCaCode() {
+        return TPV_LANG_CA_CODE;
+    }
+
+    public static String getTpvLangEsCode() {
+        return TPV_LANG_ES_CODE;
+    }
+
+    public static String getTpvOrderPrefixCodeCajamar() {
+        return TPV_ORDER_PREFIX_CODE_CAJAMAR;
+    }
 
 	public static String getTpvCurrency() {
 		return getNoObligatoryProperty(TPV_CURRENCY);

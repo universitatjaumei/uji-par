@@ -1,5 +1,6 @@
 package es.uji.apps.par.services.rest;
 
+import java.io.ByteArrayInputStream;
 import java.util.HashMap;
 import java.util.List;
 
@@ -7,6 +8,13 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response.Status;
 
+import com.sun.jersey.api.client.GenericType;
+import com.sun.jersey.multipart.FormDataBodyPart;
+import com.sun.jersey.multipart.FormDataMultiPart;
+import es.uji.apps.par.dao.TpvsDAO;
+import es.uji.apps.par.db.TpvsDTO;
+import es.uji.apps.par.exceptions.CampoRequeridoException;
+import es.uji.apps.par.model.Tpv;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -37,7 +45,7 @@ import es.uji.apps.par.model.Evento;
 import es.uji.apps.par.model.TipoEvento;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@TransactionConfiguration(transactionManager = "transactionManager")
+@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = false)
 @ContextConfiguration(locations = { "/applicationContext-db-test.xml" })
 public class EventosResourceTest extends BaseResourceTest
 {
@@ -46,14 +54,21 @@ public class EventosResourceTest extends BaseResourceTest
     @Autowired
     EventosDAO eventosDAO;
 
+    @Autowired
+    TpvsDAO tpvsDAO;
+
     public EventosResourceTest()
     {
-        super(new WebAppDescriptor.Builder(
-                "es.uji.apps.par.services.rest;com.fasterxml.jackson.jaxrs.json;es.uji.apps.par")
-                .contextParam("contextConfigLocation", "classpath:applicationContext-test.xml")
-                .contextParam("webAppRootKey", "paranimf-fw-uji.root")
-                .contextListenerClass(ContextLoaderListener.class).clientConfig(clientConfiguration())
-                .requestListenerClass(RequestContextListener.class).servletClass(SpringServlet.class).build());
+        super(
+                new WebAppDescriptor.Builder(
+                        "es.uji.apps.par.services.rest;com.fasterxml.jackson.jaxrs.json;es.uji.apps.par")
+                        .contextParam("contextConfigLocation",
+                                "classpath:applicationContext-db-test.xml")
+                        .contextParam("webAppRootKey", "paranimf-fw-uji.root")
+                        .contextListenerClass(ContextLoaderListener.class)
+                        .clientConfig(clientConfiguration())
+                        .requestListenerClass(RequestContextListener.class)
+                        .servletClass(SpringServlet.class).build());
 
         this.client().addFilter(new LoggingFilter());
         this.resource = resource();
@@ -92,10 +107,12 @@ public class EventosResourceTest extends BaseResourceTest
     private TipoEvento addTipoEvento()
     {
         TipoEvento parTipoEvento = new TipoEvento("prueba");
-        ClientResponse response = resource.path("tipoevento").post(ClientResponse.class, parTipoEvento);
-        RestResponse serviceResponse = response.getEntity(RestResponse.class);
-
+        ClientResponse response = resource.path("tipoevento").type("application/json").post(ClientResponse.class, parTipoEvento);
         Assert.assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
+        RestResponse serviceResponse = response.getEntity(new GenericType<RestResponse>()
+        {
+        });
+
         Assert.assertTrue(serviceResponse.getSuccess());
         Assert.assertNotNull(serviceResponse.getData());
         int id = Integer.valueOf(((HashMap) serviceResponse.getData().get(0)).get("id").toString());
@@ -103,15 +120,100 @@ public class EventosResourceTest extends BaseResourceTest
         return parTipoEvento;
     }
 
-    private MultivaluedMap<String, String> preparaEvento(TipoEvento tipoEvento)
+    private FormDataMultiPart preparaEvento(Evento evento)
     {
-        MultivaluedMap<String, String> map = new MultivaluedMapImpl();
+        FormDataMultiPart form = new FormDataMultiPart();
+        form.field("tituloEs", evento.getTituloEs());
+        form.field("tituloVa", evento.getTituloVa());
+        form.field("porcentajeIVA", "1.0");
+        form.field("retencionSGAE", "2.0");
+        form.field("ivaSGAE", "3.0");
+        form.field("tipoEvento", String.valueOf(evento.getTipoEvento()));
 
-        map.add("porcentajeIVA", "1.0");
-        map.add("retencionSGAE", "2.0");
-        map.add("ivaSGAE", "3.0");
+        return form;
+    }
 
-        return map;
+    @Test
+    @Transactional
+    public void addEvento() {
+        Tpv tpv = new Tpv();
+        if (tpvsDAO.getTpvDefault() == null) {
+            tpv = addTpvDefault();
+        }
+
+        TipoEvento parTipoEvento = addTipoEvento();
+
+        Evento evento = new Evento();
+        evento.setTituloEs("Nombre ES");
+        evento.setTituloVa("Nombre CA");
+        evento.setTipoEvento(parTipoEvento.getId());
+        evento.setParTpv(tpv);
+
+        evento = eventosDAO.addEvento(evento);
+
+        Assert.assertNotNull(evento.getId());
+        Assert.assertNotNull(evento.getParTpv());
+    }
+
+    @Test
+    @Transactional
+    public void addEventoSinTpv() {
+        if (tpvsDAO.getTpvDefault() == null) {
+            addTpvDefault();
+        }
+
+        TipoEvento parTipoEvento = addTipoEvento();
+
+        Evento evento = new Evento();
+        evento.setTituloEs("Nombre ES");
+        evento.setTituloVa("Nombre CA");
+        evento.setTipoEvento(parTipoEvento.getId());
+
+        evento = eventosDAO.addEvento(evento);
+
+        Assert.assertNotNull(evento.getId());
+        Assert.assertNotNull(evento.getParTpv());
+    }
+
+    @Test
+    @Transactional
+    public void updateEventoSinRest() {
+        if (tpvsDAO.getTpvDefault() == null) {
+            addTpvDefault();
+        }
+
+        TipoEvento parTipoEvento = addTipoEvento();
+
+        Evento evento = new Evento();
+        evento.setTituloEs("Nombre ES");
+        evento.setTituloVa("Nombre CA");
+        evento.setTipoEvento(parTipoEvento.getId());
+
+        evento = eventosDAO.addEvento(evento);
+        Assert.assertNotNull(evento.getId());
+        Assert.assertNotNull(evento.getParTpv());
+
+        evento.setParTipoEvento(parTipoEvento);
+        evento.setParTiposEvento(parTipoEvento);
+        evento.setTipoEvento(parTipoEvento.getId());
+        evento.setParTpv(null);
+
+        boolean campoRequerido = false;
+        try {
+            eventosDAO.updateEvento(evento);
+        }
+        catch (NullPointerException e)
+        {
+            campoRequerido = true;
+        }
+
+        Assert.assertTrue(campoRequerido);
+    }
+
+    private Tpv addTpvDefault() {
+        tpvsDAO.addTpvDefault();
+        TpvsDTO tpvDto = tpvsDAO.getTpvDefault();
+        return new Tpv(tpvDto);
     }
 
     @Test
@@ -119,6 +221,10 @@ public class EventosResourceTest extends BaseResourceTest
     @Ignore
     public void updateEvento()
     {
+        if (tpvsDAO.getTpvDefault() == null) {
+            addTpvDefault();
+        }
+
         TipoEvento parTipoEvento = addTipoEvento();
 
         Evento evento = new Evento();
@@ -130,17 +236,18 @@ public class EventosResourceTest extends BaseResourceTest
 
         long id = evento.getId();
 
-        MultivaluedMap<String, String> parEvento = preparaEvento(parTipoEvento);
+        FormDataMultiPart parEvento = preparaEvento(evento);
 
-        ClientResponse response = resource.path("evento").path(Long.toString(id))
-                .type(MediaType.APPLICATION_FORM_URLENCODED).put(ClientResponse.class, parEvento);
+        ClientResponse response = resource.path("evento").path(Long.toString(id)).type(MediaType.MULTIPART_FORM_DATA).post(ClientResponse.class, parEvento);
         Assert.assertEquals(Status.OK.getStatusCode(), response.getStatus());
-        
+        RestResponse serviceResponse = response.getEntity(new GenericType<RestResponse>()
+        {
+        });
         EventoDTO eventoBD = eventosDAO.getEventoById(id);
         List<Evento> eventos = eventosDAO.getEventos("", 0, 1000);
         
         RestResponse restResponse = resource.path("evento").get(RestResponse.class);
         
-        Assert.assertEquals(parEvento.get("porcentajeIVA"), eventoBD.getPorcentajeIva());
+        Assert.assertEquals(parEvento.getField("porcentajeIVA"), eventoBD.getPorcentajeIva());
     }
 }

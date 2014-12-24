@@ -141,7 +141,12 @@ public class EventoDTO implements Serializable {
     private String metraje;   
     
     @Column(name="SUBTITULOS")
-    private String subtitulos;   
+    private String subtitulos;
+
+    //bi-directional many-to-one association to TipoEventoDTO
+    @ManyToOne
+    @JoinColumn(name="TPV_ID")
+    private TpvsDTO parTpv;
     
 	public EventoDTO() {
 	}
@@ -464,4 +469,12 @@ public class EventoDTO implements Serializable {
 			List<SesionFormatoIdiomaICAADTO> parSesionesFormatoIdiomaICAA) {
 		this.parSesionesFormatoIdiomaICAA = parSesionesFormatoIdiomaICAA;
 	}
+
+    public TpvsDTO getParTpv() {
+        return parTpv;
+    }
+
+    public void setParTpv(TpvsDTO parTpv) {
+        this.parTpv = parTpv;
+    }
 }

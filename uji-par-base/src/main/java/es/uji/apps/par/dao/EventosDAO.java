@@ -1,42 +1,31 @@
 package es.uji.apps.par.dao;
 
-import java.lang.reflect.Type;
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.persistence.Query;
-
-import com.mysema.query.Tuple;
-import com.mysema.query.jpa.JPASubQuery;
-import com.mysema.query.jpa.sql.JPASQLQuery;
-import com.mysema.query.types.QTuple;
-import es.uji.apps.par.db.*;
-import es.uji.apps.par.model.EventoMultisesion;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.mysema.query.Tuple;
+import com.mysema.query.jpa.JPASubQuery;
 import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.jpa.impl.JPAUpdateClause;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.QTuple;
 import com.mysema.query.types.path.StringPath;
-
+import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.database.DatabaseHelper;
 import es.uji.apps.par.database.DatabaseHelperFactory;
-import es.uji.apps.par.model.Evento;
-import es.uji.apps.par.model.Sesion;
-import es.uji.apps.par.model.TipoEvento;
+import es.uji.apps.par.db.*;
+import es.uji.apps.par.model.*;
 import es.uji.apps.par.utils.DateUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.Query;
+import java.lang.reflect.Type;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.*;
 
 @Repository
 public class EventosDAO extends BaseDAO
@@ -45,6 +34,9 @@ public class EventosDAO extends BaseDAO
     private QEventoMultisesionDTO qEventoMultisesionDTO = QEventoMultisesionDTO.eventoMultisesionDTO;
 
     private DatabaseHelper databaseHelper;
+
+    @Autowired
+    private TpvsDAO tpvsDAO;
 
     public EventosDAO()
     {
@@ -138,8 +130,8 @@ public class EventosDAO extends BaseDAO
                 " e.RETENCION_SGAE as retencionsgae, e.IVA_SGAE as ivasgae, e.PORCENTAJE_IVA as porcentajeiva, " +
                 " e.RSS_ID as rssid, (select min(s.FECHA_CELEBRACION) from PAR_SESIONES s where e.id=s.EVENTO_ID) as fechaPrimeraSesion, " +
                 " e.EXPEDIENTE, e.COD_DISTRI, e.NOM_DISTRI, e.NACIONALIDAD, e.VO, e.METRAJE, e.SUBTITULOS, t.exportar_icaa, e.formato, " +
-                " (select count(*) from par_eventos_multisesion pem where pem.evento_id = e.id) " +
-                " from PAR_EVENTOS e left outer join PAR_SESIONES s on e.id=s.EVENTO_ID inner join PAR_TIPOS_EVENTO t on e.TIPO_EVENTO_ID=t.id " +
+                " (select count(*) from par_eventos_multisesion pem where pem.evento_id = e.id), tp.ID as tpv, tp.NOMBRE as tpvNombre " +
+                " from PAR_EVENTOS e left outer join PAR_SESIONES s on e.id=s.EVENTO_ID inner join PAR_TIPOS_EVENTO t on e.TIPO_EVENTO_ID=t.id inner join PAR_TPVS tp on e.TPV_ID=tp.id " +
                 (activos?getWhereActivos():getWhereTodos()) +
                 " order by ";
 
@@ -232,10 +224,19 @@ public class EventosDAO extends BaseDAO
         evento.setSubtitulos((String) array[32]);
         evento.setFormato((String) array[34]);
 
-        if (array.length >= 36) {
+        if (array[35] != null) {
             BigDecimal numeroEventosHijos = databaseHelper.castBigDecimal(array[35]);
             evento.setMultisesion((numeroEventosHijos.compareTo(BigDecimal.ZERO)==0)?"":"on");
         }
+
+        if (array[36] != null) {
+
+            Tpv tpv = new Tpv();
+            tpv.setId(databaseHelper.castId(array[36]));
+            tpv.setNombre((String) array[37]);
+            evento.setParTpv(tpv);
+        }
+        evento.setMultipleTpv(Configuration.isMultipleTpvEnabled());
 
         return evento;
     }
@@ -288,6 +289,7 @@ public class EventosDAO extends BaseDAO
         entityManager.persist(eventoDTO);
 
         evento.setId(eventoDTO.getId());
+        evento.setParTpv(new Tpv(eventoDTO.getParTpv()));
         updateEventosMultisesion(eventoDTO.getId(), evento.getEventosMultisesion());
         return evento;
     }
@@ -326,6 +328,23 @@ public class EventosDAO extends BaseDAO
             parTipoEventoDTO.setId(evento.getParTiposEvento().getId());
             eventoDTO.setParTiposEvento(parTipoEventoDTO);
         }
+
+        TpvsDTO parTpv = new TpvsDTO();
+        if (Configuration.isMultipleTpvEnabled())
+        {
+            if (evento.getParTpv() != null) {
+                parTpv.setId(evento.getParTpv().getId());
+            }
+            else
+            {
+                parTpv = tpvsDAO.getTpvDefault();
+            }
+        }
+        else {
+            parTpv = tpvsDAO.getTpvDefault();
+        }
+        eventoDTO.setParTpv(parTpv);
+
         eventoDTO.setPremiosEs(evento.getPremiosEs());
         eventoDTO.setPremiosVa(evento.getPremiosVa());
 
@@ -391,6 +410,7 @@ public class EventosDAO extends BaseDAO
         eventoDTO.setSubtitulos(evento.getSubtitulos());
 
         eventoDTO.setParTiposEvento(TipoEvento.tipoEventoToTipoEventoDTO(evento.getParTiposEvento()));
+        eventoDTO.setParTpv(Tpv.tpvToTpvDTO(evento.getParTpv()));
 
         if (evento.getImagenSrc() != null && !evento.getImagenSrc().equals("")) {
             eventoDTO.setImagen(evento.getImagen());
