@@ -364,7 +364,15 @@ public class Configuration
     
     public static List<String> getUserReadonlyPassword()
     {
-        return Arrays.asList(getProperty(USER_READONLY_PASSWORD).split(PROPERTIES_SEPARATOR));
+        String noObligatoryProperty = getNoObligatoryProperty(USER_READONLY_PASSWORD);
+        if (noObligatoryProperty != null)
+        {
+            return Arrays.asList(noObligatoryProperty.split(PROPERTIES_SEPARATOR));
+        }
+        else
+        {
+            return null;
+        }
     }
     
     public static String getJdbUrl()
