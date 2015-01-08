@@ -351,7 +351,15 @@ public class Configuration
 
     public static List<String> getUserReadonlyLogin()
     {
-        return Arrays.asList(getProperty(USER_READONLY_LOGIN).split(PROPERTIES_SEPARATOR));
+        String noObligatoryProperty = getNoObligatoryProperty(USER_READONLY_LOGIN);
+        if (noObligatoryProperty != null)
+        {
+            return Arrays.asList(noObligatoryProperty.split(PROPERTIES_SEPARATOR));
+        }
+        else
+        {
+            return null;
+        }
     }
     
     public static List<String> getUserReadonlyPassword()
