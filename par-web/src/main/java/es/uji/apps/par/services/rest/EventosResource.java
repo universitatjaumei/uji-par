@@ -103,6 +103,23 @@ public class EventosResource extends BaseResource
     }
 
     @GET
+    @Path("listado")
+    @Produces(MediaType.TEXT_HTML)
+    public Template getEventos(@QueryParam("lang") String lang) throws Exception
+    {
+        try
+        {
+            List<Evento> eventosActivos = eventosService.getEventosActivos("[{\"property\":\"tituloEs\",\"direction\":\"ASC\"}]", 0, 1000);
+
+            return getTemplateEventos(eventosActivos, lang);
+        }
+        catch (EventoNoEncontradoException e)
+        {
+            return getTemplateEventoNoEncontrado();
+        }
+    }
+
+    @GET
     @Path("{contenidoId}")
     @Produces(MediaType.TEXT_HTML)
     public Template getEvento(@PathParam("contenidoId") Long contenidoId, @QueryParam("lang") String lang) throws Exception
@@ -110,6 +127,23 @@ public class EventosResource extends BaseResource
         try
         {
             Evento evento = eventosService.getEventoByRssId(contenidoId);
+
+            return getTemplateEvento(evento, lang);
+        }
+        catch (EventoNoEncontradoException e)
+        {
+            return getTemplateEventoNoEncontrado();
+        }
+    }
+
+    @GET
+    @Path("id/{id}")
+    @Produces(MediaType.TEXT_HTML)
+    public Template getEventoById(@PathParam("id") Long id, @QueryParam("lang") String lang) throws Exception
+    {
+        try
+        {
+            Evento evento = eventosService.getEvento(id);
 
             return getTemplateEvento(evento, lang);
         }
@@ -131,6 +165,24 @@ public class EventosResource extends BaseResource
         template.put("baseUrl", getBaseUrlPublic());
         template.put("lang", language);
         
+        return template;
+    }
+
+    private Template getTemplateEventos(List<Evento> eventos, String langparam) throws MalformedURLException, ParseException
+    {
+        borrarEntradasSeleccionadasConAnterioridad();
+
+        Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "eventosListado", getLocale(), APP);
+
+        String language = getLocale(langparam).getLanguage();
+        String url = request.getRequestURL().toString();
+
+        template.put("pagina", publicPageBuilderInterface.buildPublicPageInfo(getBaseUrlPublic(), url, language.toString()));
+        template.put("baseUrl", getBaseUrlPublic());
+
+        template.put("eventos", eventos);
+        template.put("lang", language);
+
         return template;
     }
 
