@@ -1,6 +1,8 @@
 package es.uji.apps.par.services.rest;
 
 import com.sun.jersey.api.core.InjectParam;
+import es.uji.apps.par.tpv.IdTPVInterface;
+import es.uji.apps.par.tpv.SHA1TPVInterface;
 import es.uji.apps.par.builders.PublicPageBuilderInterface;
 import es.uji.apps.par.butacas.EstadoButacasRequest;
 import es.uji.apps.par.config.Configuration;
@@ -29,6 +31,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -60,6 +63,12 @@ public class EntradasResource extends BaseResource
 
 	@InjectParam
 	private TpvInterface tpvInterface;
+
+    @InjectParam
+    private SHA1TPVInterface sha1TPVInterface;
+
+    @InjectParam
+    private IdTPVInterface idTPVInterface;
 
 	@InjectParam
 	private PublicPageBuilderInterface publicPageBuilderInterface;
@@ -501,21 +510,22 @@ public class EntradasResource extends BaseResource
 			template.put("lang", language);
 			template.put("baseUrl", getBaseUrlPublic());
 
-			String secret = Configuration.getSecret();
 
-			String importe = Utils.monedaToCents(compra.getImporte());
+            String importe = Utils.monedaToCents(compra.getImporte());
             TpvsDTO parTpv = compra.getParSesion().getParEvento().getParTpv();
-			String url = parTpv.getWsdlUrl();
+            String secret = parTpv.getSecret();
+            String url = parTpv.getWsdlUrl();
 			String urlOk = getBaseUrlPublic() + "/rest/tpv/ok";
 			String urlKo = getBaseUrlPublic() + "/rest/tpv/ko";
 
-			template.put("identificador", compra.getId());
+            String identificador = idTPVInterface.getFormattedId(compra.getId());
+			template.put("identificador", identificador);
 			String concepto = StringUtils.stripAccents(compra.getParSesion().getParEvento().getTituloVa().toUpperCase());
 			template.put("concepto", concepto);
 			template.put("importe", importe);
 			template.put("correo", email);
 			template.put("url", url);
-			template.put("hash", Utils.sha1(compra.getId() + importe + email + url + secret));
+			template.put("hash", Utils.sha1(identificador + importe + email + url + secret));
 
             if (language.equals("ca"))
 				template.put("langCode", parTpv.getLangCaCode());
@@ -529,16 +539,22 @@ public class EntradasResource extends BaseResource
 			String tpvNombre = parTpv.getNombre();
             String urlPago = parTpv.getUrl();
 
-			template.put("order", parTpv.getOrderPrefix() + compra.getId());
+            String order = parTpv.getOrderPrefix() + identificador;
+			template.put("order", order);
 			if (tpvCode != null && tpvCurrency != null && tpvTransaction != null && tpvTerminal != null && tpvNombre != null && urlPago != null)
 			{
+                String date = new SimpleDateFormat("YYMMddHHmmss").format(new Date());
+
+                template.put("date", date);
 				template.put("currency", tpvCurrency);
 				template.put("code", tpvCode);
 				template.put("terminal", tpvTerminal);
 				template.put("transaction", tpvTransaction);
 				template.put("nombre", tpvNombre);
                 template.put("urlPago", urlPago);
-				String shaEnvio = Utils.sha1(importe + parTpv.getOrderPrefix() + compra.getId() + tpvCode + tpvCurrency + tpvTransaction + url + secret);
+
+                String shaEnvio = sha1TPVInterface.getFirma(importe, parTpv.getOrderPrefix(), identificador, tpvCode, tpvCurrency, tpvTransaction, url, secret, date);
+
 				template.put("hashcajamar", shaEnvio);
 				log.info("Sha1 para envio generado " + shaEnvio);
 			}

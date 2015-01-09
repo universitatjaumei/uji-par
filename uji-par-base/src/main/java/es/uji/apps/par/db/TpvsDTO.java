@@ -37,6 +37,9 @@ public class TpvsDTO {
     @Column(name="LANG_ES_CODE")
     private String langEsCode;
 
+    @Column(name="SECRET")
+    private String secret;
+
     @Column(name="URL")
     private String url;
 
@@ -152,5 +155,13 @@ public class TpvsDTO {
 
     public void setParEventos(List<EventoDTO> parEventos) {
         this.parEventos = parEventos;
+    }
+
+    public String getSecret() {
+        return secret;
+    }
+
+    public void setSecret(String secret) {
+        this.secret = secret;
     }
 }

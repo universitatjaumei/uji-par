@@ -11,6 +11,7 @@ CREATE TABLE "PAR_TPVS"
   "LANG_ES_CODE" VARCHAR2(255) NOT NULL,
   "URL" VARCHAR2(255) NOT NULL,
   "WSDL_URL" VARCHAR2(255) NOT NULL,
+  "SECRET" VARCHAR2(255) NOT NULL,
   "DEFAULT_TPV" NUMBER(1,0) DEFAULT 0,
   CONSTRAINT "PAR_TPVS_PKEY" PRIMARY KEY ("ID")
 );
@@ -20,8 +21,8 @@ ALTER TABLE PAR_EVENTOS ADD (
 );
 
 --Insert de el TPV de Benicassim, Vila-real con ID = 0 para ponerlo por defecto en la relación entre evento y TPV
-INSERT INTO PAR_TPVS (ID, NOMBRE, CODE, CURRENCY, TERMINAL, TRANSACTION_CODE, ORDER_PREFIX, LANG_CA_CODE, LANG_ES_CODE, URL, WSDL_URL, DEFAULT_TPV)
-              VALUES (0, 'ILUSTRISIMO AYUNTAMIENTO', '148527476', '978', '001', '0', '0000', '003', '001', 'https://sis.sermepa.es/sis/realizarPago', 'http://wifi.benicassim.es/japps/par-public/services/InotificacionSIS', 1);
+INSERT INTO PAR_TPVS (ID, NOMBRE, CODE, CURRENCY, TERMINAL, TRANSACTION_CODE, ORDER_PREFIX, LANG_CA_CODE, LANG_ES_CODE, URL, WSDL_URL, SECRET, DEFAULT_TPV)
+              VALUES (0, 'ILUSTRISIMO AYUNTAMIENTO', '148527476', '978', '001', '0', '0000', '003', '001', 'https://sis.sermepa.es/sis/realizarPago', 'http://wifi.benicassim.es/japps/par-public/services/InotificacionSIS', '012345', 1);
 
 ALTER TABLE PAR_EVENTOS ADD CONSTRAINT "PAR_EVENTOS_TPVS_FK1" FOREIGN KEY ("TPV_ID") REFERENCES "PAR_TPVS" ("ID") ENABLE;
 
