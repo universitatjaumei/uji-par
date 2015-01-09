@@ -382,7 +382,7 @@ Ext.define('Paranimf.controller.Eventos', {
    },
 
    preparaEvento: function(comp, opts) {
-      if (this.getGridEventos().getSelectedRecord().data.multipleTpv) {
+      if (multipleTpv) {
          this.getComboTpv().show();
          this.getComboTpv().allowBlank = false;
          this.getComboTpv().setFieldLabel(UI.i18n.field.tpv + ' <span class="req" style="color:red">*</span>');
