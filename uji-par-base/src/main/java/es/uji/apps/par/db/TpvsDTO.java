@@ -50,7 +50,7 @@ public class TpvsDTO {
     private Boolean defaultTpv;
 
     //bi-directional many-to-one association to SesionDTO
-    @OneToMany(mappedBy="parTpv")
+    @OneToMany(mappedBy="parTpv", cascade=CascadeType.ALL)
     private List<EventoDTO> parEventos;
 
     public long getId() {
