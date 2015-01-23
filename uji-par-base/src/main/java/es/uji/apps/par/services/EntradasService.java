@@ -123,7 +123,7 @@ public class EntradasService
 	            	}
 	            }
 	            
-	            entrada.generaPaginaButaca(entradaModelReport, Configuration.getUrlPublic());
+	            entrada.generaPaginaButaca(entradaModelReport, Configuration.getUrlPublicSinHTTPS());
         	}
         }
         
@@ -159,7 +159,7 @@ public class EntradasService
         entrada.setFecha(fecha);
         entrada.setHora(hora);
         entrada.setHoraApertura(horaApertura);
-        entrada.setUrlPortada(Configuration.getUrlPublic() + "/rest/evento/"
+        entrada.setUrlPortada(Configuration.getUrlPublicSinHTTPS() + "/rest/evento/"
                 + compra.getParSesion().getParEvento().getId() + "/imagenEntrada");
         entrada.setUrlPublicidad(Configuration.getUrlPieEntrada());
 
