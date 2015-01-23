@@ -43,4 +43,12 @@ public class Tpv {
 
         return tpvDTO;
     }
+
+    public static Tpv tpvDTOToTpv(TpvsDTO tpvDTO) {
+        Tpv tpv = new Tpv();
+        tpv.setId(tpvDTO.getId());
+        tpv.setNombre(tpvDTO.getNombre());
+
+        return tpv;
+    }
 }

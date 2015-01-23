@@ -16,7 +16,12 @@ public class ClientesDAO extends BaseDAO {
 
     @Transactional
     public List<Cliente> getClientes(String sortParameter, int start, int limit) {
-        List<CompraDTO> compras = getQueryClientes().orderBy(getSort(qCompraDTO, sortParameter)).limit(limit).offset(start).list(qCompraDTO);
+        JPAQuery jpaQuery = getQueryClientes();
+
+        List<CompraDTO> compras = new ArrayList<CompraDTO>();
+        if (jpaQuery != null) {
+            compras = jpaQuery.orderBy(getSort(qCompraDTO, sortParameter)).limit(limit).offset(start).list(qCompraDTO);
+        }
 
         List<Cliente> clientes = new ArrayList<Cliente>();
         for (CompraDTO compra : compras) {
@@ -28,7 +33,14 @@ public class ClientesDAO extends BaseDAO {
 
     @Transactional
     public int getTotalClientes() {
-        return getQueryClientes().list(qCompraDTO).size();
+        JPAQuery jpaQuery = getQueryClientes();
+
+        if (jpaQuery != null) {
+            return jpaQuery.list(qCompraDTO).size();
+        }
+        else {
+            return 0;
+        }
     }
 
     @Transactional
@@ -36,7 +48,13 @@ public class ClientesDAO extends BaseDAO {
         JPAQuery query = new JPAQuery(entityManager);
         JPAQuery subquery = new JPAQuery(entityManager);
 
-        return query.from(qCompraDTO).where(qCompraDTO.id.in(subquery.from(qCompraDTO).where(qCompraDTO.infoPeriodica.isTrue()).groupBy(qCompraDTO.email).list(qCompraDTO.id.max())));
+        List<Long> ids = subquery.from(qCompraDTO).where(qCompraDTO.infoPeriodica.isTrue()).groupBy(qCompraDTO.email).list(qCompraDTO.id.max());
+        if (ids.size() > 0) {
+            return query.from(qCompraDTO).where(qCompraDTO.id.in(ids));
+        }
+        else {
+            return null;
+        }
     }
 
 

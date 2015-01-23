@@ -2,12 +2,9 @@ package es.uji.apps.par.dao;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
+import com.mysema.query.types.Expression;
 import es.uji.apps.par.db.*;
 import es.uji.apps.par.exceptions.IncidenciaNotFoundException;
 import es.uji.apps.par.ficheros.registros.TipoIncidencia;
@@ -298,16 +295,38 @@ public class ComprasDAO extends BaseDAO {
 			String sortParameter, int start, int limit, int showOnline,
 			String search) {
 		QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
-		QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
-		return getQueryComprasBySesion(sesionId, showAnuladas, showOnline,
-				search, true).orderBy(getSort(qCompraDTO, sortParameter))
-				.offset(start).limit(limit)
-				.list(new QTuple(qCompraDTO, qButacaDTO.precio.sum()));
+        QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
+
+        QTuple selectGroupByExpression = getSelectGroupByExpression();
+
+        return getQueryComprasBySesion(sesionId, showAnuladas, showOnline,
+                search, true, selectGroupByExpression).orderBy(getSort(qCompraDTO, sortParameter))
+                .offset(start).limit(limit).list(selectGroupByExpression, qButacaDTO.precio.sum());
 	}
+
+    private QTuple getSelectGroupByExpression() {
+        QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
+
+        return new QTuple(qCompraDTO.id, qCompraDTO.anulada,
+                qCompraDTO.apellidos, qCompraDTO.caducada,
+                qCompraDTO.codigoPagoPasarela,
+                qCompraDTO.codigoPagoTarjeta, qCompraDTO.cp,
+                qCompraDTO.desde, qCompraDTO.direccion,
+                qCompraDTO.email, qCompraDTO.fecha,
+                qCompraDTO.hasta, qCompraDTO.importe,
+                qCompraDTO.infoPeriodica, qCompraDTO.nombre,
+                qCompraDTO.observacionesReserva,
+                qCompraDTO.pagada, qCompraDTO.parSesion.id,
+                qCompraDTO.poblacion, qCompraDTO.provincia,
+                qCompraDTO.reciboPinpad,
+                qCompraDTO.referenciaPago, qCompraDTO.reserva,
+                qCompraDTO.taquilla, qCompraDTO.telefono,
+                qCompraDTO.uuid);
+    }
 
 	@Transactional
 	private JPAQuery getQueryComprasBySesion(long sesionId, int showAnuladas,
-			int showOnline, String search, boolean doJoinButacas) {
+			int showOnline, String search, boolean doJoinButacas, QTuple selectGroupByExpression) {
 		JPAQuery query = new JPAQuery(entityManager);
 		QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
 		QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
@@ -350,25 +369,16 @@ public class ComprasDAO extends BaseDAO {
 			}
 		}
 
-		if (doJoinButacas)
-			query.from(qCompraDTO)
-					.leftJoin(qCompraDTO.parButacas, qButacaDTO)
-					.where(builder)
-					.groupBy(qCompraDTO.id, qCompraDTO.anulada,
-							qCompraDTO.apellidos, qCompraDTO.caducada,
-							qCompraDTO.codigoPagoPasarela,
-							qCompraDTO.codigoPagoTarjeta, qCompraDTO.cp,
-							qCompraDTO.desde, qCompraDTO.direccion,
-							qCompraDTO.email, qCompraDTO.fecha,
-							qCompraDTO.hasta, qCompraDTO.importe,
-							qCompraDTO.infoPeriodica, qCompraDTO.nombre,
-							qCompraDTO.observacionesReserva,
-							qCompraDTO.pagada, qCompraDTO.parSesion.id,
-							qCompraDTO.poblacion, qCompraDTO.provincia,
-							qCompraDTO.reciboPinpad,
-							qCompraDTO.referenciaPago, qCompraDTO.reserva,
-							qCompraDTO.taquilla, qCompraDTO.telefono,
-							qCompraDTO.uuid);
+		if (doJoinButacas) {
+            query.from(qCompraDTO)
+                    .leftJoin(qCompraDTO.parButacas, qButacaDTO)
+                    .where(builder);
+
+            for (Expression<?> expression : selectGroupByExpression.getArgs())
+            {
+                query.groupBy(expression);
+            }
+        }
 		else
 			query.from(qCompraDTO).where(builder);
 
@@ -379,7 +389,7 @@ public class ComprasDAO extends BaseDAO {
 	public int getTotalComprasBySesion(Long sesionId, int showAnuladas,
 			int showOnline, String search) {
 		return (int) getQueryComprasBySesion(sesionId, showAnuladas,
-				showOnline, search, false).count();
+				showOnline, search, false, getSelectGroupByExpression()).count();
 	}
 
 	@Transactional

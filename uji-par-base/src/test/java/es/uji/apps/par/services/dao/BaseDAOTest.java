@@ -5,6 +5,7 @@ import es.uji.apps.par.db.*;
 import es.uji.apps.par.model.Evento;
 import es.uji.apps.par.model.Localizacion;
 import es.uji.apps.par.model.TipoEvento;
+import es.uji.apps.par.model.Tpv;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
@@ -26,6 +27,9 @@ public class BaseDAOTest
     TarifasDAO tarifasDAO;
 
     @Autowired
+    TpvsDAO tpvsDAO;
+
+    @Autowired
     TiposEventosDAO tiposEventosDAO;
 
     protected SesionDTO preparaSesion(LocalizacionDTO localizacion)
@@ -36,9 +40,16 @@ public class BaseDAOTest
 
         tiposEventosDAO.addTipoEvento(tipoEvento);
 
+        TpvsDTO tpvDefault = tpvsDAO.getTpvDefault();
+        if (tpvDefault == null) {
+            tpvsDAO.addTpvDefault();
+            tpvDefault = tpvsDAO.getTpvDefault();
+        }
+
         Evento evento = new Evento();
         evento.setAsientosNumerados(true);
         evento.setParTipoEvento(tipoEvento);
+        evento.setParTpv(Tpv.tpvDTOToTpv(tpvDefault));
         evento = eventosDao.addEvento(evento);
         
         SesionDTO sesionDTO = new SesionDTO();
