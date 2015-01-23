@@ -1,6 +1,7 @@
 package es.uji.apps.par.services;
 
 import com.mysema.query.Tuple;
+import com.mysema.query.types.QTuple;
 import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.dao.AbonadosDAO;
 import es.uji.apps.par.dao.ButacasDAO;
@@ -8,6 +9,7 @@ import es.uji.apps.par.dao.ComprasDAO;
 import es.uji.apps.par.dao.SesionesDAO;
 import es.uji.apps.par.db.AbonadoDTO;
 import es.uji.apps.par.db.CompraDTO;
+import es.uji.apps.par.db.QCompraDTO;
 import es.uji.apps.par.db.SesionDTO;
 import es.uji.apps.par.exceptions.*;
 import es.uji.apps.par.model.*;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.*;
 
 @Service
@@ -311,7 +314,35 @@ public class ComprasService
         List<Tuple> tuples = comprasDAO.getComprasBySesion(sesionId, showAnuladas, sortParameter, start, limit, showOnline, search);
 
         for (Tuple tupla: tuples) {
-        	CompraDTO compraDTO = tupla.get(0, CompraDTO.class);
+            Tuple tupleCompra = tupla.get(0, Tuple.class);
+        	CompraDTO compraDTO = new CompraDTO();
+            compraDTO.setId(tupleCompra.get(0, Long.class));
+            compraDTO.setAnulada(tupleCompra.get(1, Boolean.class));
+            compraDTO.setApellidos(tupleCompra.get(2, String.class));
+            compraDTO.setCaducada(tupleCompra.get(3, Boolean.class));
+            compraDTO.setCodigoPagoPasarela(tupleCompra.get(4, String.class));
+            compraDTO.setCodigoPagoTarjeta(tupleCompra.get(5, String.class));
+            compraDTO.setCp(tupleCompra.get(6, String.class));
+            compraDTO.setDesde(tupleCompra.get(7, Timestamp.class));
+            compraDTO.setDireccion(tupleCompra.get(8, String.class));
+            compraDTO.setEmail(tupleCompra.get(9, String.class));
+            compraDTO.setFecha(tupleCompra.get(10, Timestamp.class));
+            compraDTO.setHasta(tupleCompra.get(11, Timestamp.class));
+            compraDTO.setImporte(tupleCompra.get(12, BigDecimal.class));
+            compraDTO.setInfoPeriodica(tupleCompra.get(13, Boolean.class));
+            compraDTO.setNombre(tupleCompra.get(14, String.class));
+            compraDTO.setObservacionesReserva(tupleCompra.get(15, String.class));
+            compraDTO.setPagada(tupleCompra.get(16, Boolean.class));
+            compraDTO.setParSesion(new SesionDTO(tupleCompra.get(17, Long.class)));
+            compraDTO.setPoblacion(tupleCompra.get(18, String.class));
+            compraDTO.setProvincia(tupleCompra.get(19, String.class));
+            compraDTO.setReciboPinpad(tupleCompra.get(20, String.class));
+            compraDTO.setReferenciaPago(tupleCompra.get(21, String.class));
+            compraDTO.setReserva(tupleCompra.get(22, Boolean.class));
+            compraDTO.setTaquilla(tupleCompra.get(23, Boolean.class));
+            compraDTO.setTelefono(tupleCompra.get(14, String.class));
+            compraDTO.setUuid(tupleCompra.get(25, String.class));
+
         	BigDecimal importe = tupla.get(1, BigDecimal.class);
         	compraDTO.setImporte(importe);
             result.add(new Compra(compraDTO));
