@@ -19,11 +19,11 @@ WITH (
   OIDS=FALSE
 );
 
-ALTER TABLE PAR_EVENTOS ADD COLUMN TPV_ID integer DEFAULT 0;
+ALTER TABLE PAR_EVENTOS ADD COLUMN TPV_ID integer DEFAULT 1;
 
---Insert de el TPV de Benicassim, Vila-real con ID = 0 para ponerlo por defecto en la relación entre evento y TPV
+--Insert de el TPV de Benicassim, Vila-real con ID = 1 para ponerlo por defecto en la relación entre evento y TPV
 INSERT INTO PAR_TPVS (ID, NOMBRE, CODE, CURRENCY, TERMINAL, TRANSACTION_CODE, ORDER_PREFIX, LANG_CA_CODE, LANG_ES_CODE, URL, WSDL_URL, SECRET, DEFAULT_TPV)
-              VALUES (0, 'ILUSTRISIMO AYUNTAMIENTO', '055136832', '978', '001', '0', '0000', '003', '001', 'https://sis-t.redsys.es:25443/sis/realizarPago', 'http://wifi.benicassim.es/japps/par-public/services/InotificacionSIS', '01234', true);
+              VALUES (1, 'ILUSTRISIMO AYUNTAMIENTO', '055136832', '978', '001', '0', '0000', '003', '001', 'https://sis-t.redsys.es:25443/sis/realizarPago', 'http://wifi.benicassim.es/japps/par-public/services/InotificacionSIS', '01234', true);
 
 ALTER TABLE PAR_EVENTOS ADD CONSTRAINT PAR_EVENTOS_TPVS_FK1 FOREIGN KEY (TPV_ID) REFERENCES PAR_TPVS (ID);
 

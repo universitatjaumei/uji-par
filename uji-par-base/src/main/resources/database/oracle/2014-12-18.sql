@@ -17,7 +17,7 @@ CREATE TABLE "PAR_TPVS"
 );
 
 ALTER TABLE PAR_EVENTOS ADD (
-  TPV_ID integer DEFAULT 0
+  TPV_ID integer DEFAULT 1
 );
 
 --Insert de el TPV de Benicassim, Vila-real con ID = 0 para ponerlo por defecto en la relación entre evento y TPV
