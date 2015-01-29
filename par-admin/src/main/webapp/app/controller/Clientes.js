@@ -50,7 +50,7 @@ Ext.define('Paranimf.controller.Clientes', {
         success: function (response) {
             var respuesta = Ext.JSON.decode(response.responseText, true);
             var emails = "";
-            for (var i = 0; i < respuesta.data.length; i++)
+            for (var i = 0; respuesta.data != null && i < respuesta.data.length; i++)
             {
                if (i < respuesta.data.length - 1)
                {

@@ -49,7 +49,7 @@ public class ClientesDAO extends BaseDAO {
         JPAQuery subquery = new JPAQuery(entityManager);
 
         List<Long> ids = subquery.from(qCompraDTO).where(qCompraDTO.infoPeriodica.isTrue()).groupBy(qCompraDTO.email).list(qCompraDTO.id.max());
-        if (ids.size() > 0) {
+        if (ids != null && ids.size() > 0) {
             return query.from(qCompraDTO).where(qCompraDTO.id.in(ids));
         }
         else {
@@ -59,6 +59,12 @@ public class ClientesDAO extends BaseDAO {
 
 
     public List<String> getMails() {
-        return getQueryClientes().distinct().list(qCompraDTO.email);
+        JPAQuery queryClientes = getQueryClientes();
+        if (queryClientes != null) {
+            return queryClientes.distinct().list(qCompraDTO.email);
+        }
+        else {
+            return null;
+        }
     }
 }
