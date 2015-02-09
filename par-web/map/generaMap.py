@@ -17,8 +17,10 @@ Options:
 
     -x <xini>                                   Desplazamiento inicial X [default: 0]
     -y <yini>                                   Desplazamiento inicial Y [default: 0]
-    -d --descendente                            Los número de butacas van en orden descendente
-    -D --filadescendente                        Los número de filas van en orden descendente
+    -d --descendente                            Los números de butacas van en orden descendente
+    -s --serpiente                              Los números de butacas van en orden de serpiente
+    -c --continuadas                            Los números de butacas siguen un progreso continuo independientemente de la fila
+    -D --filadescendente                        Los números de filas van en orden descendente
     -i <incremento> --incremento <incremento>   Los números de butaca van incrementandose en este numero [default: 1]
     -f <filaInicial>                            Número de fila inicial [default: 0]
     -b <butacaInicial>                          Número de butaca inicial (default: Calculada automáticamente)
@@ -30,7 +32,7 @@ Options:
     map                                         Genera map para incluir en el HTML
 """
 
-def genera_json(localizacion, x_ini, y_ini, ancho_imagen, alto_imagen, ancho_celda, alto_celda, descendente, inc_butaca, fila_ini, butaca_ini, descendente_fila):
+def genera_json(localizacion, x_ini, y_ini, ancho_imagen, alto_imagen, ancho_celda, alto_celda, descendente, inc_butaca, fila_ini, butaca_ini, descendente_fila, serpiente, continuadas):
 
     butacas = []
 
@@ -47,20 +49,35 @@ def genera_json(localizacion, x_ini, y_ini, ancho_imagen, alto_imagen, ancho_cel
     else:
         inc_fila = -1
 
-    for y in range(y_ini, alto_imagen, alto_celda):
-
-        if butaca_ini != None:
-            numero = int(butaca_ini)
+    if butaca_ini != None:
+        numero = int(butaca_ini)
+    else:    
+        if descendente: 
+            numero = ((ancho_imagen-x_ini) / ancho_celda) * abs(inc_butaca)
         else:    
-            if descendente: 
-                numero = ((ancho_imagen-x_ini) / ancho_celda) * abs(inc_butaca)
-            else:    
-                numero = 1
+            numero = 1
+    max_butaca = numero
 
+    for y in range(y_ini, alto_imagen, alto_celda):
         for x in range(x_ini, ancho_imagen, ancho_celda):
             butacas.append({"localizacion":localizacion, "xIni":x, "yIni":y, "xFin":x+ancho_celda, "yFin":y+alto_celda, "fila":fila, "numero":numero})
-            numero += inc_butaca
-        
+            max_butaca = max(numero, max_butaca)
+            numero += inc_butaca            
+
+        if serpiente or continuadas:
+            inc_butaca = -inc_butaca
+            if inc_butaca > 0:
+                numero = max_butaca + inc_butaca
+            else:
+                numero = max_butaca + ((ancho_imagen-x_ini) / ancho_celda) * abs(inc_butaca)
+        else:
+            if butaca_ini != None:
+                numero = int(butaca_ini)
+            else:    
+                if descendente: 
+                    numero = ((ancho_imagen-x_ini) / ancho_celda) * abs(inc_butaca)
+                else:    
+                    numero = 1
         fila += inc_fila
 
     return json.dumps(butacas, sort_keys=True, indent=4, separators=(',', ': '))
@@ -87,7 +104,7 @@ if __name__ == "__main__":
 
     if arguments['json']:
 
-        print genera_json(arguments["<localizacion>"], int(arguments["-x"]), int(arguments["-y"]), int(arguments["<anchoImagen>"]), int(arguments["<altoImagen>"]), int(arguments["<anchoCelda>"]), int(arguments["<altoCelda>"]), arguments["--descendente"], int(arguments['--incremento']), int(arguments['-f']), arguments['-b'], arguments['--filadescendente'])
+        print genera_json(arguments["<localizacion>"], int(arguments["-x"]), int(arguments["-y"]), int(arguments["<anchoImagen>"]), int(arguments["<altoImagen>"]), int(arguments["<anchoCelda>"]), int(arguments["<altoCelda>"]), arguments["--descendente"], int(arguments['--incremento']), int(arguments['-f']), arguments['-b'], arguments['--filadescendente'], arguments["--serpiente"], arguments["--continuadas"])
     
     else:
         
