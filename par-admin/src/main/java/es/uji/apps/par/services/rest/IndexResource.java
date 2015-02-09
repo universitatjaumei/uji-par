@@ -42,6 +42,7 @@ public class IndexResource extends BaseResource
         template.put("screens", getScreens(readOnlyUser));
         template.put("views", getViews(readOnlyUser));
         template.put("multipleTpv", Configuration.isMultipleTpvEnabled());
+        template.put("icaa", Configuration.isMenuICAA());
 
         return template;
     }
