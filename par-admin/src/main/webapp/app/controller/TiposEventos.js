@@ -11,6 +11,9 @@ Ext.define('Paranimf.controller.TiposEventos', {
    }, {
       ref: 'formTiposEventos',
       selector: 'formTiposEventos'
+   }, {
+      ref: 'comboIcaa',
+      selector: 'formTiposEventos combobox[name=exportarICAA]'
    }],
 
    init: function() {
@@ -35,8 +38,23 @@ Ext.define('Paranimf.controller.TiposEventos', {
 
          'formTiposEventos button[action=save]': {
             click: this.saveTiposFormData
+         },
+
+         'formTiposEventos': {
+            afterrender: this.preparaTipoEvento
          }
       });
+   },
+
+   preparaTipoEvento: function(comp, opts) {
+      if (null == icaa || !icaa) {
+         this.getComboIcaa().select(false);
+      }
+      else {
+         this.getComboIcaa().show();
+         this.getComboIcaa().allowBlank = false;
+         this.getComboIcaa().setFieldLabel(UI.i18n.field.exportarICAA + ' <span class="req" style="color:red">*</span>');
+      }
    },
 
    recargaStore: function(comp, opts) {
