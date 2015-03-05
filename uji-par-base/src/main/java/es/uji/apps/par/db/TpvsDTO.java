@@ -49,6 +49,9 @@ public class TpvsDTO {
     @Column(name="DEFAULT_TPV")
     private Boolean defaultTpv;
 
+    @Column(name="CIF")
+    private String cif;
+
     //bi-directional many-to-one association to SesionDTO
     @OneToMany(mappedBy="parTpv")
     private List<EventoDTO> parEventos;
@@ -163,5 +166,13 @@ public class TpvsDTO {
 
     public void setSecret(String secret) {
         this.secret = secret;
+    }
+
+    public String getCif() {
+        return cif;
+    }
+
+    public void setCif(String cif) {
+        this.cif = cif;
     }
 }

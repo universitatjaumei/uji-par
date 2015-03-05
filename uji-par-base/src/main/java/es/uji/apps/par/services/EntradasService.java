@@ -107,6 +107,8 @@ public class EntradasService
 	        	entradaModelReport.setNumero(butaca.getNumero());
 	            entradaModelReport.setZona(butaca.getParLocalizacion().getNombreVa());
 	            entradaModelReport.setTotal(ReportUtils.formatEuros(butaca.getPrecio()));
+                entradaModelReport.setCifEmpresa(butaca.getParSesion().getParEvento().getParTpv().getCif());
+                entradaModelReport.setNombreEmpresa(butaca.getParSesion().getParEvento().getParTpv().getNombre());
                 if (Configuration.isIdEntrada()) {
                     entradaModelReport.setBarcode(compra.getUuid() + "-" + butaca.getIdEntrada());
                 }
@@ -172,6 +174,8 @@ public class EntradasService
 	        	entradaModelReport.setNumero(butaca.getNumero());
 	        	entradaModelReport.setZona(butaca.getParLocalizacion().getNombreVa());
 	        	entradaModelReport.setTotal(ReportUtils.formatEuros(butaca.getPrecio()));
+                entradaModelReport.setCifEmpresa(butaca.getParSesion().getParEvento().getParTpv().getCif());
+                entradaModelReport.setNombreEmpresa(butaca.getParSesion().getParEvento().getParTpv().getNombre());
                 if (Configuration.isIdEntrada()) {
                     entradaModelReport.setBarcode(compra.getUuid() + "-" + butaca.getIdEntrada());
                 }

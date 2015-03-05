@@ -154,14 +154,20 @@ Ext.define('Paranimf.view.compra.GridCompras', {
       align: 'center',
       text: UI.i18n.message.printTaquilla,
       renderer: function(val, p, rec) {
+        if (!rec.data.reserva && !rec.data.anulada)
         return '<a target="blank" href="' + urlPrefix + 'compra/' + rec.data.uuid + '/pdftaquilla">' + UI.i18n.message.print + '</a>';
+        else
+          return '';
       }
     }, {
       flex: 2,
       align: 'center',
       text: UI.i18n.message.printAtHome,
       renderer: function(val, p, rec) {
+        if (!rec.data.reserva && !rec.data.anulada)
         return '<a target="blank" href="' + urlPrefix + 'compra/' + rec.data.uuid + '/pdf">' + UI.i18n.message.print + '</a>';
+        else
+          return '';
       }
     }, {
        dataIndex: 'idDevolucion',

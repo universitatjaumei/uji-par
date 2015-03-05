@@ -10,6 +10,8 @@ public class EntradaModelReport {
 	private String tipo;
 	private Boolean tarifaDefecto;
 	private String iniciales;
+    private String nombreEmpresa;
+    private String cifEmpresa;
 	
 	public EntradaModelReport() {
 		
@@ -69,5 +71,20 @@ public class EntradaModelReport {
 	public void setIniciales(String iniciales) {
 		this.iniciales = iniciales;
 	}
-	
+
+    public String getCifEmpresa() {
+        return cifEmpresa;
+    }
+
+    public void setCifEmpresa(String cifEmpresa) {
+        this.cifEmpresa = cifEmpresa;
+    }
+
+    public String getNombreEmpresa() {
+        return nombreEmpresa;
+    }
+
+    public void setNombreEmpresa(String nombreEmpresa) {
+        this.nombreEmpresa = nombreEmpresa;
+    }
 }

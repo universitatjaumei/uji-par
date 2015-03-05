@@ -249,7 +249,6 @@ Ext.define('Paranimf.controller.ComprasReservas', {
       console.log(selectedRecord);
       if (selectedRecord.data.reserva == true) {
         if (confirm(UI.i18n.message.surePassarACompra)) {
-          console.log("vamos")
           var idSesion = this.getGridSesionesComprasReservas().getSelectedColumnId();
           var idCompra = this.getGridCompras().getSelectedColumnId();
           var me = this;
