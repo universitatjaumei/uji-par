@@ -96,6 +96,7 @@ public class Configuration
 	private static final String GENERAR_CIFRADO = "uji.pgp.generateCifrado";
 
     private static final String MENU_ABONO = "uji.par.menuAbonos";
+    private static final String MENU_CLIENTES = "uji.par.menuClientes";
     private static final String MENU_ICAA = "uji.par.menuICAA";
 
 	private static final Logger log = LoggerFactory.getLogger(Configuration.class);
@@ -621,6 +622,14 @@ public class Configuration
 
     public static boolean isMenuAbono() {
         String menuAbono = getNoObligatoryProperty(MENU_ABONO);
+        if (menuAbono == null || !menuAbono.equalsIgnoreCase("true"))
+            return false;
+        else
+            return true;
+    }
+
+    public static boolean isMenuClientes() {
+        String menuAbono = getNoObligatoryProperty(MENU_CLIENTES);
         if (menuAbono == null || !menuAbono.equalsIgnoreCase("true"))
             return false;
         else

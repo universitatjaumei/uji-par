@@ -43,6 +43,7 @@ public class IndexResource extends BaseResource
         template.put("views", getViews(readOnlyUser));
         template.put("multipleTpv", Configuration.isMultipleTpvEnabled());
         template.put("icaa", Configuration.isMenuICAA());
+        template.put("clientes", Configuration.isMenuClientes());
 
         return template;
     }
@@ -84,10 +85,13 @@ public class IndexResource extends BaseResource
 
         menuHtml += "        <li id=\"menuInformes\">" +
                 "            <a href=\"javascript:muestraMenu('Informes')\"><img src=\"../resources/images/menu/informes.png\" width=\"24\"/><span>" + ResourceProperties.getProperty(locale, "menu.informes") + "</span></a>" +
-                "        </li>    " +
-                "        <li id=\"menuClientes\">" +
-                "            <a href=\"javascript:muestraMenu('Clientes')\"><img src=\"../resources/images/menu/email.png\" width=\"24\"/><span>" + ResourceProperties.getProperty(locale, "menu.clientes") + "</span></a>" +
                 "        </li>    ";
+
+        if (Configuration.isMenuClientes()) {
+            menuHtml += "        <li id=\"menuClientes\">" +
+                    "            <a href=\"javascript:muestraMenu('Clientes')\"><img src=\"../resources/images/menu/email.png\" width=\"24\"/><span>" + ResourceProperties.getProperty(locale, "menu.clientes") + "</span></a>" +
+                    "        </li>    ";
+        }
 
         if (Configuration.isMenuICAA()) {
             menuHtml += "        <li id=\"menuGenerarFicheros\">" +
@@ -101,7 +105,11 @@ public class IndexResource extends BaseResource
     }
 
     private String getControllers(boolean readOnlyUser) {
-        String controllers = "['Dashboard', 'Usuarios', 'TiposEventos', 'Eventos', 'PlantillasPrecios', 'ComprasReservas', 'Informes', 'Tarifas', 'Clientes'";
+        String controllers = "['Dashboard', 'Usuarios', 'TiposEventos', 'Eventos', 'PlantillasPrecios', 'ComprasReservas', 'Informes', 'Tarifas'";
+
+        if (Configuration.isMenuClientes()) {
+            controllers += ", 'Clientes'";
+        }
 
         if (!readOnlyUser) {
             controllers += ", 'Taquilla'";
@@ -121,9 +129,14 @@ public class IndexResource extends BaseResource
     }
 
     private String getScreens(boolean readOnlyUser) {
-        String screens = "[{'Dashboard': 0, 'Usuarios': 1, 'TiposEventos': 2, 'Eventos': 3, 'PlantillasPrecios': 4,  'ComprasReservas': 5, 'Informes': 6, 'Tarifas': 7, 'Clientes': 8";
+        String screens = "[{'Dashboard': 0, 'Usuarios': 1, 'TiposEventos': 2, 'Eventos': 3, 'PlantillasPrecios': 4,  'ComprasReservas': 5, 'Informes': 6, 'Tarifas': 7";
 
-        int i = 9;
+        int i = 8;
+        if (Configuration.isMenuClientes()) {
+            screens += ", 'Clientes': " + i;
+            i++;
+        }
+
         if (!readOnlyUser) {
             screens += ", 'Taquilla': " + i;
             i++;
