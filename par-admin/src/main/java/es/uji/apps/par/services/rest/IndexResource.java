@@ -158,7 +158,11 @@ public class IndexResource extends BaseResource
     }
 
     private String getViews(boolean readOnlyUser) {
-        String views = "[{border: false, xtype: 'dashboard'}, {xtype: 'gridUsuarios'}, {xtype: 'gridTiposEventos'}, {xtype: 'panelEventos'}, {xtype: 'panelPlantillas'}, {xtype: 'panelComprasReservas'}, {xtype: 'panelInformes'}, {xtype: 'panelTarifas'}, {xtype: 'gridClientes'}";
+        String views = "[{border: false, xtype: 'dashboard'}, {xtype: 'gridUsuarios'}, {xtype: 'gridTiposEventos'}, {xtype: 'panelEventos'}, {xtype: 'panelPlantillas'}, {xtype: 'panelComprasReservas'}, {xtype: 'panelInformes'}, {xtype: 'panelTarifas'}";
+
+        if (Configuration.isMenuClientes()) {
+            views += ", {xtype: 'gridClientes'}";
+        }
 
         if (!readOnlyUser) {
             views += ", {xtype: 'panelTaquilla'}";
