@@ -1,7 +1,6 @@
 package es.uji.apps.par.services;
 
 import com.mysema.query.Tuple;
-import com.mysema.query.types.QTuple;
 import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.dao.AbonadosDAO;
 import es.uji.apps.par.dao.ButacasDAO;
@@ -9,7 +8,6 @@ import es.uji.apps.par.dao.ComprasDAO;
 import es.uji.apps.par.dao.SesionesDAO;
 import es.uji.apps.par.db.AbonadoDTO;
 import es.uji.apps.par.db.CompraDTO;
-import es.uji.apps.par.db.QCompraDTO;
 import es.uji.apps.par.db.SesionDTO;
 import es.uji.apps.par.exceptions.*;
 import es.uji.apps.par.model.*;
@@ -254,7 +252,7 @@ public class ComprasService
 
     public CompraDTO getCompraById(long idCompra)
     {
-        return comprasDAO.getCompraById(idCompra);
+        return comprasDAO.getCompraButacasById(idCompra);
     }
 
     public CompraDTO getCompraByUuid(String uuidCompra)

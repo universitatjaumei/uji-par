@@ -9,7 +9,6 @@ import es.uji.apps.par.db.*;
 import es.uji.apps.par.exceptions.IncidenciaNotFoundException;
 import es.uji.apps.par.ficheros.registros.TipoIncidencia;
 import es.uji.apps.par.model.Abonado;
-import es.uji.apps.par.model.Abono;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -95,7 +94,7 @@ public class ComprasDAO extends BaseDAO {
 	@Transactional
 	public CompraDTO guardaCompra(Long compraId, Long sesionId, Date fecha,
 			boolean taquilla, BigDecimal importe) {
-		CompraDTO compraDTO = getCompraById(compraId);
+		CompraDTO compraDTO = getCompraButacasById(compraId);
 
 		if (compraDTO == null) {
 			compraDTO = insertaCompra(sesionId, fecha, taquilla, importe);
@@ -113,7 +112,7 @@ public class ComprasDAO extends BaseDAO {
 	}
 
 	@Transactional
-	public CompraDTO getCompraById(long id) {
+	public CompraDTO getCompraButacasById(long id) {
 		QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
 		QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
 
@@ -130,6 +129,11 @@ public class ComprasDAO extends BaseDAO {
 
 		// return entityManager.find(CompraDTO.class, id);
 	}
+
+    @Transactional
+    public CompraDTO getCompraById(long id) {
+        return entityManager.find(CompraDTO.class, id);
+    }
 
 	@Transactional
 	public void guardarCodigoPagoTarjeta(long idCompra, String codigo) {
@@ -446,7 +450,7 @@ public class ComprasDAO extends BaseDAO {
 					.where(qButacaDTO.parCompra.id.eq(idCompraReserva))
 					.execute();
 		} catch (Exception e) {
-			for (ButacaDTO butaca : getCompraById(idCompraReserva)
+			for (ButacaDTO butaca : getCompraButacasById(idCompraReserva)
 					.getParButacas()) {
 				if (butacaOcupada(butaca)) {
 					String comprador = "";
