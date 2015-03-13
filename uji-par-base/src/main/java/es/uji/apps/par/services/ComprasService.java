@@ -252,7 +252,7 @@ public class ComprasService
 
     public CompraDTO getCompraById(long idCompra)
     {
-        return comprasDAO.getCompraButacasById(idCompra);
+        return comprasDAO.getCompraById(idCompra);
     }
 
     public CompraDTO getCompraByUuid(String uuidCompra)

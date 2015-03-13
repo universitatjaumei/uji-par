@@ -94,7 +94,7 @@ public class ComprasDAO extends BaseDAO {
 	@Transactional
 	public CompraDTO guardaCompra(Long compraId, Long sesionId, Date fecha,
 			boolean taquilla, BigDecimal importe) {
-		CompraDTO compraDTO = getCompraButacasById(compraId);
+		CompraDTO compraDTO = getCompraById(compraId);
 
 		if (compraDTO == null) {
 			compraDTO = insertaCompra(sesionId, fecha, taquilla, importe);
@@ -112,28 +112,20 @@ public class ComprasDAO extends BaseDAO {
 	}
 
 	@Transactional
-	public CompraDTO getCompraButacasById(long id) {
+	public CompraDTO getCompraById(long id) {
 		QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
 		QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
 
 		JPAQuery query = new JPAQuery(entityManager);
 
 		List<CompraDTO> compras = query.from(qCompraDTO, qButacaDTO)
-				.join(qCompraDTO.parButacas, qButacaDTO).fetch()
 				.where(qCompraDTO.id.eq(id)).distinct().list(qCompraDTO);
 
 		if (compras.size() == 0)
 			return null;
 		else
-			return compras.get(0);
-
-		// return entityManager.find(CompraDTO.class, id);
+            return compras.get(0);
 	}
-
-    @Transactional
-    public CompraDTO getCompraById(long id) {
-        return entityManager.find(CompraDTO.class, id);
-    }
 
 	@Transactional
 	public void guardarCodigoPagoTarjeta(long idCompra, String codigo) {
@@ -235,7 +227,6 @@ public class ComprasDAO extends BaseDAO {
 		JPAQuery query = new JPAQuery(entityManager);
 
 		List<CompraDTO> compras = query.from(qCompraDTO, qButacaDTO)
-				.join(qCompraDTO.parButacas, qButacaDTO).fetch()
 				.where(qCompraDTO.uuid.eq(uuid)).distinct().list(qCompraDTO);
 
 		if (compras.size() == 0)
@@ -450,7 +441,7 @@ public class ComprasDAO extends BaseDAO {
 					.where(qButacaDTO.parCompra.id.eq(idCompraReserva))
 					.execute();
 		} catch (Exception e) {
-			for (ButacaDTO butaca : getCompraButacasById(idCompraReserva)
+			for (ButacaDTO butaca : getCompraById(idCompraReserva)
 					.getParButacas()) {
 				if (butacaOcupada(butaca)) {
 					String comprador = "";
