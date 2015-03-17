@@ -16,6 +16,7 @@ public class GeneralPARException extends WebApplicationException
     public static final String BUTACA_OCUPADA = "Butaca ocupada: "; 
     public static final String TIPO_INCORRECTO_COMPRA_INTERNET = "Compra de tipo Aula de Teatro por internet";
     public static final String COMPRA_BUTACA_DESCUENTO_NO_DISPONIBLE = "Se ha intentado comprar una butaca con descuento cero";
+    public static final String COMPRA_BUTACA_NO_EXISTENTE = "Se ha intentado comprar una butaca que no existe";
     public static final String COMPRA_INVITACION_INTERNET_NO_DISPONIBLE = "Compra de entrada tipo invitación por internet";
     public static final String COMPRA_SIN_BUTACAS = "Compra sin butacas seleccionadas";
     public static final String EVENTO_NO_ENCONTRADO = "Evento no encontrado: "; 
@@ -115,6 +116,7 @@ public class GeneralPARException extends WebApplicationException
     public static final Integer NOT_FOUND_INCIDENCIA_CODE = 548;
 	public static final Integer EDICION_ANULADA_EXCEPTION_CODE = 549;
     public static final Integer ABONO_CON_ABONADOS_CODE = 550;
+    public static final Integer COMPRA_BUTACA_NO_EXISTENTE_CODE = 551;
     
     static {
 		messages = new HashMap<Integer,String>();
@@ -169,6 +171,7 @@ public class GeneralPARException extends WebApplicationException
 		messages.put(NOT_FOUND_INCIDENCIA_CODE, NOT_FOUND_INCIDENCIA);
 		messages.put(EDICION_ANULADA_EXCEPTION_CODE, EDICION_ANULADA_EXCEPTION);
         messages.put(ABONO_CON_ABONADOS_CODE, ABONO_CON_ABONADOS);
+        messages.put(COMPRA_BUTACA_NO_EXISTENTE_CODE, COMPRA_BUTACA_NO_EXISTENTE);
     }
 
     public GeneralPARException(int errorCode) {

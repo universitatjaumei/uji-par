@@ -31,6 +31,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -278,6 +280,19 @@ public class EntradasResource extends BaseResource
 
         try
         {
+            Map<String, List<Butaca>> butacasExistentes = new HashMap<String, List<Butaca>>();
+            for (Butaca butacaSeleccionada : butacasSeleccionadas) {
+                String localizacion = butacaSeleccionada.getLocalizacion();
+                if (!butacasExistentes.containsKey(localizacion)) {
+                    byte[] encoded = Files.readAllBytes(Paths.get(Configuration.getPathJson() + localizacion + ".json"));
+                    butacasExistentes.put(localizacion, Butaca.parseaJSON(new String(encoded, "UTF-8")));
+                }
+
+                if (!existeButaca(butacasExistentes.get(localizacion), butacaSeleccionada)) {
+                    throw new CompraButacaNoExistente();
+                }
+            }
+
             resultadoCompra = comprasService.realizaCompraInternet(sesionId, butacasSeleccionadas, uuidCompra);
         }
         catch (FueraDePlazoVentaInternetException e)
@@ -305,6 +320,11 @@ public class EntradasResource extends BaseResource
             String error = ResourceProperties.getProperty(getLocale(), "error.seleccionEntradas.compraDescuentoNoDisponible");
             return paginaSeleccionEntradasNumeradas(sesionId, butacasSeleccionadas, null, error);
         }
+        catch (CompraButacaNoExistente e)
+        {
+            String error = ResourceProperties.getProperty(getLocale(), "error.seleccionEntradas.compraButacaNoExistente");
+            return paginaSeleccionEntradasNumeradas(sesionId, butacasSeleccionadas, null, error);
+        }
 
         if (resultadoCompra.getCorrecta())
         {
@@ -319,6 +339,17 @@ public class EntradasResource extends BaseResource
             return paginaSeleccionEntradasNumeradas(sesionId, butacasSeleccionadas,
                     resultadoCompra.getButacasOcupadas(), null);
         }
+    }
+
+
+    private boolean existeButaca(List<Butaca> butacas, Butaca butacaSeleccionada) {
+        for (Butaca butaca : butacas) {
+            if (butacaSeleccionada.getFila().equals(butaca.getFila()) && butacaSeleccionada.getNumero().equals(butaca.getNumero()))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     private Response compraEntradaNoNumeradaHtml(Long sesionId, String butacasSeleccionadasJSON, String uuidCompra) throws Exception
