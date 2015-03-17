@@ -68,7 +68,7 @@ public class CompraDTO implements Serializable {
     private SesionDTO parSesion;
 
 	// bi-directional many-to-one association to ButacaDTO
-	@OneToMany(mappedBy = "parCompra", fetch=FetchType.LAZY)
+	@OneToMany(mappedBy = "parCompra", fetch=FetchType.EAGER)
 	private List<ButacaDTO> parButacas;
 	
     @Column(name = "CODIGO_PAGO_TARJETA")

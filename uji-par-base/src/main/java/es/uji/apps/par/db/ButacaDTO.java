@@ -51,7 +51,7 @@ public class ButacaDTO implements Serializable{
     private LocalizacionDTO parLocalizacion;
     
     //bi-directional many-to-one association to CompraDTO
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="COMPRA_ID")
     private CompraDTO parCompra;
     
