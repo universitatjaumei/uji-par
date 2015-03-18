@@ -1,18 +1,8 @@
 package es.uji.apps.par.sync.uji;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-
-import javax.xml.bind.JAXBException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import es.uji.apps.par.dao.EventosDAO;
 import es.uji.apps.par.dao.TiposEventosDAO;
+import es.uji.apps.par.dao.TpvsDAO;
 import es.uji.apps.par.db.EventoDTO;
 import es.uji.apps.par.db.TipoEventoDTO;
 import es.uji.apps.par.sync.parse.RssParser;
@@ -20,6 +10,15 @@ import es.uji.apps.par.sync.rss.jaxb.Item;
 import es.uji.apps.par.sync.rss.jaxb.Rss;
 import es.uji.apps.par.sync.utils.SyncUtils;
 import es.uji.apps.par.utils.Utils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.xml.bind.JAXBException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
 
 @Service("syncUji")
 public class EventosSyncUji implements EventosSync
@@ -31,6 +30,9 @@ public class EventosSyncUji implements EventosSync
 
     @Autowired
     TiposEventosDAO tipoEventosDAO;
+
+    @Autowired
+    private TpvsDAO tpvsDAO;
     
     RssParser rssParser;
     
@@ -61,6 +63,7 @@ public class EventosSyncUji implements EventosSync
             log.info(String.format("RSS insertando nuevo evento: %s - \"%s\"", item.getContenidoId(), item.getTitle()));
 
             evento = new EventoDTO();
+            evento.setParTpv(tpvsDAO.getTpvDefault());
             evento.setRssId(item.getContenidoId());
         }
         else

@@ -11,6 +11,7 @@ import java.util.List;
 
 import javax.xml.bind.JAXBException;
 
+import es.uji.apps.par.dao.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import es.uji.apps.par.config.Configuration;
-import es.uji.apps.par.dao.EventosDAO;
-import es.uji.apps.par.dao.PlantillasDAO;
-import es.uji.apps.par.dao.SalasDAO;
-import es.uji.apps.par.dao.SesionesDAO;
-import es.uji.apps.par.dao.TiposEventosDAO;
 import es.uji.apps.par.db.EventoDTO;
 import es.uji.apps.par.db.PlantillaDTO;
 import es.uji.apps.par.db.TipoEventoDTO;
@@ -57,6 +53,9 @@ public class EventosSyncBenicassim implements EventosSync
     SalasDAO salasDAO;
 
     @Autowired
+    private TpvsDAO tpvsDAO;
+
+    @Autowired
     RssParser rssParser;
 
     
@@ -80,6 +79,7 @@ public class EventosSyncBenicassim implements EventosSync
             log.info(String.format("RSS insertando nuevo evento: %s - \"%s\"", item.getContenidoId(), item.getTitle()));
 
             evento = new EventoDTO();
+            evento.setParTpv(tpvsDAO.getTpvDefault());
             evento.setRssId(item.getContenidoId());
         }
         else
