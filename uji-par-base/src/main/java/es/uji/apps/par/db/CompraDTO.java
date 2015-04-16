@@ -379,6 +379,7 @@ public class CompraDTO implements Serializable {
 		compra.setId(res.getLong("id"));
 		compra.setUuid(res.getString("uuid"));
 		compra.setEmail(res.getString("email"));
+        compra.setPagada(res.getBoolean("pagada"));
 		
 		return compra;
 	}
