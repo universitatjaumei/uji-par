@@ -5,7 +5,7 @@ Ext.define('Paranimf.store.Clientes', {
    sorters: ['nombre'],
    autoLoad: false,
    autoSync: true,
-   pageSize: 10,
+   pageSize: 25,
    remoteSort: true,
 
    proxy: {

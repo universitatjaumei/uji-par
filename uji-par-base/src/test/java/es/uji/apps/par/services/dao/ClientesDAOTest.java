@@ -1,5 +1,6 @@
 package es.uji.apps.par.services.dao;
 
+import com.mysema.query.Tuple;
 import es.uji.apps.par.dao.ClientesDAO;
 import es.uji.apps.par.model.Cliente;
 import org.junit.Test;
@@ -25,7 +26,7 @@ public class ClientesDAOTest extends BaseDAOTest {
     @Test
     @Transactional
     public void getClientes() {
-        List<Cliente> clientes = clientesDAO.getClientes("nombre", 0, 10);
+        List<Tuple> clientes = clientesDAO.getClientes("nombre", 0, 10);
 
         assertNotNull(clientes);
         assertEquals(clientes.size(), clientesDAO.getTotalClientes());

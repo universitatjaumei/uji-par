@@ -203,11 +203,11 @@ public class ComprasDAOTest extends BaseDAOTest {
         butaca1.setParCompra(compraDTO);
         butacasDAO.addButaca(butaca1);
 
-        List<Cliente> clientes = clientesDAO.getClientes("nombre", 0, 10);
+        List<Tuple> clientes = clientesDAO.getClientes("nombre", 0, 10);
 
         assertNotNull(clientes);
         assertEquals(clientes.size(), clientesDAO.getTotalClientes());
-        assertTrue(clientes.get(0).getEmail().equals(MAIL));
+        assertTrue(clientes.get(0).get(8, String.class).equals(MAIL));
     }
 
     //TODO Anular compras y ver que marca la sesion con incidencias del ICAA

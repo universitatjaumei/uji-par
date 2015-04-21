@@ -1,5 +1,6 @@
 package es.uji.apps.par.dao;
 
+import com.mysema.query.Tuple;
 import com.mysema.query.jpa.impl.JPAQuery;
 import es.uji.apps.par.db.CompraDTO;
 import es.uji.apps.par.db.QCompraDTO;
@@ -15,20 +16,15 @@ public class ClientesDAO extends BaseDAO {
     private QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
 
     @Transactional
-    public List<Cliente> getClientes(String sortParameter, int start, int limit) {
+    public List<Tuple> getClientes(String sortParameter, int start, int limit) {
         JPAQuery jpaQuery = getQueryClientes();
 
-        List<CompraDTO> compras = new ArrayList<CompraDTO>();
+        List<Tuple> compras = new ArrayList<Tuple>();
         if (jpaQuery != null) {
-            compras = jpaQuery.orderBy(getSort(qCompraDTO, sortParameter)).limit(limit).offset(start).list(qCompraDTO);
+            compras = jpaQuery.orderBy(getSort(qCompraDTO, sortParameter)).limit(limit).offset(start).list(qCompraDTO.id, qCompraDTO.nombre, qCompraDTO.apellidos, qCompraDTO.direccion, qCompraDTO.poblacion, qCompraDTO.cp, qCompraDTO.provincia, qCompraDTO.telefono, qCompraDTO.email);
         }
 
-        List<Cliente> clientes = new ArrayList<Cliente>();
-        for (CompraDTO compra : compras) {
-            clientes.add(new Cliente(compra));
-        }
-
-        return clientes;
+        return compras;
     }
 
     @Transactional
@@ -36,7 +32,7 @@ public class ClientesDAO extends BaseDAO {
         JPAQuery jpaQuery = getQueryClientes();
 
         if (jpaQuery != null) {
-            return jpaQuery.list(qCompraDTO).size();
+            return jpaQuery.list(qCompraDTO.id).size();
         }
         else {
             return 0;
