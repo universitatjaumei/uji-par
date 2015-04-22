@@ -338,7 +338,7 @@ public class ComprasService
             compraDTO.setReferenciaPago(tupleCompra.get(21, String.class));
             compraDTO.setReserva(tupleCompra.get(22, Boolean.class));
             compraDTO.setTaquilla(tupleCompra.get(23, Boolean.class));
-            compraDTO.setTelefono(tupleCompra.get(14, String.class));
+            compraDTO.setTelefono(tupleCompra.get(24, String.class));
             compraDTO.setUuid(tupleCompra.get(25, String.class));
 
         	BigDecimal importe = tupla.get(1, BigDecimal.class);
