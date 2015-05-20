@@ -512,12 +512,11 @@ public class Sesion
 		//Sesion.checkRecaudacion(recaudacion);
 	}
 
-	public static void checkSesionValoresIcaa(String formato, long eventoId, String versionLinguistica, List<EventoDTO> peliculasMultisesion) {
+	public static void checkSesionValoresIcaa(String formato, long eventoId, String versionLinguistica) {
 		if (formato == null || formato.equals(""))
 			throw new SesionSinFormatoIdiomaIcaaException(eventoId, formato, versionLinguistica);
 
-		if ((peliculasMultisesion == null || peliculasMultisesion.size() == 0) && (versionLinguistica == null ||
-				versionLinguistica.equals("")))
+		if (versionLinguistica == null || versionLinguistica.equals(""))
 			throw new SesionSinFormatoIdiomaIcaaException(eventoId, formato, versionLinguistica);
 
 		//TODO -se podria mejorar mirando en el caso que sea multisesion, si existe version linguistica en la tabla adjunta

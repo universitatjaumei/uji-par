@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import com.mysema.query.Tuple;
 import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.dao.EventosDAO;
 import es.uji.apps.par.db.EventoDTO;
@@ -108,14 +109,17 @@ public class ComunicacionesICAAService {
 		List<SesionDTO> sesiones = sesionesDAO.getSesiones(Utils.listIntegerToListLong(ids));
 		for (SesionDTO sesion: sesiones) {
 			Sala.checkValidity(sesion.getParSala().getNombre(), sesion.getParSala().getCodigo());
-			List<EventoDTO> peliculasMultisesion = eventosDAO.getPeliculas(sesion.getParEvento().getId());
+			List<Tuple> peliculasMultisesion = eventosDAO.getPeliculasMultisesion(sesion.getParEvento().getId());
 
 			if (peliculasMultisesion.size() > 0) {
-				for (EventoDTO peliculaMultisesion: peliculasMultisesion) {
-					Evento.checkValidity(new Long(peliculaMultisesion.getId()).intValue(), peliculaMultisesion.getExpediente(),
-							peliculaMultisesion.getTituloEs(), peliculaMultisesion.getCodigoDistribuidora(),
-							peliculaMultisesion.getNombreDistribuidora(), peliculaMultisesion.getVo(),
-							sesion.getVersionLinguistica(), peliculaMultisesion.getSubtitulos(), sesion.getParEvento().getFormato());
+				for (Tuple peliculaMultisesion: peliculasMultisesion) {
+                    EventoDTO eventoDTO = peliculaMultisesion.get(0, EventoDTO.class);
+                    String versionLinguistica = peliculaMultisesion.get(1, String.class);
+
+					Evento.checkValidity(new Long(eventoDTO.getId()).intValue(), eventoDTO.getExpediente(),
+                            eventoDTO.getTituloEs(), eventoDTO.getCodigoDistribuidora(),
+                            eventoDTO.getNombreDistribuidora(), eventoDTO.getVo(),
+                            versionLinguistica, eventoDTO.getSubtitulos(), eventoDTO.getFormato());
 				}
 			} else {
 				Evento.checkValidity(new Long(sesion.getParEvento().getId()).intValue(), sesion.getParEvento().getExpediente(),
@@ -125,14 +129,6 @@ public class ComunicacionesICAAService {
 						sesion.getParEvento().getFormato());
 			}
 			Sesion.checkSesion(sesion.getFechaCelebracion(), tipoEnvio, sesion.getIncidenciaId());
-
-			try {
-				Sesion.checkSesionValoresIcaa(sesion.getParEvento().getFormato(), sesion.getParEvento().getId(),
-						sesion.getVersionLinguistica(), peliculasMultisesion);
-			} catch (Exception e) {
-				throw new SesionSinFormatoIdiomaIcaaException(sesion.getParEvento().getId(),
-						sesion.getParEvento().getFormato(), sesion.getVersionLinguistica());
-			}
 		}
 	}
 
