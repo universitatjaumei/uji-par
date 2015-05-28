@@ -273,11 +273,6 @@ public class SesionesDAO extends BaseDAO {
         return (query.count() > 0L);
     }
 
-    public boolean isSesionReprogramada(Timestamp fechaCelebracion, Long salaId, Long sesionId) {
-        return (getCantidadSesionesMismaFechaYLocalizacion(fechaCelebracion,
-                salaId, sesionId).getFirst() > 0);
-    }
-
     @Transactional
     public void addPrecioSesion(PreciosSesionDTO precioSesionDTO) {
         entityManager.persist(precioSesionDTO);
@@ -644,7 +639,7 @@ public class SesionesDAO extends BaseDAO {
         if (dtFin != null)
             condicion = condicion.and(qSesionDTO.fechaCelebracion.loe(new Timestamp(dtFin.getTime())));
 
-        query.where(condicion);
+        query.where(condicion.and(qSesionDTO.anulada.isFalse()));
 
         return query.orderBy(getSort(qSesionDTO, sort)).distinct().list(qSesionDTO);
     }
@@ -758,6 +753,15 @@ public class SesionesDAO extends BaseDAO {
         }
 
         return result;
+    }
+
+    @Transactional
+    public boolean isSesionReprogramada(Timestamp fechaCelebracion, long salaId,
+                                                           Long sesionId) {
+        JPAQuery query = new JPAQuery(entityManager);
+
+        return query.from(qSesionDTO).where(qSesionDTO.fechaCelebracion.eq(fechaCelebracion).and(qSesionDTO.parSala
+                .id.eq(salaId)).and(qSesionDTO.id.ne(sesionId))).count() > 0;
     }
 
     @Transactional
