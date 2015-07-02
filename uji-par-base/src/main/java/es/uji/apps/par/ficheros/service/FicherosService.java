@@ -131,24 +131,22 @@ public class FicherosService
 
         for (SesionDTO sesionDTO : sesionesDTO)
         {
-			if (!sesionesDAO.isIncidenciaCancelacionEvento(sesionDTO.getIncidenciaId())) {
-				if (!codigoSala.equals(sesionDTO.getParSala().getCodigo())
-						|| !DateUtils.formatDdmmyy(sesionDTO.getFechaCelebracion()).equals(ddmmaa))
-				{
-					if (registro != null)
-						registros.add(registro);
+            if (!codigoSala.equals(sesionDTO.getParSala().getCodigo())
+                    || !DateUtils.formatDdmmyy(sesionDTO.getFechaCelebracion()).equals(ddmmaa))
+            {
+                if (registro != null)
+                    registros.add(registro);
 
-					registro = new RegistroSesionProgramada();
-					registro.setCodigoSala(sesionDTO.getParSala().getCodigo());
-					registro.setFechaSesion(DateUtils.formatDdmmyy(sesionDTO.getFechaCelebracion()));
-					registro.setNumeroSesiones(0);
+                registro = new RegistroSesionProgramada();
+                registro.setCodigoSala(sesionDTO.getParSala().getCodigo());
+                registro.setFechaSesion(DateUtils.formatDdmmyy(sesionDTO.getFechaCelebracion()));
+                registro.setNumeroSesiones(0);
 
-					codigoSala = sesionDTO.getParSala().getCodigo();
-					ddmmaa = DateUtils.formatDdmmyy(sesionDTO.getFechaCelebracion());
-				}
+                codigoSala = sesionDTO.getParSala().getCodigo();
+                ddmmaa = DateUtils.formatDdmmyy(sesionDTO.getFechaCelebracion());
+            }
 
-				registro.setNumeroSesiones(registro.getNumeroSesiones() + 1);
-			}
+            registro.setNumeroSesiones(registro.getNumeroSesiones() + 1);
         }
 
         registros.add(registro);
