@@ -217,6 +217,7 @@ Ext.define('Paranimf.controller.Taquilla', {
     if (doRecargar) {
       var url = (this.getCheckMostrarTodosEventos().checked) ? urlPrefix + 'evento': urlPrefix + 'evento?activos=true';
       this.getGridEventosTaquilla().store.proxy.url = url;
+      this.getGridEventosTaquilla().store.loadPage(1);
       this.recargaStore();
     }
   },
@@ -881,6 +882,7 @@ Ext.define('Paranimf.controller.Taquilla', {
    recargaStore: function(comp, opts) {
     this.getGridEventosTaquilla().deseleccionar();
     this.getGridSesionesTaquilla().store.proxy.url = urlPrefix + 'evento/-1/sesiones';
+    this.getGridSesionesTaquilla().store.loadPage(1);
     this.getGridSesionesTaquilla().recargaStore();
     this.getGridEventosTaquilla().recargaStore();
    },
