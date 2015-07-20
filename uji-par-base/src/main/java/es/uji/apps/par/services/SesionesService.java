@@ -1,14 +1,12 @@
 package es.uji.apps.par.services;
 
 import com.mysema.query.Tuple;
-import es.uji.apps.par.dao.EventosDAO;
-import es.uji.apps.par.dao.LocalizacionesDAO;
-import es.uji.apps.par.dao.SesionesAbonosDAO;
-import es.uji.apps.par.dao.SesionesDAO;
+import es.uji.apps.par.dao.*;
 import es.uji.apps.par.db.PreciosSesionDTO;
 import es.uji.apps.par.db.SesionDTO;
 import es.uji.apps.par.db.TarifaDTO;
 import es.uji.apps.par.exceptions.CampoRequeridoException;
+import es.uji.apps.par.exceptions.EventoConCompras;
 import es.uji.apps.par.exceptions.FechasInvalidasException;
 import es.uji.apps.par.exceptions.IncidenciaNotFoundException;
 import es.uji.apps.par.model.*;
@@ -28,6 +26,9 @@ public class SesionesService
     
     @Autowired
     private EventosDAO eventosDAO;
+
+    @Autowired
+    private ComprasDAO comprasDAO;
 
     @Autowired
     private SesionesAbonosDAO sesionAbonoDAO;
@@ -180,7 +181,17 @@ public class SesionesService
 
     public void removeSesion(Integer id)
     {
-        sesionDAO.removeSesion(id);
+        if (hasSesionCompras(id))
+        {
+            throw new EventoConCompras(id);
+        }
+        else {
+            sesionDAO.removeSesion(id);
+        }
+    }
+
+    private boolean hasSesionCompras(Integer sesionId) {
+        return comprasDAO.getComprasOfSesion(sesionId).size() > 0;
     }
 
     public void removeSesionAbono(Long id)

@@ -731,6 +731,17 @@ public class ComprasDAO extends BaseDAO {
 				.list(qCompra);
 	}
 
+    @Transactional
+    public List<CompraDTO> getComprasOfSesion(long sesionId) {
+        QCompraDTO qCompra = QCompraDTO.compraDTO;
+
+        JPAQuery query = new JPAQuery(entityManager);
+        return query
+                .from(qCompra)
+                .where(qCompra.parSesion.id.eq(sesionId).and(qCompra.anulada.isFalse()).and(qCompra.caducada.isFalse()))
+                .list(qCompra);
+    }
+
 	public InformeModelReport getResumenSesion(Long sesionId) {
 		InformeModelReport r = new InformeModelReport();
 		JPAQuery query = new JPAQuery(entityManager);
