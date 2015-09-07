@@ -1,5 +1,6 @@
 package es.uji.apps.par.services.rest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +15,7 @@ import javax.ws.rs.core.Response;
 
 import com.sun.jersey.api.core.InjectParam;
 
+import es.uji.apps.par.db.ButacaDTO;
 import es.uji.apps.par.model.Butaca;
 import es.uji.apps.par.services.ButacasService;
 
@@ -51,9 +53,28 @@ public class ButacasResource extends BaseResource
             return apiAccessDenied();
         }
         
-        butacasService.updatePresentadas(sesionId, butacas);
+        butacasService.updatePresentadas(butacas);
         
         return Response.ok().build();
+    }
+
+    @POST
+    @Path("{id}/online")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateEntradaPresentada(@PathParam("id") Long sesionId, Butaca butaca)
+    {
+        if (!correctApiKey(request))
+        {
+            return apiAccessDenied();
+        }
+
+        long update = butacasService.updatePresentada(butaca);
+        if (update > 0) {
+            return Response.ok().build();
+        }
+        else {
+            return Response.serverError().build();
+        }
     }
 
 }

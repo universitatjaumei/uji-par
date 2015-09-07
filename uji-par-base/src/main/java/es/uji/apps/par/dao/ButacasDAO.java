@@ -289,14 +289,20 @@ public class ButacasDAO extends BaseDAO
     }
 
     @Transactional
-    public void updatePresentadas(Long sesionId, List<Butaca> butacas)
+    public void updatePresentadas(List<Butaca> butacas)
     {
         for (Butaca butaca: butacas)
         {
-            new JPAUpdateClause(entityManager, qButacaDTO)
-                .where(qButacaDTO.id.eq(butaca.getId()))
-                .set(qButacaDTO.presentada, butaca.getPresentada()).execute();
+            updatePresentada(butaca);
         }
+    }
+
+    @Transactional
+    public long updatePresentada(Butaca butaca)
+    {
+         return new JPAUpdateClause(entityManager, qButacaDTO)
+            .where(qButacaDTO.id.eq(butaca.getId()).and(qButacaDTO.presentada.isNull()))
+            .set(qButacaDTO.presentada, butaca.getPresentada()).execute();
     }
 
 	@Transactional

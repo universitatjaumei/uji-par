@@ -116,11 +116,15 @@ public class ButacasService
          return Butaca.butacasDTOToButacas(butacasDAO.getButacasNoAnuladas(idSesion));
     }
 
-    public void updatePresentadas(Long sesionId, List<Butaca> butacas)
+    public void updatePresentadas(List<Butaca> butacas)
     {
-        butacasDAO.updatePresentadas(sesionId, butacas); 
+        butacasDAO.updatePresentadas(butacas);
     }
 
+    public long updatePresentada(Butaca butaca)
+    {
+        return butacasDAO.updatePresentada(butaca);
+    }
 
     public List<Butaca> getButacasDisponibles(Long butacaId, String tarifaId, Locale locale) throws IOException {
         ButacaDTO butacaDTO = getButaca(butacaId);
