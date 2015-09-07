@@ -69,6 +69,7 @@ public class ButacasResource extends BaseResource
         }
 
         long update = butacasService.updatePresentada(butaca);
+        
         if (update > 0) {
             return Response.ok().build();
         }
