@@ -28,6 +28,7 @@ import es.uji.apps.par.services.*;
 
 @Path("compra")
 public class CompraResource extends BaseResource {
+    
 	@InjectParam
 	private ComprasService comprasService;
 
