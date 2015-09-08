@@ -24,7 +24,14 @@ import com.fourtic.paranimf.entradas.adapter.ButacasListAdapter;
 import com.fourtic.paranimf.entradas.constants.Constants;
 import com.fourtic.paranimf.entradas.data.Butaca;
 import com.fourtic.paranimf.entradas.db.ButacaDao;
+import com.fourtic.paranimf.entradas.network.EstadoRed;
+import com.fourtic.paranimf.entradas.scan.ResultadoScan;
+import com.fourtic.paranimf.entradas.sync.SincronizadorButacas;
+import com.fourtic.paranimf.utils.Utils;
 import com.google.inject.Inject;
+
+import org.apache.http.conn.ConnectTimeoutException;
+import org.apache.http.conn.HttpHostConnectException;
 
 public class EntradaManualActivity extends BaseNormalActivity
 {
@@ -38,9 +45,15 @@ public class EntradaManualActivity extends BaseNormalActivity
     private int sesionId;
 
     @Inject
+    private SincronizadorButacas sync;
+
+    @Inject
     private ButacaDao butacaDao;
 
     private ButacasListAdapter adapter;
+
+    @Inject
+    private EstadoRed network;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -103,23 +116,55 @@ public class EntradaManualActivity extends BaseNormalActivity
             @Override
             public void onClick(DialogInterface dialog, int arg1)
             {
-                try
+                if (butaca.getFechaPresentada() == null)
                 {
-                    marcaComoPresentada(butaca);
-                    cargaButacasDesdeBd();
-                    muestraMensaje(getString(R.string.marcada_como_presentada));
+                    butaca.setFechaPresentada(new Date());
+                    butaca.setFechaPresentadaEpoch(butaca.getFechaPresentada().getTime());
+                    if (network.estaActiva())
+                    {
+                        sync.subeButacaOnline(sesionId, butaca, new SincronizadorButacas.SyncCallback()
+                        {
+                            @Override
+                            public void onSuccess()
+                            {
+                                presentaEntrada(butaca);
+                            }
+
+                            @Override
+                            public void onError(Throwable e, String errorMessage)
+                            {
+                                gestionaError(errorMessage, e);
+                            }
+                        });
+                    }
+                    else {
+                        presentaEntrada(butaca);
+                    }
                 }
-                catch (SQLException e)
+                else
                 {
-                    gestionaError(getString(R.string.error_marcando_presentada), e);
+                    muestraError(getString(R.string.ya_presentada) + Utils.formatDateWithTime(butaca.getFechaPresentada()));
                 }
             }
         });
     }
 
+    private void presentaEntrada(Butaca butaca)
+    {
+        try
+        {
+            marcaComoPresentada(butaca);
+            cargaButacasDesdeBd();
+            muestraMensaje(getString(R.string.marcada_como_presentada));
+        }
+        catch (SQLException e) {
+            gestionaError(getString(R.string.error_marcando_presentada), e);
+        }
+    }
+
     protected void marcaComoPresentada(Butaca butaca) throws SQLException
     {
-        butacaDao.actualizaFechaPresentada(butaca.getUuid(), new Date());
+        butacaDao.actualizaFechaPresentada(butaca.getUuid(), butaca.getFechaPresentada());
     }
 
     @Override

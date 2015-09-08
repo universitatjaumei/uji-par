@@ -9,10 +9,14 @@ import com.fourtic.paranimf.entradas.R;
 import com.fourtic.paranimf.entradas.data.Butaca;
 import com.fourtic.paranimf.entradas.db.ButacaDao;
 import com.fourtic.paranimf.entradas.dump.ButacasBackup;
+import com.fourtic.paranimf.entradas.exception.EntradaPresentadaException;
 import com.fourtic.paranimf.entradas.rest.RestService;
 import com.fourtic.paranimf.entradas.rest.RestService.ResultCallback;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+
+import org.apache.http.conn.ConnectTimeoutException;
+import org.apache.http.conn.HttpHostConnectException;
 
 @Singleton
 public class SincronizadorButacas
@@ -96,6 +100,28 @@ public class SincronizadorButacas
             public void onError(Throwable throwable, String errorMessage)
             {
                 callback.onError(throwable, context.getString(R.string.error_enviando_butacas_rest));
+            }
+        });
+    }
+
+    public void subeButacaOnline(int sesionId, Butaca butaca, final SyncCallback callback) {
+        rest.updateOnlinePresentada(sesionId, butaca, new ResultCallback<Void>()
+        {
+            @Override
+            public void onSuccess(Void successData)
+            {
+                callback.onSuccess();
+            }
+
+            @Override
+            public void onError(Throwable throwable, String errorMessage)
+            {
+                if (throwable instanceof EntradaPresentadaException) {
+                    callback.onError(throwable, context.getString(R.string.ya_presentada));
+                }
+                else {
+                    callback.onSuccess();
+                }
             }
         });
     }

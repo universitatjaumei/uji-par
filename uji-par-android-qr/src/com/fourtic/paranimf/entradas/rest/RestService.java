@@ -19,12 +19,15 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.fourtic.paranimf.entradas.R;
 import com.fourtic.paranimf.entradas.activity.SettingsActivity;
 import com.fourtic.paranimf.entradas.data.Butaca;
 import com.fourtic.paranimf.entradas.data.Evento;
 import com.fourtic.paranimf.entradas.data.ResponseEventos;
+import com.fourtic.paranimf.entradas.exception.EntradaPresentadaException;
 import com.fourtic.paranimf.entradas.socket.MySSLSocketFactory;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -230,6 +233,46 @@ public class RestService {
 					}
 				});
 	}
+
+    public void updateOnlinePresentada(int idSesion, Butaca butaca,
+                                  final ResultCallback<Void> responseHandler) {
+        String url = getUrl() + BASE_SECURE_URL + "/sesion/" + idSesion
+                + "/online" +  getApiKey();
+
+        HttpEntity entity = null;
+        try {
+            String json = gson.toJson(butaca);
+            entity = new StringEntity(json, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            responseHandler.onError(e, "Error toJson en POST");
+        }
+
+        client.setTimeout(5000);
+        client.post(context, url, defaultHeaders(), entity, "application/json",
+                new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int arg0, String response) {
+                        client.setTimeout(30000);
+                        try {
+                            RestResponse restResponse = gson.fromJson(response, RestResponse.class);
+                            if (restResponse.getSuccess()) {
+                                responseHandler.onSuccess(null);
+                            }
+                            else {
+                                responseHandler.onError(new EntradaPresentadaException(), context.getString(R.string.ya_presentada));
+                            }
+                        } catch (JsonSyntaxException e) {
+                            responseHandler.onError(e, "Error fromJson al recibir la respuesta del POST");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Throwable throwable, String body) {
+                        client.setTimeout(30000);
+                        responseHandler.onError(throwable, getErrorMessage(body));
+                    }
+                });
+    }
 
 	private void get(final String url,
 			final AsyncHttpResponseHandler responseHandler) {

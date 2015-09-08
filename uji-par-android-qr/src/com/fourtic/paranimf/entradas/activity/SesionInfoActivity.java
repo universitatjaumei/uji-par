@@ -1,7 +1,9 @@
 package com.fourtic.paranimf.entradas.activity;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import roboguice.inject.InjectExtra;
 import roboguice.inject.InjectView;
@@ -34,6 +36,9 @@ import com.fourtic.paranimf.utils.Utils;
 import com.google.inject.Inject;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+
+import org.apache.http.conn.ConnectTimeoutException;
+import org.apache.http.conn.HttpHostConnectException;
 
 public class SesionInfoActivity extends BaseNormalActivity
 {
@@ -88,6 +93,9 @@ public class SesionInfoActivity extends BaseNormalActivity
 
     @Inject
     private EstadoRed red;
+
+    @Inject
+    private EstadoRed network;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -261,26 +269,40 @@ public class SesionInfoActivity extends BaseNormalActivity
     {
         abreActividadEscanear();
 
-        String uuid = scanningResult.getContents();//data.getStringExtra("SCAN_RESULT");
+        final String uuid = scanningResult.getContents();//data.getStringExtra("SCAN_RESULT");
 
         try
         {
-            Butaca butaca = butacaDao.getButacaPorUuid(sesionId, uuid);
+            final Butaca butaca = butacaDao.getButacaPorUuid(sesionId, uuid);
 
             if (butaca.getFechaPresentada() == null)
             {
-                butacaDao.actualizaFechaPresentada(uuid, new Date());
+                butaca.setFechaPresentada(new Date());
+                butaca.setFechaPresentadaEpoch(butaca.getFechaPresentada().getTime());
+                if (network.estaActiva())
+                {
+                    sync.subeButacaOnline(sesionId, butaca, new SyncCallback()
+                    {
+                        @Override
+                        public void onSuccess()
+                        {
+                            presentaEntrada(butaca);
+                        }
 
-                if (butaca.getTipo().equals("descuento"))
-                    muestraDialogoResultadoScan(getString(R.string.entrada_descuento), ResultadoScan.DESCUENTO);
-                else
-                    muestraDialogoResultadoScan(getString(R.string.entrada_ok), ResultadoScan.OK);
+                        @Override
+                        public void onError(Throwable e, String errorMessage)
+                        {
+                            muestraDialogoResultadoScan(errorMessage, ResultadoScan.ERROR);
+                        }
+                    });
+                }
+                else {
+                    presentaEntrada(butaca);
+                }
             }
             else
             {
-                muestraDialogoResultadoScan(
-                        getString(R.string.ya_presentada) + Utils.formatDateWithTime(butaca.getFechaPresentada()),
-                        ResultadoScan.ERROR);
+                muestraDialogoResultadoScan(getString(R.string.ya_presentada) + Utils.formatDateWithTime(butaca.getFechaPresentada()), ResultadoScan.ERROR);
             }
         }
         catch (ButacaNoEncontradaException e)
@@ -290,6 +312,22 @@ public class SesionInfoActivity extends BaseNormalActivity
         catch (ButacaDeOtraSesionException e)
         {
             muestraDialogoResultadoScan(getString(R.string.entrada_otra_sesion), ResultadoScan.ERROR);
+        }
+    }
+
+    private void presentaEntrada(Butaca butaca)
+    {
+        try
+        {
+            butacaDao.actualizaFechaPresentada(butaca.getUuid(), butaca.getFechaPresentada());
+
+            if (butaca.getTipo().equals("descuento"))
+                muestraDialogoResultadoScan(getString(R.string.entrada_descuento), ResultadoScan.DESCUENTO);
+            else
+                muestraDialogoResultadoScan(getString(R.string.entrada_ok), ResultadoScan.OK);
+        }
+        catch (SQLException e) {
+            muestraDialogoResultadoScan(getString(R.string.error_marcando_presentada), ResultadoScan.ERROR);
         }
     }
 
