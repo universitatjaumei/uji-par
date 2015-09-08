@@ -70,11 +70,14 @@ public class ButacasResource extends BaseResource
 
         long update = butacasService.updatePresentada(butaca);
 
+        RestResponse response = new RestResponse();
         if (update > 0) {
-            return Response.ok().build();
+            response.setSuccess(true);
+            return Response.ok(response).build();
         }
         else {
-            return Response.serverError().build();
+            response.setSuccess(false);
+            return Response.ok(response).build();
         }
     }
 
