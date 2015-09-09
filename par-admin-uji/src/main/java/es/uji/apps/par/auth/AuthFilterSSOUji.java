@@ -33,7 +33,8 @@ public class AuthFilterSSOUji implements Filter
     private String returnPort;
     private String defaultUserId;
     private String defaultUserName;
-    
+    private String authToken;
+
     @Autowired
     UJIPerfilesService ujiPerfilesService;
 
@@ -50,8 +51,8 @@ public class AuthFilterSSOUji implements Filter
         returnPort = filterConfig.getInitParameter("returnPort");
         defaultUserId = filterConfig.getInitParameter("defaultUserId");
         defaultUserName = filterConfig.getInitParameter("defaultUserName");
+        authToken = filterConfig.getInitParameter("authToken");
     }
-
 
     public void destroy()
     {
@@ -66,15 +67,25 @@ public class AuthFilterSSOUji implements Filter
             ServletException
     {
         HttpServletRequest sRequest = (HttpServletRequest) request;
+
+        String headerAuthToken = sRequest.getHeader("X-UJI-AuthToken");
+        if (headerAuthToken != null) {
+            if (authToken != null && headerAuthToken.equals(authToken)) {
+                chain.doFilter(request, response);
+                return;
+            }
+        }
+
         User user = AccessManager.getConnectedUser(sRequest);
         boolean isUserValid = false;
 
         if (sRequest.getSession().getAttribute("user") == null) {
-        	sRequest.getSession().setAttribute("user", user);
+            sRequest.getSession().setAttribute("user", user);
             isUserValid = ujiPerfilesService.hasPerfil("ADMIN", user.getId());
             sRequest.getSession().setAttribute("isUserValid", isUserValid);
-        } else
+        } else {
             isUserValid = (Boolean) sRequest.getSession().getAttribute("isUserValid");
+        }
 
         if (isExcluded(sRequest.getRequestURI()))
         {

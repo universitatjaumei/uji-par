@@ -125,6 +125,22 @@ public class CompraDTO implements Serializable {
         this.caducada = false;
 	}
 
+    public CompraDTO(SesionDTO sesion, Timestamp fecha, Boolean taquilla, BigDecimal importe, String uuid, String email, String nombre, String apellidos) {
+        this.parSesion = sesion;
+        this.fecha = fecha;
+        this.taquilla = taquilla;
+        this.importe = importe;
+        this.pagada = false;
+        this.uuid = uuid;
+        this.infoPeriodica = false;
+        this.reserva = false;
+        this.anulada = false;
+        this.caducada = false;
+        this.email = email;
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+    }
+
     public CompraDTO(SesionDTO sesion, Timestamp fecha, Boolean taquilla, BigDecimal importe, String uuid, Abonado abonado) {
         this.parSesion = sesion;
         this.fecha = fecha;

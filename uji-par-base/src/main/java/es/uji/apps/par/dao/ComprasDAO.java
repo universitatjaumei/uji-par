@@ -59,6 +59,20 @@ public class ComprasDAO extends BaseDAO {
 	}
 
     @Transactional
+    public CompraDTO insertaCompra(Long sesionId, Date fecha, boolean taquilla,
+                                   BigDecimal importe, String email, String nombre, String apellidos) {
+        SesionDTO sesion = sesionDAO.getSesion(sesionId);
+
+        CompraDTO compraDTO = new CompraDTO(sesion, new Timestamp(
+                fecha.getTime()), taquilla, importe, UUID.randomUUID()
+                .toString(), email, nombre, apellidos);
+
+        entityManager.persist(compraDTO);
+
+        return compraDTO;
+    }
+
+    @Transactional
     public CompraDTO insertaCompraAbono(Long sesionId, Date fecha, boolean taquilla,
                                    Abonado abonado) {
         SesionDTO sesion = sesionDAO.getSesion(sesionId);
@@ -110,6 +124,17 @@ public class ComprasDAO extends BaseDAO {
 
 		return compraDTO;
 	}
+
+    @Transactional
+    public List<Tuple> getComprasYPresentadas(long sesionId) {
+        QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
+        QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
+
+        JPAQuery query = new JPAQuery(entityManager);
+
+        return query.from(qCompraDTO).leftJoin(qCompraDTO.parButacas, qButacaDTO)
+                .where(qCompraDTO.parSesion.id.eq(sesionId).and(qCompraDTO.email.isNotNull())).groupBy(qCompraDTO.email).list(qCompraDTO.email, qCompraDTO.count(), qButacaDTO.presentada.count());
+    }
 
 	@Transactional
 	public CompraDTO getCompraById(long id) {
