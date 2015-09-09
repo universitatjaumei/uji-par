@@ -7,7 +7,6 @@ import javax.ws.rs.ext.Provider;
 import es.uji.apps.par.exceptions.GeneralPARException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import es.uji.apps.par.model.ResultatOperacio;
 
 @Provider
