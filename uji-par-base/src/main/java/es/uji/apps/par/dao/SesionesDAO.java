@@ -9,6 +9,7 @@ import com.mysema.query.jpa.impl.JPAUpdateClause;
 import com.mysema.query.types.expr.BooleanExpression;
 import es.uji.apps.par.db.*;
 import es.uji.apps.par.exceptions.EdicionSesionAnuladaException;
+import es.uji.apps.par.exceptions.EventoConCompras;
 import es.uji.apps.par.exceptions.IncidenciaNotFoundException;
 import es.uji.apps.par.exceptions.SesionSinFormatoIdiomaIcaaException;
 import es.uji.apps.par.ficheros.registros.RegistroPelicula;
@@ -204,7 +205,7 @@ public class SesionesDAO extends BaseDAO {
     }
 
     @Transactional(rollbackForClassName = {"EdicionSesionAnuladaException"})
-    public void updateSesion(Sesion sesion) {
+    public void updateSesion(Sesion sesion, boolean hasCompras) {
         SesionDTO sesionDTO = getSesion(sesion.getId());
 
         if (isSesionAnulada(sesionDTO))
@@ -212,8 +213,11 @@ public class SesionesDAO extends BaseDAO {
 
         Timestamp fechaCelebracion = DateUtils.dateToTimestampSafe(DateUtils.addTimeToDate(sesion.getFechaCelebracion
                 (), sesion.getHoraCelebracion()));
-        JPAUpdateClause update = new JPAUpdateClause(entityManager, qSesionDTO);
 
+        if (!sesionDTO.getFechaCelebracion().equals(fechaCelebracion) && sesionDTO.getFechaCelebracion().before(new Date()) && hasCompras)
+            throw new EventoConCompras(sesion.getEvento().getId());
+
+        JPAUpdateClause update = new JPAUpdateClause(entityManager, qSesionDTO);
         update.set(qSesionDTO.canalInternet, sesion.getCanalInternet())
                 .set(qSesionDTO.canalTaquilla, sesion.getCanalTaquilla())
                 .set(qSesionDTO.fechaCelebracion, fechaCelebracion);
@@ -254,9 +258,8 @@ public class SesionesDAO extends BaseDAO {
         for (SesionDTO sesionMismaHoraYSalaIncluidaLaPropia : sesionesMismaHoraYSala) {
             long totalAnuladas = getButacasAnuladasTotal(sesionMismaHoraYSalaIncluidaLaPropia.getId());
             boolean hasVentasDegradadas = hasVentasDegradadas(sesionMismaHoraYSalaIncluidaLaPropia.getId(),
-                    sesionMismaHoraYSalaIncluidaLaPropia.getFechaCelebracion());
-            boolean isSesionReprogramada = isSesionReprogramada(sesionMismaHoraYSalaIncluidaLaPropia.getFechaCelebracion
-                            (), sesionMismaHoraYSalaIncluidaLaPropia.getParSala().getId(),
+                    fechaCelebracion);
+            boolean isSesionReprogramada = isSesionReprogramada(fechaCelebracion, sesionMismaHoraYSalaIncluidaLaPropia.getParSala().getId(),
                     sesionMismaHoraYSalaIncluidaLaPropia.getId());
             int tipoIncidenciaId = getTipoIncidenciaSesion(totalAnuladas, hasVentasDegradadas, isSesionReprogramada);
             setIncidencia(sesionMismaHoraYSalaIncluidaLaPropia.getId(), tipoIncidenciaId);

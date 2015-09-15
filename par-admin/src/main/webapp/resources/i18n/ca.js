@@ -185,6 +185,7 @@ UI =
             "comprobandoSesionesMismaHora": "Error revisant si hi havia més sessions a la mateixa hora en la mateixa sala",
             "editSesionAnulada": "No es pot editar una sessió anul·lada, ja que es una sessió reprogramada",
             "venderSesionAnulada": "No es poden vendre entrades d'una sessió anul·lada",
+            "sesionComprasCambioFecha": "No es pot canviar la data d'una sessió celebrada amb compres",
             "reservarSesionAnulada": "No es poden reservar entrades d'una sessió anul·lada"
         },
         "button": {

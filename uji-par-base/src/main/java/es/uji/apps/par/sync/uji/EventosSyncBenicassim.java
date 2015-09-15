@@ -12,6 +12,7 @@ import java.util.List;
 import javax.xml.bind.JAXBException;
 
 import es.uji.apps.par.dao.*;
+import es.uji.apps.par.db.CompraDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,9 @@ public class EventosSyncBenicassim implements EventosSync
     
     @Autowired
     SesionesDAO sesionesDAO;
+
+    @Autowired
+    ComprasDAO comprasDAO;
     
     @Autowired
     PlantillasDAO plantillasDAO;
@@ -142,8 +146,11 @@ public class EventosSyncBenicassim implements EventosSync
 
 				if (sesion.getId() == 0)
 					sesionesDAO.addSesion(sesion);
-				else
-					sesionesDAO.updateSesion(sesion);
+				else {
+                    List<CompraDTO> comprasOfSesion = comprasDAO.getComprasOfSesion(sesion.getId());
+                    boolean hasCompras = comprasOfSesion != null ? comprasOfSesion.size() > 0 : false;
+                    sesionesDAO.updateSesion(sesion, hasCompras);
+                }
 			} catch (Exception e) {
 				log.error("Error en la sincronizacion del evento o sus sesiones", e);
 			}

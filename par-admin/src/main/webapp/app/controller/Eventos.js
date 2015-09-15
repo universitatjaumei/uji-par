@@ -599,7 +599,13 @@ Ext.define('Paranimf.controller.Eventos', {
                   if (sala.getValue() == '')
                      sala.setValue(null);
                
-                  form.saveFormData(grid, urlPrefix + 'evento/' + eventoId + '/sesiones');
+                  form.saveFormData(grid, urlPrefix + 'evento/' + eventoId + '/sesiones', undefined, undefined, function (response, action) {
+                    var error = Ext.JSON.decode(response.responseText, true);
+                    if (error != null && error.codi != null && error.codi == 515)
+                      alert(UI.i18n.error.sesionComprasCambioFecha);
+                    else
+                      alert(error.descripcio);
+                  });
                }
            }, failure: function (response) {
               alert(UI.i18n.error.comprobandoSesionesMismaHora);

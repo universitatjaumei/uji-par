@@ -2,6 +2,7 @@ package es.uji.apps.par.services;
 
 import com.mysema.query.Tuple;
 import es.uji.apps.par.dao.*;
+import es.uji.apps.par.db.CompraDTO;
 import es.uji.apps.par.db.PreciosSesionDTO;
 import es.uji.apps.par.db.SesionDTO;
 import es.uji.apps.par.db.TarifaDTO;
@@ -257,7 +258,9 @@ public class SesionesService
 		sesion.setEvento(createParEventoWithId(eventoId));
 
         sesionDAO.deleteExistingPreciosSesion(sesion.getId());
-        sesionDAO.updateSesion(sesion);
+        List<CompraDTO> comprasOfSesion = comprasDAO.getComprasOfSesion(sesion.getId());
+        boolean hasCompras = comprasOfSesion != null ? comprasOfSesion.size() > 0 : false;
+        sesionDAO.updateSesion(sesion, hasCompras);
         addPreciosSesion(Sesion.SesionToSesionDTO(sesion));
     }
 
