@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.fourtic.paranimf.entradas"
+    android:versionCode="9"
+    android:versionName="1.8" >
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="17" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <application
+        android:name=".application.ParanimfApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity android:name="com.fourtic.paranimf.entradas.activity.EventosActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.fourtic.paranimf.entradas.activity.SesionesActivity"
+            android:label="@string/title_sesiones" >
+        </activity>
+        <activity
+            android:name="com.fourtic.paranimf.entradas.activity.SesionInfoActivity"
+            android:label="@string/title_info_sesion" >
+        </activity>
+        <activity android:name="com.fourtic.paranimf.entradas.activity.ResultadoScanActivity" >
+        </activity>
+        <activity
+            android:name="com.fourtic.paranimf.entradas.activity.EntradaManualActivity"
+            android:label="@string/title_entrada_manual" >
+        </activity>
+        <activity android:name="com.fourtic.paranimf.entradas.activity.SettingsActivity" >
+        </activity>
+        <meta-data android:name="com.crashlytics.ApiKey" android:value="9d60b7bf4c5738bb9609c1f673c51de6058b9816"/>
+    </application>
+
+</manifest>
