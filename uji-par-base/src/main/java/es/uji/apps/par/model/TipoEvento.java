@@ -21,6 +21,12 @@ public class TipoEvento
         this.id = id;
     }
 
+    public TipoEvento(String nombreEs, String nombreVa, Boolean exportarICAA) {
+        this.nombreEs = nombreEs;
+        this.nombreVa = nombreVa;
+        this.exportarICAA = exportarICAA;
+    }
+
     public TipoEvento(TipoEventoDTO tipoEventoDTO)
     {
         this.id = tipoEventoDTO.getId();

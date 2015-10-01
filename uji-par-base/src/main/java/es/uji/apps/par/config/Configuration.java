@@ -52,7 +52,9 @@ public class Configuration
     private static final String DB_USER = "uji.db.username";
     private static final String DB_PASS = "uji.db.password";
     private static final String SYNC_TIPO = "uji.sync.lugar";
-    private static final String SYNC_URL_TIPO = "uji.sync.rss";
+    public static final String SYNC_URL_TIPO = "uji.sync.rss";
+    public static final String SYNC_TOKEN = "uji.sync.token";
+    public static final String SYNC_HEADER_TOKEN = "uji.sync.headerToken";
     private static final String SYNC_HORAS_INICIO_VENTA_ONLINE = "uji.sync.horasInicioVentaOnlineTrasCreacion";
     private static final String ENTRADA_TAQUILLA_REPORT = "uji.reports.entradaTaquillaReport.class";
     private static final String ENTRADA_ONLINE_REPORT = "uji.reports.entradaOnlineReport.class";
@@ -389,6 +391,16 @@ public class Configuration
     public static String[] getSyncUrlsRss()
     {
         return getProperty(SYNC_URL_TIPO).split(PROPERTIES_SEPARATOR);
+    }
+
+    public static String getSyncUrlsHeaderToken()
+    {
+        return getNoObligatoryProperty(SYNC_HEADER_TOKEN);
+    }
+
+    public static String getSyncUrlsToken()
+    {
+        return getNoObligatoryProperty(SYNC_TOKEN);
     }
     
     public static int getSyncHorasInicioVentaOnline()

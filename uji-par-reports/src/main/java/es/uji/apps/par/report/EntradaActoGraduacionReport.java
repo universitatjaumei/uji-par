@@ -1,26 +1,7 @@
 package es.uji.apps.par.report;
 
-import java.io.File;
-import java.io.OutputStream;
-import java.util.Locale;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import es.uji.apps.fopreports.Report;
-import es.uji.apps.fopreports.fop.BackgroundRepeatType;
-import es.uji.apps.fopreports.fop.Block;
-import es.uji.apps.fopreports.fop.BorderStyleType;
-import es.uji.apps.fopreports.fop.DisplayAlignType;
-import es.uji.apps.fopreports.fop.ExternalGraphic;
-import es.uji.apps.fopreports.fop.FontStyleType;
-import es.uji.apps.fopreports.fop.Leader;
-import es.uji.apps.fopreports.fop.LinefeedTreatmentType;
-import es.uji.apps.fopreports.fop.PageBreakAfterType;
-import es.uji.apps.fopreports.fop.Table;
-import es.uji.apps.fopreports.fop.TableCell;
-import es.uji.apps.fopreports.fop.TableRow;
-import es.uji.apps.fopreports.fop.TextAlignType;
+import es.uji.apps.fopreports.fop.*;
 import es.uji.apps.fopreports.serialization.FopPDFSerializer;
 import es.uji.apps.fopreports.serialization.ReportSerializationException;
 import es.uji.apps.fopreports.serialization.ReportSerializer;
@@ -30,16 +11,22 @@ import es.uji.apps.par.i18n.ResourceProperties;
 import es.uji.apps.par.report.components.BaseTable;
 import es.uji.apps.par.report.components.EntradaReportStyle;
 import es.uji.apps.par.sync.utils.SyncUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class EntradaReport extends Report implements EntradaReportOnlineInterface
+import java.io.File;
+import java.io.OutputStream;
+import java.util.Locale;
+
+public class EntradaActoGraduacionReport extends Report implements EntradaReportOnlineInterface
 {
-	private static final Logger log = LoggerFactory.getLogger(EntradaReport.class);
-	
+    private static final Logger log = LoggerFactory.getLogger(EntradaActoGraduacionReport.class);
+
     private static final String GRIS_OSCURO = "#666666";
     private static final String FONDO_GRIS = "#EEEEEE";
     private static final String FONDO_BLANCO = "#FFFFFF";
 
-    private static FopPDFSerializer reportSerializer;
+    protected static FopPDFSerializer reportSerializer;
 
     private Locale locale;
 
@@ -47,19 +34,15 @@ public class EntradaReport extends Report implements EntradaReportOnlineInterfac
     private String fecha;
     private String hora;
     private String horaApertura;
-    private String zona;
-    private String fila;
-    private String numero;
-    private String total;
-    private String urlPublicidad;
-    private String urlPortada;
+    protected String urlPublicidad;
+    protected String urlPortada;
     private String barcode;
-    
-    public EntradaReport() throws ReportSerializerInitException {
-    	super(reportSerializer, new EntradaReportStyle());
+
+    public EntradaActoGraduacionReport() throws ReportSerializerInitException {
+        super(reportSerializer, new EntradaReportStyle());
     }
 
-    private EntradaReport(ReportSerializer serializer, ReportStyle style, Locale locale)
+    public EntradaActoGraduacionReport(ReportSerializer serializer, ReportStyle style, Locale locale)
             throws ReportSerializerInitException
     {
         super(serializer, style);
@@ -69,55 +52,50 @@ public class EntradaReport extends Report implements EntradaReportOnlineInterfac
 
     public void generaPaginaButaca(EntradaModelReport entrada, String urlPublic)
     {
-        this.setFila(entrada.getFila());
-        this.setNumero(entrada.getNumero());
-        this.setZona(entrada.getZona());
-        this.setTotal(entrada.getTotal());
         this.setBarcode(entrada.getBarcode());
 
         creaSeccionEntrada(urlPublic);
         add(creaHorizontalLine());
 
-        creaSeccionCondiciones(entrada.getTarifaDefecto());
+        creaSeccionCondiciones();
         creaSeccionPublicidad();
 
         Block pageBreak = withNewBlock();
         pageBreak.setPageBreakAfter(PageBreakAfterType.ALWAYS);
     }
-    
-    private boolean existeImagen(String url) {
-		try {
-			byte[] imagen = SyncUtils.getImageFromUrl(url);
-			if (imagen != null)
-				return true;
-		} catch (Exception e) {
-			log.error("Error al comprobar si existe la imagen " + url, e);
-			return false;
-		}
-		
-		return false;
+
+    protected boolean existeImagen(String url) {
+        try {
+            byte[] imagen = SyncUtils.getImageFromUrl(url);
+            if (imagen != null)
+                return true;
+        } catch (Exception e) {
+            log.error("Error al comprobar si existe la imagen " + url, e);
+            return false;
+        }
+
+        return false;
     }
 
-	private void creaSeccionPublicidad()
+    private void creaSeccionPublicidad()
     {
-		if (existeImagen(this.urlPublicidad)) {
-	        Block publicidadBlock = withNewBlock();
-	        
-	        publicidadBlock.setMarginTop("0.3cm");
-	
-	        ExternalGraphic externalGraphic = new ExternalGraphic();
-	        externalGraphic.setSrc(this.urlPublicidad);
-	
-	        publicidadBlock.getContent().add(externalGraphic);
-		}
+        if (existeImagen(this.urlPortada)) {
+            Block publicidadBlock = withNewBlock();
+
+            publicidadBlock.setMarginTop("0.3cm");
+
+            ExternalGraphic externalGraphic = new ExternalGraphic();
+            externalGraphic.setSrc(this.urlPortada);
+            externalGraphic.setContentWidth("17.9cm");
+
+            publicidadBlock.getContent().add(externalGraphic);
+        }
     }
 
-    private void creaSeccionCondiciones(Boolean isTarifaDefecto)
+    private void creaSeccionCondiciones()
     {
-    	if (isTarifaDefecto == null)
-    		isTarifaDefecto = false;
-    	String puntos = "";
-    	Block block = new Block();
+        String puntos = "";
+        Block block = new Block();
         Block condicionesBlock = withNewBlock();
         condicionesBlock.setMarginTop("0.3cm");
 
@@ -133,16 +111,18 @@ public class EntradaReport extends Report implements EntradaReportOnlineInterfac
         block.setFontSize("8pt");
         block.setColor(GRIS_OSCURO);
         block.setMarginBottom("0.2em");
-        
-        if (!isTarifaDefecto) {
-        	block.setBackgroundImage("/etc/uji/par/imagenes/entrada_descuento.png");
-        	block.setBackgroundRepeat(BackgroundRepeatType.NO_REPEAT);
-        	block.setBackgroundPositionVertical("35%");
-        }
-        
-        for (int i = 1; i <= 10; i++)
-            puntos += ResourceProperties.getProperty(locale, String.format("entrada.condicion%d", i));
-        
+
+        //TODO: Esto solo es para que lo vean ellos ahora
+        /*for (int i = 1; i <= 6; i++)
+            puntos += ResourceProperties.getProperty(locale, String.format("entrada.actograduacion.condicion%d", i));*/
+
+        puntos += "1. L'entrada garanteix una localitat al recinte si accedeix durant l'obertura de portes en l'horari establert. Una vegada finalitze aquest horari l'entrada serà de lliure accés, segons l'aforament, fins que comence l'acte.\n"
+                + "2. Es demana puntualitat. Una vegada començat l'acte, és decisió de l'organització permetre l'accés a la sala. En cas que es permeta accedir-hi, es farà en les condicions indicades pel personal de l'organització.\n"
+                + "3. L'entrada s'ha de conservar completa i en bon estat.\n"
+                + "4. L'organització es reserva el dret d'admissió. La persona portadora d'aquesta entrada es compromet a complir els requisits i condicions de seguretat del recinte. L'organització no es fa responsable de la utilització indeguda de les instal·lacions. L'organització es reserva el dret de denegar l'entrada al recinte al portador de qualsevol objecte o producte que l'organització considere perillós o que estiga prohibit per la normativa vigent.\n"
+                + "5. El portador d'aquesta entrada es compromet a ser respectuós amb el personal del recinte, així com a desconnectar els telèfons mòbils i tot tipus d'alarmes abans d'accedir-hi, i a no menjar, beure o fumar en l'interior. També es prohibeix l'entrada d'animals, excepte dels gossos d'assistència.\n"
+                + "6. L'organització no es fa responsable de les pèrdues, robatoris, deterioraments, danys o perjudicis causats al portador o als seus objectes personals durant l'estada al recinte.\n";
+
         block.getContent().add(puntos);
         condicionesBlock.getContent().add(block);
     }
@@ -238,11 +218,11 @@ public class EntradaReport extends Report implements EntradaReportOnlineInterfac
         Block block = new Block();
 
         ExternalGraphic externalGraphic = new ExternalGraphic();
-        
-        if (existeImagen(this.urlPortada))
-            externalGraphic.setSrc(this.urlPortada);
-
+        //TODO: Cambiar al etc para que la puedan cambiar
+        //externalGraphic.setSrc("/etc/uji/par/imagenes/portada_acto_graduacion.jpg");
+        externalGraphic.setSrc(this.getClass().getClassLoader().getResource("portada_acto_graduacion.jpg").getPath());
         externalGraphic.setContentWidth("2.5cm");
+
         externalGraphic.setMaxWidth("2.5cm");
         block.getContent().add(externalGraphic);
         return block;
@@ -282,23 +262,6 @@ public class EntradaReport extends Report implements EntradaReportOnlineInterfac
         table.withNewCell(this.hora);
         table.withNewCell(this.horaApertura);
 
-        table.withNewRow();
-        TableCell cell = table.withNewCell(ResourceProperties.getProperty(locale, "entrada.zona"), "3");
-        cell.setPaddingTop("0.2cm");
-
-        Block zona = new Block();
-        zona.getContent().add(this.zona);
-        zona.setFontSize("12pt");
-
-        table.withNewRow();
-        table.withNewCell(zona, "3");
-
-        if (this.fila != null && this.numero != null)
-        {
-            table.withNewRow();
-            table.withNewCell(ResourceProperties.getProperty(locale, "entrada.butaca", this.fila, this.numero), "3");
-        }
-
         block.getContent().add(table);
 
         return block;
@@ -306,20 +269,18 @@ public class EntradaReport extends Report implements EntradaReportOnlineInterfac
 
     private BaseTable createEntradaIzquierdaAbajo(String urlPublic)
     {
-        BaseTable table = new BaseTable(new EntradaReportStyle(), 2, "8.5cm", "2.5cm");
+        BaseTable table = new BaseTable(new EntradaReportStyle(), 1, "11cm");
 
         table.setMarginTop("0.2cm");
 
         table.withNewRow();
         table.withNewCell(ResourceProperties.getProperty(locale, "entrada.cif"));
-        table.withNewCell(ResourceProperties.getProperty(locale, "entrada.total"));
 
         table.withNewRow();
         table.withNewCell(this.barcode);
-        table.withNewCell(ResourceProperties.getProperty(locale, "entrada.importe", this.total));
 
         table.withNewRow();
-        table.withNewCell(createBarcode(urlPublic), "2");
+        table.withNewCell(createBarcode(urlPublic));
 
         return table;
     }
@@ -341,7 +302,6 @@ public class EntradaReport extends Report implements EntradaReportOnlineInterfac
 
         block.getContent().add(createEntradaDerechaArriba());
         block.getContent().add(createEntradaDerechaCentro());
-        block.getContent().add(createEntradaDerechaAbajo());
 
         return block;
     }
@@ -412,44 +372,6 @@ public class EntradaReport extends Report implements EntradaReportOnlineInterfac
         table.withNewRow();
         table.withNewCell(this.horaApertura, "2");
 
-        table.withNewRow();
-        TableCell cell = table.withNewCell(ResourceProperties.getProperty(locale, "entrada.zona"), "2");
-        cell.setPaddingTop("0.2cm");
-
-        Block zona = new Block();
-        zona.getContent().add(this.zona);
-        zona.setFontSize("12pt");
-
-        table.withNewRow();
-        TableCell zonaCell = table.withNewCell(zona, "2");
-
-        if (this.fila != null && this.numero != null)
-        {
-            table.withNewRow();
-            TableCell butacaCell = table.withNewCell(
-                    ResourceProperties.getProperty(locale, "entrada.butaca", this.fila, this.numero), "2");
-            butacaCell.setPaddingBottom("0.2cm");
-        }
-        else
-        {
-            zonaCell.setPaddingBottom("0.2cm");
-        }
-
-        return table;
-    }
-
-    private Table createEntradaDerechaAbajo()
-    {
-        BaseTable table = new BaseTable(new EntradaReportStyle(), 2, "3cm", "2.5cm");
-
-        table.withNewRow();
-        table.withNewCell("");
-        table.withNewCell(ResourceProperties.getProperty(locale, "entrada.total"));
-
-        table.withNewRow();
-        table.withNewCell("");
-        table.withNewCell(ResourceProperties.getProperty(locale, "entrada.importe", this.total));
-
         return table;
     }
 
@@ -466,7 +388,7 @@ public class EntradaReport extends Report implements EntradaReportOnlineInterfac
         return b;
     }
 
-    private static void initStatics() throws ReportSerializerInitException
+    protected static void initStatics() throws ReportSerializerInitException
     {
         if (reportSerializer == null)
             reportSerializer = new FopPDFSerializer();
@@ -480,7 +402,7 @@ public class EntradaReport extends Report implements EntradaReportOnlineInterfac
             EntradaReportStyle estilo = new EntradaReportStyle();
             estilo.setSimplePageMasterMarginBottom("0cm");
             estilo.setSimplePageMasterRegionBodyMarginBottom("0cm");
-            return new EntradaReport(reportSerializer, estilo, locale);
+            return new EntradaActoGraduacionReport(reportSerializer, estilo, locale);
         }
         catch (ReportSerializerInitException e)
         {
@@ -512,26 +434,6 @@ public class EntradaReport extends Report implements EntradaReportOnlineInterfac
     public void setHoraApertura(String horaApertura)
     {
         this.horaApertura = horaApertura;
-    }
-
-    public void setZona(String zona)
-    {
-        this.zona = zona;
-    }
-
-    public void setFila(String fila)
-    {
-        this.fila = fila;
-    }
-
-    public void setNumero(String numero)
-    {
-        this.numero = numero;
-    }
-
-    public void setTotal(String total)
-    {
-        this.total = total;
     }
 
     public void setUrlPublicidad(String urlPublicidad)

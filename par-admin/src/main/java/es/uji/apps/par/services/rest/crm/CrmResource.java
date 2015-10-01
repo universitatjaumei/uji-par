@@ -84,6 +84,7 @@ public class CrmResource extends BaseResource {
                 ResultadoCompra resultadoCompra = comprasService.registraCompra(sesion.getId(), butacasSeleccionadas, true, BigDecimal.ZERO, email, nombre, apellidos);
 
                 if (resultadoCompra.getCorrecta()) {
+                    comprasService.marcaPagada(resultadoCompra.getId());
                     String urlPdf = Configuration.getUrlPublic() + "/rest/compra/" + resultadoCompra.getUuid() + "/pdf";
                     return Response.ok(new ResponseMessage(true, urlPdf)).build();
                 }

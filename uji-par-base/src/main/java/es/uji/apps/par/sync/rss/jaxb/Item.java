@@ -1,5 +1,6 @@
 package es.uji.apps.par.sync.rss.jaxb;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -9,6 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Item
 {
     private String title;
+    private String titulo;
     private List<Enclosure> enclosures;
     private String contenido;
     private String seientsNumerats;
@@ -17,9 +19,11 @@ public class Item
     private String duracio;
     private String resumen;
     private String contenidoId;
+    private String apertura;
     private String idioma;
     private String esquema;
     private Sesiones sesiones;
+    private Date date;
 
     public String getTitle()
     {
@@ -29,6 +33,15 @@ public class Item
     public void setTitle(String title)
     {
         this.title = title;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    @XmlElement(namespace = "http://www.uji.es/namespaces/rss#")
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
     }
 
     public List<Enclosure> getEnclosures()
@@ -129,6 +142,15 @@ public class Item
         this.contenidoId = contenidoId;
     }
 
+    public String getApertura() {
+        return apertura;
+    }
+
+    @XmlElement(namespace = "http://www.uji.es/namespaces/rss#")
+    public void setApertura(String apertura) {
+        this.apertura = apertura;
+    }
+
     public String getIdioma()
     {
         return idioma;
@@ -149,5 +171,14 @@ public class Item
     public void setEsquema(String esquema)
     {
         this.esquema = esquema;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    @XmlElement(namespace = "http://purl.org/dc/elements/1.1/")
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

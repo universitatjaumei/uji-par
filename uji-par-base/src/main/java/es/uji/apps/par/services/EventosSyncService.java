@@ -1,19 +1,16 @@
 package es.uji.apps.par.services;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.text.ParseException;
-
-import javax.xml.bind.JAXBException;
-
+import es.uji.apps.par.config.Configuration;
+import es.uji.apps.par.sync.uji.EventosSync;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import es.uji.apps.par.config.Configuration;
-import es.uji.apps.par.sync.uji.EventosSync;
+import javax.xml.bind.JAXBException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.ParseException;
 
 @Service
 public class EventosSyncService
@@ -39,8 +36,7 @@ public class EventosSyncService
     }
 
     @Transactional
-    public void sync(InputStream rssInputStream) throws JAXBException, MalformedURLException, IOException, ParseException
-    {
+    public void sync(InputStream rssInputStream) throws JAXBException, IOException, ParseException, IllegalAccessException, InstantiationException {
         if (tipo.equals("uji"))
             syncUji.sync(rssInputStream);
         else if (tipo.equals("benicassim"))

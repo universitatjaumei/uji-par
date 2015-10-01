@@ -1,5 +1,7 @@
 package es.uji.apps.par.db;
 
+import es.uji.apps.par.model.TipoEvento;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -83,4 +85,13 @@ public class TipoEventoDTO implements Serializable {
 		this.exportarICAA = exportarICAA;
 	}
 
+    public static TipoEventoDTO fromTipoEvento(TipoEvento tipoEvento) {
+        TipoEventoDTO tipoEventoDTO = new TipoEventoDTO();
+        tipoEventoDTO.setId(tipoEvento.getId());
+        tipoEventoDTO.setExportarICAA(tipoEvento.getExportarICAA());
+        tipoEventoDTO.setNombreEs(tipoEvento.getNombreEs());
+        tipoEventoDTO.setNombreVa(tipoEvento.getNombreVa());
+
+        return tipoEventoDTO;
+    }
 }

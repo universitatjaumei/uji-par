@@ -9,5 +9,5 @@ import javax.xml.bind.JAXBException;
 
 public interface EventosSync
 {
-    public void sync(InputStream rssInputStream) throws JAXBException, MalformedURLException, IOException, ParseException;
+    public void sync(InputStream rssInputStream) throws JAXBException, IOException, ParseException, InstantiationException, IllegalAccessException;
 }

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:upo-general="http://www.uji.es/namespaces/rss#" version="2.0">
+  <channel>
+    <title>Universitat Jaume I UPO</title>
+    <link>http://www.uji.es/upo/</link>
+    <description>Canal RSS Universitat Jaume I UPO</description>
+    <language>es-es</language>
+    <copyright>(c) 2013 Universitat Jaume I</copyright>
+    <dc:language>es-es</dc:language>
+    <dc:rights>(c) 2013 Universitat Jaume I</dc:rights>
+    <item>
+      <title>Madre Coraje (ES)</title>
+      <link>http://localhost:8080/cultura/paranimf/programacio/setembre/madre-coraje/madre-coraje.html</link>
+      <enclosure type="image/jpeg" url="https://www.google.es/images/srpr/logo4w.png"/>
+      <enclosure type="image/jpeg" url="https://www.google.es/images/srpr/logo4w.png"/>
+      <pubDate>Tue, 10 Sep 2013 22:00:00 GMT</pubDate>
+      <guid>http://localhost:8080/cultura/paranimf/programacio/setembre/madre-coraje/madre-coraje.html</guid>
+      <dc:date>2013-09-10T22:00:00Z</dc:date>
+      <upo-metadato:seientsnumerats xmlns:upo-metadato="http://www.uji.es/namespaces/rss#">si</upo-metadato:seientsnumerats>
+      <upo-metadato:tipo xmlns:upo-metadato="http://www.uji.es/namespaces/rss#">teatro</upo-metadato:tipo>
+      <upo-metadato:web xmlns:upo-metadato="http://www.uji.es/namespaces/rss#">http://atalaya-tnt.com</upo-metadato:web>
+      <upo-metadato:esquema xmlns:upo-metadato="http://www.uji.es/namespaces/rss#">paranimf</upo-metadato:esquema>
+      <upo-metadato:companyia xmlns:upo-metadato="http://www.uji.es/namespaces/rss#">Atalaya</upo-metadato:companyia>
+      <upo-metadato:duracio xmlns:upo-metadato="http://www.uji.es/namespaces/rss#">120 (ES)</upo-metadato:duracio>
+      <upo-general:subtitulo/>
+      <upo-general:contenidoId>1</upo-general:contenidoId>
+      <upo-general:titulo>Madre Coraje</upo-general:titulo>
+      <upo-general:autor/>
+      <upo-general:contenido>(ES)&lt;p&gt;&#13;
+	&lt;strong&gt;Adaptaci&amp;oacute; i direcci&amp;oacute;&lt;/strong&gt;: Ricardo Iniesta&lt;br /&gt;&#13;
+	&lt;strong&gt;Composici&amp;oacute; musical:&lt;/strong&gt; Paul Dessau&lt;br /&gt;&#13;
+	&lt;strong&gt;Arranjaments musicals:&lt;/strong&gt; Luis Navarro&lt;br /&gt;&#13;
+	&lt;strong&gt;Cors:&lt;/strong&gt; Esperanza Abad&lt;br /&gt;&#13;
+	&lt;strong&gt;Int&amp;egrave;rprets:&lt;/strong&gt; Carmen Gallardo, Lidia Mauduit, Ra&amp;uacute;l Vera, Jer&amp;oacute;nimo Arenal, Silvia Garz&amp;oacute;n, Manuel Asensio, Mar&amp;iacute;a Sanz&lt;/p&gt;&#13;
+&lt;p&gt;&#13;
+	Basada en la &lt;em&gt;Historia de la vida de la estafadora y aventurera Coraje&lt;/em&gt; (Die Ertzbetr&amp;uuml;gerin and Landst&amp;ouml;rtzerin Courasche), de Grimmelshausen, l&amp;rsquo;acci&amp;oacute; es desenvolupa entre 1624 i 1636, durant la Guerra dels Trenta Anys. Anna Fierling &amp;eacute;s una venedora de quincalles coneguda com a Mare Coratge pel valor que sembla tenir al camp de batalla. Oportunista, c&amp;iacute;nica, segura de si mateixa, va d&amp;rsquo;un territori a un altre canviant de bandera. La seua meta &amp;eacute;s sobreviure, lucrar-se amb la guerra i protegir els seus tres fills. En un m&amp;oacute;n dominat per la crueltat i la viol&amp;egrave;ncia confon la superviv&amp;egrave;ncia del seu negoci amb la de la seua pr&amp;ograve;pia fam&amp;iacute;lia.&lt;/p&gt;&#13;
+</upo-general:contenido>
+      <upo-general:tituloLargo>Madre Coraje</upo-general:tituloLargo>
+      <upo-general:lugar/>
+      <upo-general:idioma>es</upo-general:idioma>
+      <upo-general:resumen>Basada en la Historia de la vida de la estafadora y aventurera Coraje de Grimmelshausen. (ES)</upo-general:resumen>
+      <upo-general:urlCompleta>http://localhost:8080/cultura/paranimf/programacio/setembre/madre-coraje/madre-coraje.html</upo-general:urlCompleta>
+      <upo-general:origen>Servei d'Activitats Socioculturals</upo-general:origen>
+    </item>
+    <item>
+      <title>Setembre</title>
+      <link>http://localhost:8080/cultura/paranimf/programacio/setembre/setembre.html</link>
+      <enclosure type="image/jpeg" url="https://www.google.es/images/srpr/logo4w.png"/>
+      <pubDate>Tue, 10 Sep 2013 22:00:00 GMT</pubDate>
+      <guid>http://localhost:8080/cultura/paranimf/programacio/setembre/setembre.html</guid>
+      <upo-metadato:tipo xmlns:upo-metadato="http://www.uji.es/namespaces/rss#">teatro</upo-metadato:tipo>
+      <dc:date>2013-09-10T22:00:00Z</dc:date>
+      <upo-general:subtitulo/>
+      <upo-general:titulo>Setembre</upo-general:titulo>
+      <upo-general:autor/>
+      <upo-general:contenidoId>2</upo-general:contenidoId>
+      <upo-general:contenido/>
+      <upo-general:tituloLargo>Setembre</upo-general:tituloLargo>
+      <upo-general:lugar/>
+      <upo-general:idioma>es</upo-general:idioma>
+      <upo-general:resumen/>
+      <upo-general:urlCompleta>http://localhost:8080/cultura/paranimf/programacio/setembre/setembre.html</upo-general:urlCompleta>
+      <upo-general:origen>Servei d'Activitats Socioculturals</upo-general:origen>
+    </item>
+    <item>
+      <title>Wadjda / La bicicleta verde</title>
+      <link>http://localhost:8080/cultura/paranimf/programacio/setembre/bicicleta-verde/bicicleta-verde.html</link>
+      <enclosure type="image/jpeg" url="https://www.google.es/images/srpr/logo4w.png"/>
+      <enclosure type="image/jpeg" url="https://www.google.es/images/srpr/logo4w.png"/>
+      <pubDate>Thu, 05 Sep 2013 22:00:00 GMT</pubDate>
+      <guid>http://localhost:8080/cultura/paranimf/programacio/setembre/bicicleta-verde/bicicleta-verde.html</guid>
+      <dc:date>2013-09-05T22:00:00Z</dc:date>
+      <upo-metadato:seientsnumerats xmlns:upo-metadato="http://www.uji.es/namespaces/rss#">no</upo-metadato:seientsnumerats>
+      <upo-metadato:cicle xmlns:upo-metadato="http://www.uji.es/namespaces/rss#">Nou Cinema</upo-metadato:cicle>
+      <upo-metadato:tipo xmlns:upo-metadato="http://www.uji.es/namespaces/rss#">cine</upo-metadato:tipo>
+      <upo-metadato:esquema xmlns:upo-metadato="http://www.uji.es/namespaces/rss#">paranimf</upo-metadato:esquema>
+      <upo-metadato:duracio xmlns:upo-metadato="http://www.uji.es/namespaces/rss#">98</upo-metadato:duracio>
+      <upo-general:subtitulo/>
+      <upo-general:contenidoId>3</upo-general:contenidoId>
+      <upo-general:titulo>Wadjda / La bicicleta verde</upo-general:titulo>
+      <upo-general:autor/>
+      <upo-general:contenido>&lt;p&gt;&#13;
+	&lt;strong&gt;Direcci&amp;oacute; i gui&amp;oacute;: &lt;/strong&gt;Haifaa Al-Mansour&lt;br /&gt;&#13;
+	&lt;strong&gt;Interpretaci&amp;oacute;&lt;/strong&gt;: Reem Abdullah, Waad Mohammed, Abdullrahman Algohani, Sultan Al Assaf, Ahd Kamel&lt;/p&gt;&#13;
+&lt;p&gt;&#13;
+	Wadjda &amp;eacute;s una xica de 10 anys que viu als suburbis de Riad, la capital d&amp;rsquo;Ar&amp;agrave;bia Saudita. Encara que viu en un m&amp;oacute;n conservador, Wadjda &amp;eacute;s divertida, emprenedora i sempre arriba al l&amp;iacute;mit entre all&amp;ograve; que pot fer i all&amp;ograve; prohibit. Despr&amp;eacute;s d&amp;rsquo;una baralla amb el seu amic Abdullah, un ve&amp;iacute; amb qui no hauria de jugar, Wadjda veu una bonica bicicleta en venda. Vol desesperadament la bicicleta per poder guanyar Abdullah en una carrera. No obstant aix&amp;ograve;, la mare de Wadjda no li ho permet per por a una societat que veu les bicicletes com un perill per a la dignitat d&amp;rsquo;una xica.&lt;/p&gt;&#13;
+</upo-general:contenido>
+      <upo-general:tituloLargo>Wadjda / La bicicleta verde</upo-general:tituloLargo>
+      <upo-general:lugar/>
+      <upo-general:idioma>es</upo-general:idioma>
+      <upo-general:resumen>Haifaa Al-Mansour. Aràbia Saudita. Alemanya. 2012. Color. 98 min. VOSE. 35mm. TP</upo-general:resumen>
+      <upo-general:urlCompleta>http://localhost:8080/cultura/paranimf/programacio/setembre/bicicleta-verde/bicicleta-verde.html</upo-general:urlCompleta>
+      <upo-general:origen>Servei d'Activitats Socioculturals</upo-general:origen>
+    </item>
+  </channel>
+</rss>

@@ -19,4 +19,11 @@
   	</bean>
   	                    
 	<bean id="authentication-filter" class="es.uji.apps.par.auth.AuthFilterSSOUji" />
+
+    <bean id="ActoGraduacion" class="es.uji.apps.par.sync.uji.ActoGraduacion">
+    </bean>
+
+    <bean id="ActoGraduacionReport" class="es.uji.apps.par.report.EntradaActoGraduacionReport">
+    </bean>
+
 </beans>

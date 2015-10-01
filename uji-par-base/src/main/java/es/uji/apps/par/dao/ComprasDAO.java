@@ -133,7 +133,7 @@ public class ComprasDAO extends BaseDAO {
         JPAQuery query = new JPAQuery(entityManager);
 
         return query.from(qCompraDTO).leftJoin(qCompraDTO.parButacas, qButacaDTO)
-                .where(qCompraDTO.parSesion.id.eq(sesionId).and(qCompraDTO.email.isNotNull())).groupBy(qCompraDTO.email).list(qCompraDTO.email, qCompraDTO.count(), qButacaDTO.presentada.count());
+                .where(qCompraDTO.parSesion.id.eq(sesionId).and(qCompraDTO.email.isNotNull()).and(qCompraDTO.anulada.isFalse())).groupBy(qCompraDTO.email).list(qCompraDTO.email, qCompraDTO.count(), qButacaDTO.presentada.count());
     }
 
 	@Transactional

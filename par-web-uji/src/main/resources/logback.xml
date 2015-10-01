@@ -40,7 +40,7 @@
 		<appender-ref ref="ASYNC_CONSOLE" />
 		<appender-ref ref="ASYNC_FILE" />
 	</root>
-	<root level="error">
-		<appender-ref ref="EMAIL" />
-	</root>
+    <!--<root level="error">
+        <appender-ref ref="EMAIL" />
+    </root>-->
 </configuration>

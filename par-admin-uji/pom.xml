@@ -20,6 +20,12 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>2.2.8</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>es.uji.commons</groupId>
             <artifactId>uji-commons-testing</artifactId>
             <version>0.2.2</version>

@@ -12,18 +12,21 @@ import es.uji.apps.par.sync.utils.SyncUtils;
 import es.uji.apps.par.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 
 @Service("syncUji")
-public class EventosSyncUji implements EventosSync
-{
-	private static final Logger log = LoggerFactory.getLogger(EventosSyncUji.class);
+public class EventosSyncUji implements EventosSync {
+    private static final Logger log = LoggerFactory.getLogger(EventosSyncUji.class);
+
+    @Autowired
+    private ApplicationContext appContext;
 
     @Autowired
     EventosDAO eventosDAO;
@@ -33,81 +36,83 @@ public class EventosSyncUji implements EventosSync
 
     @Autowired
     private TpvsDAO tpvsDAO;
-    
+
     RssParser rssParser;
-    
-    public EventosSyncUji()
-    {
+
+    public EventosSyncUji() {
         rssParser = new RssParser();
     }
 
-    public void sync(InputStream rssInputStream) throws JAXBException, MalformedURLException, IOException
-    {
+    public void sync(InputStream rssInputStream) throws JAXBException, IOException, InstantiationException, IllegalAccessException {
         Rss rss = rssParser.parse(rssInputStream);
 
-        for (Item item : rss.getChannel().getItems())
-        {
-            if (item.getEsquema() != null && item.getEsquema().equals("paranimf"))
-            {
-                syncEvento(item);
+        for (Item item : rss.getChannel().getItems()) {
+            try {
+                if (item.getTipo() != null && appContext.getBean(item.getTipo()) != null)
+                    syncEventoTipo(item);
+            } catch (BeansException e) {
+                if (item.getEsquema() != null && item.getEsquema().equals("paranimf")) {
+                    syncEvento(item);
+                }
             }
         }
     }
 
-    private void syncEvento(Item item) throws MalformedURLException, IOException
-    {
+    private void syncEvento(Item item) throws IOException {
         EventoDTO evento = eventosDAO.getEventoByRssId(item.getContenidoId());
 
-        if (evento == null)
-        {
+        if (evento == null) {
             log.info(String.format("RSS insertando nuevo evento: %s - \"%s\"", item.getContenidoId(), item.getTitle()));
 
             evento = new EventoDTO();
             evento.setParTpv(tpvsDAO.getTpvDefault());
             evento.setRssId(item.getContenidoId());
-        }
-        else
-        {
+        } else {
             log.info(String.format("RSS actualizando evento existente: %s - \"%s\"", evento.getRssId(),
                     evento.getTituloVa()));
         }
 
         updateDatosEvento(item, evento);
 
-        if (evento.getParTiposEvento() != null)
-        {
+        if (evento.getParTiposEvento() != null) {
             eventosDAO.updateEventoDTO(evento);
         }
     }
 
-    private void updateDatosEvento(Item item, EventoDTO evento) throws MalformedURLException, IOException
-    {
-        if (item.getSeientsNumerats() != null)
-        {
+    private void syncEventoTipo(Item item) throws IOException, IllegalAccessException, InstantiationException {
+        EventosTipoSync eventosTipoSync = (EventosTipoSync)appContext.getBean(item.getTipo());
+        EventoDTO evento = eventosDAO.getEventoByRssId(item.getContenidoId());
+
+        if (evento == null) {
+            eventosTipoSync.createNewTipoEvento(item);
+        } else {
+            eventosTipoSync.updateTipoEvento(evento, item);
+        }
+    }
+
+    private void updateDatosEvento(Item item, EventoDTO evento) throws IOException {
+        if (item.getSeientsNumerats() != null) {
             evento.setAsientosNumerados(item.getSeientsNumerats().equals("si") ? true : false);
         }
 
-        if (item.getEnclosures() != null && item.getEnclosures().size() > 0)
-        {
+        if (item.getEnclosures() != null && item.getEnclosures().size() > 0) {
             String urlImagen = item.getEnclosures().get(0).getUrl();
-            
+
             byte[] imagen = SyncUtils.getImageFromUrl(urlImagen);
             if (imagen != null)
-            	evento.setImagen(imagen);
-            
+                evento.setImagen(imagen);
+
             evento.setImagenSrc(urlImagen);
             evento.setImagenContentType(item.getEnclosures().get(0).getType());
         }
 
-        if (item.getIdioma().equals("ca"))
-        {
+        if (item.getIdioma().equals("ca")) {
             evento.setTituloVa(item.getTitle());
             evento.setCaracteristicasVa(item.getResumen());
             evento.setDuracionVa(item.getDuracio());
             evento.setDescripcionVa(item.getContenido());
 
-            if (item.getTipo() != null)
-            {
+            if (item.getTipo() != null) {
                 String tipo = Utils.toUppercaseFirst(item.getTipo().trim());
                 TipoEventoDTO tipoEvento = tipoEventosDAO.getTipoEventoByNombreVa(tipo);
 
@@ -116,16 +121,13 @@ public class EventosSyncUji implements EventosSync
                 else
                     evento.setParTiposEvento(tipoEvento);
             }
-        }
-        else if (item.getIdioma().equals("es"))
-        {
+        } else if (item.getIdioma().equals("es")) {
             evento.setTituloEs(item.getTitle());
             evento.setCaracteristicasEs(item.getResumen());
             evento.setDuracionEs(item.getDuracio());
             evento.setDescripcionEs(item.getContenido());
 
-            if (item.getTipo() != null)
-            {
+            if (item.getTipo() != null) {
                 String tipo = Utils.toUppercaseFirst(item.getTipo().trim());
                 TipoEventoDTO tipoEvento = tipoEventosDAO.getTipoEventoByNombreEs(tipo);
 
@@ -134,27 +136,22 @@ public class EventosSyncUji implements EventosSync
                 else
                     evento.setParTiposEvento(tipoEvento);
             }
-        }
-        else
-        {
+        } else {
             log.error(String.format("Idioma desconocido: \"%s\" - Título: %s", item.getIdioma(), item.getTitle()));
         }
 
         // Para que no de error en BD
-        if (evento.getTituloEs() == null)
-        {
+        if (evento.getTituloEs() == null) {
             evento.setTituloEs(evento.getTituloVa());
         }
 
         // Para que no de error en BD
-        if (evento.getTituloVa() == null)
-        {
+        if (evento.getTituloVa() == null) {
             evento.setTituloVa(evento.getTituloEs());
         }
     }
 
-    private void logeaTipoNoEncontrado(EventoDTO evento, String tipo, String idioma)
-    {
+    private void logeaTipoNoEncontrado(EventoDTO evento, String tipo, String idioma) {
         log.error(String.format("No se ha encontrado el tipo \"%s\" para evento: %d - %s - idioma: %s", tipo,
                 evento.getId(), evento.getTituloVa(), idioma));
     }

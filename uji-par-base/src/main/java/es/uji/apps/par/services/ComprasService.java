@@ -149,19 +149,6 @@ public class ComprasService
 
     @Transactional(rollbackForClassName={"NoHayButacasLibresException","ButacaOcupadaException",
             "CompraSinButacasException","IncidenciaNotFoundException"})
-    public synchronized ResultadoCompra registraCompra(Long sesionId, List<Butaca> butacasSeleccionadas, boolean taquilla, String email, String nombre, String apellidos)
-            throws NoHayButacasLibresException, ButacaOcupadaException, CompraSinButacasException, IncidenciaNotFoundException {
-        if (butacasSeleccionadas.size() == 0)
-            throw new CompraSinButacasException();
-
-        BigDecimal importe = calculaImporteButacas(sesionId, butacasSeleccionadas, taquilla);
-        CompraDTO compraDTO = comprasDAO.insertaCompra(sesionId, new Date(), taquilla, importe, email, nombre, apellidos);
-
-        return registraCompra(sesionId, butacasSeleccionadas, taquilla, compraDTO);
-    }
-
-    @Transactional(rollbackForClassName={"NoHayButacasLibresException","ButacaOcupadaException",
-            "CompraSinButacasException","IncidenciaNotFoundException"})
     public synchronized ResultadoCompra registraCompra(Long sesionId, List<Butaca> butacasSeleccionadas, boolean taquilla, BigDecimal importe, String email, String nombre, String apellidos)
             throws NoHayButacasLibresException, ButacaOcupadaException, CompraSinButacasException, IncidenciaNotFoundException {
         if (butacasSeleccionadas.size() == 0)
