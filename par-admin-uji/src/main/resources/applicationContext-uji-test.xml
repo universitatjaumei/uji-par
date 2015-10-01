@@ -12,5 +12,4 @@
 
   <bean id="ActoGraduacion" class="es.uji.apps.par.sync.uji.ActoGraduacion">
   </bean>
-
 </beans>
