@@ -120,6 +120,17 @@ public class SesionesService
         }
         return listaSesiones;
     }
+
+    public List<Sesion> getSesionesPorRssId(String rssId)
+    {
+        List<Sesion> listaSesiones = new ArrayList<Sesion>();
+        List<SesionDTO> sesiones = sesionDAO.getSesionesPorRssId(rssId);
+
+        for (SesionDTO sesionDB: sesiones) {
+            listaSesiones.add(new Sesion(sesionDB));
+        }
+        return listaSesiones;
+    }
     
     // Para el Ext que espera recibir segundos en vez de milisegundos
     public List<Sesion> getSesionesDateEnSegundos(Long eventoId, String sortParameter, int start, int limit)

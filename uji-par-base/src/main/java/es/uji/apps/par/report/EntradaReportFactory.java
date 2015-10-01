@@ -22,6 +22,15 @@ public class EntradaReportFactory
     	}
     }
 
+    public static EntradaReportOnlineInterface newInstanceByClassName(String className)
+    {
+        try {
+            return (EntradaReportOnlineInterface) Class.forName(className).newInstance();
+        } catch(Exception e) {
+            throw new RuntimeException("Imposible instanciar la clase del pdf de entrada de venta online: " + Configuration.getEntradaOnlineReport());
+        }
+    }
+
 	public static InformeInterface newInstanceInformeTaquilla() {
 		try {
 			return (InformeInterface) Class.forName(Configuration.getInformeTaquillaReport()).newInstance();

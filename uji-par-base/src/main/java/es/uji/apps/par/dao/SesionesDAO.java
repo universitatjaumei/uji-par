@@ -69,6 +69,14 @@ public class SesionesDAO extends BaseDAO {
     }
 
     @Transactional
+    public List<SesionDTO> getSesionesPorRssId(String rssId) {
+        QSalaDTO qSalaDTO = QSalaDTO.salaDTO;
+        JPAQuery query = new JPAQuery(entityManager);
+        return query.from(qSesionDTO).leftJoin(qSesionDTO.parSala, qSalaDTO).fetch().
+                where(qSesionDTO.parEvento.rssId.eq(rssId)).list(qSesionDTO);
+    }
+
+    @Transactional
     public List<Tuple> getSesionesConButacasVendidas(long eventoId, boolean activas, String sortParameter,
                                                      int start, int limit) {
         QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;

@@ -32,7 +32,7 @@ public class CrmResource extends BaseResource {
     @POST
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response compraEntrada(@PathParam("id") Long eventoId, @QueryParam("entradas") int numeroEntradas, @QueryParam("email") String email, @QueryParam("nombre") String nombre, @QueryParam("apellidos") String apellidos) {
+    public Response compraEntrada(@PathParam("id") String rssId, @QueryParam("entradas") int numeroEntradas, @QueryParam("email") String email, @QueryParam("nombre") String nombre, @QueryParam("apellidos") String apellidos) {
 
         if (email == null) {
             return errorResponse("error.datosComprador.email");
@@ -49,7 +49,7 @@ public class CrmResource extends BaseResource {
 
         //TODO: solamente se permiten ids de eventos de tipo Graduación
 
-        List<Sesion> sesiones = sesionesService.getSesiones(eventoId);
+        List<Sesion> sesiones = sesionesService.getSesionesPorRssId(rssId);
         if (sesiones != null && sesiones.size() == 1) {
             Sesion sesion = sesiones.get(0);
 
@@ -107,10 +107,10 @@ public class CrmResource extends BaseResource {
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response muestraCompras(@PathParam("id") Long eventoId) {
+    public Response muestraCompras(@PathParam("id") String rssId) {
         //TODO: solamente se permiten ids de eventos de tipo Graduación
 
-        List<Sesion> sesiones = sesionesService.getSesiones(eventoId);
+        List<Sesion> sesiones = sesionesService.getSesionesPorRssId(rssId);
         if (sesiones != null && sesiones.size() == 1) {
             Sesion sesion = sesiones.get(0);
 

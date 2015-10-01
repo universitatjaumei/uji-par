@@ -37,10 +37,8 @@ public class EntradasService {
     public static final String UUID_COMPRA = "uuidCompra";
     public static final String ID_SESION = "idSesion";
     public static final String BEAN_REPORT_SUFFIX = "Report";
+    public static final String BEAN_REPORT_PREFIX = "Entrada";
     private static final Logger log = LoggerFactory.getLogger(EntradasService.class);
-
-    @Autowired
-    private ApplicationContext appContext;
 
     @Autowired
     private EventosService eventosService;
@@ -60,14 +58,11 @@ public class EntradasService {
             throw new NullPointerException();
 
         EventoDTO evento = compra.getParSesion().getParEvento();
-        //if (entradaOnlineReport == null) {
-            try {
-                if (evento.getParTiposEvento() != null && evento.getParTiposEvento().getNombreEs() != null && appContext.getBean(evento.getParTiposEvento().getNombreEs() + BEAN_REPORT_SUFFIX) != null)
-                    entradaOnlineReport = (EntradaReportOnlineInterface) appContext.getBean(evento.getParTiposEvento().getNombreEs() + BEAN_REPORT_SUFFIX);
-            } catch (BeansException e) {
-                entradaOnlineReport = EntradaReportFactory.newInstanceOnline();
-            }
-        //}
+        try {
+            entradaOnlineReport = EntradaReportFactory.newInstanceByClassName("es.uji.apps.par.report." + BEAN_REPORT_PREFIX + evento.getParTiposEvento().getNombreEs() + BEAN_REPORT_SUFFIX);
+        } catch(Exception e) {
+            entradaOnlineReport = EntradaReportFactory.newInstanceOnline();
+        }
 
         EntradaReportOnlineInterface entrada = entradaOnlineReport.create(new Locale(Configuration.getIdiomaPorDefecto()));
         try {

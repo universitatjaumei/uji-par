@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.Locale;
 
 public class EntradaActoGraduacionReport extends Report implements EntradaReportOnlineInterface
@@ -116,12 +117,17 @@ public class EntradaActoGraduacionReport extends Report implements EntradaReport
         /*for (int i = 1; i <= 6; i++)
             puntos += ResourceProperties.getProperty(locale, String.format("entrada.actograduacion.condicion%d", i));*/
 
-        puntos += "1. L'entrada garanteix una localitat al recinte si accedeix durant l'obertura de portes en l'horari establert. Una vegada finalitze aquest horari l'entrada serà de lliure accés, segons l'aforament, fins que comence l'acte.\n"
-                + "2. Es demana puntualitat. Una vegada començat l'acte, és decisió de l'organització permetre l'accés a la sala. En cas que es permeta accedir-hi, es farà en les condicions indicades pel personal de l'organització.\n"
-                + "3. L'entrada s'ha de conservar completa i en bon estat.\n"
-                + "4. L'organització es reserva el dret d'admissió. La persona portadora d'aquesta entrada es compromet a complir els requisits i condicions de seguretat del recinte. L'organització no es fa responsable de la utilització indeguda de les instal·lacions. L'organització es reserva el dret de denegar l'entrada al recinte al portador de qualsevol objecte o producte que l'organització considere perillós o que estiga prohibit per la normativa vigent.\n"
-                + "5. El portador d'aquesta entrada es compromet a ser respectuós amb el personal del recinte, així com a desconnectar els telèfons mòbils i tot tipus d'alarmes abans d'accedir-hi, i a no menjar, beure o fumar en l'interior. També es prohibeix l'entrada d'animals, excepte dels gossos d'assistència.\n"
-                + "6. L'organització no es fa responsable de les pèrdues, robatoris, deterioraments, danys o perjudicis causats al portador o als seus objectes personals durant l'estada al recinte.\n";
+        try {
+            puntos += new String(("1. L'entrada garanteix una localitat al recinte si accedeix durant l'obertura de portes en l'horari establert. Una vegada finalitze aquest horari l'entrada serà de lliure accés, segons l'aforament, fins que comence l'acte.\n"
+                    + "2. Es demana puntualitat. Una vegada començat l'acte, és decisió de l'organització permetre l'accés a la sala. En cas que es permeta accedir-hi, es farà en les condicions indicades pel personal de l'organització.\n"
+                    + "3. L'entrada s'ha de conservar completa i en bon estat.\n"
+                    + "4. L'organització es reserva el dret d'admissió. La persona portadora d'aquesta entrada es compromet a complir els requisits i condicions de seguretat del recinte. L'organització no es fa responsable de la utilització indeguda de les instal·lacions. L'organització es reserva el dret de denegar l'entrada al recinte al portador de qualsevol objecte o producte que l'organització considere perillós o que estiga prohibit per la normativa vigent.\n"
+                    + "5. El portador d'aquesta entrada es compromet a ser respectuós amb el personal del recinte, així com a desconnectar els telèfons mòbils i tot tipus d'alarmes abans d'accedir-hi, i a no menjar, beure o fumar en l'interior. També es prohibeix l'entrada d'animals, excepte dels gossos d'assistència.\n"
+                    + "6. L'organització no es fa responsable de les pèrdues, robatoris, deterioraments, danys o perjudicis causats al portador o als seus objectes personals durant l'estada al recinte.\n").getBytes("UTF-8"));
+        }
+        catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
         block.getContent().add(puntos);
         condicionesBlock.getContent().add(block);
