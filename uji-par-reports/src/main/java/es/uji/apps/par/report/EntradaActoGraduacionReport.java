@@ -123,7 +123,7 @@ public class EntradaActoGraduacionReport extends Report implements EntradaReport
                     + "3. L'entrada s'ha de conservar completa i en bon estat.\n"
                     + "4. L'organització es reserva el dret d'admissió. La persona portadora d'aquesta entrada es compromet a complir els requisits i condicions de seguretat del recinte. L'organització no es fa responsable de la utilització indeguda de les instal·lacions. L'organització es reserva el dret de denegar l'entrada al recinte al portador de qualsevol objecte o producte que l'organització considere perillós o que estiga prohibit per la normativa vigent.\n"
                     + "5. El portador d'aquesta entrada es compromet a ser respectuós amb el personal del recinte, així com a desconnectar els telèfons mòbils i tot tipus d'alarmes abans d'accedir-hi, i a no menjar, beure o fumar en l'interior. També es prohibeix l'entrada d'animals, excepte dels gossos d'assistència.\n"
-                    + "6. L'organització no es fa responsable de les pèrdues, robatoris, deterioraments, danys o perjudicis causats al portador o als seus objectes personals durant l'estada al recinte.\n").getBytes("UTF-8"));
+                    + "6. L'organització no es fa responsable de les pèrdues, robatoris, deterioraments, danys o perjudicis causats al portador o als seus objectes personals durant l'estada al recinte.\n").getBytes("ISO-8859-1"));
         }
         catch (UnsupportedEncodingException e) {
             e.printStackTrace();
