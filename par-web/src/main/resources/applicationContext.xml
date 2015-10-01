@@ -21,7 +21,7 @@
 
   <tx:annotation-driven mode="aspectj" transaction-manager="transactionManager" />
 
-  <!--<bean id="enviaMailsJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  <bean id="enviaMailsJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 	<property name="targetObject" ref="enviaMails" />
 	<property name="targetMethod" value="ejecuta" />
 	<property name="concurrent" value="false" />
@@ -45,5 +45,5 @@
 		  <ref bean="enviaMailsTrigger" />
 	    </list>
 	</property>
-  </bean>-->
+  </bean>
 </beans>
