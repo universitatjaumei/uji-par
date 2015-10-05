@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.uji.apps.par.db.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,10 +12,6 @@ import com.mysema.query.jpa.impl.JPADeleteClause;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.jpa.impl.JPAUpdateClause;
 
-import es.uji.apps.par.db.LocalizacionDTO;
-import es.uji.apps.par.db.QLocalizacionDTO;
-import es.uji.apps.par.db.QSalaDTO;
-import es.uji.apps.par.db.QSesionDTO;
 import es.uji.apps.par.model.Localizacion;
 
 @Repository
@@ -76,6 +73,22 @@ public class LocalizacionesDAO extends BaseDAO
         localizacionDTO.setNombreVa(localizacion.getNombreVa());
         localizacionDTO.setCodigo(localizacion.getCodigo());
         localizacionDTO.setTotalEntradas(new BigDecimal(localizacion.getTotalEntradas()));
+
+        entityManager.persist(localizacionDTO);
+
+        localizacion.setId(localizacionDTO.getId());
+        return localizacion;
+    }
+
+    @Transactional
+    public Localizacion add(Localizacion localizacion, SalaDTO salaDTO)
+    {
+        LocalizacionDTO localizacionDTO = new LocalizacionDTO();
+        localizacionDTO.setNombreEs(localizacion.getNombreEs());
+        localizacionDTO.setNombreVa(localizacion.getNombreVa());
+        localizacionDTO.setCodigo(localizacion.getCodigo());
+        localizacionDTO.setTotalEntradas(new BigDecimal(localizacion.getTotalEntradas()));
+        localizacionDTO.setSala(salaDTO);
 
         entityManager.persist(localizacionDTO);
 

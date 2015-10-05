@@ -1,13 +1,12 @@
 package es.uji.apps.par.sync;
 
 import es.uji.apps.par.dao.*;
-import es.uji.apps.par.model.Cine;
-import es.uji.apps.par.model.Evento;
-import es.uji.apps.par.model.Sala;
-import es.uji.apps.par.model.TipoEvento;
+import es.uji.apps.par.db.EventoDTO;
+import es.uji.apps.par.db.SesionDTO;
+import es.uji.apps.par.db.TarifaDTO;
+import es.uji.apps.par.model.*;
 import es.uji.apps.par.services.EventosSyncService;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,12 +29,16 @@ import static org.junit.Assert.assertEquals;
 public class EventosSyncServiceUjiTest extends SyncBaseTest
 {
     private static final String RSS_TIPO_GRADUACION = "uji/rss-graduacion.xml";
+    private static final String RSS_TIPO_GRADUACION_UPDATE = "uji/rss-graduacion-update.xml";
 
     @Autowired
     EventosSyncService syncService;
 
     @Autowired
     EventosDAO eventosDAO;
+
+    @Autowired
+    SesionesDAO sesionesDAO;
 
     @Autowired
     TiposEventosDAO tiposEventosDAO;
@@ -49,19 +52,56 @@ public class EventosSyncServiceUjiTest extends SyncBaseTest
     @Autowired
     private CinesDAO cinesDAO;
 
+    @Autowired
+    private TarifasDAO tarifasDAO;
+
+    @Autowired
+    private LocalizacionesDAO localizacionesDAO;
+
+    @Autowired
+    private PlantillasDAO plantillasDAO;
+
     @Before
     public void setup()
     {
         syncService.setTipo("uji");
+
+        insertaTarifa();
         insertaTpvDefault();
         insertaSala();
         insertaTiposEventos();
     }
 
+    private void insertaLocalizacion(Sala sala) {
+        Plantilla plantilla = new Plantilla();
+        plantilla.setNombre("");
+        plantilla.setSala(sala);
+        plantillasDAO.add(plantilla);
+
+        Localizacion localizacionDTO = new Localizacion();
+        localizacionDTO.setNombreVa("");
+        localizacionDTO.setNombreEs("");
+        localizacionDTO.setCodigo("CODIGO");
+        localizacionDTO.setTotalEntradas(200);
+
+        localizacionesDAO.add(localizacionDTO, Sala.salaToSalaDTO(sala));
+    }
+
+    private void insertaTarifa() {
+        TarifaDTO tarifaDTO = new TarifaDTO();
+        tarifaDTO.setNombre("GENERAL");
+        tarifaDTO.setDefecto(false);
+        tarifaDTO.setIsPublica(false);
+
+        tarifasDAO.add(tarifaDTO);
+    }
+
     private void insertaSala()
     {
         Cine cine = cinesDAO.addCine(new Cine("CODIGO", "nombre", "cif", "direccion", "codigoMunicipio", "nombreMunicipio", "cp", "empresa", "codigoRegistro", "telefono", BigDecimal.ONE));
-        salasDAO.addSala(new Sala("SALA", "SALA", 10, 0, 10, "Cine", "Formato", "", cine));
+        Sala sala = salasDAO.addSala(new Sala("SALA", "SALA", 10, 0, 10, "Cine", "Formato", "", cine));
+
+        insertaLocalizacion(sala);
     }
 
     private void insertaTpvDefault()
@@ -86,7 +126,6 @@ public class EventosSyncServiceUjiTest extends SyncBaseTest
 
     @Test
     @Transactional
-    @Ignore
     public void testSyncNuevosItemsGraduacion() throws Exception
     {
         syncService.sync(loadFromClasspath(RSS_TIPO_GRADUACION));
@@ -94,5 +133,23 @@ public class EventosSyncServiceUjiTest extends SyncBaseTest
         List<Evento> eventos = eventosDAO.getEventosConSesiones();
 
         assertEquals("Número de eventos nuevos", 2, eventos.size());
+    }
+
+    @Test
+    @Transactional
+    public void testSyncUpdateItemsGraduacion() throws Exception
+    {
+        syncService.sync(loadFromClasspath(RSS_TIPO_GRADUACION));
+        List<Evento> eventos = eventosDAO.getEventosConSesiones();
+        assertEquals("Número de eventos nuevos", 2, eventos.size());
+
+        syncService.sync(loadFromClasspath(RSS_TIPO_GRADUACION_UPDATE));
+        List<SesionDTO> sesiones = sesionesDAO.getSesionesPorRssId("2508948");
+
+        //No cambia la fecha
+        assertEquals("Fecha primera sesión", sesiones.get(0).getFechaCelebracion().toString(), "2015-10-16 19:00:00.0");
+
+        //Sí que actualiza la hora de apertura
+        assertEquals("Hora apertura", sesiones.get(0).getHoraApertura(), "18:00");
     }
 }

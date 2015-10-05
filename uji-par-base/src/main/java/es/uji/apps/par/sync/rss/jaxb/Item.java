@@ -1,7 +1,9 @@
 package es.uji.apps.par.sync.rss.jaxb;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -179,6 +181,17 @@ public class Item
 
     @XmlElement(namespace = "http://purl.org/dc/elements/1.1/")
     public void setDate(Date date) {
-        this.date = date;
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        cal.setTime(date);
+
+        Calendar gmt = Calendar.getInstance();
+        gmt.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY));
+        gmt.set(Calendar.MINUTE, cal.get(Calendar.MINUTE));
+        gmt.set(Calendar.SECOND, cal.get(Calendar.SECOND));
+        gmt.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH));
+        gmt.set(Calendar.MONTH, cal.get(Calendar.MONTH));
+        gmt.set(Calendar.YEAR, cal.get(Calendar.YEAR));
+
+        this.date = gmt.getTime();
     }
 }

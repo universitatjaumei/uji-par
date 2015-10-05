@@ -6,6 +6,7 @@ import es.uji.apps.par.db.*;
 import es.uji.apps.par.model.*;
 import es.uji.apps.par.sync.rss.jaxb.Item;
 import es.uji.apps.par.sync.utils.SyncUtils;
+import es.uji.apps.par.utils.DateUtils;
 import es.uji.apps.par.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,6 +43,9 @@ public class ActoGraduacion implements EventosTipoSync {
 
     @Autowired
     private ComprasDAO comprasDAO;
+
+    @Autowired
+    private PlantillasDAO plantillasDAO;
 
     @Override
     public void createNewTipoEvento(Item item) throws MalformedURLException {
@@ -100,24 +104,26 @@ public class ActoGraduacion implements EventosTipoSync {
             if (salas.size() > 0 && tarifas.size() > 0)
             {
                 evento = eventosDAO.updateEventoDTO(evento);
-
-                List<SesionDTO> parSesiones = evento.getParSesiones();
-                Sesion sesion = new Sesion();
-                if (parSesiones.size() > 0)
+                List<SesionDTO> parSesiones = sesionesDAO.getSesiones(evento.getId(), true, null, 0, Integer.MAX_VALUE);
+                Sesion sesion = null;
+                if (parSesiones != null && parSesiones.size() > 0)
                 {
                     sesion = Sesion.SesionDTOToSesion(parSesiones.get(0));
                     sesion.setFechaCelebracionWithDate(item.getDate());
+                    sesion.setHoraCelebracion(DateUtils.getHourAndMinutesWithLeadingZeros(item.getDate()));
                     sesion.setHoraApertura(item.getApertura());
 
                     List<CompraDTO> comprasOfSesion = comprasDAO.getComprasOfSesion(sesion.getId());
                     sesionesDAO.updateSesion(sesion, comprasOfSesion.size() > 0);
                 }
                 else {
+                    sesion = new Sesion();
                     sesion.setEvento(Evento.eventoDTOtoEvento(evento));
                     sesion.setCanalInternet("0");
                     sesion.setSala(salas.get(0));
                     sesion.setCanalTaquilla("1");
                     sesion.setFechaCelebracionWithDate(item.getDate());
+                    sesion.setHoraCelebracion(DateUtils.getHourAndMinutesWithLeadingZeros(item.getDate()));
                     sesion.setHoraApertura(item.getApertura());
 
                     List<PreciosSesion> preciosSesion = new ArrayList<PreciosSesion>();
@@ -132,6 +138,9 @@ public class ActoGraduacion implements EventosTipoSync {
                     }
 
                     sesion.setPreciosSesion(preciosSesion);
+                    List<PlantillaDTO> plantillas = plantillasDAO.get(false, "", 0, 100);
+                    Plantilla plantilla = Plantilla.plantillaPreciosDTOtoPlantillaPrecios(plantillas.get(0));
+                    sesion.setPlantillaPrecios(plantilla);
 
                     sesionesDAO.addSesion(sesion);
                 }

@@ -55,7 +55,7 @@ public class SesionesDAO extends BaseDAO {
     }
 
     @Transactional
-    private List<SesionDTO> getSesiones(long eventoId, boolean activos, String sortParameter, int start, int limit) {
+    public List<SesionDTO> getSesiones(long eventoId, boolean activos, String sortParameter, int start, int limit) {
         List<SesionDTO> sesion = new ArrayList<SesionDTO>();
 
         if (activos)
@@ -225,32 +225,29 @@ public class SesionesDAO extends BaseDAO {
         if (!sesionDTO.getFechaCelebracion().equals(fechaCelebracion) && sesionDTO.getFechaCelebracion().before(new Date()) && hasCompras)
             throw new EventoConCompras(sesion.getEvento().getId());
 
-        JPAUpdateClause update = new JPAUpdateClause(entityManager, qSesionDTO);
-        update.set(qSesionDTO.canalInternet, sesion.getCanalInternet())
-                .set(qSesionDTO.canalTaquilla, sesion.getCanalTaquilla())
-                .set(qSesionDTO.fechaCelebracion, fechaCelebracion);
-
         if (sesion.getFechaInicioVentaOnline() != null)
-            update.set(qSesionDTO.fechaInicioVentaOnline, DateUtils.dateToTimestampSafe(DateUtils.addTimeToDate(sesion
+            sesionDTO.setFechaInicioVentaOnline(DateUtils.dateToTimestampSafe(DateUtils.addTimeToDate(sesion
                     .getFechaInicioVentaOnline(), sesion.getHoraInicioVentaOnline())));
         else
-            update.setNull(qSesionDTO.fechaInicioVentaOnline);
+            sesionDTO.setFechaInicioVentaOnline(null);
 
         if (sesion.getFechaFinVentaOnline() != null)
-            update.set(qSesionDTO.fechaFinVentaOnline, DateUtils.dateToTimestampSafe(DateUtils.addTimeToDate(sesion
+            sesionDTO.setFechaFinVentaOnline(DateUtils.dateToTimestampSafe(DateUtils.addTimeToDate(sesion
                     .getFechaFinVentaOnline(), sesion.getHoraFinVentaOnline())));
         else
-            update.setNull(qSesionDTO.fechaFinVentaOnline);
+            sesionDTO.setFechaFinVentaOnline(null);
 
-        update.set(qSesionDTO.horaApertura, sesion.getHoraApertura())
-                .set(qSesionDTO.parEvento, Evento.eventoToEventoDTO(sesion.getEvento()))
-                .set(qSesionDTO.parPlantilla,
-                        Plantilla.plantillaPreciosToPlantillaPreciosDTO(sesion.getPlantillaPrecios()))
-                .set(qSesionDTO.nombre, sesion.getNombre())
-                .set(qSesionDTO.versionLinguistica, sesion.getVersionLinguistica())
-                .set(qSesionDTO.rssId, sesion.getRssId())
-                .set(qSesionDTO.parSala, Sala.salaToSalaDTO(sesion.getSala()))
-                .where(qSesionDTO.id.eq(sesion.getId())).execute();
+        sesionDTO.setFechaCelebracion(fechaCelebracion);
+        sesionDTO.setCanalInternet(sesion.getCanalInternet());
+        sesionDTO.setCanalTaquilla(sesion.getCanalTaquilla());
+        sesionDTO.setHoraApertura(sesion.getHoraApertura());
+        sesionDTO.setParEvento(Evento.eventoToEventoDTO(sesion.getEvento()));
+        sesionDTO.setParPlantilla( Plantilla.plantillaPreciosToPlantillaPreciosDTO(sesion.getPlantillaPrecios()));
+        sesionDTO.setVersionLinguistica(sesion.getVersionLinguistica());
+        sesionDTO.setRssId(sesion.getRssId());
+        sesionDTO.setParSala(Sala.salaToSalaDTO(sesion.getSala()));
+        entityManager.merge(sesionDTO);
+
         //TODO -> Esta sesion.getVersionLingustica sera erronea cuando sea multisesion, mejor hacer un insert en la tabla hija
         // por cada pelicula de la multisesion (evento.getFormato, evento.getId, evento.getPeliculasMultisesion()
         // .getversionLingusitca())
