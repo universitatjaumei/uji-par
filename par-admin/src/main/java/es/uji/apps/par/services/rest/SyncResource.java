@@ -33,22 +33,23 @@ public class SyncResource extends BaseResource {
         String urlRssException = null;
         String syncUrlsHeaderToken = Configuration.getSyncUrlsHeaderToken();
         String syncUrlsToken = Configuration.getSyncUrlsToken();
-        try {
-            for (String urlRss : Configuration.getSyncUrlsRss()) {
-                urlRssException = urlRss;
 
+        for (String urlRss : Configuration.getSyncUrlsRss()) {
+            urlRssException = urlRss;
+
+            try {
                 URL url = new URL(urlRss);
                 URLConnection urlConnection = url.openConnection();
                 if (syncUrlsHeaderToken != null && syncUrlsToken != null)
                     urlConnection.setRequestProperty(syncUrlsHeaderToken, syncUrlsToken);
 
                 eventosSyncService.sync(urlConnection.getInputStream());
+            } catch (Exception e) {
+                if (urlRssException != null)
+                    log.error(String.format("Error sincronizando eventos desde %s: %s", urlRssException, e.getMessage()));
+                else
+                    log.error(String.format("Error en la sincronización: no existe la propiedad %s", Configuration.SYNC_URL_TIPO));
             }
-        } catch (Exception e) {
-            if (urlRssException != null)
-                log.error(String.format("Error sincronizando eventos desde %s", e.getMessage()));
-            else
-                log.error(String.format("Error en la sincronización: no existe la propiedad %s", Configuration.SYNC_URL_TIPO));
         }
 
         return Response.ok().build();
