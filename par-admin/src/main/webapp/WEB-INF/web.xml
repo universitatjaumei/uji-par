@@ -53,7 +53,7 @@
         </init-param>
         <init-param>
           <param-name>exclude</param-name>
-          <param-value>.*/par/rest/crm/.*</param-value>
+          <param-value>.*/par/rest/crm/.*|.*/par/rest/sync</param-value>
 		</init-param>
 	</filter>
 	<filter-mapping>
@@ -85,7 +85,7 @@
 		</init-param>
         <init-param>
             <param-name>exclude</param-name>
-            <param-value>.*/par/rest/crm/.*</param-value>
+            <param-value>.*/par/rest/crm/.*|.*/par/rest/sync</param-value>
         </init-param>
 	</filter>
 	<filter-mapping>
