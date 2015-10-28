@@ -16,7 +16,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.Locale;
 
 public class EntradaActoGraduacionReport extends Report implements EntradaReportOnlineInterface
@@ -37,6 +36,7 @@ public class EntradaActoGraduacionReport extends Report implements EntradaReport
     private String horaApertura;
     protected String urlPublicidad;
     protected String urlPortada;
+    private int totalButacas;
     private String barcode;
 
     public EntradaActoGraduacionReport() throws ReportSerializerInitException {
@@ -253,6 +253,16 @@ public class EntradaActoGraduacionReport extends Report implements EntradaReport
         table.withNewCell(this.hora);
         table.withNewCell(this.horaApertura);
 
+
+
+        Block totalButacas = new Block();
+        totalButacas.setFontSize("10pt");
+        totalButacas.setMarginTop("0.2cm");
+        totalButacas.getContent().add(ResourceProperties.getProperty(locale, "entrada.totalButacas") + ": " + Integer.toString(this.totalButacas));
+
+        table.withNewRow();
+        table.withNewCell(totalButacas, "3");
+
         block.getContent().add(table);
 
         return block;
@@ -441,4 +451,12 @@ public class EntradaActoGraduacionReport extends Report implements EntradaReport
     {
         this.barcode = barcode;
     }
+
+    @Override
+    public void setTotalButacas(int totalButacas) {
+        this.totalButacas = totalButacas;
+    }
+
+    @Override
+    public boolean esAgrupada() { return true; }
 }

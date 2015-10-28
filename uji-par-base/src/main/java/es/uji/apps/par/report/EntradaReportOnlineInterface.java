@@ -1,9 +1,9 @@
 package es.uji.apps.par.report;
 
+import es.uji.apps.fopreports.serialization.ReportSerializationException;
+
 import java.io.OutputStream;
 import java.util.Locale;
-
-import es.uji.apps.fopreports.serialization.ReportSerializationException;
 
 public interface EntradaReportOnlineInterface {
 	public EntradaReportOnlineInterface create(Locale locale);
@@ -15,4 +15,6 @@ public interface EntradaReportOnlineInterface {
 	public void serialize(OutputStream output) throws ReportSerializationException;
 	public void setUrlPublicidad(String urlPublicidad);
 	public void setUrlPortada(String urlPortada);
+	public boolean esAgrupada();
+	public void setTotalButacas(int totalButacas);
 }

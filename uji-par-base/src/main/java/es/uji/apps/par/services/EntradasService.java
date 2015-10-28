@@ -1,35 +1,31 @@
 package es.uji.apps.par.services;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.List;
-import java.util.Locale;
-
-import com.sun.jersey.api.core.InjectParam;
-import es.uji.apps.par.db.*;
-import es.uji.apps.par.model.Evento;
-import es.uji.apps.par.model.EventoMultisesion;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.stereotype.Service;
-import org.xml.sax.SAXException;
-
 import es.uji.apps.fopreports.serialization.ReportSerializationException;
 import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.dao.ComprasDAO;
 import es.uji.apps.par.dao.TarifasDAO;
+import es.uji.apps.par.db.*;
+import es.uji.apps.par.model.EventoMultisesion;
 import es.uji.apps.par.report.EntradaModelReport;
 import es.uji.apps.par.report.EntradaReportFactory;
 import es.uji.apps.par.report.EntradaReportOnlineInterface;
 import es.uji.apps.par.report.EntradaReportTaquillaInterface;
 import es.uji.apps.par.utils.DateUtils;
 import es.uji.apps.par.utils.ReportUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.stereotype.Service;
+import org.xml.sax.SAXException;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.List;
+import java.util.Locale;
 
 @Service
 public class EntradasService {
@@ -162,27 +158,42 @@ public class EntradasService {
         entrada.setUrlPortada(Configuration.getUrlPublicSinHTTPS() + "/rest/evento/"
                 + compra.getParSesion().getParEvento().getId() + "/imagenEntrada");
         entrada.setUrlPublicidad(Configuration.getUrlPieEntrada());
+        int totalButacas = 0;
 
         for (ButacaDTO butaca : compra.getParButacas()) {
             if (butaca.getAnulada() == null || butaca.getAnulada() == false) {
-                TarifaDTO tarifaCompra = tarifasDAO.get(Integer.valueOf(butaca.getTipo()));
-                EntradaModelReport entradaModelReport = new EntradaModelReport();
-                entradaModelReport.setFila(butaca.getFila());
-                entradaModelReport.setNumero(butaca.getNumero());
-                entradaModelReport.setZona(butaca.getParLocalizacion().getNombreVa());
-                entradaModelReport.setTotal(ReportUtils.formatEuros(butaca.getPrecio()));
-                entradaModelReport.setCifEmpresa(butaca.getParSesion().getParEvento().getParTpv().getCif());
-                entradaModelReport.setNombreEmpresa(butaca.getParSesion().getParEvento().getParTpv().getNombre());
-                if (Configuration.isIdEntrada()) {
-                    entradaModelReport.setBarcode(compra.getUuid() + "-" + butaca.getIdEntrada());
-                } else {
-                    entradaModelReport.setBarcode(compra.getUuid() + "-" + butaca.getId());
+                if (entrada.esAgrupada()) {
+                    totalButacas++;
                 }
-                entradaModelReport.setTipo(tarifaCompra.getNombre());
-                entradaModelReport.setTarifaDefecto(tarifaCompra.getDefecto());
-                entrada.generaPaginaButaca(entradaModelReport, Configuration.getUrlPublicSinHTTPS());
+                else {
+                    EntradaModelReport entradaModelReport = new EntradaModelReport();
+                    rellenaButaca(entradaModelReport, compra, entrada, butaca);
+                }
             }
         }
+        if (entrada.esAgrupada()) {
+            EntradaModelReport entradaModelReport = new EntradaModelReport();
+            entrada.setTotalButacas(totalButacas);
+            rellenaButaca(entradaModelReport, compra, entrada, compra.getParButacas().get(0));
+        }
+    }
+
+    private void rellenaButaca(EntradaModelReport entradaModelReport, CompraDTO compra, EntradaReportOnlineInterface entrada, ButacaDTO butaca) {
+        TarifaDTO tarifaCompra = tarifasDAO.get(Integer.valueOf(butaca.getTipo()));
+        entradaModelReport.setFila(butaca.getFila());
+        entradaModelReport.setNumero(butaca.getNumero());
+        entradaModelReport.setZona(butaca.getParLocalizacion().getNombreVa());
+        entradaModelReport.setTotal(ReportUtils.formatEuros(butaca.getPrecio()));
+        entradaModelReport.setCifEmpresa(butaca.getParSesion().getParEvento().getParTpv().getCif());
+        entradaModelReport.setNombreEmpresa(butaca.getParSesion().getParEvento().getParTpv().getNombre());
+        if (Configuration.isIdEntrada()) {
+            entradaModelReport.setBarcode(compra.getUuid() + "-" + butaca.getIdEntrada());
+        } else {
+            entradaModelReport.setBarcode(compra.getUuid() + "-" + butaca.getId());
+        }
+        entradaModelReport.setTipo(tarifaCompra.getNombre());
+        entradaModelReport.setTarifaDefecto(tarifaCompra.getDefecto());
+        entrada.generaPaginaButaca(entradaModelReport, Configuration.getUrlPublicSinHTTPS());
     }
 
     public static void main(String[] args) throws FileNotFoundException, ReportSerializationException {
