@@ -259,6 +259,7 @@ public class EntradaActoGraduacionReport extends Report implements EntradaReport
         totalButacas.setFontSize("10pt");
         totalButacas.setMarginTop("0.2cm");
         totalButacas.getContent().add(ResourceProperties.getProperty(locale, "entrada.totalButacas") + ": " + Integer.toString(this.totalButacas));
+        
 
         table.withNewRow();
         table.withNewCell(totalButacas, "3");
