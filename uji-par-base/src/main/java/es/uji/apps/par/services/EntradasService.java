@@ -174,6 +174,7 @@ public class EntradasService {
         if (entrada.esAgrupada()) {
             EntradaModelReport entradaModelReport = new EntradaModelReport();
             entrada.setTotalButacas(totalButacas);
+            
             rellenaButaca(entradaModelReport, compra, entrada, compra.getParButacas().get(0));
         }
     }
