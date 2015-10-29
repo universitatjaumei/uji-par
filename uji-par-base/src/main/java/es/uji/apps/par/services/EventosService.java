@@ -76,9 +76,6 @@ public class EventosService
     {
         checkRequiredFields(evento);
 
-        if (evento.getParTpv() == null)
-            throw new CampoRequeridoException("TPV");
-
         if (hasEventoCompras(evento) && modificanAsientosNumerados(evento))
         	throw new EventoConCompras(evento.getId());
         else

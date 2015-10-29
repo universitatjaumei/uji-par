@@ -15,6 +15,7 @@ import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.database.DatabaseHelper;
 import es.uji.apps.par.database.DatabaseHelperFactory;
 import es.uji.apps.par.db.*;
+import es.uji.apps.par.exceptions.CampoRequeridoException;
 import es.uji.apps.par.model.*;
 import es.uji.apps.par.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -376,6 +377,9 @@ public class EventosDAO extends BaseDAO
     public Evento updateEvento(Evento evento)
     {
         EventoDTO eventoDTO = getEventoById(evento.getId());
+
+        if (evento.getParTpv() == null)
+            throw new CampoRequeridoException("TPV");
 
         eventoDTO.setRssId(evento.getRssId());
         eventoDTO.setTituloEs(evento.getTituloEs());
