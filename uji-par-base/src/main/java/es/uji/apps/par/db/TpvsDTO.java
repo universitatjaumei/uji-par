@@ -52,6 +52,9 @@ public class TpvsDTO {
     @Column(name="CIF")
     private String cif;
 
+    @Column(name="SIGNATURE_METHOD")
+    private String signatureMethod;
+
     //bi-directional many-to-one association to SesionDTO
     @OneToMany(mappedBy="parTpv")
     private List<EventoDTO> parEventos;
@@ -174,5 +177,13 @@ public class TpvsDTO {
 
     public void setCif(String cif) {
         this.cif = cif;
+    }
+
+    public String getSignatureMethod() {
+        return signatureMethod;
+    }
+
+    public void setSignatureMethod(String signatureMethod) {
+        this.signatureMethod = signatureMethod;
     }
 }

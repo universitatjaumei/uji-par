@@ -28,7 +28,7 @@
         <dependency>
             <groupId>es.uji.commons</groupId>
             <artifactId>uji-commons-testing</artifactId>
-            <version>0.2.2</version>
+            <version>0.2.5</version>
             <exclusions>
                 <exclusion>
                     <groupId>log4j</groupId>

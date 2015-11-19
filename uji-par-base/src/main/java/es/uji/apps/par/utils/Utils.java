@@ -22,8 +22,10 @@ import es.uji.apps.par.model.OrdreGrid;
 
 public class Utils
 {
+	public static final String HMAC_SHA256_V1 = "HMAC_SHA256_V1";
+
 	private static final Logger log = LoggerFactory.getLogger(Utils.class);
-	
+
 	public static String stripAccents(String texto) {
     	return StringUtils.stripAccents(texto);
     }
