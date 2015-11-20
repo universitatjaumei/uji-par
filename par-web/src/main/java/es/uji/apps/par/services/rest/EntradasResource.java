@@ -1,5 +1,6 @@
 package es.uji.apps.par.services.rest;
 
+import com.mysema.commons.lang.Pair;
 import com.sun.jersey.api.core.InjectParam;
 import es.uji.apps.par.builders.PublicPageBuilderInterface;
 import es.uji.apps.par.butacas.EstadoButacasRequest;
@@ -13,6 +14,7 @@ import es.uji.apps.par.services.ButacasService;
 import es.uji.apps.par.services.ComprasService;
 import es.uji.apps.par.services.EntradasService;
 import es.uji.apps.par.services.SesionesService;
+import es.uji.apps.par.tpv.HmacSha256TPVInterface;
 import es.uji.apps.par.tpv.IdTPVInterface;
 import es.uji.apps.par.tpv.SHA1TPVInterface;
 import es.uji.apps.par.tpv.TpvInterface;
@@ -23,7 +25,6 @@ import es.uji.commons.web.template.Template;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sis.redsys.api.ApiMacSha256;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -66,6 +67,9 @@ public class EntradasResource extends BaseResource
 
 	@InjectParam
 	private TpvInterface tpvInterface;
+
+    @InjectParam
+    private HmacSha256TPVInterface hmacSha256TPVInterface;
 
     @InjectParam
     private SHA1TPVInterface sha1TPVInterface;
@@ -536,94 +540,104 @@ public class EntradasResource extends BaseResource
 		if (Configuration.isDebug())
 			return tpvInterface.testTPV(compra.getId());
 		else {
-            Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "tpv", locale, APP);
+            Template template;
             TpvsDTO parTpv = compra.getParSesion().getParEvento().getParTpv();
 
-            String importe = Utils.monedaToCents(compra.getImporte());
             String tpvSignatureMethod = parTpv.getSignatureMethod();
-            String identificador = idTPVInterface.getFormattedId(compra.getId());
-            String order = parTpv.getOrderPrefix() + identificador;
-            String tpvCode = parTpv.getCode();
-            String tpvCurrency = parTpv.getCurrency();
-            String tpvTransaction = parTpv.getTransactionCode();
-            String tpvTerminal = parTpv.getTerminal();
-            String tpvNombre = parTpv.getNombre();
-            String secret = parTpv.getSecret();
-            String urlPago = parTpv.getUrl();
-            String url = parTpv.getWsdlUrl();
-            String urlOk = getBaseUrlPublic() + "/rest/tpv/ok";
-            String urlKo = getBaseUrlPublic() + "/rest/tpv/ko";
-            String concepto = StringUtils.stripAccents(compra.getParSesion().getParEvento().getTituloVa().toUpperCase());
-
             if (tpvSignatureMethod != null && tpvSignatureMethod.equals(Utils.HMAC_SHA256_V1)) {
-                template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "tpv_sha2", locale, APP);
-
-                ApiMacSha256 apiMacSha256 = new ApiMacSha256();
-
-                apiMacSha256.setParameter("DS_MERCHANT_AMOUNT", importe);
-                apiMacSha256.setParameter("DS_MERCHANT_ORDER", order);
-                apiMacSha256.setParameter("DS_MERCHANT_MERCHANTCODE", tpvCode);
-                apiMacSha256.setParameter("DS_MERCHANT_CURRENCY", tpvCurrency);
-                apiMacSha256.setParameter("DS_MERCHANT_TRANSACTIONTYPE", tpvTransaction);
-                apiMacSha256.setParameter("DS_MERCHANT_TERMINAL", tpvTerminal);
-                apiMacSha256.setParameter("DS_MERCHANT_MERCHANTURL", url);
-                apiMacSha256.setParameter("DS_MERCHANT_URLOK", String.format("%ssha2", urlOk));
-                apiMacSha256.setParameter("DS_MERCHANT_URLKO", String.format("%ssha2", urlKo));
-                apiMacSha256.setParameter("DS_MERCHANT_TITULAR", email);
-                if (language.equals("ca"))
-                    apiMacSha256.setParameter("DS_MERCHANT_CONSUMERLANGUAGE", parTpv.getLangCaCode());
-                else
-                    apiMacSha256.setParameter("DS_MERCHANT_CONSUMERLANGUAGE", parTpv.getLangEsCode());
-                apiMacSha256.setParameter("DS_MERCHANT_MERCHANTDATA", identificador);
-                apiMacSha256.setParameter("DS_MERCHANT_PRODUCTDESCRIPTION", concepto);
-                apiMacSha256.setParameter("DS_MERCHANT_MERCHANTNAME", tpvNombre);
-
-                String merchantParameters = apiMacSha256.createMerchantParameters();
-                String merchantSignature = apiMacSha256.createMerchantSignature(secret);
-
-                template.put("params", merchantParameters);
-                template.put("signature", merchantSignature);
+                template = getSha2Template(locale, parTpv, compra, email, language);
             }
             else {
-                template.put("idioma", language);
-                template.put("lang", language);
-                template.put("baseUrl", getBaseUrlPublic());
-                template.put("identificador", identificador);
-                template.put("concepto", concepto);
-                template.put("importe", importe);
-                template.put("correo", email);
-                template.put("url", url);
-                template.put("hash", Utils.sha1(identificador + importe + email + url + secret));
-                template.put("order", order);
-                template.put("urlOk", urlOk);
-                template.put("urlKo", urlKo);
-
-                if (language.equals("ca"))
-                    template.put("langCode", parTpv.getLangCaCode());
-                else
-                    template.put("langCode", parTpv.getLangEsCode());
-
-                if (tpvCode != null && tpvCurrency != null && tpvTransaction != null && tpvTerminal != null && tpvNombre != null) {
-                    String date = new SimpleDateFormat("YYMMddHHmmss").format(new Date());
-                    template.put("date", date);
-                    template.put("currency", tpvCurrency);
-                    template.put("code", tpvCode);
-                    template.put("terminal", tpvTerminal);
-                    template.put("transaction", tpvTransaction);
-                    template.put("nombre", tpvNombre);
-
-                    String shaEnvio = sha1TPVInterface.getFirma(importe, parTpv.getOrderPrefix(), identificador, tpvCode, tpvCurrency, tpvTransaction, url, secret, date);
-
-                    template.put("hashcajamar", shaEnvio);
-                    log.info("Sha1 para envio generado " + shaEnvio);
-                }
+                template = getSha1Template(locale, parTpv, compra, email, language);
             }
 
+            String urlPago = parTpv.getUrl();
             if (urlPago != null)
                 template.put("urlPago", urlPago);
 
 			return Response.ok(template).build();
 		}
+    }
+
+    private Template getSha2Template(Locale locale, TpvsDTO parTpv, CompraDTO compra, String email, String language) throws Exception {
+
+        String identificador = idTPVInterface.getFormattedId(compra.getId());
+        String urlOk = getBaseUrlPublic() + "/rest/tpv/oksha2";
+        String urlKo = getBaseUrlPublic() + "/rest/tpv/kosha2";
+
+        Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "tpv_sha2", locale, APP);
+        Pair<String, String> parametrosYFirma = hmacSha256TPVInterface.getParametrosYFirma(
+                Utils.monedaToCents(compra.getImporte()),
+                parTpv.getOrderPrefix() + identificador,
+                parTpv.getCode(),
+                parTpv.getCurrency(),
+                parTpv.getTransactionCode(),
+                parTpv.getTerminal(),
+                parTpv.getWsdlUrl(),
+                urlOk,
+                urlKo,
+                email,
+                language.equals("ca") ? parTpv.getLangCaCode() : parTpv.getLangEsCode(),
+                identificador,
+                StringUtils.stripAccents(compra.getParSesion().getParEvento().getTituloVa().toUpperCase()),
+                parTpv.getNombre(),
+                parTpv.getSecret());
+
+        template.put("params", parametrosYFirma.getFirst());
+        template.put("signature", parametrosYFirma.getSecond());
+        return template;
+    }
+
+    private Template getSha1Template(Locale locale, TpvsDTO parTpv, CompraDTO compra, String email, String language) {
+        String importe = Utils.monedaToCents(compra.getImporte());
+        String identificador = idTPVInterface.getFormattedId(compra.getId());
+        String order = parTpv.getOrderPrefix() + identificador;
+        String tpvCode = parTpv.getCode();
+        String tpvCurrency = parTpv.getCurrency();
+        String tpvTransaction = parTpv.getTransactionCode();
+        String tpvTerminal = parTpv.getTerminal();
+        String tpvNombre = parTpv.getNombre();
+        String secret = parTpv.getSecret();
+        String url = parTpv.getWsdlUrl();
+        String urlOk = getBaseUrlPublic() + "/rest/tpv/ok";
+        String urlKo = getBaseUrlPublic() + "/rest/tpv/ko";
+        String concepto = StringUtils.stripAccents(compra.getParSesion().getParEvento().getTituloVa().toUpperCase());
+
+        Template template = new HTMLTemplate(Constantes.PLANTILLAS_DIR + "tpv", locale, APP);
+        template.put("idioma", language);
+        template.put("lang", language);
+        template.put("baseUrl", getBaseUrlPublic());
+        template.put("identificador", identificador);
+        template.put("concepto", concepto);
+        template.put("importe", importe);
+        template.put("correo", email);
+        template.put("url", url);
+        template.put("hash", Utils.sha1(identificador + importe + email + url + secret));
+        template.put("order", order);
+        template.put("urlOk", urlOk);
+        template.put("urlKo", urlKo);
+
+        if (language.equals("ca"))
+            template.put("langCode", parTpv.getLangCaCode());
+        else
+            template.put("langCode", parTpv.getLangEsCode());
+
+        if (tpvCode != null && tpvCurrency != null && tpvTransaction != null && tpvTerminal != null && tpvNombre != null) {
+            String date = new SimpleDateFormat("YYMMddHHmmss").format(new Date());
+            template.put("date", date);
+            template.put("currency", tpvCurrency);
+            template.put("code", tpvCode);
+            template.put("terminal", tpvTerminal);
+            template.put("transaction", tpvTransaction);
+            template.put("nombre", tpvNombre);
+
+            String shaEnvio = sha1TPVInterface.getFirma(importe, parTpv.getOrderPrefix(), identificador, tpvCode, tpvCurrency, tpvTransaction, url, secret, date);
+
+            template.put("hashcajamar", shaEnvio);
+            log.info("Sha1 para envio generado " + shaEnvio);
+        }
+
+        return template;
     }
 
     private Response paginaFueraDePlazo() throws Exception
