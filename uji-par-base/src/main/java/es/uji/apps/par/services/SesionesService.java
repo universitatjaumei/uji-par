@@ -47,11 +47,11 @@ public class SesionesService
         for (SesionAbono sesionAbono : sesionesAbonos)
         {
             Sesion sesion = sesionAbono.getSesion();
-            sesion.setFechaCelebracionWithDate(new Date(sesion.getFechaCelebracion().getTime()/1000));
+            sesion.setFechaCelebracionWithDate(new Date(sesion.getFechaCelebracion().getTime()));
             if (sesion.getFechaInicioVentaOnline() != null)
-                sesion.setFechaInicioVentaOnlineWithDate(new Date(sesion.getFechaInicioVentaOnline().getTime()/1000));
+                sesion.setFechaInicioVentaOnlineWithDate(new Date(sesion.getFechaInicioVentaOnline().getTime()));
             if (sesion.getFechaFinVentaOnline() != null)
-                sesion.setFechaFinVentaOnlineWithDate(new Date(sesion.getFechaFinVentaOnline().getTime()/1000));
+                sesion.setFechaFinVentaOnlineWithDate(new Date(sesion.getFechaFinVentaOnline().getTime()));
         }
 
         return sesionesAbonos;

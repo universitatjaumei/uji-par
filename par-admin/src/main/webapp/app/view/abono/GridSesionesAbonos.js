@@ -31,9 +31,14 @@ Ext.define('Paranimf.view.abono.GridSesionesAbonos', {
     }, {
       dataIndex: 'fechaCelebracion',
       text: UI.i18n.field.eventDate,
-      format:'d/m/Y H:i',
-      xtype: 'datecolumn',
-      flex: 1
+      flex: 1,
+      renderer: function(val) {
+        if (val != '' && val != undefined) {
+            var dt = new Date(val);
+            return Ext.Date.format(dt, 'd/m/Y H:i');
+        }
+        return '';
+      }
     }, {
       dataIndex: 'horaApertura',
       text: UI.i18n.field.opening,
