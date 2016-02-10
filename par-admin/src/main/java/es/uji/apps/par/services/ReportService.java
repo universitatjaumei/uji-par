@@ -2,7 +2,6 @@ package es.uji.apps.par.services;
 
 import com.mysema.query.Tuple;
 import es.uji.apps.fopreports.serialization.ReportSerializationException;
-import es.uji.apps.par.exceptions.SinIvaException;
 import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.dao.ButacasDAO;
 import es.uji.apps.par.dao.CinesDAO;
@@ -12,9 +11,11 @@ import es.uji.apps.par.database.DatabaseHelper;
 import es.uji.apps.par.database.DatabaseHelperFactory;
 import es.uji.apps.par.db.ButacaDTO;
 import es.uji.apps.par.db.SesionDTO;
+import es.uji.apps.par.exceptions.SinIvaException;
 import es.uji.apps.par.i18n.ResourceProperties;
 import es.uji.apps.par.model.*;
 import es.uji.apps.par.report.EntradaReportFactory;
+import es.uji.apps.par.report.InformeAbonoReport;
 import es.uji.apps.par.report.InformeInterface;
 import es.uji.apps.par.report.InformeModelReport;
 import es.uji.apps.par.utils.DateUtils;
@@ -125,6 +126,15 @@ public class ReportService {
 		informe.setIva(dbHelper.castBigDecimal(fila[6]));
 
 		return informe;
+	}
+
+	private InformeAbonoReport objectToInformeAbonoIva(Object[] fila) {
+		InformeAbonoReport informeAbonoReport = new InformeAbonoReport();
+		informeAbonoReport.setNombre(Utils.safeObjectToString(fila[0]));
+		informeAbonoReport.setAbonados(Utils.safeObjectBigDecimalToInt(dbHelper.castBigDecimal(fila[1])));
+		informeAbonoReport.setTotal(dbHelper.castBigDecimal(fila[2]));
+
+		return informeAbonoReport;
 	}
 
 	private InformeModelReport objectToInformeTpv(Object[] fila) {
@@ -286,9 +296,13 @@ public class ReportService {
 			ParseException, SinIvaException {
 		InformeInterface informe = informeEfectivoReport.create(locale);
 		List<InformeModelReport> compras = objectsSesionesToInformesIva(comprasDAO.getComprasEfectivo(fechaInicio, fechaFin));
+		List<InformeAbonoReport> abonos = new ArrayList<InformeAbonoReport>();
+		if (Configuration.isMenuAbono()) {
+			abonos = objectsAbonosToInformesIva(comprasDAO.getAbonosEfectivo(fechaInicio, fechaFin));
+		}
 
 		informe.genera(getSpanishStringDateFromBBDDString(fechaInicio),
-				getSpanishStringDateFromBBDDString(fechaFin), compras,
+				getSpanishStringDateFromBBDDString(fechaFin), compras, abonos,
 				Configuration.getCargoInformeEfectivo(),
 				Configuration.getFirmanteInformeEfectivo());
 
@@ -304,7 +318,7 @@ public class ReportService {
 		List<InformeModelReport> compras = objectsSesionesToInformesTpv(comprasDAO.getComprasTpv(fechaInicio, fechaFin));
 
 		informe.genera(getSpanishStringDateFromBBDDString(fechaInicio),
-				getSpanishStringDateFromBBDDString(fechaFin), compras,
+				getSpanishStringDateFromBBDDString(fechaFin), compras, null,
 				Configuration.getCargoInformeEfectivo(),
 				Configuration.getFirmanteInformeEfectivo());
 
@@ -341,6 +355,16 @@ public class ReportService {
 
 		for (Object[] compra : compras) {
 			result.add(objectToInformeIva(compra));
+		}
+
+		return result;
+	}
+
+	private List<InformeAbonoReport> objectsAbonosToInformesIva(List<Object[]> abonos) {
+		List<InformeAbonoReport> result = new ArrayList<InformeAbonoReport>();
+
+		for (Object[] abono : abonos) {
+			result.add(objectToInformeAbonoIva(abono));
 		}
 
 		return result;

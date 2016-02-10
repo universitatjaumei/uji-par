@@ -1,31 +1,29 @@
 package es.uji.apps.par.dao;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.*;
-
-import com.mysema.query.types.Expression;
-import es.uji.apps.par.db.*;
-import es.uji.apps.par.exceptions.IncidenciaNotFoundException;
-import es.uji.apps.par.ficheros.registros.TipoIncidencia;
-import es.uji.apps.par.model.Abonado;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.mysema.query.BooleanBuilder;
 import com.mysema.query.Tuple;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.jpa.impl.JPAUpdateClause;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.QTuple;
 import com.sun.istack.logging.Logger;
-
-import es.uji.apps.par.exceptions.ButacaOcupadaAlActivarException;
 import es.uji.apps.par.database.DatabaseHelper;
 import es.uji.apps.par.database.DatabaseHelperFactory;
+import es.uji.apps.par.db.*;
+import es.uji.apps.par.exceptions.ButacaOcupadaAlActivarException;
+import es.uji.apps.par.exceptions.IncidenciaNotFoundException;
+import es.uji.apps.par.ficheros.registros.TipoIncidencia;
+import es.uji.apps.par.model.Abonado;
 import es.uji.apps.par.model.Sesion;
 import es.uji.apps.par.report.InformeModelReport;
 import es.uji.apps.par.utils.DateUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.*;
 
 @Repository
 public class ComprasDAO extends BaseDAO {
@@ -569,10 +567,6 @@ public class ComprasDAO extends BaseDAO {
 	public List<Object[]> getComprasEfectivo(String fechaInicio, String fechaFin) {
 		String sql = "select e.titulo_va, s.fecha_celebracion, b.tipo, count(b.id) as cantidad, sum(b.precio) as total, "
 				+ "c.sesion_id, e.porcentaje_iva, "
-				/*+ dbHelper.caseString("b.tipo", new String[] { "'normal'", "1",
-						"'descuento'", "2", "'aulaTeatro'", "3",
-						"'invitacion'", "4" })
-				+ " as tipoOrden, "*/
 				+ "f.nombre "
 				+ "from par_butacas b, par_compras c, par_sesiones s, par_eventos e, par_tarifas f "
 				+ "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id "
@@ -580,8 +574,26 @@ public class ComprasDAO extends BaseDAO {
 				+ "and c.taquilla = " + dbHelper.trueString() + " "
 				+ "and c.codigo_pago_tarjeta is null "
 				+ "and f.id = " + dbHelper.toInteger("b.tipo") + " "
+				+ "and c.abonado_id is null "
 				+ "group by c.sesion_id, e.titulo_va, b.tipo, s.fecha_celebracion, e.porcentaje_iva, f.nombre "
 				+ "order by e.titulo_va, s.fecha_celebracion, f.nombre";
+
+		return entityManager.createNativeQuery(sql).getResultList();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public List<Object[]> getAbonosEfectivo(String fechaInicio, String fechaFin) {
+		String sql = "select a.nombre, count(a.id)/count(distinct(c.sesion_id)) as abonos, sum(b.precio)/count(distinct(c.sesion_id)) as total "
+				+ "from par_butacas b, par_compras c, par_sesiones s, par_eventos e, par_tarifas f, par_abonados abdos, par_abonos a "
+				+ "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id and c.abonado_id = abdos.id and abdos.abono_id = a.id "
+				+ sqlConditionsToSkipAnuladasIReservas(fechaInicio, fechaFin)
+				+ "and c.taquilla = " + dbHelper.trueString() + " "
+				+ "and c.codigo_pago_tarjeta is null "
+				+ "and f.id = " + dbHelper.toInteger("b.tipo") + " "
+				+ "and c.abonado_id is not null "
+				+ "group by a.nombre, b.tipo "
+				+ "order by a.nombre";
 
 		return entityManager.createNativeQuery(sql).getResultList();
 	}
