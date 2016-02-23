@@ -18,6 +18,6 @@ Ext.define('Paranimf.model.Compra', {
       {name: 'desde', type: 'date', dateFormat: 'U'},
       {name: 'hasta', type: 'date', dateFormat: 'U'},
       'observacionesReserva',
-      'idDevolucion',
+      'idDevolucion'
    ]
 });
