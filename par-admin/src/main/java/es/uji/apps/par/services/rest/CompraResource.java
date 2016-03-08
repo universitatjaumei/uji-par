@@ -1,30 +1,23 @@
 package es.uji.apps.par.services.rest;
 
+import com.sun.jersey.api.core.InjectParam;
+import es.uji.apps.par.auth.AuthChecker;
+import es.uji.apps.par.exceptions.*;
+import es.uji.apps.par.model.Butaca;
+import es.uji.apps.par.model.CompraAbonado;
+import es.uji.apps.par.model.DisponiblesLocalizacion;
+import es.uji.apps.par.model.ResultadoCompra;
+import es.uji.apps.par.services.*;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DefaultValue;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
-import com.sun.jersey.api.core.InjectParam;
-
-import es.uji.apps.par.auth.AuthChecker;
-import es.uji.apps.par.exceptions.*;
-import es.uji.apps.par.model.*;
-import es.uji.apps.par.services.*;
 
 @Path("compra")
 public class CompraResource extends BaseResource {
@@ -253,7 +246,7 @@ public class CompraResource extends BaseResource {
 		BigDecimal importe = comprasService.calculaImporteButacas(sesionId,
 				butacasSeleccionadas, true);
 
-		return Response.ok().entity(importe.setScale(2).toString()).build();
+		return Response.ok().entity(importe.setScale(2, BigDecimal.ROUND_HALF_UP).toString()).build();
 	}
 
     @POST
@@ -266,7 +259,7 @@ public class CompraResource extends BaseResource {
 
         BigDecimal importe = comprasService.calculaImporteButacasAbono(abonoId, butacasSeleccionadas);
 
-        return Response.ok().entity(importe.setScale(2).toString()).build();
+        return Response.ok().entity(importe.setScale(2, BigDecimal.ROUND_HALF_UP).toString()).build();
     }
 
 	@GET
