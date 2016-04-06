@@ -181,9 +181,9 @@ Ext.define('Paranimf.controller.Taquilla', {
          	  change: this.actualizaPrecio
          },
          'formComprar #tipoPago': {
-            select: this.muestraOcultaDevolucionImporte
+            select: this.muestraOcultaDevolucionImporte,
+            afterrender: this.seleccionaModoPago
          },
-
          'formComprar #pasoPagar numberfield[name=importePagado]': {
             change: this.actualizaCambioADevolver
          },
@@ -277,6 +277,14 @@ Ext.define('Paranimf.controller.Taquilla', {
 	   layout.setActiveItem(0);
 	   this.cambiarEstadoBotonesComprar();
    },
+
+    seleccionaModoPago: function(combo, opts) {
+        if (combo != undefined) {
+            var store = combo.getStore();
+            if (store != undefined && store.getAt(0) != undefined)
+                combo.setValue(combo.getStore().getAt(0).data.value);
+        }
+    },
    
    	muestraDisponibles: function() {
    		var DISPONIBLES = UI.i18n.field.entradesDisponibles;
