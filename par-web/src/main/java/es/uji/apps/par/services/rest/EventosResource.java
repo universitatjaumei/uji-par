@@ -1,47 +1,34 @@
 package es.uji.apps.par.services.rest;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
+import com.sun.jersey.api.core.InjectParam;
 import es.uji.apps.par.builders.PublicPageBuilderInterface;
 import es.uji.apps.par.config.Configuration;
-import es.uji.apps.par.model.*;
-import es.uji.apps.par.services.ButacasService;
-import org.apache.commons.io.output.ByteArrayOutputStream;
-import org.apache.sanselan.ImageReadException;
-
-import com.sun.jersey.api.core.InjectParam;
-
-import es.uji.apps.par.exceptions.Constantes;
-import es.uji.apps.par.exceptions.EventoNoEncontradoException;
 import es.uji.apps.par.database.DatabaseHelper;
 import es.uji.apps.par.database.DatabaseHelperFactory;
+import es.uji.apps.par.exceptions.Constantes;
+import es.uji.apps.par.exceptions.EventoNoEncontradoException;
 import es.uji.apps.par.i18n.ResourceProperties;
+import es.uji.apps.par.model.*;
+import es.uji.apps.par.services.ButacasService;
 import es.uji.apps.par.services.EntradasService;
 import es.uji.apps.par.services.EventosService;
 import es.uji.apps.par.services.SesionesService;
 import es.uji.apps.par.utils.DateUtils;
-import es.uji.apps.par.utils.ImageUtils;
 import es.uji.commons.web.template.HTMLTemplate;
 import es.uji.commons.web.template.Template;
+import org.apache.commons.io.output.ByteArrayOutputStream;
+import org.apache.sanselan.ImageReadException;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Path("evento")
 public class EventosResource extends BaseResource {
@@ -102,7 +89,7 @@ public class EventosResource extends BaseResource {
     @Produces(MediaType.TEXT_HTML)
     public Template getEventos(@QueryParam("lang") String lang) throws Exception {
         try {
-            List<Evento> eventosActivos = eventosService.getEventosActivos("[{\"property\":\"tituloEs\",\"direction\":\"ASC\"}]", 0, 1000);
+            List<Evento> eventosActivos = eventosService.getEventosActivos("[{\"property\":\"fechaPrimeraSesion\",\"direction\":\"ASC\"}]", 0, 1000);
 
             return getTemplateEventos(eventosActivos, lang);
         } catch (EventoNoEncontradoException e) {
