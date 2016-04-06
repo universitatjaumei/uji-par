@@ -572,7 +572,7 @@ public class ComprasDAO extends BaseDAO {
 				+ "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id "
 				+ sqlConditionsToSkipAnuladasIReservas(fechaInicio, fechaFin)
 				+ "and c.taquilla = " + dbHelper.trueString() + " "
-				+ "and c.codigo_pago_tarjeta is null "
+				+ "and (c.codigo_pago_tarjeta is null and c.referencia_pago is null) "
 				+ "and f.id = " + dbHelper.toInteger("b.tipo") + " "
 				+ "and c.abonado_id is null "
 				+ "group by c.sesion_id, e.titulo_va, b.tipo, s.fecha_celebracion, e.porcentaje_iva, f.nombre "
@@ -589,7 +589,7 @@ public class ComprasDAO extends BaseDAO {
 				+ "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id and c.abonado_id = abdos.id and abdos.abono_id = a.id "
 				+ sqlConditionsToSkipAnuladasIReservas(fechaInicio, fechaFin)
 				+ "and c.taquilla = " + dbHelper.trueString() + " "
-				+ "and c.codigo_pago_tarjeta is null "
+				+ "and (c.codigo_pago_tarjeta is null and c.referencia_pago is null) "
 				+ "and f.id = " + dbHelper.toInteger("b.tipo") + " "
 				+ "and c.abonado_id is not null "
 				+ "group by a.nombre, b.tipo "
@@ -614,7 +614,7 @@ public class ComprasDAO extends BaseDAO {
 				+ "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id "
 				+ sqlConditionsToSkipAnuladasIReservas(fechaInicio, fechaFin)
 				+ "and (c.caducada is null or c.caducada = " + dbHelper.falseString() + ") "
-				+ "and (c.codigo_pago_tarjeta is not null or c.codigo_pago_pasarela is not null or c.taquilla = " + dbHelper.falseString() + ") "
+				+ "and (c.codigo_pago_tarjeta is not null or c.codigo_pago_pasarela is not null or c.referencia_pago is not null or c.taquilla = " + dbHelper.falseString() + ") "
 				+ "and f.id = " + dbHelper.toInteger("b.tipo") + " "
 				+ "group by c.sesion_id, e.titulo_va, b.tipo, s.fecha_celebracion, e.porcentaje_iva, "
 				+ dbHelper.trunc("c.fecha", formato) + ", f.nombre "
@@ -649,7 +649,7 @@ public class ComprasDAO extends BaseDAO {
 				+ "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id "
 				+ sqlConditionsToSkipAnuladasIReservas(fechaInicio, fechaFin)
 				+ "and c.taquilla = " + dbHelper.trueString() + " "
-				+ "and c.codigo_pago_tarjeta is not null";
+				+ "and (c.codigo_pago_tarjeta is not null or c.referencia_pago is not null)";
 
         List<Object[]> result = entityManager.createNativeQuery(sql).getResultList();
 
@@ -666,7 +666,7 @@ public class ComprasDAO extends BaseDAO {
 				+ "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id "
 				+ sqlConditionsToSkipAnuladasIReservas(fechaInicio, fechaFin)
 				+ "and c.taquilla = " + dbHelper.trueString() + " "
-				+ "and c.codigo_pago_tarjeta is null";
+				+ "and (c.codigo_pago_tarjeta is null and c.referencia_pago is null)";
 
 		List<Object[]> result = entityManager.createNativeQuery(sql).getResultList();
 
