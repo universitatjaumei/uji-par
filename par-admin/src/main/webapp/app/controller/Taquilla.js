@@ -284,6 +284,8 @@ Ext.define('Paranimf.controller.Taquilla', {
             if (store != undefined && store.getAt(0) != undefined)
                 combo.setValue(combo.getStore().getAt(0).data.value);
         }
+
+        this.muestraOcultaDevolucionImporte(combo);
     },
    
    	muestraDisponibles: function() {
