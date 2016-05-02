@@ -33,6 +33,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
@@ -539,6 +540,9 @@ public class EntradasResource extends BaseResource
 
 		if (Configuration.isDebug())
 			return tpvInterface.testTPV(compra.getId());
+        else if (compra.getImporte().equals(BigDecimal.ZERO)) {
+            return tpvInterface.compraGratuita(compra.getId());
+        }
 		else {
             Template template;
             TpvsDTO parTpv = compra.getParSesion().getParEvento().getParTpv();

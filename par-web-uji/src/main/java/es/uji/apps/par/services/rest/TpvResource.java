@@ -158,4 +158,11 @@ public class TpvResource extends BaseResource implements TpvInterface
 		Template template = checkCompra(compra, "RECIBO_TEST", "OK");
 		return Response.ok(template).build();
 	}
+
+    @Override
+    public Response compraGratuita(long identificador) throws Exception {
+        CompraDTO compra = compras.getCompraById(identificador);
+        Template template = checkCompra(compra, "COMPRA_GRATUITA_" + identificador, "OK");
+        return Response.ok(template).build();
+    }
 }
