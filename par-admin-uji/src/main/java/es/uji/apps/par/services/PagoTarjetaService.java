@@ -1,31 +1,26 @@
 package es.uji.apps.par.services;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import es.uji.apps.par.dao.AbonadosDAO;
-import es.uji.apps.par.db.AbonadoDTO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
-
 import com.sun.jersey.api.core.InjectParam;
-
+import es.uji.apps.par.dao.AbonadosDAO;
 import es.uji.apps.par.dao.ComprasDAO;
+import es.uji.apps.par.db.AbonadoDTO;
 import es.uji.apps.par.db.CompraDTO;
 import es.uji.apps.par.pinpad.EstadoPinpad;
 import es.uji.apps.par.pinpad.ResultadoPagoPinpad;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class PagoTarjetaService
 {
 	private static final Logger log = LoggerFactory.getLogger(PagoTarjetaService.class);
-
-    private static final String PAGO_OK_TARJETA_MAGNETICA = "20";
-    private static final String PAGO_OK_TARJETA_CHIP = "30";
-
-    private Map<Long, EstadoPinpad> pagosPendientes = new HashMap<Long, EstadoPinpad>();
+    private static final String PAGO_OK = "0";
+	private Map<Long, EstadoPinpad> pagosPendientes = new HashMap<Long, EstadoPinpad>();
 
     @InjectParam
     private Pinpad pinpad;
@@ -42,15 +37,9 @@ public class PagoTarjetaService
         ResultadoPagoPinpad resultado = pinpad.realizaPago(Long.toString(idCompra), compra.getImporte(), concepto);
 
         if (resultado.getError())
-        {
             compras.borrarCompraNoPagada(idCompra);
-        }
         else
-        {
-            log.info("guardandoCodigoPago: idCompra:" + idCompra);
-            compras.guardarCodigoPagoTarjeta(compra.getId(), resultado.getCodigo());
-            lanzaThreadConsultaEstado(compra.getId());
-        }
+            log.info("pago realizado para la compra idCompra:" + idCompra + ", empezamos la comprobacion de estado");
 
         return resultado;
     }
@@ -74,49 +63,6 @@ public class PagoTarjetaService
         }
 
         return resultado;
-    }
-
-    private void lanzaThreadConsultaEstado(final long idCompra)
-    {
-        new Thread()
-        {
-            @Override
-            public void run()
-            {
-                while (true)
-                {
-                    EstadoPinpad estado = pinpad.getEstadoPinpad(Long.toString(idCompra));
-                    pagosPendientes.put(idCompra, estado);
-                    
-                    if (tieneCodigoAccion(estado))
-                    {
-                        if (pagoCorrecto(estado))
-                        {
-                            log.info("marcarPagada: idCompra:" + idCompra);
-                            compras.marcarPagadaConRecibo(idCompra, estado.getRecibo());
-                        }
-                        else
-                        {
-                            compras.borrarCompraNoPagada(idCompra);
-                        }
-
-                        return;
-                    }
-                    else
-                    {
-                        try
-                        {
-                            Thread.sleep(1000);
-                        }
-                        catch (InterruptedException e)
-                        {
-                            log.error("Sleep en bucle de consulta estado: " + e);
-                        }
-                    }
-                }
-            }
-
-        }.start();
     }
 
     private void lanzaThreadConsultaEstadoAbonado(final long idAbonado)
@@ -164,8 +110,7 @@ public class PagoTarjetaService
 
     private boolean pagoCorrecto(EstadoPinpad estado)
     {
-        return estado.getCodigoAccion().equals(PAGO_OK_TARJETA_MAGNETICA)
-                || estado.getCodigoAccion().equals(PAGO_OK_TARJETA_CHIP);
+        return estado.getCodigoAccion().equals(PAGO_OK);
     }
     
     private boolean tieneCodigoAccion(EstadoPinpad estado)
@@ -173,19 +118,32 @@ public class PagoTarjetaService
         return estado != null && estado.getCodigoAccion()!=null && !estado.getCodigoAccion().equals("");
     }
 
-    public EstadoPinpad consultaEstadoPago(Long id)
+    public EstadoPinpad consultaEstadoPago(Long idCompra)
     {
-        EstadoPinpad estado = pagosPendientes.get(id);
-
-        if (tieneCodigoAccion(estado))
-        {
-            pagosPendientes.remove(id);
-        }
-
-        return estado;
+		EstadoPinpad estado = pinpad.getEstadoPinpad(Long.toString(idCompra));
+		if (tieneCodigoAccion(estado))
+		{
+			if (pagoCorrecto(estado))
+			{
+				actualizaCompraComoPagada(idCompra, estado);
+			}
+			else if (estado.getError())
+			{
+				compras.borrarCompraNoPagada(idCompra);
+			}
+		}
+		return estado;
     }
 
-    public void borraCompraPendiente(Long idCompra)
+	@Transactional
+	private void actualizaCompraComoPagada(Long idCompra, EstadoPinpad estado) {
+		log.info("guardarRecibo: idCompra:" + idCompra);
+		compras.guardarCodigoPagoTarjeta(idCompra, estado.getRecibo());
+		log.info("marcarPagada: idCompra:" + idCompra);
+		compras.marcarPagadaConRecibo(idCompra, estado.getRecibo());
+	}
+
+	public void borraCompraPendiente(Long idCompra)
     {
         compras.borrarCompraNoPagada(idCompra);
     }

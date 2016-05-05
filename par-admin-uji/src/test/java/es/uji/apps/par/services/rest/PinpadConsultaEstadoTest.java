@@ -26,66 +26,52 @@ public class PinpadConsultaEstadoTest
         pinpad = new Pinpad(pinpadService);
     }
 
+	/*
+0-<recibo>-Pago correcto
+1-<recibo>-Pendiente de confirmación
+5--Timeout
+6--Recibo no creado
+7--Error de firma
+8--Error en parámetros
+9--Error desconocido
+	 */
+
     @Test
     public void testNoError()
     {
-        when(pinpadService.consultaEstado(anyString())).thenReturn("0-20-Correcto");
+        when(pinpadService.consultaEstado(anyString())).thenReturn("0-<recibo>-Pago correcto");
 
         EstadoPinpad estado = pinpad.getEstadoPinpad("");
 
         assertFalse("No error", estado.getError());
+		assertEquals("0", estado.getCodigoAccion());
+		assertEquals("<recibo>", estado.getRecibo());
+		assertTrue(estado.getReady());
     }
 
-    @Test
-    public void testError()
-    {
-        when(pinpadService.consultaEstado(anyString())).thenThrow(new RuntimeException("Mensaje de error"));
+	@Test
+	public void testPendienteConfirmacion() {
+		when(pinpadService.consultaEstado(anyString())).thenReturn("1-<recibo>-Pendiente de confirmación");
 
-        EstadoPinpad estado = pinpad.getEstadoPinpad("");
+		EstadoPinpad estado = pinpad.getEstadoPinpad("");
 
-        assertTrue("Error valor", estado.getError());
-        assertEquals("Error mensaje", "Mensaje de error", estado.getMensajeExcepcion());
-    }
+		assertFalse("No error", estado.getError());
+		assertEquals("1", estado.getCodigoAccion());
+		assertEquals("<recibo>", estado.getRecibo());
+		assertFalse(estado.getReady());
+	}
 
-    @Test
-    public void testReady()
-    {
-        when(pinpadService.consultaEstado(anyString())).thenReturn("1-20-Correcto");
+	@Test
+	public void testTimeout() {
+		when(pinpadService.consultaEstado(anyString())).thenReturn("5--Timeout");
 
-        EstadoPinpad estado = pinpad.getEstadoPinpad("");
+		EstadoPinpad estado = pinpad.getEstadoPinpad("");
 
-        assertTrue("Ready", estado.getReady());
-    }
-
-    @Test
-    public void testPagoIncorrecto()
-    {
-        when(pinpadService.consultaEstado(anyString())).thenReturn("0-2-Correcto");
-
-        EstadoPinpad estado = pinpad.getEstadoPinpad("");
-
-        assertFalse("Not ready", estado.getReady());
-    }
-
-    @Test
-    public void testCodigoError()
-    {
-        when(pinpadService.consultaEstado(anyString())).thenReturn("1-2-Correcto");
-
-        EstadoPinpad estado = pinpad.getEstadoPinpad("");
-
-        assertEquals("Código error", "2", estado.getCodigoAccion());
-    }
-
-    @Test
-    public void testMensaje()
-    {
-        when(pinpadService.consultaEstado(anyString())).thenReturn("1-2-Esto es el mensaje");
-
-        EstadoPinpad estado = pinpad.getEstadoPinpad("");
-
-        assertEquals("Mensaje", "Esto es el mensaje", estado.getMensaje());
-    }
+		assertTrue("No error", estado.getError());
+		assertEquals("5", estado.getCodigoAccion());
+		assertEquals("", estado.getRecibo());
+		assertFalse(estado.getReady());
+	}
 
     @Test
     public void testMensajeConGuiones()
@@ -97,32 +83,52 @@ public class PinpadConsultaEstadoTest
         assertEquals("Mensaje con guiones", "Esto es el mensaje - ole", estado.getMensaje());
     }
 
-    @Test
-    public void pagoCorrecto()
-    {
-        when(pinpadService.consultaEstado(anyString())).thenReturn("1-20-Pago correcto");
-        assertTrue("Pago correcto 1", pinpad.getEstadoPinpad("").getPagoCorrecto());
+	@Test
+	public void testReciboNoCreado() {
+		when(pinpadService.consultaEstado(anyString())).thenReturn("6--Recibo no creado");
 
-        when(pinpadService.consultaEstado(anyString())).thenReturn("1-30-Pago correcto");
-        assertTrue("Pago correcto 2", pinpad.getEstadoPinpad("").getPagoCorrecto());
-    }
+		EstadoPinpad estado = pinpad.getEstadoPinpad("");
 
-    @Test
-    public void pagoNoCorrecto()
-    {
-        when(pinpadService.consultaEstado(anyString())).thenReturn("1-1-Lo que sea");
-        assertFalse("Pago no correcto 1", pinpad.getEstadoPinpad("").getPagoCorrecto());
+		assertFalse("Error", estado.getError());
+		assertEquals("6", estado.getCodigoAccion());
+		assertEquals("", estado.getRecibo());
+		assertFalse(estado.getReady());
+	}
 
-        when(pinpadService.consultaEstado(anyString())).thenReturn("1-32-Lo que sea");
-        assertFalse("Pago no correcto 2", pinpad.getEstadoPinpad("").getPagoCorrecto());
-    }
+	@Test
+	public void testErrorFirma() {
+		when(pinpadService.consultaEstado(anyString())).thenReturn("7--Error de firma");
 
-    @Test
-    public void reciboPago()
-    {
-        when(pinpadService.consultaEstado(anyString())).thenReturn("1-1-OPERACION ACEPTADA\nTarjeta: 1\nlalala");
+		EstadoPinpad estado = pinpad.getEstadoPinpad("");
 
-        assertEquals("Texto recibo", "Tarjeta: 1\nlalala", pinpad.getEstadoPinpad("").getRecibo());
-    }
+		assertTrue("Error", estado.getError());
+		assertEquals("7", estado.getCodigoAccion());
+		assertEquals("", estado.getRecibo());
+		assertFalse(estado.getReady());
+	}
+
+	@Test
+	public void testErrorEnParametros() {
+		when(pinpadService.consultaEstado(anyString())).thenReturn("8--Error en parámetros");
+
+		EstadoPinpad estado = pinpad.getEstadoPinpad("");
+
+		assertTrue("Error", estado.getError());
+		assertEquals("8", estado.getCodigoAccion());
+		assertEquals("", estado.getRecibo());
+		assertFalse(estado.getReady());
+	}
+
+	@Test
+	public void testErrorDesconocido() {
+		when(pinpadService.consultaEstado(anyString())).thenReturn("9--Error desconocido");
+
+		EstadoPinpad estado = pinpad.getEstadoPinpad("");
+
+		assertTrue("Error", estado.getError());
+		assertEquals("9", estado.getCodigoAccion());
+		assertEquals("", estado.getRecibo());
+		assertFalse(estado.getReady());
+	}
 
 }

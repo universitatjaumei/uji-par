@@ -1,6 +1,8 @@
 package es.uji.apps.par.services;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +16,7 @@ import es.uji.apps.par.pinpad.ResultadoPagoPinpad;
 public class Pinpad
 {
 	private static final Logger log = LoggerFactory.getLogger(Pinpad.class);
+	public static final List<String> CODIGOS_ERROR = Arrays.asList("5", "7", "8", "9");
 
     @Autowired
     PinpadDataService dataService;
@@ -87,22 +90,22 @@ public class Pinpad
     {
         EstadoPinpad estado = new EstadoPinpad(false);
 
-        String[] vecMensaje = resultado.split("\n", 2);
+        String[] vecMensaje = resultado.split("\n", 1);
         String lineaEstado = vecMensaje[0];
-
-        if (vecMensaje.length > 1)
-            estado.setRecibo(vecMensaje[1]);
-
         String[] vecLineaEstado = lineaEstado.split("-", 3);
 
-        String ready = vecLineaEstado[0];
-        String codigoAccion = vecLineaEstado[1];
+        String codigoAccion = vecLineaEstado[0];
+		String recibo = vecLineaEstado[1];
         String mensaje = vecLineaEstado[2];
 
-        estado.setReady(ready.equals("1"));
+        estado.setReady(codigoAccion.equals("0"));
+		estado.setRecibo(recibo);
         estado.setCodigoAccion(codigoAccion);
         estado.setMensaje(mensaje);
-        estado.setPagoCorrecto(codigoAccion.equals("20") || codigoAccion.equals("30"));
+        estado.setPagoCorrecto(codigoAccion.equals("0"));
+
+		if (CODIGOS_ERROR.contains(codigoAccion))
+			estado.setError(true);
 
         return estado;
     }
