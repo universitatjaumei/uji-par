@@ -23,8 +23,6 @@ import es.uji.apps.par.utils.Utils;
 @Path("barcode")
 public class BarcodeResource extends BaseResource
 {
-	private static final Logger log = LoggerFactory.getLogger(BarcodeResource.class);
-
     @InjectParam
     private BarcodeService barcodeService;
 
