@@ -611,7 +611,27 @@ Ext.define('Paranimf.controller.Taquilla', {
                     me.habilitaBotonPagar();
                 }
                 else {
-                    eval(respuesta.codigo);
+                    var newElement = document.createElement('div');
+                    newElement.innerHTML = respuesta.codigo;
+
+                    var scripts = newElement.getElementsByTagName("script");
+                    var loadingSrc = false;
+                    for (var i = 0; i < scripts.length; ++i) {
+                        var script = scripts[i];
+                        if (script.src != undefined && script.src != '' && !loadingSrc) {
+                            var loadingSrc = true;
+                            jQuery.getScript(script.src).done(function() {
+                                for (var i = 0; i < scripts.length; ++i) {
+                                    var script = scripts[i];
+                                    if (script.src == undefined || script.src == '')
+                                        eval(script.innerHTML);
+                                }
+                            });
+                        }
+                        else if (!loadingSrc) {
+                            eval(script.innerHTML);
+                        }
+                    }
                     //me.idPagoTarjeta = respuesta.codigo;
                     me.muestraMensajePagoTarjeta(UI.i18n.message.pagoTarjetaEnviadoLector);
                     me.lanzaComprobacionEstadoPago(id);
@@ -630,7 +650,7 @@ Ext.define('Paranimf.controller.Taquilla', {
                     alert(UI.i18n.error.errorRealizaPago);
             }
         });
-    },
+   },
 
     lanzaComprobacionEstadoPago: function (idPago) {
         var me = this;
