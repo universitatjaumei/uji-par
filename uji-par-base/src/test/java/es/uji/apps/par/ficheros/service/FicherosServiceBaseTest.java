@@ -6,6 +6,7 @@ import java.util.Arrays;
 
 import es.uji.apps.par.dao.*;
 import es.uji.apps.par.db.TarifaDTO;
+import es.uji.apps.par.db.TpvsDTO;
 import es.uji.apps.par.exceptions.*;
 import es.uji.apps.par.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,9 @@ public class FicherosServiceBaseTest
     @Autowired
     private ComprasService comprasService;
 
+	@Autowired
+	private TpvsDAO tpvsDAO;
+
     protected Cine cine;
     protected Localizacion localizacion;
     protected Plantilla plantilla;
@@ -53,6 +57,7 @@ public class FicherosServiceBaseTest
     protected TipoEvento tipoEvento;
     protected Evento evento;
 	protected Tarifa tarifa;
+	protected Tpv tpv;
 
 
     protected void setup() throws PrecioRepetidoException {
@@ -66,6 +71,18 @@ public class FicherosServiceBaseTest
         precioSesion = creaPrecioSesion(precioPlantilla);
         evento = creaEvento(tipoEvento);
     }
+
+	private Tpv creaTpv() {
+		tpv = new Tpv();
+		tpv.setNombre("TPV Prueba");
+		TpvsDTO tpvDefecto = tpvsDAO.getTpvDefault();
+		if (tpvDefecto == null)
+			tpvsDAO.addTpv(tpv, true);
+
+		TpvsDTO tpvDefectoInsertado = tpvsDAO.getTpvDefault();
+		tpv.setId(tpvDefectoInsertado.getId());
+		return tpv;
+	}
 
 	private Tarifa creaTarifa() {
 		Tarifa tarifa = new Tarifa();
@@ -131,6 +148,7 @@ public class FicherosServiceBaseTest
     protected Evento creaEvento(TipoEvento tipoEvento, String expediente, String titulo, String codigoDistribuidora,
             String nombreDistribuidora, String vo, String subtitulos)
     {
+		tpv = creaTpv();
         Evento evento = new Evento();
         evento.setTipoEvento(tipoEvento.getId());
         evento.setExpediente(expediente);
@@ -139,6 +157,7 @@ public class FicherosServiceBaseTest
         evento.setNombreDistribuidora(nombreDistribuidora);
         evento.setVo(vo);
         evento.setSubtitulos(subtitulos);
+		evento.setParTpv(tpv);
 
         eventosDAO.addEvento(evento);
 
