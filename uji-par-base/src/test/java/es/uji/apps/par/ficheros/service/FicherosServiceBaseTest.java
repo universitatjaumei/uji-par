@@ -117,10 +117,15 @@ public class FicherosServiceBaseTest
         return sesion;
     }
 
-    protected Sesion creaSesion(Sala sala, Evento evento) throws ParseException
+    protected Sesion creaSesion(Sala sala, Evento evento, String hora) throws ParseException
     {
-        return creaSesion(sala, evento, "11/12/2013", "22:00");
+        return creaSesion(sala, evento, "11/12/2013", hora);
     }
+
+	protected Sesion creaSesion(Sala sala, Evento evento) throws ParseException
+	{
+		return creaSesion(sala, evento, "11/12/2013", "22:00");
+	}
 
     protected PreciosSesion creaPrecioSesion(PreciosPlantilla precioPlantilla)
     {
