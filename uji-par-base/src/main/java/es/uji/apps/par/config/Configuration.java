@@ -679,4 +679,9 @@ public class Configuration
 	{
 		return getProperty(MAIL_USERNAME);
 	}
+
+	public boolean getLocalizacionEnValenciano() {
+		String langsAllowed = getProperty(LANGS_ALLOWED);
+		return (langsAllowed.toUpperCase().contains("VALENCI") || langsAllowed.toUpperCase().contains("CATAL"));
+	}
 }
