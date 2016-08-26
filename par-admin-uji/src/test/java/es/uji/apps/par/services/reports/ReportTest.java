@@ -203,7 +203,7 @@ public class ReportTest {
 		altaRelacionSalaUsuario(sala, usuario);
 		altaReports("es.uji.apps.par.report.InformeTaquillaReport", EntradaReportFactory.TIPO_INFORME_PDF_TAQUILLA, sala);
 		InformeInterface informe = reportService.generaYRellenaInformePDFTaquilla("2016-01-01", "2016-02-01", new Locale("es"),
-				usuario.getUsuario());
+				usuario.getUsuario(), "logo");
 		Assert.assertNotNull(informe);
 		Assert.assertEquals("es.uji.apps.par.report.InformeTaquillaReport", informe.getClass().getName());
 	}
@@ -218,7 +218,7 @@ public class ReportTest {
 		altaReports("es.uji.apps.par.report.InformeTaquillaReportPersonalizado", EntradaReportFactory.TIPO_INFORME_PDF_TAQUILLA,
 				sala);
 		reportService.generaYRellenaInformePDFTaquilla("2016-01-01", "2016-02-01", new Locale("es"),
-				usuario.getUsuario());
+				usuario.getUsuario(), "logo");
 	}
 
 	@Test(expected = RuntimeException.class)
@@ -230,7 +230,7 @@ public class ReportTest {
 		altaRelacionSalaUsuario(sala, usuario);
 		altaReports("es.uji.apps.par.report.InformeTaquillaReport", EntradaReportFactory.TIPO_INFORME_PDF_TAQUILLA, sala);
 		reportService.generaYRellenaInformePDFTaquilla("2016-01-01", "2016-02-01", new Locale("es"),
-				"NOTEXISTS");
+				"NOTEXISTS", "logo");
 	}
 
 	@Test
@@ -242,7 +242,7 @@ public class ReportTest {
 		altaRelacionSalaUsuario(sala, usuario);
 		altaReports("es.uji.apps.par.report.InformeEfectivoReport", EntradaReportFactory.TIPO_INFORME_PDF_EFECTIVO, sala);
 		InformeInterface informe = reportService.generaYRellenaInformePDFEfectivo("2016-01-01", "2016-02-01", new Locale("es"),
-				usuario.getUsuario());
+				usuario.getUsuario(), "logo");
 		Assert.assertNotNull(informe);
 		Assert.assertEquals("es.uji.apps.par.report.InformeEfectivoReport", informe.getClass().getName());
 	}
@@ -257,7 +257,7 @@ public class ReportTest {
 		altaReports("es.uji.apps.par.report.InformeEfectivoReportPersonalizado", EntradaReportFactory.TIPO_INFORME_PDF_EFECTIVO,
 				sala);
 		reportService.generaYRellenaInformePDFEfectivo("2016-01-01", "2016-02-01", new Locale("es"),
-				usuario.getUsuario());
+				usuario.getUsuario(), "logo");
 	}
 
 	@Test(expected = RuntimeException.class)
@@ -269,7 +269,7 @@ public class ReportTest {
 		altaRelacionSalaUsuario(sala, usuario);
 		altaReports("es.uji.apps.par.report.InformeEfectivoReport", EntradaReportFactory.TIPO_INFORME_PDF_EFECTIVO, sala);
 		reportService.generaYRellenaInformePDFEfectivo("2016-01-01", "2016-02-01", new Locale("es"),
-				"NOTEXISTS");
+				"NOTEXISTS", "logo");
 	}
 
 	@Test
@@ -282,7 +282,7 @@ public class ReportTest {
 		altaReports("es.uji.apps.par.report.InformeTaquillaTpvSubtotalesReport", EntradaReportFactory
 				.TIPO_INFORME_PDF_TAQUILLA_TPV_SUBTOTALES, sala);
 		InformeInterface informe = reportService.generaYRellenaInformePDFTaquillaTPVSubtotales("2016-01-01", "2016-02-01", new
-				Locale("es"), usuario.getUsuario());
+				Locale("es"), usuario.getUsuario(), "logo");
 		Assert.assertNotNull(informe);
 		Assert.assertEquals("es.uji.apps.par.report.InformeTaquillaTpvSubtotalesReport", informe.getClass().getName());
 	}
@@ -298,7 +298,7 @@ public class ReportTest {
 		altaReports("es.uji.apps.par.report.InformeTaquillaTpvSubtotalesReportPersonalizado", EntradaReportFactory
 				 .TIPO_INFORME_PDF_TAQUILLA_TPV_SUBTOTALES, sala);
 		reportService.generaYRellenaInformePDFTaquillaTPVSubtotales("2016-01-01", "2016-02-01", new Locale("es"), usuario
-				 .getUsuario());
+				 .getUsuario(), "logo");
 	}
 
 	@Test(expected = RuntimeException.class)
@@ -311,7 +311,7 @@ public class ReportTest {
 		altaRelacionSalaUsuario(sala, usuario);
 		altaReports("es.uji.apps.par.report.InformeTaquillaTpvSubtotalesReport", EntradaReportFactory
 				 .TIPO_INFORME_PDF_TAQUILLA_TPV_SUBTOTALES, sala);
-		reportService.generaYRellenaInformePDFTaquillaTPVSubtotales("2016-01-01", "2016-02-01", new Locale("es"), "NOTEXISTS");
+		reportService.generaYRellenaInformePDFTaquillaTPVSubtotales("2016-01-01", "2016-02-01", new Locale("es"), "NOTEXISTS", "logo");
 	}
 
 	@Test
@@ -323,7 +323,7 @@ public class ReportTest {
 		altaRelacionSalaUsuario(sala, usuario);
 		altaReports("es.uji.apps.par.report.InformeEventosReport", EntradaReportFactory.TIPO_INFORME_PDF_EVENTOS, sala);
 		InformeInterface informe = reportService.generaYRellenaInformePDFEventos("2016-01-01", "2016-02-01", new Locale("es"),
-				usuario.getUsuario());
+				usuario.getUsuario(), "logo");
 		Assert.assertNotNull(informe);
 		Assert.assertEquals("es.uji.apps.par.report.InformeEventosReport", informe.getClass().getName());
 	}
@@ -337,7 +337,7 @@ public class ReportTest {
 		altaRelacionSalaUsuario(sala, usuario);
 		altaReports("es.uji.apps.par.report.InformeEventosReportPersonalizado", EntradaReportFactory.TIPO_INFORME_PDF_EVENTOS,
 				sala);
-		reportService.generaYRellenaInformePDFEventos("2016-01-01", "2016-02-01", new Locale("es"), usuario.getUsuario());
+		reportService.generaYRellenaInformePDFEventos("2016-01-01", "2016-02-01", new Locale("es"), usuario.getUsuario(), "logo");
 	}
 
 	@Test(expected = RuntimeException.class)
@@ -348,7 +348,7 @@ public class ReportTest {
 		Usuario usuario = altaUsuario("Nombre", "Mail", "login");
 		altaRelacionSalaUsuario(sala, usuario);
 		altaReports("es.uji.apps.par.report.InformeEventosReport", EntradaReportFactory.TIPO_INFORME_PDF_EVENTOS, sala);
-		reportService.generaYRellenaInformePDFEventos("2016-01-01", "2016-02-01", new Locale("es"), "NOTEXISTS");
+		reportService.generaYRellenaInformePDFEventos("2016-01-01", "2016-02-01", new Locale("es"), "NOTEXISTS", "logo");
 	}
 
 	@Test
@@ -367,7 +367,7 @@ public class ReportTest {
 		altaReports("es.uji.apps.par.report.InformeSesionReport", EntradaReportFactory.TIPO_INFORME_PDF_SESIONES, sala);
 		InformeInterface informe = reportService.generaYRellenaPDFSesiones(Arrays.asList(sesion), new Locale("es"), usuario
 				.getUsuario
-				());
+				(), "logo");
 		Assert.assertNotNull(informe);
 		Assert.assertEquals("es.uji.apps.par.report.InformeSesionReport", informe.getClass().getName());
 	}
@@ -382,7 +382,7 @@ public class ReportTest {
 		Sesion s = new Sesion(1);
 		altaReports("es.uji.apps.par.report.InformeSesionReportPersonalizado", EntradaReportFactory.TIPO_INFORME_PDF_SESIONES,
 				sala);
-		reportService.generaYRellenaPDFSesiones(Arrays.asList(s), new Locale("es"), usuario.getUsuario());
+		reportService.generaYRellenaPDFSesiones(Arrays.asList(s), new Locale("es"), usuario.getUsuario(), "logo");
 	}
 
 	@Test(expected = RuntimeException.class)
@@ -394,7 +394,7 @@ public class ReportTest {
 		altaRelacionSalaUsuario(sala, usuario);
 		Sesion s = new Sesion(1);
 		altaReports("es.uji.apps.par.report.InformeSesionReport", EntradaReportFactory.TIPO_INFORME_PDF_SESIONES, sala);
-		reportService.generaYRellenaPDFSesiones(Arrays.asList(s), new Locale("es"), "NOTEXISTS");
+		reportService.generaYRellenaPDFSesiones(Arrays.asList(s), new Locale("es"), "NOTEXISTS", "logo");
 	}
 
 	@Test
