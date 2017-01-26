@@ -575,7 +575,7 @@ public class EventosDAO extends BaseDAO
                         .and(qEventoDTO.id.eq(eventoId)))
                 .list(qEventoDTO);
 
-        return list.get(0);
+        return list != null && list.size() > 0 ? list.get(0) : null;
     }
 
     @Transactional
@@ -587,7 +587,7 @@ public class EventosDAO extends BaseDAO
 
         JPAQuery query = new JPAQuery(entityManager);
 
-        List<EventoDTO> eventos = query
+        List<EventoDTO> list = query
                 .from(qEventoDTO)
                 .leftJoin(qEventoDTO.parTiposEvento, qTipoEvento).fetch()
                 .leftJoin(qEventoDTO.parCine, qCineDTO)
@@ -597,10 +597,7 @@ public class EventosDAO extends BaseDAO
                 .where((qUsuarioDTO.usuario.eq(userUID).or(qCineDTO.isNull())).and(qEventoDTO.rssId.eq(rssId)))
                 .list(qEventoDTO);
 
-        if (eventos.size() == 0)
-            return null;
-        else
-            return eventos.get(0);
+        return list != null && list.size() > 0 ? list.get(0) : null;
     }
 
     @Transactional
