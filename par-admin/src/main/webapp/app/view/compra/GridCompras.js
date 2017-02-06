@@ -122,7 +122,10 @@ Ext.define('Paranimf.view.compra.GridCompras', {
         dataIndex: 'infoPeriodica',
         flex: 2,
         text: UI.i18n.field.infoPeriodica,
-        hidden: true
+        hidden: true,
+        renderer: function (val, p) {
+            return (val)?'<img src="../resources/images/tick.png" alt="Sí" title="Sí" />':'';
+        }
     }, {
       align: 'center',
       dataIndex: 'importe',
