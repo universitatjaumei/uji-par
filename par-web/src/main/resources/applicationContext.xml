@@ -33,17 +33,17 @@
 	<property name="startDelay" value="1000" />
   </bean>
 
-  <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
-	<property name="jobDetails">
-	   <list>
-	      <ref bean="enviaMailsJob" />
-	   </list>
-	</property>
- 
-	<property name="triggers">
-	    <list>
-		  <ref bean="enviaMailsTrigger" />
-	    </list>
-	</property>
-  </bean>
+  <!--<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">-->
+	<!--<property name="jobDetails">-->
+	   <!--<list>-->
+	      <!--<ref bean="enviaMailsJob" />-->
+	   <!--</list>-->
+	<!--</property>-->
+ <!---->
+	<!--<property name="triggers">-->
+	    <!--<list>-->
+		  <!--<ref bean="enviaMailsTrigger" />-->
+	    <!--</list>-->
+	<!--</property>-->
+  <!--</bean>-->
 </beans>

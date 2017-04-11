@@ -20,6 +20,7 @@ public class ConfigurationProperties implements ConfigurationSelector
 	private static final String MAIL_FROM = "uji.par.mail.from";
 	private static final String URL_PIE_ENTRADA = "uji.par.urlPieEntrada";
 	private static final String LOGO_REPORT = "uji.reports.logo";
+	private static final String LOCATION_REPORT = "uji.reports.location";
 	private static final String API_KEY = "api.key";
 
 	private static final Logger log = LoggerFactory.getLogger(ConfigurationProperties.class);
@@ -115,6 +116,11 @@ public class ConfigurationProperties implements ConfigurationSelector
 	public String getLogoReport()
 	{
 		return getProperty(LOGO_REPORT);
+	}
+
+	@Override
+	public String getNombreMunicipio() {
+		return getNoObligatoryProperty(LOCATION_REPORT);
 	}
 
 	public String getApiKey()

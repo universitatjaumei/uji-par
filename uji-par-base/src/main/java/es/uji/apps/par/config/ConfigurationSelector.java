@@ -12,6 +12,7 @@ public interface ConfigurationSelector
 	String getUrlCondicionesPrivacidad();
 	String getUrlPieEntrada();
 	String getLogoReport();
+	String getNombreMunicipio();
 	String getApiKey();
 	boolean showButacasHanEntradoEnDistintoColor();
 }

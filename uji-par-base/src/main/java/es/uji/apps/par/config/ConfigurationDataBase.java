@@ -87,6 +87,14 @@ public class ConfigurationDataBase implements ConfigurationSelector
 		return cine.getLogoReport();
 	}
 
+	@Override
+	public String getNombreMunicipio()
+	{
+		Cine cine = usuariosDAO.getUserCineByServerName(this.currentRequest.getServerName());
+
+		return cine.getNombreMunicipio();
+	}
+
 	public String getApiKey()
 	{
 		return usuariosDAO.getApiKeyByServerName(this.currentRequest.getServerName());
