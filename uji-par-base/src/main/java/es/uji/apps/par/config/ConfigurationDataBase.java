@@ -101,6 +101,24 @@ public class ConfigurationDataBase implements ConfigurationSelector
 	}
 
 	@Override
+	public String getLangsAllowed()
+	{
+		Cine cine = usuariosDAO.getUserCineByServerName(this.currentRequest.getServerName());
+
+		String langsAllowed = cine.getLangs();
+
+		if (langsAllowed != null && langsAllowed.length() > 0)
+			return langsAllowed;
+		return "[{'locale':'es', 'alias': 'Español'}]";
+	}
+
+	@Override
+	public boolean getLocalizacionEnValenciano() {
+		String langsAllowed = getLangsAllowed();
+		return (langsAllowed.toUpperCase().contains("VALENCI") || langsAllowed.toUpperCase().contains("CATAL"));
+	}
+
+	@Override
 	public boolean showButacasHanEntradoEnDistintoColor() {
 		Cine cine = usuariosDAO.getUserCineByServerName(this.currentRequest.getServerName());
 

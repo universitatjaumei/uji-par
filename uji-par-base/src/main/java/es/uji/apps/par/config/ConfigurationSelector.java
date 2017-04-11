@@ -14,5 +14,7 @@ public interface ConfigurationSelector
 	String getLogoReport();
 	String getNombreMunicipio();
 	String getApiKey();
+	String getLangsAllowed();
+	boolean getLocalizacionEnValenciano();
 	boolean showButacasHanEntradoEnDistintoColor();
 }

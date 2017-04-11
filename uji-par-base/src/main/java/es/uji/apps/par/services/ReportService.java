@@ -19,6 +19,7 @@ import java.util.Locale;
 
 import es.uji.apps.fopreports.serialization.ReportSerializationException;
 import es.uji.apps.par.config.Configuration;
+import es.uji.apps.par.config.ConfigurationSelector;
 import es.uji.apps.par.dao.ButacasDAO;
 import es.uji.apps.par.dao.CinesDAO;
 import es.uji.apps.par.dao.ComprasDAO;
@@ -64,15 +65,18 @@ public class ReportService {
 
 	Configuration configuration;
 
+	ConfigurationSelector configurationSelector;
+
 	private DatabaseHelper dbHelper;
 
     private InformeInterface informeReport;
 
 	@Autowired
-	public ReportService(Configuration configuration) throws InstantiationException, IllegalAccessException,
+	public ReportService(Configuration configuration, ConfigurationSelector configurationSelector) throws InstantiationException, IllegalAccessException,
 			ClassNotFoundException {
 		this.configuration = configuration;
-		dbHelper = DatabaseHelperFactory.newInstance(configuration);
+		this.configurationSelector = configurationSelector;
+		dbHelper = DatabaseHelperFactory.newInstance(this.configuration);
 	}
 
 	public ByteArrayOutputStream getExcelTaquilla(String fechaInicio, String fechaFin, Locale locale, String userUID) throws
@@ -534,7 +538,7 @@ public class ReportService {
 			ButacaDTO butacaDTO = butacaYTarifa.get(0, ButacaDTO.class);
 			String nombreTarifa = butacaYTarifa.get(1, String.class);
 			InformeModelReport informeModel = InformeModelReport.fromButaca(butacaDTO, configuration.getHorasVentaAnticipada(),
-					configuration.getLocalizacionEnValenciano());
+					configurationSelector.getLocalizacionEnValenciano());
 			informeModel.setTipoEntrada(nombreTarifa);
 			compras.add(informeModel);
 		}

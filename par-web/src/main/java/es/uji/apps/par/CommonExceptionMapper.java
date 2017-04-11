@@ -1,5 +1,20 @@
 package es.uji.apps.par;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.text.ParseException;
+import java.util.Locale;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.ExceptionMapper;
+import javax.ws.rs.ext.Provider;
+
 import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.config.ConfigurationSelector;
 import es.uji.apps.par.exceptions.Constantes;
@@ -9,19 +24,6 @@ import es.uji.commons.web.template.model.GrupoMenu;
 import es.uji.commons.web.template.model.ItemMenu;
 import es.uji.commons.web.template.model.Menu;
 import es.uji.commons.web.template.model.Pagina;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.ext.ExceptionMapper;
-import javax.ws.rs.ext.Provider;
-import java.text.ParseException;
-import java.util.Locale;
 
 @Provider
 public class CommonExceptionMapper implements ExceptionMapper<Exception>
@@ -50,8 +52,7 @@ public class CommonExceptionMapper implements ExceptionMapper<Exception>
     
     protected Locale getLocale(String lang)
     {
-        String idiomaFinal = "ca";
-
+        String idiomaFinal = configuration.getIdiomaPorDefecto();
         if (lang != null && lang.length() > 0)
         {
         	HttpSession session = currentRequest.getSession();
@@ -78,7 +79,6 @@ public class CommonExceptionMapper implements ExceptionMapper<Exception>
             }
 
             String idiomaParametro = currentRequest.getParameter("idioma");
-
             if (idiomaParametro != null)
             {
                 if (esIdiomaValido(idiomaParametro))
