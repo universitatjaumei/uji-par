@@ -79,7 +79,6 @@ public class Configuration
 	private static final String TIPOS_INFORME_GENERALES = "uji.reports.tiposGenerales";
     public static final String HORAS_VENTA_ANTICIPADA = "uji.reports.horaVentaAnticipada";
 	private static final String ALLOW_MULTISESION = "uji.par.allowMultisesion";
-    private static final String IDIOMA_POR_DEFECTO = "uji.par.defaultLang";
 	private static final String GENERAR_CIFRADO = "uji.pgp.generateCifrado";
 
     private static final String MENU_ABONO = "uji.par.menuAbonos";
@@ -131,17 +130,6 @@ public class Configuration
 		}
         
         return value.trim();
-    }
-
-    public String getIdiomaPorDefecto()
-    {
-        String lang = getNoObligatoryProperty(IDIOMA_POR_DEFECTO);
-        if (lang != null && lang.length() > 0) {
-            return lang;
-        }
-        else {
-            return "ca";
-        }
     }
 
     public boolean isIdEntrada()

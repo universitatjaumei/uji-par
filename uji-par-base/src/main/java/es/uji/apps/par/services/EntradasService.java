@@ -1,17 +1,5 @@
 package es.uji.apps.par.services;
 
-import es.uji.apps.fopreports.serialization.ReportSerializationException;
-import es.uji.apps.par.config.Configuration;
-import es.uji.apps.par.dao.ComprasDAO;
-import es.uji.apps.par.dao.TarifasDAO;
-import es.uji.apps.par.db.*;
-import es.uji.apps.par.model.EventoMultisesion;
-import es.uji.apps.par.report.EntradaModelReport;
-import es.uji.apps.par.report.EntradaReportFactory;
-import es.uji.apps.par.report.EntradaReportOnlineInterface;
-import es.uji.apps.par.report.EntradaReportTaquillaInterface;
-import es.uji.apps.par.utils.DateUtils;
-import es.uji.apps.par.utils.ReportUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +14,23 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 import java.util.Locale;
+
+import es.uji.apps.fopreports.serialization.ReportSerializationException;
+import es.uji.apps.par.config.Configuration;
+import es.uji.apps.par.config.ConfigurationSelector;
+import es.uji.apps.par.dao.ComprasDAO;
+import es.uji.apps.par.dao.TarifasDAO;
+import es.uji.apps.par.db.ButacaDTO;
+import es.uji.apps.par.db.CompraDTO;
+import es.uji.apps.par.db.EventoDTO;
+import es.uji.apps.par.db.TarifaDTO;
+import es.uji.apps.par.model.EventoMultisesion;
+import es.uji.apps.par.report.EntradaModelReport;
+import es.uji.apps.par.report.EntradaReportFactory;
+import es.uji.apps.par.report.EntradaReportOnlineInterface;
+import es.uji.apps.par.report.EntradaReportTaquillaInterface;
+import es.uji.apps.par.utils.DateUtils;
+import es.uji.apps.par.utils.ReportUtils;
 
 @Service
 public class EntradasService {
@@ -47,6 +52,9 @@ public class EntradasService {
 
 	@Autowired
 	Configuration configuration;
+
+	@Autowired
+	ConfigurationSelector configurationSelector;
 
     private static EntradaReportTaquillaInterface entradaTaquillaReport;
     private static EntradaReportOnlineInterface entradaOnlineReport;
@@ -77,7 +85,7 @@ public class EntradasService {
 			entradaOnlineReport = EntradaReportFactory.newInstanceOnline(reportClass);
 		}
 
-		EntradaReportOnlineInterface entrada = entradaOnlineReport.create(new Locale(configuration.getIdiomaPorDefecto()), configuration);
+		EntradaReportOnlineInterface entrada = entradaOnlineReport.create(new Locale(configurationSelector.getIdiomaPorDefecto()), configuration);
 		rellenaEntrada(compra, entrada, userUID, urlPublicSinHTTPS, urlPieEntrada);
 		return entrada;
 	}
@@ -92,7 +100,7 @@ public class EntradasService {
 		String reportClass = comprasDAO.getReportClassByCompraUUID(uuidCompra, EntradaReportFactory.TIPO_ENTRADA_TAQUILLA);
 		entradaTaquillaReport = EntradaReportFactory.newInstanceTaquilla(reportClass);
 
-		EntradaReportTaquillaInterface entrada = entradaTaquillaReport.create(new Locale(configuration.getIdiomaPorDefecto()), configuration);
+		EntradaReportTaquillaInterface entrada = entradaTaquillaReport.create(new Locale(configurationSelector.getIdiomaPorDefecto()), configuration);
 
 		rellenaEntradaTaquilla(uuidCompra, entrada, userUID, urlPublicSinHTTPS);
 		return entrada;
@@ -104,7 +112,7 @@ public class EntradasService {
 
 		String titulo;
 		List<EventoMultisesion> peliculas = eventosService.getPeliculas(compra.getParSesion().getParEvento().getId());
-		Locale locale = new Locale(configuration.getIdiomaPorDefecto());
+		Locale locale = new Locale(configurationSelector.getIdiomaPorDefecto());
 		if (locale.getLanguage().equals("ca"))
 		{
 			titulo = compra.getParSesion().getParEvento().getTituloVa();
@@ -192,7 +200,7 @@ public class EntradasService {
     private void rellenaEntrada(CompraDTO compra, EntradaReportOnlineInterface entrada, String userUID, String urlPublicSinHTTPS, String urlPieEntrada) throws NullPointerException {
 		String titulo;
 		List<EventoMultisesion> peliculas = eventosService.getPeliculas(compra.getParSesion().getParEvento().getId());
-		Locale locale = new Locale(configuration.getIdiomaPorDefecto());
+		Locale locale = new Locale(configurationSelector.getIdiomaPorDefecto());
 		if (locale.getLanguage().equals("ca"))
 		{
 			titulo = compra.getParSesion().getParEvento().getTituloVa();
@@ -268,7 +276,7 @@ public class EntradasService {
 
     private void rellenaButaca(EntradaModelReport entradaModelReport, CompraDTO compra, EntradaReportOnlineInterface entrada, ButacaDTO butaca, String userUID, String urlPublicSinHTTPS) {
         TarifaDTO tarifaCompra = tarifasDAO.get(Integer.valueOf(butaca.getTipo()), userUID);
-		Locale locale = new Locale(configuration.getIdiomaPorDefecto());
+		Locale locale = new Locale(configurationSelector.getIdiomaPorDefecto());
 		if (locale.getLanguage().equals("ca"))
 		{
 			entradaModelReport.setZona(butaca.getParLocalizacion().getNombreVa());

@@ -22,6 +22,7 @@ public class ConfigurationProperties implements ConfigurationSelector {
     private static final String LOCATION_REPORT = "uji.reports.location";
     private static final String API_KEY = "api.key";
     private static final String LANGS_ALLOWED = "uji.par.langsAllowed";
+    private static final String IDIOMA_POR_DEFECTO = "uji.par.defaultLang";
 
     private static final Logger log = LoggerFactory.getLogger(ConfigurationProperties.class);
     private static final String SHOW_BUTACAS_QUE_HAN_ENTRADO_EN_DISTINTO_COLOR =
@@ -113,13 +114,25 @@ public class ConfigurationProperties implements ConfigurationSelector {
 
         if (langsAllowed != null && langsAllowed.length() > 0)
             return langsAllowed;
-        return "[{'locale':'es', 'alias': 'Español'}]";
+        return "[{'locale':'ca', 'alias': 'Valencià'}]";
     }
 
     @Override
     public boolean getLocalizacionEnValenciano() {
         String langsAllowed = getLangsAllowed();
         return (langsAllowed.toUpperCase().contains("VALENCI") || langsAllowed.toUpperCase().contains("CATAL"));
+    }
+
+    @Override
+    public String getIdiomaPorDefecto()
+    {
+        String lang = getNoObligatoryProperty(IDIOMA_POR_DEFECTO);
+        if (lang != null && lang.length() > 0) {
+            return lang;
+        }
+        else {
+            return "ca";
+        }
     }
 
     @Override

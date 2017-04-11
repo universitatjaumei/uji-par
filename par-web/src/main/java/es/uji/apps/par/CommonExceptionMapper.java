@@ -15,7 +15,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.config.ConfigurationSelector;
 import es.uji.apps.par.exceptions.Constantes;
 import es.uji.commons.web.template.HTMLTemplate;
@@ -34,9 +33,6 @@ public class CommonExceptionMapper implements ExceptionMapper<Exception>
     HttpServletRequest currentRequest;
 
 	@Autowired
-	Configuration configuration;
-
-	@Autowired
 	ConfigurationSelector configurationSelector;
     
     protected static final String APP = "par";
@@ -52,7 +48,7 @@ public class CommonExceptionMapper implements ExceptionMapper<Exception>
     
     protected Locale getLocale(String lang)
     {
-        String idiomaFinal = configuration.getIdiomaPorDefecto();
+        String idiomaFinal = configurationSelector.getIdiomaPorDefecto();
         if (lang != null && lang.length() > 0)
         {
         	HttpSession session = currentRequest.getSession();

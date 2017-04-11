@@ -48,7 +48,7 @@ public class BaseResource
     
     protected Locale getLocale(String lang)
     {
-        String idiomaFinal = configuration.getIdiomaPorDefecto();
+        String idiomaFinal = configurationSelector.getIdiomaPorDefecto();
         if (lang != null && lang.length() > 0)
         {
         	HttpSession session = currentRequest.getSession();

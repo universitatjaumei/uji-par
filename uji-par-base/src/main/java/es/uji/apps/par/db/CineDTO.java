@@ -87,6 +87,9 @@ public class CineDTO implements Serializable {
 	@Column(name = "LANGS")
 	private String langs;
 
+	@Column(name = "DEFAULT_LANG")
+	private String defaultLang;
+
 	@OneToMany(mappedBy = "parCine", fetch=FetchType.LAZY)
 	private List<SalaDTO> parSalas;
 	
@@ -394,5 +397,13 @@ public class CineDTO implements Serializable {
 
 	public void setLangs(String langs) {
 		this.langs = langs;
+	}
+
+	public String getDefaultLang() {
+		return defaultLang;
+	}
+
+	public void setDefaultLang(String defaultLang) {
+		this.defaultLang = defaultLang;
 	}
 }

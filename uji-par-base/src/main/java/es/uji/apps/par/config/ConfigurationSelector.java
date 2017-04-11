@@ -16,5 +16,6 @@ public interface ConfigurationSelector
 	String getApiKey();
 	String getLangsAllowed();
 	boolean getLocalizacionEnValenciano();
+	String getIdiomaPorDefecto();
 	boolean showButacasHanEntradoEnDistintoColor();
 }

@@ -119,6 +119,17 @@ public class ConfigurationDataBase implements ConfigurationSelector
 	}
 
 	@Override
+	public String getIdiomaPorDefecto()
+	{
+		Cine cine = usuariosDAO.getUserCineByServerName(this.currentRequest.getServerName());
+
+		String defaultLang = cine.getDefaultLang();
+		if (defaultLang != null && defaultLang.length() > 0)
+			return defaultLang;
+		return "es";
+	}
+
+	@Override
 	public boolean showButacasHanEntradoEnDistintoColor() {
 		Cine cine = usuariosDAO.getUserCineByServerName(this.currentRequest.getServerName());
 
