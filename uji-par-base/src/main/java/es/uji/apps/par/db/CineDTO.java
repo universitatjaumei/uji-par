@@ -90,6 +90,9 @@ public class CineDTO implements Serializable {
 	@Column(name = "DEFAULT_LANG")
 	private String defaultLang;
 
+	@Column(name = "SHOW_IVA")
+	private Boolean showIVA;
+
 	@OneToMany(mappedBy = "parCine", fetch=FetchType.LAZY)
 	private List<SalaDTO> parSalas;
 	
@@ -405,5 +408,13 @@ public class CineDTO implements Serializable {
 
 	public void setDefaultLang(String defaultLang) {
 		this.defaultLang = defaultLang;
+	}
+
+	public Boolean getShowIVA() {
+		return showIVA;
+	}
+
+	public void setShowIVA(Boolean showIVA) {
+		this.showIVA = showIVA;
 	}
 }

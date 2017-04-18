@@ -290,6 +290,7 @@ public class EntradasService {
         entradaModelReport.setTotal(ReportUtils.formatEuros(butaca.getPrecio()));
         entradaModelReport.setCifEmpresa(butaca.getParSesion().getParEvento().getParTpv().getCif());
         entradaModelReport.setNombreEmpresa(butaca.getParSesion().getParEvento().getParTpv().getNombre());
+        entradaModelReport.setShowIVA(configurationSelector.showIVA());
         if (configuration.isIdEntrada()) {
             entradaModelReport.setBarcode(compra.getUuid() + "-" + butaca.getIdEntrada());
         } else {

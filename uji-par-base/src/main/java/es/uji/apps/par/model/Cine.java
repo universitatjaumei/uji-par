@@ -35,6 +35,7 @@ public class Cine implements Serializable
 	private Boolean showButacasQueHanEntradoEnDistintoColor;
 	private String langs;
     private String defaultLang;
+    private Boolean showIVA;
 
     public Cine()
     {
@@ -107,6 +108,7 @@ public class Cine implements Serializable
 		cine.setShowButacasQueHanEntradoEnDistintoColor(cineDTO.getShowButacasQueHanEntradoEnDistintoColor());
 		cine.setLangs(cineDTO.getLangs());
         cine.setDefaultLang(cineDTO.getDefaultLang());
+        cine.setShowIVA(cineDTO.getShowIVA());
 
         return cine;
     }
@@ -321,5 +323,13 @@ public class Cine implements Serializable
 
     public void setDefaultLang(String defaultLang) {
         this.defaultLang = defaultLang;
+    }
+
+    public Boolean getShowIVA() {
+        return showIVA;
+    }
+
+    public void setShowIVA(Boolean showIVA) {
+        this.showIVA = showIVA;
     }
 }

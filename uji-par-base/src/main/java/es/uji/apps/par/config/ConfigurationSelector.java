@@ -18,4 +18,5 @@ public interface ConfigurationSelector
 	boolean getLocalizacionEnValenciano();
 	String getIdiomaPorDefecto();
 	boolean showButacasHanEntradoEnDistintoColor();
+	boolean showIVA();
 }

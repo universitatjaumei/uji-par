@@ -136,4 +136,11 @@ public class ConfigurationDataBase implements ConfigurationSelector
 		return (cine.getShowButacasQueHanEntradoEnDistintoColor() != null && cine.getShowButacasQueHanEntradoEnDistintoColor()) ?
 				true : false;
 	}
+
+	@Override
+	public boolean showIVA() {
+		Cine cine = usuariosDAO.getUserCineByServerName(this.currentRequest.getServerName());
+
+		return cine.getShowIVA();
+	}
 }

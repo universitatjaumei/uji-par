@@ -14,7 +14,7 @@ import es.uji.apps.par.model.InformeSesion;
 
 public interface InformeInterface
 {
-	InformeInterface create(Locale locale, Configuration configuration, String logoReport, String location);
+	InformeInterface create(Locale locale, Configuration configuration, String logoReport, boolean showIVA, String location);
 	void serialize(OutputStream output) throws ReportSerializationException;
 	void genera(String inicio, String fin, List<InformeModelReport> compras, BigDecimal totalTaquillaTPV,
             BigDecimal totalTaquillaEfectivo, BigDecimal totalTaquillaTransferencia, BigDecimal totalOnline);

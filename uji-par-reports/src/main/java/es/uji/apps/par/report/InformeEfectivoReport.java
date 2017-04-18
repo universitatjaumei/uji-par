@@ -358,7 +358,7 @@ public class InformeEfectivoReport extends Report implements InformeInterface
             reportSerializer = new FopPDFSerializer();
     }
 
-    public InformeInterface create(Locale locale, Configuration configuration, String logoReport, String location)
+    public InformeInterface create(Locale locale, Configuration configuration, String logoReport, boolean showIVA, String location)
     {
         try
         {

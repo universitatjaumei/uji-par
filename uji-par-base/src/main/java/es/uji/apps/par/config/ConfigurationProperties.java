@@ -142,4 +142,9 @@ public class ConfigurationProperties implements ConfigurationSelector {
         return (showButacasQueHanEntradoEnDistintoColor != null && showButacasQueHanEntradoEnDistintoColor.toLowerCase()
             .equals("true")) ? true : false;
     }
+
+    @Override
+    public boolean showIVA() {
+        return true;
+    }
 }
