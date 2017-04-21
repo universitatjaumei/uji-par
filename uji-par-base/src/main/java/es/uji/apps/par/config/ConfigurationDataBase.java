@@ -121,11 +121,18 @@ public class ConfigurationDataBase implements ConfigurationSelector
 	@Override
 	public String getIdiomaPorDefecto()
 	{
-		Cine cine = usuariosDAO.getUserCineByServerName(this.currentRequest.getServerName());
+		try {
+			String serverName = this.currentRequest.getServerName();
+			Cine cine = usuariosDAO.getUserCineByServerName(serverName);
 
-		String defaultLang = cine.getDefaultLang();
-		if (defaultLang != null && defaultLang.length() > 0)
-			return defaultLang;
+			String defaultLang = cine.getDefaultLang();
+			if (defaultLang != null && defaultLang.length() > 0)
+				return defaultLang;
+		}
+		catch (IllegalStateException e)
+		{
+		}
+
 		return "es";
 	}
 
