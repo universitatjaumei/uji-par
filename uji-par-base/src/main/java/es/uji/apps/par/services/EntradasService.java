@@ -20,10 +20,12 @@ import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.config.ConfigurationSelector;
 import es.uji.apps.par.dao.ComprasDAO;
 import es.uji.apps.par.dao.TarifasDAO;
+import es.uji.apps.par.dao.UsuariosDAO;
 import es.uji.apps.par.db.ButacaDTO;
 import es.uji.apps.par.db.CompraDTO;
 import es.uji.apps.par.db.EventoDTO;
 import es.uji.apps.par.db.TarifaDTO;
+import es.uji.apps.par.model.Cine;
 import es.uji.apps.par.model.EventoMultisesion;
 import es.uji.apps.par.report.EntradaModelReport;
 import es.uji.apps.par.report.EntradaReportFactory;
@@ -46,6 +48,9 @@ public class EntradasService {
 
     @Autowired
     private ComprasDAO comprasDAO;
+
+	@Autowired
+	private UsuariosDAO usuariosDAO;
 
     @Autowired
     private TarifasDAO tarifasDAO;
@@ -85,7 +90,7 @@ public class EntradasService {
 			entradaOnlineReport = EntradaReportFactory.newInstanceOnline(reportClass);
 		}
 
-		EntradaReportOnlineInterface entrada = entradaOnlineReport.create(new Locale(configurationSelector.getIdiomaPorDefecto()), configuration);
+		EntradaReportOnlineInterface entrada = entradaOnlineReport.create(getLocale(userUID), configuration);
 		rellenaEntrada(compra, entrada, userUID, urlPublicSinHTTPS, urlPieEntrada);
 		return entrada;
 	}
@@ -100,7 +105,7 @@ public class EntradasService {
 		String reportClass = comprasDAO.getReportClassByCompraUUID(uuidCompra, EntradaReportFactory.TIPO_ENTRADA_TAQUILLA);
 		entradaTaquillaReport = EntradaReportFactory.newInstanceTaquilla(reportClass);
 
-		EntradaReportTaquillaInterface entrada = entradaTaquillaReport.create(new Locale(configurationSelector.getIdiomaPorDefecto()), configuration);
+		EntradaReportTaquillaInterface entrada = entradaTaquillaReport.create(getLocale(userUID), configuration);
 
 		rellenaEntradaTaquilla(uuidCompra, entrada, userUID, urlPublicSinHTTPS);
 		return entrada;
@@ -112,7 +117,7 @@ public class EntradasService {
 
 		String titulo;
 		List<EventoMultisesion> peliculas = eventosService.getPeliculas(compra.getParSesion().getParEvento().getId());
-		Locale locale = new Locale(configurationSelector.getIdiomaPorDefecto());
+		Locale locale = getLocale(userUID);
 		if (locale.getLanguage().equals("ca"))
 		{
 			titulo = compra.getParSesion().getParEvento().getTituloVa();
@@ -200,7 +205,7 @@ public class EntradasService {
     private void rellenaEntrada(CompraDTO compra, EntradaReportOnlineInterface entrada, String userUID, String urlPublicSinHTTPS, String urlPieEntrada) throws NullPointerException {
 		String titulo;
 		List<EventoMultisesion> peliculas = eventosService.getPeliculas(compra.getParSesion().getParEvento().getId());
-		Locale locale = new Locale(configurationSelector.getIdiomaPorDefecto());
+		Locale locale = getLocale(userUID);
 		if (locale.getLanguage().equals("ca"))
 		{
 			titulo = compra.getParSesion().getParEvento().getTituloVa();
@@ -276,7 +281,7 @@ public class EntradasService {
 
     private void rellenaButaca(EntradaModelReport entradaModelReport, CompraDTO compra, EntradaReportOnlineInterface entrada, ButacaDTO butaca, String userUID, String urlPublicSinHTTPS) {
         TarifaDTO tarifaCompra = tarifasDAO.get(Integer.valueOf(butaca.getTipo()), userUID);
-		Locale locale = new Locale(configurationSelector.getIdiomaPorDefecto());
+		Locale locale = getLocale(userUID);
 		if (locale.getLanguage().equals("ca"))
 		{
 			entradaModelReport.setZona(butaca.getParLocalizacion().getNombreVa());
@@ -290,7 +295,16 @@ public class EntradasService {
         entradaModelReport.setTotal(ReportUtils.formatEuros(butaca.getPrecio()));
         entradaModelReport.setCifEmpresa(butaca.getParSesion().getParEvento().getParTpv().getCif());
         entradaModelReport.setNombreEmpresa(butaca.getParSesion().getParEvento().getParTpv().getNombre());
-        entradaModelReport.setShowIVA(configurationSelector.showIVA());
+
+		Cine cine = usuariosDAO.getUserCineByUserUID(userUID);
+		Boolean showIVA = cine.getShowIVA();
+		if (showIVA != null) {
+			entradaModelReport.setShowIVA(cine.getShowIVA());
+		}
+		else {
+			entradaModelReport.setShowIVA(configurationSelector.showIVA());
+		}
+
         if (configuration.isIdEntrada()) {
             entradaModelReport.setBarcode(compra.getUuid() + "-" + butaca.getIdEntrada());
         } else {
@@ -310,4 +324,15 @@ public class EntradasService {
         //service.generaEntradaTaquilla("e3a762c9-9107-47b7-b13d-175e308aa24f", new FileOutputStream("/tmp/entrada.pdf"));
         service.generaEntrada("e3a762c9-9107-47b7-b13d-175e308aa24f", new FileOutputStream("/tmp/entrada.pdf"), "", "https", "urlPieEntrada");
     }
+
+    private Locale getLocale(String userUID) {
+		Cine cine = usuariosDAO.getUserCineByUserUID(userUID);
+		String defaultLang = cine.getDefaultLang();
+		if (defaultLang != null) {
+			return new Locale(cine.getDefaultLang());
+		}
+		else {
+			return new Locale(configurationSelector.getIdiomaPorDefecto());
+		}
+	}
 }
