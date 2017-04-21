@@ -146,8 +146,16 @@ public class ConfigurationDataBase implements ConfigurationSelector
 
 	@Override
 	public boolean showIVA() {
-		Cine cine = usuariosDAO.getUserCineByServerName(this.currentRequest.getServerName());
+		try {
+			String serverName = this.currentRequest.getServerName();
+			Cine cine = usuariosDAO.getUserCineByServerName(serverName);
 
-		return cine.getShowIVA();
+			return cine.getShowIVA();
+		}
+		catch (IllegalStateException e)
+		{
+		}
+
+		return true;
 	}
 }
