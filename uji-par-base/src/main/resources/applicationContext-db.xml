@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
-                           http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd   
-                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd   
-                           http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd   
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
                            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
     <context:spring-configured/>
@@ -29,28 +26,22 @@
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
           destroy-method="close">
         <property name="dataSourceName" value="par"/>
-        <property name="driverClass">
-            <value>${uji.db.driverClass}</value>
-        </property>
-        <property name="jdbcUrl">
-            <value>${uji.db.jdbcUrl}</value>
-        </property>
-        <property name="initialPoolSize" value="${uji.db.initialPoolSize}"/>
-        <property name="maxPoolSize" value="${uji.db.maxPoolSize}"/>
-        <property name="minPoolSize" value="${uji.db.minPoolSize}"/>
-        <property name="acquireIncrement" value="${uji.db.acquireIncrement}"/>
-        <property name="acquireRetryAttempts" value="10"/>
-        <property name="idleConnectionTestPeriod">
-            <value>14400</value>
-        </property>
-        <property name="checkoutTimeout">
-            <value>25200</value>
-        </property>
+        <property name="driverClass" value="${uji.db.driverClass}"/>
+        <property name="jdbcUrl" value="${uji.db.jdbcUrl}"/>
+        <property name="initialPoolSize" value="${uji.db.initialPoolSize:3}"/>
+        <property name="maxPoolSize" value="${uji.db.maxPoolSize:15}"/>
+        <property name="minPoolSize" value="${uji.db.minPoolSize:3}"/>
+        <property name="acquireIncrement" value="${uji.db.acquireIncrement:3}"/>
+        <property name="acquireRetryAttempts" value="${uji.db.acquireRetryAttempts:30}"/>
+        <property name="maxIdleTime" value="${uji.db.maxIdleTime:0}"/>
+        <property name="idleConnectionTestPeriod" value="${uji.db.idleConnectionTestPeriod:0}"/>
+        <property name="checkoutTimeout" value="${uji.db.checkoutTimeout:0}"/>
+        <property name="maxStatements" value="${uji.db.maxStatements:0}"/>
         <property name="properties">
             <props>
-                <prop key="c3p0.max_size">${uji.db.maxPoolSize}</prop>
-                <prop key="c3p0.min_size">${uji.db.minPoolSize}</prop>
-                <prop key="c3p0.max_statements">0</prop>
+                <prop key="c3p0.max_size">${uji.db.maxPoolSize:15}</prop>
+                <prop key="c3p0.min_size">${uji.db.minPoolSize:3}</prop>
+                <prop key="c3p0.max_statements">${uji.db.maxStatements:0}</prop>
                 <prop key="c3p0.preferredTestQuery">${uji.db.preferredTestQuery}</prop>
                 <prop key="user">${uji.db.username}</prop>
                 <prop key="password">${uji.db.password}</prop>
@@ -63,14 +54,8 @@
         <property ref="dataSource" name="dataSource"></property>
         <property name="persistenceUnitName" value="persistenceUnit"/>
         <property name="jpaVendorAdapter">
-            <bean
-                    class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-                <!--
-                <property name="database">
-                  <value>${uji.db.databaseId}</value>
-                </property>
-                -->
-                <property name="showSql" value="true"/>
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+                <property name="showSql" value="${uji.db.showSql:false}"/>
                 <property name="databasePlatform">
                     <value>${uji.db.dialect}</value>
                 </property>
@@ -78,26 +63,16 @@
         </property>
         <property name="jpaProperties">
             <props>
-                <!-- prop key="hibernate.hbm2ddl.auto">create</prop -->
                 <prop key="hibernate.cache.provider_class">org.hibernate.cache.HashtableCacheProvider</prop>
                 <prop key="hibernate.jdbc.batch_size">0</prop>
             </props>
         </property>
     </bean>
 
-    <bean id="ConfigurationInterface" class="es.uji.apps.par.config.ConfigurationInFile" />
-    <bean id="Configuration" class="es.uji.apps.par.config.Configuration" />
-    <bean id="ConfigurationSelector" class="es.uji.apps.par.config.ConfigurationProperties" />
-
-    <bean id="cinesDAO" class="es.uji.apps.par.dao.CinesDAO">
-    </bean>
-
-    <bean id="butacasDAO" class="es.uji.apps.par.dao.ButacasDAO">
-    </bean>
-
-    <bean id="sesionesDAO" class="es.uji.apps.par.dao.SesionesDAO">
-    </bean>
-
-
-
+    <bean id="ConfigurationInterface" class="es.uji.apps.par.config.ConfigurationInFile"/>
+    <bean id="Configuration" class="es.uji.apps.par.config.Configuration"/>
+    <bean id="ConfigurationSelector" class="es.uji.apps.par.config.ConfigurationProperties"/>
+    <bean id="cinesDAO" class="es.uji.apps.par.dao.CinesDAO"/>
+    <bean id="butacasDAO" class="es.uji.apps.par.dao.ButacasDAO"/>
+    <bean id="sesionesDAO" class="es.uji.apps.par.dao.SesionesDAO"/>
 </beans>

@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
 public class ConfigurationProperties implements ConfigurationSelector {
@@ -37,17 +36,7 @@ public class ConfigurationProperties implements ConfigurationSelector {
     }
 
     private String getProperty(String propertyName) {
-        String value = properties.getProperty(propertyName);
-        try {
-            value = new String(value.getBytes("ISO-8859-1"), "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        } catch (NullPointerException e) {
-            log.info("Propiedad " + propertyName + " nula");
-            throw e;
-        }
-
-        return value.trim();
+        return Configuration.getProperty(properties, propertyName);
     }
 
     private String getNoObligatoryProperty(String propertyName) {

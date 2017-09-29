@@ -114,7 +114,12 @@ public class Configuration
 
     private String getProperty(String propertyName)
     {
-        String value = (String) properties.getProperty(propertyName);
+        return Configuration.getProperty(properties, propertyName);
+    }
+
+    static public String getProperty(Properties properties, String propertyName)
+    {
+        String value = properties.getProperty(propertyName);
         try
         {
             value = new String(value.getBytes("ISO-8859-1"), "UTF-8");
@@ -123,12 +128,11 @@ public class Configuration
         {
             throw new RuntimeException(e);
         }
-		catch (NullPointerException e) {
-			//mejor info, ya que puede ser que mire properties no obligatorias, y así no envia mail
-			log.info("Propiedad " + propertyName + " nula");
-			throw e;
-		}
-        
+        catch (NullPointerException e) {
+            log.info("Propiedad " + propertyName + " nula");
+            throw e;
+        }
+
         return value.trim();
     }
 
