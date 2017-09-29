@@ -35,6 +35,8 @@ public class DatabaseHelperPostgres implements DatabaseHelper
         	return new BigDecimal (((Boolean)value)?1:0);
         else if (value instanceof Integer)
         	return new BigDecimal ((Integer)value);
+        else if (value instanceof Double)
+            return new BigDecimal ((Double)value);
         else 
             throw new RuntimeException("Unknown cast type for: " + value);
     }

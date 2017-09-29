@@ -539,7 +539,7 @@ public class ReportService {
 		InformeModelReport resumen = comprasDAO.getResumenSesion(sesionId);
 		List<Tuple> butacasYTarifas = butacasDAO.getButacas(sesionId);
 
-		List<InformeModelReport> compras = new ArrayList<InformeModelReport>();
+		List<InformeModelReport> compras = new ArrayList<>();
 		for (Tuple butacaYTarifa: butacasYTarifas) {
 			ButacaDTO butacaDTO = butacaYTarifa.get(0, ButacaDTO.class);
 			String nombreTarifa = butacaYTarifa.get(1, String.class);

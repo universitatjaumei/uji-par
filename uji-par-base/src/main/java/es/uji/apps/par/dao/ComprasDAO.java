@@ -44,106 +44,128 @@ import es.uji.apps.par.utils.DateUtils;
 
 @Repository
 public class ComprasDAO extends BaseDAO {
-	public static Logger log = Logger.getLogger(ComprasDAO.class);
-	public static final String NO_FINALIZADAS = "cnf";
-	private static final int ELIMINA_PENDIENTES_MINUTOS = 20;
+    public static Logger log = Logger.getLogger(ComprasDAO.class);
+    public static final String NO_FINALIZADAS = "cnf";
+    private static final int ELIMINA_PENDIENTES_MINUTOS = 20;
 
-	@Autowired
-	private SesionesDAO sesionDAO;
+    @Autowired
+    private SesionesDAO sesionDAO;
 
-	@Autowired
-	private EventosDAO eventosDAO;
+    @Autowired
+    private EventosDAO eventosDAO;
 
     @Autowired
     private AbonadosDAO abonadoDAO;
 
-	private DatabaseHelper dbHelper;
+    private DatabaseHelper dbHelper;
 
-	@Autowired
-	public ComprasDAO(Configuration configuration) {
-		dbHelper = DatabaseHelperFactory.newInstance(configuration);
-	}
-
-	@Transactional
-	public CompraDTO insertaCompra(Long sesionId, Date fecha, boolean taquilla, BigDecimal importe, String userUID) {
-		SesionDTO sesion = sesionDAO.getSesion(sesionId, userUID);
-		CompraDTO compraDTO = new CompraDTO(sesion, new Timestamp(
-				fecha.getTime()), taquilla, importe, sesion.getParEvento().getPorcentajeIva(), UUID.randomUUID()
-				.toString());
-
-		entityManager.persist(compraDTO);
-
-		return compraDTO;
-	}
+    @Autowired
+    public ComprasDAO(Configuration configuration) {
+        dbHelper = DatabaseHelperFactory.newInstance(configuration);
+    }
 
     @Transactional
-    public CompraDTO insertaCompra(Long sesionId, Date fecha, boolean taquilla,
-                                   BigDecimal importe, String email, String nombre, String apellidos, String userUID) {
+    public CompraDTO insertaCompra(
+        Long sesionId,
+        Date fecha,
+        boolean taquilla,
+        BigDecimal importe,
+        String userUID
+    ) {
         SesionDTO sesion = sesionDAO.getSesion(sesionId, userUID);
-        CompraDTO compraDTO = new CompraDTO(sesion, new Timestamp(
-                fecha.getTime()), taquilla, importe, sesion.getParEvento().getPorcentajeIva(), UUID.randomUUID()
-                .toString(), email, nombre, apellidos);
+        CompraDTO compraDTO = new CompraDTO(sesion, new Timestamp(fecha.getTime()), taquilla, importe,
+            sesion.getParEvento().getPorcentajeIva(), UUID.randomUUID().toString());
 
         entityManager.persist(compraDTO);
 
         return compraDTO;
     }
 
-	@Transactional
-	public void passarACompra(Long sesionId, Long idCompraReserva, String recibo, String tipoPago, String userUID) {
-		SesionDTO sesion = sesionDAO.getSesion(sesionId, userUID);
-		QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
-		JPAUpdateClause updateC = new JPAUpdateClause(entityManager, qCompraDTO);
-		updateC.set(qCompraDTO.reserva, false)
-			.set(qCompraDTO.pagada, true)
-			.set(qCompraDTO.porcentajeIva, sesion.getParEvento().getPorcentajeIva())
-			.setNull(qCompraDTO.desde)
-			.setNull(qCompraDTO.hasta)
-			.set(qCompraDTO.caducada, false)
-			.set(qCompraDTO.anulada, false)
-			.set(qCompraDTO.referenciaPago, recibo)
-			.set(qCompraDTO.fecha, new Timestamp(new Date().getTime()))
-			.set(qCompraDTO.tipoPago, tipoPago)
-			.where(qCompraDTO.id.eq(idCompraReserva).and(
-				qCompraDTO.parSesion.id.eq(sesionId).and(
-					qCompraDTO.reserva.eq(true)))).execute();
-	}
-
     @Transactional
-    public CompraDTO insertaCompraAbono(Long sesionId, Date fecha, boolean taquilla,
-                                   Abonado abonado, String userUID) {
+    public CompraDTO insertaCompra(
+        Long sesionId,
+        Date fecha,
+        boolean taquilla,
+        BigDecimal importe,
+        String email,
+        String nombre,
+        String apellidos,
+        String userUID
+    ) {
         SesionDTO sesion = sesionDAO.getSesion(sesionId, userUID);
-
-        CompraDTO compraDTO = new CompraDTO(sesion, new Timestamp(
-                fecha.getTime()), taquilla, new BigDecimal(0), new BigDecimal(0), UUID.randomUUID()
-                .toString(), abonado);
+        CompraDTO compraDTO = new CompraDTO(sesion, new Timestamp(fecha.getTime()), taquilla, importe,
+            sesion.getParEvento().getPorcentajeIva(), UUID.randomUUID().toString(), email, nombre, apellidos);
 
         entityManager.persist(compraDTO);
 
         return compraDTO;
     }
 
-	@Transactional
-	public CompraDTO reserva(Long sesionId, Date fecha, Date desde, Date hasta,
-			String observaciones, String userUID) {
-		SesionDTO sesion = sesionDAO.getSesion(sesionId, userUID);
+    @Transactional
+    public void passarACompra(
+        Long sesionId,
+        Long idCompraReserva,
+        String recibo,
+        String tipoPago,
+        String userUID
+    ) {
+        SesionDTO sesion = sesionDAO.getSesion(sesionId, userUID);
+        QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
+        JPAUpdateClause updateC = new JPAUpdateClause(entityManager, qCompraDTO);
+        updateC.set(qCompraDTO.reserva, false).set(qCompraDTO.pagada, true)
+            .set(qCompraDTO.porcentajeIva, sesion.getParEvento().getPorcentajeIva()).setNull(qCompraDTO.desde)
+            .setNull(qCompraDTO.hasta).set(qCompraDTO.caducada, false).set(qCompraDTO.anulada, false)
+            .set(qCompraDTO.referenciaPago, recibo).set(qCompraDTO.fecha, new Timestamp(new Date().getTime()))
+            .set(qCompraDTO.tipoPago, tipoPago).where(qCompraDTO.id.eq(idCompraReserva)
+            .and(qCompraDTO.parSesion.id.eq(sesionId).and(qCompraDTO.reserva.eq(true)))).execute();
+    }
 
-		CompraDTO compraDTO = new CompraDTO(sesion, new Timestamp(
-				fecha.getTime()), true, BigDecimal.ZERO, BigDecimal.ZERO, UUID.randomUUID()
-				.toString());
+    @Transactional
+    public CompraDTO insertaCompraAbono(
+        Long sesionId,
+        Date fecha,
+        boolean taquilla,
+        Abonado abonado,
+        String userUID
+    ) {
+        SesionDTO sesion = sesionDAO.getSesion(sesionId, userUID);
 
-		compraDTO.setReserva(true);
-		compraDTO.setDesde(DateUtils.dateToTimestampSafe(desde));
-		compraDTO.setHasta(DateUtils.dateToTimestampSafe(hasta));
-		compraDTO.setObservacionesReserva(observaciones);
+        CompraDTO compraDTO =
+            new CompraDTO(sesion, new Timestamp(fecha.getTime()), taquilla, new BigDecimal(0), new BigDecimal(0),
+                UUID.randomUUID().toString(), abonado);
 
-		entityManager.persist(compraDTO);
+        entityManager.persist(compraDTO);
 
-		return compraDTO;
-	}
+        return compraDTO;
+    }
+
+    @Transactional
+    public CompraDTO reserva(
+        Long sesionId,
+        Date fecha,
+        Date desde,
+        Date hasta,
+        String observaciones,
+        String userUID
+    ) {
+        SesionDTO sesion = sesionDAO.getSesion(sesionId, userUID);
+
+        CompraDTO compraDTO =
+            new CompraDTO(sesion, new Timestamp(fecha.getTime()), true, BigDecimal.ZERO, BigDecimal.ZERO,
+                UUID.randomUUID().toString());
+
+        compraDTO.setReserva(true);
+        compraDTO.setDesde(DateUtils.dateToTimestampSafe(desde));
+        compraDTO.setHasta(DateUtils.dateToTimestampSafe(hasta));
+        compraDTO.setObservacionesReserva(observaciones);
+
+        entityManager.persist(compraDTO);
+
+        return compraDTO;
+    }
 
 	/*@Transactional
-	public CompraDTO guardaCompra(Long compraId, Long sesionId, Date fecha,
+    public CompraDTO guardaCompra(Long compraId, Long sesionId, Date fecha,
 			boolean taquilla, BigDecimal importe, String userUID) {
 		CompraDTO compraDTO = getCompraById(compraId);
 
@@ -169,99 +191,119 @@ public class ComprasDAO extends BaseDAO {
 
         JPAQuery query = new JPAQuery(entityManager);
 
-        return query.from(qCompraDTO).leftJoin(qCompraDTO.parButacas, qButacaDTO)
-                .where(qCompraDTO.parSesion.id.eq(sesionId).and(qCompraDTO.email.isNotNull()).and(qCompraDTO.anulada.isFalse())).groupBy(qCompraDTO.email).list(qCompraDTO.email, qCompraDTO.count(), qButacaDTO.presentada.count());
+        return query.from(qCompraDTO).leftJoin(qCompraDTO.parButacas, qButacaDTO).where(
+            qCompraDTO.parSesion.id.eq(sesionId).and(qCompraDTO.email.isNotNull()).and(qCompraDTO.anulada.isFalse()))
+            .groupBy(qCompraDTO.email).list(qCompraDTO.email, qCompraDTO.count(), qButacaDTO.presentada.count());
     }
 
-	@Transactional
-	public CompraDTO getCompraById(long id) {
-		QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
-		QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
+    @Transactional
+    public CompraDTO getCompraById(long id) {
+        QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
+        QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
 
-		JPAQuery query = new JPAQuery(entityManager);
+        JPAQuery query = new JPAQuery(entityManager);
 
-		List<CompraDTO> compras = query.from(qCompraDTO, qButacaDTO)
-				.where(qCompraDTO.id.eq(id)).distinct().list(qCompraDTO);
+        List<CompraDTO> compras =
+            query.from(qCompraDTO, qButacaDTO).where(qCompraDTO.id.eq(id)).distinct().list(qCompraDTO);
 
-		if (compras.size() == 0)
-			return null;
-		else
+        if (compras.size() == 0)
+            return null;
+        else
             return compras.get(0);
-	}
-
-	@Transactional
-	public void guardarCodigoPagoTarjeta(long idCompra, String codigo) {
-		CompraDTO compra = getCompraById(idCompra);
-
-		compra.setCodigoPagoTarjeta(codigo);
-
-		entityManager.persist(compra);
-	}
-
-	@Transactional
-	public void marcarPagada(Long idCompra, TipoPago tipoPago) {
-		CompraDTO compra = getCompraById(idCompra);
-
-		compra.setPagada(true);
-		compra.setTipoPago(tipoPago.toString());
-
-		entityManager.persist(compra);
-	}
-
-	@Transactional
-	public void marcarPagadaConReferenciaDePago(Long idCompra, String referenciaPago, String tipoPago) {
-		CompraDTO compra = getCompraById(idCompra);
-
-		compra.setPagada(true);
-		compra.setReferenciaPago(referenciaPago);
-		compra.setTipoPago(tipoPago);
-
-		entityManager.persist(compra);
-	}
-
-	@Transactional
-	public void marcarPagadaConRecibo(Long idCompra, String reciboPinpad) {
-		CompraDTO compra = getCompraById(idCompra);
-
-		compra.setPagada(true);
-		compra.setReciboPinpad(reciboPinpad);
-		compra.setTipoPago(TipoPago.TARJETA.toString());
-
-		entityManager.persist(compra);
-	}
+    }
 
     @Transactional
-    public void marcarAbonadoPagadaConRecibo(Long idAbonado, String reciboPinpad) {
+    public void guardarCodigoPagoTarjeta(
+        long idCompra,
+        String codigo
+    ) {
+        CompraDTO compra = getCompraById(idCompra);
+
+        compra.setCodigoPagoTarjeta(codigo);
+
+        entityManager.persist(compra);
+    }
+
+    @Transactional
+    public void marcarPagada(
+        Long idCompra,
+        TipoPago tipoPago
+    ) {
+        CompraDTO compra = getCompraById(idCompra);
+
+        compra.setPagada(true);
+        compra.setTipoPago(tipoPago.toString());
+
+        entityManager.persist(compra);
+    }
+
+    @Transactional
+    public void marcarPagadaConReferenciaDePago(
+        Long idCompra,
+        String referenciaPago,
+        String tipoPago
+    ) {
+        CompraDTO compra = getCompraById(idCompra);
+
+        compra.setPagada(true);
+        compra.setReferenciaPago(referenciaPago);
+        compra.setTipoPago(tipoPago);
+
+        entityManager.persist(compra);
+    }
+
+    @Transactional
+    public void marcarPagadaConRecibo(
+        Long idCompra,
+        String reciboPinpad
+    ) {
+        CompraDTO compra = getCompraById(idCompra);
+
+        compra.setPagada(true);
+        compra.setReciboPinpad(reciboPinpad);
+        compra.setTipoPago(TipoPago.TARJETA.toString());
+
+        entityManager.persist(compra);
+    }
+
+    @Transactional
+    public void marcarAbonadoPagadaConRecibo(
+        Long idAbonado,
+        String reciboPinpad
+    ) {
         AbonadoDTO abonado = abonadoDAO.getAbonado(idAbonado);
 
         for (CompraDTO compra : abonado.getParCompras()) {
             compra.setPagada(true);
             compra.setReciboPinpad(reciboPinpad);
-			compra.setTipoPago(TipoPago.TARJETA.toString());
+            compra.setTipoPago(TipoPago.TARJETA.toString());
 
             entityManager.persist(compra);
         }
     }
 
-	@Transactional
-	public void marcarPagadaPasarela(Long idCompra, String codigoPago) {
-		CompraDTO compra = getCompraById(idCompra);
+    @Transactional
+    public void marcarPagadaPasarela(
+        Long idCompra,
+        String codigoPago
+    ) {
+        CompraDTO compra = getCompraById(idCompra);
 
-		compra.setPagada(true);
-		compra.setCodigoPagoPasarela(codigoPago);
-		compra.setTipoPago(TipoPago.TARJETA.toString());
+        compra.setPagada(true);
+        compra.setCodigoPagoPasarela(codigoPago);
+        compra.setTipoPago(TipoPago.TARJETA.toString());
 
-		entityManager.persist(compra);
-	}
+        entityManager.persist(compra);
+    }
 
-	@Transactional
-	public void borrarCompraNoPagada(Long idCompra) {
-		CompraDTO compra = getCompraById(idCompra);
+    @Transactional
+    public void borrarCompraNoPagada(Long idCompra) {
+        CompraDTO compra = getCompraById(idCompra);
 
-		if (compra != null && !compra.getPagada()) {
-			entityManager.remove(compra);
-		}
-	}
+        if (compra != null && !compra.getPagada()) {
+            entityManager.remove(compra);
+        }
+    }
 
     @Transactional
     public void borrarCompraAbonadoNoPagada(Long idAbonado) {
@@ -276,522 +318,469 @@ public class ComprasDAO extends BaseDAO {
         }
     }
 
-	@Transactional
-	public void borrarCompraNoPagada(String uuidCompra) {
-		CompraDTO compra = getCompraByUuid(uuidCompra);
+    @Transactional
+    public void borrarCompraNoPagada(String uuidCompra) {
+        CompraDTO compra = getCompraByUuid(uuidCompra);
 
-		if (compra != null && !compra.getPagada()) {
-			entityManager.remove(compra);
-		}
-	}
+        if (compra != null && !compra.getPagada()) {
+            entityManager.remove(compra);
+        }
+    }
 
-	@Transactional
-	public CompraDTO getCompraByUuid(String uuid) {
-		QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
-		QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
+    @Transactional
+    public CompraDTO getCompraByUuid(String uuid) {
+        QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
+        QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
 
-		JPAQuery query = new JPAQuery(entityManager);
+        JPAQuery query = new JPAQuery(entityManager);
 
-		List<CompraDTO> compras = query.from(qCompraDTO, qButacaDTO)
-				.where(qCompraDTO.uuid.eq(uuid)).distinct().list(qCompraDTO);
+        List<CompraDTO> compras =
+            query.from(qCompraDTO, qButacaDTO).where(qCompraDTO.uuid.eq(uuid)).distinct().list(qCompraDTO);
 
-		if (compras.size() == 0)
-			return null;
-		else
-			return compras.get(0);
-	}
+        if (compras.size() == 0)
+            return null;
+        else
+            return compras.get(0);
+    }
 
-	@Transactional
-	public void eliminaComprasPendientes() throws IncidenciaNotFoundException {
-		QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
+    @Transactional
+    public void eliminaComprasPendientes() throws IncidenciaNotFoundException {
+        QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
 
-		Calendar calendar = Calendar.getInstance();
-		calendar.add(Calendar.MINUTE, -ELIMINA_PENDIENTES_MINUTOS);
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MINUTE, -ELIMINA_PENDIENTES_MINUTOS);
 
-		Timestamp limite = new Timestamp(calendar.getTimeInMillis());
+        Timestamp limite = new Timestamp(calendar.getTimeInMillis());
 
-		JPAQuery query = new JPAQuery(entityManager);
+        JPAQuery query = new JPAQuery(entityManager);
 
-		List<CompraDTO> comprasACaducar = query
-				.from(qCompraDTO)
-				.where(qCompraDTO.pagada.eq(false)
-						.and(qCompraDTO.anulada.eq(false))
-						.and(qCompraDTO.reserva.eq(false))
-						.and(qCompraDTO.fecha.lt(limite))).distinct()
-				.list(qCompraDTO);
+        List<CompraDTO> comprasACaducar = query.from(qCompraDTO).where(
+            qCompraDTO.pagada.eq(false).and(qCompraDTO.anulada.eq(false)).and(qCompraDTO.reserva.eq(false))
+                .and(qCompraDTO.fecha.lt(limite))).distinct().list(qCompraDTO);
 
-		for (CompraDTO compra : comprasACaducar) {
-			compra.setCaducada(true);
-			entityManager.persist(compra);
+        for (CompraDTO compra : comprasACaducar) {
+            compra.setCaducada(true);
+            entityManager.persist(compra);
 
-			anularCompraReserva(compra.getId(), false);
-		}
-	}
+            anularCompraReserva(compra.getId(), false);
+        }
+    }
 
-	@Transactional
-	public void rellenaDatosComprador(String uuidCompra, String nombre,
-			String apellidos, String direccion, String poblacion, String cp,
-			String provincia, String telefono, String email,
-			Object infoPeriodica) {
-		log.info("RellenaDatosComprador uuidCompra" + uuidCompra + " nombre "
-				+ nombre + " " + apellidos);
-		CompraDTO compra = getCompraByUuid(uuidCompra);
+    @Transactional
+    public void rellenaDatosComprador(
+        String uuidCompra,
+        String nombre,
+        String apellidos,
+        String direccion,
+        String poblacion,
+        String cp,
+        String provincia,
+        String telefono,
+        String email,
+        Object infoPeriodica
+    ) {
+        log.info("RellenaDatosComprador uuidCompra" + uuidCompra + " nombre " + nombre + " " + apellidos);
+        CompraDTO compra = getCompraByUuid(uuidCompra);
 
-		compra.setNombre(nombre);
-		compra.setApellidos(apellidos);
-		compra.setDireccion(direccion);
-		compra.setPoblacion(poblacion);
-		compra.setCp(cp);
-		compra.setProvincia(provincia);
-		compra.setTelefono(telefono);
-		compra.setEmail(email);
-		compra.setInfoPeriodica(infoPeriodica != null
-				&& infoPeriodica.equals("si"));
+        compra.setNombre(nombre);
+        compra.setApellidos(apellidos);
+        compra.setDireccion(direccion);
+        compra.setPoblacion(poblacion);
+        compra.setCp(cp);
+        compra.setProvincia(provincia);
+        compra.setTelefono(telefono);
+        compra.setEmail(email);
+        compra.setInfoPeriodica(infoPeriodica != null && infoPeriodica.equals("si"));
 
-		entityManager.persist(compra);
-	}
+        entityManager.persist(compra);
+    }
 
-	@Transactional
-	public List<Tuple> getComprasBySesion(long sesionId, int showAnuladas,
-			String sortParameter, int start, int limit, int showOnline,
-			String search) {
-		QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
+    @Transactional
+    public List<Tuple> getComprasBySesion(
+        long sesionId,
+        int showAnuladas,
+        String sortParameter,
+        int start,
+        int limit,
+        int showOnline,
+        String search
+    ) {
+        QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
         QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
 
         QTuple selectGroupByExpression = getSelectGroupByExpression();
 
-        return getQueryComprasBySesion(sesionId, showAnuladas, showOnline,
-                search, true, selectGroupByExpression).orderBy(getSort(qCompraDTO, sortParameter))
-                .offset(start).limit(limit).list(selectGroupByExpression, qButacaDTO.precio.sum());
-	}
+        return getQueryComprasBySesion(sesionId, showAnuladas, showOnline, search, true, selectGroupByExpression)
+            .orderBy(getSort(qCompraDTO, sortParameter)).offset(start).limit(limit)
+            .list(selectGroupByExpression, qButacaDTO.precio.sum());
+    }
 
     private QTuple getSelectGroupByExpression() {
         QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
 
-        return new QTuple(
-                    qCompraDTO.id,
-                    qCompraDTO.anulada,
-                    qCompraDTO.apellidos,
-                    qCompraDTO.caducada,
-                    qCompraDTO.codigoPagoPasarela,
-                    qCompraDTO.codigoPagoTarjeta,
-                    qCompraDTO.cp,
-                    qCompraDTO.desde,
-                    qCompraDTO.direccion,
-                    qCompraDTO.email,
-                    qCompraDTO.fecha,
-                    qCompraDTO.hasta,
-                    qCompraDTO.importe,
-                    qCompraDTO.infoPeriodica,
-                    qCompraDTO.nombre,
-                    qCompraDTO.observacionesReserva,
-                    qCompraDTO.pagada,
-                    qCompraDTO.parSesion.id,
-                    qCompraDTO.poblacion,
-                    qCompraDTO.provincia,
-                    qCompraDTO.reciboPinpad,
-                    qCompraDTO.referenciaPago,
-                    qCompraDTO.reserva,
-                    qCompraDTO.taquilla,
-                    qCompraDTO.telefono,
-                    qCompraDTO.uuid,
-                    qCompraDTO.tipoPago,
-                    qCompraDTO.direccion,
-                    qCompraDTO.poblacion,
-                    qCompraDTO.cp,
-                    qCompraDTO.provincia,
-                    qCompraDTO.infoPeriodica
-        );
+        return new QTuple(qCompraDTO.id, qCompraDTO.anulada, qCompraDTO.apellidos, qCompraDTO.caducada,
+            qCompraDTO.codigoPagoPasarela, qCompraDTO.codigoPagoTarjeta, qCompraDTO.cp, qCompraDTO.desde,
+            qCompraDTO.direccion, qCompraDTO.email, qCompraDTO.fecha, qCompraDTO.hasta, qCompraDTO.importe,
+            qCompraDTO.infoPeriodica, qCompraDTO.nombre, qCompraDTO.observacionesReserva, qCompraDTO.pagada,
+            qCompraDTO.parSesion.id, qCompraDTO.poblacion, qCompraDTO.provincia, qCompraDTO.reciboPinpad,
+            qCompraDTO.referenciaPago, qCompraDTO.reserva, qCompraDTO.taquilla, qCompraDTO.telefono, qCompraDTO.uuid,
+            qCompraDTO.tipoPago, qCompraDTO.direccion, qCompraDTO.poblacion, qCompraDTO.cp, qCompraDTO.provincia,
+            qCompraDTO.infoPeriodica);
     }
 
-	@Transactional
-	private JPAQuery getQueryComprasBySesion(long sesionId, int showAnuladas,
-			int showOnline, String search, boolean doJoinButacas, QTuple selectGroupByExpression) {
-		JPAQuery query = new JPAQuery(entityManager);
-		QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
-		QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
-		BooleanBuilder builder = new BooleanBuilder();
-		builder.and(qCompraDTO.parSesion.id.eq(sesionId).and(qCompraDTO.parAbonado.isNull()));
+    private JPAQuery getQueryComprasBySesion(
+        long sesionId,
+        int showAnuladas,
+        int showOnline,
+        String search,
+        boolean doJoinButacas,
+        QTuple selectGroupByExpression
+    ) {
+        JPAQuery query = new JPAQuery(entityManager);
+        QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
+        QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
+        BooleanBuilder builder = new BooleanBuilder();
+        builder.and(qCompraDTO.parSesion.id.eq(sesionId).and(qCompraDTO.parAbonado.isNull()));
 
-		if (showAnuladas == 0) {
-			builder.and(qCompraDTO.anulada.isNull().or(
-					qCompraDTO.anulada.eq(false)));
-			if (doJoinButacas)
-				builder.and(qButacaDTO.anulada.isNull().or(
-						qButacaDTO.anulada.eq(false)));
-		}
+        if (showAnuladas == 0) {
+            builder.and(qCompraDTO.anulada.isNull().or(qCompraDTO.anulada.eq(false)));
+            if (doJoinButacas)
+                builder.and(qButacaDTO.anulada.isNull().or(qButacaDTO.anulada.eq(false)));
+        }
 
-		if (showOnline == 0)
-			builder.and(qCompraDTO.taquilla.eq(true));
+        if (showOnline == 0)
+            builder.and(qCompraDTO.taquilla.eq(true));
 
-		if (!"".equals(search)) {
-			String isNumeric = "^[\\d]+$";
-			if (search.matches(isNumeric)) {
-				long numericSearch = Integer.parseInt(search);
-				builder.and(qCompraDTO.uuid
-						.toUpperCase()
-						.like('%' + search.toUpperCase() + '%')
-						.or(qCompraDTO.observacionesReserva.toUpperCase()
-								.like('%' + search.toUpperCase() + '%')
-								.or(qCompraDTO.id.eq(numericSearch))));
-			} else {
-				search = search.toUpperCase();
-				builder.and(qCompraDTO.uuid
-						.toUpperCase()
-						.like('%' + search + '%')
-						.or(qCompraDTO.observacionesReserva.toUpperCase().like(
-								'%' + search + '%'))
-						.or(qCompraDTO.nombre
-								.toUpperCase()
-								.like('%' + search + '%')
-								.or(qCompraDTO.apellidos.toUpperCase().like(
-										'%' + search + '%'))));
-			}
-		}
-
-		if (doJoinButacas) {
-            query.from(qCompraDTO)
-                    .leftJoin(qCompraDTO.parButacas, qButacaDTO)
-                    .where(builder);
-
-            for (Expression<?> expression : selectGroupByExpression.getArgs())
-            {
-                query.groupBy(expression);
+        if (!"".equals(search)) {
+            String isNumeric = "^[\\d]+$";
+            if (search.matches(isNumeric)) {
+                long numericSearch = Integer.parseInt(search);
+                builder.and(qCompraDTO.uuid.toUpperCase().like('%' + search.toUpperCase() + '%')
+                    .or(qCompraDTO.observacionesReserva.toUpperCase().like('%' + search.toUpperCase() + '%')
+                        .or(qCompraDTO.id.eq(numericSearch))));
+            } else {
+                search = search.toUpperCase();
+                builder.and(qCompraDTO.uuid.toUpperCase().like('%' + search + '%')
+                    .or(qCompraDTO.observacionesReserva.toUpperCase().like('%' + search + '%'))
+                    .or(qCompraDTO.nombre.toUpperCase().like('%' + search + '%')
+                        .or(qCompraDTO.apellidos.toUpperCase().like('%' + search + '%'))));
             }
         }
-		else
-			query.from(qCompraDTO).where(builder);
 
-		return query;
-	}
+        if (doJoinButacas) {
+            query.from(qCompraDTO).leftJoin(qCompraDTO.parButacas, qButacaDTO).where(builder);
 
-	@Transactional
-	public int getTotalComprasBySesion(Long sesionId, int showAnuladas,
-			int showOnline, String search) {
-		return (int) getQueryComprasBySesion(sesionId, showAnuladas,
-				showOnline, search, false, getSelectGroupByExpression()).count();
-	}
+            for (Expression<?> expression : selectGroupByExpression.getArgs()) {
+                query.groupBy(expression);
+            }
+        } else
+            query.from(qCompraDTO).where(builder);
 
-	@Transactional
-	private SesionDTO getSesion(Long idCompra) {
-		QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
-		QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
-		JPAQuery query = new JPAQuery(entityManager);
-		return query.from(qCompraDTO).join(qCompraDTO.parSesion, qSesionDTO).where(qCompraDTO.id.eq(idCompra)).uniqueResult
-				(qSesionDTO);
-	}
+        return query;
+    }
 
-	@Transactional(rollbackForClassName = {"IncidenciaNotFoundException"})
-	public void anularCompraReserva(Long idCompraReserva, boolean manual) throws IncidenciaNotFoundException {
-		QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
-		QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
-		QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
-		int ANULACION_VENTAS = 9;
+    @Transactional
+    public int getTotalComprasBySesion(
+        Long sesionId,
+        int showAnuladas,
+        int showOnline,
+        String search
+    ) {
+        return (int) getQueryComprasBySesion(sesionId, showAnuladas, showOnline, search, false,
+            getSelectGroupByExpression()).count();
+    }
 
-		JPAUpdateClause updateCompra = new JPAUpdateClause(entityManager,
-				qCompraDTO);
-		updateCompra.set(qCompraDTO.anulada, true)
-				.where(qCompraDTO.id.eq(idCompraReserva)).execute();
+    private SesionDTO getSesion(Long idCompra) {
+        QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
+        QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
+        JPAQuery query = new JPAQuery(entityManager);
+        return query.from(qCompraDTO).join(qCompraDTO.parSesion, qSesionDTO).where(qCompraDTO.id.eq(idCompra))
+            .uniqueResult(qSesionDTO);
+    }
 
-		JPAUpdateClause updateButacas = new JPAUpdateClause(entityManager,
-				qButacaDTO);
-		updateButacas.set(qButacaDTO.anulada, true)
-				.where(qButacaDTO.parCompra.id.eq(idCompraReserva)).execute();
+    @Transactional(rollbackForClassName = {"IncidenciaNotFoundException"})
+    public void anularCompraReserva(
+        Long idCompraReserva,
+        boolean manual
+    ) throws IncidenciaNotFoundException {
+        QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
+        QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
 
-		CompraDTO compra = getCompraById(idCompraReserva);
+        JPAUpdateClause updateCompra = new JPAUpdateClause(entityManager, qCompraDTO);
+        updateCompra.set(qCompraDTO.anulada, true).where(qCompraDTO.id.eq(idCompraReserva)).execute();
 
-		if (manual && (compra.getReserva() == null || compra.getReserva() != true)) {
-			SesionDTO sesionDTO = getSesion(idCompraReserva);
-			sesionDAO.setIncidencia(sesionDTO.getId(), TipoIncidencia.addAnulacionVentasToIncidenciaActual(sesionDTO.getIncidenciaId()));
-		}
-	}
+        JPAUpdateClause updateButacas = new JPAUpdateClause(entityManager, qButacaDTO);
+        updateButacas.set(qButacaDTO.anulada, true).where(qButacaDTO.parCompra.id.eq(idCompraReserva)).execute();
 
-	@Transactional
-	public void desanularCompraReserva(Long idCompraReserva)
-			throws ButacaOcupadaAlActivarException {
+        CompraDTO compra = getCompraById(idCompraReserva);
 
-		try {
-			QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
-			QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
-			JPAUpdateClause updateCompra = new JPAUpdateClause(entityManager,
-					qCompraDTO);
-			updateCompra.set(qCompraDTO.anulada, false)
-					.set(qCompraDTO.caducada, false)
-					.set(qCompraDTO.pagada, true)
-					.where(qCompraDTO.id.eq(idCompraReserva)).execute();
+        if (manual && (compra.getReserva() == null || compra.getReserva() != true)) {
+            SesionDTO sesionDTO = getSesion(idCompraReserva);
+            sesionDAO.setIncidencia(sesionDTO.getId(),
+                TipoIncidencia.addAnulacionVentasToIncidenciaActual(sesionDTO.getIncidenciaId()));
+        }
+    }
 
-			JPAUpdateClause updateButacas = new JPAUpdateClause(entityManager,
-					qButacaDTO);
-			updateButacas.set(qButacaDTO.anulada, false)
-					.where(qButacaDTO.parCompra.id.eq(idCompraReserva))
-					.execute();
-		} catch (Exception e) {
-			for (ButacaDTO butaca : getCompraById(idCompraReserva)
-					.getParButacas()) {
-				if (butacaOcupada(butaca)) {
-					String comprador = "";
+    @Transactional
+    public void desanularCompraReserva(Long idCompraReserva) throws ButacaOcupadaAlActivarException {
 
-					if (butaca.getParCompra().getNombre() != null
-							|| butaca.getParCompra().getApellidos() != null)
-						comprador = butaca.getParCompra().getNombre() + " "
-								+ butaca.getParCompra().getApellidos();
+        try {
+            QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
+            QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
+            JPAUpdateClause updateCompra = new JPAUpdateClause(entityManager, qCompraDTO);
+            updateCompra.set(qCompraDTO.anulada, false).set(qCompraDTO.caducada, false).set(qCompraDTO.pagada, true)
+                .where(qCompraDTO.id.eq(idCompraReserva)).execute();
 
-					throw new ButacaOcupadaAlActivarException(butaca
-							.getParSesion().getId(), butaca
-							.getParLocalizacion().getCodigo(),
-							butaca.getFila(), butaca.getNumero(), comprador,
-							butaca.getParCompra().getTaquilla());
-				}
-			}
-		}
-	}
+            JPAUpdateClause updateButacas = new JPAUpdateClause(entityManager, qButacaDTO);
+            updateButacas.set(qButacaDTO.anulada, false).where(qButacaDTO.parCompra.id.eq(idCompraReserva)).execute();
+        } catch (Exception e) {
+            for (ButacaDTO butaca : getCompraById(idCompraReserva).getParButacas()) {
+                if (butacaOcupada(butaca)) {
+                    String comprador = "";
 
-	@Transactional
-	private boolean butacaOcupada(ButacaDTO butaca) {
-		QButacaDTO b = QButacaDTO.butacaDTO;
+                    if (butaca.getParCompra().getNombre() != null || butaca.getParCompra().getApellidos() != null)
+                        comprador = butaca.getParCompra().getNombre() + " " + butaca.getParCompra().getApellidos();
 
-		JPAQuery query = new JPAQuery(entityManager);
-		query.from(b).where(
-				b.parSesion.id
-						.eq(butaca.getParSesion().getId())
-						.and(b.anulada.eq(false))
-						.and(b.parLocalizacion.codigo.eq(butaca
-								.getParLocalizacion().getCodigo()))
-						.and(b.fila.eq(butaca.getFila()))
-						.and(b.numero.eq(butaca.getNumero())));
+                    throw new ButacaOcupadaAlActivarException(butaca.getParSesion().getId(),
+                        butaca.getParLocalizacion().getCodigo(), butaca.getFila(), butaca.getNumero(), comprador,
+                        butaca.getParCompra().getTaquilla());
+                }
+            }
+        }
+    }
 
-		return query.count() > 0;
-	}
+    private boolean butacaOcupada(ButacaDTO butaca) {
+        QButacaDTO b = QButacaDTO.butacaDTO;
 
-	@Transactional
-	public List<CompraDTO> getReservasACaducar(Date date) {
-		QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
+        JPAQuery query = new JPAQuery(entityManager);
+        query.from(b).where(b.parSesion.id.eq(butaca.getParSesion().getId()).and(b.anulada.eq(false))
+            .and(b.parLocalizacion.codigo.eq(butaca.getParLocalizacion().getCodigo())).and(b.fila.eq(butaca.getFila()))
+            .and(b.numero.eq(butaca.getNumero())));
 
-		JPAQuery query = new JPAQuery(entityManager);
+        return query.count() > 0;
+    }
 
-		List<CompraDTO> compras = query
-				.from(qCompraDTO)
-				.where(qCompraDTO.reserva
-						.eq(true)
-						.and(qCompraDTO.anulada.eq(false))
-						.and(qCompraDTO.hasta.lt(DateUtils
-								.dateToTimestampSafe(date)))).distinct()
-				.list(qCompraDTO);
+    @Transactional
+    public List<CompraDTO> getReservasACaducar(Date date) {
+        QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
 
-		return compras;
-	}
+        JPAQuery query = new JPAQuery(entityManager);
 
-	private String sqlConditionsToSkipAnuladasIReservas(String fechaInicio, String fechaFin) {
-		return "and TO_CHAR(c.fecha, 'YYYY-MM-DD HH24:MI') >= '"	+ fechaInicio + " 00:00' "
-				+ "and TO_CHAR(c.fecha, 'YYYY-MM-DD HH24:MI') <= '" + fechaFin + " 23:59' "
-				+ "and c.pagada = " + dbHelper.trueString() + " "
-				+ "and c.reserva = " + dbHelper.falseString() + " "
-				+ "and b.anulada = " + dbHelper.falseString() + " "
-				+ "and c.anulada = " + dbHelper.falseString() + " "
-				+ "and (s.anulada is null or s.anulada = " + dbHelper.falseString() + ") ";
-	}
+        List<CompraDTO> compras = query.from(qCompraDTO).where(
+            qCompraDTO.reserva.eq(true).and(qCompraDTO.anulada.eq(false))
+                .and(qCompraDTO.hasta.lt(DateUtils.dateToTimestampSafe(date)))).distinct().list(qCompraDTO);
 
-	@SuppressWarnings("unchecked")
-	@Transactional
-	public List<Object[]> getComprasInFechas(String fechaInicio, String fechaFin, String userUID, boolean online) {
-		String sql = "select e.titulo_es, s.fecha_celebracion, b.tipo, l.codigo, count(b.id) as cantidad, sum(b.precio) as total, c.sesion_id, "
-				+ "l.nombre_es, f.nombre "
-				+ "from par_butacas b, par_compras c, par_sesiones s, par_eventos e, par_localizaciones l, par_tarifas f, "
-				+ "par_salas sala, par_salas_usuarios su, par_usuarios u "
-				+ "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id and l.id=b.localizacion_id "
-				+ "and sala.id = s.sala_id and u.usuario = '" + userUID + "' and sala.id = su.sala_id and su.usuario_id = u.id "
-				+ sqlConditionsToSkipAnuladasIReservas(fechaInicio, fechaFin)
-				+ (online ? " " : "and c.taquilla = " + dbHelper.trueString() + " and c.codigo_pago_tarjeta is null ")
-				+ "and f.id = "	+ dbHelper.toInteger("b.tipo") + " "
-				+ "group by c.sesion_id, e.titulo_es, b.tipo, s.fecha_celebracion, l.codigo, l.nombre_es, f.nombre "
-				+ "order by e.titulo_es";
+        return compras;
+    }
 
-		return entityManager.createNativeQuery(sql).getResultList();
-	}
+    private String sqlConditionsToSkipAnuladasIReservas(
+        String fechaInicio,
+        String fechaFin
+    ) {
+        return "and TO_CHAR(c.fecha, 'YYYY-MM-DD HH24:MI') >= '" + fechaInicio + " 00:00' "
+            + "and TO_CHAR(c.fecha, 'YYYY-MM-DD HH24:MI') <= '" + fechaFin + " 23:59' " + "and c.pagada = " + dbHelper
+            .trueString() + " " + "and c.reserva = " + dbHelper.falseString() + " " + "and b.anulada = " + dbHelper
+            .falseString() + " " + "and c.anulada = " + dbHelper.falseString() + " "
+            + "and (s.anulada is null or s.anulada = " + dbHelper.falseString() + ") ";
+    }
 
-	@SuppressWarnings("unchecked")
-	@Transactional
-	public List<Object[]> getComprasPorEventoInFechas(String fechaInicio, String fechaFin, String userUID) {
-		String sql = "select e.id, e.titulo_es, b.tipo, count(b.id) as cantidad, sum(b.precio) as total, c.taquilla, "
-				+ "f.nombre "
-				+ "from par_butacas b, par_compras c, par_sesiones s, par_eventos e, par_tarifas f, "
-				+ "par_salas sala, par_salas_usuarios su, par_usuarios u "
-				+ "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id "
-				+ "and sala.id = s.sala_id and u.usuario = '" + userUID + "' and sala.id = su.sala_id and su.usuario_id = u.id "
-				+ sqlConditionsToSkipAnuladasIReservas(fechaInicio, fechaFin)
-				+ "and f.id = "	+ dbHelper.toInteger("b.tipo") + " "
-				+ "group by e.id, e.titulo_es, b.tipo, c.taquilla, f.nombre "
-				+ "order by e.titulo_es";
+    @SuppressWarnings("unchecked")
+    @Transactional
+    public List<Object[]> getComprasInFechas(
+        String fechaInicio,
+        String fechaFin,
+        String userUID,
+        boolean online
+    ) {
+        String sql =
+            "select e.titulo_es, s.fecha_celebracion, b.tipo, l.codigo, count(b.id) as cantidad, sum(b.precio) as total, c.sesion_id, "
+                + "l.nombre_es, f.nombre "
+                + "from par_butacas b, par_compras c, par_sesiones s, par_eventos e, par_localizaciones l, par_tarifas f, "
+                + "par_salas sala, par_salas_usuarios su, par_usuarios u "
+                + "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id and l.id=b.localizacion_id "
+                + "and sala.id = s.sala_id and u.usuario = '" + userUID
+                + "' and sala.id = su.sala_id and su.usuario_id = u.id " + sqlConditionsToSkipAnuladasIReservas(
+                fechaInicio, fechaFin) + (online ?
+                " " :
+                "and c.taquilla = " + dbHelper.trueString() + " and c.codigo_pago_tarjeta is null ") + "and f.id = "
+                + dbHelper.toInteger("b.tipo") + " "
+                + "group by c.sesion_id, e.titulo_es, b.tipo, s.fecha_celebracion, l.codigo, l.nombre_es, f.nombre "
+                + "order by e.titulo_es";
 
-		return entityManager.createNativeQuery(sql).getResultList();
-	}
+        return entityManager.createNativeQuery(sql).getResultList();
+    }
 
-	@SuppressWarnings("unchecked")
-	@Transactional
-	public List<Object[]> getComprasEfectivo(String fechaInicio, String fechaFin, String userUID) {
-		String sql = "select e.titulo_es, s.fecha_celebracion, b.tipo, count(b.id) as cantidad, sum(b.precio) as total, "
-				+ "c.sesion_id, c.porcentaje_iva, "
-				+ "f.nombre "
-				+ "from par_butacas b, par_compras c, par_sesiones s, par_eventos e, par_tarifas f, "
-				+ "par_salas sala, par_salas_usuarios su, par_usuarios u "
-				+ "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id "
-				+ "and sala.id = s.sala_id and u.usuario = '" + userUID + "' and sala.id = su.sala_id and su.usuario_id = u.id "
-				+ sqlConditionsToSkipAnuladasIReservas(fechaInicio, fechaFin)
-				+ "and c.taquilla = " + dbHelper.trueString() + " "
-				+ getSQLCompraIsEfectivo()
-				+ "and f.id = " + dbHelper.toInteger("b.tipo") + " "
-				+ "and c.abonado_id is null "
-				+ "group by c.sesion_id, e.titulo_es, b.tipo, s.fecha_celebracion, c.porcentaje_iva, f.nombre "
-				+ "order by e.titulo_es, s.fecha_celebracion, f.nombre";
+    @SuppressWarnings("unchecked")
+    @Transactional
+    public List<Object[]> getComprasPorEventoInFechas(
+        String fechaInicio,
+        String fechaFin,
+        String userUID
+    ) {
+        String sql = "select e.id, e.titulo_es, b.tipo, count(b.id) as cantidad, sum(b.precio) as total, c.taquilla, "
+            + "f.nombre " + "from par_butacas b, par_compras c, par_sesiones s, par_eventos e, par_tarifas f, "
+            + "par_salas sala, par_salas_usuarios su, par_usuarios u "
+            + "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id "
+            + "and sala.id = s.sala_id and u.usuario = '" + userUID
+            + "' and sala.id = su.sala_id and su.usuario_id = u.id " + sqlConditionsToSkipAnuladasIReservas(fechaInicio,
+            fechaFin) + "and f.id = " + dbHelper.toInteger("b.tipo") + " "
+            + "group by e.id, e.titulo_es, b.tipo, c.taquilla, f.nombre " + "order by e.titulo_es";
 
-		return entityManager.createNativeQuery(sql).getResultList();
-	}
+        return entityManager.createNativeQuery(sql).getResultList();
+    }
 
-	@SuppressWarnings("unchecked")
-	@Transactional
-	public List<Object[]> getAbonosEfectivo(String fechaInicio, String fechaFin, String userUID) {
-		String sql = "select a.nombre, count(a.id)/count(distinct(c.sesion_id)) as abonos, sum(b.precio)/count(distinct(c.sesion_id)) as total "
-				+ "from par_butacas b, par_compras c, par_sesiones s, par_eventos e, par_tarifas f, par_abonados abdos, par_abonos a, "
-				+ "par_salas sala, par_salas_usuarios su, par_usuarios u "
-				+ "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id and c.abonado_id = abdos.id and abdos.abono_id = a.id "
-				+ "and sala.id = s.sala_id and u.usuario = '" + userUID + "' and sala.id = su.sala_id and su.usuario_id = u.id "
-				+ sqlConditionsToSkipAnuladasIReservas(fechaInicio, fechaFin)
-				+ "and c.taquilla = " + dbHelper.trueString() + " "
-				+ getSQLCompraIsEfectivo()
-				+ "and f.id = " + dbHelper.toInteger("b.tipo") + " "
-				+ "and c.abonado_id is not null "
-				+ "group by a.nombre, b.tipo "
-				+ "order by a.nombre";
+    @SuppressWarnings("unchecked")
+    @Transactional
+    public List<Object[]> getComprasEfectivo(
+        String fechaInicio,
+        String fechaFin,
+        String userUID
+    ) {
+        String sql =
+            "select e.titulo_es, s.fecha_celebracion, b.tipo, count(b.id) as cantidad, sum(b.precio) as total, "
+                + "c.sesion_id, c.porcentaje_iva, " + "f.nombre "
+                + "from par_butacas b, par_compras c, par_sesiones s, par_eventos e, par_tarifas f, "
+                + "par_salas sala, par_salas_usuarios su, par_usuarios u "
+                + "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id "
+                + "and sala.id = s.sala_id and u.usuario = '" + userUID
+                + "' and sala.id = su.sala_id and su.usuario_id = u.id " + sqlConditionsToSkipAnuladasIReservas(
+                fechaInicio, fechaFin) + "and c.taquilla = " + dbHelper.trueString() + " " + getSQLCompraIsEfectivo()
+                + "and f.id = " + dbHelper.toInteger("b.tipo") + " " + "and c.abonado_id is null "
+                + "group by c.sesion_id, e.titulo_es, b.tipo, s.fecha_celebracion, c.porcentaje_iva, f.nombre "
+                + "order by e.titulo_es, s.fecha_celebracion, f.nombre";
 
-		return entityManager.createNativeQuery(sql).getResultList();
-	}
+        return entityManager.createNativeQuery(sql).getResultList();
+    }
 
-	private String getSQLCompraIsEfectivo() {
-		return "and ((c.codigo_pago_tarjeta IS NULL or c.codigo_pago_tarjeta = '') "
-				+ "and (c.referencia_pago IS NULL or c.referencia_pago = '')) ";
-	}
+    @SuppressWarnings("unchecked")
+    @Transactional
+    public List<Object[]> getAbonosEfectivo(
+        String fechaInicio,
+        String fechaFin,
+        String userUID
+    ) {
+        String sql =
+            "select a.nombre, count(a.id)/count(distinct(c.sesion_id)) as abonos, sum(b.precio)/count(distinct(c.sesion_id)) as total "
+                + "from par_butacas b, par_compras c, par_sesiones s, par_eventos e, par_tarifas f, par_abonados abdos, par_abonos a, "
+                + "par_salas sala, par_salas_usuarios su, par_usuarios u "
+                + "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id and c.abonado_id = abdos.id and abdos.abono_id = a.id "
+                + "and sala.id = s.sala_id and u.usuario = '" + userUID
+                + "' and sala.id = su.sala_id and su.usuario_id = u.id " + sqlConditionsToSkipAnuladasIReservas(
+                fechaInicio, fechaFin) + "and c.taquilla = " + dbHelper.trueString() + " " + getSQLCompraIsEfectivo()
+                + "and f.id = " + dbHelper.toInteger("b.tipo") + " " + "and c.abonado_id is not null "
+                + "group by a.nombre, b.tipo " + "order by a.nombre";
 
-	private String getSQLCompraIsTPVTaquilla() {
-		return getSQLCompraIsTPV(true);
-	}
+        return entityManager.createNativeQuery(sql).getResultList();
+    }
 
-	private String getSQLCompraIsTPVOnline() {
-		return getSQLCompraIsTPV(false);
-	}
+    private String getSQLCompraIsEfectivo() {
+        return "and ((c.codigo_pago_tarjeta IS NULL or c.codigo_pago_tarjeta = '') "
+            + "and (c.referencia_pago IS NULL or c.referencia_pago = '')) ";
+    }
 
-	private String getSQLCompraIsTPV(boolean taquilla) {
-		String sql = "and ((c.codigo_pago_tarjeta is not null and " + dbHelper.isNotEmptyString("c.codigo_pago_tarjeta") + ") "
-				+ "or (c.codigo_pago_pasarela is not null and " + dbHelper.isNotEmptyString("c.codigo_pago_pasarela") + ") "
-				+ "or (c.referencia_pago is not null and " + dbHelper.isNotEmptyString("c.referencia_pago") + ")) "
-				+ "and c.taquilla = " + (taquilla ? dbHelper.trueString() : dbHelper.falseString()) + " ";
-		return sql;
-	}
+    private String getSQLCompraIsTPVTaquilla() {
+        return getSQLCompraIsTPV(true);
+    }
 
-	@SuppressWarnings("unchecked")
-	@Transactional
-	public List<Object[]> getComprasTpv(String fechaInicio, String fechaFin, String userUID) {
-		return getComprasTpvType(fechaInicio, fechaFin, userUID, false);
-	}
+    private String getSQLCompraIsTPVOnline() {
+        return getSQLCompraIsTPV(false);
+    }
 
-	@SuppressWarnings("unchecked")
-	@Transactional
-	public List<Object[]> getComprasTpvOnline(String fechaInicio, String fechaFin, String userUID) {
-		return getComprasTpvType(fechaInicio, fechaFin, userUID, true);
-	}
+    private String getSQLCompraIsTPV(boolean taquilla) {
+        String sql =
+            "and ((c.codigo_pago_tarjeta is not null and " + dbHelper.isNotEmptyString("c.codigo_pago_tarjeta") + ") "
+                + "or (c.codigo_pago_pasarela is not null and " + dbHelper.isNotEmptyString("c.codigo_pago_pasarela")
+                + ") " + "or (c.referencia_pago is not null and " + dbHelper.isNotEmptyString("c.referencia_pago")
+                + ")) " + "and c.taquilla = " + (taquilla ? dbHelper.trueString() : dbHelper.falseString()) + " ";
+        return sql;
+    }
 
-	@SuppressWarnings("unchecked")
-	@Transactional
-	private List<Object[]> getComprasTpvType(String fechaInicio, String fechaFin, String userUID, boolean onlyOnline) {
-		String formato = "DD";
-		String sql = "select e.titulo_es, s.fecha_celebracion, b.tipo, count(b.id) as cantidad, sum(b.precio) as total, c.sesion_id, "
-				+ "c.porcentaje_iva, "
-				+ dbHelper.trunc("c.fecha", formato)
-				+ ", f.nombre "
-				+ "from par_butacas b, par_compras c, par_sesiones s, par_eventos e, par_tarifas f, "
-				+ "par_salas sala, par_salas_usuarios su, par_usuarios u "
-				+ "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id "
-				+ "and sala.id = s.sala_id and u.usuario = '" + userUID + "' and sala.id = su.sala_id and su.usuario_id = u.id "
-				+ sqlConditionsToSkipAnuladasIReservas(fechaInicio, fechaFin)
-				+ "and (c.caducada is null or c.caducada = " + dbHelper.falseString() + ") "
-				+ (onlyOnline ? getSQLCompraIsTPVOnline() : getSQLCompraIsTPVTaquilla())
-				+ "and f.id = " + dbHelper.toInteger("b.tipo") + " "
-				+ "group by c.sesion_id, e.titulo_es, b.tipo, s.fecha_celebracion, c.porcentaje_iva, "
-				+ dbHelper.trunc("c.fecha", formato) + ", f.nombre "
-				+ "order by " + dbHelper.trunc("c.fecha", formato) + ", s.fecha_celebracion, f.nombre";
+    @SuppressWarnings("unchecked")
+    @Transactional
+    public List<Object[]> getComprasTpv(
+        String fechaInicio,
+        String fechaFin,
+        String userUID
+    ) {
+        return getComprasTpvType(fechaInicio, fechaFin, userUID, false);
+    }
 
-		return entityManager.createNativeQuery(sql).getResultList();
-	}
+    @SuppressWarnings("unchecked")
+    @Transactional
+    public List<Object[]> getComprasTpvOnline(
+        String fechaInicio,
+        String fechaFin,
+        String userUID
+    ) {
+        return getComprasTpvType(fechaInicio, fechaFin, userUID, true);
+    }
 
-	@SuppressWarnings("unchecked")
-	@Transactional
-	public List<Object[]> getComprasEventos(String fechaInicio, String fechaFin, String userUID) {
-		String sql = "select e.titulo_es, s.fecha_celebracion, b.tipo, count(b.id) as cantidad, sum(b.precio) as total, "
-				+ "c.porcentaje_iva, "
-				+ dbHelper.caseString("b.tipo", new String[] { "'normal'", "1",
-						"'descuento'", "2", "'aulaTeatro'", "3",
-						"'invitacion'", "4" })
-				+ " as tipoOrden, e.id as eventoId, s.id as sesionId, f.nombre "
-				+ "from par_butacas b, par_compras c, par_sesiones s, par_eventos e, par_tarifas f, "
-				+ "par_salas sala, par_salas_usuarios su, par_usuarios u "
-				+ "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id "
-				+ "and sala.id = s.sala_id and u.usuario = '" + userUID + "' and sala.id = su.sala_id and su.usuario_id = u.id "
-				+ sqlConditionsToSkipAnuladasIReservas(fechaInicio, fechaFin)
-				+ "and f.id = "	+ dbHelper.toInteger("b.tipo") + " "
-				+ "group by e.id, s.id, e.titulo_es, b.tipo, s.fecha_celebracion, c.porcentaje_iva, f.nombre "
-				+ "order by s.fecha_celebracion, tipoOrden";
+    private List<Object[]> getComprasTpvType(
+        String fechaInicio,
+        String fechaFin,
+        String userUID,
+        boolean onlyOnline
+    ) {
+        String formato = "DD";
+        String sql =
+            "select e.titulo_es, s.fecha_celebracion, b.tipo, count(b.id) as cantidad, sum(b.precio) as total, c.sesion_id, "
+                + "c.porcentaje_iva, " + dbHelper.trunc("c.fecha", formato) + ", f.nombre "
+                + "from par_butacas b, par_compras c, par_sesiones s, par_eventos e, par_tarifas f, "
+                + "par_salas sala, par_salas_usuarios su, par_usuarios u "
+                + "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id "
+                + "and sala.id = s.sala_id and u.usuario = '" + userUID
+                + "' and sala.id = su.sala_id and su.usuario_id = u.id " + sqlConditionsToSkipAnuladasIReservas(
+                fechaInicio, fechaFin) + "and (c.caducada is null or c.caducada = " + dbHelper.falseString() + ") " + (
+                onlyOnline ?
+                    getSQLCompraIsTPVOnline() :
+                    getSQLCompraIsTPVTaquilla()) + "and f.id = " + dbHelper.toInteger("b.tipo") + " "
+                + "group by c.sesion_id, e.titulo_es, b.tipo, s.fecha_celebracion, c.porcentaje_iva, " + dbHelper
+                .trunc("c.fecha", formato) + ", f.nombre " + "order by " + dbHelper.trunc("c.fecha", formato)
+                + ", s.fecha_celebracion, f.nombre";
 
-		return entityManager.createNativeQuery(sql).getResultList();
-	}
+        return entityManager.createNativeQuery(sql).getResultList();
+    }
 
-	@Transactional
-	public Object[] getTotalTaquillaTpv(String fechaInicio, String fechaFin, String userUID) {
-		String sql = "select sum(b.precio), count(b.precio) "
-				+ "from par_butacas b, par_compras c, par_sesiones s, par_eventos e, "
-				+ "par_salas sala, par_salas_usuarios su, par_usuarios u "
-				+ "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id "
-				+ "and sala.id = s.sala_id and u.usuario = '" + userUID + "' and sala.id = su.sala_id and su.usuario_id = u.id "
-				+ sqlConditionsToSkipAnuladasIReservas(fechaInicio, fechaFin)
-				+ "and c.taquilla = " + dbHelper.trueString() + " "
-		 		+ "and ((c.codigo_pago_tarjeta is not null and " + dbHelper.isNotEmptyString("c.codigo_pago_tarjeta") + ") "
-				+ "or (c.codigo_pago_pasarela is not null and " + dbHelper.isNotEmptyString("c.codigo_pago_pasarela") + ") "
-				+ "or (c.referencia_pago is not null and " + dbHelper.isNotEmptyString("c.referencia_pago") + "))";
+    @SuppressWarnings("unchecked")
+    @Transactional
+    public List<Object[]> getComprasEventos(
+        String fechaInicio,
+        String fechaFin,
+        String userUID
+    ) {
+        String sql =
+            "select e.titulo_es, s.fecha_celebracion, b.tipo, count(b.id) as cantidad, sum(b.precio) as total, "
+                + "c.porcentaje_iva, " + dbHelper.caseString("b.tipo",
+                new String[] {"'normal'", "1", "'descuento'", "2", "'aulaTeatro'", "3", "'invitacion'", "4"})
+                + " as tipoOrden, e.id as eventoId, s.id as sesionId, f.nombre "
+                + "from par_butacas b, par_compras c, par_sesiones s, par_eventos e, par_tarifas f, "
+                + "par_salas sala, par_salas_usuarios su, par_usuarios u "
+                + "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id "
+                + "and sala.id = s.sala_id and u.usuario = '" + userUID
+                + "' and sala.id = su.sala_id and su.usuario_id = u.id " + sqlConditionsToSkipAnuladasIReservas(
+                fechaInicio, fechaFin) + "and f.id = " + dbHelper.toInteger("b.tipo") + " "
+                + "group by e.id, s.id, e.titulo_es, b.tipo, s.fecha_celebracion, c.porcentaje_iva, f.nombre "
+                + "order by s.fecha_celebracion, tipoOrden";
 
-        List<Object[]> result = entityManager.createNativeQuery(sql).getResultList();
+        return entityManager.createNativeQuery(sql).getResultList();
+    }
 
-        if (result.size() > 0)
-            return result.get(0);
-        else
-            return null;
-	}
-
-	@Transactional
-	public Object[] getTotalTaquillaEfectivo(String fechaInicio, String fechaFin, String userUID) {
-		String sql = "select sum(b.precio), count(b.precio) "
-				+ "from par_butacas b, par_compras c, par_sesiones s, par_eventos e, "
-				+ "par_salas sala, par_salas_usuarios su, par_usuarios u "
-				+ "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id "
-				+ "and sala.id = s.sala_id and u.usuario = '" + userUID + "' and sala.id = su.sala_id and su.usuario_id = u.id "
-				+ sqlConditionsToSkipAnuladasIReservas(fechaInicio, fechaFin)
-				+ "and c.taquilla = " + dbHelper.trueString() + " "
-				+ getSQLCompraIsEfectivo();
-
-		List<Object[]> result = entityManager.createNativeQuery(sql).getResultList();
-
-        if (result.size() > 0)
-            return result.get(0);
-        else
-            return null;
-	}
-
-	@Transactional
-	public Object[] getTotalOnline(String fechaInicio, String fechaFin, String userUID) {
-		String sql = "select sum(b.precio), count(b.precio) "
-				+ "from par_butacas b, par_compras c, par_sesiones s, par_eventos e, "
-				+ "par_salas sala, par_salas_usuarios su, par_usuarios u "
-				+ "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id "
-				+ "and sala.id = s.sala_id and u.usuario = '" + userUID + "' and sala.id = su.sala_id and su.usuario_id = u.id "
-				+ sqlConditionsToSkipAnuladasIReservas(fechaInicio, fechaFin)
-				+ "and c.taquilla = " + dbHelper.falseString() + " ";
+    @Transactional
+    public Object[] getTotalTaquillaTpv(
+        String fechaInicio,
+        String fechaFin,
+        String userUID
+    ) {
+        String sql = "select sum(b.precio), count(b.precio) "
+            + "from par_butacas b, par_compras c, par_sesiones s, par_eventos e, "
+            + "par_salas sala, par_salas_usuarios su, par_usuarios u "
+            + "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id "
+            + "and sala.id = s.sala_id and u.usuario = '" + userUID
+            + "' and sala.id = su.sala_id and su.usuario_id = u.id " + sqlConditionsToSkipAnuladasIReservas(fechaInicio,
+            fechaFin) + "and c.taquilla = " + dbHelper.trueString() + " "
+            + "and ((c.codigo_pago_tarjeta is not null and " + dbHelper.isNotEmptyString("c.codigo_pago_tarjeta") + ") "
+            + "or (c.codigo_pago_pasarela is not null and " + dbHelper.isNotEmptyString("c.codigo_pago_pasarela") + ") "
+            + "or (c.referencia_pago is not null and " + dbHelper.isNotEmptyString("c.referencia_pago") + "))";
 
         List<Object[]> result = entityManager.createNativeQuery(sql).getResultList();
 
@@ -799,167 +788,207 @@ public class ComprasDAO extends BaseDAO {
             return result.get(0);
         else
             return null;
-	}
+    }
 
-	/************************************ NUEVAS **********************************************************************************/
-	@Transactional
-	public Object[] getTotalNueva(String fechaInicio, String fechaFin, String userUID, TipoPago tipoPago, boolean taquilla) {
-		String sql = "select sum(b.precio), count(b.precio) "
-				+ "from par_butacas b, par_compras c, par_sesiones s, par_eventos e, "
-				+ "par_salas sala, par_salas_usuarios su, par_usuarios u "
-				+ "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id "
-				+ "and sala.id = s.sala_id and u.usuario = '" + userUID + "' and sala.id = su.sala_id and su.usuario_id = u.id "
-				+ sqlConditionsToSkipAnuladasIReservas(fechaInicio, fechaFin)
-		 		+ "and c.taquilla = " + (taquilla ? dbHelper.trueString() : dbHelper.falseString()) + " "
-				+ "and c.tipo IS NOT NULL and lower(c.tipo) = '" + tipoPago.toString().toLowerCase() + "' ";
+    @Transactional
+    public Object[] getTotalTaquillaEfectivo(
+        String fechaInicio,
+        String fechaFin,
+        String userUID
+    ) {
+        String sql = "select sum(b.precio), count(b.precio) "
+            + "from par_butacas b, par_compras c, par_sesiones s, par_eventos e, "
+            + "par_salas sala, par_salas_usuarios su, par_usuarios u "
+            + "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id "
+            + "and sala.id = s.sala_id and u.usuario = '" + userUID
+            + "' and sala.id = su.sala_id and su.usuario_id = u.id " + sqlConditionsToSkipAnuladasIReservas(fechaInicio,
+            fechaFin) + "and c.taquilla = " + dbHelper.trueString() + " " + getSQLCompraIsEfectivo();
 
-		List<Object[]> result = entityManager.createNativeQuery(sql).getResultList();
+        List<Object[]> result = entityManager.createNativeQuery(sql).getResultList();
 
-		if (result.size() > 0)
-			return result.get(0);
-		else
-			return null;
-	}
-	/******************************************************************************************************************************/
+        if (result.size() > 0)
+            return result.get(0);
+        else
+            return null;
+    }
 
-	@Transactional
-	public void rellenaCodigoPagoPasarela(long idCompra, String codigoPago) {
-		CompraDTO compra = getCompraById(idCompra);
-		compra.setCodigoPagoPasarela(codigoPago);
+    @Transactional
+    public Object[] getTotalOnline(
+        String fechaInicio,
+        String fechaFin,
+        String userUID
+    ) {
+        String sql = "select sum(b.precio), count(b.precio) "
+            + "from par_butacas b, par_compras c, par_sesiones s, par_eventos e, "
+            + "par_salas sala, par_salas_usuarios su, par_usuarios u "
+            + "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id "
+            + "and sala.id = s.sala_id and u.usuario = '" + userUID
+            + "' and sala.id = su.sala_id and su.usuario_id = u.id " + sqlConditionsToSkipAnuladasIReservas(fechaInicio,
+            fechaFin) + "and c.taquilla = " + dbHelper.falseString() + " ";
 
-		entityManager.persist(compra);
-	}
+        List<Object[]> result = entityManager.createNativeQuery(sql).getResultList();
 
-	@Transactional
-	public BigDecimal getRecaudacionSesiones(List<Sesion> sesiones) {
-		QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
-		QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
-		QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
+        if (result.size() > 0)
+            return result.get(0);
+        else
+            return null;
+    }
 
-		List<Long> idsSesiones = Sesion.getIdsSesiones(sesiones);
+    /************************************ NUEVAS **********************************************************************************/
+    @Transactional
+    public Object[] getTotalNueva(
+        String fechaInicio,
+        String fechaFin,
+        String userUID,
+        TipoPago tipoPago,
+        boolean taquilla
+    ) {
+        String sql = "select sum(b.precio), count(b.precio) "
+            + "from par_butacas b, par_compras c, par_sesiones s, par_eventos e, "
+            + "par_salas sala, par_salas_usuarios su, par_usuarios u "
+            + "where b.compra_id = c.id and s.id = c.sesion_id and e.id = s.evento_id "
+            + "and sala.id = s.sala_id and u.usuario = '" + userUID
+            + "' and sala.id = su.sala_id and su.usuario_id = u.id " + sqlConditionsToSkipAnuladasIReservas(fechaInicio,
+            fechaFin) + "and c.taquilla = " + (taquilla ? dbHelper.trueString() : dbHelper.falseString()) + " "
+            + "and c.tipo IS NOT NULL and lower(c.tipo) = '" + tipoPago.toString().toLowerCase() + "' ";
 
-		JPAQuery query = new JPAQuery(entityManager);
+        List<Object[]> result = entityManager.createNativeQuery(sql).getResultList();
 
-		BigDecimal total = query
-				.from(qCompraDTO)
-				.join(qCompraDTO.parSesion, qSesionDTO)
-				.join(qCompraDTO.parButacas, qButacaDTO)
-				.where(qSesionDTO.id.in(idsSesiones)
-                        .and(qCompraDTO.parAbonado.isNull())
-						.and(qCompraDTO.reserva.eq(false))
-						.and(qCompraDTO.anulada.eq(false))
-						.and(qButacaDTO.anulada.eq(false))).distinct()
-				.uniqueResult(qButacaDTO.precio.sum());
+        if (result.size() > 0)
+            return result.get(0);
+        else
+            return null;
+    }
 
-		if (total == null)
-			return BigDecimal.ZERO;
-		else
-			return total;
-	}
+    /******************************************************************************************************************************/
 
-	@Transactional
-	public int getEspectadores(List<Sesion> sesiones) {
-		QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
-		QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
-		QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
+    @Transactional
+    public void rellenaCodigoPagoPasarela(
+        long idCompra,
+        String codigoPago
+    ) {
+        CompraDTO compra = getCompraById(idCompra);
+        compra.setCodigoPagoPasarela(codigoPago);
 
-		List<Long> idsSesiones = Sesion.getIdsSesiones(sesiones);
+        entityManager.persist(compra);
+    }
 
-		JPAQuery query = new JPAQuery(entityManager);
+    @Transactional
+    public BigDecimal getRecaudacionSesiones(List<Sesion> sesiones) {
+        QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
+        QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
+        QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
 
-		Long butacas = query
-				.from(qCompraDTO)
-				.join(qCompraDTO.parSesion, qSesionDTO)
-				.join(qCompraDTO.parButacas, qButacaDTO)
-				.where(qSesionDTO.id.in(idsSesiones)
-						.and(qCompraDTO.reserva.eq(false))
-						.and(qCompraDTO.anulada.eq(false))
-						.and(qButacaDTO.anulada.eq(false)))
-				.uniqueResult(qButacaDTO.count());
+        List<Long> idsSesiones = Sesion.getIdsSesiones(sesiones);
 
-		if (butacas == null)
-			return 0;
-		else
-			return butacas.intValue();
-	}
+        JPAQuery query = new JPAQuery(entityManager);
 
-	@Transactional
-	public List<CompraDTO> getComprasOfEvento(long eventoId) {
-		QEventoDTO qEvento = QEventoDTO.eventoDTO;
-		QSesionDTO qSesion = QSesionDTO.sesionDTO;
-		QCompraDTO qCompra = QCompraDTO.compraDTO;
+        BigDecimal total =
+            query.from(qCompraDTO).join(qCompraDTO.parSesion, qSesionDTO).join(qCompraDTO.parButacas, qButacaDTO).where(
+                qSesionDTO.id.in(idsSesiones).and(qCompraDTO.parAbonado.isNull()).and(qCompraDTO.reserva.eq(false))
+                    .and(qCompraDTO.anulada.eq(false)).and(qButacaDTO.anulada.eq(false))).distinct()
+                .uniqueResult(qButacaDTO.precio.sum());
 
-		JPAQuery query = new JPAQuery(entityManager);
-		return query
-				.from(qEvento, qSesion, qCompra)
-				.where(qEvento.id.eq(eventoId).and(
-						qSesion.parEvento.id.eq(qEvento.id).and(
-								qCompra.parSesion.id.eq(qSesion.id))))
-				.list(qCompra);
-	}
+        if (total == null)
+            return BigDecimal.ZERO;
+        else
+            return total;
+    }
+
+    @Transactional
+    public int getEspectadores(List<Sesion> sesiones) {
+        QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
+        QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
+        QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
+
+        List<Long> idsSesiones = Sesion.getIdsSesiones(sesiones);
+
+        JPAQuery query = new JPAQuery(entityManager);
+
+        Long butacas =
+            query.from(qCompraDTO).join(qCompraDTO.parSesion, qSesionDTO).join(qCompraDTO.parButacas, qButacaDTO).where(
+                qSesionDTO.id.in(idsSesiones).and(qCompraDTO.reserva.eq(false)).and(qCompraDTO.anulada.eq(false))
+                    .and(qButacaDTO.anulada.eq(false))).uniqueResult(qButacaDTO.count());
+
+        if (butacas == null)
+            return 0;
+        else
+            return butacas.intValue();
+    }
+
+    @Transactional
+    public List<CompraDTO> getComprasOfEvento(long eventoId) {
+        QEventoDTO qEvento = QEventoDTO.eventoDTO;
+        QSesionDTO qSesion = QSesionDTO.sesionDTO;
+        QCompraDTO qCompra = QCompraDTO.compraDTO;
+
+        JPAQuery query = new JPAQuery(entityManager);
+        return query.from(qEvento, qSesion, qCompra).where(
+            qEvento.id.eq(eventoId).and(qSesion.parEvento.id.eq(qEvento.id).and(qCompra.parSesion.id.eq(qSesion.id))))
+            .list(qCompra);
+    }
 
     @Transactional
     public List<CompraDTO> getComprasOfSesion(long sesionId) {
         QCompraDTO qCompra = QCompraDTO.compraDTO;
 
         JPAQuery query = new JPAQuery(entityManager);
-        return query
-                .from(qCompra)
-                .where(qCompra.parSesion.id.eq(sesionId).and(qCompra.anulada.isFalse()).and(qCompra.caducada.isFalse()))
-                .list(qCompra);
+        return query.from(qCompra)
+            .where(qCompra.parSesion.id.eq(sesionId).and(qCompra.anulada.isFalse()).and(qCompra.caducada.isFalse()))
+            .list(qCompra);
     }
 
-	public InformeModelReport getResumenSesion(Long sesionId) {
-		InformeModelReport r = new InformeModelReport();
-		JPAQuery query = new JPAQuery(entityManager);
-		QButacaDTO qButaca = QButacaDTO.butacaDTO;
-		Long vendidas = query.from(qButaca)
-			.where(qButaca.parSesion.id.eq(sesionId).and(qButaca.anulada.eq(false).and(qButaca.parCompra.reserva.eq(false)).and(qButaca.parCompra.parAbonado.isNull()).and
-					(qButaca.parSesion.anulada.isNull().or(qButaca.parSesion.anulada.eq(false))))).count();
-		r.setNumeroEntradas(vendidas.intValue());
+    public InformeModelReport getResumenSesion(Long sesionId) {
+        InformeModelReport r = new InformeModelReport();
+        JPAQuery query = new JPAQuery(entityManager);
+        QButacaDTO qButaca = QButacaDTO.butacaDTO;
+        Long vendidas = query.from(qButaca).where(qButaca.parSesion.id.eq(sesionId).and(
+            qButaca.anulada.eq(false).and(qButaca.parCompra.reserva.eq(false))
+                .and(qButaca.parCompra.parAbonado.isNull())
+                .and(qButaca.parSesion.anulada.isNull().or(qButaca.parSesion.anulada.eq(false))))).count();
+        r.setNumeroEntradas(vendidas.intValue());
 
-		query = new JPAQuery(entityManager);
-		Long canceladas = query
-				.from(qButaca)
-				.where(qButaca.parSesion.id.eq(sesionId).and(qButaca.parCompra.parAbonado.isNull())
-				.and(qButaca.parSesion.anulada.isNull().or(qButaca.parSesion.anulada.eq(false)))
-				.and(qButaca.parCompra.reserva.eq(false).and(qButaca.anulada.eq(true)))).count();
-		r.setCanceladasTaquilla(canceladas.intValue());
+        query = new JPAQuery(entityManager);
+        Long canceladasTaquilla = query.from(qButaca).where(
+            qButaca.parSesion.id.eq(sesionId).and(qButaca.parCompra.parAbonado.isNull())
+                .and(qButaca.parSesion.anulada.isNull().or(qButaca.parSesion.anulada.eq(false))).and(
+                qButaca.parCompra.reserva.eq(false).and(qButaca.parCompra.anulada.eq(true))
+                    .and(qButaca.parCompra.caducada.eq(false)))).count();
+        r.setCanceladasTaquilla(canceladasTaquilla.intValue());
 
-		Sesion sesion = new Sesion(sesionId.intValue());
-		r.setTotal(getRecaudacionSesiones(Arrays.asList(sesion)));
+        Sesion sesion = new Sesion(sesionId.intValue());
+        r.setTotal(getRecaudacionSesiones(Arrays.asList(sesion)));
 
-		return r;
-	}
+        return r;
+    }
 
-	@Transactional
+    @Transactional
     public void updateDatosAbonadoCompra(Abonado abonado) {
         QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
         JPAUpdateClause updateC = new JPAUpdateClause(entityManager, qCompraDTO);
-        updateC.set(qCompraDTO.nombre, abonado.getNombre())
-                .set(qCompraDTO.apellidos, abonado.getApellidos())
-                .set(qCompraDTO.direccion, abonado.getDireccion())
-                .set(qCompraDTO.poblacion, abonado.getPoblacion())
-                .set(qCompraDTO.cp, abonado.getCp())
-                .set(qCompraDTO.provincia, abonado.getProvincia())
-                .set(qCompraDTO.telefono, abonado.getTelefono())
-                .set(qCompraDTO.email, abonado.getEmail())
-                .set(qCompraDTO.infoPeriodica, abonado.getInfoPeriodica())
-                .where(qCompraDTO.parAbonado.id.eq(abonado.getId())).execute();
+        updateC.set(qCompraDTO.nombre, abonado.getNombre()).set(qCompraDTO.apellidos, abonado.getApellidos())
+            .set(qCompraDTO.direccion, abonado.getDireccion()).set(qCompraDTO.poblacion, abonado.getPoblacion())
+            .set(qCompraDTO.cp, abonado.getCp()).set(qCompraDTO.provincia, abonado.getProvincia())
+            .set(qCompraDTO.telefono, abonado.getTelefono()).set(qCompraDTO.email, abonado.getEmail())
+            .set(qCompraDTO.infoPeriodica, abonado.getInfoPeriodica())
+            .where(qCompraDTO.parAbonado.id.eq(abonado.getId())).execute();
 
     }
 
-	@Transactional
-	public String getReportClassByCompraUUID(String uuidCompra, String tipo) {
-		JPAQuery query = new JPAQuery(entityManager);
-		QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
-		QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
-		QSalaDTO qSalaDTO = QSalaDTO.salaDTO;
-		QReportDTO qReportDTO = QReportDTO.reportDTO;
+    @Transactional
+    public String getReportClassByCompraUUID(
+        String uuidCompra,
+        String tipo
+    ) {
+        JPAQuery query = new JPAQuery(entityManager);
+        QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
+        QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
+        QSalaDTO qSalaDTO = QSalaDTO.salaDTO;
+        QReportDTO qReportDTO = QReportDTO.reportDTO;
 
-		return query.from(qCompraDTO).join(qCompraDTO.parSesion, qSesionDTO).join(qSesionDTO.parSala, qSalaDTO).join(qSalaDTO
-				.parReports, qReportDTO)
-				.where(qCompraDTO.uuid.eq(uuidCompra).and(qReportDTO.tipo.toUpperCase().eq(tipo.toUpperCase())))
-				.uniqueResult(qReportDTO.clase);
-	}
+        return query.from(qCompraDTO).join(qCompraDTO.parSesion, qSesionDTO).join(qSesionDTO.parSala, qSalaDTO)
+            .join(qSalaDTO.parReports, qReportDTO)
+            .where(qCompraDTO.uuid.eq(uuidCompra).and(qReportDTO.tipo.toUpperCase().eq(tipo.toUpperCase())))
+            .uniqueResult(qReportDTO.clase);
+    }
 }
