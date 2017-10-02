@@ -952,7 +952,7 @@ public class ComprasDAO extends BaseDAO {
         Long canceladasTaquilla = query.from(qButaca).where(
             qButaca.parSesion.id.eq(sesionId).and(qButaca.parCompra.parAbonado.isNull())
                 .and(qButaca.parSesion.anulada.isNull().or(qButaca.parSesion.anulada.eq(false))).and(
-                qButaca.parCompra.reserva.eq(false).and(qButaca.parCompra.anulada.eq(true))
+                qButaca.parCompra.reserva.eq(false).and(qButaca.parCompra.anulada.eq(true).or(qButaca.anulada.eq(true)))
                     .and(qButaca.parCompra.caducada.eq(false)))).count();
         r.setCanceladasTaquilla(canceladasTaquilla.intValue());
 
