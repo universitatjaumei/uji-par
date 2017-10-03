@@ -1,6 +1,27 @@
 package es.uji.apps.par.services;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.mysema.query.Tuple;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.multipart.FormDataMultiPart;
+
+import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.ws.rs.core.MediaType;
+
 import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.dao.ComprasDAO;
 import es.uji.apps.par.dao.EventosDAO;
@@ -8,21 +29,16 @@ import es.uji.apps.par.db.EventoDTO;
 import es.uji.apps.par.exceptions.CampoRequeridoException;
 import es.uji.apps.par.exceptions.EventoConCompras;
 import es.uji.apps.par.exceptions.EventoNoEncontradoException;
+import es.uji.apps.par.exceptions.GuardarImagenException;
 import es.uji.apps.par.model.Evento;
 import es.uji.apps.par.model.EventoMultisesion;
 import es.uji.apps.par.model.EventoParaSync;
-import org.apache.commons.io.IOUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class EventosService
 {
+	private static final Logger log = LoggerFactory.getLogger(EventosService.class);
+
     @Autowired
     private EventosDAO eventosDAO;
     
@@ -31,6 +47,12 @@ public class EventosService
 
 	@Autowired
 	Configuration configuration;
+
+	@Value("${uji.par.fitxersServiceURL:}")
+	private String fitxersServiceURL;
+
+	@Value("${uji.par.authToken:}")
+	private String authToken;
 
     public List<Evento> getEventosConSesiones(String userUID)
     {
@@ -55,16 +77,103 @@ public class EventosService
             return eventosDAO.getEventos(sort, start, limit, userUID);
     }
 
-    public void removeEvento(Integer id)
+    public void removeEvento(Long eventoId)
     {
-        eventosDAO.removeEvento(id);
+        removeImagenes(eventoId);
+        eventosDAO.removeEvento(eventoId);
     }
 
     public Evento addEvento(Evento evento) throws CampoRequeridoException
     {
         checkRequiredFields(evento);
-        return eventosDAO.addEvento(evento);
+		checkAndSaveImage(evento);
+		return eventosDAO.addEvento(evento);
     }
+
+	private void checkAndSaveImage(Evento evento) {
+		byte[] imagen = evento.getImagen();
+		if (imagen != null && imagen.length > 0) {
+			String imagenSrc = evento.getImagenSrc();
+			String imagenContentType = evento.getImagenContentType();
+			if (!fitxersServiceURL.isEmpty() && !authToken.isEmpty() && imagenContentType != null) {
+				String reference = insertImageToAdeWS(imagen, imagenSrc, imagenContentType);
+				evento.setImagenUUID(reference);
+			} else {
+				evento.setImagen(imagen);
+			}
+		}
+
+		byte[] imagenPubli = evento.getImagenPubli();
+		if (imagenPubli != null && imagenPubli.length > 0)
+		{
+			String imagenPubliSrc = evento.getImagenPubliSrc();
+			String imagenPubliContentType = evento.getImagenPubliContentType();
+			if (!fitxersServiceURL.isEmpty() && !authToken.isEmpty() && imagenPubliContentType != null) {
+				String reference = insertImageToAdeWS(imagenPubli, imagenPubliSrc, imagenPubliContentType);
+				evento.setImagenPubliUUID(reference);
+			}
+			else {
+				evento.setImagenPubli(imagenPubli);
+			}
+		}
+	}
+
+	private byte[] getImageFromAdeWS(String uuid) {
+		try {
+			ClientResponse response = getWebResource(fitxersServiceURL + "/storage/" + uuid).get(ClientResponse.class);
+			InputStream is = response.getEntityInputStream();
+			return IOUtils.toByteArray(is);
+		} catch (Exception e) {
+            log.error("La imagen con uuid " + uuid + " no existe");
+		}
+		return null;
+	}
+
+	private String insertImageToAdeWS(
+		byte[] imagen,
+		String imagenSrc,
+		String imagenContentType
+	) {
+        try {
+            FormDataMultiPart responseMultipart = getFormDataMultiPart(imagenSrc, imagenContentType, imagen);
+            ClientResponse response = getWebResource(fitxersServiceURL + "/storage").type("multipart/form-data")
+                .post(ClientResponse.class, responseMultipart);
+            JsonNode responseMessage = response.getEntity(JsonNode.class);
+            return responseMessage.path("data").path("reference").asText();
+        }
+        catch (Exception e) {
+            log.error("No se ha podido guardar la imagen " + imagenSrc);
+            throw new GuardarImagenException(imagenSrc);
+        }
+	}
+
+    private void removeImageFromAdeWS(String uuid) {
+        if (uuid != null) {
+            try {
+                ClientResponse response = getWebResource(fitxersServiceURL + "/storage/" + uuid).delete(ClientResponse.class);
+                response.getEntityInputStream();
+            } catch (Exception e) {
+                log.error("No se ha podido eliminar la imagen con uuid " + uuid);
+            }
+        }
+    }
+
+	private WebResource.Builder getWebResource(String url) {
+		Client client = Client.create();
+		return client.resource(url).header("X-UJI-AuthToken", authToken);
+	}
+
+	private FormDataMultiPart getFormDataMultiPart(
+		String name,
+		String mimeType,
+		byte[] bytes
+	) {
+		FormDataMultiPart responseMultipart = new FormDataMultiPart();
+		responseMultipart.field("name", name);
+		responseMultipart.field("mimetype", mimeType);
+		responseMultipart.field("contents", bytes, MediaType.valueOf(mimeType));
+		return responseMultipart;
+	}
 
     private void checkRequiredFields(Evento evento) throws CampoRequeridoException
     {
@@ -80,8 +189,10 @@ public class EventosService
 
         if (hasEventoCompras(evento) && modificanAsientosNumerados(evento, userUID))
         	throw new EventoConCompras(evento.getId());
-        else
-        	eventosDAO.updateEvento(evento, userUID);
+        else {
+			checkAndSaveImage(evento);
+			eventosDAO.updateEvento(evento, userUID);
+		}
     }
 
 	private boolean modificanAsientosNumerados(Evento evento, String userUID) {
@@ -96,31 +207,80 @@ public class EventosService
     public Evento getEvento(Long eventoId, String userUID) throws EventoNoEncontradoException
     {
         EventoDTO eventoDTO = eventosDAO.getEventoById(eventoId.longValue(), userUID);
-		if (eventoDTO != null)
-        	return new Evento(eventoDTO, true);
+		if (eventoDTO != null) {
+			return getEventoConImagen(eventoDTO);
+		}
 
         throw new EventoNoEncontradoException(eventoId);
     }
-    
-    public Evento getEventoByRssId(Long contenidoId, String userUID) throws EventoNoEncontradoException
+
+	public Evento getEventoByRssId(Long contenidoId, String userUID) throws EventoNoEncontradoException
     {
         EventoDTO eventoDTO = eventosDAO.getEventoByRssId(contenidoId.toString(), userUID);
 
         if (eventoDTO == null)
             throw new EventoNoEncontradoException(contenidoId);
-        else
-            return new Evento(eventoDTO, true);
+        else {
+			return getEventoConImagen(eventoDTO);
+		}
     }
 
-    public void removeImagen(Integer eventoId)
-    {
-        eventosDAO.deleteImagen(eventoId);
-    }
+	private Evento getEventoConImagen(EventoDTO eventoDTO) {
+		Evento evento = new Evento(eventoDTO, true);
+		if (evento.getImagenUUID() != null) {
+			byte[] fitxerFromAdeWS = getImageFromAdeWS(evento.getImagenUUID());
+			evento.setImagen(fitxerFromAdeWS);
+		}
 
-	public void removeImagenPubli(Integer eventoId)
-	{
-		eventosDAO.deleteImagenPubli(eventoId);
+		if (evento.getImagenPubliUUID() != null) {
+			byte[] fitxerFromAdeWS = getImageFromAdeWS(evento.getImagenPubliUUID());
+			evento.setImagenPubli(fitxerFromAdeWS);
+		}
+
+		return evento;
 	}
+
+    public void removeImagenes(Long eventoId)
+    {
+        Tuple imagenesEvento = eventosDAO.getImagenUUID(eventoId);
+
+        removeImagen(eventoId, imagenesEvento);
+        removeImagenPubli(eventoId, imagenesEvento);
+    }
+
+    public void removeImagen(Long eventoId)
+    {
+        Tuple imagenesEvento = eventosDAO.getImagenUUID(eventoId);
+        removeImagen(eventoId, imagenesEvento);
+    }
+
+    public void removeImagenPubli(Long eventoId)
+	{
+        Tuple imagenesEvento = eventosDAO.getImagenUUID(eventoId);
+        removeImagenPubli(eventoId, imagenesEvento);
+	}
+
+    private void removeImagenPubli(
+        Long eventoId,
+        Tuple imagenesEvento
+    ) {
+        eventosDAO.deleteImagenPubli(eventoId);
+        String imagenPubliUUID = imagenesEvento.get(1, String.class);
+        if (imagenPubliUUID != null) {
+            removeImageFromAdeWS(imagenPubliUUID);
+        }
+    }
+
+    private void removeImagen(
+        Long eventoId,
+        Tuple imagenesEvento
+    ) {
+        eventosDAO.deleteImagen(eventoId);
+        String imagenUUID = imagenesEvento.get(0, String.class);
+        if (imagenUUID != null) {
+            removeImageFromAdeWS(imagenUUID);
+        }
+    }
 
 	public int getTotalEventosActivos(String userUID) {
 		return eventosDAO.getTotalEventosActivos(userUID);
@@ -130,7 +290,6 @@ public class EventosService
 		return eventosDAO.getTotalEventos(userUID);
 	}
 
-	//url: "http://www.example.com/test/23173?idioma=##IDIOMA##"
 	public List<EventoParaSync> getEventosActivosParaVentaOnline(String urlPublic) {
 		List<EventoDTO> eventosDTO = eventosDAO.getEventosActivosParaVentaOnline();
 		List<EventoParaSync> eventosParaSync = new ArrayList<EventoParaSync>();

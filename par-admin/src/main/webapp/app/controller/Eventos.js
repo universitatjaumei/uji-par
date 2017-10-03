@@ -597,7 +597,7 @@ Ext.define('Paranimf.controller.Eventos', {
       form.saveFormData(grid, urlPrefix + 'evento', undefined, 'multipart/form-data', function(form, action) {
          if (action != undefined && action.response != undefined && action.response.responseText != undefined) {
             var respuesta = Ext.JSON.decode(action.response.responseText, true);
-            var key = "UI.i18n.error." + respuesta.message;
+            var key = "UI.i18n.error.error" + respuesta.codi;
             var msg = eval(key);
 
             if (msg != undefined)

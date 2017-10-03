@@ -1,9 +1,20 @@
 package es.uji.apps.par.db;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 
 /**
@@ -62,6 +73,9 @@ public class EventoDTO implements Serializable {
 	@Column(name="IMAGEN_SRC")
 	private String imagenSrc;
 
+	@Column(name="IMAGEN_UUID")
+	private String imagenUUID;
+
 	@Lob
 	@Column(name="IMAGEN_PUBLI")
 	private byte[] imagenPubli;
@@ -71,6 +85,9 @@ public class EventoDTO implements Serializable {
 
 	@Column(name="IMAGEN_PUBLI_SRC")
 	private String imagenPubliSrc;
+
+	@Column(name="IMAGEN_PUBLI_UUID")
+	private String imagenPubliUUID;
 
 	@Column(name="INTERPRETES_ES")
 	private String interpretesEs;
@@ -545,5 +562,21 @@ public class EventoDTO implements Serializable {
 	public void setNifPromotor(String nifPromotor)
 	{
 		this.nifPromotor = nifPromotor;
+	}
+
+	public String getImagenUUID() {
+		return imagenUUID;
+	}
+
+	public void setImagenUUID(String imagenUUID) {
+		this.imagenUUID = imagenUUID;
+	}
+
+	public String getImagenPubliUUID() {
+		return imagenPubliUUID;
+	}
+
+	public void setImagenPubliUUID(String imagenPubliUUID) {
+		this.imagenPubliUUID = imagenPubliUUID;
 	}
 }

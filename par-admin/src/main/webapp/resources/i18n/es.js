@@ -104,6 +104,7 @@ UI =
             "formSave": "Error al guardar el formulario",
             "fechasObligatorias": "Las fechas son obligatorias",
             "salaObligatoria": "Es necesario elegir primero la sala",
+            "error515": "El evento ya tiene compras realizadas y no se puede cambiar el tipo de asientos",
             "error516": "Evento sin formato:",
             "error536": "El idioma de los subtítulos de la película es obligatorio",
             "error537": "El formato de proyección de la película es obligatorio",
@@ -192,7 +193,8 @@ UI =
             "editSesionAnulada": "No se puede editar una sesión anulada, ya que es una sesión reprogramada",
             "venderSesionAnulada": "No se puede vender entradas de una sesión anulada",
             "sesionComprasCambioFecha": "No se puede cambiar la fecha de una sesión celebrada con compras",
-            "reservarSesionAnulada": "No se puede reservar entradas de una sesión anulada"
+            "reservarSesionAnulada": "No se puede reservar entradas de una sesión anulada",
+            "error552": "No se puede guardar la imagen"
         },
         "button": {
             "ver": "Ver detalle",

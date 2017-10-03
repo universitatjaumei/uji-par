@@ -159,6 +159,7 @@ UI =
             "sessioAmbCompres": "No es permet canviar si la sessió és numerada o no, quan un espectacle ja té compres realitzades",
             "compraNoReserva": "La fila seleccionada no és una reserva",
             "fitxerJaGenerat": "No es pot modificar una sessió que ja té el seu fitxer generat",
+            "error515": "L'esdeveniment ja té compres realitzades i no es pot canviar el tipus de seients",
             "error516": "Espectacle sense format: ",
             "error519": "La sala de la sessió programada no té codi, i és obligatori",
             "error520": "La sessió programada no té data de sessió, i és obligatòria",
@@ -192,7 +193,8 @@ UI =
             "editSesionAnulada": "No es pot editar una sessió anul·lada, ja que es una sessió reprogramada",
             "venderSesionAnulada": "No es poden vendre entrades d'una sessió anul·lada",
             "sesionComprasCambioFecha": "No es pot canviar la data d'una sessió celebrada amb compres",
-            "reservarSesionAnulada": "No es poden reservar entrades d'una sessió anul·lada"
+            "reservarSesionAnulada": "No es poden reservar entrades d'una sessió anul·lada",
+            "error552": "No es pot guardar la imatge"
         },
         "button": {
             "closeSession": "Tancar sessió",

@@ -4,6 +4,29 @@ import com.sun.jersey.api.core.InjectParam;
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataBodyPart;
 import com.sun.jersey.multipart.FormDataParam;
+
+import java.math.BigDecimal;
+import java.net.URI;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
 import es.uji.apps.par.auth.AuthChecker;
 import es.uji.apps.par.exceptions.EventoNoEncontradoException;
 import es.uji.apps.par.exceptions.GeneralPARException;
@@ -15,18 +38,6 @@ import es.uji.apps.par.services.LocalizacionesService;
 import es.uji.apps.par.services.SesionesService;
 import es.uji.apps.par.services.UsersService;
 import es.uji.apps.par.utils.DateUtils;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.math.BigDecimal;
-import java.net.URI;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 @Path("evento")
 public class EventosResource
@@ -368,11 +379,11 @@ public class EventosResource
     @DELETE
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response remove(@PathParam("id") Integer id)
+    public Response remove(@PathParam("id") Long eventoId)
     {
         AuthChecker.canWrite(currentRequest);
-        
-        eventosService.removeEvento(id);
+
+        eventosService.removeEvento(eventoId);
         return Response.ok().entity(new RestResponse(true)).build();
     }
 
@@ -391,10 +402,10 @@ public class EventosResource
     @DELETE
     @Path("{id}/imagen")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response removeImagen(@PathParam("id") Integer eventoId)
+    public Response removeImagen(@PathParam("id") Long eventoId)
     {
         AuthChecker.canWrite(currentRequest);
-        
+
         eventosService.removeImagen(eventoId);
         return Response.ok().entity(new RestResponse(true)).build();
     }
@@ -402,7 +413,7 @@ public class EventosResource
     @DELETE
     @Path("{id}/imagenPubli")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response removeImagenPubli(@PathParam("id") Integer eventoId)
+    public Response removeImagenPubli(@PathParam("id") Long eventoId)
     {
         AuthChecker.canWrite(currentRequest);
 

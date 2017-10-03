@@ -1,9 +1,10 @@
 package es.uji.apps.par.exceptions;
 
-import es.uji.apps.par.config.Configuration;
+import java.util.HashMap;
 
 import javax.ws.rs.WebApplicationException;
-import java.util.HashMap;
+
+import es.uji.apps.par.config.Configuration;
 
 @SuppressWarnings("serial")
 public class GeneralPARException extends WebApplicationException
@@ -62,6 +63,7 @@ public class GeneralPARException extends WebApplicationException
     public static final String NOT_FOUND_INCIDENCIA = "Incidencia no encontrada";
 	public static final String EDICION_ANULADA_EXCEPTION = "No se puede editar una sesión anulada";
     public static final String ABONO_CON_ABONADOS = "Abono con abonados";
+    public static final String ADE_ERROR = "Error guardando imagen en ADE";
 
     public static final Integer ERROR_GENERAL_CODE = 500;
     public static final Integer REQUIRED_FIELD_CODE = 501;
@@ -115,6 +117,7 @@ public class GeneralPARException extends WebApplicationException
 	public static final Integer EDICION_ANULADA_EXCEPTION_CODE = 549;
     public static final Integer ABONO_CON_ABONADOS_CODE = 550;
     public static final Integer COMPRA_BUTACA_NO_EXISTENTE_CODE = 551;
+    public static final Integer ADE_ERROR_CODE = 552;
 
     static {
 		messages = new HashMap<Integer,String>();
@@ -170,6 +173,7 @@ public class GeneralPARException extends WebApplicationException
 		messages.put(EDICION_ANULADA_EXCEPTION_CODE, EDICION_ANULADA_EXCEPTION);
         messages.put(ABONO_CON_ABONADOS_CODE, ABONO_CON_ABONADOS);
         messages.put(COMPRA_BUTACA_NO_EXISTENTE_CODE, COMPRA_BUTACA_NO_EXISTENTE);
+        messages.put(ADE_ERROR_CODE, ADE_ERROR);
     }
 
     public GeneralPARException(int errorCode) {

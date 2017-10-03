@@ -2,18 +2,21 @@ package es.uji.apps.par.model;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import es.uji.apps.par.db.EventoDTO;
-import es.uji.apps.par.exceptions.GeneralPARException;
-import es.uji.apps.par.exceptions.RegistroSerializaException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
+import es.uji.apps.par.db.EventoDTO;
+import es.uji.apps.par.exceptions.GeneralPARException;
+import es.uji.apps.par.exceptions.RegistroSerializaException;
 
 @XmlRootElement
 public class Evento
@@ -33,9 +36,11 @@ public class Evento
     private String duracionVa;
     private byte[] imagen;
     private String imagenSrc;
+    private String imagenUUID;
     private String imagenContentType;
     private byte[] imagenPubli;
     private String imagenPubliSrc;
+    private String imagenPubliUUID;
     private String imagenPubliContentType;
     private String premiosEs;
     private String premiosVa;
@@ -225,16 +230,18 @@ public class Evento
         if (crearConImagen)
         {
             this.imagen = eventoDTO.getImagen();
+            this.imagenUUID = eventoDTO.getImagenUUID();
         }
 
         this.imagenContentType = eventoDTO.getImagenContentType();
         this.imagenSrc = eventoDTO.getImagenSrc();
 
-        if (eventoDTO.getImagenPubli() != null)
+        if (eventoDTO.getImagenPubli() != null || eventoDTO.getImagenPubliUUID() != null)
         {
             if (crearConImagen)
             {
                 this.imagenPubli = eventoDTO.getImagenPubli();
+                this.imagenPubliUUID = eventoDTO.getImagenPubliUUID();
             }
             this.imagenPubliContentType = eventoDTO.getImagenPubliContentType();
             this.imagenPubliSrc = eventoDTO.getImagenPubliSrc();
@@ -868,5 +875,21 @@ public class Evento
 
     public void setMultipleTpv(Boolean multipleTpv) {
         this.multipleTpv = multipleTpv;
+    }
+
+    public String getImagenUUID() {
+        return imagenUUID;
+    }
+
+    public void setImagenUUID(String imagenUUID) {
+        this.imagenUUID = imagenUUID;
+    }
+
+    public String getImagenPubliUUID() {
+        return imagenPubliUUID;
+    }
+
+    public void setImagenPubliUUID(String imagenPubliUUID) {
+        this.imagenPubliUUID = imagenPubliUUID;
     }
 }
