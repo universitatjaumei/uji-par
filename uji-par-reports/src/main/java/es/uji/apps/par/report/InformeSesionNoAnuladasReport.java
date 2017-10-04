@@ -286,9 +286,9 @@ public class InformeSesionNoAnuladasReport extends Report implements InformeInte
     	}
         createCabeceraTablaTarifa(table, "informeSesion.tarifa.titulo");
 
-        BigDecimal precio = null;
-        Boolean preciosIguales = true;
         for(String tarifa: mapOrdenadoTarifa.keySet()) {
+            BigDecimal precio = null;
+            Boolean preciosIguales = true;
         	Integer vendidas = 0;
         	BigDecimal total = new BigDecimal(0);
             if (tarifa != null) {
@@ -304,7 +304,7 @@ public class InformeSesionNoAnuladasReport extends Report implements InformeInte
                             if (precio == null) {
                                 precio = butaca.getTotal();
                             } else {
-                                if (precio != butaca.getTotal()) {
+                                if (!precio.equals(butaca.getTotal())){
                                     preciosIguales = false;
                                 }
                             }
