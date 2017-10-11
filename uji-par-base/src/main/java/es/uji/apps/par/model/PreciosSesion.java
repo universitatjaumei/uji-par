@@ -41,7 +41,7 @@ public class PreciosSesion
 		this.id = preciosSesion.getId();
 		this.localizacion = Localizacion.localizacionDTOtoLocalizacion(preciosSesion.getParLocalizacione());
 		this.sesion = Sesion.SesionDTOToSesion(preciosSesion.getParSesione());
-		this.precio = preciosSesion.getPrecio();
+		this.precio =  preciosSesion.getPrecio() != null ? preciosSesion.getPrecio().setScale(2, RoundingMode.HALF_UP) : preciosSesion.getPrecio();
 		this.tarifa = Tarifa.tarifaDTOToTarifa(preciosSesion.getParTarifa());
 	}
 
@@ -67,7 +67,7 @@ public class PreciosSesion
 
 	public BigDecimal getDescuento()
 	{
-		return descuento != null ? descuento.setScale(2, RoundingMode.CEILING) : descuento;
+		return descuento != null ? descuento.setScale(2, RoundingMode.HALF_UP) : descuento;
 	}
 
 	public void setDescuento(BigDecimal descuento)
@@ -77,7 +77,7 @@ public class PreciosSesion
 
 	public BigDecimal getInvitacion()
 	{
-		return invitacion != null ? invitacion.setScale(2, RoundingMode.CEILING) : invitacion;
+		return invitacion != null ? invitacion.setScale(2, RoundingMode.HALF_UP) : invitacion;
 	}
 
 	public void setInvitacion(BigDecimal invitacion)
@@ -87,7 +87,7 @@ public class PreciosSesion
 
 	public BigDecimal getPrecio()
 	{
-		return precio != null ? precio.setScale(2, RoundingMode.CEILING) : precio;
+		return precio != null ? precio.setScale(2, RoundingMode.HALF_UP) : precio;
 	}
 
 	public void setPrecio(BigDecimal precio)
@@ -97,7 +97,7 @@ public class PreciosSesion
 
 	public BigDecimal getAulaTeatro()
 	{
-		return aulaTeatro != null ? aulaTeatro.setScale(2, RoundingMode.CEILING) : aulaTeatro;
+		return aulaTeatro != null ? aulaTeatro.setScale(2, RoundingMode.HALF_UP) : aulaTeatro;
 	}
 
 	public void setAulaTeatro(BigDecimal aulaTeatro)
