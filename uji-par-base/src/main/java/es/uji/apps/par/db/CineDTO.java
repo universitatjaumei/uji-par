@@ -93,6 +93,9 @@ public class CineDTO implements Serializable {
 	@Column(name = "SHOW_IVA")
 	private Boolean showIVA;
 
+	@Column(name = "PASSBOOK_ACTIVADO")
+	private Boolean passbookActivado;
+
 	@OneToMany(mappedBy = "parCine", fetch=FetchType.LAZY)
 	private List<SalaDTO> parSalas;
 	
@@ -416,5 +419,13 @@ public class CineDTO implements Serializable {
 
 	public void setShowIVA(Boolean showIVA) {
 		this.showIVA = showIVA;
+	}
+
+	public Boolean getPassbookActivado() {
+		return passbookActivado;
+	}
+
+	public void setPassbookActivado(Boolean passbookActivado) {
+		this.passbookActivado = passbookActivado;
 	}
 }

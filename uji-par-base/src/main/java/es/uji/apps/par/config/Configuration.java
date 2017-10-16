@@ -90,6 +90,13 @@ public class Configuration
     public static final String JSON_LOCALIZACIONES_PATH = "/etc/uji/par/butacas/";
 	private static final String IS_LOADED_FROM_RESOURCE = "uji.par.isLoadedFromResource";
 
+	private static final String PORT_PASSBOOK_DEBUG = "uji.par.passbook.port";
+
+    private static final String APPLEWWDRCA_PATH = "cert.applewwdrca.path";
+    private static final String APPLE_KEYSTORE_PATH = "cert.apple.p12.path";
+    private static final String APPLE_KEYSTORE_PASS = "cert.apple.p12.pass";
+    private static final String APPLE_KEYSTORE_TEAMID = "cert.apple.p12.teamid";
+    private static final String APPLE_KEYSTORE_NAME = "cert.apple.p12.name";
     private Properties properties;
 
 	@Autowired
@@ -548,4 +555,31 @@ public class Configuration
 	{
 		return getProperty(MAIL_USERNAME);
 	}
+
+	public String getPortPassbookDebug() {
+        String port = getNoObligatoryProperty(PORT_PASSBOOK_DEBUG);
+        if(port == null){
+            port = "";
+        } else {
+            port = ":" + port;
+        }
+
+        return port;
+    }
+
+    public String getAppleWWDRCAPath(){
+        return getProperty(APPLEWWDRCA_PATH);
+    }
+    public String getAppleKeyStorePath(){
+        return getProperty(APPLE_KEYSTORE_PATH);
+    }
+    public String getAppleKeyStorePass(){
+        return getProperty(APPLE_KEYSTORE_PASS);
+    }
+    public String getAppleTeamId(){
+        return getProperty(APPLE_KEYSTORE_TEAMID);
+    }
+    public String getAppleCertName(){
+        return getProperty(APPLE_KEYSTORE_NAME);
+    }
 }

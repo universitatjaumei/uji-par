@@ -47,7 +47,7 @@ public class EntradasService {
     private EventosService eventosService;
 
     @Autowired
-    private ComprasDAO comprasDAO;
+	protected ComprasDAO comprasDAO;
 
 	@Autowired
 	private UsuariosDAO usuariosDAO;
@@ -56,7 +56,7 @@ public class EntradasService {
     private TarifasDAO tarifasDAO;
 
 	@Autowired
-	Configuration configuration;
+	protected Configuration configuration;
 
 	@Autowired
 	ConfigurationSelector configurationSelector;
@@ -118,31 +118,7 @@ public class EntradasService {
 		String titulo;
 		List<EventoMultisesion> peliculas = eventosService.getPeliculas(compra.getParSesion().getParEvento().getId());
 		Locale locale = getLocale(userUID);
-		if (locale.getLanguage().equals("ca"))
-		{
-			titulo = compra.getParSesion().getParEvento().getTituloVa();
-			if (peliculas.size() > 0)
-			{
-				titulo += ": ";
-				for (EventoMultisesion pelicula : peliculas)
-				{
-					titulo += pelicula.getTituloVa() + ", ";
-				}
-				titulo = titulo.substring(0, titulo.length() - 2);
-			}
-		}
-		else {
-			titulo = compra.getParSesion().getParEvento().getTituloEs();
-			if (peliculas.size() > 0)
-			{
-				titulo += ": ";
-				for (EventoMultisesion pelicula : peliculas)
-				{
-					titulo += pelicula.getTituloEs() + ", ";
-				}
-				titulo = titulo.substring(0, titulo.length() - 2);
-			}
-		}
+		titulo = getTitulo(compra, peliculas, locale);
         String fecha = DateUtils.dateToSpanishString(compra.getParSesion().getFechaCelebracion());
         String hora = DateUtils.dateToHourString(compra.getParSesion().getFechaCelebracion());
         String horaApertura = compra.getParSesion().getHoraApertura();
@@ -202,36 +178,29 @@ public class EntradasService {
         }
     }
 
-    private void rellenaEntrada(CompraDTO compra, EntradaReportOnlineInterface entrada, String userUID, String urlPublicSinHTTPS, String urlPieEntrada) throws NullPointerException {
+    private void rellenaEntrada(
+		CompraDTO compra,
+		EntradaReportOnlineInterface entrada,
+		String userUID,
+		String urlPublicSinHTTPS,
+		String urlPieEntrada
+	)
+	{
+		rellenaEntrada(compra, null, entrada, userUID, urlPublicSinHTTPS, urlPieEntrada);
+	}
+
+    protected void rellenaEntrada(
+		CompraDTO compra,
+		Long butacaId,
+		EntradaReportOnlineInterface entrada,
+		String userUID,
+		String urlPublicSinHTTPS,
+		String urlPieEntrada
+	) throws NullPointerException {
 		String titulo;
 		List<EventoMultisesion> peliculas = eventosService.getPeliculas(compra.getParSesion().getParEvento().getId());
 		Locale locale = getLocale(userUID);
-		if (locale.getLanguage().equals("ca"))
-		{
-			titulo = compra.getParSesion().getParEvento().getTituloVa();
-			if (peliculas.size() > 0)
-			{
-				titulo += ": ";
-				for (EventoMultisesion pelicula : peliculas)
-				{
-					titulo += pelicula.getTituloVa() + ", ";
-				}
-				titulo = titulo.substring(0, titulo.length() - 2);
-			}
-		}
-		else
-		{
-			titulo = compra.getParSesion().getParEvento().getTituloEs();
-			if (peliculas.size() > 0)
-			{
-				titulo += ": ";
-				for (EventoMultisesion pelicula : peliculas)
-				{
-					titulo += pelicula.getTituloEs() + ", ";
-				}
-				titulo = titulo.substring(0, titulo.length() - 2);
-			}
-		}
+		titulo = getTitulo(compra, peliculas, locale);
         String fecha = DateUtils.dateToSpanishString(compra.getParSesion().getFechaCelebracion());
         String hora = DateUtils.dateToHourString(compra.getParSesion().getFechaCelebracion());
         String horaApertura = compra.getParSesion().getHoraApertura();
@@ -253,6 +222,8 @@ public class EntradasService {
 			entrada.setUrlPublicidad(urlPieEntrada);
 		}
 
+		entrada.setCodigoCine(compra.getParSesion().getParEvento().getParCine().getCodigo());
+		entrada.setEmailCompra(compra.getEmail());
 		entrada.setNombreEntidad(compra.getParSesion().getParEvento().getParCine().getNombre());
 		entrada.setDireccion(String.format("%s %s %s", compra.getParSesion().getParEvento().getParCine().getDireccion(), compra.getParSesion().getParEvento().getParCine().getCp(), compra.getParSesion().getParEvento().getParCine().getNombreMunicipio()));
 		entrada.setCif(compra.getParSesion().getParEvento().getParTpv().getCif());
@@ -261,17 +232,18 @@ public class EntradasService {
         int totalButacas = 0;
 
         for (ButacaDTO butaca : compra.getParButacas()) {
-            if (butaca.getAnulada() == null || butaca.getAnulada() == false) {
-                if (entrada.esAgrupada()) {
-                    totalButacas++;
-                }
-                else {
-                    EntradaModelReport entradaModelReport = new EntradaModelReport();
-                    rellenaButaca(entradaModelReport, compra, entrada, butaca, userUID, urlPublicSinHTTPS);
-                }
-            }
+        	if (butacaId == null || Long.valueOf(butaca.getId()).equals(butacaId)) {
+				if (butaca.getAnulada() == null || butaca.getAnulada() == false) {
+					if (entrada.esAgrupada()) {
+						totalButacas++;
+					} else {
+						EntradaModelReport entradaModelReport = new EntradaModelReport();
+						rellenaButaca(entradaModelReport, compra, entrada, butaca, userUID, urlPublicSinHTTPS);
+					}
+				}
+			}
         }
-        if (entrada.esAgrupada()) {
+		if (entrada.esAgrupada()) {
             EntradaModelReport entradaModelReport = new EntradaModelReport();
             entrada.setTotalButacas(totalButacas);
             
@@ -279,7 +251,27 @@ public class EntradasService {
         }
     }
 
-    private void rellenaButaca(EntradaModelReport entradaModelReport, CompraDTO compra, EntradaReportOnlineInterface entrada, ButacaDTO butaca, String userUID, String urlPublicSinHTTPS) {
+	private String getTitulo(
+		CompraDTO compra,
+		List<EventoMultisesion> peliculas,
+		Locale locale
+	) {
+		EventoDTO parEvento = compra.getParSesion().getParEvento();
+		boolean catalan = locale.getLanguage().equalsIgnoreCase("ca");
+		String titulo = catalan ? parEvento.getTituloVa() : parEvento.getTituloEs();
+		if (peliculas.size() > 0)
+        {
+            titulo += ": ";
+            for (EventoMultisesion pelicula : peliculas)
+            {
+                titulo += (catalan ? pelicula.getTituloVa() : pelicula.getTituloEs()) + ", ";
+            }
+            titulo = titulo.substring(0, titulo.length() - 2);
+        }
+		return titulo;
+	}
+
+	private void rellenaButaca(EntradaModelReport entradaModelReport, CompraDTO compra, EntradaReportOnlineInterface entrada, ButacaDTO butaca, String userUID, String urlPublicSinHTTPS) {
         TarifaDTO tarifaCompra = tarifasDAO.get(Integer.valueOf(butaca.getTipo()), userUID);
 		Locale locale = getLocale(userUID);
 		if (locale.getLanguage().equals("ca"))
@@ -320,12 +312,10 @@ public class EntradasService {
         ApplicationContext ctx = new ClassPathXmlApplicationContext("/applicationContext-db.xml");
 
         EntradasService service = ctx.getBean(EntradasService.class);
-
-        //service.generaEntradaTaquilla("e3a762c9-9107-47b7-b13d-175e308aa24f", new FileOutputStream("/tmp/entrada.pdf"));
         service.generaEntrada("e3a762c9-9107-47b7-b13d-175e308aa24f", new FileOutputStream("/tmp/entrada.pdf"), "", "https", "urlPieEntrada");
     }
 
-    private Locale getLocale(String userUID) {
+    protected Locale getLocale(String userUID) {
 		Cine cine = usuariosDAO.getUserCineByUserUID(userUID);
 		String defaultLang = cine.getDefaultLang();
 		if (defaultLang != null) {

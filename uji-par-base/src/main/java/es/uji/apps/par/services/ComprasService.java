@@ -520,4 +520,12 @@ public class ComprasService
     public void actualizaDatosAbonado(Abonado abonado) {
         comprasDAO.updateDatosAbonadoCompra(abonado);
     }
+
+    public boolean existeCompraButaca(
+        String uuidCompra,
+        Long idButaca,
+        long idUsuario
+    ) {
+        return comprasDAO.existeCompraButaca(uuidCompra, idButaca, idUsuario);
+    }
 }
