@@ -31,7 +31,9 @@ import es.uji.apps.par.db.QCompraDTO;
 import es.uji.apps.par.db.QEventoDTO;
 import es.uji.apps.par.db.QReportDTO;
 import es.uji.apps.par.db.QSalaDTO;
+import es.uji.apps.par.db.QSalasUsuarioDTO;
 import es.uji.apps.par.db.QSesionDTO;
+import es.uji.apps.par.db.QUsuarioDTO;
 import es.uji.apps.par.db.SesionDTO;
 import es.uji.apps.par.enums.TipoPago;
 import es.uji.apps.par.exceptions.ButacaOcupadaAlActivarException;
@@ -990,5 +992,31 @@ public class ComprasDAO extends BaseDAO {
             .join(qSalaDTO.parReports, qReportDTO)
             .where(qCompraDTO.uuid.eq(uuidCompra).and(qReportDTO.tipo.toUpperCase().eq(tipo.toUpperCase())))
             .uniqueResult(qReportDTO.clase);
+    }
+
+    public boolean existeCompraButaca(
+        String uuidCompra,
+        Long idButaca,
+        long idUsuario
+    ) {
+        QCompraDTO qCompraDTO = QCompraDTO.compraDTO;
+        QButacaDTO qButacaDTO = QButacaDTO.butacaDTO;
+        QSesionDTO qSesionDTO = QSesionDTO.sesionDTO;
+        QSalaDTO qSalaDTO = QSalaDTO.salaDTO;
+        QUsuarioDTO qUsuarioDTO = QUsuarioDTO.usuarioDTO;
+        QSalasUsuarioDTO qSalasUsuarioDTO = QSalasUsuarioDTO.salasUsuarioDTO;
+
+        JPAQuery query = new JPAQuery(entityManager);
+        return query.from(qCompraDTO)
+            .join(qCompraDTO.parButacas, qButacaDTO)
+            .join(qCompraDTO.parSesion, qSesionDTO)
+            .join(qSesionDTO.parSala, qSalaDTO)
+            .join(qSalaDTO.parSalasUsuario, qSalasUsuarioDTO)
+            .join(qSalasUsuarioDTO.parUsuario, qUsuarioDTO)
+            .where(
+                qCompraDTO.uuid.like(uuidCompra)
+                .and(qButacaDTO.id.eq(idButaca))
+                .and(qUsuarioDTO.id.eq(idUsuario))
+            ).exists();
     }
 }
