@@ -1,7 +1,26 @@
 package es.uji.apps.par.report;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.io.OutputStream;
+import java.util.Locale;
+
 import es.uji.apps.fopreports.Report;
-import es.uji.apps.fopreports.fop.*;
+import es.uji.apps.fopreports.fop.BackgroundRepeatType;
+import es.uji.apps.fopreports.fop.Block;
+import es.uji.apps.fopreports.fop.BorderStyleType;
+import es.uji.apps.fopreports.fop.DisplayAlignType;
+import es.uji.apps.fopreports.fop.ExternalGraphic;
+import es.uji.apps.fopreports.fop.FontStyleType;
+import es.uji.apps.fopreports.fop.Leader;
+import es.uji.apps.fopreports.fop.LinefeedTreatmentType;
+import es.uji.apps.fopreports.fop.PageBreakAfterType;
+import es.uji.apps.fopreports.fop.Table;
+import es.uji.apps.fopreports.fop.TableCell;
+import es.uji.apps.fopreports.fop.TableRow;
+import es.uji.apps.fopreports.fop.TextAlignType;
 import es.uji.apps.fopreports.serialization.FopPDFSerializer;
 import es.uji.apps.fopreports.serialization.ReportSerializationException;
 import es.uji.apps.fopreports.serialization.ReportSerializer;
@@ -12,12 +31,6 @@ import es.uji.apps.par.i18n.ResourceProperties;
 import es.uji.apps.par.report.components.BaseTable;
 import es.uji.apps.par.report.components.EntradaReportStyle;
 import es.uji.apps.par.sync.utils.SyncUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.io.OutputStream;
-import java.util.Locale;
 
 public class EntradaReport extends Report implements EntradaReportOnlineInterface
 {
@@ -554,6 +567,14 @@ public class EntradaReport extends Report implements EntradaReportOnlineInterfac
     public void setDireccion(String direccion)
     {
         this.direccion = direccion;
+    }
+
+    public void setCodigoCine(String codigo) {
+
+    }
+
+    public void setEmailCompra(String email) {
+
     }
 
     public void setBarcode(String barcode)
