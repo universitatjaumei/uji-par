@@ -1,8 +1,15 @@
 package es.uji.apps.par.db;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 /**
  * The persistent class for the PAR_MAILS database table.
@@ -28,7 +35,7 @@ public class MailDTO implements Serializable
     @Column(name = "TITULO")
     private String titulo;
 
-    @Column(name = "TEXTO")
+    @Column(name = "TEXTO", length = 10000)
     private String texto;
 
     @Column(name = "FECHA_CREADO")

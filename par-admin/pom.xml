@@ -15,7 +15,7 @@
     </properties>
 
     <parent>
-        <groupId>es.uji.apps.par</groupId>
+        <groupId>es.uji.apps.par</groupId>h
         <artifactId>uji-par</artifactId>
         <version>0.0.12-SNAPSHOT</version>
     </parent>
@@ -34,7 +34,7 @@
             <version>0.0.12-SNAPSHOT</version>
         </dependency>
 
-        <!-- jUnit -->
+        <!-- Test -->
 
         <dependency>
             <groupId>junit</groupId>
@@ -57,6 +57,13 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>2.2.8</version>
+            <scope>test</scope>
+        </dependency>
+
         <!-- Cifrar passwords -->
 
         <dependency>
@@ -66,12 +73,6 @@
             <scope>compile</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.hsqldb</groupId>
-            <artifactId>hsqldb</artifactId>
-            <version>2.2.8</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
     <build>

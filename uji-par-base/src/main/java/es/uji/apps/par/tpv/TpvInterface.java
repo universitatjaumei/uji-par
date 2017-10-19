@@ -1,11 +1,13 @@
 package es.uji.apps.par.tpv;
 
-import javax.ws.rs.core.Response;
+import java.util.Locale;
+
+import es.uji.commons.web.template.Template;
 
 public interface TpvInterface {
 
-	public Response testTPV(long identificadorCompra) throws Exception;
+	Template testTPV(long identificadorCompra, String url, Locale locale) throws Exception;
 
-	public Response compraGratuita(long identificadorCompra) throws Exception;
+	Template compraGratuita(long identificadorCompra, String url, Locale locale) throws Exception;
 }
 

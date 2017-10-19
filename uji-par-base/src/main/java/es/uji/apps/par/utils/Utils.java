@@ -2,13 +2,11 @@ package es.uji.apps.par.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import es.uji.apps.par.model.Evento;
-import es.uji.apps.par.model.OrdreGrid;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.core.Response.ResponseBuilder;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.security.MessageDigest;
@@ -16,6 +14,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+
+import javax.ws.rs.core.Response.ResponseBuilder;
+
+import es.uji.apps.par.model.Evento;
+import es.uji.apps.par.model.OrdreGrid;
 
 public class Utils
 {
@@ -27,18 +30,27 @@ public class Utils
 	
     public static String sha1(String string)
     {
-    	log.info("Preparamos sha1 con: " + string);
-        MessageDigest md = null;
-        try
-        {
-            md = MessageDigest.getInstance("SHA-1");
-            return byteArrayToHexString(md.digest(string.getBytes("UTF-8")));
-        }
-        catch (Exception e)
-        {
-            throw new RuntimeException(e);
-        }
+		return sha("SHA-1", string);
     }
+
+	public static String sha2(String string)
+	{
+		return sha("SHA-256", string);
+	}
+
+	public static String sha(String type, String string)
+	{
+		try
+		{
+			log.info(String.format("Preparamos %s con: %s", type, string));
+			MessageDigest md = MessageDigest.getInstance(type);
+			return byteArrayToHexString(md.digest(string.getBytes("UTF-8")));
+		}
+		catch (Exception e)
+		{
+			throw new RuntimeException(e);
+		}
+	}
 
     private static String byteArrayToHexString(byte[] b)
     {

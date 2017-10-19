@@ -2,14 +2,68 @@ package es.uji.apps.par.services.rest;
 
 import com.mysema.commons.lang.Pair;
 import com.sun.jersey.api.core.InjectParam;
+
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
+
 import es.uji.apps.par.builders.PublicPageBuilderInterface;
 import es.uji.apps.par.butacas.EstadoButacasRequest;
 import es.uji.apps.par.db.CompraDTO;
 import es.uji.apps.par.db.TpvsDTO;
-import es.uji.apps.par.exceptions.*;
+import es.uji.apps.par.exceptions.ButacaOcupadaException;
+import es.uji.apps.par.exceptions.CompraButacaDescuentoNoDisponible;
+import es.uji.apps.par.exceptions.CompraButacaNoExistente;
+import es.uji.apps.par.exceptions.CompraInvitacionPorInternetException;
+import es.uji.apps.par.exceptions.CompraSinButacasException;
+import es.uji.apps.par.exceptions.Constantes;
+import es.uji.apps.par.exceptions.FueraDePlazoVentaInternetException;
+import es.uji.apps.par.exceptions.NoHayButacasLibresException;
 import es.uji.apps.par.i18n.ResourceProperties;
-import es.uji.apps.par.model.*;
-import es.uji.apps.par.services.*;
+import es.uji.apps.par.model.Butaca;
+import es.uji.apps.par.model.Compra;
+import es.uji.apps.par.model.Evento;
+import es.uji.apps.par.model.PreciosSesion;
+import es.uji.apps.par.model.ResultadoCompra;
+import es.uji.apps.par.model.Sesion;
+import es.uji.apps.par.model.SignatureTPV;
+import es.uji.apps.par.model.Tarifa;
+import es.uji.apps.par.model.Usuario;
+import es.uji.apps.par.services.ButacasService;
+import es.uji.apps.par.services.ComprasService;
+import es.uji.apps.par.services.EntradasService;
+import es.uji.apps.par.services.LocalizacionesService;
+import es.uji.apps.par.services.SesionesService;
+import es.uji.apps.par.services.UsersService;
 import es.uji.apps.par.tpv.HmacSha256TPVInterface;
 import es.uji.apps.par.tpv.IdTPVInterface;
 import es.uji.apps.par.tpv.SHA1TPVInterface;
@@ -18,23 +72,6 @@ import es.uji.apps.par.utils.DateUtils;
 import es.uji.apps.par.utils.Utils;
 import es.uji.commons.web.template.HTMLTemplate;
 import es.uji.commons.web.template.Template;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.ResponseBuilder;
-import java.math.BigDecimal;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Path("entrada")
 public class EntradasResource extends BaseResource {
@@ -424,29 +461,30 @@ public class EntradasResource extends BaseResource {
                                          @FormParam("telefono") String telefono, @FormParam("email") String email,
                                          @FormParam("infoPeriodica") String infoPeriodica,
                                          @FormParam("condicionesPrivacidad") String condicionesPrivacidad) throws Exception {
+        Locale locale = getLocale();
         if (nombre == null || nombre.equals("")) {
             return rellenaDatosComprador(uuidCompra, nombre, apellidos, direccion, poblacion, cp, provincia, telefono,
                     email, infoPeriodica, condicionesPrivacidad,
-                    ResourceProperties.getProperty(getLocale(), "error.datosComprador.nombre"));
+                    ResourceProperties.getProperty(locale, "error.datosComprador.nombre"));
         }
 
         if (apellidos == null || apellidos.equals("")) {
             return rellenaDatosComprador(uuidCompra, nombre, apellidos, direccion, poblacion, cp, provincia, telefono,
                     email, infoPeriodica, condicionesPrivacidad,
-                    ResourceProperties.getProperty(getLocale(), "error.datosComprador.apellidos"));
+                    ResourceProperties.getProperty(locale, "error.datosComprador.apellidos"));
         }
 
         if (email == null || email.equals("")) {
             return rellenaDatosComprador(uuidCompra, nombre, apellidos, direccion, poblacion, cp, provincia, telefono,
                     email, infoPeriodica, condicionesPrivacidad,
-                    ResourceProperties.getProperty(getLocale(), "error.datosComprador.email"));
+                    ResourceProperties.getProperty(locale, "error.datosComprador.email"));
         } else {
             Pattern pattern = Pattern.compile(EMAIL_PATTERN);
             Matcher matcher = pattern.matcher(email);
             if (!matcher.matches()) {
                 return rellenaDatosComprador(uuidCompra, nombre, apellidos, direccion, poblacion, cp, provincia, telefono,
                         email, infoPeriodica, condicionesPrivacidad,
-                        ResourceProperties.getProperty(getLocale(), "error.datosComprador.emailIncorrecto"));
+                        ResourceProperties.getProperty(locale, "error.datosComprador.emailIncorrecto"));
             }
         }
 
@@ -457,7 +495,7 @@ public class EntradasResource extends BaseResource {
         if (condicionesPrivacidad == null || condicionesPrivacidad.equals("")) {
             return rellenaDatosComprador(uuidCompra, nombre, apellidos, direccion, poblacion, cp, provincia, telefono,
                     email, infoPeriodica, condicionesPrivacidad,
-                    ResourceProperties.getProperty(getLocale(), "error.datosComprador.condicionesPrivacidad"));
+                    ResourceProperties.getProperty(locale, "error.datosComprador.condicionesPrivacidad"));
         }
 
         comprasService.rellenaDatosComprador(uuidCompra, nombre, apellidos, direccion, poblacion, cp, provincia,
@@ -468,18 +506,20 @@ public class EntradasResource extends BaseResource {
         if (compra.getCaducada()) {
             return rellenaDatosComprador(uuidCompra, nombre, apellidos, direccion, poblacion, cp, provincia, telefono,
                     email, infoPeriodica, condicionesPrivacidad,
-                    ResourceProperties.getProperty(getLocale(), "error.datosComprador.compraCaducada"));
+                    ResourceProperties.getProperty(locale, "error.datosComprador.compraCaducada"));
         }
 
-        Locale locale = getLocale();
         String language = locale.getLanguage();
-
-        if (configuration.isDebug())
-            return tpvInterface.testTPV(compra.getId());
+        Template template;
+        String url = currentRequest.getRequestURL().toString();
+        if (configuration.isDebug()) {
+            eliminaCompraDeSesion(currentRequest);
+            template = tpvInterface.testTPV(compra.getId(), url, locale);
+        }
         else if (compra.getImporte().equals(BigDecimal.ZERO)) {
-            return tpvInterface.compraGratuita(compra.getId());
+            eliminaCompraDeSesion(currentRequest);
+            template = tpvInterface.compraGratuita(compra.getId(), url, locale);
         } else {
-            Template template;
             TpvsDTO parTpv = compra.getParSesion().getParEvento().getParTpv();
 
             String tpvSignatureMethod = parTpv.getSignatureMethod();
@@ -494,9 +534,13 @@ public class EntradasResource extends BaseResource {
             String urlPago = parTpv.getUrl();
             if (urlPago != null)
                 template.put("urlPago", urlPago);
-
-            return Response.ok(template).build();
         }
+        return Response.ok(template).build();
+    }
+
+    public static void eliminaCompraDeSesion(HttpServletRequest request) {
+        request.getSession().removeAttribute(EntradasService.BUTACAS_COMPRA);
+        request.getSession().removeAttribute(EntradasService.UUID_COMPRA);
     }
 
     private Template getSha2Template(Locale locale, TpvsDTO parTpv, CompraDTO compra, String email, String language) throws Exception {

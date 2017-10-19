@@ -18,8 +18,8 @@ import es.uji.apps.par.i18n.ResourceProperties;
 
 public class BaseResource
 {
-    protected static final String APP = "par";
-    protected static final String LANG = "language";
+    public static final String APP = "par";
+    public static final String LANG = "language";
 
     @Context
     HttpServletRequest currentRequest;
