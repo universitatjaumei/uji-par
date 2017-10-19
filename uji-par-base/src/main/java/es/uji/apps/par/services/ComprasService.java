@@ -15,6 +15,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import es.uji.apps.par.config.Configuration;
 import es.uji.apps.par.dao.AbonadosDAO;
 import es.uji.apps.par.dao.ButacasDAO;
@@ -67,6 +69,11 @@ public class ComprasService
 
 	@Autowired
 	Configuration configuration;
+
+    public void eliminaCompraDeSesion(HttpServletRequest request) {
+        request.getSession().removeAttribute(EntradasService.BUTACAS_COMPRA);
+        request.getSession().removeAttribute(EntradasService.UUID_COMPRA);
+    }
 
     public ResultadoCompra registraCompraTaquilla(Long sesionId, List<Butaca> butacasSeleccionadas, String userUID)
             throws NoHayButacasLibresException, ButacaOcupadaException, CompraSinButacasException, IncidenciaNotFoundException {

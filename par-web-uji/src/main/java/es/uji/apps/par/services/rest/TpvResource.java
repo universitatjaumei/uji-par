@@ -73,12 +73,12 @@ public class TpvResource extends BaseResource
         Template template;
         if (compra.getCaducada())
         {
-            EntradasResource.eliminaCompraDeSesion(currentRequest);
+            compras.eliminaCompraDeSesion(currentRequest);
             template = tpvComprasService.compraCaducada(compra, recibo, url, locale);
         }
         else if (estado != null && estado.equals("OK"))
         {
-            EntradasResource.eliminaCompraDeSesion(currentRequest);
+            compras.eliminaCompraDeSesion(currentRequest);
             template = tpvComprasService.compraOk(compra, recibo, url, locale);
         }
         else

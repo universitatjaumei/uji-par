@@ -21,7 +21,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -513,11 +512,11 @@ public class EntradasResource extends BaseResource {
         Template template;
         String url = currentRequest.getRequestURL().toString();
         if (configuration.isDebug()) {
-            eliminaCompraDeSesion(currentRequest);
+            comprasService.eliminaCompraDeSesion(currentRequest);
             template = tpvInterface.testTPV(compra.getId(), url, locale);
         }
         else if (compra.getImporte().equals(BigDecimal.ZERO)) {
-            eliminaCompraDeSesion(currentRequest);
+            comprasService.eliminaCompraDeSesion(currentRequest);
             template = tpvInterface.compraGratuita(compra.getId(), url, locale);
         } else {
             TpvsDTO parTpv = compra.getParSesion().getParEvento().getParTpv();
@@ -536,11 +535,6 @@ public class EntradasResource extends BaseResource {
                 template.put("urlPago", urlPago);
         }
         return Response.ok(template).build();
-    }
-
-    public static void eliminaCompraDeSesion(HttpServletRequest request) {
-        request.getSession().removeAttribute(EntradasService.BUTACAS_COMPRA);
-        request.getSession().removeAttribute(EntradasService.UUID_COMPRA);
     }
 
     private Template getSha2Template(Locale locale, TpvsDTO parTpv, CompraDTO compra, String email, String language) throws Exception {
