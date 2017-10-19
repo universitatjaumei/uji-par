@@ -15,7 +15,7 @@
     </properties>
 
     <parent>
-        <groupId>es.uji.apps.par</groupId>h
+        <groupId>es.uji.apps.par</groupId>
         <artifactId>uji-par</artifactId>
         <version>0.0.12-SNAPSHOT</version>
     </parent>
