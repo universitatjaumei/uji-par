@@ -64,6 +64,7 @@ public class ActoGraduacion implements EventosTipoSync {
         evento.setAsientosNumerados(false);
         evento.setRssId(item.getContenidoId());
         evento.setParCine(cineDTO);
+        evento.setPorcentajeIva(new BigDecimal(0));
 
         updateTipoEvento(evento, item, userUID);
     }
