@@ -184,6 +184,38 @@ public class CompraDTO implements Serializable {
         this.parAbonado = new AbonadoDTO(abonado.getId());
     }
 
+    public CompraDTO(CompraBorradaDTO compraBorrada) {
+        this.id = compraBorrada.getCompraId();
+        this.nombre = compraBorrada.getNombre();
+        this.apellidos = compraBorrada.getApellidos();
+        this.direccion = compraBorrada.getDireccion();
+        this.poblacion = compraBorrada.getPoblacion();
+        this.cp = compraBorrada.getCp();
+        this.provincia = compraBorrada.getProvincia();
+        this.telefono = compraBorrada.getTelefono();
+        this.email = compraBorrada.getEmail();
+        this.infoPeriodica = compraBorrada.getInfoPeriodica();
+        this.fecha = compraBorrada.getFecha();
+        this.taquilla = compraBorrada.getTaquilla();
+        this.importe = compraBorrada.getImporte();
+        this.referenciaPago = compraBorrada.getReferenciaPago();
+        this.tipoPago = compraBorrada.getTipoPago();
+        this.porcentajeIva = compraBorrada.getPorcentajeIva();
+        this.parSesion = compraBorrada.getParSesion();
+        this.codigoPagoTarjeta = compraBorrada.getCodigoPagoTarjeta();
+        this.codigoPagoPasarela = compraBorrada.getCodigoPagoPasarela();
+        this.pagada = compraBorrada.getPagada();
+        this.uuid = compraBorrada.getUuid();
+        this.reserva = compraBorrada.getReserva();
+        this.desde = compraBorrada.getDesde();
+        this.hasta = compraBorrada.getHasta();
+        this.observacionesReserva = compraBorrada.getObservacionesReserva();
+        this.anulada = compraBorrada.getAnulada();
+        this.reciboPinpad = compraBorrada.getReciboPinpad();
+        this.caducada = compraBorrada.getCaducada();
+        this.parAbonado = compraBorrada.getAbonadoId() != null ? new AbonadoDTO(compraBorrada.getAbonadoId()) : null;
+    }
+
 	public long getId() {
 		return this.id;
 	}

@@ -11,6 +11,7 @@
 	<class>es.uji.apps.par.db.ButacaDTO</class>
 	<class>es.uji.apps.par.db.CineDTO</class>
 	<class>es.uji.apps.par.db.CompraDTO</class>
+    <class>es.uji.apps.par.db.CompraBorradaDTO</class>
 	<class>es.uji.apps.par.db.EnvioDTO</class>
 	<class>es.uji.apps.par.db.EnviosSesionDTO</class>
     <class>es.uji.apps.par.db.EventoDTO</class>

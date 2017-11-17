@@ -25,8 +25,10 @@ import es.uji.apps.par.database.DatabaseHelper;
 import es.uji.apps.par.database.DatabaseHelperFactory;
 import es.uji.apps.par.db.AbonadoDTO;
 import es.uji.apps.par.db.ButacaDTO;
+import es.uji.apps.par.db.CompraBorradaDTO;
 import es.uji.apps.par.db.CompraDTO;
 import es.uji.apps.par.db.QButacaDTO;
+import es.uji.apps.par.db.QCompraBorradaDTO;
 import es.uji.apps.par.db.QCompraDTO;
 import es.uji.apps.par.db.QEventoDTO;
 import es.uji.apps.par.db.QReportDTO;
@@ -214,6 +216,22 @@ public class ComprasDAO extends BaseDAO {
             return compras.get(0);
     }
 
+
+    @Transactional
+    public CompraBorradaDTO getCompraBorradaById(long id) {
+        QCompraBorradaDTO qCompraBorradaDTO = QCompraBorradaDTO.compraBorradaDTO;
+
+        JPAQuery query = new JPAQuery(entityManager);
+
+        List<CompraBorradaDTO> compras =
+            query.from(qCompraBorradaDTO).where(qCompraBorradaDTO.compraId.eq(id)).distinct().list(qCompraBorradaDTO);
+
+        if (compras.size() == 0)
+            return null;
+        else
+            return compras.get(0);
+    }
+
     @Transactional
     public void guardarCodigoPagoTarjeta(
         long idCompra,
@@ -303,6 +321,8 @@ public class ComprasDAO extends BaseDAO {
         CompraDTO compra = getCompraById(idCompra);
 
         if (compra != null && !compra.getPagada()) {
+            CompraBorradaDTO compraBorrada = new CompraBorradaDTO(compra);
+            entityManager.persist(compraBorrada);
             entityManager.remove(compra);
         }
     }
@@ -314,6 +334,8 @@ public class ComprasDAO extends BaseDAO {
         if (abonado != null) {
             for (CompraDTO compra : abonado.getParCompras()) {
                 if (compra != null && !compra.getPagada()) {
+                    CompraBorradaDTO compraBorrada = new CompraBorradaDTO(compra);
+                    entityManager.persist(compraBorrada);
                     entityManager.remove(compra);
                 }
             }
@@ -325,6 +347,8 @@ public class ComprasDAO extends BaseDAO {
         CompraDTO compra = getCompraByUuid(uuidCompra);
 
         if (compra != null && !compra.getPagada()) {
+            CompraBorradaDTO compraBorrada = new CompraBorradaDTO(compra);
+            entityManager.persist(compraBorrada);
             entityManager.remove(compra);
         }
     }

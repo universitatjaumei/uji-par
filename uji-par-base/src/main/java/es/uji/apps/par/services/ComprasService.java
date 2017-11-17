@@ -24,6 +24,7 @@ import es.uji.apps.par.dao.ComprasDAO;
 import es.uji.apps.par.dao.SesionesDAO;
 import es.uji.apps.par.db.AbonadoDTO;
 import es.uji.apps.par.db.ButacaDTO;
+import es.uji.apps.par.db.CompraBorradaDTO;
 import es.uji.apps.par.db.CompraDTO;
 import es.uji.apps.par.db.SesionDTO;
 import es.uji.apps.par.enums.TipoPago;
@@ -304,6 +305,12 @@ public class ComprasService
     public CompraDTO getCompraById(long idCompra)
     {
         return comprasDAO.getCompraById(idCompra);
+    }
+
+    public CompraDTO getCompraBorradaById(long idCompra)
+    {
+        CompraBorradaDTO compraBorrada = comprasDAO.getCompraBorradaById(idCompra);
+        return new CompraDTO(compraBorrada);
     }
 
     public CompraDTO getCompraByUuid(String uuidCompra)

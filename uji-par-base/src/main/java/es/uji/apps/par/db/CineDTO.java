@@ -2,6 +2,8 @@ package es.uji.apps.par.db;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -427,5 +429,16 @@ public class CineDTO implements Serializable {
 
 	public void setPassbookActivado(Boolean passbookActivado) {
 		this.passbookActivado = passbookActivado;
+	}
+
+	public static CineDTO resultsetToDTO(ResultSet res) throws SQLException {
+		CineDTO cine = new CineDTO();
+		cine.setNombre(res.getString("nombre"));
+		cine.setMailFrom(res.getString("mail_from"));
+		cine.setUrlPublic(res.getString("url_public"));
+		cine.setUrlPieEntrada(res.getString("url_pie_entrada"));
+		cine.setDefaultLang(res.getString("default_lang"));
+
+		return cine;
 	}
 }
